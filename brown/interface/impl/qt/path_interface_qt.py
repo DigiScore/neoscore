@@ -126,7 +126,10 @@ class PathInterfaceQt(PathInterface):
             end_x, end_y)
 
     def render(self):
-        """Add the path to the document."""
+        """Render the line to the scene.
+
+        Returns: None
+        """
         # Note: This seems to implicitly convert the QPainterPath
         # to a QGraphicsPathItem, and add that to the scene.
         # Might cause difficulty down the line.

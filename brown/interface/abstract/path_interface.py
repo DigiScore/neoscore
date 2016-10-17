@@ -112,5 +112,8 @@ class PathInterface(ABC):
         raise NotImplementedError
 
     def render(self):
-        """Add the path to the document."""
+        """Render the line to the scene.
+
+        Returns: None
+        """
         raise NotImplementedError

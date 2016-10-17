@@ -15,6 +15,14 @@ class Path:
         self.current_path_x = 0
         self.current_path_y = 0
 
+    ######## CLASSMETHODS ########
+
+    @classmethod
+    def straight_line(cls, x1, y1, x2, y2):
+        line = cls(x1, y1)
+        line.line_to(x2, y2)
+        return line
+
     ######## PUBLIC PROPERTIES ########
 
     @property
@@ -115,8 +123,7 @@ class Path:
             end_x (float): The x position of the end point
             end_y (float): The y position of the end point
 
-        Returns:
-            None
+        Returns: None
         """
         self._interface.cubic_to(
             control_1_x, control_1_y,
@@ -124,4 +131,8 @@ class Path:
             end_x, end_y)
 
     def render(self):
+        """Render the line to the scene.
+
+        Returns: None
+        """
         self._interface.render()
