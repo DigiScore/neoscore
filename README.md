@@ -2,7 +2,7 @@
 
 ## A (very early) WIP Graphic Music Notation API
 
-Brown is a vector graphics program API with an inclination
+Brown is a vector graphics API with an inclination
 toward music notation.
 
 This project is in an extremely early stage, and should be

@@ -20,21 +20,7 @@ class AppInterfaceQt(AppInterface):
         self.app = QtWidgets.QApplication([])
         self.scene = QtWidgets.QGraphicsScene()
         self.view = QtWidgets.QGraphicsView(self.scene)
-
-    def draw_line(self, x1, y1, x2, y2):
-        if self.current_pen is None:
-            pen = self.default_pen
-        else:
-            pen = self.current_pen
-        self.scene.addLine(x1, y1, x2, y2, pen)
-
-    def draw_circle(self, x, y, radius):
-        self.scene.addEllipse(QtCore.QRectF(x - radius,
-                                            y - radius,
-                                            radius * 2,
-                                            radius * 2),
-                              self.default_pen,
-                              self.color)
+        self.view.setRenderHint(QtGui.QPainter.Antialiasing)
 
     def show(self):
         self.view.show()
