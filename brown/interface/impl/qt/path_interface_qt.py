@@ -130,8 +130,10 @@ class PathInterfaceQt(PathInterface):
 
         Returns: None
         """
-        # Note: This seems to implicitly convert the QPainterPath
-        # to a QGraphicsPathItem, and add that to the scene.
-        # Might cause difficulty down the line.
+        # Hack! scene.addPath returns a QGraphicsPathItem, after which
+        # we set the position. For some reason initializing a QGraphicsPathItem
+        # in self.__init__ and then adding it to the scene via scene.addItem
+        # Doesn't do it. Investigate more...
+
         path_item = brown._app_interface.scene.addPath(self._qt_object)
         path_item.setPos(self.x, self.y)

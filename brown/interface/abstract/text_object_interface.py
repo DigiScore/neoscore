@@ -29,8 +29,5 @@ class TextObjectInterface(ABC):
     def text(self, value):
         raise NotImplementedError
 
-    def draw(self):
-        raise NotImplementedError
-
-    def refresh_interface_properties(self):
+    def render(self):
         raise NotImplementedError

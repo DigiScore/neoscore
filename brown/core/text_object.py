@@ -17,13 +17,8 @@ class TextObject:
         self._interface = TextObject._interface_class(
             self.x, self.y, self.text, self.font._interface)
 
-    def draw(self):
-        self._interface.draw()
-
-    def _refresh_interface_object_position(self):
-        self._interface.x = self.x
-        self._interface.y = self.y
-        self._interface.refresh_interface_properties()
+    def render(self):
+        self._interface.render()
 
     @property
     def text(self):
@@ -43,8 +38,7 @@ class TextObject:
     @x.setter
     def x(self, value):
         self._x = value
-        # Refresh position with qt object
-        self._refresh_interface_object_position()
+        self._interface.x = self._x
 
     @property
     def y(self):
@@ -53,5 +47,4 @@ class TextObject:
     @y.setter
     def y(self, value):
         self._y = value
-        # Refresh position with qt object
-        self._refresh_interface_object_position()
+        self._interface.y = self._y
