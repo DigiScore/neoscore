@@ -12,8 +12,8 @@ class Path:
         self._interface = Path._interface_class(0, 0)
         self.x = x
         self.y = y
-        self.current_path_x = 0
-        self.current_path_y = 0
+        self._current_path_x = 0
+        self._current_path_y = 0
 
     ######## CLASSMETHODS ########
 
@@ -59,37 +59,34 @@ class Path:
 
         This value is dependent on `self.current_path_x` and
         `self.current_path_y`, both of which are initialized to `0`.
+
+        This property is read-only. To move the current position, use
+        the move_to() method, implicitly closing the current sub-path and
+        beginning a new one.
         """
         return self.current_path_x, self.current_path_y
-
-    @current_path_position.setter
-    def current_path_position(self, position):
-        self.current_path_x, self.current_path_y = position
-        self._interface.current_path_position = position
 
     @property
     def current_path_x(self):
         """
         float: The current relative drawing x-axis position
+
+        This property is read-only. To move the current position, use
+        the move_to() method, implicitly closing the current sub-path and
+        beginning a new one.
         """
         return self._current_path_x
-
-    @current_path_x.setter
-    def current_path_x(self, value):
-        self._current_path_x = value
-        self._interface.current_path_x = value
 
     @property
     def current_path_y(self):
         """
         float: The current relative drawing x-axis position
+
+        This property is read-only. To move the current position, use
+        the move_to() method, implicitly closing the current sub-path and
+        beginning a new one.
         """
         return self._current_path_y
-
-    @current_path_y.setter
-    def current_path_y(self, value):
-        self._current_path_y = value
-        self._interface.current_path_y = value
 
     ######## Public Methods ########
 
@@ -129,6 +126,19 @@ class Path:
             control_1_x, control_1_y,
             control_2_x, control_2_y,
             end_x, end_y)
+
+    def move_to(self, new_x, new_y):
+        """Close the current sub-path and start a new one.
+
+        Args:
+            new_x: The new x coordinate to begin the new sub-path
+            new_y: The new y coordinate to begin the new sub-path
+
+        Returns: None
+        """
+        self._interface.move_to(new_x, new_y)
+        self._current_path_x = new_x
+        self._current_path_y = new_y
 
     def render(self):
         """Render the line to the scene.

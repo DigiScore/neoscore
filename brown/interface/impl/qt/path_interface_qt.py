@@ -14,12 +14,12 @@ class PathInterfaceQt(PathInterface):
             x (float): The x position of the path relative to the document
             y (float): The y position of the path relative to the document
         """
+        self._qt_path = QtGui.QPainterPath()
+        self._qt_object = QtWidgets.QGraphicsPathItem(self._qt_path)
         self.x = x
         self.y = y
-        self.current_path_x = 0
-        self.current_path_y = 0
-        self._qt_object = QtGui.QPainterPath(
-            QtCore.QPointF(self.current_path_x, self.current_path_y))
+        self._current_path_x = 0
+        self._current_path_y = 0
 
     ######## PUBLIC PROPERTIES ########
 
@@ -33,7 +33,7 @@ class PathInterfaceQt(PathInterface):
     @x.setter
     def x(self, value):
         self._x = value
-        # self._graphics_path_item.setX(self._x)  # Add once render is fixed
+        self._qt_object.setX(self._x)
 
     @property
     def y(self):
@@ -45,7 +45,7 @@ class PathInterfaceQt(PathInterface):
     @y.setter
     def y(self, value):
         self._y = value
-        # self._graphics_path_item.setY(self._y)  # Add once render is fixed
+        self._qt_object.setY(self._y)
 
     @property
     def current_path_position(self):
@@ -57,34 +57,34 @@ class PathInterfaceQt(PathInterface):
 
         This value is dependent on `self.current_path_x` and
         `self.current_path_y`, both of which are initialized to `0`.
+
+        This property is read-only. To move the current position, use
+        the move_to() method, implicitly closing the current sub-path and
+        beginning a new one.
         """
         return self.current_path_x, self.current_path_y
-
-    @current_path_position.setter
-    def current_path_position(self, position):
-        self.current_path_x, self.current_path_y = position
 
     @property
     def current_path_x(self):
         """
         float: The current relative drawing x-axis position
+
+        This property is read-only. To move the current position, use
+        the move_to() method, implicitly closing the current sub-path and
+        beginning a new one.
         """
         return self._current_path_x
-
-    @current_path_x.setter
-    def current_path_x(self, value):
-        self._current_path_x = value
 
     @property
     def current_path_y(self):
         """
         float: The current relative drawing x-axis position
+
+        This property is read-only. To move the current position, use
+        the move_to() method, implicitly closing the current sub-path and
+        beginning a new one.
         """
         return self._current_path_y
-
-    @current_path_y.setter
-    def current_path_y(self, value):
-        self._current_path_y = value
 
     ######## Public Methods ########
 
@@ -100,8 +100,10 @@ class PathInterfaceQt(PathInterface):
 
         Returns: None
         """
-        self._qt_object.lineTo(x, y)
-        self.current_path_position = (x, y)
+        self._qt_path.lineTo(x, y)
+        self._update_qt_object_path()
+        self._current_path_x = x
+        self._current_path_y = y
 
     def cubic_to(self,
                  control_1_x, control_1_y,
@@ -119,23 +121,41 @@ class PathInterfaceQt(PathInterface):
             end_x (float): The local x position of the end point
             end_y (float): The local y position of the end point
 
-        Returns:
-            None
+        Returns: None
         """
-        self._qt_object.cubicTo(
+        self._qt_path.cubicTo(
             control_1_x, control_1_y,
             control_2_x, control_2_y,
             end_x, end_y)
+        self._update_qt_object_path()
+        self._current_path_x = end_x
+        self._current_path_y = end_y
+
+    def move_to(self, new_x, new_y):
+        """Close the current sub-path and start a new one.
+
+        Args:
+            new_x: The new x coordinate to begin the new sub-path
+            new_y: The new y coordinate to begin the new sub-path
+
+        Returns: None
+        """
+        self._qt_path.moveTo(new_x, new_y)
+        self._current_path_x = new_x
+        self._current_path_y = new_y
+        self._update_qt_object_path()
 
     def render(self):
         """Render the line to the scene.
 
         Returns: None
         """
-        # Hack! scene.addPath returns a QGraphicsPathItem, after which
-        # we set the position. For some reason initializing a QGraphicsPathItem
-        # in self.__init__ and then adding it to the scene via scene.addItem
-        # Doesn't do it. Investigate more...
+        brown._app_interface.scene.addItem(self._qt_object)
 
-        path_item = brown._app_interface.scene.addPath(self._qt_object)
-        path_item.setPos(self.x, self.y)
+    ######## PRIVATE METHODS ########
+
+    def _update_qt_object_path(self):
+        """
+        Synchronize the contents of self._qt_path to self._qt_object
+        """
+        self._qt_object.setPath(self._qt_path)

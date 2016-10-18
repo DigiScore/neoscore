@@ -45,33 +45,33 @@ class PathInterface(ABC):
 
         This value is dependent on `self.current_path_x` and
         `self.current_path_y`, both of which are initialized to `0`.
-        """
-        raise NotImplementedError
 
-    @current_path_position.setter
-    def current_path_position(self, position):
+        This property is read-only. To move the current position, use
+        the move_to() method, implicitly closing the current sub-path and
+        beginning a new one.
+        """
         raise NotImplementedError
 
     @property
     def current_path_x(self):
         """
         float: The current relative drawing x-axis position
-        """
-        raise NotImplementedError
 
-    @current_path_x.setter
-    def current_path_x(self, value):
+        This property is read-only. To move the current position, use
+        the move_to() method, implicitly closing the current sub-path and
+        beginning a new one.
+        """
         raise NotImplementedError
 
     @property
     def current_path_y(self):
         """
         float: The current relative drawing x-axis position
-        """
-        raise NotImplementedError
 
-    @current_path_y.setter
-    def current_path_y(self, value):
+        This property is read-only. To move the current position, use
+        the move_to() method, implicitly closing the current sub-path and
+        beginning a new one.
+        """
         raise NotImplementedError
 
     ######## Public Methods ########
@@ -106,8 +106,18 @@ class PathInterface(ABC):
             end_x (float): The x position of the end point
             end_y (float): The y position of the end point
 
-        Returns:
-            None
+        Returns: None
+        """
+        raise NotImplementedError
+
+    def move_to(self, new_x, new_y):
+        """Close the current sub-path and start a new one.
+
+        Args:
+            new_x: The new x coordinate to begin the new sub-path
+            new_y: The new y coordinate to begin the new sub-path
+
+        Returns: None
         """
         raise NotImplementedError
 
