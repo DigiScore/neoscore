@@ -93,8 +93,8 @@ class PathInterfaceQt(PathInterface):
         by `x` and `y`, and move `self.current_path_position` to the new point.
 
         Args:
-            x (float): The relative x-axis position of the line endpoint
-            y (float): The relative y-axis position of the line endpoint
+            x (float): The local x position of the line endpoint
+            y (float): The local y position of the line endpoint
 
         Returns: None
         """
@@ -110,12 +110,12 @@ class PathInterfaceQt(PathInterface):
         Moves `self.current_path_position` to the new end point.
 
         Args:
-            control_1_x (float): The x position of the first control point
-            control_1_y (float): The y position of the first control point
-            control_2_x (float): The x position of the second control point
-            control_2_y (float): The y position of the second control point
-            end_x (float): The x position of the end point
-            end_y (float): The y position of the end point
+            control_1_x (float): The local x position of the 1st control point
+            control_1_y (float): The local y position of the 1st control point
+            control_2_x (float): The local x position of the 2nd control point
+            control_2_y (float): The local y position of the 2nd control point
+            end_x (float): The local x position of the end point
+            end_y (float): The local y position of the end point
 
         Returns:
             None
@@ -133,4 +133,5 @@ class PathInterfaceQt(PathInterface):
         # Note: This seems to implicitly convert the QPainterPath
         # to a QGraphicsPathItem, and add that to the scene.
         # Might cause difficulty down the line.
-        brown._app_interface.scene.addPath(self._qt_object)
+        path_item = brown._app_interface.scene.addPath(self._qt_object)
+        path_item.setPos(self.x, self.y)

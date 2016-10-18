@@ -20,10 +20,10 @@ path = Path(0, 0)
 
 path.line_to(30, 40)
 path.cubic_to(30, 40, 90, 60, 100, 100)
-path.cubic_to(80, 80, 10, 120, 10, 90)
+path.cubic_to(80, 80, 10, 120, 50, 75)
 path.render()
 
-line = Path.straight_line(0,0, 50, 50)
+line = Path.straight_line(50, 50, 50, 50)
 line.render()
 
 
