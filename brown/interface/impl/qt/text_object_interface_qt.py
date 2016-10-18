@@ -59,11 +59,12 @@ class TextObjectInterfaceQt(TextObjectInterface):
     @property
     def font(self):
         """ font (FontInterface): The font object for the text """
-        raise NotImplementedError
+        return self._font
 
     @font.setter
     def font(self, value):
-        raise NotImplementedError
+        self._font = value
+        # TODO: Propogate font change to qt object
 
     ######## PUBLIC METHODS ########
 
