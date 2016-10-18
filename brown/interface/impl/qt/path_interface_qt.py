@@ -33,6 +33,7 @@ class PathInterfaceQt(PathInterface):
     @x.setter
     def x(self, value):
         self._x = value
+        # self._graphics_path_item.setX(self._x)  # Add once render is fixed
 
     @property
     def y(self):
@@ -44,6 +45,7 @@ class PathInterfaceQt(PathInterface):
     @y.setter
     def y(self, value):
         self._y = value
+        # self._graphics_path_item.setY(self._y)  # Add once render is fixed
 
     @property
     def current_path_position(self):
