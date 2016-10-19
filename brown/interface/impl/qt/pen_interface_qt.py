@@ -43,4 +43,4 @@ class PenInterfaceQt(PenInterface):
             self._color = value
         else:
             raise TypeError
-        self._qt_object.setColor(self._color)
+        self._qt_object.setColor(QtGui.QColor(self._color))

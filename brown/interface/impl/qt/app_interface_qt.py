@@ -13,8 +13,7 @@ class AppInterfaceQt(AppInterface):
         self.app = None
         self.scene = None
         self.current_pen = None
-        self.default_pen = QtGui.QPen()
-        self.color = None
+        self.current_brush = None
 
     def create_document(self, doctype='plane'):
         self.app = QtWidgets.QApplication([])
@@ -26,13 +25,27 @@ class AppInterfaceQt(AppInterface):
         self.view.show()
         self.app.exec_()
 
-    def set_pen(self, color, style):
-        self.current_pen = QtGui.QPen()
+    def set_pen(self, pen):
+        """
+        Set the current pen in the app
 
-    def set_color(self, color):
-        # Well defined function, not implemented
-        self.color = QtGui.QBrush(QtGui.QColor(color),
-                                  11)  # 0: no fill
+        Args:
+            pen (PenInterface[Qt]): A pen interface object
+
+        Returns: None
+        """
+        self.current_pen = pen
+
+    def set_brush(self, brush):
+        """
+        Set the current brush in the app
+
+        Args:
+            brush (BrushInterface[Qt]): A brush interface object
+
+        Returns: None
+        """
+        self.current_brush = brush
 
     def register_font(self, font_file_path):
         """

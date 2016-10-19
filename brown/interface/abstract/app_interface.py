@@ -34,13 +34,16 @@ class AppInterface(ABC):
         # Well defined function, not implemented
         raise NotImplementedError
 
-    def register_fonts(self, font_file_paths):
+    def register_font(self, font_file_path):
         """
         Register a list of fonts to the graphics engine.
 
         Args:
-            font_file_paths (list[str]): A list of paths to font files.
+            font_file_paths (strictly): A list of paths to font files.
                 Paths may be either absolute or relative to the package-level
                 `brown` directory. (One folder below the top)
+
+        Returns: FontInterface (implementation): A newly created
+            font interface object
         """
         raise NotImplementedError
