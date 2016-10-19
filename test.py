@@ -1,12 +1,20 @@
 #!/usr/bin/env python3
 
 from brown.core import brown
+from brown.core.font import Font
 from brown.core.text_object import TextObject
 from brown.core.glyph import Glyph
 from brown.core.path import Path
 
 
 brown.setup()
+
+
+# Create music font
+music_font = Font('gonville', 20)
+
+glyph = Glyph(50, 50, '\uE118', music_font)
+glyph.render()
 
 path = Path(0, 0)
 

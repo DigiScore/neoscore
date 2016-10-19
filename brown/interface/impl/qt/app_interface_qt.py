@@ -33,3 +33,18 @@ class AppInterfaceQt(AppInterface):
         # Well defined function, not implemented
         self.color = QtGui.QBrush(QtGui.QColor(color),
                                   11)  # 0: no fill
+
+    def register_font(self, font_file_path):
+        """
+        Register a list of fonts to the graphics engine.
+
+        Args:
+            font_file_paths (strictly): A list of paths to font files.
+                Paths may be either absolute or relative to the package-level
+                `brown` directory. (One folder below the top)
+
+        Returns: FontInterfaceQt: A newly created
+            font interface object
+        """
+        font_id = QtGui.QFontDatabase.addApplicationFont(font_file_path)
+        #family = QtGui.QFontDatabase.applicationFontFamilies(font_id).at(0)

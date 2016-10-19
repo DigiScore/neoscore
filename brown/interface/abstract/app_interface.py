@@ -4,6 +4,9 @@ from abc import ABC
 class AppInterface(ABC):
 
     def __init__(self):
+        """
+        TODO: Flesh out these docs
+        """
         # Well defined function, not implemented
         raise NotImplementedError
 
@@ -29,4 +32,15 @@ class AppInterface(ABC):
 
     def set_color(self, color):
         # Well defined function, not implemented
+        raise NotImplementedError
+
+    def register_fonts(self, font_file_paths):
+        """
+        Register a list of fonts to the graphics engine.
+
+        Args:
+            font_file_paths (list[str]): A list of paths to font files.
+                Paths may be either absolute or relative to the package-level
+                `brown` directory. (One folder below the top)
+        """
         raise NotImplementedError
