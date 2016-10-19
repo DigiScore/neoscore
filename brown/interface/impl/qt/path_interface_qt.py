@@ -8,16 +8,20 @@ from brown.interface.abstract.path_interface import PathInterface
 
 class PathInterfaceQt(PathInterface):
     """Interface for a generic graphic path object."""
-    def __init__(self, x, y):
+    def __init__(self, x, y, pen=None, brush=None):
         """
         Args:
             x (float): The x position of the path relative to the document
             y (float): The y position of the path relative to the document
+            pen (PenInterfaceQt): The pen to draw outlines with.
+            brush (BrushInterfaceQt): The brush to draw outlines with.
         """
         self._qt_path = QtGui.QPainterPath()
         self._qt_object = QtWidgets.QGraphicsPathItem(self._qt_path)
         self.x = x
         self.y = y
+        self.pen = pen
+        self.brush = brush
         self._current_path_x = 0
         self._current_path_y = 0
 
@@ -46,6 +50,40 @@ class PathInterfaceQt(PathInterface):
     def y(self, value):
         self._y = value
         self._qt_object.setY(self._y)
+
+    @property
+    def pen(self):
+        """
+        PenInterfaceQt: The pen to draw outlines with
+        """
+        return self._pen
+
+    @pen.setter
+    def pen(self, value):
+        self._pen = value
+        if self._pen:
+            self._qt_object.setPen(self._pen._qt_object)
+        else:
+            # Use Qt default pen.
+            # TODO: Make global default pen and use that instead
+            self._qt_object.setPen(QtGui.QPen())
+
+    @property
+    def brush(self):
+        """
+        BrushInterfaceQt: The brush to draw outlines with
+        """
+        return self._brush
+
+    @brush.setter
+    def brush(self, value):
+        self._brush = value
+        if self._brush:
+            self._qt_object.setBrush(self._brush._qt_object)
+        else:
+            # Use Qt default brush.
+            # TODO: Make global default brush and use that instead
+            self._qt_object.setBrush(QtGui.QBrush())
 
     @property
     def current_path_position(self):

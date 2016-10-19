@@ -3,11 +3,13 @@ from abc import ABC
 
 class PathInterface(ABC):
     """Interface for a generic graphic path object."""
-    def __init__(self, x, y):
+    def __init__(self, x, y, pen=None, brush=None):
         """
         Args:
             x (float): The x position of the path relative to the document
             y (float): The y position of the path relative to the document
+            pen (PenInterface): The pen to draw outlines with.
+            brush (BrushInterface): The brush to draw outlines with.
         """
         raise NotImplementedError
 
@@ -33,6 +35,28 @@ class PathInterface(ABC):
 
     @y.setter
     def y(self, value):
+        raise NotImplementedError
+
+    @property
+    def pen(self):
+        """
+        PenInterface: The pen to draw outlines with
+        """
+        raise NotImplementedError
+
+    @pen.setter
+    def pen(self, value):
+        raise NotImplementedError
+
+    @property
+    def brush(self):
+        """
+        BrushInterface: The brush to draw outlines with
+        """
+        raise NotImplementedError
+
+    @brush.setter
+    def brush(self, value):
         raise NotImplementedError
 
     @property

@@ -5,13 +5,22 @@ class Path:
 
     _interface_class = path_interface_qt.PathInterfaceQt
 
-    def __init__(self, x, y):
+    def __init__(self, x, y, pen=None, brush=None):
+        """
+        Args:
+            x (float): The x position of the path relative to the document
+            y (float): The y position of the path relative to the document
+            pen (Pen): The pen to draw outlines with.
+            brush (Brush): The brush to draw outlines with.
+        """
         # Hack? Initialize interface to position 0, 0
         # so that attribute setters don't try to push
         # changes to not-yet-existing interface
         self._interface = Path._interface_class(0, 0)
         self.x = x
         self.y = y
+        self.pen = pen
+        self.brush = brush
         self._current_path_x = 0
         self._current_path_y = 0
 
@@ -48,6 +57,32 @@ class Path:
     def y(self, value):
         self._y = value
         self._interface.y = value
+
+    @property
+    def pen(self):
+        """
+        Pen: The pen to draw outlines with
+        """
+        return self._pen
+
+    @pen.setter
+    def pen(self, value):
+        self._pen = value
+        if self._pen:
+            self._interface.pen = self._pen._interface
+
+    @property
+    def brush(self):
+        """
+        Brush: The brush to draw outlines with
+        """
+        return self._brush
+
+    @brush.setter
+    def brush(self, value):
+        self._brush = value
+        if self._brush:
+            self._interface.brush = self._brush._interface
 
     @property
     def current_path_position(self):

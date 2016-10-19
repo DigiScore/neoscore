@@ -5,6 +5,7 @@ from brown.core.font import Font
 from brown.core.text_object import TextObject
 from brown.core.glyph import Glyph
 from brown.core.path import Path
+from brown.core.pen import Pen
 
 
 brown.setup()
@@ -16,7 +17,7 @@ music_font = Font('gonville', 20)
 glyph = Glyph(50, 50, '\uE118', music_font)
 glyph.render()
 
-path = Path(0, 0)
+path = Path(0, 0, Pen('#f29000'))
 
 path.line_to(30, 40)
 path.cubic_to(30, 40, 90, 60, 100, 100)
