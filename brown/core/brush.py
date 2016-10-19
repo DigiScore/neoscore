@@ -10,7 +10,7 @@ class Brush:
 
     _interface_class = brush_interface_qt.BrushInterfaceQt
 
-    def __init__(self, color):
+    def __init__(self, color='#000000'):
         """
         Args:
             color (str or tuple): Either a hexadecimal color string or a

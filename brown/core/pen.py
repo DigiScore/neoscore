@@ -10,7 +10,7 @@ class Pen:
 
     _interface_class = pen_interface_qt.PenInterfaceQt
 
-    def __init__(self, color):
+    def __init__(self, color='#000000'):
         """
         Args:
             color (str or tuple): Either a hexadecimal color string or a
