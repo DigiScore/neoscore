@@ -175,6 +175,17 @@ class Path:
         self._current_path_x = new_x
         self._current_path_y = new_y
 
+    def close_subpath(self):
+        """Close the current sub-path and start a new one at (0, 0).
+
+        This is equivalent to `move_to(0, 0)`
+
+        Returns: None
+        """
+        self._interface.close_subpath
+        self._current_path_y = 0
+        self._current_path_x = 0
+
     def render(self):
         """Render the line to the scene.
 

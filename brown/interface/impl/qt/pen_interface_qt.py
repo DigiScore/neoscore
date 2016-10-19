@@ -17,7 +17,9 @@ class PenInterfaceQt(PenInterface):
             color (str or tuple): Either a hexadecimal color string or a
                 3-tuple of RGB int's
         """
-        self._qt_object = QtGui.QPen(QtGui.QColor('#DDDDDD'))
+        # TEMP: Initialize color to bright red to signal this not being
+        # overrided
+        self._qt_object = QtGui.QPen(QtGui.QColor('#FF0000'))
         self.color = color
 
     ######## PUBLIC PROPERTIES ########

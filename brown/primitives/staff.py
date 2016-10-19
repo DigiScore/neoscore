@@ -1,32 +1,75 @@
-from brown.core.flowable import Flowable
-from brown.core.flowable_object import FlowableObject
-
 from brown.utils import units
+from brown.config import config
+from brown.core import brown
+from brown.core.path import Path
 
-from brown.models.clef import Clef
-from brown.models.position import Position
+
+# mock up stuff
 
 
-class Staff(FlowableObject):
-    def __init__(flowable, offset=None, contents=None):
-        '''
-        Args:
-            flowable (Flowable): The parent flowable
-            offset (Position): The offset position of the staff relative
-                to the parent flowable
-            contents (list): An optional list of initial contents for the staff
-        '''
-        self.flowable = flowable
-        self.offset = offset
-        self.offset = offset
+class Staff:
+
+    def __init__(self, x, y, length, height=None):
+        self._x = x
+        self._y = y
+        self._length = length
+        if height:
+            self._height = height
+        else:
+            self._height = config.DEFAULT_STAFF_HEIGHT * units.mm
+        self.grob = Path(self.x, self.y)
+        # Draw the staff lines
+        line_distance = self.height / 5
+        for i in range(5):
+            self.grob.move_to(0,
+                              i * line_distance)
+            self.grob.line_to(self.length,
+                              i * line_distance)
+
+
+    ######## PUBLIC PROPERTIES ########
 
     @property
-    def contents():
-        return self._contents
+    def x(self):
+        """float: x coordinate of the left side of the staff"""
+        return self._x
 
-    @contents.setter
-    def contents(value):
-        if value is None:
-            self._contents = []
-        else:
-            self._contents = value
+    @x.setter
+    def x(self, value):
+        self._x = value
+
+    @property
+    def y(self):
+        """float: y coordinate of the left side of the staff"""
+        return self._y
+
+    @y.setter
+    def y(self, value):
+        self._y = value
+
+    @property
+    def height(self):
+        """float: height coordinate of the left side of the staff"""
+        return self._height
+
+    @height.setter
+    def height(self, value):
+        self._height = value
+
+    @property
+    def length(self):
+        """float: length coordinate of the left side of the staff"""
+        return self._length
+
+    @length.setter
+    def length(self, value):
+        self._length = value
+
+    ######## Public Methods ########
+
+    def render(self):
+        """Render the staff.
+
+        Returns: None
+        """
+        self.grob.render()

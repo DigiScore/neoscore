@@ -145,6 +145,15 @@ class PathInterface(ABC):
         """
         raise NotImplementedError
 
+    def close_subpath(self):
+        """Close the current sub-path and start a new one at (0, 0).
+
+        This is equivalent to `move_to(0, 0)`
+
+        Returns: None
+        """
+        raise NotImplementedError
+
     def render(self):
         """Render the line to the scene.
 
