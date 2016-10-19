@@ -7,31 +7,37 @@ class AppInterface(ABC):
         """
         TODO: Flesh out these docs
         """
-        # Well defined function, not implemented
+        # TODO: Doc me!
         raise NotImplementedError
 
     def create_document(self, doctype='plane'):
-        # Well defined function, not implemented
-        raise NotImplementedError
-
-    def draw_line(self, x1, y1, x2, y2):
-        # Well defined function, not implemented
-        raise NotImplementedError
-
-    def draw_circle(self, x, y, radius):
-        # Well defined function, not implemented
+        # TODO: Doc me!
         raise NotImplementedError
 
     def show(self):
-        # Well defined function, not implemented
+        # TODO: Doc me!
         raise NotImplementedError
 
-    def set_pen(self, color, style):
-        # Well defined function, not implemented
+    def set_pen(self, pen):
+        """
+        Set the current pen in the app
+
+        Args:
+            pen (PenInterface[Qt]): A pen interface object
+
+        Returns: None
+        """
         raise NotImplementedError
 
-    def set_color(self, color):
-        # Well defined function, not implemented
+    def set_brush(self, brush):
+        """
+        Set the current brush in the app
+
+        Args:
+            brush (BrushInterface[Qt]): A brush interface object
+
+        Returns: None
+        """
         raise NotImplementedError
 
     def register_font(self, font_file_path):
