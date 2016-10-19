@@ -2,9 +2,8 @@ from brown.interface.impl.qt import brush_interface_qt
 from brown.utils import color
 
 
-
 class Brush:
-    """Class for a generic drawing brush controlling drawing patterns.
+    """Class for a generic drawing brush controlling fill patterns.
 
     Currently only solid colors are supported.
     """

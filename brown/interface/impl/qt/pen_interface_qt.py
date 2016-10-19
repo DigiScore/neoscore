@@ -1,12 +1,12 @@
 from PyQt5 import QtGui
 
-from brown.interface.abstract.brush_interface import BrushInterface
+from brown.interface.abstract.pen_interface import PenInterface
 from brown.utils import color
 
 
 
-class BrushInterfaceQt(BrushInterface):
-    """Interface for a generic drawing brush controlling fill patterns.
+class PenInterfaceQt(PenInterface):
+    """Interface for a generic drawing pen controlling path outline appearance.
 
     Currently only solid colors are supported.
     """
@@ -17,7 +17,7 @@ class BrushInterfaceQt(BrushInterface):
             color (str or tuple): Either a hexadecimal color string or a
                 3-tuple of RGB int's
         """
-        self._qt_object = QtGui.QBrush(QtGui.QColor('#DDDDDD'))
+        self._qt_object = QtGui.QPen(QtGui.QColor('#DDDDDD'))
         self.color = color
 
     ######## PUBLIC PROPERTIES ########

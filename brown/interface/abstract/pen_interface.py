@@ -1,8 +1,8 @@
 from abc import ABC
 
 
-class BrushInterface(ABC):
-    """Interface for a generic drawing brush controlling fill patterns.
+class PenInterface(ABC):
+    """Interface for a generic drawing pen controlling path outline appearance.
 
     Currently only solid colors are supported.
     """
