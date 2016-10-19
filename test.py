@@ -28,6 +28,7 @@ line = Path.straight_line(50, 50, 50, 50)
 line.render()
 
 text = TextObject(80, 10, 'hello')
+text.default_color = '#ff00ff'
 text.render()
 
 brown.show()

@@ -2,8 +2,10 @@ from PyQt5 import QtWidgets
 from PyQt5 import QtGui
 from PyQt5 import QtCore
 
+
 from brown.core import brown
 from brown.interface.abstract.text_object_interface import TextObjectInterface
+from brown.utils import color
 
 
 class TextObjectInterfaceQt(TextObjectInterface):
@@ -17,7 +19,7 @@ class TextObjectInterfaceQt(TextObjectInterface):
         """
         self.text = text
         self.font = font
-        self._qt_object = QtWidgets.QGraphicsSimpleTextItem(self.text)
+        self._qt_object = QtWidgets.QGraphicsTextItem(self.text)
         self._qt_object.setFont(self.font._qt_object)
         self.x = x
         self.y = y
@@ -43,6 +45,33 @@ class TextObjectInterfaceQt(TextObjectInterface):
     def y(self, value):
         self._y = value
         self._qt_object.setY(self._y)
+
+    @property
+    def default_color(self):
+        """str: A hexadecimal color controlling the color of unformatted text.
+
+        If this is set to an RGB tuple it will be converted to and stored
+        in hexadecimal form
+
+        By default this value is black ('#000000')
+        """
+        return self._default_color
+
+    @default_color.setter
+    def default_color(self, value):
+        if isinstance(value, tuple):
+            if len(value) == 3:
+                self._default_color = color.rgb_to_hex(value)
+            else:
+                raise ValueError(
+                    'RGB tuple for BrushInterface[Qt] must be len 3')
+        elif isinstance(value, str):
+            self._default_color = value
+        elif value is None:
+            self._qt_object.setDefaultTextColor(QtGui.QColor('#000000'))
+        else:
+            raise TypeError
+        self._qt_object.setDefaultTextColor(QtGui.QColor(self._default_color))
 
     @property
     def text(self):
