@@ -6,9 +6,14 @@ from brown.interface.abstract.app_interface import AppInterface
 
 
 class AppInterfaceQt(AppInterface):
+    """The primary interface to the application state.
+
+    This holds much of the global state for interacting with the API,
+    and must be created (and `create_document()` must be called) before
+    working with the API.
+    """
 
     def __init__(self):
-        # implementation of api specified in AppInterface
         print('Initializing with QT toolkit')
         self.app = None
         self.scene = None
@@ -16,40 +21,43 @@ class AppInterfaceQt(AppInterface):
         self.current_brush = None
 
     def create_document(self, doctype='plane'):
+        """Initialize a document.
+
+        This is required before just about any operation
+        in the API can be performed.
+        """
         self.app = QtWidgets.QApplication([])
         self.scene = QtWidgets.QGraphicsScene()
         self.view = QtWidgets.QGraphicsView(self.scene)
         self.view.setRenderHint(QtGui.QPainter.Antialiasing)
 
     def show(self):
+        """Open a window showing a preview of the document."""
         self.view.show()
         self.app.exec_()
 
     def set_pen(self, pen):
-        """
-        Set the current pen in the app
+        """Set the current pen in the app
 
         Args:
-            pen (PenInterface[Qt]): A pen interface object
+            pen (PenInterfaceQt): A pen interface object
 
         Returns: None
         """
         self.current_pen = pen
 
     def set_brush(self, brush):
-        """
-        Set the current brush in the app
+        """Set the current brush in the app
 
         Args:
-            brush (BrushInterface[Qt]): A brush interface object
+            brush (BrushInterfaceQt): A brush interface object
 
         Returns: None
         """
         self.current_brush = brush
 
     def register_font(self, font_file_path):
-        """
-        Register a list of fonts to the graphics engine.
+        """Register a list of fonts to the graphics engine.
 
         Args:
             font_file_paths (strictly): A list of paths to font files.
