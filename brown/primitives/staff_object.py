@@ -6,7 +6,6 @@ from abc import ABC
 from brown.utils import units
 
 # from brown.models.duration import Duration
-from brown.models.position import Position
 
 from brown.primitives.staff import Staff
 
@@ -15,18 +14,20 @@ from brown.primitives.staff import Staff
 # what about spanners?
 
 
-class StaffObject:
+class StaffObject(ABC):
 
     """An object in a staff """
 
-    def __init__(self, staff, position):
+    def __init__(self, staff, position_x):
         '''
         Args:
             staff (Staff): The parent staff
-            position (Position): The position of the object
+            position_x (float): The x-position of the object in staff-units
         '''
         self.staff = staff
-        self.position = position
+        self.position_x = position_x
+
+    ######## PUBLIC PROPERTIES ########
 
     @property
     def staff(self):
@@ -37,9 +38,14 @@ class StaffObject:
         self._staff = value
 
     @property
-    def position(self):
-        return self._position
+    def position_x(self):
+        return self._position_x
 
-    @position.setter
-    def position(self, value):
-        self._position = value
+    @position_x.setter
+    def position_x(self, value):
+        self._position_x = value
+
+    ######## PUBLIC METHODS ########
+
+    def render(self):
+        raise NotImplementedError

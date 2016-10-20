@@ -21,4 +21,4 @@ DEFAULT_MUSIC_FONT_PATH = os.path.join(
 PRINT_PPI = 300
 
 # Staff Height
-DEFAULT_STAFF_HEIGHT = 6  # millimeters
+DEFAULT_STAFF_UNIT = 1  # in millimeters

@@ -16,20 +16,44 @@ Thoughts on the Notehead class
 
 class Notehead(StaffObject):
 
-    def __init__(self, parent_staff, position, pitch):
+    def __init__(self, staff, position_x, pitch):
         """
         Args:
             parent_staff (Staff):
-            position (float):
+            position_x (float):
             pitch (Pitch):
         """
-        self.parent_staff = parent_staff
-        self.position = position
+        super(Notehead, self).__init__(staff, position_x)
         self.pitch = pitch
         self.grob = Glyph(
-            parent_staff.x + position,
+            self.staff.x + self.position_x,
             0,
             '\uE13E', Font('gonville', 20))
+
+    ######## PUBLIC PROPERTIES ########
+
+    @property
+    def pitch(self):
+        """Pitch: The pitch of this notehead.
+
+        May be set to a valid string pitch descriptor.
+        See Pitch docs.
+        """
+        return self._pitch
+
+    @pitch.setter
+    def pitch(self, value):
+        if isinstance(value, Pitch):
+            self._pitch = value
+        else:
+            self._pitch = Pitch(value)
+
+    @property
+    def position_y(self):
+        """The vertical staff position of the notehead"""
+        pass
+
+    ######## PUBLIC METHODS ########
 
     def render(self):
         self.grob.render()

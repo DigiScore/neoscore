@@ -4,29 +4,26 @@ from brown.core import brown
 from brown.core.path import Path
 
 
-# mock up stuff
+# mock up staff
 
 
 class Staff:
 
-    def __init__(self, x, y, length, height=None):
+    def __init__(self, x, y, length, staff_unit=None):
         self._x = x
         self._y = y
+        self.line_count = 5
         self._length = length
-        if height:
-            self._height = height
+        if staff_unit:
+            self.staff_unit = staff_unit
         else:
-            self._height = config.DEFAULT_STAFF_HEIGHT * units.mm
+            self.staff_unit = config.DEFAULT_STAFF_UNIT * units.mm
         self.contents = []
         self.grob = Path(self.x, self.y)
         # Draw the staff lines
-        line_distance = self.height / 5
-        for i in range(5):
-            self.grob.move_to(0,
-                              i * line_distance)
-            self.grob.line_to(self.length,
-                              i * line_distance)
-
+        for i in range(self.line_count):
+            self.grob.move_to(0, i * self.staff_unit)
+            self.grob.line_to(self.length, i * self.staff_unit)
 
     ######## PUBLIC PROPERTIES ########
 
@@ -49,15 +46,6 @@ class Staff:
         self._y = value
 
     @property
-    def height(self):
-        """float: height coordinate of the left side of the staff"""
-        return self._height
-
-    @height.setter
-    def height(self, value):
-        self._height = value
-
-    @property
     def length(self):
         """float: length coordinate of the left side of the staff"""
         return self._length
@@ -67,6 +55,21 @@ class Staff:
         self._length = value
 
     ######## Public Methods ########
+
+    def middle_c_at(self, position_x):
+        """Find the vertical staff position of middle-c at a given point.
+
+        Looks for clefs and other transposing modifiers to determine
+        the position of middle-c. If no clef is present, treble is assumed.
+
+        Returns an `int` vertical staff position, where 0 means the center
+        line or space of the staff, higher numbers mean higher pitches,
+        and lower numbers mean lower pitches.
+        """
+        # TODO: Revisit once clefs and other transposition modifiers
+        #       are implemented.
+        #       assumes for now that everything is treble clef.
+        return -6
 
     def render(self):
         """Render the staff.
