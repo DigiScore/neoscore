@@ -7,7 +7,7 @@ class InvalidPitchDescriptionError(Exception):
 class Pitch:
     """A pitch with a letter, octave, and accidental"""
 
-    _pitch_regex = re.compile("^([a-g]|[A-G])?([s|f|S|F])?('*|,*)$")
+    _pitch_regex = re.compile("^([a-g]|[A-G])([s|f|S|F])?('*|,*)$")
 
     def __init__(self, pitch):
         """
@@ -45,11 +45,11 @@ class Pitch:
     @pitch.setter
     def pitch(self, value):
         match = Pitch._pitch_regex.match(value)
+        if match is None:
+            raise InvalidPitchDescriptionError
         letter = match.group(1)
         accidental = match.group(2)
         ticks = match.group(3)
-        if letter is None:
-            raise InvalidPitchDescriptionError
         self._letter = letter
         self._accidental = accidental
         if ticks is None:

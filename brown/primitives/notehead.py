@@ -1,9 +1,9 @@
 from brown.core.font import Font
 from brown.core.glyph import Glyph
 from brown.primitives.staff import Staff
-# from brown.primitives.staff_object import StaffObject
+from brown.models.pitch import Pitch
+from brown.primitives.staff_object import StaffObject
 # from brown.primitives.chord_rest import ChordRest
-# from brown.models.pitch import Pitch
 
 """
 Thoughts on the Notehead class
@@ -14,7 +14,7 @@ Thoughts on the Notehead class
 
 """
 
-class Notehead:
+class Notehead(StaffObject):
 
     def __init__(self, parent_staff, position, pitch):
         """
