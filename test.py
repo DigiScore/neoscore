@@ -8,13 +8,14 @@ from brown.core.path import Path
 from brown.core.pen import Pen
 from brown.core.brush import Brush
 from brown.primitives.staff import Staff
+from brown.primitives.notehead import Notehead
 
 
 brown.setup()
 
 
 # Create music font
-music_font = Font('gonville', 20)
+music_font = Font('Gonville', 20)
 
 glyph = Glyph(50, 50, '\uE118', music_font)
 glyph.render()
@@ -37,5 +38,8 @@ text.render()
 
 staff = Staff(30, 30, 200)
 staff.render()
+
+note = Notehead(staff, 40, 'c\'')
+note.render()
 
 brown.show()

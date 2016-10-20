@@ -17,6 +17,7 @@ class Staff:
             self._height = height
         else:
             self._height = config.DEFAULT_STAFF_HEIGHT * units.mm
+        self.contents = []
         self.grob = Path(self.x, self.y)
         # Draw the staff lines
         line_distance = self.height / 5

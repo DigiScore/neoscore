@@ -1,10 +1,11 @@
-from brown.core import FlowableObject
-from brown.core import Flowable
+from abc import ABC
+
+# from brown.core import FlowableObject
+# from brown.core import Flowable
 
 from brown.utils import units
 
-from brown.models.clef import Clef
-from brown.models.duration import Duration
+# from brown.models.duration import Duration
 from brown.models.position import Position
 
 from brown.primitives.staff import Staff
@@ -14,41 +15,31 @@ from brown.primitives.staff import Staff
 # what about spanners?
 
 
+class StaffObject:
 
+    """An object in a staff """
 
-class StaffObject(FlowableObject):
-    def __init__(staff, position, duration=None):
+    def __init__(self, staff, position):
         '''
         Args:
             staff (Staff): The parent staff
             position (Position): The position of the object
-            duration (Duration): An optional duration for the object
         '''
         self.staff = staff
         self.position = position
-        self.duration = duration
-
 
     @property
-    def staff():
+    def staff(self):
         return self._staff
 
     @staff.setter
-    def staff(value):
+    def staff(self, value):
         self._staff = value
 
     @property
-    def position():
+    def position(self):
         return self._position
 
     @position.setter
-    def position(value):
+    def position(self, value):
         self._position = value
-
-    @property
-    def duration():
-        return self._duration
-
-    @duration.setter
-    def duration(value):
-        self._duration = value
