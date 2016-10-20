@@ -35,11 +35,11 @@ class Accidental:
     @value.setter
     def value(self, new_value):
         if isinstance(new_value, str):
-            if new_value == 'f':
+            if new_value == 'f' or new_value == 'F':
                 self._value = -1
-            elif new_value == 'n':
+            elif new_value == 'n' or new_value == 'N':
                 self._value = 0
-            elif new_value == 's':
+            elif new_value == 's' or new_value == 'S':
                 self._value = 1
             else:
                 raise InvalidAccidentalError
@@ -52,3 +52,18 @@ class Accidental:
             self._value = None
         else:
             raise InvalidAccidentalError
+
+    @property
+    def value_as_str(self):
+        """str or None: The str (or None) version of the accidental value.
+
+        Read-only.
+        """
+        if self._value == -1:
+            return 'f'
+        elif self._value == 0:
+            return 'n'
+        elif self._value == 1:
+            return 's'
+        else:
+            return None

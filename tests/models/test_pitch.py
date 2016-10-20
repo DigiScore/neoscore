@@ -8,7 +8,7 @@ def test_pitch_init_common_case():
     test_pitch = Pitch(pitch_string)
     assert(test_pitch.pitch == pitch_string)
     assert(test_pitch.letter == 'a')
-    assert(test_pitch.accidental == 'f')
+    assert(test_pitch.accidental.value == -1)
     assert(test_pitch.octave == 1)
 
 
@@ -25,6 +25,6 @@ def test_pitch_init_letter_case_agnostic():
 
 def test_pitch_init_accidental_case_agnostic():
     test_pitch = Pitch('af,,')
-    assert(test_pitch.accidental == 'f')
+    assert(test_pitch.accidental.value == -1)
     test_pitch_2 = Pitch('aF,,')
-    assert(test_pitch_2.accidental == 'F')
+    assert(test_pitch_2.accidental.value == -1)

@@ -26,3 +26,9 @@ def test_garbage_int_value():
 def test_garbage_type_value():
     with pytest.raises(InvalidAccidentalError):
         Accidental(['nonsense', 'input'])
+
+
+def test_value_as_str():
+    input_types = ['f', 'n', 's', None]
+    for case in input_types:
+        assert(Accidental(case).value_as_str == case)

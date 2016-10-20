@@ -1,5 +1,7 @@
 import re
 
+from brown.models.accidental import Accidental
+
 class InvalidPitchDescriptionError(Exception):
     pass
 
@@ -51,7 +53,7 @@ class Pitch:
         accidental = match.group(2)
         ticks = match.group(3)
         self._letter = letter
-        self._accidental = accidental
+        self._accidental = Accidental(accidental)
         if ticks is None:
             self._octave = 3
         else:
