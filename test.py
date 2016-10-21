@@ -36,10 +36,10 @@ text = TextObject(80, 10, 'hello')
 text.default_color = '#ff00ff'
 text.render()
 
-staff = Staff(30, 30, 200)
+staff = Staff(30, 0, 200, 2)
 staff.render()
 
-note = Notehead(staff, 40, "c")
+note = Notehead(staff, 40, "c''")
 note.render()
 
 brown.show()

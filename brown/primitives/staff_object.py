@@ -45,6 +45,16 @@ class StaffObject(ABC):
     def position_x(self, value):
         self._position_x = value
 
+    @property
+    def position_y(self):
+        """float: The vertical staff position of the notehead in pixels
+        relative to the top of the staff."""
+        raise NotImplementedError
+
+    @position_y.setter
+    def position_y(self, value):
+        raise NotImplementedError
+
     ######## PUBLIC METHODS ########
 
     def render(self):

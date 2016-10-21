@@ -15,7 +15,7 @@ class Staff:
         self.line_count = 5
         self._length = length
         if staff_unit:
-            self.staff_unit = staff_unit
+            self.staff_unit = staff_unit * units.mm
         else:
             self.staff_unit = config.DEFAULT_STAFF_UNIT * units.mm
         self.contents = []
@@ -53,6 +53,11 @@ class Staff:
     @length.setter
     def length(self, value):
         self._length = value
+
+    @property
+    def height(self):
+        """float: The height of the staff in pixels, from top to bottom line."""
+        return (self.line_count - 1) * self.staff_unit
 
     ######## Public Methods ########
 

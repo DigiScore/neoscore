@@ -26,8 +26,8 @@ class Notehead(StaffObject):
         super(Notehead, self).__init__(staff, position_x)
         self.pitch = pitch
         self.grob = Glyph(
-            self.staff.x + self.position_x,
-            0,
+            self.staff.x + self.position_x,  # TODO: We should be able to pass relative coords
+            self.staff.x + self.position_y,
             '\uE13E', Font('gonville', 20))
 
     ######## PUBLIC PROPERTIES ########
@@ -56,6 +56,7 @@ class Notehead(StaffObject):
         line or space of the staff, higher numbers mean higher pitches,
         and lower numbers mean lower pitches.
         """
+        # TODO: Clean up / shorten line lengths here
         return (self.staff.middle_c_at(self.position_x) +  # Middle c in staff
                 (self.pitch.diatonic_degree_from_c - 1) +  # Diatonic pitch number, off by one
                 (self.pitch.octave * 8) -                  # Octave multiplier
@@ -64,9 +65,12 @@ class Notehead(StaffObject):
 
     @property
     def position_y(self):
-        """The vertical staff position of the notehead"""
-        #return staff.
-        pass
+        """float: The vertical staff position of the notehead in pixels
+        relative to the top of the staff."""
+        position_relative_to_top = (-1 * self.staff_position) + 4
+        # TODO: Clean up this formula
+        # Convert to pixels and return
+        return position_relative_to_top * (self.staff.staff_unit / 2)
 
     ######## PUBLIC METHODS ########
 
