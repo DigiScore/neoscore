@@ -56,6 +56,17 @@ class Staff:
 
     ######## Public Methods ########
 
+    # def center_position_at(self, position_x):
+    #     """Find the (natural) pitch corresponding to the middle
+    #     staff line or space at a given x position.
+
+    #     Looks for clefs and other transposing modifiers.
+    #     If no clef is present, treble is assumed.
+
+    #     Returns a
+    #     """
+
+
     def middle_c_at(self, position_x):
         """Find the vertical staff position of middle-c at a given point.
 

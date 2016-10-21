@@ -49,8 +49,23 @@ class Notehead(StaffObject):
             self._pitch = Pitch(value)
 
     @property
+    def staff_position(self):
+        """int: The notehead position in the staff in staff units.
+
+        0 means the center
+        line or space of the staff, higher numbers mean higher pitches,
+        and lower numbers mean lower pitches.
+        """
+        return (self.staff.middle_c_at(self.position_x) +  # Middle c in staff
+                (self.pitch.diatonic_degree_from_c - 1) +  # Diatonic pitch number, off by one
+                (self.pitch.octave * 8) -                  # Octave multiplier
+                (32))                                      # Octave baseline
+                                                           # (middle c is octave 4)
+
+    @property
     def position_y(self):
         """The vertical staff position of the notehead"""
+        #return staff.
         pass
 
     ######## PUBLIC METHODS ########

@@ -1,4 +1,3 @@
-from brown.core import brown
 from brown.interface.impl.qt import font_interface_qt
 
 

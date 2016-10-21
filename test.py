@@ -39,7 +39,7 @@ text.render()
 staff = Staff(30, 30, 200)
 staff.render()
 
-note = Notehead(staff, 40, 'c\'')
+note = Notehead(staff, 40, "c")
 note.render()
 
 brown.show()

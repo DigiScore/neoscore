@@ -10,13 +10,26 @@ class Pitch:
     """A pitch with a letter, octave, and accidental"""
 
     _pitch_regex = re.compile("^([a-g]|[A-G])([s|f|S|F])?('*|,*)$")
-    naturals = {'c': 0,
-                'd': 2,
-                'e': 4,
-                'f': 5,
-                'g': 7,
-                'a': 9,
-                'b': 11}
+    natural_pitch_classes = {
+        'c': 0,
+        'd': 2,
+        'e': 4,
+        'f': 5,
+        'g': 7,
+        'a': 9,
+        'b': 11
+    }
+
+    _diatonic_degrees_from_c = {
+        'c': 1,
+        'd': 2,
+        'e': 3,
+        'f': 4,
+        'g': 5,
+        'a': 6,
+        'b': 7
+    }
+
 
     def __init__(self, pitch):
         """
@@ -106,4 +119,18 @@ class Pitch:
     @property
     def pitch_class(self):
         """int: The 0-11 pitch class of this pitch."""
-        return Pitch.naturals[self.letter] + self.accidental.value
+        return Pitch.natural_pitch_classes[self.letter] + self.accidental.value
+
+    @property
+    def diatonic_degree_from_c(self):
+        """int: The diatonic degree of the pitch as if it were in C.
+
+            'c': 1,
+            'd': 2,
+            'e': 3,
+            'f': 4,
+            'g': 5,
+            'a': 6,
+            'b': 7
+        """
+        return Pitch._diatonic_degrees_from_c[self.letter]
