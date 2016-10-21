@@ -10,6 +10,13 @@ class Pitch:
     """A pitch with a letter, octave, and accidental"""
 
     _pitch_regex = re.compile("^([a-g]|[A-G])([s|f|S|F])?('*|,*)$")
+    naturals = {'c': 0,
+                'd': 2,
+                'e': 4,
+                'f': 5,
+                'g': 7,
+                'a': 9,
+                'b': 11}
 
     def __init__(self, pitch):
         """
@@ -54,7 +61,7 @@ class Pitch:
         ticks = match.group(3)
         self._letter = letter
         self._accidental = Accidental(accidental)
-        if ticks is None:
+        if not ticks:
             self._octave = 3
         else:
             self._octave = 3 + (len(ticks) * (-1 if ticks[0] == ',' else 1))
@@ -95,3 +102,8 @@ class Pitch:
         TODO: maybe implement setters
         """
         return self._octave
+
+    @property
+    def pitch_class(self):
+        """int: The 0-11 pitch class of this pitch."""
+        return Pitch.naturals[self.letter] + self.accidental.value
