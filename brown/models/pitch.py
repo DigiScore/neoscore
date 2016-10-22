@@ -3,13 +3,14 @@ import re
 from brown.models.accidental import Accidental
 
 class InvalidPitchDescriptionError(Exception):
+    """An exception raised when an invalid pitch specifier is used."""
     pass
 
 
 class Pitch:
     """A pitch with a letter, octave, and accidental"""
 
-    _pitch_regex = re.compile("^([a-g]|[A-G])([s|f|S|F])?('*|,*)$")
+    _pitch_regex = re.compile("^([a-g])([snf])?('*|,*)$")
     natural_pitch_classes = {
         'c': 0,
         'd': 2,
@@ -19,7 +20,6 @@ class Pitch:
         'a': 9,
         'b': 11
     }
-
     _diatonic_degrees_from_c = {
         'c': 1,
         'd': 2,
@@ -29,6 +29,8 @@ class Pitch:
         'a': 6,
         'b': 7
     }
+    _middle_c_octave = 4
+    _midi_middle_c = 60
 
 
     def __init__(self, pitch):
@@ -119,7 +121,17 @@ class Pitch:
     @property
     def pitch_class(self):
         """int: The 0-11 pitch class of this pitch."""
-        return Pitch.natural_pitch_classes[self.letter] + self.accidental.value
+        natural = Pitch.natural_pitch_classes[self.letter]
+        if self.accidental.value is not None:
+            return natural + self.accidental.value
+        return natural
+
+    @property
+    def midi_number(self):
+        """int: The midi pitch number, where A440 == 69 and middle C == 60"""
+        return (Pitch._midi_middle_c +                           # Start point
+                ((self.octave - Pitch._middle_c_octave) * 12) +  # 8ve offset
+                self.pitch_class)                                # pitch offset
 
     @property
     def diatonic_degree_from_c(self):
