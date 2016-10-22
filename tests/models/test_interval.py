@@ -43,3 +43,37 @@ def test_interval_no_quality_fails():
 def test_interval_no_distance_fails():
     with pytest.raises(InvalidIntervalError):
         Interval('aM')
+
+@pytest.mark.skip
+def test_interval_pitch_class_delta_major_minor():
+    assert(Interval('am2').pitch_class_delta == 1)
+    assert(Interval('aM2').pitch_class_delta == 2)
+    assert(Interval('am3').pitch_class_delta == 3)
+    assert(Interval('aM3').pitch_class_delta == 4)
+    assert(Interval('am6').pitch_class_delta == 8)
+    assert(Interval('aM6').pitch_class_delta == 9)
+    assert(Interval('am7').pitch_class_delta == 10)
+    assert(Interval('aM7').pitch_class_delta == 11)
+    assert(Interval('dm2').pitch_class_delta == -1)
+    assert(Interval('dM2').pitch_class_delta == -2)
+    assert(Interval('dm3').pitch_class_delta == -3)
+    assert(Interval('dM3').pitch_class_delta == -4)
+    assert(Interval('dm6').pitch_class_delta == -8)
+    assert(Interval('dM6').pitch_class_delta == -9)
+    assert(Interval('dm7').pitch_class_delta == -10)
+    assert(Interval('dM7').pitch_class_delta == -11)
+
+@pytest.mark.skip
+def test_interval_pitch_class_delta_aug_dim():
+    assert(Interval('ad2').pitch_class_delta == 0)
+    assert(Interval('aA2').pitch_class_delta == 3)
+    assert(Interval('ad3').pitch_class_delta == 2)
+    assert(Interval('aA3').pitch_class_delta == 5)
+    assert(Interval('ad4').pitch_class_delta == 4)
+    assert(Interval('aA4').pitch_class_delta == 6)
+    assert(Interval('ad5').pitch_class_delta == 6)
+    assert(Interval('aA5').pitch_class_delta == 8)
+    assert(Interval('ad6').pitch_class_delta == 7)
+    assert(Interval('aA6').pitch_class_delta == 10)
+    assert(Interval('ad7').pitch_class_delta == 9)
+    assert(Interval('aA7').pitch_class_delta == 12)
