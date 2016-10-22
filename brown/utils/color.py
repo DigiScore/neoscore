@@ -16,9 +16,9 @@ def rgb_to_hex(color):
         >>> rgb_to_hex((0, 0, 0))
         '#000000'
         >>> rgb_to_hex((255, 255, 255))
-        '#FFFFFF'
+        '#ffffff'
     """
     return '#{0:02x}{1:02x}{2:02x}'.format(
         numbers.clamp_value(int(color[0]), 0, 255),
         numbers.clamp_value(int(color[1]), 0, 255),
-        numbers.clamp_value(int(color[2]), 0, 255)).upper()
+        numbers.clamp_value(int(color[2]), 0, 255))
