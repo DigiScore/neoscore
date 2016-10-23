@@ -2,9 +2,7 @@ from brown.utils import units
 from brown.config import config
 from brown.core import brown
 from brown.core.path import Path
-
-
-# mock up staff
+from brown.primitives.clef import Clef
 
 
 class Staff:
@@ -85,20 +83,34 @@ class Staff:
 
     ######## PUBLIC METHODS ########
 
+    def active_clef_at(self, position_x):
+        """Find and return the active clef at a given point.
+
+        Returns: Clef
+        """
+        # TODO: Find a more efficient way to quickly look up contents by type
+        clefs_before = [item for item in self.contents
+                        if isinstance(item, Clef) and
+                        item.position_x <= position_x]
+        return max(clefs_before, key=lambda c: c.position_x, default=None)
+
     def middle_c_at(self, position_x):
         """Find the vertical staff position of middle-c at a given point.
 
         Looks for clefs and other transposing modifiers to determine
         the position of middle-c. If no clef is present, treble is assumed.
 
-        Returns an `int` vertical staff position, where 0 means the center
-        line or space of the staff, higher numbers mean higher pitches,
-        and lower numbers mean lower pitches.
+        Returns:
+            int: A vertical staff position, where 0 means the center
+            line or space of the staff, higher numbers mean higher positions,
+            and lower numbers mean lower positions.
         """
-        # TODO: Revisit once clefs and other transposition modifiers
-        #       are implemented.
-        #       assumes for now that everything is treble clef.
-        return -6
+        clef = self.active_clef_at(position_x)
+        if clef is None:
+            # Assume treble
+            return -6
+        else:
+            return clef.middle_c_staff_position
 
     def natural_midi_number_of_top_line_at(self, position_x):
         """Find the natural midi pitch class of the top line at a given point.

@@ -7,9 +7,6 @@ from brown.utils import units
 
 # from brown.models.duration import Duration
 
-from brown.primitives.staff import Staff
-
-
 
 # what about spanners?
 

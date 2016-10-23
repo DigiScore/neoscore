@@ -10,6 +10,7 @@ from brown.core.pen import Pen
 from brown.core.brush import Brush
 from brown.primitives.staff import Staff
 from brown.primitives.notehead import Notehead
+from brown.primitives.clef import Clef
 from brown.config import config
 
 
@@ -33,13 +34,19 @@ text = TextObject(120, 10, 'hello')
 text.brush = Brush('#00ffff')
 text.render()
 
-staff = Staff(30, 0, 200, 1)
+staff = Staff(30, 0, 300, 1)
 staff.render()
+
+clef = Clef(staff, 0, 'tenor')
+clef.render()
+
+clef = Clef(staff, 150, 'treble')
+clef.render()
 
 pitches = ["d'", "e'", "f'", "g'", "a'", "b'",
            "c''", "d''", "e''", "f''"]
 for i, pitch in enumerate(pitches):
-    Notehead(staff, i * 20, pitch).render()
+    Notehead(staff, i * 20 + 30, pitch).render()
 
 
 brown.show()
