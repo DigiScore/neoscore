@@ -22,6 +22,7 @@ class Interval:
         'd': 'diminished',
         'A': 'Augmented'
     }
+    _perfectable_distances = [1, 4, 5]
 
     def __init__(self, specifier):
         """
@@ -51,9 +52,18 @@ class Interval:
         match = Interval._shorthand_regex.match(specifier)
         if match is None:
             raise InvalidIntervalError
-        self._direction = match.group(1)
-        self._quality = match.group(2)
-        self._distance = int(match.group(3))
+        direction = match.group(1)
+        quality = match.group(2)
+        distance = int(match.group(3))
+        self._direction = direction
+        self._quality = quality
+        self._distance = distance
+        # Check against invalid edge case intervals
+        if (self.simple_distance in Interval._perfectable_distances and
+                quality not in ['P', 'd', 'A']):
+            # unisons, fourths, fifths, and their compounds
+            # can only be perfect, augmented, or diminished
+            raise InvalidIntervalError
 
     ######## PUBLIC PROPERTIES ########
 
@@ -76,6 +86,21 @@ class Interval:
     @property
     def distance(self):
         return self._distance
+
+    @property
+    def simple_distance(self):
+        """The simplified interval distance collapsing compound intervals.
+
+        This value is the simplified version of `self.distance` where intervals
+        larger than an octave are moved to be within one octave.
+
+        Examples:
+            >>> Interval('aM10').simple_distance
+            2
+            >>> Interval('dP12').simple_distance
+            5
+        """
+        return ((self.distance - 1) % 7) + 1
 
     @property
     def pitch_class_delta(self):
