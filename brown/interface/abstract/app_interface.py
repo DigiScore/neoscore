@@ -24,6 +24,10 @@ class AppInterface(ABC):
         """Open a window showing a preview of the document."""
         raise NotImplementedError
 
+    def destroy(self):
+        """Destroy the window and all global interface-level data."""
+        raise NotImplementedError
+
     def set_pen(self, pen):
         """Set the current pen in the app.
 

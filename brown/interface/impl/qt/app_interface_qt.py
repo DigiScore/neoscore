@@ -14,7 +14,6 @@ class AppInterfaceQt(AppInterface):
     """
 
     def __init__(self):
-        print('Initializing with QT toolkit')
         self.app = None
         self.scene = None
         self.current_pen = None
@@ -33,8 +32,18 @@ class AppInterfaceQt(AppInterface):
 
     def show(self):
         """Open a window showing a preview of the document."""
+        print('Launching Qt Application instance')
         self.view.show()
         self.app.exec_()
+
+    def destroy(self):
+        """Destroy the window and all global interface-level data."""
+        print('Tearing down Qt Application instance')
+        self.app.exit()
+        self.app = None
+        self.scene = None
+        self.current_pen = None
+        self.current_brush = None
 
     def set_pen(self, pen):
         """Set the current pen in the app
