@@ -19,7 +19,7 @@ class BrushInterfaceQt(BrushInterface):
         """
         # TEMP: Initialize color to bright red to signal this not being
         # overrided
-        self._qt_object = QtGui.QBrush(QtGui.QColor('#FF0000'))
+        self._qt_object = QtGui.QBrush(QtGui.QColor('#ff0000'))
         self.color = color
 
     ######## PUBLIC PROPERTIES ########

@@ -68,4 +68,7 @@ class AppInterfaceQt(AppInterface):
             font interface object
         """
         font_id = QtGui.QFontDatabase.addApplicationFont(font_file_path)
+        if font_id == -1:
+            print('FONT LOADED FROM {} RETURNED ID OF {}'.format(
+                font_file_path, font_id))
         #family = QtGui.QFontDatabase.applicationFontFamilies(font_id).at(0)

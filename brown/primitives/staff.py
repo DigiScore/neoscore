@@ -87,6 +87,20 @@ class Staff:
         #       assumes for now that everything is treble clef.
         return -6
 
+    def natural_midi_number_of_top_line_at(self, position_x):
+        """Find the natural midi pitch class of the top line at a given point.
+
+        Looks for clefs and other transposing modifiers to determine
+        the this value. If no clef is present, treble is assumed.
+
+        Returns an `int` midi pitch number.
+        """
+        # TODO: This currently assumes treble clef
+        return 77
+
+
+
+
     def render(self):
         """Render the staff.
 

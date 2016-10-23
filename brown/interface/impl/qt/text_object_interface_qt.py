@@ -19,7 +19,7 @@ class TextObjectInterfaceQt(TextObjectInterface):
         """
         self.text = text
         self.font = font
-        self._qt_object = QtWidgets.QGraphicsTextItem(self.text)
+        self._qt_object = QtWidgets.QGraphicsSimpleTextItem(self.text)
         self._qt_object.setFont(self.font._qt_object)
         self.x = x
         self.y = y
@@ -47,31 +47,38 @@ class TextObjectInterfaceQt(TextObjectInterface):
         self._qt_object.setY(self._y)
 
     @property
-    def default_color(self):
-        """str: A hexadecimal color controlling the color of unformatted text.
-
-        If this is set to an RGB tuple it will be converted to and stored
-        in hexadecimal form
-
-        By default this value is black ('#000000')
+    def pen(self):
         """
-        return self._default_color
+        PenInterfaceQt: The pen to draw outlines with
+        """
+        return self._pen
 
-    @default_color.setter
-    def default_color(self, value):
-        if isinstance(value, tuple):
-            if len(value) == 3:
-                self._default_color = color.rgb_to_hex(value)
-            else:
-                raise ValueError(
-                    'RGB tuple for BrushInterface[Qt] must be len 3')
-        elif isinstance(value, str):
-            self._default_color = value
-        elif value is None:
-            self._qt_object.setDefaultTextColor(QtGui.QColor('#000000'))
+    @pen.setter
+    def pen(self, value):
+        self._pen = value
+        if self._pen:
+            self._qt_object.setPen(self._pen._qt_object)
         else:
-            raise TypeError
-        self._qt_object.setDefaultTextColor(QtGui.QColor(self._default_color))
+            # Use Qt default pen.
+            # TODO: Make global default pen and use that instead
+            self._qt_object.setPen(QtGui.QPen())
+
+    @property
+    def brush(self):
+        """
+        BrushInterfaceQt: The brush to draw outlines with
+        """
+        return self._brush
+
+    @brush.setter
+    def brush(self, value):
+        self._brush = value
+        if self._brush:
+            self._qt_object.setBrush(self._brush._qt_object)
+        else:
+            # Use Qt default brush.
+            # TODO: Make global default brush and use that instead
+            self._qt_object.setBrush(QtGui.QBrush())
 
     @property
     def text(self):

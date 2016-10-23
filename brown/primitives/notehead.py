@@ -1,8 +1,10 @@
+from brown.config import config
 from brown.core.font import Font
 from brown.core.glyph import Glyph
 from brown.primitives.staff import Staff
 from brown.models.pitch import Pitch
 from brown.primitives.staff_object import StaffObject
+from brown.core import brown
 # from brown.primitives.chord_rest import ChordRest
 
 """
@@ -27,8 +29,9 @@ class Notehead(StaffObject):
         self.pitch = pitch
         self.grob = Glyph(
             self.staff.x + self.position_x,  # TODO: We should be able to pass relative coords
-            self.staff.x + self.position_y,
-            '\uE13E', Font('gonville', 20))
+            self.staff.y + self.position_y,
+            '\uE0A4', brown.music_font)
+        self.grob.position_y_baseline(self.staff.y + self.position_y)
 
     ######## PUBLIC PROPERTIES ########
 
@@ -49,28 +52,36 @@ class Notehead(StaffObject):
             self._pitch = Pitch(value)
 
     @property
+    def position_relative_to_middle_c(self):
+        middle_c = (4 * 7) + 1
+        note_pos = (self.pitch.octave * 7) + self.pitch.diatonic_degree_in_c
+        return note_pos - middle_c
+
+    @property
     def staff_position(self):
-        """int: The notehead position in the staff in staff units.
+        """int: The notehead position in the staff in staff units
 
         0 means the center
         line or space of the staff, higher numbers mean higher pitches,
         and lower numbers mean lower pitches.
         """
-        # TODO: Clean up / shorten line lengths here
-        return (self.staff.middle_c_at(self.position_x) +  # Middle c in staff
-                (self.pitch.diatonic_degree_from_c - 1) +  # Diatonic pitch number, off by one
-                (self.pitch.octave * 8) -                  # Octave multiplier
-                (32))                                      # Octave baseline
-                                                           # (middle c is octave 4)
+        return (self.staff.middle_c_at(self.position_x)
+                + self.position_relative_to_middle_c)
+
+    @property
+    def position_relative_to_top(self):
+        """int: The vertical staff position of this notehead relative to
+        the top of the staff. Lower numbers mean visually lower positions,
+        and higher numbers mean visually higher positions."""
+        return(self.staff.middle_c_at(self.position_x))
 
     @property
     def position_y(self):
         """float: The vertical staff position of the notehead in pixels
         relative to the top of the staff."""
         position_relative_to_top = (-1 * self.staff_position) + 4
-        # TODO: Clean up this formula
         # Convert to pixels and return
-        return position_relative_to_top * (self.staff.staff_unit / 2)
+        return (position_relative_to_top) * (self.staff.staff_unit / 2)
 
     ######## PUBLIC METHODS ########
 

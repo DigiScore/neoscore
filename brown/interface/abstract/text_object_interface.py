@@ -31,18 +31,25 @@ class TextObjectInterface(ABC):
         raise NotImplementedError
 
     @property
-    def default_color(self):
-        """str: A hexadecimal color controlling the color of unformatted text.
-
-        If this is set to an RGB tuple it will be converted to and stored
-        in hexadecimal form
-
-        By default this value is black ('#000000')
+    def pen(self):
+        """
+        PenInterface: The pen to draw outlines with
         """
         raise NotImplementedError
 
-    @default_color.setter
-    def default_color(self, value):
+    @pen.setter
+    def pen(self, value):
+        raise NotImplementedError
+
+    @property
+    def brush(self):
+        """
+        BrushInterface: The brush to draw outlines with
+        """
+        raise NotImplementedError
+
+    @brush.setter
+    def brush(self, value):
         raise NotImplementedError
 
     @property

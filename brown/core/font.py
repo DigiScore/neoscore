@@ -14,3 +14,13 @@ class Font:
                                                 self.size,
                                                 self.weight,
                                                 self.italic)
+
+    ######## PUBLIC PROPERTIES ########
+
+    @property
+    def ascent(self):
+        return self._interface.ascent
+
+    @property
+    def descent(self):
+        return self._interface.descent

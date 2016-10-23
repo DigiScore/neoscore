@@ -20,7 +20,7 @@ class Pitch:
         'a': 9,
         'b': 11
     }
-    _diatonic_degrees_from_c = {
+    _diatonic_degrees_in_c = {
         'c': 1,
         'd': 2,
         'e': 3,
@@ -134,7 +134,7 @@ class Pitch:
                 self.pitch_class)                                # pitch offset
 
     @property
-    def diatonic_degree_from_c(self):
+    def diatonic_degree_in_c(self):
         """int: The diatonic degree of the pitch as if it were in C.
 
             'c': 1,
@@ -145,4 +145,4 @@ class Pitch:
             'a': 6,
             'b': 7
         """
-        return Pitch._diatonic_degrees_from_c[self.letter]
+        return Pitch._diatonic_degrees_in_c[self.letter]

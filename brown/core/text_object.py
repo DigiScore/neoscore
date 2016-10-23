@@ -1,6 +1,6 @@
 from brown.interface.impl.qt import text_object_interface_qt
-from brown.config.config import DEFAULT_FONT
 from brown.utils import color
+from brown.core import brown
 
 
 class TextObject:
@@ -14,7 +14,7 @@ class TextObject:
         if font:
             self.font = font
         else:
-            self.font = DEFAULT_FONT
+            self.font = brown.text_font
         self._interface = TextObject._interface_class(
             self.x, self.y, self.text, self.font._interface)
 
@@ -38,7 +38,7 @@ class TextObject:
 
     @x.setter
     def x(self, value):
-        self._x = value
+        self.gl_x = value
         self._interface.x = self._x
 
     @property
@@ -51,24 +51,27 @@ class TextObject:
         self._interface.y = self._y
 
     @property
-    def default_color(self):
-        """str: A hexadecimal color string value.
-
-        If this is set to an RGB tuple it will be converted to and stored
-        in hexadecimal form
+    def pen(self):
         """
-        return self._color
+        Pen: The pen to draw outlines with
+        """
+        return self._pen
 
-    @default_color.setter
-    def default_color(self, value):
-        if isinstance(value, tuple):
-            if len(value) == 3:
-                self._default_color = color.rgb_to_hex(value)
-            else:
-                raise ValueError(
-                    'RGB tuple for PenInterface[Qt] must be len 3')
-        elif isinstance(value, str):
-            self._default_color = value
-        else:
-            raise TypeError
-        self._interface.default_color = self._default_color
+    @pen.setter
+    def pen(self, value):
+        self._pen = value
+        if self._pen:
+            self._interface.pen = self._pen._interface
+
+    @property
+    def brush(self):
+        """
+        Brush: The brush to draw outlines with
+        """
+        return self._brush
+
+    @brush.setter
+    def brush(self, value):
+        self._brush = value
+        if self._brush:
+            self._interface.brush = self._brush._interface

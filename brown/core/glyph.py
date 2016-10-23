@@ -11,6 +11,8 @@ class Glyph(TextObject):
     can have at most one character
     """
 
+    ######## PUBLIC PROPERTIES ########
+
     @property
     def text(self):
         return self._text
@@ -23,3 +25,15 @@ class Glyph(TextObject):
             raise InvalidGlyphLengthError('Glyph text must be of length 1')
         else:
             self._text = value
+
+    @property
+    def baseline_y(self):
+        """float: The y coordinate of the glyph's baseline"""
+        return self.font.ascent + self.y
+
+    ######## PUBLIC METHODS ########
+
+    def position_y_baseline(self, y):
+        """Position the glyph such that its baseline is on `y`"""
+        print('at position_y_baseline, ascent is {}'.format(self.font.ascent))
+        self.y = y - self.font.ascent
