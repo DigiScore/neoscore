@@ -38,7 +38,7 @@ class TextObject:
 
     @x.setter
     def x(self, value):
-        self.gl_x = value
+        self._x = value
         self._interface.x = self._x
 
     @property

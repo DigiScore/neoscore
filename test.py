@@ -16,7 +16,7 @@ from brown.config import config
 brown.setup()
 
 
-path = Path(0, 0, Pen('#f29000'), Brush('#EEEEEE'))
+path = Path(0, 0, Pen('#f29000'), Brush('#eeeeee'))
 path.line_to(30, 40)
 path.cubic_to(30, 40, 90, 60, 100, 100)
 path.cubic_to(80, 80, 10, 120, 50, 75)
@@ -30,7 +30,7 @@ line = Path.straight_line(50, 50, 50, 50)
 line.render()
 
 text = TextObject(120, 10, 'hello')
-text.brush = Brush('#00FFFF')
+text.brush = Brush('#00ffff')
 text.render()
 
 staff = Staff(30, 0, 200, 1)

@@ -1,9 +1,9 @@
 import unittest
 import pytest
 
+from brown.core import brown
 from brown.primitives.notehead import Notehead
 from brown.primitives.staff import Staff
-from brown.core import brown
 
 
 """

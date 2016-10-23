@@ -35,5 +35,4 @@ class Glyph(TextObject):
 
     def position_y_baseline(self, y):
         """Position the glyph such that its baseline is on `y`"""
-        print('at position_y_baseline, ascent is {}'.format(self.font.ascent))
         self.y = y - self.font.ascent

@@ -81,7 +81,7 @@ class Notehead(StaffObject):
         relative to the top of the staff."""
         position_relative_to_top = (-1 * self.staff_position) + 4
         # Convert to pixels and return
-        return (position_relative_to_top) * (self.staff.staff_unit / 2)
+        return position_relative_to_top * (self.staff.staff_unit / 2)
 
     ######## PUBLIC METHODS ########
 
