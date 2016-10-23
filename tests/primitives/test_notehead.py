@@ -13,6 +13,8 @@ brown.setup()
 
 class TestNotehead(unittest.TestCase):
     def setUp(self):
+        # TODO: Once clefs are implemented, make this this mock
+        #       has an explicit clef!
         self.mock_staff = Staff(0, 0, 100)
 
     def test_staff_position_middle_c_treble(self):

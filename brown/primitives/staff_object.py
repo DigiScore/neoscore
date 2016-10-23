@@ -25,6 +25,7 @@ class StaffObject(ABC):
             position_x (float): The x-position of the object in staff-units
         '''
         self.staff = staff
+        self.staff._register_staff_object(self)
         self.position_x = position_x
 
     ######## PUBLIC PROPERTIES ########

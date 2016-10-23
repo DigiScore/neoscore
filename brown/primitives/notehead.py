@@ -71,7 +71,7 @@ class Notehead(StaffObject):
         while negative values extend *upward* above the top staff line.
         """
         # Take centered staff position, flip direction and offset to top
-        return (-1 * self.staff_position) + 4
+        return (-1 * self.staff_position) + (self.staff.line_count - 1)
 
     @property
     def position_y(self):

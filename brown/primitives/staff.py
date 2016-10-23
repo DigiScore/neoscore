@@ -12,13 +12,13 @@ class Staff:
     def __init__(self, x, y, length, staff_unit=None):
         self._x = x
         self._y = y
-        self.line_count = 5
+        self._line_count = 5
         self._length = length
         if staff_unit:
             self.staff_unit = staff_unit * units.mm
         else:
             self.staff_unit = config.DEFAULT_STAFF_UNIT * units.mm
-        self.contents = []
+        self._contents = []
         self.grob = Path(self.x, self.y)
         # Draw the staff lines
         for i in range(self.line_count):
@@ -60,18 +60,30 @@ class Staff:
         """float: The height of the staff in pixels, from top to bottom line."""
         return (self.line_count - 1) * self.staff_unit
 
-    ######## Public Methods ########
+    @property
+    def line_count(self):
+        """int: The number of lines in the staff"""
+        return self._line_count
 
-    # def center_position_at(self, position_x):
-    #     """Find the (natural) pitch corresponding to the middle
-    #     staff line or space at a given x position.
+    @property
+    def contents(self):
+        """list[StaffObject]: A list of staff objects belonging to the staff"""
+        return self._contents
 
-    #     Looks for clefs and other transposing modifiers.
-    #     If no clef is present, treble is assumed.
+    ######## PRIVATE METHODS ########
 
-    #     Returns a
-    #     """
+    def _register_staff_object(self, staff_object):
+        """Add a StaffObject to `self.contents`.
 
+        Args:
+            staff_object (StaffObject): The object to add to `self.contents`
+
+        Warning:
+            This does not set `staff_object.staff` to self"""
+        self._contents.append(staff_object)
+        staff_object.staff = self
+
+    ######## PUBLIC METHODS ########
 
     def middle_c_at(self, position_x):
         """Find the vertical staff position of middle-c at a given point.
@@ -98,9 +110,6 @@ class Staff:
         """
         # TODO: This currently assumes treble clef
         return 77
-
-
-
 
     def render(self):
         """Render the staff.
