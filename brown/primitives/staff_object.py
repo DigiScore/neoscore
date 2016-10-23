@@ -47,12 +47,30 @@ class StaffObject(ABC):
 
     @property
     def position_y(self):
-        """float: The vertical staff position of the notehead in pixels
-        relative to the top of the staff."""
+        """float: The y position in pixels below top of the staff.
+
+        0 means exactly at the top staff line.
+        Positive values extend *downward* below the top staff line
+        while negative values extend *upward* above the top staff line.
+        """
         raise NotImplementedError
 
     @position_y.setter
     def position_y(self, value):
+        raise NotImplementedError
+
+    @property
+    def position_y_in_staff_units(self):
+        """float: The y position in staff units below top of the staff.
+
+        0 means exactly at the top staff line.
+        Positive values extend *downward* below the top staff line
+        while negative values extend *upward* above the top staff line.
+        """
+        raise NotImplementedError
+
+    @position_y.setter
+    def position_y_in_staff_units(self, value):
         raise NotImplementedError
 
     ######## PUBLIC METHODS ########

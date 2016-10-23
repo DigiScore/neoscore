@@ -24,6 +24,7 @@ class Staff:
         for i in range(self.line_count):
             self.grob.move_to(0, i * self.staff_unit)
             self.grob.line_to(self.length, i * self.staff_unit)
+        # TODO: More fully implement arbitrary numbers of staff lines
 
     ######## PUBLIC PROPERTIES ########
 

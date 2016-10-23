@@ -2,6 +2,7 @@ import re
 
 from brown.models.accidental import Accidental
 
+
 class InvalidPitchDescriptionError(Exception):
     """An exception raised when an invalid pitch specifier is used."""
     pass
