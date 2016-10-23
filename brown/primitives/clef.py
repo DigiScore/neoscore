@@ -29,6 +29,13 @@ class Clef(StaffObject):
         'tenor': 2,
         'alto': 0,
     }
+    _natural_midi_numbers_at_top_staff_line = {
+        'treble': 77,
+        'bass': 57,
+        '8vb bass': 45,
+        'tenor': 64,
+        'alto': 67
+    }
     # TODO: unify staff position systems -
     #       notice how _baseline_staff_positions and _middle_c_staff_positions
     #       are actually in different coordinate systems
@@ -82,7 +89,7 @@ class Clef(StaffObject):
 
     @property
     def middle_c_staff_position(self):
-        """int: The staff position of middle c when this clef is in effect.
+        """int: The staff position of middle c for this clef
 
         This value is a vertical staff position, where 0 means the center
         line or space of the staff, higher numbers mean higher positions,
@@ -93,6 +100,10 @@ class Clef(StaffObject):
         """
         return Clef._middle_c_staff_positions[self.clef_type]
 
+    @property
+    def natural_midi_number_at_top_staff_line(self):
+        """int: The natural midi number of the top staff line for this clef."""
+        return Clef._natural_midi_numbers_at_top_staff_line[self.clef_type]
 
     ######## PUBLIC METHODS ########
 

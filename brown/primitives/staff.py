@@ -109,7 +109,7 @@ class Staff:
         clef = self.active_clef_at(position_x)
         if clef is None:
             # Assume treble
-            return -6
+            return Clef._middle_c_staff_positions['treble']
         else:
             return clef.middle_c_staff_position
 
@@ -121,8 +121,12 @@ class Staff:
 
         Returns an `int` midi pitch number.
         """
-        # TODO: This currently assumes treble clef
-        return 77
+        clef = self.active_clef_at(position_x)
+        if clef is None:
+            # Assume treble
+            return Clef._natural_midi_numbers_at_top_staff_line['treble']
+        else:
+            return clef.natural_midi_number_at_top_staff_line
 
     def render(self):
         """Render the staff.
