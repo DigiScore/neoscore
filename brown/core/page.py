@@ -1,6 +1,6 @@
 from brown.core.flowable import Flowable
-from brown.core.paper import Paper
-from brown.core.document import Document
+#from brown.core.paper import Paper
+#from brown.core.document import Document
 from brown.utils import units
 
 class Page(Flowable):
@@ -9,3 +9,4 @@ class Page(Flowable):
         Args:
 
         '''
+        pass

@@ -7,10 +7,10 @@ from brown.primitives.clef import Clef
 
 class Staff:
 
-    def __init__(self, x, y, length, staff_unit=None):
+    def __init__(self, x, y, length, staff_unit=None, line_count=5):
         self._x = x
         self._y = y
-        self._line_count = 5
+        self._line_count = line_count
         self._length = length
         if staff_unit:
             self.staff_unit = staff_unit * units.mm
@@ -129,3 +129,25 @@ class Staff:
         Returns: None
         """
         self.grob.render()
+
+    ######## PRIVATE METHODS ########
+
+    def _centered_position_to_top_down(self, centered_value):
+        """Convert a centered staff position to its top-down equivalent.
+
+        This takes a centered staff position (where 0 means the center
+        position positive values mean higher positions, and lower values
+        vice versa) and returns its equivalent in the top-down system
+        (where 0 means the top line of the staff, negative values
+        extend upward, and positive values extend downward).
+
+        Args:
+            centered_value (int): A staff position in the centered system.
+
+        Returns:
+            int: A staff position in the top-down system
+
+        Example:
+
+        """
+        return (-1 * centered_value) + self.line_count - 1

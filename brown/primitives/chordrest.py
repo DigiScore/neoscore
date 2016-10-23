@@ -1,12 +1,6 @@
 from brown.primitives.staff import Staff
 from brown.primitives.staff_object import StaffObject
 
-# ?
-from brown.models.transposition import Transposition
-from brown.models.clef import Clef
-from brown.models.pitch import Pitch  # ?
-from brown.models.duration import Duration
-from brown.models.position import Position
 
 
 """
@@ -23,7 +17,7 @@ utils/object models allowed
 
 
 class ChordRest(StaffObject):
-    def __init__(staff, noteheads, duration, position):
+    def __init__(self, staff, noteheads, duration, position):
         '''
         Args:
             staff (Staff): The parent staff
@@ -37,28 +31,28 @@ class ChordRest(StaffObject):
         self.position = position
 
     @property
-    def noteheads():
+    def noteheads(self, ):
         return self._noteheads
 
     @noteheads.setter
-    def noteheads(value):
+    def noteheads(self, value):
         self._noteheads = value
 
     @property
-    def duration():
+    def duration(self):
         return self._duration
 
     @duration.setter
-    def duration(value):
+    def duration(self, value):
         self._duration = value
 
     @property
-    def position():
+    def position(self):
         return self._position
 
     @position.setter
-    def position(value):
+    def position(self, value):
         self._position = value
 
-    def draw():
+    def draw(self):
         pass

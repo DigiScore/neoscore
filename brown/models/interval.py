@@ -97,7 +97,7 @@ class Interval:
 
         Examples:
             >>> Interval('aM10').simple_distance
-            2
+            3
             >>> Interval('dP12').simple_distance
             5
         """

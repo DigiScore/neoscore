@@ -1,5 +1,5 @@
 from brown.utils import units
-from brown.core.graphic_object import GraphicObject
+
 
 
 """
@@ -24,5 +24,6 @@ Examples of flowables:
 """
 
 
-class Flowable(GraphicObject):
+class Flowable:
     def __init__():
+        pass

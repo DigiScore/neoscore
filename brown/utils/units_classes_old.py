@@ -19,8 +19,11 @@ less implicit way.
 
 """
 
+import pytest
+
 
 from brown.config import config
+
 
 
 class BaseUnit:
@@ -37,6 +40,7 @@ class BaseUnit:
     @property
     def val(self):
         return self._val
+
 
 
 class Pixel(BaseUnit):
@@ -63,6 +67,7 @@ class Pixel(BaseUnit):
         return config.PRINT_PPI * inch_val
 
 
+
 class Inch:
 
     def __init__(self, val):
@@ -72,6 +77,7 @@ class Inch:
             self._val = config.PRINT_PPI * val
         else:
             raise TypeError
+
 
 
 def _convert_units(value, target_type):
@@ -85,8 +91,8 @@ def _convert_units(value, target_type):
         int or float: Value as it would be expressed in `target_type` units
 
     Example:
-        >>> inches = Inches(3)
-        >>> _convert_units(inches, Pixel)  # Assuming config.PRINT_PPI == 300
+        >>> inches = Inch(3)
+        >>> _convert_units(inches, Pixel)  # Assuming config.PRINT_PPI == 300  # doctest: +SKIP
         900
     """
     # Convert to pixel values as intermediary

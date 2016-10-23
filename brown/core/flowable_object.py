@@ -1,23 +1,23 @@
 from brown.core.flowable import Flowable
-from brown.core.graphic_object import GraphicObject
 
 
-class FlowableObject(GraphicObject):
+
+class FlowableObject:
 
     # Init inherited completely from GraphicObject
 
     @property
-    def flowable():
+    def flowable(self):
         return self._flowable
 
     @flowable.setter
-    def flowable(value):
+    def flowable(self, value):
         self._flowable = value
 
     @property
-    def offset():
+    def offset(self):
         return self._offset
 
     @offset.setter
-    def offset(value):
+    def offset(self, value):
         self._offset = value
