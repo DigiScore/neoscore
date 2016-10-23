@@ -1,4 +1,5 @@
 import re
+import warnings
 
 class InvalidIntervalError(Exception):
     """An exception raised when an invalid interval specifier is used."""
@@ -7,7 +8,7 @@ class InvalidIntervalError(Exception):
 class Interval:
     """A pitch interval."""
     _shorthand_regex = re.compile("^([ad])([mMPdA])([1-9]\d*)$")
-    major_interval_pitch_class_deltas = {
+    major_and_perfect_intervals = {
         1: 0,
         2: 2,
         3: 4,
@@ -104,7 +105,21 @@ class Interval:
 
     @property
     def pitch_class_delta(self):
-        # TODO: Build me!
-        pass
-
-    # TODO: Guard against edge case intervals like Augmented Unison
+        octave = (self.distance - 1) // 7
+        octave_pc_dist = octave * 12
+        simple_pc_dist = Interval.major_and_perfect_intervals[self.simple_distance]
+        if self.simple_distance in Interval._perfectable_distances:
+            if self.quality == 'd':
+                simple_pc_dist -= 1
+            elif self.quality == 'A':
+                simple_pc_dist += 1
+            # Otherwise perfect - no modification needed
+        else:
+            if self.quality == 'd':
+                simple_pc_dist -= 2
+            elif self.quality == 'm':
+                simple_pc_dist -= 1
+            elif self.quality == 'A':
+                simple_pc_dist += 1
+            # Otherwise major - no modification needed
+        return (octave_pc_dist + simple_pc_dist) * self.direction_as_int

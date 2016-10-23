@@ -27,6 +27,15 @@ def test_interval_quality_in_english():
 
 
 def test_interval_simple_distance():
+    # Within one octave - distance shouldn't change
+    assert(Interval('aP1').simple_distance == 1)
+    assert(Interval('am2').simple_distance == 2)
+    assert(Interval('am3').simple_distance == 3)
+    assert(Interval('aP4').simple_distance == 4)
+    assert(Interval('aP5').simple_distance == 5)
+    assert(Interval('am6').simple_distance == 6)
+    assert(Interval('am7').simple_distance == 7)
+    # Select compounds
     assert(Interval('aP8').simple_distance == 1)
     assert(Interval('aM9').simple_distance == 2)
     assert(Interval('dA10').simple_distance == 3)
@@ -137,7 +146,6 @@ def test_interval_major_minor_fifths_and_compounds_fail():
         Interval('dM19')
 
 
-@pytest.mark.skip
 def test_interval_pitch_class_delta_major_minor():
     assert(Interval('am2').pitch_class_delta == 1)
     assert(Interval('aM2').pitch_class_delta == 2)
@@ -156,7 +164,7 @@ def test_interval_pitch_class_delta_major_minor():
     assert(Interval('dm7').pitch_class_delta == -10)
     assert(Interval('dM7').pitch_class_delta == -11)
 
-@pytest.mark.skip
+
 def test_interval_pitch_class_delta_aug_dim():
     assert(Interval('ad2').pitch_class_delta == 0)
     assert(Interval('aA2').pitch_class_delta == 3)
@@ -170,3 +178,10 @@ def test_interval_pitch_class_delta_aug_dim():
     assert(Interval('aA6').pitch_class_delta == 10)
     assert(Interval('ad7').pitch_class_delta == 9)
     assert(Interval('aA7').pitch_class_delta == 12)
+
+
+def test_interval_pitch_class_delta_compound_intervals():
+    assert(Interval('aP8').pitch_class_delta == 12)
+    assert(Interval('am9').pitch_class_delta == 13)
+    assert(Interval('aP11').pitch_class_delta == 17)
+    assert(Interval('aP12').pitch_class_delta == 19)
