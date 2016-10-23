@@ -1,9 +1,10 @@
 import re
-import warnings
+
 
 class InvalidIntervalError(Exception):
     """An exception raised when an invalid interval specifier is used."""
     pass
+
 
 class Interval:
     """A pitch interval."""

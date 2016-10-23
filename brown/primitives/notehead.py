@@ -52,12 +52,6 @@ class Notehead(StaffObject):
             self._pitch = Pitch(value)
 
     @property
-    def position_relative_to_middle_c(self):
-        middle_c = (4 * 7) + 1
-        note_pos = (self.pitch.octave * 7) + self.pitch.diatonic_degree_in_c
-        return note_pos - middle_c
-
-    @property
     def staff_position(self):
         """int: The notehead position in the staff in staff units
 
@@ -65,20 +59,14 @@ class Notehead(StaffObject):
         line or space of the staff, higher numbers mean higher pitches,
         and lower numbers mean lower pitches.
         """
-        return (self.staff.middle_c_at(self.position_x)
-                + self.position_relative_to_middle_c)
-
-    @property
-    def position_relative_to_top(self):
-        """int: The vertical staff position of this notehead relative to
-        the top of the staff. Lower numbers mean visually lower positions,
-        and higher numbers mean visually higher positions."""
-        return(self.staff.middle_c_at(self.position_x))
+        return (self.staff.middle_c_at(self.position_x) +
+                self.pitch.staff_position_relative_to_middle_c)
 
     @property
     def position_y(self):
         """float: The vertical staff position of the notehead in pixels
         relative to the top of the staff."""
+        # Flip direction and offset to top
         position_relative_to_top = (-1 * self.staff_position) + 4
         # Convert to pixels and return
         return position_relative_to_top * (self.staff.staff_unit / 2)

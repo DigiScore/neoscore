@@ -146,3 +146,25 @@ class Pitch:
             'b': 7
         """
         return Pitch._diatonic_degrees_in_c[self.letter]
+
+
+    @property
+    def staff_position_relative_to_middle_c(self):
+        """int:The pitch's staff position relative to middle C.
+
+        Values are in staff units where positive values mean positions above
+        middle C, and negative values mean positions below it.
+
+        Examples:
+            >>> Pitch("c'").staff_position_relative_to_middle_c
+            0
+            >>> Pitch("cs'").staff_position_relative_to_middle_c
+            0
+            >>> Pitch("d''").staff_position_relative_to_middle_c
+            8
+            >>> Pitch("cn,").staff_position_relative_to_middle_c
+            -14
+        """
+        middle_c = (4 * 7) + 1  # C at octave 4
+        note_pos = (self.octave * 7) + self.diatonic_degree_in_c
+        return note_pos - middle_c

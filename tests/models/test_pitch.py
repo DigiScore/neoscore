@@ -32,7 +32,8 @@ def test_apostrophe_octave_marks():
 def test_pitch_class():
     assert(Pitch('af').pitch_class == 8)
 
-def test_pitch_midi_number():
+
+def test_midi_number():
     assert(Pitch("a''").midi_number == 81)
     assert(Pitch("a'").midi_number == 69)
     assert(Pitch("c'").midi_number == 60)
@@ -40,3 +41,28 @@ def test_pitch_midi_number():
     assert(Pitch("c").midi_number == 48)
     assert(Pitch("cn").midi_number == 48)
     assert(Pitch("cs").midi_number == 49)
+
+
+def test_diatonic_degree_in_c():
+    # Simple identity test - mostly to raise a flag if the API changes
+    degrees = {
+        'c': 1,
+        'd': 2,
+        'e': 3,
+        'f': 4,
+        'g': 5,
+        'a': 6,
+        'b': 7
+    }
+    for letter, number in degrees.items():
+        assert(Pitch(letter).diatonic_degree_in_c == number)
+
+
+def test_staff_position_relative_to_middle_c():
+    assert(Pitch("c'").staff_position_relative_to_middle_c == 0)
+    assert(Pitch("cf'").staff_position_relative_to_middle_c == 0)
+    assert(Pitch("cn'").staff_position_relative_to_middle_c == 0)
+    assert(Pitch("cs'").staff_position_relative_to_middle_c == 0)
+    assert(Pitch("d").staff_position_relative_to_middle_c == -6)
+    assert(Pitch("e").staff_position_relative_to_middle_c == -5)
+    assert(Pitch("b,,").staff_position_relative_to_middle_c == -15)
