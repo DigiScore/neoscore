@@ -8,7 +8,7 @@ class InvalidIntervalError(Exception):
 class Interval:
     """A pitch interval."""
     _shorthand_regex = re.compile("^([ad])([mMPdA])([1-9]\d*)$")
-    major_and_perfect_intervals = {
+    _base_pc_deltas = {
         1: 0,
         2: 2,
         3: 4,
@@ -17,7 +17,7 @@ class Interval:
         6: 9,
         7: 11
     }
-    qualities_in_english = {
+    _qualities_in_english = {
         'm': 'minor',
         'M': 'Major',
         'd': 'diminished',
@@ -47,8 +47,7 @@ class Interval:
         Some examples:
 
             * `Interval('aM3')` signifies an ascending major third
-            * `Interval('dA9')` signifies a descending augmented ninth
-
+            * `Interval('dA9')` signifies a descending augmented
         """
         match = Interval._shorthand_regex.match(specifier)
         if match is None:
@@ -82,7 +81,7 @@ class Interval:
 
     @property
     def quality_in_english(self):
-        return Interval.qualities_in_english[self._quality]
+        return Interval._qualities_in_english[self._quality]
 
     @property
     def distance(self):
@@ -107,7 +106,7 @@ class Interval:
     def pitch_class_delta(self):
         octave = (self.distance - 1) // 7
         octave_pc_dist = octave * 12
-        simple_pc_dist = Interval.major_and_perfect_intervals[self.simple_distance]
+        simple_pc_dist = Interval._base_pc_deltas[self.simple_distance]
         if self.simple_distance in Interval._perfectable_distances:
             if self.quality == 'd':
                 simple_pc_dist -= 1

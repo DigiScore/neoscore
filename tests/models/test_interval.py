@@ -55,9 +55,11 @@ def test_interval_no_quality_fails():
     with pytest.raises(InvalidIntervalError):
         Interval('a2')
 
+
 def test_interval_no_distance_fails():
     with pytest.raises(InvalidIntervalError):
         Interval('aM')
+
 
 def test_interval_major_minor_unison_and_compounds_fail():
     # Unison
