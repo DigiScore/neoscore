@@ -63,17 +63,6 @@ class Notehead(StaffObject):
                 self.pitch.staff_position_relative_to_middle_c)
 
     @property
-    def position_y_in_staff_units(self):
-        """float: The y position in staff units below top of the staff.
-
-        0 means exactly at the top staff line.
-        Positive values extend *downward* below the top staff line
-        while negative values extend *upward* above the top staff line.
-        """
-        # Take centered staff position, flip direction and offset to top
-        return (-1 * self.staff_position) + (self.staff.line_count - 1)
-
-    @property
     def position_y(self):
         """float: The y position in pixels below top of the staff.
 
@@ -82,7 +71,8 @@ class Notehead(StaffObject):
         while negative values extend *upward* above the top staff line.
         """
         # Take position_y_in_staff_units and convert to pixels
-        return self.position_y_in_staff_units * (self.staff.staff_unit / 2)
+        return (self.staff._centered_position_to_top_down(self.staff_position) *
+                (self.staff.staff_unit / 2))
 
     ######## PUBLIC METHODS ########
 

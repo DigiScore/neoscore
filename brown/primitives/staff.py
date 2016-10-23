@@ -55,7 +55,8 @@ class Staff:
 
     @property
     def height(self):
-        """float: The height of the staff in pixels, from top to bottom line."""
+        """float: The height of the staff in pixels from top to bottom line."""
+        # TODO: How should the height of a 1 line staff be defined?
         return (self.line_count - 1) * self.staff_unit
 
     @property
