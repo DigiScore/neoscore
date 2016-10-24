@@ -40,7 +40,7 @@ text = TextObject(120, 10, 'hello')
 text.brush = Brush('#00ffff')
 text.render()
 
-staff = Staff(30, 0, 300, 1)
+staff = Staff(0, 0, 300, 1)
 staff.render()
 
 clef = Clef(staff, 0, 'tenor')
@@ -54,14 +54,19 @@ pitches = ["d'", "e'", "f'", "g'", "a'", "b'",
 for i, pitch in enumerate(pitches):
     Notehead(staff, i * 20 + 30, pitch).render()
 
+Notehead(staff, 0, "c'").render()
+
 # dummy ledgers
 ledger = LedgerLine(staff, 97, 6)
 ledger.render()
 
 # chordrest
-chord_pitches = ["c'", "e'", "g'"]
+chord_pitches = ["c'", "e'", "g'", "a'"]
 chordrest = ChordRest(staff, chord_pitches, 270)
 chordrest.render()
+
+# Draw vertical line at chordrest 0 position
+Path.straight_line(270, 0, 0, 100).render()
 
 
 brown.show()

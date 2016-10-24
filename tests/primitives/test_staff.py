@@ -81,3 +81,45 @@ class TestStaff(unittest.TestCase):
         test_staff = Staff(0, 0, 100)
         # No clef specified - should default to treble
         assert(test_staff.natural_midi_number_of_top_line_at(5) == 77)
+
+    def test_centered_position_outside_staff_with_odd_line_count(self):
+        test_staff_5 = Staff(0, 0, 100, line_count=5)
+        assert(test_staff_5._centered_position_outside_staff(0) is False)
+        assert(test_staff_5._centered_position_outside_staff(4) is False)
+        assert(test_staff_5._centered_position_outside_staff(-4) is False)
+        assert(test_staff_5._centered_position_outside_staff(5) is True)
+        assert(test_staff_5._centered_position_outside_staff(-5) is True)
+
+    def test_centered_position_outside_staff_with_even_line_count(self):
+        test_staff_4 = Staff(0, 0, 100, line_count=4)
+        assert(test_staff_4._centered_position_outside_staff(0) is False)
+        assert(test_staff_4._centered_position_outside_staff(3) is False)
+        assert(test_staff_4._centered_position_outside_staff(-3) is False)
+        assert(test_staff_4._centered_position_outside_staff(4) is True)
+        assert(test_staff_4._centered_position_outside_staff(-4) is True)
+
+    def test_position_needs_ledger_with_odd_line_count(self):
+        test_staff_5 = Staff(0, 0, 100, line_count=5)
+        assert(test_staff_5._position_needs_ledger(0) is False)
+        assert(test_staff_5._position_needs_ledger(4) is False)
+        assert(test_staff_5._position_needs_ledger(-4) is False)
+        assert(test_staff_5._position_needs_ledger(6) is True)
+        assert(test_staff_5._position_needs_ledger(-6) is True)
+        assert(test_staff_5._position_needs_ledger(7) is False)
+        assert(test_staff_5._position_needs_ledger(-7) is False)
+        assert(test_staff_5._position_needs_ledger(8) is True)
+        assert(test_staff_5._position_needs_ledger(-8) is True)
+
+    def test_position_needs_ledger_with_even_line_count(self):
+        test_staff_4 = Staff(0, 0, 100, line_count=4)
+        assert(test_staff_4._position_needs_ledger(0) is False)
+        assert(test_staff_4._position_needs_ledger(3) is False)
+        assert(test_staff_4._position_needs_ledger(-3) is False)
+        assert(test_staff_4._position_needs_ledger(4) is False)
+        assert(test_staff_4._position_needs_ledger(-4) is False)
+        assert(test_staff_4._position_needs_ledger(5) is True)
+        assert(test_staff_4._position_needs_ledger(-5) is True)
+        assert(test_staff_4._position_needs_ledger(6) is False)
+        assert(test_staff_4._position_needs_ledger(-6) is False)
+        assert(test_staff_4._position_needs_ledger(7) is True)
+        assert(test_staff_4._position_needs_ledger(-7) is True)

@@ -182,3 +182,17 @@ class Staff:
         """
         return (self._centered_position_to_top_down(centered_value) *
                 (self.staff_unit / 2))
+
+    def _centered_position_outside_staff(self, centered_value):
+        """bool: Determine if a position is outside of the staff.
+
+        This is true for any position not on or between the outer staff lines.
+        """
+        return abs(centered_value) > (self.line_count - 1)
+
+    def _position_needs_ledger(self, centered_value):
+        """bool: Determine if a position needs a ledger line"""
+        # If the position is outside the staff and self.count_count and
+        # centered_value's evenness are different, a ledger line is needed
+        return (self._centered_position_outside_staff(centered_value) and
+                self.line_count % 2 != centered_value % 2)

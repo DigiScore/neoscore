@@ -32,6 +32,7 @@ class Notehead(StaffObject):
             self.staff.y + self.position_y,
             '\uE0A4', brown.music_font)
         self.grob.position_y_baseline(self.staff.y + self.position_y)
+        self.grob_width = 1.25 * self.staff.staff_unit  # TODO: Temporary testing
 
     ######## PUBLIC PROPERTIES ########
 
@@ -55,9 +56,8 @@ class Notehead(StaffObject):
     def staff_position(self):
         """int: The notehead position in the staff in staff units
 
-        0 means the center
-        line or space of the staff, higher numbers mean higher pitches,
-        and lower numbers mean lower pitches.
+        0 means the center line or space of the staff, higher numbers
+        mean higher pitches, and lower numbers mean lower pitches.
         """
         return (self.staff.middle_c_at(self.position_x) +
                 self.pitch.staff_position_relative_to_middle_c)
