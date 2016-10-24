@@ -1,6 +1,7 @@
 from brown.interface.impl.qt import path_interface_qt
 
 
+
 class Path:
 
     _interface_class = path_interface_qt.PathInterfaceQt
@@ -27,9 +28,11 @@ class Path:
     ######## CLASSMETHODS ########
 
     @classmethod
-    def straight_line(cls, x1, y1, x2, y2):
-        line = cls(x1, y1)
-        line.line_to(x2, y2)
+    def straight_line(cls, x_start, y_start, delta_x, delta_y):
+        # TODO: This is pretty awkward, it may well be more intuitive to
+        #       to (startx, starty, endx, endy) instead
+        line = cls(x_start, y_start)
+        line.line_to(delta_x, delta_y)
         return line
 
     ######## PUBLIC PROPERTIES ########

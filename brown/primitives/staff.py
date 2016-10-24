@@ -153,6 +153,27 @@ class Staff:
             int: A staff position in the top-down system
 
         Example:
-
+            # TODO: Make me
         """
         return (-1 * centered_value) + self.line_count - 1
+
+    def _centered_position_to_rel_pixels(self, centered_value):
+        """Convert a centered staff position to pixels relative to the staff.
+
+        This takes a centered staff position (where 0 means the center
+        position positive values mean higher positions, and lower values
+        vice versa) and returns its translation to pixels relative to the
+        top of the staff, where 0 is the top of the staff, negative values
+        extend upward, and positive values extend downward
+
+        Args:
+            centered_value (int): A staff position in the centered system.
+
+        Returns:
+            int: A y-axis pixel position relative to the top of the staff
+
+        Example:
+            # TODO: Make me
+        """
+        return (self._centered_position_to_top_down(centered_value) *
+                (self.staff_unit / 2))

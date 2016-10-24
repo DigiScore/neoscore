@@ -21,7 +21,7 @@ class Notehead(StaffObject):
     def __init__(self, staff, position_x, pitch):
         """
         Args:
-            parent_staff (Staff):
+            staff (Staff):
             position_x (float):
             pitch (Pitch):
         """
