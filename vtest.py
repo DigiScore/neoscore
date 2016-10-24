@@ -66,7 +66,7 @@ chordrest = ChordRest(staff, chord_pitches, 270)
 chordrest.render()
 
 # Draw vertical line at chordrest 0 position
-Path.straight_line(270, 0, 0, 100).render()
+# Path.straight_line(270, 0, 0, 100).render()
 
 
 brown.show()
