@@ -11,7 +11,9 @@ from brown.core.brush import Brush
 from brown.primitives.clef import Clef
 from brown.primitives.staff import Staff
 from brown.primitives.notehead import Notehead
+from brown.primitives.chordrest import ChordRest
 from brown.primitives.ledger_line import LedgerLine
+
 from brown.config import config
 
 
@@ -55,6 +57,11 @@ for i, pitch in enumerate(pitches):
 # dummy ledgers
 ledger = LedgerLine(staff, 97, 6)
 ledger.render()
+
+# chordrest
+chord_pitches = ["c'", "e'", "g'"]
+chordrest = ChordRest(staff, chord_pitches, 270)
+chordrest.render()
 
 
 brown.show()
