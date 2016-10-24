@@ -27,7 +27,7 @@ class Notehead(StaffObject):
         """
         super(Notehead, self).__init__(staff, position_x)
         self.pitch = pitch
-        self.grob = Glyph(
+        self._grob = Glyph(
             self.staff.x + self.position_x,  # TODO: We should be able to pass relative coords
             self.staff.y + self.position_y,
             '\uE0A4', brown.music_font)

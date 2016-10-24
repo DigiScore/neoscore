@@ -28,6 +28,11 @@ class StaffObject(ABC):
     ######## PUBLIC PROPERTIES ########
 
     @property
+    def grob(self):
+        """The core graphical object representation of this StaffObject"""
+        return self._grob
+
+    @property
     def staff(self):
         return self._staff
 

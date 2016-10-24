@@ -49,7 +49,7 @@ class Clef(StaffObject):
         """
         super(Clef, self).__init__(staff, position_x)
         self._clef_type = clef_type
-        self.grob = Glyph(
+        self._grob = Glyph(
             self.staff.x + self.position_x,  # TODO: pass relative coords
             self.staff.y + self.position_y,
             Clef._smufl_codepoints[self.clef_type],

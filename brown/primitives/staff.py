@@ -17,7 +17,7 @@ class Staff:
         else:
             self.staff_unit = config.DEFAULT_STAFF_UNIT * units.mm
         self._contents = []
-        self.grob = Path(self.x, self.y)
+        self._grob = Path(self.x, self.y)
         # Draw the staff lines
         for i in range(self.line_count):
             self.grob.move_to(0, i * self.staff_unit)
@@ -27,31 +27,36 @@ class Staff:
     ######## PUBLIC PROPERTIES ########
 
     @property
+    def grob(self):
+        """The core graphical object representation of this StaffObject"""
+        return self._grob
+
+    @property
     def x(self):
         """float: x coordinate of the left side of the staff"""
         return self._x
 
-    @x.setter
-    def x(self, value):
-        self._x = value
+    # @x.setter
+    # def x(self, value):
+    #     self._x = value
 
     @property
     def y(self):
         """float: y coordinate of the left side of the staff"""
         return self._y
 
-    @y.setter
-    def y(self, value):
-        self._y = value
+    # @y.setter
+    # def y(self, value):
+    #     self._y = value
 
     @property
     def length(self):
         """float: length coordinate of the left side of the staff"""
         return self._length
 
-    @length.setter
-    def length(self, value):
-        self._length = value
+    # @length.setter
+    # def length(self, value):
+    #     self._length = value
 
     @property
     def height(self):
