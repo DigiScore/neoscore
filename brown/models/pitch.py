@@ -1,6 +1,6 @@
 import re
 
-from brown.models.accidental import Accidental
+from brown.models.virtual_accidental import VirtualAccidental
 
 
 class InvalidPitchDescriptionError(Exception):
@@ -9,7 +9,7 @@ class InvalidPitchDescriptionError(Exception):
 
 
 class Pitch:
-    """A pitch with a letter, octave, and accidental"""
+    """A pitch with a letter, octave, and virtual accidental"""
 
     _pitch_regex = re.compile("^([a-g])([snf])?('*|,*)$")
     natural_pitch_classes = {
@@ -53,7 +53,7 @@ class Pitch:
                   familiar with lilypond pitch notation
         """
         self._letter = None
-        self._accidental = None
+        self._virtual_accidental = None
         self._octave = None      # These three are initialized by the pitch setter
         self.pitch = pitch
 
@@ -73,10 +73,10 @@ class Pitch:
         if match is None:
             raise InvalidPitchDescriptionError
         letter = match.group(1)
-        accidental = match.group(2)
+        virtual_accidental = match.group(2)
         ticks = match.group(3)
         self._letter = letter
-        self._accidental = Accidental(accidental)
+        self._virtual_accidental = VirtualAccidental(virtual_accidental)
         if not ticks:
             self._octave = 3
         else:
@@ -93,7 +93,7 @@ class Pitch:
         return self._letter
 
     @property
-    def accidental(self):
+    def virtual_accidental(self):
         """str or None: A character representing the accidental.
 
         Supported values:
@@ -105,7 +105,7 @@ class Pitch:
         This property is read-only. To modify, set the `pitch` property.
         TODO: maybe implement setters
         """
-        return self._accidental
+        return self._virtual_accidental
 
     @property
     def octave(self):
@@ -123,8 +123,8 @@ class Pitch:
     def pitch_class(self):
         """int: The 0-11 pitch class of this pitch."""
         natural = Pitch.natural_pitch_classes[self.letter]
-        if self.accidental.value is not None:
-            return natural + self.accidental.value
+        if self.virtual_accidental.value is not None:
+            return natural + self.virtual_accidental.value
         return natural
 
     @property

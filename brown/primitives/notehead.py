@@ -5,6 +5,7 @@ from brown.primitives.staff import Staff
 from brown.models.pitch import Pitch
 from brown.primitives.staff_object import StaffObject
 from brown.core import brown
+from brown.primitives.accidental import Accidental
 # from brown.primitives.chord_rest import ChordRest
 
 """
@@ -26,13 +27,13 @@ class Notehead(StaffObject):
             pitch (Pitch):
         """
         super(Notehead, self).__init__(staff, position_x)
+        self.grob_width = 1.25 * self.staff.staff_unit  # TODO: Temporary testing
         self.pitch = pitch
         self._grob = Glyph(
             self.staff.x + self.position_x,  # TODO: We should be able to pass relative coords
             self.staff.y + self.position_y,
             '\uE0A4', brown.music_font)
         self.grob.position_y_baseline(self.staff.y + self.position_y)
-        self.grob_width = 1.25 * self.staff.staff_unit  # TODO: Temporary testing
 
     ######## PUBLIC PROPERTIES ########
 
@@ -51,6 +52,7 @@ class Notehead(StaffObject):
             self._pitch = value
         else:
             self._pitch = Pitch(value)
+        self._accidental = Accidental(self, self.grob_width * -1)
 
     @property
     def staff_position(self):
@@ -70,11 +72,31 @@ class Notehead(StaffObject):
         Positive values extend *downward* below the top staff line
         while negative values extend *upward* above the top staff line.
         """
-        # Take position_y_in_staff_units and convert to pixels
-        return (self.staff._staff_pos_to_top_down(self.staff_position) *
-                (self.staff.staff_unit / 2))
+        return self.staff._staff_pos_to_rel_pixels(self.staff_position)
+
+    @property
+    def position_x(self):
+        return self._position_x
+
+    # HACK : Override of staff_object version to propogate changes to child
+    #        accidental. Remove once proper parent-child relative position
+    #        is implemented.
+    @position_x.setter
+    def position_x(self, value):
+        # TODO: Is there a way in python to call the super class setter?
+        self._position_x = value
+        self.grob.x = value
+        if self.accidental.grob is not None:
+            self.accidental.position_x = value + self.accidental.x_offset
+
+    @property
+    def accidental(self):
+        """Accidental: The Accidental object for the notehead"""
+        return self._accidental
 
     ######## PUBLIC METHODS ########
 
     def render(self):
         self.grob.render()
+        # Render the accidental
+        self.accidental.render()

@@ -3,7 +3,7 @@ class InvalidAccidentalError(Exception):
     pass
 
 
-class Accidental:
+class VirtualAccidental:
 
     def __init__(self, value):
         """

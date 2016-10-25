@@ -177,7 +177,7 @@ class Staff:
         """
         return (-1 * centered_value) + self.line_count - 1
 
-    def _staff_pos_to_rel_pixels(self, centered_value):
+    def _staff_pos_to_rel_pixels(self, staff_position):
         """Convert a staff position to pixels relative to the staff.
 
         This takes a centered staff position (where 0 means the center
@@ -195,7 +195,7 @@ class Staff:
         Example:
             # TODO: Make me
         """
-        return (self._staff_pos_to_top_down(centered_value) *
+        return (self._staff_pos_to_top_down(staff_position) *
                 (self.staff_unit / 2))
 
     def _position_inside_staff(self, position):
