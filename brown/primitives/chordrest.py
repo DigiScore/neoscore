@@ -110,7 +110,7 @@ class ChordRest(StaffObject):
         """
         furthest = self.furthest_notehead
         if furthest:
-            return 1 if furthest.staff_position <= 0 else -1
+            return 1 if furthest.staff_position < 0 else -1
         else:
             return None
 
@@ -138,7 +138,6 @@ class ChordRest(StaffObject):
         """
         self.ledgers = []
         for ledger_pos in self.ledger_line_positions:
-            print('adding ledger at position')
             self.ledgers.append(
                 LedgerLine(self.staff, self.position_x, ledger_pos)
             )

@@ -65,6 +65,9 @@ chord_pitches = ["c'", "e'", "g'", "a'"]
 chordrest = ChordRest(staff, chord_pitches, 270)
 chordrest.render()
 
+# one note chordrest high above the staff
+ChordRest(staff, ["d''''"], 220).render()
+
 # Draw vertical line at chordrest 0 position
 # Path.straight_line(270, 0, 0, 100).render()
 
