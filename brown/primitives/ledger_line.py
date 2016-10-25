@@ -10,23 +10,23 @@ from brown.utils import units
 
 class LedgerLine(StaffObject):
 
-    length = 1.75  # Staff units length of a ledger line
-
-    def __init__(self, staff, position_x, staff_position):
+    def __init__(self, staff, position_x, staff_position, length=None):
         """
         Args:
-            staff (Staff):
-            position_x (float):
-            staff_position (int): centered staff position
+            staff (Staff): The parent staff
+            position_x (float): Position in pixels of the left edge of the line
+            staff_position (int): The staff position of the ledger line
+            length (float): Length in pixels of the ledger line
         """
         super(LedgerLine, self).__init__(staff, position_x)
         self._staff_position = staff_position
-        self._length_px = LedgerLine.length * self.staff.staff_unit
+        # HACK --- length should be handled more elegantly later
+        self._length = length if length else 1.75 * self.staff.staff_unit
         y_pos = self.staff._staff_pos_to_rel_pixels(self.staff_position)
         self._grob = Path.straight_line(
-            self.staff.x + self.position_x - (self.length_px / 2),
+            self.staff.x + self.position_x,
             self.staff.y + y_pos,
-            self.length_px,
+            self.length,
             0,
         )
 
@@ -38,9 +38,9 @@ class LedgerLine(StaffObject):
         return self._staff_position
 
     @property
-    def length_px(self):
-        """int: The length in pixels of the ledger line"""
-        return self._length_px
+    def length(self):
+        """int: The length in staff units of the ledger line"""
+        return self._length
 
     ######## PUBLIC METHODS ########
 

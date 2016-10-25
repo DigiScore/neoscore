@@ -100,6 +100,71 @@ class ChordRest(StaffObject):
                    default=None)
 
     @property
+    def leftmost_notehead(self):
+        """Notehead or None: the Notehead furthest to the left in the chord"""
+        return min(self.noteheads,
+                   key=lambda n: n.position_x,
+                   default=None)
+
+    @property
+    def rightmost_notehead(self):
+        """Notehead or None: the Notehead furthest to the right in the chord"""
+        return max(self.noteheads,
+                   key=lambda n: n.position_x,
+                   default=None)
+
+    @property
+    def widest_notehead(self):
+        """Notehead or None: the Notehead with the greatest `grob_width`"""
+        return max(self.noteheads,
+                   key=lambda n: n.grob_width,
+                   default=None)
+
+    @property
+    def notehead_column_width(self):
+        """float: The width in pixels of the *noteheads* in the chord"""
+        if not self.noteheads:
+            return 0
+        elif len(self.noteheads) == 1:
+            return self.widest_notehead.grob_width
+        else:
+            return (self.rightmost_notehead.position_x -
+                    self.leftmost_notehead.position_x +
+                    self.widest_notehead.grob_width)
+
+    @property
+    def noteheads_outside_staff(self):
+        """list[Notehead]: A list of all noteheads which are above or below the staff"""
+        return [note for note in self.noteheads
+                if self.staff._position_outside_staff(note.staff_position)]
+
+    @property
+    def leftmost_notehead_outside_staff(self):
+        """Notehead or None: the Notehead furthest to the left outside the staff"""
+        return min(self.noteheads_outside_staff,
+                   key=lambda n: n.position_x,
+                   default=None)
+
+    @property
+    def rightmost_notehead_outside_staff(self):
+        """Notehead or None: the Notehead furthest to the right outside the staff"""
+        return max(self.noteheads_outside_staff,
+                   key=lambda n: n.position_x,
+                   default=None)
+
+    @property
+    def notehead_column_outside_staff_width(self):
+        """float: The width in pixels of the *noteheads* outside the staff"""
+        if not self.noteheads:
+            return 0
+        elif len(self.noteheads) == 1:
+            return self.widest_notehead.grob_width
+        else:
+            return (self.rightmost_notehead_outside_staff.position_x -
+                    self.leftmost_notehead_outside_staff.position_x +
+                    self.widest_notehead.grob_width)
+
+    @property
     def stem_direction(self):
         """int: The direction of the stem, either 1 (up) or -1 (down)
 
@@ -135,12 +200,18 @@ class ChordRest(StaffObject):
 
         Returns: None
 
+        Warning: This should be called after _position_noteheads_horizontally()
+                 as it relies on the position of noteheads in the chord to
+                 calculate the position and length of the ledger lines
         Warning: This overwrites the contents of `self.ledgers`
         """
+        # Calculate x position and length of ledger lines
+        x_position = self.leftmost_notehead.position_x - (0.3 * self.staff.staff_unit)
+        length = self.notehead_column_outside_staff_width + (0.6 * self.staff.staff_unit)
         self.ledgers = []
-        for ledger_pos in self.ledger_line_positions:
+        for staff_pos in self.ledger_line_positions:
             self.ledgers.append(
-                LedgerLine(self.staff, self.position_x, ledger_pos)
+                LedgerLine(self.staff, x_position, staff_pos, length)
             )
 
     def _create_stem(self):
@@ -178,5 +249,5 @@ class ChordRest(StaffObject):
             # Reposition, using last_side (here) as the chosen side for this note
             if last_side == -1:
                 note.position_x -= note.grob_width
-            # Lastly, set last_staff_pos
+            # Lastly, update last_staff_pos
             last_staff_pos = note.staff_position

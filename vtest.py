@@ -61,7 +61,7 @@ ledger = LedgerLine(staff, 97, 6)
 ledger.render()
 
 # chordrest
-chord_pitches = ["c'", "e'", "g'", "a'"]
+chord_pitches = ["f", "c'", "e'", "g'", "a'"]
 chordrest = ChordRest(staff, chord_pitches, 270)
 chordrest.render()
 
