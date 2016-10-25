@@ -23,7 +23,7 @@ class StaffObject(ABC):
         '''
         self.staff = staff
         self.staff._register_staff_object(self)
-        self.position_x = position_x
+        self._position_x = position_x
 
     ######## PUBLIC PROPERTIES ########
 
@@ -47,6 +47,10 @@ class StaffObject(ABC):
     @position_x.setter
     def position_x(self, value):
         self._position_x = value
+        # TODO: This may not be the best way to handle propagating changed
+        #       to grob, and it is not consistently implemented in similar
+        #       classes.
+        self.grob.x = value
 
     @property
     def position_y(self):

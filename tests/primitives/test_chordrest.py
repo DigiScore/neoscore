@@ -66,12 +66,12 @@ class TestChordRest(unittest.TestCase):
         chord = ChordRest(self.mock_staff, pitches, 10)
         assert(chord.highest_notehead == chord.lowest_notehead)
 
-    def test_stem_direction_up(self):
+    def test_stem_direction_down(self):
         pitches = ["c'", "b'", "c'''"]
         chord = ChordRest(self.mock_staff, pitches, 10)
         assert(chord.stem_direction == -1)
 
-    def test_stem_direction_down(self):
+    def test_stem_direction_up(self):
         pitches = ["c,,,,,", "b'", "c'''"]
         chord = ChordRest(self.mock_staff, pitches, 10)
         assert(chord.stem_direction == 1)

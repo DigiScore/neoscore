@@ -117,6 +117,7 @@ class ChordRest(StaffObject):
     ######## PUBLIC METHODS ########
 
     def render(self):
+        self._position_noteheads_horizontally()
         for note in self.noteheads:
             note.render()
         # Generate and render ledger lines
@@ -151,3 +152,31 @@ class ChordRest(StaffObject):
         end = start + self.stem_direction * 6
         self._stem = Stem(self.staff, self.position_x,
                           start, end)
+
+    def _position_noteheads_horizontally(self):
+        """Reposition noteheads so that they are laid out correctly
+
+        Decides which noteheads lie on which side of the staff, and
+        modifies positions when needed by directly changing the grobs'
+        `position_x` properties.
+        """
+        # Find the preferred side of the stem for noteheads,
+        # where 1 means right and -1 means left
+        default_side = self.stem_direction * -1
+        # Start last staff pos at sentinel infinity position
+        last_staff_pos = float("inf")
+        # Start last_side at wrong side so first note goes on the default side
+        last_side = -1 * default_side
+        for note in sorted(self.noteheads,
+                           key=lambda n: n.staff_position,
+                           reverse=(self.stem_direction == -1)):
+            if abs(last_staff_pos - note.staff_position) < 2:
+                # This note collides with previous, use switch sides
+                last_side = -1 * last_side
+            else:
+                last_side = default_side
+            # Reposition, using last_side (here) as the chosen side for this note
+            if last_side == -1:
+                note.position_x -= note.grob_width
+            # Lastly, set last_staff_pos
+            last_staff_pos = note.staff_position
