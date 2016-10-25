@@ -66,20 +66,37 @@ class ChordRest(StaffObject):
 
     @property
     def ledger_line_positions(self):
-        """set[int]: A set of staff positions of needed ledger lines.
+        """set{int}: A set of staff positions of needed ledger lines.
 
         Positions are in centered staff positions.
 
         An empty set means no ledger lines are needed
         """
-        return {note.staff_position for note in self.noteheads
-                if self.staff._position_needs_ledger(note.staff_position)}
+        highest = self.highest_notehead.staff_position
+        lowest = self.lowest_notehead.staff_position
+        # Join sets of needed ledgers above and below with union operator
+        return (self.staff._ledgers_needed_from_position(lowest) |
+                self.staff._ledgers_needed_from_position(highest))
 
     @property
     def furthest_notehead(self):
         """Notehead or None: The Notehead furthest from the staff center"""
         return max(self.noteheads,
-                   key=lambda n: abs(n.position_y),
+                   key=lambda n: abs(n.staff_position),
+                   default=None)
+
+    @property
+    def highest_notehead(self):
+        """Notehead of None: The highest Notehead in the chord."""
+        return max(self.noteheads,
+                   key=lambda n: n.staff_position,
+                   default=None)
+
+    @property
+    def lowest_notehead(self):
+        """Notehead of None: The lowest Notehead in the chord."""
+        return min(self.noteheads,
+                   key=lambda n: n.staff_position,
                    default=None)
 
     @property

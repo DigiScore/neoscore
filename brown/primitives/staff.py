@@ -24,11 +24,13 @@ class Staff:
             self.grob.line_to(self.length, i * self.staff_unit)
         # TODO: More fully implement arbitrary numbers of staff lines
 
+
+
     ######## PUBLIC PROPERTIES ########
 
     @property
     def grob(self):
-        """The core graphical object representation of this StaffObject"""
+        """The core graphical object representation of the staff"""
         return self._grob
 
     @property
@@ -73,6 +75,16 @@ class Staff:
     def contents(self):
         """list[StaffObject]: A list of staff objects belonging to the staff"""
         return self._contents
+
+    @property
+    def highest_position(self):
+        """int: The staff position of the top line"""
+        return self.line_count - 1
+
+    @property
+    def lowest_position(self):
+        """int: The staff position of the bottom line"""
+        return (self.line_count - 1) * -1
 
     ######## PRIVATE METHODS ########
 
@@ -186,16 +198,39 @@ class Staff:
         return (self._staff_pos_to_top_down(centered_value) *
                 (self.staff_unit / 2))
 
-    def _staff_pos_outside_staff(self, centered_value):
+    def _position_inside_staff(self, position):
+        """bool: Determine if a position is inside the staff.
+
+        This is true for any position within or on the outer lines.
+        """
+        return self.lowest_position <= position <= self.highest_position
+
+    def _position_outside_staff(self, position):
         """bool: Determine if a position is outside of the staff.
 
         This is true for any position not on or between the outer staff lines.
         """
-        return abs(centered_value) > (self.line_count - 1)
+        return not self._position_inside_staff(position)
 
-    def _position_needs_ledger(self, centered_value):
-        """bool: Determine if a position needs a ledger line"""
+    def _position_on_ledger(self, position):
+        """bool: Tell if a position is on a ledger line position"""
         # If the position is outside the staff and self.count_count and
-        # centered_value's evenness are different, a ledger line is needed
-        return (self._staff_pos_outside_staff(centered_value) and
-                self.line_count % 2 != centered_value % 2)
+        # position's evenness are different, a ledger line is needed
+        return (self._position_outside_staff(position) and
+                self.line_count % 2 != position % 2)
+
+    def _ledgers_needed_from_position(self, position):
+        """set{int}: Ledgers needed for a note at a given position."""
+        direction = 1 if position < 0 else -1
+        if position is None or self._position_inside_staff(position):
+            return set()
+        else:
+            # Find start and end points for ledger generation
+            start = position
+            if not self._position_on_ledger(position):
+                start += direction
+            if direction == 1:
+                end = self.lowest_position
+            else:
+                end = self.highest_position
+            return {pos for pos in range(start, end, 2 * direction)}
