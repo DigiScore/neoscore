@@ -118,7 +118,7 @@ class Staff:
         else:
             return clef.middle_c_staff_position
 
-    def natural_midi_number_of_top_line_at(self, position_x):
+    def _natural_midi_number_of_top_line_at(self, position_x):
         """Find the natural midi pitch class of the top line at a given point.
 
         Looks for clefs and other transposing modifiers to determine
@@ -131,7 +131,7 @@ class Staff:
             # Assume treble
             return Clef._natural_midi_numbers_at_top_staff_line['treble']
         else:
-            return clef.natural_midi_number_at_top_staff_line
+            return clef._natural_midi_number_at_top_staff_line
 
     def render(self):
         """Render the staff.
@@ -142,14 +142,17 @@ class Staff:
 
     ######## PRIVATE METHODS ########
 
-    def _centered_position_to_top_down(self, centered_value):
-        """Convert a centered staff position to its top-down equivalent.
+    def _staff_pos_to_top_down(self, centered_value):
+        """Convert a staff position to its top-down equivalent.
 
         This takes a centered staff position (where 0 means the center
         position positive values mean higher positions, and lower values
         vice versa) and returns its equivalent in the top-down system
         (where 0 means the top line of the staff, negative values
         extend upward, and positive values extend downward).
+
+        This is mostly meant for internal purposes in the rendering
+        pipeline. Values should not be stored in objects as these values.
 
         Args:
             centered_value (int): A staff position in the centered system.
@@ -162,8 +165,8 @@ class Staff:
         """
         return (-1 * centered_value) + self.line_count - 1
 
-    def _centered_position_to_rel_pixels(self, centered_value):
-        """Convert a centered staff position to pixels relative to the staff.
+    def _staff_pos_to_rel_pixels(self, centered_value):
+        """Convert a staff position to pixels relative to the staff.
 
         This takes a centered staff position (where 0 means the center
         position positive values mean higher positions, and lower values
@@ -172,18 +175,18 @@ class Staff:
         extend upward, and positive values extend downward
 
         Args:
-            centered_value (int): A staff position in the centered system.
+            centered_value (float): A staff position in the centered system.
 
         Returns:
-            int: A y-axis pixel position relative to the top of the staff
+            float: A y-axis pixel position relative to the top of the staff
 
         Example:
             # TODO: Make me
         """
-        return (self._centered_position_to_top_down(centered_value) *
+        return (self._staff_pos_to_top_down(centered_value) *
                 (self.staff_unit / 2))
 
-    def _centered_position_outside_staff(self, centered_value):
+    def _staff_pos_outside_staff(self, centered_value):
         """bool: Determine if a position is outside of the staff.
 
         This is true for any position not on or between the outer staff lines.
@@ -194,5 +197,5 @@ class Staff:
         """bool: Determine if a position needs a ledger line"""
         # If the position is outside the staff and self.count_count and
         # centered_value's evenness are different, a ledger line is needed
-        return (self._centered_position_outside_staff(centered_value) and
+        return (self._staff_pos_outside_staff(centered_value) and
                 self.line_count % 2 != centered_value % 2)

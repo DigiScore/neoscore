@@ -71,7 +71,7 @@ class Notehead(StaffObject):
         while negative values extend *upward* above the top staff line.
         """
         # Take position_y_in_staff_units and convert to pixels
-        return (self.staff._centered_position_to_top_down(self.staff_position) *
+        return (self.staff._staff_pos_to_top_down(self.staff_position) *
                 (self.staff.staff_unit / 2))
 
     ######## PUBLIC METHODS ########

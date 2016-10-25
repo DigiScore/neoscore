@@ -22,7 +22,7 @@ class Stem(StaffObject):
         super(Stem, self).__init__(staff, position_x)
         self._staff_position_start = staff_position_start
         self._staff_position_end = staff_position_end
-        y_pos = self.staff._centered_position_to_rel_pixels(self.staff_position_start)
+        y_pos = self.staff._staff_pos_to_rel_pixels(self.staff_position_start)
         y_delta = (self.staff_position_start - self.staff_position_end) * self.staff.staff_unit
         self._grob = Path.straight_line(
             self.staff.x + self.position_x,

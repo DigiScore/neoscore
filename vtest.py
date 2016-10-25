@@ -43,7 +43,7 @@ text.render()
 staff = Staff(0, 0, 300, 1)
 staff.render()
 
-clef = Clef(staff, 0, 'tenor')
+clef = Clef(staff, 0, 'alto')
 clef.render()
 
 clef = Clef(staff, 150, 'treble')

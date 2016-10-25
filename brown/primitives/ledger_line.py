@@ -22,7 +22,7 @@ class LedgerLine(StaffObject):
         super(LedgerLine, self).__init__(staff, position_x)
         self._staff_position = staff_position
         self._length_px = LedgerLine.length * self.staff.staff_unit
-        y_pos = self.staff._centered_position_to_rel_pixels(self.staff_position)
+        y_pos = self.staff._staff_pos_to_rel_pixels(self.staff_position)
         self._grob = Path.straight_line(
             self.staff.x + self.position_x - (self.length_px / 2),
             self.staff.y + y_pos,

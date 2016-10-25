@@ -13,20 +13,20 @@ class TestStaff(unittest.TestCase):
     def setUp(self):
         brown.setup()
 
-    def test_centered_position_to_top_down(self):
+    def test_staff_pos_to_top_down(self):
         test_staff = Staff(0, 0, 100, line_count=5)
         # Center of staff
-        assert(test_staff._centered_position_to_top_down(0) == 4)
+        assert(test_staff._staff_pos_to_top_down(0) == 4)
         # Above center
-        assert(test_staff._centered_position_to_top_down(1) == 3)
-        assert(test_staff._centered_position_to_top_down(4) == 0)
-        assert(test_staff._centered_position_to_top_down(5) == -1)
-        assert(test_staff._centered_position_to_top_down(12) == -8)
+        assert(test_staff._staff_pos_to_top_down(1) == 3)
+        assert(test_staff._staff_pos_to_top_down(4) == 0)
+        assert(test_staff._staff_pos_to_top_down(5) == -1)
+        assert(test_staff._staff_pos_to_top_down(12) == -8)
         # Below center
-        assert(test_staff._centered_position_to_top_down(-1) == 5)
-        assert(test_staff._centered_position_to_top_down(-4) == 8)
-        assert(test_staff._centered_position_to_top_down(-5) == 9)
-        assert(test_staff._centered_position_to_top_down(-12) == 16)
+        assert(test_staff._staff_pos_to_top_down(-1) == 5)
+        assert(test_staff._staff_pos_to_top_down(-4) == 8)
+        assert(test_staff._staff_pos_to_top_down(-5) == 9)
+        assert(test_staff._staff_pos_to_top_down(-12) == 16)
 
     def test_height(self):
         # 5 lines
@@ -73,30 +73,30 @@ class TestStaff(unittest.TestCase):
         test_treble_clef = Clef(test_staff, 0,  'treble')
         test_bass_clef = Clef(test_staff, 10, 'bass')
         # Test between two clefs should be in treble mode
-        assert(test_staff.natural_midi_number_of_top_line_at(5) == 77)
+        assert(test_staff._natural_midi_number_of_top_line_at(5) == 77)
         # Test after bass clef goes into effect
-        assert(test_staff.natural_midi_number_of_top_line_at(15) == 57)
+        assert(test_staff._natural_midi_number_of_top_line_at(15) == 57)
 
     def test_natural_midi_number_of_top_line_at_with_implicit_default_clef(self):
         test_staff = Staff(0, 0, 100)
         # No clef specified - should default to treble
-        assert(test_staff.natural_midi_number_of_top_line_at(5) == 77)
+        assert(test_staff._natural_midi_number_of_top_line_at(5) == 77)
 
-    def test_centered_position_outside_staff_with_odd_line_count(self):
+    def test_staff_pos_outside_staff_with_odd_line_count(self):
         test_staff_5 = Staff(0, 0, 100, line_count=5)
-        assert(test_staff_5._centered_position_outside_staff(0) is False)
-        assert(test_staff_5._centered_position_outside_staff(4) is False)
-        assert(test_staff_5._centered_position_outside_staff(-4) is False)
-        assert(test_staff_5._centered_position_outside_staff(5) is True)
-        assert(test_staff_5._centered_position_outside_staff(-5) is True)
+        assert(test_staff_5._staff_pos_outside_staff(0) is False)
+        assert(test_staff_5._staff_pos_outside_staff(4) is False)
+        assert(test_staff_5._staff_pos_outside_staff(-4) is False)
+        assert(test_staff_5._staff_pos_outside_staff(5) is True)
+        assert(test_staff_5._staff_pos_outside_staff(-5) is True)
 
-    def test_centered_position_outside_staff_with_even_line_count(self):
+    def test_staff_pos_outside_staff_with_even_line_count(self):
         test_staff_4 = Staff(0, 0, 100, line_count=4)
-        assert(test_staff_4._centered_position_outside_staff(0) is False)
-        assert(test_staff_4._centered_position_outside_staff(3) is False)
-        assert(test_staff_4._centered_position_outside_staff(-3) is False)
-        assert(test_staff_4._centered_position_outside_staff(4) is True)
-        assert(test_staff_4._centered_position_outside_staff(-4) is True)
+        assert(test_staff_4._staff_pos_outside_staff(0) is False)
+        assert(test_staff_4._staff_pos_outside_staff(3) is False)
+        assert(test_staff_4._staff_pos_outside_staff(-3) is False)
+        assert(test_staff_4._staff_pos_outside_staff(4) is True)
+        assert(test_staff_4._staff_pos_outside_staff(-4) is True)
 
     def test_position_needs_ledger_with_odd_line_count(self):
         test_staff_5 = Staff(0, 0, 100, line_count=5)

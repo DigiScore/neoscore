@@ -9,11 +9,11 @@ from brown.core import brown
 class Clef(StaffObject):
 
     _baseline_staff_positions = {
-        'treble': 6,    # Treble clef baseline is middle of the G curl
+        'treble': -2,    # Treble clef baseline is middle of the G curl
         'bass': 2,      # Bass clef baseline is between the two dots
         '8vb bass': 2,  # 8vb Bass clef baseline same as regular bass clef
         'tenor': 2,     # C clef baseline is in the middle of the glyph
-        'alto': 4,
+        'alto': 0,
     }
     _smufl_codepoints = {
         'treble': '\uE050',
@@ -36,9 +36,6 @@ class Clef(StaffObject):
         'tenor': 64,
         'alto': 67
     }
-    # TODO: unify staff position systems -
-    #       notice how _baseline_staff_positions and _middle_c_staff_positions
-    #       are actually in different coordinate systems
 
     def __init__(self, staff, position_x, clef_type):
         """
@@ -67,7 +64,7 @@ class Clef(StaffObject):
         return self._clef_type
 
     @property
-    def position_y_in_staff_units(self):
+    def staff_position(self):
         """float: The y position in staff units below top of the staff.
 
         0 means exactly at the top staff line.
@@ -84,8 +81,9 @@ class Clef(StaffObject):
         Positive values extend *downward* below the top staff line
         while negative values extend *upward* above the top staff line.
         """
-        # Take position_y_in_staff_units and convert to pixels
-        return self.position_y_in_staff_units * (self.staff.staff_unit / 2)
+        # Take staff_position and convert to pixels
+        return self.staff._staff_pos_to_rel_pixels(
+            self.staff_position)
 
     @property
     def middle_c_staff_position(self):
@@ -101,7 +99,7 @@ class Clef(StaffObject):
         return Clef._middle_c_staff_positions[self.clef_type]
 
     @property
-    def natural_midi_number_at_top_staff_line(self):
+    def _natural_midi_number_at_top_staff_line(self):
         """int: The natural midi number of the top staff line for this clef."""
         return Clef._natural_midi_numbers_at_top_staff_line[self.clef_type]
 
