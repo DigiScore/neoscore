@@ -1,8 +1,8 @@
 from brown.primitives.notehead import Notehead
-from brown.primitives.staff import Staff
 from brown.primitives.staff_object import StaffObject
 from brown.primitives.ledger_line import LedgerLine
 from brown.primitives.stem import Stem
+from brown.core.invisible_object import InvisibleObject
 
 
 class ChordRest(StaffObject):
@@ -18,10 +18,13 @@ class ChordRest(StaffObject):
         super(ChordRest, self).__init__(staff, position_x)
         self._noteheads = []
         self._ledgers = []
+        self._grob = InvisibleObject(self.position_x, 0)
+        self.parent = staff
         for pitch in noteheads:
             self._noteheads.append(Notehead(self.staff,
-                                            self.position_x,
-                                            pitch))
+                                            0,
+                                            pitch,
+                                            self))
         self._duration = duration
         self._stem = None
 
@@ -211,7 +214,7 @@ class ChordRest(StaffObject):
         self.ledgers = []
         for staff_pos in self.ledger_line_positions:
             self.ledgers.append(
-                LedgerLine(self.staff, x_position, staff_pos, length)
+                LedgerLine(self, x_position, staff_pos, length)
             )
 
     def _create_stem(self):

@@ -6,13 +6,14 @@ class Path:
 
     _interface_class = path_interface_qt.PathInterfaceQt
 
-    def __init__(self, x, y, pen=None, brush=None):
+    def __init__(self, x, y, pen=None, brush=None, parent=None):
         """
         Args:
             x (float): The x position of the path relative to the document
             y (float): The y position of the path relative to the document
             pen (Pen): The pen to draw outlines with.
             brush (Brush): The brush to draw outlines with.
+            parent: The parent (core-level) object or None
         """
         # Hack? Initialize interface to position 0, 0
         # so that attribute setters don't try to push
@@ -24,14 +25,15 @@ class Path:
         self.brush = brush
         self._current_path_x = 0
         self._current_path_y = 0
+        self.parent = parent
 
     ######## CLASSMETHODS ########
 
     @classmethod
-    def straight_line(cls, x_start, y_start, delta_x, delta_y):
+    def straight_line(cls, x_start, y_start, delta_x, delta_y, parent=None):
         # TODO: This is pretty awkward, it may well be more intuitive to
         #       to (startx, starty, endx, endy) instead
-        line = cls(x_start, y_start)
+        line = cls(x_start, y_start, parent=parent)
         line.line_to(delta_x, delta_y)
         return line
 
@@ -86,6 +88,19 @@ class Path:
         self._brush = value
         if self._brush:
             self._interface.brush = self._brush._interface
+
+    @property
+    def parent(self):
+        """The parent object"""
+        return self._parent
+
+    @parent.setter
+    def parent(self, value):
+        self._parent = value
+        if value is not None:
+            self._interface.parent = value._interface
+        else:
+            self._interface.parent = None
 
     @property
     def current_path_position(self):

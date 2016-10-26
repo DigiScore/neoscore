@@ -19,21 +19,31 @@ Thoughts on the Notehead class
 
 class Notehead(StaffObject):
 
-    def __init__(self, staff, position_x, pitch):
+    def __init__(self, staff, position_x, pitch, parent=None):
         """
         Args:
             staff (Staff):
             position_x (float):
             pitch (Pitch):
+            parent: The parent of the Notehead -- if None, `staff` is used
         """
         super(Notehead, self).__init__(staff, position_x)
         self.grob_width = 1.25 * self.staff.staff_unit  # TODO: Temporary testing
+        if parent:
+            self.parent = parent
+        else:
+            self.parent = self.staff
         self.pitch = pitch
         self._grob = Glyph(
-            self.staff.x + self.position_x,  # TODO: We should be able to pass relative coords
-            self.staff.y + self.position_y,
-            '\uE0A4', brown.music_font)
-        self.grob.position_y_baseline(self.staff.y + self.position_y)
+            self.position_x,   # TODO: We should be able to pass relative coords
+            self.position_y,
+            '\uE0A4',
+            brown.music_font,
+            self.parent.grob)
+        self.pitch = pitch  # HACK - pitch setter expects self.grob to exist,
+                            #        but self.grob setter expects pitch to exist
+        self.grob.position_y_baseline(self.position_y)
+        self._build_accidental()
 
     ######## PUBLIC PROPERTIES ########
 
@@ -52,7 +62,6 @@ class Notehead(StaffObject):
             self._pitch = value
         else:
             self._pitch = Pitch(value)
-        self._accidental = Accidental(self, self.grob_width * -1)
 
     @property
     def staff_position(self):
@@ -61,7 +70,12 @@ class Notehead(StaffObject):
         0 means the center line or space of the staff, higher numbers
         mean higher pitches, and lower numbers mean lower pitches.
         """
-        return (self.staff.middle_c_at(self.position_x) +
+        if self.parent is None or self.parent == self.staff:
+            pos_x_from_staff = self.position_x
+        else:
+            pos_x_from_staff = self.position_x + self.parent.position_x
+        print('pos_x_from_staff == {}'.format(pos_x_from_staff))
+        return (self.staff.middle_c_at(pos_x_from_staff) +
                 self.pitch.staff_position_relative_to_middle_c)
 
     @property
@@ -72,6 +86,8 @@ class Notehead(StaffObject):
         Positive values extend *downward* below the top staff line
         while negative values extend *upward* above the top staff line.
         """
+        print('notehead.position_x == {}'.format(self.position_x))
+        print('notehead.staff_position == {}'.format(self.staff_position))
         return self.staff._staff_pos_to_rel_pixels(self.staff_position)
 
     @property
@@ -87,7 +103,7 @@ class Notehead(StaffObject):
         self._position_x = value
         self.grob.x = value
         if self.accidental.grob is not None:
-            self.accidental.position_x = value + self.accidental.x_offset
+            self.accidental.position_x = value
 
     @property
     def accidental(self):
@@ -100,3 +116,6 @@ class Notehead(StaffObject):
         self.grob.render()
         # Render the accidental
         self.accidental.render()
+
+    def _build_accidental(self):
+        self._accidental = Accidental(self, self.grob_width * -1)

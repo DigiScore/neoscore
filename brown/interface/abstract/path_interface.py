@@ -60,6 +60,15 @@ class PathInterface(ABC):
         raise NotImplementedError
 
     @property
+    def parent(self):
+        """The interface of the parent object."""
+        raise NotImplementedError
+
+    @parent.setter
+    def parent(self, value):
+        raise NotImplementedError
+
+    @property
     def current_path_position(self):
         """
         tuple (float: x, float: y): The current relative drawing position.

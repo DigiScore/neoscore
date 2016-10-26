@@ -9,13 +9,14 @@ from brown.utils import color
 
 
 class TextObjectInterfaceQt(TextObjectInterface):
-    def __init__(self, x, y, text, font):
+    def __init__(self, x, y, text, font, parent=None):
         """
         Args:
             x (float): The x position relative to the document
             y (float): The y position relative to the document
             text (str): The text for the object
             font (FontInterface): The font object for the text
+            parent: The parent interface object
         """
         self.text = text
         self.font = font
@@ -23,6 +24,7 @@ class TextObjectInterfaceQt(TextObjectInterface):
         self._qt_object.setFont(self.font._qt_object)
         self.x = x
         self.y = y
+        self.parent = parent
 
     ######## PUBLIC PROPERTIES ########
 
@@ -79,6 +81,20 @@ class TextObjectInterfaceQt(TextObjectInterface):
             # Use Qt default brush.
             # TODO: Make global default brush and use that instead
             self._qt_object.setBrush(QtGui.QBrush())
+
+    @property
+    def parent(self):
+        """The interface of the parent object."""
+        return self._parent
+
+    @parent.setter
+    def parent(self, value):
+        self._parent = value
+        # HACK: Assumes the passed item has a _qt_object
+        if value is not None:
+            self._qt_object.setParentItem(value._qt_object)
+        else:
+            self._qt_object.setParentItem(None)
 
     @property
     def text(self):

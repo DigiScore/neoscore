@@ -7,7 +7,7 @@ class TextObject:
 
     _interface_class = text_object_interface_qt.TextObjectInterfaceQt
 
-    def __init__(self, x, y, text, font=None):
+    def __init__(self, x, y, text, font=None, parent=None):
         self._x = x
         self._y = y
         self.text = text
@@ -15,8 +15,13 @@ class TextObject:
             self.font = font
         else:
             self.font = brown.text_font
+        self._parent = parent
         self._interface = TextObject._interface_class(
-            self.x, self.y, self.text, self.font._interface)
+            self.x,
+            self.y,
+            self.text,
+            self.font._interface)
+        self.parent = parent
 
     def render(self):
         self._interface.render()
@@ -75,3 +80,16 @@ class TextObject:
         self._brush = value
         if self._brush:
             self._interface.brush = self._brush._interface
+
+    @property
+    def parent(self):
+        """The parent object"""
+        return self._parent
+
+    @parent.setter
+    def parent(self, value):
+        self._parent = value
+        if value is not None:
+            self._interface.parent = value._interface
+        else:
+            self._interface.parent = None

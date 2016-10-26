@@ -10,24 +10,26 @@ from brown.utils import units
 
 class LedgerLine(StaffObject):
 
-    def __init__(self, staff, position_x, staff_position, length=None):
+    def __init__(self, chordrest, position_x, staff_position, length=None):
         """
         Args:
-            staff (Staff): The parent staff
+            chordrest (ChordRest): The parent chordrest for the ledger line
             position_x (float): Position in pixels of the left edge of the line
             staff_position (int): The staff position of the ledger line
             length (float): Length in pixels of the ledger line
         """
-        super(LedgerLine, self).__init__(staff, position_x)
+        super(LedgerLine, self).__init__(chordrest.staff, position_x)
         self._staff_position = staff_position
         # HACK --- length should be handled more elegantly later
         self._length = length if length else 1.75 * self.staff.staff_unit
         y_pos = self.staff._staff_pos_to_rel_pixels(self.staff_position)
+        self.parent = chordrest
         self._grob = Path.straight_line(
-            self.staff.x + self.position_x,
-            self.staff.y + y_pos,
+            self.position_x,
+            y_pos,
             self.length,
             0,
+            self.parent.grob
         )
 
     ######## PUBLIC PROPERTIES ########

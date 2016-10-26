@@ -86,6 +86,20 @@ class PathInterfaceQt(PathInterface):
             self._qt_object.setBrush(QtGui.QBrush())
 
     @property
+    def parent(self):
+        """The interface of the parent object."""
+        return self._parent
+
+    @parent.setter
+    def parent(self, value):
+        self._parent = value
+        # HACK: Assumes the passed item has a _qt_object
+        if value is not None:
+            self._qt_object.setParentItem(value._qt_object)
+        else:
+            self._qt_object.setParentItem(None)
+
+    @property
     def current_path_position(self):
         """
         tuple (float: x, float: y): The current relative drawing position.

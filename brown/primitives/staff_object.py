@@ -24,6 +24,7 @@ class StaffObject(ABC):
         self.staff = staff
         self.staff._register_staff_object(self)
         self._position_x = position_x
+        self._grob = None
 
     ######## PUBLIC PROPERTIES ########
 
@@ -39,6 +40,16 @@ class StaffObject(ABC):
     @staff.setter
     def staff(self, value):
         self._staff = value
+
+    @property
+    def parent(self):
+        return self._parent
+
+    @parent.setter
+    def parent(self, value):
+        self._parent = value
+        if self._grob is not None and self._parent is not None:
+            self.grob.parent = self._parent.grob
 
     @property
     def position_x(self):

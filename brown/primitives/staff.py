@@ -24,8 +24,6 @@ class Staff:
             self.grob.line_to(self.length, i * self.staff_unit)
         # TODO: More fully implement arbitrary numbers of staff lines
 
-
-
     ######## PUBLIC PROPERTIES ########
 
     @property

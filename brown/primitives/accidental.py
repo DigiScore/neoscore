@@ -17,23 +17,23 @@ class Accidental(StaffObject):
         2:  '\uE263',  # Double-Sharp
     }
 
-    def __init__(self, notehead, x_offset):
+    def __init__(self, notehead, position_x):
         """
         Args:
             notehead (Notehead): The parent Notehead object
-            x_offset (float): The x offset (in pixels) from the notehead
+            position_x (float): The x position (in pixels) relative to the notehead
         """
         self._notehead = notehead
-        self._x_offset = x_offset
-        super(Accidental, self).__init__(self.notehead.staff,
-                                         self.notehead.position_x + self.x_offset)
+        super(Accidental, self).__init__(self.notehead.staff, position_x)
+        self.parent = notehead
         if self.virtual_accidental.value is not None:
             self._grob = Glyph(
-                self.staff.x + self.position_x,  # TODO: We should be able to pass relative coords
-                self.staff.y + self.position_y,
+                self.position_x,  # TODO: We should be able to pass relative coords
+                self.position_y,
                 Accidental._smufl_codepoints[self.virtual_accidental.value],
-                brown.music_font)
-            self.grob.position_y_baseline(self.staff.y + self.position_y)
+                brown.music_font,
+                self.parent.grob)
+            self.grob.position_y_baseline(self.position_y)
             self.grob_width = 1.25 * self.staff.staff_unit  # TODO: Temporary testing
         else:
             self._grob = None
@@ -73,11 +73,6 @@ class Accidental(StaffObject):
     def notehead(self):
         """Notehead: The parent Notehead."""
         return self._notehead
-
-    @property
-    def x_offset(self):
-        """float: The x offset (in pixels) from the parent notehead"""
-        return self._x_offset
 
     ######## PUBLIC METHODS ########
 
