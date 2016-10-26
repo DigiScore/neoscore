@@ -15,16 +15,13 @@ class ChordRest(StaffObject):
                 representing noteheads. An empty list indicates a rest.
             duration (Duration): A duration value for the chord
         '''
-        super(ChordRest, self).__init__(staff, position_x)
+        super().__init__(staff, position_x)
         self._noteheads = []
         self._ledgers = []
         self._grob = InvisibleObject(self.position_x, 0)
         self.parent = staff
         for pitch in noteheads:
-            self._noteheads.append(Notehead(self.staff,
-                                            0,
-                                            pitch,
-                                            self))
+            self._noteheads.append(Notehead(self.staff, 0, pitch, self))
         self._duration = duration
         self._stem = None
 

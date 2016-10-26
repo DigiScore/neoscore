@@ -44,7 +44,7 @@ class Clef(StaffObject):
             position_x (float):
             pitch (Pitch):
         """
-        super(Clef, self).__init__(staff, position_x)
+        super().__init__(staff, position_x)
         self._clef_type = clef_type
         self._grob = Glyph(
             self.position_x,

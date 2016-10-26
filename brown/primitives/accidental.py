@@ -24,11 +24,11 @@ class Accidental(StaffObject):
             position_x (float): The x position (in pixels) relative to the notehead
         """
         self._notehead = notehead
-        super(Accidental, self).__init__(self.notehead.staff, position_x)
+        super().__init__(self.notehead.staff, position_x)
         self.parent = notehead
         if self.virtual_accidental.value is not None:
             self._grob = Glyph(
-                self.position_x,  # TODO: We should be able to pass relative coords
+                self.position_x,
                 self.position_y,
                 Accidental._smufl_codepoints[self.virtual_accidental.value],
                 brown.music_font,

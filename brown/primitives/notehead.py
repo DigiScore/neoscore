@@ -27,7 +27,7 @@ class Notehead(StaffObject):
             pitch (Pitch):
             parent: The parent of the Notehead -- if None, `staff` is used
         """
-        super(Notehead, self).__init__(staff, position_x)
+        super().__init__(staff, position_x)
         self.grob_width = 1.25 * self.staff.staff_unit  # TODO: Temporary testing
         if parent:
             self.parent = parent
@@ -35,7 +35,7 @@ class Notehead(StaffObject):
             self.parent = self.staff
         self.pitch = pitch
         self._grob = Glyph(
-            self.position_x,   # TODO: We should be able to pass relative coords
+            self.position_x,
             self.position_y,
             '\uE0A4',
             brown.music_font,
@@ -74,7 +74,6 @@ class Notehead(StaffObject):
             pos_x_from_staff = self.position_x
         else:
             pos_x_from_staff = self.position_x + self.parent.position_x
-        print('pos_x_from_staff == {}'.format(pos_x_from_staff))
         return (self.staff.middle_c_at(pos_x_from_staff) +
                 self.pitch.staff_position_relative_to_middle_c)
 
@@ -86,8 +85,6 @@ class Notehead(StaffObject):
         Positive values extend *downward* below the top staff line
         while negative values extend *upward* above the top staff line.
         """
-        print('notehead.position_x == {}'.format(self.position_x))
-        print('notehead.staff_position == {}'.format(self.staff_position))
         return self.staff._staff_pos_to_rel_pixels(self.staff_position)
 
     @property

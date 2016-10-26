@@ -19,7 +19,7 @@ class Stem(StaffObject):
             staff_position_start (int): Staff position where the stem starts
             staff_position_end (int): Staff position where the stem ends
         """
-        super(Stem, self).__init__(staff, position_x)
+        super().__init__(staff, position_x)
         self._staff_position_start = staff_position_start
         self._staff_position_end = staff_position_end
         y_pos = self.staff._staff_pos_to_rel_pixels(self.staff_position_start)
