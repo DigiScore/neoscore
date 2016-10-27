@@ -4,11 +4,14 @@ from abc import ABC
 # from brown.core import Flowable
 
 from brown.utils import units
-
 # from brown.models.duration import Duration
 
 
 # what about spanners?
+
+class NoAncestorStaffError(Exception):
+    """Exception raised when no ancestor of a StaffObject is a Staff."""
+    pass
 
 
 class StaffObject(ABC):
@@ -30,7 +33,10 @@ class StaffObject(ABC):
 
     @property
     def grob(self):
-        """The core graphical object representation of this StaffObject"""
+        """The core graphical object representation of this StaffObject
+
+        This value is read-only.
+        """
         return self._grob
 
     @property
@@ -95,3 +101,22 @@ class StaffObject(ABC):
 
     def render(self):
         raise NotImplementedError
+
+    ######## PRIVATE METHODS ########
+
+    def _find_ancestor_staff(self):
+        """Traverse the parent chain until a `Staff` is found, and return it.
+
+        This is used when looking up the root staff for StaffObjects.
+
+        Returns: Staff
+
+        Raises: NoAncestorStaffError if no such `Staff` exists.
+        """
+        try:
+            ancestor = self.parent
+            while type(ancestor).__name__ != 'Staff':
+                ancestor = ancestor.parent
+            return ancestor
+        except AttributeError:
+            raise NoAncestorStaffError
