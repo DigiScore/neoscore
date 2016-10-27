@@ -24,16 +24,17 @@ class Accidental(StaffObject):
             position_x (float): The x position (in pixels) relative to the notehead
         """
         self._notehead = notehead
-        super().__init__(self.notehead.staff, position_x)
-        self.parent = notehead
+        super().__init__(self.notehead, position_x)
         if self.virtual_accidental.value is not None:
             self._grob = Glyph(
                 self.position_x,
-                self.position_y,
+                0,
                 Accidental._smufl_codepoints[self.virtual_accidental.value],
                 brown.music_font,
                 self.parent.grob)
-            self.grob.position_y_baseline(self.position_y)
+            # TODO: Baseline offset has already been performed by parent object,
+            #       how can positioning be handled correctly with a parentage system?
+            #self.grob.position_y_baseline(0)
             self.grob_width = 1.25 * self.staff.staff_unit  # TODO: Temporary testing
         else:
             self._grob = None
@@ -50,24 +51,24 @@ class Accidental(StaffObject):
         """
         return self.notehead.pitch.virtual_accidental
 
-    @property
-    def staff_position(self):
-        """int: The notehead position in the staff in staff units
+    # @property
+    # def staff_position(self):
+    #     """int: The notehead position in the staff in staff units
 
-        0 means the center line or space of the staff, higher numbers
-        mean higher pitches, and lower numbers mean lower pitches.
-        """
-        return self.notehead.staff_position
+    #     0 means the center line or space of the staff, higher numbers
+    #     mean higher pitches, and lower numbers mean lower pitches.
+    #     """
+    #     return self.notehead.staff_position
 
-    @property
-    def position_y(self):
-        """float: The y position in pixels below top of the staff.
+    # @property
+    # def position_y(self):
+    #     """float: The y position in pixels below top of the staff.
 
-        0 means exactly at the top staff line.
-        Positive values extend *downward* below the top staff line
-        while negative values extend *upward* above the top staff line.
-        """
-        return self.staff._staff_pos_to_rel_pixels(self.staff_position)
+    #     0 means exactly at the top staff line.
+    #     Positive values extend *downward* below the top staff line
+    #     while negative values extend *upward* above the top staff line.
+    #     """
+    #     return self.root_staff._staff_pos_to_rel_pixels(self.staff_position)
 
     @property
     def notehead(self):

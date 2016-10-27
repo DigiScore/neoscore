@@ -18,14 +18,14 @@ class StaffObject(ABC):
 
     """An object in a staff """
 
-    def __init__(self, staff, position_x):
+    def __init__(self, parent, position_x):
         '''
         Args:
             staff (Staff): The parent staff
             position_x (float): The x-position of the object in staff-units
         '''
-        self.staff = staff
-        self.staff._register_staff_object(self)
+        self._parent = parent
+        self.root_staff._register_staff_object(self)
         self._position_x = position_x
         self._grob = None
 
@@ -40,12 +40,10 @@ class StaffObject(ABC):
         return self._grob
 
     @property
-    def staff(self):
-        return self._staff
-
-    @staff.setter
-    def staff(self, value):
-        self._staff = value
+    def root_staff(self):
+        """The staff associated with this object"""
+        # TODO: Maybe just fold the logic directly into here
+        return self._find_ancestor_staff()
 
     @property
     def parent(self):
@@ -72,6 +70,8 @@ class StaffObject(ABC):
     @property
     def position_y(self):
         """float: The y position in pixels below top of the staff.
+
+        # TODO: out of date?
 
         0 means exactly at the top staff line.
         Positive values extend *downward* below the top staff line

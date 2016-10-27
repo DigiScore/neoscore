@@ -7,21 +7,20 @@ from brown.core.invisible_object import InvisibleObject
 
 class ChordRest(StaffObject):
     # (use temporary None in duration until those are implemented)
-    def __init__(self, staff, noteheads, position_x, duration=None):
+    def __init__(self, parent, noteheads, position_x, duration=None):
         '''
         Args:
-            staff (Staff): The parent staff
+            parent (Staff or StaffObject):
             noteheads (list[Notehead]): A list of pitch strings
                 representing noteheads. An empty list indicates a rest.
             duration (Duration): A duration value for the chord
         '''
-        super().__init__(staff, position_x)
+        super().__init__(parent, position_x)
         self._noteheads = []
         self._ledgers = []
-        self._grob = InvisibleObject(self.position_x, 0)
-        self.parent = staff
+        self._grob = InvisibleObject(self.position_x, 0, self.parent.grob)
         for pitch in noteheads:
-            self._noteheads.append(Notehead(self.staff, 0, pitch, self))
+            self._noteheads.append(Notehead(self, 0, pitch))
         self._duration = duration
         self._stem = None
 
@@ -75,8 +74,8 @@ class ChordRest(StaffObject):
         highest = self.highest_notehead.staff_position
         lowest = self.lowest_notehead.staff_position
         # Join sets of needed ledgers above and below with union operator
-        return (self.staff._ledgers_needed_from_position(lowest) |
-                self.staff._ledgers_needed_from_position(highest))
+        return (self.root_staff._ledgers_needed_from_position(lowest) |
+                self.root_staff._ledgers_needed_from_position(highest))
 
     @property
     def furthest_notehead(self):
@@ -136,7 +135,7 @@ class ChordRest(StaffObject):
     def noteheads_outside_staff(self):
         """list[Notehead]: A list of all noteheads which are above or below the staff"""
         return [note for note in self.noteheads
-                if self.staff._position_outside_staff(note.staff_position)]
+                if self.root_staff._position_outside_staff(note.staff_position)]
 
     @property
     def leftmost_notehead_outside_staff(self):
@@ -206,8 +205,8 @@ class ChordRest(StaffObject):
         Warning: This overwrites the contents of `self.ledgers`
         """
         # Calculate x position and length of ledger lines
-        x_position = self.leftmost_notehead.position_x - (0.3 * self.staff.staff_unit)
-        length = self.notehead_column_outside_staff_width + (0.6 * self.staff.staff_unit)
+        x_position = self.leftmost_notehead.position_x - (0.3 * self.root_staff.staff_unit)
+        length = self.notehead_column_outside_staff_width + (0.6 * self.root_staff.staff_unit)
         self.ledgers = []
         for staff_pos in self.ledger_line_positions:
             self.ledgers.append(
@@ -221,8 +220,7 @@ class ChordRest(StaffObject):
         """
         start = self.furthest_notehead.staff_position
         end = start + self.stem_direction * 6
-        self._stem = Stem(self.staff, self.position_x,
-                          start, end)
+        self._stem = Stem(self, 0, start, end)
 
     def _position_noteheads_horizontally(self):
         """Reposition noteheads so that they are laid out correctly

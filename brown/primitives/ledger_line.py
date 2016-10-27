@@ -18,15 +18,13 @@ class LedgerLine(StaffObject):
             staff_position (int): The staff position of the ledger line
             length (float): Length in pixels of the ledger line
         """
-        super().__init__(chordrest.staff, position_x)
+        super().__init__(chordrest, position_x)
         self._staff_position = staff_position
         # HACK --- length should be handled more elegantly later
-        self._length = length if length else 1.75 * self.staff.staff_unit
-        y_pos = self.staff._staff_pos_to_rel_pixels(self.staff_position)
-        self.parent = chordrest
+        self._length = length if length else 1.75 * self.root_staff.staff_unit
         self._grob = Path.straight_line(
             self.position_x,
-            y_pos,
+            self.root_staff._staff_pos_to_rel_pixels(self.staff_position),
             self.length,
             0,
             self.parent.grob

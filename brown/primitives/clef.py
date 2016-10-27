@@ -37,21 +37,21 @@ class Clef(StaffObject):
         'alto': 67
     }
 
-    def __init__(self, staff, position_x, clef_type):
+    def __init__(self, parent, position_x, clef_type):
         """
         Args:
-            parent_staff (Staff):
+            parent (Staff or StaffObject):
             position_x (float):
             pitch (Pitch):
         """
-        super().__init__(staff, position_x)
+        super().__init__(parent, position_x)
         self._clef_type = clef_type
         self._grob = Glyph(
             self.position_x,
             self.position_y,
             Clef._smufl_codepoints[self.clef_type],
-            brown.music_font)
-        self.parent = staff
+            brown.music_font,
+            self.parent.grob)
         self.grob.position_y_baseline(self.position_y)
 
     ######## PUBLIC PROPERTIES ########
@@ -83,7 +83,7 @@ class Clef(StaffObject):
         while negative values extend *upward* above the top staff line.
         """
         # Take staff_position and convert to pixels
-        return self.staff._staff_pos_to_rel_pixels(
+        return self.root_staff._staff_pos_to_rel_pixels(
             self.staff_position)
 
     @property
