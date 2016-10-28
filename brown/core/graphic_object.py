@@ -1,7 +1,7 @@
 from abc import ABC
 
 
-class GraphicObject:
+class GraphicObject(ABC):
     """An abstract graphic object.
 
     All classes in `core` which have the ability to be displayed

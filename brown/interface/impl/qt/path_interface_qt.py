@@ -1,6 +1,5 @@
 from PyQt5 import QtWidgets
 from PyQt5 import QtGui
-from PyQt5 import QtCore
 
 from brown.core import brown
 from brown.interface.abstract.path_interface import PathInterface

@@ -3,11 +3,8 @@ from abc import ABC
 # from brown.core import FlowableObject
 # from brown.core import Flowable
 
-from brown.utils import units
 # from brown.models.duration import Duration
 
-
-# what about spanners?
 
 class NoAncestorStaffError(Exception):
     """Exception raised when no ancestor of a StaffObject is a Staff."""

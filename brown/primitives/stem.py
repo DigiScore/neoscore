@@ -1,11 +1,5 @@
-from brown.core import brown
-from brown.config import config
 from brown.core.path import Path
-from brown.primitives.staff import Staff
-from brown.models.pitch import Pitch
 from brown.primitives.staff_object import StaffObject
-from brown.utils import units
-
 
 
 class Stem(StaffObject):

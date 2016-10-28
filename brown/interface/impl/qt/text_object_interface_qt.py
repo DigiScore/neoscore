@@ -1,10 +1,8 @@
 from PyQt5 import QtWidgets
 from PyQt5 import QtGui
-from PyQt5 import QtCore
 
 from brown.core import brown
 from brown.interface.abstract.text_object_interface import TextObjectInterface
-from brown.utils import color
 
 
 class TextObjectInterfaceQt(TextObjectInterface):

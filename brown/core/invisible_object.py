@@ -1,5 +1,4 @@
 from brown.interface.impl.qt import invisible_object_interface_qt
-
 from brown.core.graphic_object import GraphicObject
 
 

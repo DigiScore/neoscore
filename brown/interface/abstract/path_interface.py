@@ -1,5 +1,3 @@
-from abc import ABC
-
 from brown.interface.abstract.graphic_object_interface import GraphicObjectInterface
 
 

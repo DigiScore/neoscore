@@ -1,5 +1,4 @@
 from brown.interface.impl.qt import text_object_interface_qt
-from brown.utils import color
 from brown.core import brown
 from brown.core.graphic_object import GraphicObject
 
