@@ -42,8 +42,13 @@ class StaffObject(ABC):
     @property
     def root_staff(self):
         """The staff associated with this object"""
-        # TODO: Maybe just fold the logic directly into here
-        return self._find_ancestor_staff()
+        try:
+            ancestor = self.parent
+            while type(ancestor).__name__ != 'Staff':
+                ancestor = ancestor.parent
+            return ancestor
+        except AttributeError:
+            raise NoAncestorStaffError
 
     @property
     def parent(self):
@@ -101,22 +106,3 @@ class StaffObject(ABC):
 
     def render(self):
         raise NotImplementedError
-
-    ######## PRIVATE METHODS ########
-
-    def _find_ancestor_staff(self):
-        """Traverse the parent chain until a `Staff` is found, and return it.
-
-        This is used when looking up the root staff for StaffObjects.
-
-        Returns: Staff
-
-        Raises: NoAncestorStaffError if no such `Staff` exists.
-        """
-        try:
-            ancestor = self.parent
-            while type(ancestor).__name__ != 'Staff':
-                ancestor = ancestor.parent
-            return ancestor
-        except AttributeError:
-            raise NoAncestorStaffError
