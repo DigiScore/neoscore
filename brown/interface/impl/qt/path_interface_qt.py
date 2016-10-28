@@ -8,13 +8,14 @@ from brown.interface.abstract.path_interface import PathInterface
 
 class PathInterfaceQt(PathInterface):
     """Interface for a generic graphic path object."""
-    def __init__(self, x, y, pen=None, brush=None):
+    def __init__(self, x, y, pen=None, brush=None, parent=None):
         """
         Args:
-            x (float): The x position of the path relative to the document
-            y (float): The y position of the path relative to the document
+            x (float): The x position of the path relative to the parent
+            y (float): The y position of the path relative to the parent
             pen (PenInterfaceQt): The pen to draw outlines with.
             brush (BrushInterfaceQt): The brush to draw outlines with.
+            parent (GraphicObjectInterfaceQt):
         """
         self._qt_path = QtGui.QPainterPath()
         self._qt_object = QtWidgets.QGraphicsPathItem(self._qt_path)
@@ -24,6 +25,7 @@ class PathInterfaceQt(PathInterface):
         self.brush = brush
         self._current_path_x = 0
         self._current_path_y = 0
+        self.parent = parent
 
     ######## PUBLIC PROPERTIES ########
 
@@ -36,6 +38,10 @@ class PathInterfaceQt(PathInterface):
 
     @x.setter
     def x(self, value):
+        # TODO: Is there a way to pull this functionality and similar
+        #       in other Qt Interface classes so that common properties
+        #       like x and y can be inherited instead of repeated,
+        #       while avoiding multiple inheritance?
         self._x = value
         self._qt_object.setX(self._x)
 

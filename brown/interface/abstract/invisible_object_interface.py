@@ -1,7 +1,9 @@
 from abc import ABC
 
+from brown.interface.abstract.graphic_object_interface import GraphicObjectInterface
 
-class InvisibleObjectInterface(ABC):
+
+class InvisibleObjectInterface(GraphicObjectInterface):
     """
     Interface for a non-drawing object with a position, parent, and children.
     """
@@ -10,38 +12,6 @@ class InvisibleObjectInterface(ABC):
         Args:
             x (float): The x position of the path relative to the parent.
             y (float): The y position of the path relative to the parent.
+            parent (GraphicObjectInterface): The parent of the object
         """
-        raise NotImplementedError
-
-    ######## PUBLIC PROPERTIES ########
-
-    @property
-    def x(self):
-        """
-        float: The x position of the Path relative to the document
-        """
-        raise NotImplementedError
-
-    @x.setter
-    def x(self, value):
-        raise NotImplementedError
-
-    @property
-    def y(self):
-        """
-        float: The y position of the Path relative to the document
-        """
-        raise NotImplementedError
-
-    @y.setter
-    def y(self, value):
-        raise NotImplementedError
-
-    @property
-    def parent(self):
-        """The interface of the parent object."""
-        raise NotImplementedError
-
-    @parent.setter
-    def parent(self, value):
         raise NotImplementedError

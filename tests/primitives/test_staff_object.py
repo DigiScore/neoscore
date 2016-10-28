@@ -28,7 +28,7 @@ def test_find_root_staff_with_ancestor():
     assert(test_child_object.root_staff == test_staff)
 
 
-def test_find_root_staff_with_no_staf_raises_error():
+def test_find_root_staff_with_no_staff_raises_error():
 
     class ChildObject(StaffObject):
         pass

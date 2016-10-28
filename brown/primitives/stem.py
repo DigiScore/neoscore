@@ -25,10 +25,11 @@ class Stem(StaffObject):
         y_pos = self.root_staff._staff_pos_to_rel_pixels(self.staff_position_start)
         y_delta = (self.staff_position_start - self.staff_position_end) * self.root_staff.staff_unit
         self._grob = Path.straight_line(
-            self.root_staff.x + self.position_x,
-            self.root_staff.y + y_pos,
+            self.position_x,
+            y_pos,
             0,
             y_delta,
+            self.parent.grob
         )
 
     ######## PUBLIC PROPERTIES ########
