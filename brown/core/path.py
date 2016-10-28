@@ -1,8 +1,9 @@
 from brown.interface.impl.qt import path_interface_qt
 
+from brown.core.graphic_object import GraphicObject
 
 
-class Path:
+class Path(GraphicObject):
 
     _interface_class = path_interface_qt.PathInterfaceQt
 
@@ -18,14 +19,11 @@ class Path:
         # Hack? Initialize interface to position 0, 0
         # so that attribute setters don't try to push
         # changes to not-yet-existing interface
+
         self._interface = Path._interface_class(0, 0)
-        self.x = x
-        self.y = y
-        self.pen = pen
-        self.brush = brush
+        super().__init__(x, y, pen, brush, parent)
         self._current_path_x = 0
         self._current_path_y = 0
-        self.parent = parent
 
     ######## CLASSMETHODS ########
 
@@ -38,69 +36,6 @@ class Path:
         return line
 
     ######## PUBLIC PROPERTIES ########
-
-    @property
-    def x(self):
-        """
-        float: The x position of the Path relative to the document
-        """
-        return self._x
-
-    @x.setter
-    def x(self, value):
-        self._x = value
-        self._interface.x = value
-
-    @property
-    def y(self):
-        """
-        float: The y position of the Path relative to the document
-        """
-        return self._y
-
-    @y.setter
-    def y(self, value):
-        self._y = value
-        self._interface.y = value
-
-    @property
-    def pen(self):
-        """
-        Pen: The pen to draw outlines with
-        """
-        return self._pen
-
-    @pen.setter
-    def pen(self, value):
-        self._pen = value
-        if self._pen:
-            self._interface.pen = self._pen._interface
-
-    @property
-    def brush(self):
-        """
-        Brush: The brush to draw outlines with
-        """
-        return self._brush
-
-    @brush.setter
-    def brush(self, value):
-        self._brush = value
-        if self._brush:
-            self._interface.brush = self._brush._interface
-
-    @property
-    def parent(self):
-        """The parent object"""
-        return self._parent
-
-    @parent.setter
-    def parent(self, value):
-        self._parent = value
-        if value is not None:
-            self._interface.parent = value._interface
-        else:
-            self._interface.parent = None
 
     @property
     def current_path_position(self):
@@ -203,10 +138,3 @@ class Path:
         self._interface.close_subpath
         self._current_path_y = 0
         self._current_path_x = 0
-
-    def render(self):
-        """Render the line to the scene.
-
-        Returns: None
-        """
-        self._interface.render()

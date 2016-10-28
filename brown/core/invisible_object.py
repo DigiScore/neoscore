@@ -1,8 +1,9 @@
 from brown.interface.impl.qt import invisible_object_interface_qt
 
+from brown.core.graphic_object import GraphicObject
 
 
-class InvisibleObject:
+class InvisibleObject(GraphicObject):
 
     _interface_class = invisible_object_interface_qt.InvisibleObjectInterfaceQt
 
@@ -17,45 +18,4 @@ class InvisibleObject:
         # so that attribute setters don't try to push
         # changes to not-yet-existing interface
         self._interface = InvisibleObject._interface_class(0, 0)
-        self.x = x
-        self.y = y
-        self.parent = parent
-
-    ######## PUBLIC PROPERTIES ########
-
-    @property
-    def x(self):
-        """
-        float: The x position of the Path relative to the document
-        """
-        return self._x
-
-    @x.setter
-    def x(self, value):
-        self._x = value
-        self._interface.x = value
-
-    @property
-    def y(self):
-        """
-        float: The y position of the Path relative to the document
-        """
-        return self._y
-
-    @y.setter
-    def y(self, value):
-        self._y = value
-        self._interface.y = value
-
-    @property
-    def parent(self):
-        """The parent object"""
-        return self._parent
-
-    @parent.setter
-    def parent(self, value):
-        self._parent = value
-        if value is not None:
-            self._interface.parent = value._interface
-        else:
-            self._interface.parent = None
+        super().__init__(x, y, None, None, parent)
