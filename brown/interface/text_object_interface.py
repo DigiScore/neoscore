@@ -32,14 +32,11 @@ class TextObjectInterface(GraphicObjectInterface):
 
     @text.setter
     def text(self, value):
-        if not isinstance(value, str):
-            raise ValueError
-        else:
-            self._text = value
+        self._text = value
 
     @property
     def font(self):
-        """ font (FontInterface): The font object for the text """
+        """font (FontInterface): The font object for the text """
         return self._font
 
     @font.setter
