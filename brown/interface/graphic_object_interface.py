@@ -1,3 +1,5 @@
+from PyQt5 import QtGui
+
 from abc import ABC
 
 
@@ -8,6 +10,13 @@ class GraphicObjectInterface(ABC):
     """
     def __init__(self, parent, x, y, pen=None, brush=None):
         """
+        Must define and set:
+
+            self._qt_object = # Some subclass of QGraphicsItem
+            self.x = x
+            self.y = y
+            self.parent = parent
+
         Args:
             x (float): The x position of the path relative to the document
             y (float): The y position of the path relative to the document
@@ -23,56 +32,72 @@ class GraphicObjectInterface(ABC):
         """
         float: The x position of the Path relative to the document
         """
-        raise NotImplementedError
+        return self._x
 
     @x.setter
     def x(self, value):
-        raise NotImplementedError
+        self._x = value
+        self._qt_object.setX(self._x)
 
     @property
     def y(self):
         """
         float: The y position of the Path relative to the document
         """
-        raise NotImplementedError
+        return self._y
 
     @y.setter
     def y(self, value):
-        raise NotImplementedError
+        self._y = value
+        self._qt_object.setY(self._y)
 
     @property
     def pen(self):
         """
-        PenInterface: The pen to draw outlines with
+        PenInterfaceQt: The pen to draw outlines with
         """
-        raise NotImplementedError
+        return self._pen
 
     @pen.setter
     def pen(self, value):
-        raise NotImplementedError
+        self._pen = value
+        if self._pen:
+            self._qt_object.setPen(self._pen._qt_object)
+        else:
+            self._qt_object.setPen(QtGui.QPen())
 
     @property
     def brush(self):
         """
-        BrushInterface: The brush to draw outlines with
+        BrushInterfaceQt: The brush to draw outlines with
         """
-        raise NotImplementedError
+        return self._brush
 
     @brush.setter
     def brush(self, value):
-        raise NotImplementedError
+        self._brush = value
+        if self._brush:
+            self._qt_object.setBrush(self._brush._qt_object)
+        else:
+            self._qt_object.setBrush(QtGui.QBrush())
 
     @property
     def parent(self):
         """The interface of the parent object."""
-        raise NotImplementedError
+        return self._parent
 
     @parent.setter
     def parent(self, value):
-        raise NotImplementedError
+        self._parent = value
+        if value is not None:
+            self._qt_object.setParentItem(value._qt_object)
+        else:
+            self._qt_object.setParentItem(None)
+
+    ######## PUBLIC METHODS ########
 
     def render(self):
-        """Render the line to the scene.
+        """Render the object to the scene.
 
         Returns: None
         """
