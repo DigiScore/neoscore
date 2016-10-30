@@ -1,11 +1,9 @@
 from PyQt5 import QtGui
 
-from brown.interface.abstract.pen_interface import PenInterface
 from brown.utils import color
 
 
-
-class PenInterfaceQt(PenInterface):
+class PenInterface:
     """Interface for a generic drawing pen controlling path outline appearance.
 
     Currently only solid colors are supported.

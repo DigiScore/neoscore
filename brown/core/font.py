@@ -1,9 +1,9 @@
-from brown.interface.impl.qt import font_interface_qt
+from brown.interface.font_interface import FontInterface
 
 
 class Font:
 
-    _interface_class = font_interface_qt.FontInterfaceQt
+    _interface_class = FontInterface
 
     def __init__(self, family_name, size, weight=1, italic=False):
         self.family_name = family_name

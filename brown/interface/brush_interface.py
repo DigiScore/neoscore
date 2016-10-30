@@ -1,11 +1,9 @@
 from PyQt5 import QtGui
 
-from brown.interface.abstract.brush_interface import BrushInterface
 from brown.utils import color
 
 
-
-class BrushInterfaceQt(BrushInterface):
+class BrushInterface:
     """Interface for a generic drawing brush controlling fill patterns.
 
     Currently only solid colors are supported.

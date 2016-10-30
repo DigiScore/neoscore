@@ -1,4 +1,4 @@
-from brown.interface.impl.qt import pen_interface_qt
+from brown.interface.pen_interface import PenInterface
 from brown.utils import color
 
 
@@ -8,7 +8,7 @@ class Pen:
     Currently only solid colors are supported.
     """
 
-    _interface_class = pen_interface_qt.PenInterfaceQt
+    _interface_class = PenInterface
 
     def __init__(self, color='#000000'):
         """

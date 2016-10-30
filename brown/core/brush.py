@@ -1,4 +1,4 @@
-from brown.interface.impl.qt import brush_interface_qt
+from brown.interface.brush_interface import BrushInterface
 from brown.utils import color
 
 
@@ -8,7 +8,7 @@ class Brush:
     Currently only solid colors are supported.
     """
 
-    _interface_class = brush_interface_qt.BrushInterfaceQt
+    _interface_class = BrushInterface
 
     def __init__(self, color='#000000'):
         """

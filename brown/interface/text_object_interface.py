@@ -2,10 +2,10 @@ from PyQt5 import QtWidgets
 from PyQt5 import QtGui
 
 from brown.core import brown
-from brown.interface.abstract.text_object_interface import TextObjectInterface
+from brown.interface.graphic_object_interface import GraphicObjectInterface
 
 
-class TextObjectInterfaceQt(TextObjectInterface):
+class TextObjectInterface(GraphicObjectInterface):
     def __init__(self, x, y, text, font, parent=None):
         """
         Args:
@@ -81,13 +81,12 @@ class TextObjectInterfaceQt(TextObjectInterface):
 
     @property
     def parent(self):
-        """The interface of the parent object."""
+        """GraphicObjectInterface: The interface of the parent object."""
         return self._parent
 
     @parent.setter
     def parent(self, value):
         self._parent = value
-        # HACK: Assumes the passed item has a _qt_object
         if value is not None:
             self._qt_object.setParentItem(value._qt_object)
         else:

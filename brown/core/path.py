@@ -1,10 +1,10 @@
-from brown.interface.impl.qt import path_interface_qt
+from brown.interface.path_interface import PathInterface
 from brown.core.graphic_object import GraphicObject
 
 
 class Path(GraphicObject):
 
-    _interface_class = path_interface_qt.PathInterfaceQt
+    _interface_class = PathInterface
 
     def __init__(self, x, y, pen=None, brush=None, parent=None):
         """

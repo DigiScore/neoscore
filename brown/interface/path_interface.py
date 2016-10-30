@@ -2,10 +2,10 @@ from PyQt5 import QtWidgets
 from PyQt5 import QtGui
 
 from brown.core import brown
-from brown.interface.abstract.path_interface import PathInterface
+from brown.interface.graphic_object_interface import GraphicObjectInterface
 
 
-class PathInterfaceQt(PathInterface):
+class PathInterface(GraphicObjectInterface):
     """Interface for a generic graphic path object."""
     def __init__(self, x, y, pen=None, brush=None, parent=None):
         """

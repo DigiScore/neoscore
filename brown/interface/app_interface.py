@@ -2,10 +2,8 @@ from PyQt5 import QtWidgets
 from PyQt5 import QtGui
 from PyQt5 import QtCore
 
-from brown.interface.abstract.app_interface import AppInterface
 
-
-class AppInterfaceQt(AppInterface):
+class AppInterface:
     """The primary interface to the application state.
 
     This holds much of the global state for interacting with the API,

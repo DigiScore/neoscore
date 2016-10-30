@@ -1,10 +1,10 @@
-from brown.interface.impl.qt import invisible_object_interface_qt
+from brown.interface.invisible_object_interface import InvisibleObjectInterface
 from brown.core.graphic_object import GraphicObject
 
 
 class InvisibleObject(GraphicObject):
 
-    _interface_class = invisible_object_interface_qt.InvisibleObjectInterfaceQt
+    _interface_class = InvisibleObjectInterface
 
     def __init__(self, x, y, parent=None):
         """

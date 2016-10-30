@@ -1,11 +1,11 @@
-from brown.interface.impl.qt import text_object_interface_qt
+from brown.interface.text_object_interface import TextObjectInterface
 from brown.core import brown
 from brown.core.graphic_object import GraphicObject
 
 
 class TextObject(GraphicObject):
 
-    _interface_class = text_object_interface_qt.TextObjectInterfaceQt
+    _interface_class = TextObjectInterface
 
     def __init__(self, x, y, text, font=None, parent=None):
         if font:

@@ -1,11 +1,11 @@
 from brown.config import config
-from brown.interface.impl.qt import app_interface_qt
+from brown.interface.app_interface import AppInterface
 from brown.core.brush import Brush
 from brown.core.pen import Pen
 from brown.core.font import Font
 
 # Fetch and initialize app interface
-_app_interface_class = app_interface_qt.AppInterfaceQt
+_app_interface_class = AppInterface
 _app_interface = None
 document = None
 music_font = None

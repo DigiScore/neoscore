@@ -59,10 +59,6 @@ be composed into `primitives` rather than manipulated manually
 Various utilities
 * Units
 
-## Reminders
-* Common functionality for interface to QGraphicsItem needs to be pulled out
-  into a generic shared GraphicsItemInterface class
-
 ## Things to care about during this phase
 * _getting it done_  ---- the most important thing by far right now
 * Keeping the graphics backend strictly decoupled from the rest of the code

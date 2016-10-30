@@ -1,11 +1,17 @@
 from PyQt5 import QtGui
 
-from brown.interface.abstract.font_interface import FontInterface
 from brown.core import brown
 
 
-class FontInterfaceQt(FontInterface):
+class FontInterface:
     def __init__(self, family_name, size, weight=1, italic=False):
+        """
+        Args:
+            family_name (str): The name of the font family
+            size (float): The size of the font, in pixels
+            weight (int): The font weight
+            italic (bool): Italicized or not
+        """
         self.family_name = family_name
         self.size = size
         self.weight = weight
