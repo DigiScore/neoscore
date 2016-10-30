@@ -54,7 +54,7 @@ class GraphicObjectInterface(ABC):
     @property
     def pen(self):
         """
-        PenInterfaceQt: The pen to draw outlines with
+        PenInterface: The pen to draw outlines with
         """
         return self._pen
 
@@ -69,7 +69,7 @@ class GraphicObjectInterface(ABC):
     @property
     def brush(self):
         """
-        BrushInterfaceQt: The brush to draw outlines with
+        BrushInterface: The brush to draw outlines with
         """
         return self._brush
 

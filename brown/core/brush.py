@@ -37,7 +37,7 @@ class Brush:
                 self._color = color.rgb_to_hex(value)
             else:
                 raise ValueError(
-                    'RGB tuple for BrushInterface[Qt] must be len 3')
+                    'RGB tuple for BrushInterface must be len 3')
         elif isinstance(value, str):
             self._color = value
         else:

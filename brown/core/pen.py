@@ -37,7 +37,7 @@ class Pen:
                 self._color = color.rgb_to_hex(value)
             else:
                 raise ValueError(
-                    'RGB tuple for PenInterface[Qt] must be len 3')
+                    'RGB tuple for PenInterface must be len 3')
         elif isinstance(value, str):
             self._color = value
         else:
