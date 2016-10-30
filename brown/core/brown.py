@@ -23,8 +23,8 @@ def setup(doctype='plane'):
     global text_font
     _app_interface = _app_interface_class()
     _app_interface.create_document(doctype)
-    _app_interface.set_pen(current_pen._interface)
-    _app_interface.set_brush(current_brush._interface)
+    _app_interface.pen = current_pen._interface
+    _app_interface.brush = current_brush._interface
     _app_interface.register_font(config.DEFAULT_MUSIC_FONT_PATH)
     music_font = Font(config.DEFAULT_MUSIC_FONT_NAME, 35)
     text_font = Font(config.DEFAULT_TEXT_FONT_NAME, 12, 1, False)

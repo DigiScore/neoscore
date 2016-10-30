@@ -1,3 +1,5 @@
+import warnings
+
 from PyQt5 import QtWidgets
 from PyQt5 import QtGui
 from PyQt5 import QtCore
@@ -16,6 +18,34 @@ class AppInterface:
         self.scene = None
         self.current_pen = None
         self.current_brush = None
+
+    ######## PUBLIC PROPERTIES ########
+
+    @property
+    def current_pen(self):
+        """PenInterface: The current pen for certain default drawing
+
+        # TODO: Which objects are affected by this? Is this even needed?
+        """
+        return self._current_pen
+
+    @current_pen.setter
+    def current_pen(self, value):
+        self._current_pen = value
+
+    @property
+    def current_brush(self):
+        """BrushInterface: The current brush for certain default drawing
+
+        # TODO: Which objects are affected by this? Is this even needed?
+        """
+        return self._current_brush
+
+    @current_brush.setter
+    def current_brush(self, value):
+        self._current_brush = value
+
+    ######## PUBLIC METHODS ########
 
     def create_document(self, doctype='plane'):
         """Initialize a document.
@@ -43,39 +73,19 @@ class AppInterface:
         self.current_pen = None
         self.current_brush = None
 
-    def set_pen(self, pen):
-        """Set the current pen in the app
-
-        Args:
-            pen (PenInterfaceQt): A pen interface object
-
-        Returns: None
-        """
-        self.current_pen = pen
-
-    def set_brush(self, brush):
-        """Set the current brush in the app
-
-        Args:
-            brush (BrushInterfaceQt): A brush interface object
-
-        Returns: None
-        """
-        self.current_brush = brush
-
     def register_font(self, font_file_path):
         """Register a list of fonts to the graphics engine.
 
         Args:
-            font_file_paths (strictly): A list of paths to font files.
+            font_file_paths (str): A list of paths to font files.
                 Paths may be either absolute or relative to the package-level
                 `brown` directory. (One folder below the top)
 
-        Returns: FontInterfaceQt: A newly created
+        Returns: FontInterface: A newly created
             font interface object
         """
         font_id = QtGui.QFontDatabase.addApplicationFont(font_file_path)
         if font_id == -1:
-            print('FONT LOADED FROM {} RETURNED ID OF {}'.format(
+            warnings.warn('Font loaded from {} failed'.format(
                 font_file_path, font_id))
         #family = QtGui.QFontDatabase.applicationFontFamilies(font_id).at(0)
