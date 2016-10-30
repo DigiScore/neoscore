@@ -37,7 +37,7 @@ class BrushInterface:
             if len(value) == 3:
                 self._color = color.rgb_to_hex(value)
             else:
-                raise ValueError(
+                raise TypeError(
                     'RGB tuple for BrushInterface must be len 3')
         elif isinstance(value, str):
             self._color = value
