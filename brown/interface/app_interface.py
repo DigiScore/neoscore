@@ -92,6 +92,5 @@ class AppInterface:
         if font_id == -1:
             raise FontRegistrationError(
                 'Font loaded from {} failed'.format(font_file_path))
-        print("Font registered with ID {}".format(font_id))
         return font_id
         #family = QtGui.QFontDatabase.applicationFontFamilies(font_id).at(0)

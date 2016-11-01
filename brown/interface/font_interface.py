@@ -3,6 +3,13 @@ from PyQt5 import QtGui
 from brown.core import brown
 
 
+class UnknownFontFamilyError(Exception):
+    """
+    Exception raised when an invalid font name is passed to a FontInterface.
+    """
+    pass
+
+
 class FontInterface:
     def __init__(self, family_name, size, weight=1, italic=False):
         """
@@ -20,6 +27,7 @@ class FontInterface:
                                       self.size,
                                       self.weight,
                                       self.italic)
+        self._qt_font_info_object = QtGui.QFontInfo(self._qt_object)
         self._qt_font_metrics_object = QtGui.QFontMetricsF(
             self._qt_object,
             brown._app_interface.view)
