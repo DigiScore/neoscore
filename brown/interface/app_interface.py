@@ -1,8 +1,10 @@
-import warnings
-
 from PyQt5 import QtWidgets
 from PyQt5 import QtGui
-from PyQt5 import QtCore
+
+
+class FontRegistrationError(Exception):
+    """Exception raised when a font is loaded from disk unsuccessfully."""
+    pass
 
 
 class AppInterface:
@@ -81,11 +83,15 @@ class AppInterface:
                 Paths may be either absolute or relative to the package-level
                 `brown` directory. (One folder below the top)
 
-        Returns: FontInterface: A newly created
-            font interface object
+        Returns:
+            int: The id of the newly registered font
+            TODO: Investigate more if returning an ID is really
+                  the thing to do here...
         """
         font_id = QtGui.QFontDatabase.addApplicationFont(font_file_path)
         if font_id == -1:
-            warnings.warn('Font loaded from {} failed'.format(
-                font_file_path, font_id))
+            raise FontRegistrationError(
+                'Font loaded from {} failed'.format(font_file_path))
+        print("Font registered with ID {}".format(font_id))
+        return font_id
         #family = QtGui.QFontDatabase.applicationFontFamilies(font_id).at(0)

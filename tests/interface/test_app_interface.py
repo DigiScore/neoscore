@@ -1,13 +1,14 @@
+import os
 import pytest
 import unittest
 
 from PyQt5 import QtWidgets
 from PyQt5 import QtGui
-from PyQt5 import QtCore
 
-from brown.interface.app_interface import AppInterface
+from brown.interface.app_interface import AppInterface, FontRegistrationError
 from brown.interface.pen_interface import PenInterface
 from brown.interface.brush_interface import BrushInterface
+from brown.config import config
 
 
 class TestAppInterface(unittest.TestCase):
@@ -57,3 +58,15 @@ class TestAppInterface(unittest.TestCase):
         test_brush = BrushInterface('#ffffff')
         self.interface.current_brush = test_brush
         assert(self.interface.current_brush == test_brush)
+
+    def test_register_font(self):
+        self.interface.create_document()
+        test_font_file_path = os.path.join(config.RESOURCES_DIR, 'fonts', 'Bravura.otf')
+        font_id = self.interface.register_font(test_font_file_path)
+        assert(QtGui.QFontDatabase.applicationFontFamilies(font_id) == ['Bravura'])
+
+    def test_register_font(self):
+        self.interface.create_document()
+        test_font_file_path = "path that doesn't exist"
+        with pytest.raises(FontRegistrationError):
+            self.interface.register_font(test_font_file_path)
