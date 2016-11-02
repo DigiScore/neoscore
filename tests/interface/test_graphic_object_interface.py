@@ -1,9 +1,6 @@
 import unittest
-import pytest
-
 
 from PyQt5 import QtWidgets
-from PyQt5 import QtGui
 
 from brown.core import brown
 from brown.interface.graphic_object_interface import GraphicObjectInterface
@@ -37,45 +34,62 @@ class TestGraphicObjectInterface(unittest.TestCase):
     def setUp(self):
         brown.setup()
 
-    def test_x_getter(self):
+    def test_x_after_init(self):
         test_object = MockSubclass1(None, 5, 6)
         assert(test_object.x == test_object._x)
-
-    def test_x_setter(self):
-        test_object = MockSubclass1(None, 5, 6)
         assert(test_object.x == 5)
+        assert(test_object._qt_object.x() == test_object.x)
 
-    def test_y_getter(self):
+    def test_x_setter_changes_qt_object(self):
         test_object = MockSubclass1(None, 5, 6)
-        assert(test_object.y == test_object._y)
+        test_object.x = 100
+        assert(test_object.x == test_object._qt_object.x())
 
-    def test_y_setter(self):
+    def test_y_after_init(self):
         test_object = MockSubclass1(None, 5, 6)
         assert(test_object.y == 6)
+        assert(test_object.y == test_object._y)
+        assert(test_object._qt_object.y() == test_object.y)
 
-    def test_pen_getter(self):
+    def test_y_setter_changes_qt_object(self):
         test_object = MockSubclass1(None, 5, 6)
-        assert(test_object.pen == test_object._pen)
+        test_object.y = 100
+        assert(test_object.y == test_object._qt_object.y())
 
-    def test_pen_setter(self):
+    def test_pen_after_init(self):
         test_pen = PenInterface('eeeeee')
         test_object = MockSubclass1(None, 5, 6, pen=test_pen)
+        assert(test_object.pen == test_object._pen)
         assert(test_object.pen == test_pen)
+        assert(test_object._qt_object.pen() == test_object.pen._qt_object)
 
-    def test_brush_getter(self):
-        test_object = MockSubclass1(None, 5, 6)
-        assert(test_object.brush == test_object._brush)
+    def test_pen_setter_changes_qt_object(self):
+        test_object = MockSubclass1(None, 5, 6, pen=None)
+        test_pen = PenInterface('eeeeee')
+        test_object.pen = test_pen
+        assert(test_object._qt_object.pen() == test_object.pen._qt_object)
 
-    def test_brush_setter(self):
+    def test_brush_after_init(self):
         test_brush = BrushInterface('eeeeee')
         test_object = MockSubclass1(None, 5, 6, brush=test_brush)
+        assert(test_object.brush == test_object._brush)
         assert(test_object.brush == test_brush)
+        assert(test_object._qt_object.brush() == test_object.brush._qt_object)
 
-    @pytest.mark.skip
-    def test_parent_getter(self):
-        # TODO
-        pass
+    def test_brush_setter_changes_qt_object(self):
+        test_object = MockSubclass1(None, 5, 6, brush=None)
+        test_brush = BrushInterface('eeeeee')
+        test_object.brush = test_brush
+        assert(test_object._qt_object.brush() == test_object.brush._qt_object)
 
-    # TODO: More tests, make tests less tautological. Especially do lots
-    #       of testing that setters actually propagate changes to underlying
-    #       _qt_objects
+    def test_parent_after_init(self):
+        test_parent = MockSubclass1(None, 5, 6)
+        test_child = MockSubclass1(test_parent, 100, 100)
+        assert(test_child.parent == test_child._parent)
+        assert(test_child._qt_object.parentItem() == test_child._parent._qt_object)
+
+    def test_parent_setter_changes_qt_object(self):
+        test_parent = MockSubclass1(None, 5, 6)
+        test_child = MockSubclass1(None, 100, 100)
+        test_child.parent = test_parent
+        assert(test_child._qt_object.parentItem() == test_child._parent._qt_object)
