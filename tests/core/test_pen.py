@@ -9,8 +9,8 @@ class TestPen(unittest.TestCase):
         test_pen = Pen('#ffffff')
         assert(test_pen.color == '#ffffff')
 
-    def test_default_color(self):
-        # Default value API change canary
+    def test_default_init_values(self):
+        # API default values canary
         test_pen = Pen()
         assert(test_pen.color == '#000000')
 
