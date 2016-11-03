@@ -35,7 +35,7 @@ class TestGraphicObjectInterface(unittest.TestCase):
         assert(test_object.y == test_object._qt_object.y())
 
     def test_pen_after_init(self):
-        test_pen = PenInterface('eeeeee')
+        test_pen = PenInterface('#eeeeee')
         test_object = MockGraphicObject(None, 5, 6, pen=test_pen)
         assert(test_object.pen == test_object._pen)
         assert(test_object.pen == test_pen)
@@ -43,12 +43,12 @@ class TestGraphicObjectInterface(unittest.TestCase):
 
     def test_pen_setter_changes_qt_object(self):
         test_object = MockGraphicObject(None, 5, 6, pen=None)
-        test_pen = PenInterface('eeeeee')
+        test_pen = PenInterface('#eeeeee')
         test_object.pen = test_pen
         assert(test_object._qt_object.pen() == test_object.pen._qt_object)
 
     def test_brush_after_init(self):
-        test_brush = BrushInterface('eeeeee')
+        test_brush = BrushInterface('#eeeeee')
         test_object = MockGraphicObject(None, 5, 6, brush=test_brush)
         assert(test_object.brush == test_object._brush)
         assert(test_object.brush == test_brush)
@@ -56,7 +56,7 @@ class TestGraphicObjectInterface(unittest.TestCase):
 
     def test_brush_setter_changes_qt_object(self):
         test_object = MockGraphicObject(None, 5, 6, brush=None)
-        test_brush = BrushInterface('eeeeee')
+        test_brush = BrushInterface('#eeeeee')
         test_object.brush = test_brush
         assert(test_object._qt_object.brush() == test_object.brush._qt_object)
 

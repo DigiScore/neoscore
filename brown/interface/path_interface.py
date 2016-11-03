@@ -133,7 +133,7 @@ class PathInterface(GraphicObjectInterface):
 
         Returns: None
         """
-        self._qt_path.closePath()
+        self._qt_path.closeSubpath()
         self._current_path_y = 0
         self._current_path_x = 0
         self._update_qt_object_path()
