@@ -233,19 +233,19 @@ class ChordRest(StaffObject):
         # where 1 means right and -1 means left
         default_side = self.stem_direction * -1
         # Start last staff pos at sentinel infinity position
-        last_staff_pos = float("inf")
-        # Start last_side at wrong side so first note goes on the default side
-        last_side = -1 * default_side
+        prev_staff_pos = float("inf")
+        # Start prev_side at wrong side so first note goes on the default side
+        prev_side = -1 * default_side
         for note in sorted(self.noteheads,
                            key=lambda n: n.staff_position,
                            reverse=(self.stem_direction == -1)):
-            if abs(last_staff_pos - note.staff_position) < 2:
+            if abs(prev_staff_pos - note.staff_position) < 2:
                 # This note collides with previous, use switch sides
-                last_side = -1 * last_side
+                prev_side = -1 * prev_side
             else:
-                last_side = default_side
-            # Reposition, using last_side (here) as the chosen side for this note
-            if last_side == -1:
+                prev_side = default_side
+            # Reposition, using prev_side (here) as the chosen side for this note
+            if prev_side == -1:
                 note.position_x -= note.grob_width
-            # Lastly, update last_staff_pos
-            last_staff_pos = note.staff_position
+            # Lastly, update prev_staff_pos
+            prev_staff_pos = note.staff_position

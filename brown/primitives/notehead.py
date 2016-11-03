@@ -85,21 +85,6 @@ class Notehead(StaffObject):
         return self.root_staff._staff_pos_to_rel_pixels(self.staff_position)
 
     @property
-    def position_x(self):
-        return self._position_x
-
-    # HACK : Override of staff_object version to propogate changes to child
-    #        accidental. Remove once proper parent-child relative position
-    #        is implemented.
-    @position_x.setter
-    def position_x(self, value):
-        # TODO: Is there a way in python to call the super class setter?
-        self._position_x = value
-        self.grob.x = value
-        if self.accidental.grob is not None:
-            self.accidental.position_x = value
-
-    @property
     def accidental(self):
         """Accidental: The Accidental object for the notehead"""
         return self._accidental

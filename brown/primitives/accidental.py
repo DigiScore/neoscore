@@ -51,25 +51,6 @@ class Accidental(StaffObject):
         """
         return self.notehead.pitch.virtual_accidental
 
-    # @property
-    # def staff_position(self):
-    #     """int: The notehead position in the staff in staff units
-
-    #     0 means the center line or space of the staff, higher numbers
-    #     mean higher pitches, and lower numbers mean lower pitches.
-    #     """
-    #     return self.notehead.staff_position
-
-    # @property
-    # def position_y(self):
-    #     """float: The y position in pixels below top of the staff.
-
-    #     0 means exactly at the top staff line.
-    #     Positive values extend *downward* below the top staff line
-    #     while negative values extend *upward* above the top staff line.
-    #     """
-    #     return self.root_staff._staff_pos_to_rel_pixels(self.staff_position)
-
     @property
     def notehead(self):
         """Notehead: The parent Notehead."""
