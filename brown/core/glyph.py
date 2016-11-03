@@ -21,10 +21,11 @@ class Glyph(TextObject):
     def text(self, value):
         if not isinstance(value, str):
             raise ValueError
-        if len(value) != 1:
+        elif len(value) != 1:
             raise InvalidGlyphLengthError('Glyph text must be of length 1')
         else:
             self._text = value
+            self._interface.text = value
 
     @property
     def baseline_y(self):

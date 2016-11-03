@@ -2,7 +2,7 @@ import unittest
 
 from brown.core import brown
 from brown.interface.text_object_interface import TextObjectInterface
-from mock_graphic_object import MockGraphicObject
+from mock_graphic_object_interface import MockGraphicObjectInterface
 from brown.interface.font_interface import FontInterface
 
 
@@ -12,7 +12,7 @@ class TestTextObjectInterface(unittest.TestCase):
         brown.setup()
 
     def test_init(self):
-        mock_parent = MockGraphicObject(0, 0, parent=None)
+        mock_parent = MockGraphicObjectInterface(0, 0, parent=None)
         test_font = FontInterface('Bravura', 12)
         test_object = TextObjectInterface(5, 6, 'testing',
                                           test_font, mock_parent)

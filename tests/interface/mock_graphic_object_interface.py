@@ -10,7 +10,7 @@ A mock concrete GraphicObjectInterface subclass for testing
 """
 
 
-class MockGraphicObject(GraphicObjectInterface):
+class MockGraphicObjectInterface(GraphicObjectInterface):
 
     """Only need to implement init for a functional mock subclass"""
 

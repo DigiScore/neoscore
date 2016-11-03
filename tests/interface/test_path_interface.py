@@ -4,7 +4,7 @@ from brown.core import brown
 from brown.interface.path_interface import PathInterface
 from brown.interface.pen_interface import PenInterface
 from brown.interface.brush_interface import BrushInterface
-from mock_graphic_object import MockGraphicObject
+from mock_graphic_object_interface import MockGraphicObjectInterface
 
 
 class TestPathInterface(unittest.TestCase):
@@ -13,7 +13,7 @@ class TestPathInterface(unittest.TestCase):
         brown.setup()
 
     def test_init(self):
-        mock_parent = MockGraphicObject(0, 0, parent=None)
+        mock_parent = MockGraphicObjectInterface(0, 0, parent=None)
         test_pen = PenInterface('#eeeeee')
         test_brush = BrushInterface('#dddddd')
         test_object = PathInterface(5, 6, test_pen, test_brush, mock_parent)

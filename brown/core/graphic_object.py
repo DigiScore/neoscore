@@ -22,13 +22,6 @@ class GraphicObject(ABC):
         self.brush = brush
         self.parent = parent
 
-    ######## PRIVATE PROPERTIES ########
-
-    @property
-    def __interface(self):
-        """The interface layer object responsible for rendering"""
-        return self._interface
-
     ######## PUBLIC PROPERTIES ########
 
     @property
