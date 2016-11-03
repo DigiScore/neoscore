@@ -13,7 +13,7 @@ class TestPathInterface(unittest.TestCase):
         brown.setup()
 
     def test_init(self):
-        mock_parent = MockGraphicObject(None, 0, 0)
+        mock_parent = MockGraphicObject(0, 0, parent=None)
         test_pen = PenInterface('#eeeeee')
         test_brush = BrushInterface('#dddddd')
         test_object = PathInterface(5, 6, test_pen, test_brush, mock_parent)

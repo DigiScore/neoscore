@@ -14,7 +14,7 @@ class MockGraphicObject(GraphicObjectInterface):
 
     """Only need to implement init for a functional mock subclass"""
 
-    def __init__(self, parent, x, y, pen=None, brush=None):
+    def __init__(self, x, y, pen=None, brush=None, parent=None):
         self._qt_object = QtWidgets.QGraphicsRectItem(x, y, 10, 10)
         self.x = x
         self.y = y

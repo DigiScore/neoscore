@@ -8,7 +8,7 @@ class GraphicObjectInterface(ABC):
 
     This is a top-level abstract interface class.
     """
-    def __init__(self, parent, x, y, pen=None, brush=None):
+    def __init__(self, x, y, pen=None, brush=None, parent=None):
         """
         Must define and set:
 

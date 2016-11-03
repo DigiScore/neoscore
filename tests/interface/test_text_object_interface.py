@@ -12,7 +12,7 @@ class TestTextObjectInterface(unittest.TestCase):
         brown.setup()
 
     def test_init(self):
-        mock_parent = MockGraphicObject(None, 0, 0)
+        mock_parent = MockGraphicObject(0, 0, parent=None)
         test_font = FontInterface('Bravura', 12)
         test_object = TextObjectInterface(5, 6, 'testing',
                                           test_font, mock_parent)
