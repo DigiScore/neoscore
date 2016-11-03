@@ -15,7 +15,7 @@ class InvisibleObjectInterface(GraphicObjectInterface):
             parent (GraphicObjectInterface): The parent of the object
         """
         # TODO: Is there a better way to model an invisible object?
-        self._qt_object = QtWidgets.QGraphicsRectItem(x, y, 100, 100)
+        self._qt_object = QtWidgets.QGraphicsRectItem(x, y, 1, 1)
         self._qt_object.setFlag(QtWidgets.QGraphicsItem.ItemHasNoContents)
         self.x = x
         self.y = y
