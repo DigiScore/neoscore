@@ -41,4 +41,15 @@ class TestGlyph(unittest.TestCase):
         with pytest.raises(InvalidGlyphLengthError):
             Glyph(5, 6, 'more than one char')
 
-    #def test_text_setter_changes_
+    def test_text_setter_changes_interface(self):
+        test_object = Glyph(5, 6, 'a')
+        test_object.text = 'b'
+        assert(test_object.text == 'b')
+        assert(test_object._interface.text == 'b')
+
+    def test_font_setter_changes_interface(self):
+        test_object = Glyph(5, 6, 'a')
+        new_font = Font('Bravura', 20, 1, False)
+        test_object.font = new_font
+        assert(test_object.font == new_font)
+        assert(test_object._interface.font == new_font._interface)

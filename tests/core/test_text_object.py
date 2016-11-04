@@ -45,4 +45,5 @@ class TestTextObject(unittest.TestCase):
         test_object = TextObject(5, 6, 'testing')
         new_font = Font('Bravura', 20, 1, False)
         test_object.font = new_font
+        assert(test_object.font == new_font)
         assert(test_object._interface.font == new_font._interface)
