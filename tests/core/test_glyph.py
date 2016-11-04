@@ -37,9 +37,7 @@ class TestGlyph(unittest.TestCase):
         assert(test_object.font == brown.text_font)
         assert(test_object.parent is None)
 
-    @pytest.mark.skip
     def test_prevent_multi_chars_text(self):
-        # TODO: Failing
         with pytest.raises(InvalidGlyphLengthError):
             Glyph(5, 6, 'more than one char')
 

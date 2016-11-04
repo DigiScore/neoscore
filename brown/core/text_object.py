@@ -8,11 +8,12 @@ class TextObject(GraphicObject):
     _interface_class = TextObjectInterface
 
     def __init__(self, x, y, text, font=None, parent=None):
+        self._interface = None
         if font:
-            self._font = font
+            self.font = font
         else:
-            self._font = brown.text_font
-        self._text = text
+            self.font = brown.text_font
+        self.text = text
         self._interface = TextObject._interface_class(
             x,
             y,
@@ -30,7 +31,8 @@ class TextObject(GraphicObject):
             raise TypeError
         else:
             self._text = value
-            self._interface.text = value
+            if self._interface:
+                self._interface.text = value
 
     @property
     def font(self):
@@ -39,4 +41,5 @@ class TextObject(GraphicObject):
     @font.setter
     def font(self, value):
         self._font = value
-        self._interface.font = value._interface
+        if self._interface:
+            self._interface.font = value._interface
