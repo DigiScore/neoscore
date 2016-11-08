@@ -1,4 +1,4 @@
-from brown.core.flowable import Flowable
+from brown.core.flowable_frame import FlowableFrame
 
 
 
