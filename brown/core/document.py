@@ -17,7 +17,6 @@ class Document:
         else:
             self.paper = paper
 
-
     ######## PUBLIC PROPERTIES ########
 
     @property
@@ -38,8 +37,11 @@ class Document:
 
     ######## PRIVATE METHODS ########
 
-    def _live_page_origin_in_doc_space(self, page_number):
-        """Find the position of the top left corner of the live area of a page.
+    def _page_origin_in_doc_space(self, page_number):
+        """Find the position in pixels of the origin of the live area of a page.
+
+        The origin is the top left corner of the live area, equivalent to
+        the real page corner plus margins and gutter.
 
         Args:
             page_number (int): The number of the page to locate
@@ -51,8 +53,9 @@ class Document:
         if page_number < 1:
             raise ValueError('page_number must be 1 or greater.')
         # Left edge of paper (not including margin/gutter)
+        page_pix_width = self.paper.width * units.mm
         x_page_left = ((page_number - 1) *
-                       (self.paper.width + self._page_display_gap))
-        x_page_origin = (x_page_left + self.paper.margin_left) * units.mm
+                       (page_pix_width + self._page_display_gap))
+        x_page_origin = x_page_left + (self.paper.margin_left * units.mm)
         y_page_origin = (self.paper.margin_top) * units.mm
         return x_page_origin, y_page_origin

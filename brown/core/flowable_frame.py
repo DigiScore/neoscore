@@ -101,8 +101,10 @@ class FlowableFrame:
     ######## PRIVATE METHODS ########
 
     def _generate_auto_layout_controllers(self):
-        """
-        Generate automatic layout controllers.
+        """Generate automatic layout controllers.
+
+        The generated controllers are stored in `self.auto_layout_controllers`
+        in sorted order according to ascending x position
 
         Warning:
             This overwrites the contents of self.auto_layout_controllers
@@ -137,11 +139,38 @@ class FlowableFrame:
         """Convert a position inside the frame to its position in the document.
 
         Args:
-            x (float): x coordinate
-            y (float): y coordinate
+            x (float): x coordinate in pixels
+            y (float): y coordinate in pixels
 
-        Returns: tuple(float: x, float: y)
+        Returns: tuple(float: x, float: y) coordinates in pixels
         """
-        # TODO: WIP
-        doc_x = x % self._default_span_width
-        return doc_x, 9999999999  # Very wip
+        # Seek to the page and line-on-page based on auto layout controllers
+        self._generate_auto_layout_controllers()
+        page_num = 1
+        line_on_page = 1
+        current_x_offset = self.x
+        current_y_offset = self.y
+        remaining_x = x
+        for controller in self.auto_layout_controllers:
+            if controller.x > x:
+                break
+            remaining_x -= ((brown.document.paper.live_width * units.mm) -
+                            current_x_offset)
+            if isinstance(controller, AutoLineBreak):
+                line_on_page += 1
+                current_x_offset = 0
+                current_y_offset += self.height + controller.margin_above_next
+            elif isinstance(controller, AutoPageBreak):
+                page_num += 1
+                line_on_page = 1
+                current_x_offset = 0
+                current_y_offset = controller.margin_above_next
+        print('remaining x is', remaining_x)
+        print('page num is ', page_num)
+        print('line on page is ', line_on_page)
+        page_x, page_y = brown.document._page_origin_in_doc_space(page_num)
+        print('page coords: ', page_x, page_y)
+        line_x = page_x + current_x_offset
+        line_y = page_y + current_y_offset
+        print('line coords: ', line_x, line_y)
+        return line_x + remaining_x, line_y + y

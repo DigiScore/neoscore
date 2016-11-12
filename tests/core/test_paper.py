@@ -29,7 +29,8 @@ class TestPaper(unittest.TestCase):
         assert(test_paper.gutter == 10)
 
     def test_from_template_is_case_insensitive(self):
-        Paper.from_template('A4').__dict__ == Paper.from_template('a4').__dict__
+        assert(Paper.from_template('A4').__dict__ ==
+               Paper.from_template('a4').__dict__)
 
     def test_live_width(self):
         test_paper = Paper(210, 297, 20, 30, 20, 30, 15)

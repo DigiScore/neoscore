@@ -94,10 +94,54 @@ class TestFlowableFrame(unittest.TestCase):
 
     # Space conversion tests ##################################################
 
-    @pytest.mark.skip
-    def test_local_space_to_doc_space_x_in_first_span(self):
+    def test_local_space_to_doc_space_x_in_first_line(self):
         test_frame = FlowableFrame(10, 11,
                                    width=1000, height=100,
                                    y_padding=20)
         x_val = test_frame._local_space_to_doc_space(100, 40)[0]
-        assert(x_val == 100)
+        assert(x_val == 100 + 10 + (brown.document.paper.margin_left * units.mm))
+
+    def test_local_space_to_doc_space_y_in_first_line(self):
+        test_frame = FlowableFrame(10, 11,
+                                   width=1000, height=100,
+                                   y_padding=20)
+        y_val = test_frame._local_space_to_doc_space(100, 40)[1]
+        assert(y_val == 40 + 11 + (brown.document.paper.margin_top * units.mm))
+
+    def test_local_space_to_doc_space_x_in_second_line(self):
+        test_frame = FlowableFrame(17, 11,
+                                   width=10000, height=300,
+                                   y_padding=80)
+        x_val = test_frame._local_space_to_doc_space(3000, 40)[0]
+        first_line_width = (brown.document.paper.live_width * units.mm) - 17
+        expected = (3000 - first_line_width +
+                    (brown.document.paper.margin_left * units.mm))
+        assert(x_val == expected)
+
+    def test_local_space_to_doc_space_y_in_second_line(self):
+        test_frame = FlowableFrame(17, 11,
+                                   width=10000, height=300,
+                                   y_padding=80)
+        y_val = test_frame._local_space_to_doc_space(3000, 40)[1]
+        second_line_y = (11 + test_frame.height + test_frame.y_padding +
+                         (brown.document.paper.margin_top * units.mm))
+        assert(y_val == second_line_y + 40)
+
+    def test_local_space_to_doc_space_x_in_third_line(self):
+        test_frame = FlowableFrame(17, 11,
+                                   width=10000, height=300,
+                                   y_padding=80)
+        x_val = test_frame._local_space_to_doc_space(5000, 40)[0]
+        first_line_width = (brown.document.paper.live_width * units.mm) - 17
+        second_line_width = (brown.document.paper.live_width * units.mm)
+        expected = (5000 - first_line_width - second_line_width +
+                    (brown.document.paper.margin_left * units.mm))
+        assert(x_val == expected)
+
+    @pytest.mark.skip
+    def test_local_space_to_doc_space_y_in_third_line(self):
+        test_frame = FlowableFrame(17, 11,
+                                   width=10000, height=300,
+                                   y_padding=80)
+        y_val = test_frame._local_space_to_doc_space(6000, 40)[1]
+        assert(y_val == 40 + 11 + (brown.document.paper.margin_top * units.mm))
