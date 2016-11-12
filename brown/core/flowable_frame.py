@@ -71,7 +71,10 @@ class FlowableFrame:
 
     @property
     def layout_controllers(self):
-        """list[LayoutController]: Explicit controllers for layout"""
+        """list[LayoutController]: Explicit controllers for layout
+
+        Layout support for explicit controllers not yet supported.
+        """
         return self._layout_controllers
 
     @layout_controllers.setter
@@ -104,9 +107,6 @@ class FlowableFrame:
         Warning:
             This overwrites the contents of self.auto_layout_controllers
 
-        Note:
-            In the current state, the end of the frame is considered to a break as well
-
         Returns: None
         """
         self.auto_layout_controllers = []
@@ -126,11 +126,11 @@ class FlowableFrame:
                 break
             if current_page_y > live_page_height:
                 self.auto_layout_controllers.append(
-                    AutoPageBreak(self, x_progress))
+                    AutoPageBreak(self, x_progress, self.y_padding))
                 current_page_y = 0
             else:
                 self.auto_layout_controllers.append(
-                    AutoLineBreak(self, x_progress))
+                    AutoLineBreak(self, x_progress, 0))
                 current_page_x = 0
 
     def _local_space_to_doc_space(self, x, y):
