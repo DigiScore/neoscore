@@ -95,3 +95,12 @@ class Paper:
     @gutter.setter
     def gutter(self, value):
         self._gutter = value
+
+    @property
+    def live_width(self):
+        return (self.width - self.gutter -
+                self.margin_left - self.margin_right)
+
+    @property
+    def live_height(self):
+        return self.height - self.margin_bottom - self.margin_top

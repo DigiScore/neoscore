@@ -7,7 +7,7 @@ Template names are case-insensitive.
 """
 
 paper_templates = {
-    'A4': (210, 297, 20, 30, 20, 30, 15),
+    'A4': (210, 297, 20, 20, 20, 20, 10),
 }
 
 # TODO: support more templates
