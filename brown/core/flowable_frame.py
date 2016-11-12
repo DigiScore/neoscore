@@ -110,8 +110,8 @@ class FlowableFrame:
         Returns: None
         """
         self.auto_layout_controllers = []
-        live_page_width = brown.paper.live_width * units.mm
-        live_page_height = brown.paper.live_height * units.mm
+        live_page_width = brown.document.paper.live_width * units.mm
+        live_page_height = brown.document.paper.live_height * units.mm
         # The progress the layout generation has reached along the frame's width.
         # When the entire flowable has been covered, this value will == self.width
         x_progress = 0

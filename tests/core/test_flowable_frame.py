@@ -35,7 +35,7 @@ class TestFlowableFrame(unittest.TestCase):
         assert(len(test_frame.auto_layout_controllers) == 0)
 
     def test_generate_auto_layout_controllers_with_one_line_break(self):
-        live_width = brown.paper.live_width * units.mm
+        live_width = brown.document.paper.live_width * units.mm
         test_frame = FlowableFrame(0, 0,
                                    width=live_width * 1.5, height=50,
                                    y_padding=20)
@@ -47,7 +47,7 @@ class TestFlowableFrame(unittest.TestCase):
         assert(test_frame.auto_layout_controllers[0].x == live_width)
 
     def test_generate_auto_layout_controllers_with_many_line_breaks(self):
-        live_width = brown.paper.live_width * units.mm
+        live_width = brown.document.paper.live_width * units.mm
         test_frame = FlowableFrame(0, 0,
                                    width=live_width * 3.5, height=50,
                                    y_padding=20)
@@ -63,8 +63,8 @@ class TestFlowableFrame(unittest.TestCase):
         assert(test_frame.auto_layout_controllers[2].x == live_width * 3)
 
     def test_generate_auto_layout_controllers_with_one_page_break(self):
-        # brown.paper.live_height * units.mm == 1889.763779527559
-        live_width = brown.paper.live_width * units.mm    # 3035.433070866142
+        # brown.document.paper.live_height * units.mm == 1889.763779527559
+        live_width = brown.document.paper.live_width * units.mm    # 3035.433070866142
         test_frame = FlowableFrame(0, 0,
                                    width=live_width * 1.5, height=2800,
                                    y_padding=300)
@@ -76,8 +76,8 @@ class TestFlowableFrame(unittest.TestCase):
         assert(test_frame.auto_layout_controllers[0].x == live_width)
 
     def test_generate_auto_layout_controllers_with_many_page_breaks(self):
-        # brown.paper.live_height * units.mm == 1889.763779527559
-        live_width = brown.paper.live_width * units.mm    # 3035.433070866142
+        # brown.document.paper.live_height * units.mm == 1889.763779527559
+        live_width = brown.document.paper.live_width * units.mm    # 3035.433070866142
         test_frame = FlowableFrame(0, 0,
                                    width=live_width * 3.5, height=2800,
                                    y_padding=300)

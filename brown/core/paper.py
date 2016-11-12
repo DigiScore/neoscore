@@ -7,6 +7,16 @@ class Paper:
                  margin_top, margin_right,
                  margin_bottom, margin_left,
                  gutter=0):
+        """
+        Args:
+            width (float): The paper width in mm.
+            height (float): The paper height in mm.
+            margin_top (float): The paper top margin in mm.
+            margin_right (float): The paper right margin in mm.
+            margin_bottom (float): The paper bottom margin in mm.
+            margin_left (float): The paper left margin in mm.
+            gutter (float): The paper gutter in mm.
+        """
         self.width = width
         self.height = height
         self.margin_top = margin_top
@@ -89,7 +99,10 @@ class Paper:
 
     @property
     def gutter(self):
-        """float: The page gutter in mm"""
+        """float: The page gutter in mm.
+
+        TODO: Gutter support is not fully implemented.
+        """
         return self._gutter
 
     @gutter.setter
