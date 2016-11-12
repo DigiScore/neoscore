@@ -121,6 +121,7 @@ class FlowableFrame:
         while True:
             delta_x = live_page_width - current_page_x
             x_progress += delta_x
+            current_page_y = current_page_y + self.height + self.y_padding
             if x_progress >= self.width:
                 break
             if current_page_y > live_page_height:
@@ -130,8 +131,7 @@ class FlowableFrame:
             else:
                 self.auto_layout_controllers.append(
                     AutoLineBreak(self, x_progress))
-                current_page_y = current_page_y + self.height + self.y_padding
-            current_page_x = 0
+                current_page_x = 0
 
     def _local_space_to_doc_space(self, x, y):
         """Convert a position inside the frame to its position in the document.
