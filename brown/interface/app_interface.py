@@ -49,7 +49,7 @@ class AppInterface:
 
     ######## PUBLIC METHODS ########
 
-    def create_document(self, doctype='plane'):
+    def create_document(self):
         """Initialize a document.
 
         This is required before just about any operation
