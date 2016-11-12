@@ -98,9 +98,11 @@ class Paper:
 
     @property
     def live_width(self):
+        """The printable width of the page in mm"""
         return (self.width - self.gutter -
                 self.margin_left - self.margin_right)
 
     @property
     def live_height(self):
+        """The printable height of the page in mm"""
         return self.height - self.margin_bottom - self.margin_top

@@ -10,7 +10,7 @@ class LayoutController(ABC):
         """
         Args:
             flowable_frame (FlowableFrame): The parent frame.
-            x (float): The x position in the parent frame's local space.
+            x (float): The x position in pixels in the frame's local space.
         """
         self._flowable_frame = flowable_frame
         self._x = x

@@ -7,23 +7,25 @@ from brown.core.auto_page_break import AutoPageBreak
 
 class FlowableFrame:
 
-    def __init__(self, x, y, width, height, min_gap_below=None):
+    def __init__(self, x, y, width, height, y_padding=None):
         """
         Args:
-            x (float): Starting x position in pixels relative to document
-            y (float): Starting y position in pixels relative to document
+            x (float): Starting x position in pixels relative to
+                the top left corner of the live document area on the first page
+            y (float): Starting y position in pixels relative to
+                the top left corner of the live document area on the first page
             width (float): width of the frame in pixels
             height (float): height of the frame in pixels
-            min_gap_below (float): The min gap between frame sections in pixels
+            y_padding (float): The min gap between frame sections in pixels
         """
         self.x = x
         self.y = y
         self.width = width
         self.height = height
-        if min_gap_below is None:
-            self.min_gap_below = units.mm * 20
+        if y_padding is None:
+            self.y_padding = units.mm * 20
         else:
-            self.min_gap_below = min_gap_below
+            self.y_padding = y_padding
 
     ######## PUBLIC PROPERTIES ########
 
@@ -60,12 +62,12 @@ class FlowableFrame:
         self._height = value
 
     @property
-    def min_gap_below(self):
-        return self._min_gap_below
+    def y_padding(self):
+        return self._y_padding
 
-    @min_gap_below.setter
-    def min_gap_below(self, value):
-        self._min_gap_below = value
+    @y_padding.setter
+    def y_padding(self, value):
+        self._y_padding = value
 
     @property
     def layout_controllers(self):
@@ -112,21 +114,23 @@ class FlowableFrame:
         live_page_height = brown.paper.live_height * units.mm
         # The progress the layout generation has reached along the frame's width.
         # When the entire flowable has been covered, this value will == self.width
-        frame_x_progress = 0
+        x_progress = 0
         # Current position on the page relative to the top left corner of the live page area
-        current_page_x = self.x + (brown.paper.margin_left * units.mm)
-        current_page_y = self.y + (brown.paper.margin_top * units.mm)
+        current_page_x = self.x
+        current_page_y = self.y
         while True:
             delta_x = live_page_width - current_page_x
-            frame_x_progress += delta_x
-            if frame_x_progress >= self.width:
+            x_progress += delta_x
+            if x_progress >= self.width:
                 break
             if current_page_y > live_page_height:
-                self.auto_layout_controllers.append(AutoPageBreak(self, frame_x_progress))
+                self.auto_layout_controllers.append(
+                    AutoPageBreak(self, x_progress))
                 current_page_y = 0
             else:
-                self.auto_layout_controllers.append(AutoLineBreak(self, frame_x_progress))
-                current_page_y = current_page_y + self.height + self.min_gap_below
+                self.auto_layout_controllers.append(
+                    AutoLineBreak(self, x_progress))
+                current_page_y = current_page_y + self.height + self.y_padding
             current_page_x = 0
 
     def _local_space_to_doc_space(self, x, y):
