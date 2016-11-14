@@ -102,7 +102,7 @@ class TestFlowableFrame(unittest.TestCase):
         test_frame._generate_auto_layout_controllers()
         new_lines = [c for c in test_frame.auto_layout_controllers
                        if isinstance(c, AutoNewLine)]
-        assert(all(b.margin_above_next == test_frame.y_padding
+        assert(all(b.offset_y == test_frame.y_padding
                    for b in new_lines))
 
     def test_generate_auto_layout_controllers_new_pages_have_no_padding(self):
@@ -115,7 +115,7 @@ class TestFlowableFrame(unittest.TestCase):
         test_frame._generate_auto_layout_controllers()
         new_pages = [c for c in test_frame.auto_layout_controllers
                        if isinstance(c, AutoNewPage)]
-        assert(all(b.margin_above_next == 0
+        assert(all(b.offset_y == 0
                    for b in new_pages))
 
     # Space conversion tests ##################################################

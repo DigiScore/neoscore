@@ -163,12 +163,12 @@ class FlowableFrame:
             if isinstance(controller, AutoNewLine):
                 line_on_page += 1
                 current_x_offset = 0
-                current_y_offset += self.height + controller.margin_above_next
+                current_y_offset += self.height + controller.offset_y
             elif isinstance(controller, AutoNewPage):
                 page_num += 1
                 line_on_page = 1
                 current_x_offset = 0
-                current_y_offset = controller.margin_above_next
+                current_y_offset = controller.offset_y
         # Locate current page origin in doc space and apply offsets
         # print('remaining x is', remaining_x)
         # print('page num is ', page_num)
