@@ -6,7 +6,9 @@
 __pycache__
 *.pyc
 venv
+.venv
 virtualenv
+.virtualenv
 .cache
 *.egg-info
 .coverage

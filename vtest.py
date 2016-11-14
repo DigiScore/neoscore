@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import random
+
 from brown.utils import units
 from brown.core import brown
 from brown.core.font import Font
@@ -13,6 +15,7 @@ from brown.primitives.staff import Staff
 from brown.primitives.notehead import Notehead
 from brown.primitives.chordrest import ChordRest
 from brown.primitives.ledger_line import LedgerLine
+from brown.core.flowable_frame import FlowableFrame
 
 from brown.config import config
 
@@ -71,6 +74,13 @@ chordrest.render()
 
 # Draw vertical line at chordrest 0 position
 # Path.straight_line(270, 0, 0, 100).render()
+
+# Test hacky use of flowable coordinate space
+flow = FlowableFrame(0, 0, 350000, 400)
+for i in range(1000):
+    x, y = flow._local_space_to_doc_space(i * 20, random.randint(0, 250))
+    glyph = Glyph(x, y, '\uE118', brown.music_font)
+    glyph.render()
 
 
 brown.show()

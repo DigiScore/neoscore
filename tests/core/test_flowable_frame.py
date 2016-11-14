@@ -162,14 +162,76 @@ class TestFlowableFrame(unittest.TestCase):
         x_val = test_frame._local_space_to_doc_space(5000, 40)[0]
         first_line_width = (brown.document.paper.live_width * units.mm) - 17
         second_line_width = (brown.document.paper.live_width * units.mm)
+        page_origin = brown.document._page_origin_in_doc_space(1)
         expected = (5000 - first_line_width - second_line_width +
-                    (brown.document.paper.margin_left * units.mm))
+                    page_origin[0])
         assert(x_val == expected)
 
-    @pytest.mark.skip
     def test_local_space_to_doc_space_y_in_third_line(self):
         test_frame = FlowableFrame(17, 11,
                                    width=10000, height=300,
                                    y_padding=80)
-        y_val = test_frame._local_space_to_doc_space(6000, 40)[1]
-        assert(y_val == 40 + 11 + (brown.document.paper.margin_top * units.mm))
+        y_val = test_frame._local_space_to_doc_space(5000, 40)[1]
+        page_origin = brown.document._page_origin_in_doc_space(1)
+        expected = (page_origin[1] + 11 + 40 +
+                    ((test_frame.height + test_frame.y_padding) * 2))
+        assert(y_val == expected)
+
+    def test_local_space_to_doc_space_x_on_second_page_first_line(self):
+        test_frame = FlowableFrame(17, 11,
+                                   width=100000, height=300,
+                                   y_padding=80)
+        x_val = test_frame._local_space_to_doc_space(16000, 40)[0]
+        live_width = brown.document.paper.live_width
+        page_origin = brown.document._page_origin_in_doc_space(2)
+        num_full_lines = 8
+        expected_x_on_last_line = (16000 - ((live_width * num_full_lines) * units.mm) + 17)
+        expected = page_origin[0] + expected_x_on_last_line
+        self.assertAlmostEqual(x_val, expected)
+
+    def test_local_space_to_doc_space_y_on_second_page_first_line(self):
+        test_frame = FlowableFrame(17, 11,
+                                   width=100000, height=300,
+                                   y_padding=80)
+        y_val = test_frame._local_space_to_doc_space(16000, 40)[1]
+        page_origin = brown.document._page_origin_in_doc_space(2)
+        expected = page_origin[1] + 40
+        self.assertAlmostEqual(y_val, expected)
+
+    def test_local_space_to_doc_space_x_on_second_page_second_line(self):
+        test_frame = FlowableFrame(17, 11,
+                                   width=100000, height=300,
+                                   y_padding=80)
+        x_val = test_frame._local_space_to_doc_space(18000, 40)[0]
+        live_width = brown.document.paper.live_width
+        page_origin = brown.document._page_origin_in_doc_space(2)
+        num_full_lines = 9
+        expected_x_on_last_line = (18000 -
+            ((live_width * num_full_lines) * units.mm) + 17)
+        expected = page_origin[0] + expected_x_on_last_line
+        self.assertAlmostEqual(x_val, expected)
+
+    def test_local_space_to_doc_space_y_on_second_page_second_line(self):
+        test_frame = FlowableFrame(17, 11,
+                                   width=100000, height=300,
+                                   y_padding=80)
+        y_val = test_frame._local_space_to_doc_space(18000, 40)[1]
+        page_origin = brown.document._page_origin_in_doc_space(2)
+        expected = (page_origin[1] + 40 +
+                    test_frame.height + test_frame.y_padding)
+        self.assertAlmostEqual(y_val, expected)
+
+    def test_local_space_to_doc_space_y_same_across_pages(self):
+        test_frame = FlowableFrame(0, 0,
+                                   width=100000, height=1000,
+                                   y_padding=80)
+        page_origin = brown.document._page_origin_in_doc_space(1)
+        live_width = (brown.document.paper.live_width * units.mm)
+        line_and_padding_height = test_frame.height + test_frame.y_padding
+        for i in range(12):
+            y_val = test_frame._local_space_to_doc_space(
+                ((i * live_width) + 10), 0)[1]
+            line_on_page = i % 3
+            expected = (page_origin[1] +
+                        line_on_page * line_and_padding_height)
+            self.assertAlmostEqual(y_val, expected)
