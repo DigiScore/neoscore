@@ -128,15 +128,17 @@ class FlowableFrame:
                 break
             if current_page_y > live_page_height:
                 self.auto_layout_controllers.append(
-                    AutoPageBreak(self, x_progress, self.y_padding))
+                    AutoPageBreak(self, x_progress))
                 current_page_y = 0
             else:
                 self.auto_layout_controllers.append(
-                    AutoLineBreak(self, x_progress, 0))
+                    AutoLineBreak(self, x_progress, self.y_padding))
                 current_page_x = 0
 
     def _local_space_to_doc_space(self, x, y):
         """Convert a position inside the frame to its position in the document.
+
+        Coordinates relative to the top left corner of the first page.
 
         Args:
             x (float): x coordinate in pixels
@@ -148,13 +150,15 @@ class FlowableFrame:
         self._generate_auto_layout_controllers()
         page_num = 1
         line_on_page = 1
-        current_x_offset = self.x
-        current_y_offset = self.y
+        current_x_offset = self.x  # Offsets relative to ideal line start
+        current_y_offset = self.y  # on left margin
         remaining_x = x
+        # Calculate position relative to the top left corner of the live page
+        # area of the current page
         for controller in self.auto_layout_controllers:
             if controller.x > x:
                 break
-            remaining_x -= ((brown.document.paper.live_width * units.mm) -
+            remaining_x -= (brown.document.paper.live_width * units.mm -
                             current_x_offset)
             if isinstance(controller, AutoLineBreak):
                 line_on_page += 1
@@ -165,6 +169,7 @@ class FlowableFrame:
                 line_on_page = 1
                 current_x_offset = 0
                 current_y_offset = controller.margin_above_next
+        # Locate current page origin in doc space and apply offsets
         print('remaining x is', remaining_x)
         print('page num is ', page_num)
         print('line on page is ', line_on_page)

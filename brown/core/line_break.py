@@ -4,7 +4,7 @@ from brown.core.layout_controller import LayoutController
 class LineBreak(LayoutController):
     """A line break controller."""
 
-    def __init__(self, flowable_frame, x, margin_above_next=None):
+    def __init__(self, flowable_frame, x, margin_above_next=0):
         """
         Args:
             flowable_frame (FlowableFrame): The parent frame.

@@ -39,7 +39,7 @@ class TestFlowableFrame(unittest.TestCase):
         test_frame = FlowableFrame(0, 0,
                                    width=live_width * 1.5, height=50,
                                    y_padding=20)
-        # Should result in four lines separated by 3 line breaks
+        # Should result in 2 lines separated by 1 line break
         test_frame._generate_auto_layout_controllers()
         assert(len(test_frame.auto_layout_controllers) == 1)
         assert(isinstance(test_frame.auto_layout_controllers[0], AutoLineBreak))
@@ -92,6 +92,32 @@ class TestFlowableFrame(unittest.TestCase):
         assert(test_frame.auto_layout_controllers[1].x == live_width * 2)
         assert(test_frame.auto_layout_controllers[2].x == live_width * 3)
 
+    def test_generate_auto_layout_controllers_line_breaks_have_padding(self):
+        # brown.document.paper.live_height * units.mm == 1889.763779527559
+        live_width = brown.document.paper.live_width * units.mm    # 3035.433070866142
+        test_frame = FlowableFrame(0, 0,
+                                   width=live_width * 3.5, height=2800,
+                                   y_padding=300)
+        # Should result in two lines separated by one page break
+        test_frame._generate_auto_layout_controllers()
+        line_breaks = [c for c in test_frame.auto_layout_controllers
+                       if isinstance(c, AutoLineBreak)]
+        assert(all(b.margin_above_next == test_frame.y_padding
+                   for b in line_breaks))
+
+    def test_generate_auto_layout_controllers_page_breaks_have_no_padding(self):
+        # brown.document.paper.live_height * units.mm == 1889.763779527559
+        live_width = brown.document.paper.live_width * units.mm    # 3035.433070866142
+        test_frame = FlowableFrame(0, 0,
+                                   width=live_width * 3.5, height=2800,
+                                   y_padding=300)
+        # Should result in two lines separated by one page break
+        test_frame._generate_auto_layout_controllers()
+        page_breaks = [c for c in test_frame.auto_layout_controllers
+                       if isinstance(c, AutoPageBreak)]
+        assert(all(b.margin_above_next == 0
+                   for b in page_breaks))
+
     # Space conversion tests ##################################################
 
     def test_local_space_to_doc_space_x_in_first_line(self):
@@ -99,7 +125,8 @@ class TestFlowableFrame(unittest.TestCase):
                                    width=1000, height=100,
                                    y_padding=20)
         x_val = test_frame._local_space_to_doc_space(100, 40)[0]
-        assert(x_val == 100 + 10 + (brown.document.paper.margin_left * units.mm))
+        page_origin = brown.document._page_origin_in_doc_space(1)
+        assert(x_val == page_origin[0] + 10 + 100)
 
     def test_local_space_to_doc_space_y_in_first_line(self):
         test_frame = FlowableFrame(10, 11,
@@ -123,8 +150,9 @@ class TestFlowableFrame(unittest.TestCase):
                                    width=10000, height=300,
                                    y_padding=80)
         y_val = test_frame._local_space_to_doc_space(3000, 40)[1]
+        page_origin = brown.document._page_origin_in_doc_space(1)
         second_line_y = (11 + test_frame.height + test_frame.y_padding +
-                         (brown.document.paper.margin_top * units.mm))
+                         page_origin[1])
         assert(y_val == second_line_y + 40)
 
     def test_local_space_to_doc_space_x_in_third_line(self):
