@@ -1,4 +1,5 @@
 from brown.utils import units
+from brown.utils.point import Point
 from brown.core import brown
 from brown.core.layout_controller import LayoutController
 from brown.core.auto_new_line import AutoNewLine
@@ -135,28 +136,30 @@ class FlowableFrame:
                     AutoNewLine(self, x_progress, self.y_padding))
                 current_page_x = 0
 
-    def _local_space_to_doc_space(self, x, y):
+    def _local_space_to_doc_space(self, point):
         """Convert a position inside the frame to its position in the document.
 
         Coordinates relative to the top left corner of the first page.
 
         Args:
-            x (float): x coordinate in pixels
-            y (float): y coordinate in pixels
+            local_point (tuple or Point): An x-y coordinate in pixels.
 
         Returns: tuple(float: x, float: y) coordinates in pixels
+        Returns:
+            Point: A point in pixels
         """
+        local_point = Point(point)
         # Seek to the page and line-on-page based on auto layout controllers
         self._generate_auto_layout_controllers()
         page_num = 1
         line_on_page = 1
         current_x_offset = self.x  # Offsets relative to ideal line start
         current_y_offset = self.y  # on left margin
-        remaining_x = x
+        remaining_x = local_point.x
         # Calculate position relative to the top left corner of the live page
         # area of the current page
         for controller in self.auto_layout_controllers:
-            if controller.x > x:
+            if controller.x > local_point.x:
                 break
             remaining_x -= (brown.document.paper.live_width * units.mm -
                             current_x_offset)
@@ -178,4 +181,4 @@ class FlowableFrame:
         line_x = page_x + current_x_offset
         line_y = page_y + current_y_offset
         # print('line coords: ', line_x, line_y)
-        return line_x + remaining_x, line_y + y
+        return Point(line_x + remaining_x, line_y + local_point.y)

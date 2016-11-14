@@ -13,16 +13,18 @@ from brown.config import config
 
 class TestAppInterface(unittest.TestCase):
 
-    def setUp(self):
-        self.interface = AppInterface()
+    # def setUp(self):
+    #     self.interface = AppInterface()
 
     def test_init(self):
+        self.interface = AppInterface()
         assert(self.interface.app is None)
         assert(self.interface.scene is None)
         assert(self.interface.current_pen is None)
         assert(self.interface.current_brush is None)
 
     def test_create_document(self):
+        self.interface = AppInterface()
         self.interface.create_document()
         # QApplication init
         assert(isinstance(self.interface.app, QtWidgets.QApplication))
@@ -48,24 +50,28 @@ class TestAppInterface(unittest.TestCase):
         pass
 
     def test_current_pen(self):
+        self.interface = AppInterface()
         self.interface.create_document()
         test_pen = PenInterface('#ffffff')
         self.interface.current_pen = test_pen
         assert(self.interface.current_pen == test_pen)
 
     def test_current_brush(self):
+        self.interface = AppInterface()
         self.interface.create_document()
         test_brush = BrushInterface('#ffffff')
         self.interface.current_brush = test_brush
         assert(self.interface.current_brush == test_brush)
 
     def test_register_font(self):
+        self.interface = AppInterface()
         self.interface.create_document()
         test_font_file_path = os.path.join(config.RESOURCES_DIR, 'fonts', 'Bravura.otf')
         font_id = self.interface.register_font(test_font_file_path)
         assert(QtGui.QFontDatabase.applicationFontFamilies(font_id) == ['Bravura'])
 
     def test_register_font(self):
+        self.interface = AppInterface()
         self.interface.create_document()
         test_font_file_path = "path that doesn't exist"
         with pytest.raises(FontRegistrationError):

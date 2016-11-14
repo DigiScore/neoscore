@@ -1,7 +1,9 @@
 from brown.config import config
 from brown.core import brown
 from brown.utils import units
+from brown.utils.point import Point
 from brown.core.paper import Paper
+
 
 
 class Document:
@@ -47,6 +49,8 @@ class Document:
             page_number (int): The number of the page to locate
 
         Returns: tuple(float, float): An x, y coordinate in pixels
+        Returns:
+            Point: A point in pixels
 
         Note: Assumes left-to right layout
         """
@@ -58,4 +62,4 @@ class Document:
                        (page_pix_width + self._page_display_gap))
         x_page_origin = x_page_left + (self.paper.margin_left * units.mm)
         y_page_origin = (self.paper.margin_top) * units.mm
-        return x_page_origin, y_page_origin
+        return Point(x_page_origin, y_page_origin)
