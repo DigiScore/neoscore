@@ -5,8 +5,8 @@ from brown.utils import units
 from brown.core.paper import Paper
 from brown.core import brown
 from brown.core.flowable_frame import FlowableFrame
-from brown.core.auto_line_break import AutoLineBreak
-from brown.core.auto_page_break import AutoPageBreak
+from brown.core.auto_new_line import AutoNewLine
+from brown.core.auto_new_page import AutoNewPage
 
 
 
@@ -34,7 +34,7 @@ class TestFlowableFrame(unittest.TestCase):
         test_frame._generate_auto_layout_controllers()
         assert(len(test_frame.auto_layout_controllers) == 0)
 
-    def test_generate_auto_layout_controllers_with_one_line_break(self):
+    def test_generate_auto_layout_controllers_with_one_new_line(self):
         live_width = brown.document.paper.live_width * units.mm
         test_frame = FlowableFrame(0, 0,
                                    width=live_width * 1.5, height=50,
@@ -42,11 +42,11 @@ class TestFlowableFrame(unittest.TestCase):
         # Should result in 2 lines separated by 1 line break
         test_frame._generate_auto_layout_controllers()
         assert(len(test_frame.auto_layout_controllers) == 1)
-        assert(isinstance(test_frame.auto_layout_controllers[0], AutoLineBreak))
+        assert(isinstance(test_frame.auto_layout_controllers[0], AutoNewLine))
         assert(test_frame.auto_layout_controllers[0].flowable_frame == test_frame)
         assert(test_frame.auto_layout_controllers[0].x == live_width)
 
-    def test_generate_auto_layout_controllers_with_many_line_breaks(self):
+    def test_generate_auto_layout_controllers_with_many_new_lines(self):
         live_width = brown.document.paper.live_width * units.mm
         test_frame = FlowableFrame(0, 0,
                                    width=live_width * 3.5, height=50,
@@ -54,7 +54,7 @@ class TestFlowableFrame(unittest.TestCase):
         # Should result in four lines separated by 3 line breaks
         test_frame._generate_auto_layout_controllers()
         assert(len(test_frame.auto_layout_controllers) == 3)
-        assert(all(isinstance(c, AutoLineBreak)
+        assert(all(isinstance(c, AutoNewLine)
                    for c in test_frame.auto_layout_controllers))
         assert(all(c.flowable_frame == test_frame
                    for c in test_frame.auto_layout_controllers))
@@ -62,7 +62,7 @@ class TestFlowableFrame(unittest.TestCase):
         assert(test_frame.auto_layout_controllers[1].x == live_width * 2)
         assert(test_frame.auto_layout_controllers[2].x == live_width * 3)
 
-    def test_generate_auto_layout_controllers_with_one_page_break(self):
+    def test_generate_auto_layout_controllers_with_one_new_page(self):
         # brown.document.paper.live_height * units.mm == 1889.763779527559
         live_width = brown.document.paper.live_width * units.mm    # 3035.433070866142
         test_frame = FlowableFrame(0, 0,
@@ -71,11 +71,11 @@ class TestFlowableFrame(unittest.TestCase):
         # Should result in two lines separated by one page break
         test_frame._generate_auto_layout_controllers()
         assert(len(test_frame.auto_layout_controllers) == 1)
-        assert(isinstance(test_frame.auto_layout_controllers[0], AutoPageBreak))
+        assert(isinstance(test_frame.auto_layout_controllers[0], AutoNewPage))
         assert(test_frame.auto_layout_controllers[0].flowable_frame == test_frame)
         assert(test_frame.auto_layout_controllers[0].x == live_width)
 
-    def test_generate_auto_layout_controllers_with_many_page_breaks(self):
+    def test_generate_auto_layout_controllers_with_many_new_pages(self):
         # brown.document.paper.live_height * units.mm == 1889.763779527559
         live_width = brown.document.paper.live_width * units.mm    # 3035.433070866142
         test_frame = FlowableFrame(0, 0,
@@ -84,7 +84,7 @@ class TestFlowableFrame(unittest.TestCase):
         # Should result in two lines separated by one page break
         test_frame._generate_auto_layout_controllers()
         assert(len(test_frame.auto_layout_controllers) == 3)
-        assert(all(isinstance(c, AutoPageBreak)
+        assert(all(isinstance(c, AutoNewPage)
                    for c in test_frame.auto_layout_controllers))
         assert(all(c.flowable_frame == test_frame
                    for c in test_frame.auto_layout_controllers))
@@ -92,7 +92,7 @@ class TestFlowableFrame(unittest.TestCase):
         assert(test_frame.auto_layout_controllers[1].x == live_width * 2)
         assert(test_frame.auto_layout_controllers[2].x == live_width * 3)
 
-    def test_generate_auto_layout_controllers_line_breaks_have_padding(self):
+    def test_generate_auto_layout_controllers_new_lines_have_padding(self):
         # brown.document.paper.live_height * units.mm == 1889.763779527559
         live_width = brown.document.paper.live_width * units.mm    # 3035.433070866142
         test_frame = FlowableFrame(0, 0,
@@ -100,12 +100,12 @@ class TestFlowableFrame(unittest.TestCase):
                                    y_padding=300)
         # Should result in two lines separated by one page break
         test_frame._generate_auto_layout_controllers()
-        line_breaks = [c for c in test_frame.auto_layout_controllers
-                       if isinstance(c, AutoLineBreak)]
+        new_lines = [c for c in test_frame.auto_layout_controllers
+                       if isinstance(c, AutoNewLine)]
         assert(all(b.margin_above_next == test_frame.y_padding
-                   for b in line_breaks))
+                   for b in new_lines))
 
-    def test_generate_auto_layout_controllers_page_breaks_have_no_padding(self):
+    def test_generate_auto_layout_controllers_new_pages_have_no_padding(self):
         # brown.document.paper.live_height * units.mm == 1889.763779527559
         live_width = brown.document.paper.live_width * units.mm    # 3035.433070866142
         test_frame = FlowableFrame(0, 0,
@@ -113,10 +113,10 @@ class TestFlowableFrame(unittest.TestCase):
                                    y_padding=300)
         # Should result in two lines separated by one page break
         test_frame._generate_auto_layout_controllers()
-        page_breaks = [c for c in test_frame.auto_layout_controllers
-                       if isinstance(c, AutoPageBreak)]
+        new_pages = [c for c in test_frame.auto_layout_controllers
+                       if isinstance(c, AutoNewPage)]
         assert(all(b.margin_above_next == 0
-                   for b in page_breaks))
+                   for b in new_pages))
 
     # Space conversion tests ##################################################
 

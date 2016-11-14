@@ -1,8 +1,8 @@
 from brown.utils import units
 from brown.core import brown
 from brown.core.layout_controller import LayoutController
-from brown.core.auto_line_break import AutoLineBreak
-from brown.core.auto_page_break import AutoPageBreak
+from brown.core.auto_new_line import AutoNewLine
+from brown.core.auto_new_page import AutoNewPage
 
 
 class FlowableFrame:
@@ -128,11 +128,11 @@ class FlowableFrame:
                 break
             if current_page_y > live_page_height:
                 self.auto_layout_controllers.append(
-                    AutoPageBreak(self, x_progress))
+                    AutoNewPage(self, x_progress))
                 current_page_y = 0
             else:
                 self.auto_layout_controllers.append(
-                    AutoLineBreak(self, x_progress, self.y_padding))
+                    AutoNewLine(self, x_progress, self.y_padding))
                 current_page_x = 0
 
     def _local_space_to_doc_space(self, x, y):
@@ -160,22 +160,22 @@ class FlowableFrame:
                 break
             remaining_x -= (brown.document.paper.live_width * units.mm -
                             current_x_offset)
-            if isinstance(controller, AutoLineBreak):
+            if isinstance(controller, AutoNewLine):
                 line_on_page += 1
                 current_x_offset = 0
                 current_y_offset += self.height + controller.margin_above_next
-            elif isinstance(controller, AutoPageBreak):
+            elif isinstance(controller, AutoNewPage):
                 page_num += 1
                 line_on_page = 1
                 current_x_offset = 0
                 current_y_offset = controller.margin_above_next
         # Locate current page origin in doc space and apply offsets
-        print('remaining x is', remaining_x)
-        print('page num is ', page_num)
-        print('line on page is ', line_on_page)
+        # print('remaining x is', remaining_x)
+        # print('page num is ', page_num)
+        # print('line on page is ', line_on_page)
         page_x, page_y = brown.document._page_origin_in_doc_space(page_num)
-        print('page coords: ', page_x, page_y)
+        # print('page coords: ', page_x, page_y)
         line_x = page_x + current_x_offset
         line_y = page_y + current_y_offset
-        print('line coords: ', line_x, line_y)
+        # print('line coords: ', line_x, line_y)
         return line_x + remaining_x, line_y + y

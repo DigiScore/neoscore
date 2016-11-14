@@ -1,7 +1,7 @@
 from brown.core.layout_controller import LayoutController
 
 
-class PageBreak(LayoutController):
+class NewLine(LayoutController):
     """A line break controller."""
 
     def __init__(self, flowable_frame, x, margin_above_next=0):
@@ -9,8 +9,8 @@ class PageBreak(LayoutController):
         Args:
             flowable_frame (FlowableFrame): The parent frame.
             x (float): The x position in pixels in the frame's local space.
-            margin_above_next (float): The space in pixels above the first
-                line on the next page.
+            margin_above_next (float): The space between the bottom of the
+                current line and the top of the next, in pixels.
         """
         super().__init__(flowable_frame, x)
         self.margin_above_next = margin_above_next
@@ -19,9 +19,7 @@ class PageBreak(LayoutController):
 
     @property
     def margin_above_next(self):
-        """
-        (float): The space in pixels above the first line on the next page.
-        """
+        """float: The space in pixels before the next line."""
         return self._margin_above_next
 
     @margin_above_next.setter
