@@ -8,19 +8,16 @@ from brown.core.auto_new_page import AutoNewPage
 
 class FlowableFrame:
 
-    def __init__(self, x, y, width, height, y_padding=None):
+    def __init__(self, pos, width, height, y_padding=None):
         """
         Args:
-            x (float): Starting x position in pixels relative to
-                the top left corner of the live document area on the first page
-            y (float): Starting y position in pixels relative to
-                the top left corner of the live document area on the first page
+            pos (Point or tuple): Starting position in pixels relative to
+                the top left corner of the live document area of the first page
             width (float): width of the frame in pixels
             height (float): height of the frame in pixels
             y_padding (float): The min gap between frame sections in pixels
         """
-        self.x = x
-        self.y = y
+        self.pos = Point(pos)
         self.width = width
         self.height = height
         if y_padding is None:
@@ -31,20 +28,29 @@ class FlowableFrame:
     ######## PUBLIC PROPERTIES ########
 
     @property
+    def pos(self):
+        """Point: The starting point of the frame on the first page."""
+        return self._pos
+
+    @pos.setter
+    def pos(self, value):
+        self._pos = value
+
+    @property
     def x(self):
-        return self._x
+        return self.pos.x
 
     @x.setter
     def x(self, value):
-        self._x = value
+        self.pos.x = value
 
     @property
     def y(self):
-        return self._y
+        return self.pos.y
 
     @y.setter
     def y(self, value):
-        self._y = value
+        self.pos.y = value
 
     @property
     def width(self):

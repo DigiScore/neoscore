@@ -76,9 +76,9 @@ chordrest.render()
 # Path.straight_line(270, 0, 0, 100).render()
 
 # Test hacky use of flowable coordinate space
-flow = FlowableFrame(0, 0, 350000, 400)
+flow = FlowableFrame((0, 0), 350000, 400)
 for i in range(1000):
-    x, y = flow._local_space_to_doc_space(i * 20, random.randint(0, 250))
+    x, y = flow._local_space_to_doc_space((i * 20, random.randint(0, 250)))
     glyph = Glyph(x, y, '\uE118', brown.music_font)
     glyph.render()
 

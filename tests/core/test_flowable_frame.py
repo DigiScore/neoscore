@@ -16,19 +16,33 @@ class TestFlowableFrame(unittest.TestCase):
         brown.setup(Paper(210, 297, 20, 20, 20, 20, 10))
 
     def test_init(self):
-        test_frame = FlowableFrame(10, 11,
+        test_frame = FlowableFrame((10, 11),
                                    width=1000, height=100,
                                    y_padding=20)
         assert(test_frame.x == 10)
         assert(test_frame.y == 11)
+        assert(test_frame.pos.x == 10)
+        assert(test_frame.pos.y == 11)
         assert(test_frame.width == 1000)
         assert(test_frame.height == 100)
         assert(test_frame.y_padding == 20)
 
+    def test_self_pos_manipulation(self):
+        test_frame = FlowableFrame((10, 11),
+                                   width=1000, height=100,
+                                   y_padding=20)
+        test_frame.x = 20
+        assert(test_frame.pos.x == 20)
+        assert(test_frame.x == 20)
+        test_frame.y = 21
+        assert(test_frame.pos.y == 21)
+        assert(test_frame.y == 21)
+
+
     # Layout generation tests #################################################
 
     def test_generate_auto_layout_controllers_with_no_controllers_needed(self):
-        test_frame = FlowableFrame(10, 11,
+        test_frame = FlowableFrame((10, 11),
                                    width=200, height=50,
                                    y_padding=20)
         test_frame._generate_auto_layout_controllers()
@@ -36,7 +50,7 @@ class TestFlowableFrame(unittest.TestCase):
 
     def test_generate_auto_layout_controllers_with_one_new_line(self):
         live_width = brown.document.paper.live_width * units.mm
-        test_frame = FlowableFrame(0, 0,
+        test_frame = FlowableFrame((0, 0),
                                    width=live_width * 1.5, height=50,
                                    y_padding=20)
         # Should result in 2 lines separated by 1 line break
@@ -48,7 +62,7 @@ class TestFlowableFrame(unittest.TestCase):
 
     def test_generate_auto_layout_controllers_with_many_new_lines(self):
         live_width = brown.document.paper.live_width * units.mm
-        test_frame = FlowableFrame(0, 0,
+        test_frame = FlowableFrame((0, 0),
                                    width=live_width * 3.5, height=50,
                                    y_padding=20)
         # Should result in four lines separated by 3 line breaks
@@ -64,7 +78,7 @@ class TestFlowableFrame(unittest.TestCase):
 
     def test_generate_auto_layout_controllers_with_one_new_page(self):
         live_width = brown.document.paper.live_width * units.mm
-        test_frame = FlowableFrame(0, 0,
+        test_frame = FlowableFrame((0, 0),
                                    width=live_width * 1.5, height=2800,
                                    y_padding=300)
         # Should result in two lines separated by one page break
@@ -76,7 +90,7 @@ class TestFlowableFrame(unittest.TestCase):
 
     def test_generate_auto_layout_controllers_with_many_new_pages(self):
         live_width = brown.document.paper.live_width * units.mm
-        test_frame = FlowableFrame(0, 0,
+        test_frame = FlowableFrame((0, 0),
                                    width=live_width * 3.5, height=2800,
                                    y_padding=300)
         test_frame._generate_auto_layout_controllers()
@@ -91,7 +105,7 @@ class TestFlowableFrame(unittest.TestCase):
 
     def test_generate_auto_layout_controllers_new_lines_have_padding(self):
         live_width = brown.document.paper.live_width * units.mm
-        test_frame = FlowableFrame(0, 0,
+        test_frame = FlowableFrame((0, 0),
                                    width=live_width * 3.5, height=2800,
                                    y_padding=300)
         test_frame._generate_auto_layout_controllers()
@@ -102,7 +116,7 @@ class TestFlowableFrame(unittest.TestCase):
 
     def test_generate_auto_layout_controllers_new_pages_have_no_padding(self):
         live_width = brown.document.paper.live_width * units.mm
-        test_frame = FlowableFrame(0, 0,
+        test_frame = FlowableFrame((0, 0),
                                    width=live_width * 3.5, height=2800,
                                    y_padding=300)
         test_frame._generate_auto_layout_controllers()
@@ -114,7 +128,7 @@ class TestFlowableFrame(unittest.TestCase):
     # Space conversion tests ##################################################
 
     def test_local_space_to_doc_space_x_in_first_line(self):
-        test_frame = FlowableFrame(10, 11,
+        test_frame = FlowableFrame((10, 11),
                                    width=1000, height=100,
                                    y_padding=20)
         x_val = test_frame._local_space_to_doc_space((100, 40))[0]
@@ -122,14 +136,14 @@ class TestFlowableFrame(unittest.TestCase):
         assert(x_val == page_origin[0] + 10 + 100)
 
     def test_local_space_to_doc_space_y_in_first_line(self):
-        test_frame = FlowableFrame(10, 11,
+        test_frame = FlowableFrame((10, 11),
                                    width=1000, height=100,
                                    y_padding=20)
         y_val = test_frame._local_space_to_doc_space((100, 40))[1]
         assert(y_val == 40 + 11 + (brown.document.paper.margin_top * units.mm))
 
     def test_local_space_to_doc_space_x_in_second_line(self):
-        test_frame = FlowableFrame(17, 11,
+        test_frame = FlowableFrame((17, 11),
                                    width=10000, height=300,
                                    y_padding=80)
         x_val = test_frame._local_space_to_doc_space((3000, 40))[0]
@@ -139,7 +153,7 @@ class TestFlowableFrame(unittest.TestCase):
         assert(x_val == expected)
 
     def test_local_space_to_doc_space_y_in_second_line(self):
-        test_frame = FlowableFrame(17, 11,
+        test_frame = FlowableFrame((17, 11),
                                    width=10000, height=300,
                                    y_padding=80)
         y_val = test_frame._local_space_to_doc_space((3000, 40))[1]
@@ -149,7 +163,7 @@ class TestFlowableFrame(unittest.TestCase):
         assert(y_val == second_line_y + 40)
 
     def test_local_space_to_doc_space_x_in_third_line(self):
-        test_frame = FlowableFrame(17, 11,
+        test_frame = FlowableFrame((17, 11),
                                    width=10000, height=300,
                                    y_padding=80)
         x_val = test_frame._local_space_to_doc_space((5000, 40))[0]
@@ -161,7 +175,7 @@ class TestFlowableFrame(unittest.TestCase):
         assert(x_val == expected)
 
     def test_local_space_to_doc_space_y_in_third_line(self):
-        test_frame = FlowableFrame(17, 11,
+        test_frame = FlowableFrame((17, 11),
                                    width=10000, height=300,
                                    y_padding=80)
         y_val = test_frame._local_space_to_doc_space((5000, 40))[1]
@@ -171,7 +185,7 @@ class TestFlowableFrame(unittest.TestCase):
         assert(y_val == expected)
 
     def test_local_space_to_doc_space_x_on_second_page_first_line(self):
-        test_frame = FlowableFrame(17, 11,
+        test_frame = FlowableFrame((17, 11),
                                    width=100000, height=300,
                                    y_padding=80)
         x_val = test_frame._local_space_to_doc_space((16000, 40))[0]
@@ -183,7 +197,7 @@ class TestFlowableFrame(unittest.TestCase):
         self.assertAlmostEqual(x_val, expected)
 
     def test_local_space_to_doc_space_y_on_second_page_first_line(self):
-        test_frame = FlowableFrame(17, 11,
+        test_frame = FlowableFrame((17, 11),
                                    width=100000, height=300,
                                    y_padding=80)
         y_val = test_frame._local_space_to_doc_space((16000, 40))[1]
@@ -192,7 +206,7 @@ class TestFlowableFrame(unittest.TestCase):
         self.assertAlmostEqual(y_val, expected)
 
     def test_local_space_to_doc_space_x_on_second_page_second_line(self):
-        test_frame = FlowableFrame(17, 11,
+        test_frame = FlowableFrame((17, 11),
                                    width=100000, height=300,
                                    y_padding=80)
         x_val = test_frame._local_space_to_doc_space((18000, 40))[0]
@@ -205,7 +219,7 @@ class TestFlowableFrame(unittest.TestCase):
         self.assertAlmostEqual(x_val, expected)
 
     def test_local_space_to_doc_space_y_on_second_page_second_line(self):
-        test_frame = FlowableFrame(17, 11,
+        test_frame = FlowableFrame((17, 11),
                                    width=100000, height=300,
                                    y_padding=80)
         y_val = test_frame._local_space_to_doc_space((18000, 40))[1]
@@ -215,7 +229,7 @@ class TestFlowableFrame(unittest.TestCase):
         self.assertAlmostEqual(y_val, expected)
 
     def test_local_space_to_doc_space_y_same_across_pages(self):
-        test_frame = FlowableFrame(0, 0,
+        test_frame = FlowableFrame((0, 0),
                                    width=100000, height=1000,
                                    y_padding=80)
         page_origin = brown.document._page_origin_in_doc_space(1)
