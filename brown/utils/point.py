@@ -40,6 +40,19 @@ class Point:
 
         self._iter_index = 0
 
+    ######## PUBLIC METHODS ########
+
+    def to_unit(self, unit_class):
+        """Translate coordinates to be of a certain unit type.
+
+        Args:
+            unit_class (type): A BaseUnit class.
+
+        Returns: None
+        """
+        self.x = unit_class(self.x)
+        self.y = unit_class(self.y)
+
     ######## SPECIAL METHODS ########
 
     def __iter__(self):

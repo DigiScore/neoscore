@@ -3,6 +3,9 @@ import pytest
 
 from brown.utils.point import Point
 
+from brown.utils.base_unit import BaseUnit
+from brown.utils.mm import Mm
+
 
 class TestPoint(unittest.TestCase):
 
@@ -21,6 +24,22 @@ class TestPoint(unittest.TestCase):
         test_point = Point(existing_point)
         assert(test_point.x == 5)
         assert(test_point.y == 6)
+
+    def test_to_unit_from_int(self):
+        test_point = Point(5, 6)
+        test_point.to_unit(BaseUnit)
+        assert(isinstance(test_point.x, BaseUnit))
+        assert(isinstance(test_point.y, BaseUnit))
+        assert(test_point.x == BaseUnit(5))
+        assert(test_point.y == BaseUnit(6))
+
+    def test_to_unit_from_other_unit(self):
+        test_point = Point(BaseUnit(1), BaseUnit(2))
+        test_point.to_unit(Mm)
+        assert(isinstance(test_point.x, Mm))
+        assert(isinstance(test_point.y, Mm))
+        self.assertAlmostEqual(test_point.x, Mm(BaseUnit(1)))
+        self.assertAlmostEqual(test_point.y, Mm(BaseUnit(2)))
 
     def test_iteration(self):
         test_point = Point(5, 6)
