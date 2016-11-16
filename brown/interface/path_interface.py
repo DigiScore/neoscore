@@ -2,6 +2,7 @@ from PyQt5 import QtWidgets
 from PyQt5 import QtGui
 
 from brown.core import brown
+from brown.utils.point import Point
 from brown.interface.graphic_object_interface import GraphicObjectInterface
 
 
@@ -21,8 +22,7 @@ class PathInterface(GraphicObjectInterface):
         self.pos = pos
         self.pen = pen
         self.brush = brush
-        self._current_path_x = 0
-        self._current_path_y = 0
+        self._current_path_position = Point(0, 0)
         self.parent = parent
 
     ######## PUBLIC PROPERTIES ########
@@ -30,7 +30,7 @@ class PathInterface(GraphicObjectInterface):
     @property
     def current_path_position(self):
         """
-        tuple (float: x, float: y): The current relative drawing position.
+        Point[GraphicUnit]: The current relative drawing position.
 
         This is the location from which operations like line_to() will draw,
         relative to the position of the Path (`self.x` and `self.y`).
@@ -42,18 +42,18 @@ class PathInterface(GraphicObjectInterface):
         the move_to() method, implicitly closing the current sub-path and
         beginning a new one.
         """
-        return self.current_path_x, self.current_path_y
+        return self._current_path_position
 
     @property
     def current_path_x(self):
         """
-        float: The current relative drawing x-axis position
+        GraphicUnit: The current relative drawing x-axis position
 
         This property is read-only. To move the current position, use
         the move_to() method, implicitly closing the current sub-path and
         beginning a new one.
         """
-        return self._current_path_x
+        return self.current_path_position.x
 
     @property
     def current_path_y(self):
@@ -64,7 +64,7 @@ class PathInterface(GraphicObjectInterface):
         the move_to() method, implicitly closing the current sub-path and
         beginning a new one.
         """
-        return self._current_path_y
+        return self.current_path_position.x
 
     ######## Public Methods ########
 
@@ -82,8 +82,8 @@ class PathInterface(GraphicObjectInterface):
         """
         self._qt_path.lineTo(x, y)
         self._update_qt_object_path()
-        self._current_path_x = x
-        self._current_path_y = y
+        self.current_path_position.x = x
+        self.current_path_position.y = y
 
     def cubic_to(self,
                  control_1_x, control_1_y,
@@ -108,8 +108,8 @@ class PathInterface(GraphicObjectInterface):
             control_2_x, control_2_y,
             end_x, end_y)
         self._update_qt_object_path()
-        self._current_path_x = end_x
-        self._current_path_y = end_y
+        self.current_path_position.x = end_x
+        self.current_path_position.y = end_y
 
     def move_to(self, new_x, new_y):
         """Close the current sub-path and start a new one.
@@ -121,8 +121,8 @@ class PathInterface(GraphicObjectInterface):
         Returns: None
         """
         self._qt_path.moveTo(new_x, new_y)
-        self._current_path_x = new_x
-        self._current_path_y = new_y
+        self.current_path_position.x = new_x
+        self.current_path_position.y = new_y
         self._update_qt_object_path()
 
     def close_subpath(self):
@@ -133,8 +133,8 @@ class PathInterface(GraphicObjectInterface):
         Returns: None
         """
         self._qt_path.closeSubpath()
-        self._current_path_y = 0
-        self._current_path_x = 0
+        self.current_path_position.x = 0
+        self.current_path_position.y = 0
         self._update_qt_object_path()
 
     def render(self):
