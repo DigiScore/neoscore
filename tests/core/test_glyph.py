@@ -22,8 +22,8 @@ class TestGlyph(unittest.TestCase):
         self.font = Font('Bravura', 12, 1, False)
 
     def test_init(self):
-        mock_parent = MockGraphicObject(10, 11, parent=None)
-        test_object = Glyph(5, 6, 'a', self.font, mock_parent)
+        mock_parent = MockGraphicObject((10, 11), parent=None)
+        test_object = Glyph((5, 6), 'a', self.font, mock_parent)
         assert(test_object.x == 5)
         assert(test_object.y == 6)
         assert(test_object.text == 'a')
@@ -32,23 +32,23 @@ class TestGlyph(unittest.TestCase):
 
     def test_default_init_values(self):
         # API default values canary
-        test_object = Glyph(5, 6, 'a')
+        test_object = Glyph((5, 6), 'a')
         # When no font is passed, the global brown default text_font is used
         assert(test_object.font == brown.text_font)
         assert(test_object.parent is None)
 
     def test_prevent_multi_chars_text(self):
         with pytest.raises(InvalidGlyphLengthError):
-            Glyph(5, 6, 'more than one char')
+            Glyph((5, 6), 'more than one char')
 
     def test_text_setter_changes_interface(self):
-        test_object = Glyph(5, 6, 'a')
+        test_object = Glyph((5, 6), 'a')
         test_object.text = 'b'
         assert(test_object.text == 'b')
         assert(test_object._interface.text == 'b')
 
     def test_font_setter_changes_interface(self):
-        test_object = Glyph(5, 6, 'a')
+        test_object = Glyph((5, 6), 'a')
         new_font = Font('Bravura', 20, 1, False)
         test_object.font = new_font
         assert(test_object.font == new_font)

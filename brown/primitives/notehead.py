@@ -30,8 +30,7 @@ class Notehead(StaffObject):
         self.grob_width = 1.25 * self.root_staff.staff_unit  # TODO: Temporary testing
         self.pitch = pitch
         self._grob = Glyph(
-            self.position_x,
-            self.position_y,
+            (self.position_x, self.position_y),
             '\uE0A4',
             brown.music_font,
             self.parent.grob)

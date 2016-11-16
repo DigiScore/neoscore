@@ -5,11 +5,11 @@ from brown.interface.graphic_object_interface import GraphicObjectInterface
 
 
 class TextObjectInterface(GraphicObjectInterface):
-    def __init__(self, x, y, text, font, parent=None):
+    def __init__(self, pos, text, font, parent=None):
         """
         Args:
-            x (float): The x position relative to the document
-            y (float): The y position relative to the document
+            pos (Point[GraphicUnit] or tuple): The position of the path root
+                relative to the document.
             text (str): The text for the object
             font (FontInterface): The font object for the text
             parent: The parent interface object
@@ -17,8 +17,7 @@ class TextObjectInterface(GraphicObjectInterface):
         self._qt_object = QtWidgets.QGraphicsSimpleTextItem('')
         self.text = text
         self.font = font
-        self.x = x
-        self.y = y
+        self.pos = pos
         self.parent = parent
 
     ######## PUBLIC PROPERTIES ########

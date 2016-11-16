@@ -1,23 +1,22 @@
 from PyQt5 import QtWidgets
 
 from brown.interface.graphic_object_interface import GraphicObjectInterface
+from brown.utils.point import Point
+from brown.utils.base_unit import BaseUnit
 
 
-"""
-
-A mock concrete GraphicObjectInterface subclass for testing
-
-"""
+"""A mock concrete GraphicObjectInterface subclass for testing"""
 
 
 class MockGraphicObjectInterface(GraphicObjectInterface):
 
     """Only need to implement init for a functional mock subclass"""
 
-    def __init__(self, x, y, pen=None, brush=None, parent=None):
-        self._qt_object = QtWidgets.QGraphicsRectItem(x, y, 10, 10)
-        self.x = x
-        self.y = y
+    def __init__(self, pos, pen=None, brush=None, parent=None):
+        pos_point = Point.with_unit(pos, unit_class=BaseUnit)
+        self._qt_object = QtWidgets.QGraphicsRectItem(
+            pos_point.x.value, pos_point.y.value, 10, 10)
+        self.pos = pos_point
         self.parent = parent
         self.pen = pen
         self.brush = brush

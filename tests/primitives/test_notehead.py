@@ -8,7 +8,7 @@ from brown.primitives.staff import Staff
 class TestNotehead(unittest.TestCase):
     def setUp(self):
         brown.setup()
-        self.mock_staff = Staff(0, 0, 100)
+        self.mock_staff = Staff((0, 0), 100)
 
     def test_staff_position_middle_c_treble(self):
         assert(Notehead(self.mock_staff, 50, "c'").staff_position == -6)

@@ -12,9 +12,9 @@ class TestTextObjectInterface(unittest.TestCase):
         brown.setup()
 
     def test_init(self):
-        mock_parent = MockGraphicObjectInterface(0, 0, parent=None)
+        mock_parent = MockGraphicObjectInterface((0, 0), parent=None)
         test_font = FontInterface('Bravura', 12)
-        test_object = TextObjectInterface(5, 6, 'testing',
+        test_object = TextObjectInterface((5, 6), 'testing',
                                           test_font, mock_parent)
         assert(test_object.x == 5)
         assert(test_object._qt_object.x() == 5)
@@ -29,7 +29,7 @@ class TestTextObjectInterface(unittest.TestCase):
 
     def test_text_setter_changes_qt_object(self):
         test_font = FontInterface('Bravura', 12)
-        test_object = TextObjectInterface(5, 6, 'testing',
+        test_object = TextObjectInterface((5, 6), 'testing',
                                           test_font)
         test_object.text = 'new value'
         assert(test_object.text == 'new value')
@@ -37,7 +37,7 @@ class TestTextObjectInterface(unittest.TestCase):
 
     def test_font_setter_changes_qt_object(self):
         test_font = FontInterface('Bravura', 12)
-        test_object = TextObjectInterface(5, 6, 'testing',
+        test_object = TextObjectInterface((5, 6), 'testing',
                                           test_font)
         new_test_font = FontInterface('Bravura', 16)
         test_object.font = new_test_font

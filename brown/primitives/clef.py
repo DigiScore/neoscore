@@ -47,8 +47,7 @@ class Clef(StaffObject):
         super().__init__(parent, position_x)
         self._clef_type = clef_type
         self._grob = Glyph(
-            self.position_x,
-            self.position_y,
+            (self.position_x, self.position_y),
             Clef._smufl_codepoints[self.clef_type],
             brown.music_font,
             self.parent.grob)

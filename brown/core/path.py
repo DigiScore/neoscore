@@ -6,11 +6,11 @@ class Path(GraphicObject):
 
     _interface_class = PathInterface
 
-    def __init__(self, x, y, pen=None, brush=None, parent=None):
+    def __init__(self, pos, pen=None, brush=None, parent=None):
         """
         Args:
-            x (float): The x position of the path relative to the document
-            y (float): The y position of the path relative to the document
+            pos (Point[GraphicUnit]): The position of the path relative
+                to the document
             pen (Pen): The pen to draw outlines with.
             brush (Brush): The brush to draw outlines with.
             parent: The parent (core-level) object or None
@@ -19,8 +19,8 @@ class Path(GraphicObject):
         # so that attribute setters don't try to push
         # changes to not-yet-existing interface
 
-        self._interface = Path._interface_class(0, 0)
-        super().__init__(x, y, pen, brush, parent)
+        self._interface = Path._interface_class((0, 0))
+        super().__init__(pos, pen, brush, parent)
         self._current_path_x = 0
         self._current_path_y = 0
 
@@ -30,7 +30,7 @@ class Path(GraphicObject):
     def straight_line(cls, x_start, y_start, delta_x, delta_y, parent=None):
         # TODO: This is pretty awkward, it may well be more intuitive to
         #       to (startx, starty, endx, endy) instead
-        line = cls(x_start, y_start, parent=parent)
+        line = cls((x_start, y_start), parent=parent)
         line.line_to(delta_x, delta_y)
         return line
 

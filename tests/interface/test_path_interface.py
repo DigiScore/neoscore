@@ -13,10 +13,10 @@ class TestPathInterface(unittest.TestCase):
         brown.setup()
 
     def test_init(self):
-        mock_parent = MockGraphicObjectInterface(0, 0, parent=None)
+        mock_parent = MockGraphicObjectInterface((0, 0), parent=None)
         test_pen = PenInterface('#eeeeee')
         test_brush = BrushInterface('#dddddd')
-        test_object = PathInterface(5, 6, test_pen, test_brush, mock_parent)
+        test_object = PathInterface((5, 6), test_pen, test_brush, mock_parent)
         assert(test_object.x == 5)
         assert(test_object._qt_object.x() == 5)
         assert(test_object.y == 6)
@@ -30,15 +30,15 @@ class TestPathInterface(unittest.TestCase):
         assert(test_object.current_path_position == (0, 0))
 
     def test_current_path_x(self):
-        test_object = PathInterface(5, 6)
+        test_object = PathInterface((5, 6))
         assert(test_object.current_path_x == test_object.current_path_position[0])
 
     def test_current_path_y(self):
-        test_object = PathInterface(5, 6)
+        test_object = PathInterface((5, 6))
         assert(test_object.current_path_y == test_object.current_path_position[1])
 
     def test_line_to(self):
-        test_object = PathInterface(5, 6)
+        test_object = PathInterface((5, 6))
         test_object.line_to(10, 12)
         assert(test_object.current_path_position == (10, 12))
         assert(test_object._qt_path.currentPosition().x() == 10)
@@ -47,7 +47,7 @@ class TestPathInterface(unittest.TestCase):
         #       are as expected
 
     def test_cubic_to(self):
-        test_object = PathInterface(5, 6)
+        test_object = PathInterface((5, 6))
         test_object.cubic_to(10, 11,
                              0, 1,
                              5, 6)
@@ -58,7 +58,7 @@ class TestPathInterface(unittest.TestCase):
         #       are as expected
 
     def test_move_to(self):
-        test_object = PathInterface(5, 6)
+        test_object = PathInterface((5, 6))
         test_object.move_to(10, 11)
         assert(test_object.current_path_position == (10, 11))
         assert(test_object._qt_path.currentPosition().x() == 10)
@@ -67,7 +67,7 @@ class TestPathInterface(unittest.TestCase):
         #       are as expected
 
     def test_close_subpath(self):
-        test_object = PathInterface(5, 6)
+        test_object = PathInterface((5, 6))
         test_object.close_subpath()
         assert(test_object.current_path_position == (0, 0))
         assert(test_object._qt_path.currentPosition().x() == 0)

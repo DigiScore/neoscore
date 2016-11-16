@@ -23,14 +23,14 @@ from brown.config import config
 brown.setup()
 
 
-path = Path(0, 0, Pen('#f29000'), Brush('#eeeeee'))
+path = Path((0, 0), Pen('#f29000'), Brush('#eeeeee'))
 path.line_to(30, 40)
 path.cubic_to(30, 40, 90, 60, 100, 100)
 path.cubic_to(80, 80, 10, 120, 50, 75)
 path.close_subpath()
 path.render()
 
-glyph = Glyph(50, 100, '\uE118', brown.music_font)
+glyph = Glyph((50, 100), '\uE118', brown.music_font)
 glyph.render()
 
 line = Path.straight_line(50, 50, 50, 50)
@@ -39,11 +39,11 @@ line.render()
 Path.straight_line(0, 0, 200, 200).render()
 
 
-text = TextObject(120, 10, 'hello')
+text = TextObject((120, 10), 'hello')
 text.brush = Brush('#00ffff')
 text.render()
 
-staff = Staff(0, 150, 300, 1)
+staff = Staff((0, 150), 300, 1)
 staff.render()
 
 clef = Clef(staff, 0, 'alto')
@@ -79,7 +79,7 @@ chordrest.render()
 flow = FlowableFrame((0, 0), 350000, 400)
 for i in range(1000):
     x, y = flow._local_space_to_doc_space((i * 20, random.randint(0, 250)))
-    glyph = Glyph(x, y, '\uE118', brown.music_font)
+    glyph = Glyph((x, y), '\uE118', brown.music_font)
     glyph.render()
 
 

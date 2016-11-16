@@ -7,19 +7,18 @@ from brown.interface.graphic_object_interface import GraphicObjectInterface
 
 class PathInterface(GraphicObjectInterface):
     """Interface for a generic graphic path object."""
-    def __init__(self, x, y, pen=None, brush=None, parent=None):
+    def __init__(self, pos, pen=None, brush=None, parent=None):
         """
         Args:
-            x (float): The x position of the path relative to the parent
-            y (float): The y position of the path relative to the parent
+            pos (Point[GraphicUnit] or tuple): The position of the path root
+                relative to the document.
             pen (PenInterface): The pen to draw outlines with.
             brush (BrushInterface): The brush to draw outlines with.
             parent (GraphicObjectInterface):
         """
         self._qt_path = QtGui.QPainterPath()
         self._qt_object = QtWidgets.QGraphicsPathItem(self._qt_path)
-        self.x = x
-        self.y = y
+        self.pos = pos
         self.pen = pen
         self.brush = brush
         self._current_path_x = 0

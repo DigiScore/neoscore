@@ -1,5 +1,6 @@
 from abc import ABC
 
+from brown.utils.graphic_unit import GraphicUnit
 from brown.utils.point import Point
 
 
@@ -9,17 +10,16 @@ class GraphicObject(ABC):
     All classes in `core` which have the ability to be displayed
     should be subclasses of this.
     """
-    def __init__(self, x, y, pen=None, brush=None, parent=None):
+    def __init__(self, pos, pen=None, brush=None, parent=None):
         """
         Args:
-            x (float): The x position of the path relative to the document
-            y (float): The y position of the path relative to the document
+            pos (Point[GraphicUnit] or tuple): The position of the object
+                relative to the document.
             pen (Pen): The pen to draw outlines with.
             brush (Brush): The brush to draw outlines with.
             parent (GraphicObject): The parent (core-level) object or None
         """
-        self.x = x
-        self.y = y
+        self.pos = pos
         self.pen = pen
         self.brush = brush
         self.parent = parent
@@ -27,27 +27,37 @@ class GraphicObject(ABC):
     ######## PUBLIC PROPERTIES ########
 
     @property
+    def pos(self):
+        """Point: The starting point of the frame on the first page."""
+        return self._pos
+
+    @pos.setter
+    def pos(self, value):
+        self._pos = Point.with_unit(value, unit_class=GraphicUnit)
+        self._interface.pos = self._pos
+
+    @property
     def x(self):
         """
-        float: The x position of the Path relative to the document
+        GraphicUnit: The x position of the Path relative to the document
         """
-        return self._x
+        return self.pos.x
 
     @x.setter
     def x(self, value):
-        self._x = value
+        self.pos.x = value
         self._interface.x = value
 
     @property
     def y(self):
         """
-        float: The y position of the Path relative to the document
+        GraphicUnit: The y position of the Path relative to the document
         """
-        return self._y
+        return self.pos.y
 
     @y.setter
     def y(self, value):
-        self._y = value
+        self.pos.y = value
         self._interface.y = value
 
     @property

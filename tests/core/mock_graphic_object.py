@@ -8,12 +8,12 @@ class MockGraphicObject(GraphicObject):
 
     _interface_class = InvisibleObjectInterface
 
-    def __init__(self, x, y, parent=None):
+    def __init__(self, pos, pen=None, brush=None, parent=None):
         """
         Args:
-            x (float): The x position of the path relative to the document
-            y (float): The y position of the path relative to the document
+            pos (Point[GraphicUnit] or tuple): The position of the path root
+                relative to the document.
             parent: The parent (core-level) object or None
         """
-        self._interface = MockGraphicObject._interface_class(0, 0)
-        super().__init__(x, y, None, None, parent)
+        self._interface = MockGraphicObject._interface_class((0, 0))
+        super().__init__(pos, pen, brush, parent)

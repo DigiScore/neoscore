@@ -8,7 +8,7 @@ def test_find_root_staff_with_direct_parent():
     class ChildObject(StaffObject):
         pass
 
-    test_staff = Staff(0, 0, 100)
+    test_staff = Staff((0, 0), 100)
     test_child_object = ChildObject(test_staff, 0)
     assert(test_child_object.root_staff == test_staff)
 
@@ -21,7 +21,7 @@ def test_find_root_staff_with_ancestor():
     class ChildObject(StaffObject):
         pass
 
-    test_staff = Staff(0, 0, 100)
+    test_staff = Staff((0, 0), 100)
     test_parent_object = ParentObject(test_staff, 0)
     test_child_object = ChildObject(test_parent_object, 50)
 

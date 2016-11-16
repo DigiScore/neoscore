@@ -1,15 +1,22 @@
 from brown.utils import units
+from brown.utils.point import Point
+from brown.utils.graphic_unit import GraphicUnit
 from brown.config import config
 from brown.core import brown
 from brown.core.path import Path
 from brown.primitives.clef import Clef
 
 
+
 class Staff:
 
-    def __init__(self, x, y, length, staff_unit=None, line_count=5):
-        self._x = x
-        self._y = y
+    def __init__(self, pos, length, staff_unit=None, line_count=5):
+        """TODO: Document me!"""
+        # TODO: Implement units in staff land
+        # pos_point = Point.with_unit(pos, unit_class=GraphicUnit)
+        self._pos = Point(pos)
+        self._x = self._pos.x
+        self._y = self._pos.x
         self._line_count = line_count
         self._length = length
         if staff_unit:
@@ -17,7 +24,7 @@ class Staff:
         else:
             self.staff_unit = config.DEFAULT_STAFF_UNIT * units.mm
         self._contents = []
-        self._grob = Path(self.x, self.y)
+        self._grob = Path(self.pos)
         # Draw the staff lines
         for i in range(self.line_count):
             self.grob.move_to(0, i * self.staff_unit)
@@ -32,9 +39,13 @@ class Staff:
         return self._grob
 
     @property
+    def pos(self):
+        return self._pos
+
+    @property
     def x(self):
-        """float: x coordinate of the left side of the staff"""
-        return self._x
+        """GraphicUnit: x coordinate of the left side of the staff"""
+        return self.pos.x
 
     # @x.setter
     # def x(self, value):
@@ -42,8 +53,8 @@ class Staff:
 
     @property
     def y(self):
-        """float: y coordinate of the left side of the staff"""
-        return self._y
+        """GraphicUnit: y coordinate of the left side of the staff"""
+        return self.pos.x
 
     # @y.setter
     # def y(self, value):
@@ -51,7 +62,7 @@ class Staff:
 
     @property
     def length(self):
-        """float: length coordinate of the left side of the staff"""
+        """GraphicUnit: length coordinate of the left side of the staff"""
         return self._length
 
     # @length.setter
@@ -60,7 +71,7 @@ class Staff:
 
     @property
     def height(self):
-        """float: The height of the staff in pixels from top to bottom line."""
+        """GraphicUnit: The height of the staff in pixels from top to bottom line."""
         # TODO: How should the height of a 1 line staff be defined?
         return (self.line_count - 1) * self.staff_unit
 

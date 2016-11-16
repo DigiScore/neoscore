@@ -27,8 +27,7 @@ class Accidental(StaffObject):
         super().__init__(self.notehead, position_x)
         if self.virtual_accidental.value is not None:
             self._grob = Glyph(
-                self.position_x,
-                0,
+                (self.position_x, 0),
                 Accidental._smufl_codepoints[self.virtual_accidental.value],
                 brown.music_font,
                 self.parent.grob)

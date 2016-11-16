@@ -40,6 +40,37 @@ class Point:
 
         self._iter_index = 0
 
+    ######## PRIVATE CLASS METHODS ########
+
+    @classmethod
+    def with_unit(cls, *args, unit_class=None):
+        """Create a Point and ensure its coordinates are in a type of unit.
+
+        *args: One of:
+            - An `x, y` pair outside of a tuple
+            - An `(x, y)` 2-tuple
+            - An existing Point
+        kwargs:
+            unit_class (type): A BaseUnit class.
+
+        Example:
+            >>> from brown.utils.inch import Inch
+            >>> p = Point.with_unit(2, 3, unit_class=Inch)
+            >>> print(p.x)
+            2 inches
+            >>> print(p.y)
+            3 inches
+
+        Warning: Due to the flexibility of constructor options in Points,
+            `unit_class` must be passed as a keyword argument.
+        """
+        if unit_class is None:
+            raise TypeError('unit_class must be set to a BaseUnit or subclass.'
+                            ' (Did you forget to pass it as a kwarg?)')
+        point = cls(*args)
+        point.to_unit(unit_class)
+        return point
+
     ######## PUBLIC METHODS ########
 
     def to_unit(self, unit_class):

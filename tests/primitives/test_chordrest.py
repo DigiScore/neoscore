@@ -11,7 +11,7 @@ from brown.primitives.clef import Clef
 class TestChordRest(unittest.TestCase):
     def setUp(self):
         brown.setup()
-        self.mock_staff = Staff(0, 0, 100)
+        self.mock_staff = Staff((0, 0), 100)
 
     def test_ledger_line_positions_treble(self):
         pitches = ["c'", "b'", "c'''"]

@@ -3,12 +3,16 @@ from PyQt5 import QtGui
 from abc import ABC
 
 
+from brown.utils.graphic_unit import GraphicUnit
+from brown.utils.point import Point
+
+
 class GraphicObjectInterface(ABC):
     """Interface for a generic graphic object.
 
     This is a top-level abstract interface class.
     """
-    def __init__(self, x, y, pen=None, brush=None, parent=None):
+    def __init__(self, pos, pen=None, brush=None, parent=None):
         """
         Must define and set:
 
@@ -18,8 +22,8 @@ class GraphicObjectInterface(ABC):
             self.parent = parent
 
         Args:
-            x (float): The x position of the path relative to the document
-            y (float): The y position of the path relative to the document
+            pos (Point[GraphicUnit] or tuple): The position of the path root
+                relative to the document.
             pen (PenInterface): The pen to draw outlines with.
             brush (BrushInterface): The brush to draw outlines with.
         """
@@ -28,28 +32,35 @@ class GraphicObjectInterface(ABC):
     ######## PUBLIC PROPERTIES ########
 
     @property
+    def pos(self):
+        """Point[GraphicUnit]: The position of the object."""
+        return self._pos
+
+    @pos.setter
+    def pos(self, value):
+        self._pos = Point.with_unit(value, unit_class=GraphicUnit)
+        self._qt_object.setX(self.pos.x.value)
+        self._qt_object.setY(self.pos.y.value)
+
+    @property
     def x(self):
-        """
-        float: The x position of the Path relative to the document
-        """
-        return self._x
+        """GraphicUnit: The x position relative to the document"""
+        return self.pos.x
 
     @x.setter
     def x(self, value):
-        self._x = value
-        self._qt_object.setX(self._x)
+        self.pos.x = GraphicUnit(value)
+        self._qt_object.setX(self.pos.x.value)
 
     @property
     def y(self):
-        """
-        float: The y position of the Path relative to the document
-        """
-        return self._y
+        """GraphicUnit: The y position relative to the document"""
+        return self.pos.y
 
     @y.setter
     def y(self, value):
-        self._y = value
-        self._qt_object.setY(self._y)
+        self.pos.y = GraphicUnit(value)
+        self._qt_object.setY(self.pos.y.value)
 
     @property
     def pen(self):

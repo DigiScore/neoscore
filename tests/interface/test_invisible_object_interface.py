@@ -12,7 +12,7 @@ class TestInvisibleObjectInterface(unittest.TestCase):
         brown.setup()
 
     def test_init_without_parent(self):
-        test_object = InvisibleObjectInterface(5, 6)
+        test_object = InvisibleObjectInterface((5, 6))
         assert(test_object.x == 5)
         assert(test_object._qt_object.x() == 5)
         assert(test_object.y == 6)
@@ -24,7 +24,7 @@ class TestInvisibleObjectInterface(unittest.TestCase):
                    QtWidgets.QGraphicsItem.ItemHasNoContents))
 
     def test_init_with_parent(self):
-        test_parent = InvisibleObjectInterface(5, 6)
-        test_child = InvisibleObjectInterface(5, 6, parent=test_parent)
+        test_parent = InvisibleObjectInterface((5, 6))
+        test_child = InvisibleObjectInterface((5, 6), parent=test_parent)
         assert(test_child.parent == test_child._parent)
         assert(test_child._qt_object.parentItem() == test_child._parent._qt_object)
