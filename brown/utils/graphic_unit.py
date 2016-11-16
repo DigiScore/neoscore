@@ -1,7 +1,7 @@
 from brown.utils.base_unit import BaseUnit
 
 
-class Pixel(BaseUnit):
+class GraphicUnit(BaseUnit):
     # TODO: When stable, copy and tailor docstring from BaseUnit
     _unit_name_plural = 'pixels'
     _base_units_per_self_unit = 1
