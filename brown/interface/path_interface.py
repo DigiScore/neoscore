@@ -3,6 +3,7 @@ from PyQt5 import QtGui
 
 from brown.core import brown
 from brown.utils.point import Point
+from brown.utils.graphic_unit import GraphicUnit
 from brown.interface.graphic_object_interface import GraphicObjectInterface
 
 
@@ -35,9 +36,6 @@ class PathInterface(GraphicObjectInterface):
         This is the location from which operations like line_to() will draw,
         relative to the position of the Path (`self.x` and `self.y`).
 
-        This value is dependent on `self.current_path_x` and
-        `self.current_path_y`, both of which are initialized to `0`.
-
         This property is read-only. To move the current position, use
         the move_to() method, implicitly closing the current sub-path and
         beginning a new one.
@@ -58,71 +56,80 @@ class PathInterface(GraphicObjectInterface):
     @property
     def current_path_y(self):
         """
-        float: The current relative drawing x-axis position
+        GraphicUnit: The current relative drawing y-axis position
 
         This property is read-only. To move the current position, use
         the move_to() method, implicitly closing the current sub-path and
         beginning a new one.
         """
-        return self.current_path_position.x
+        return self.current_path_position.y
 
     ######## Public Methods ########
 
-    def line_to(self, x, y):
+    def line_to(self, *args):
         """Draw a path from the current position to a new point.
 
         Connect a path from the current position to a new position specified
         by `x` and `y`, and move `self.current_path_position` to the new point.
 
         Args:
-            x (float): The local x position of the line endpoint
-            y (float): The local y position of the line endpoint
+            The position of the new line ending, specified by one of:
+                - A Point
+                - An `x, y` pair outside of a tuple
+                - An `(x, y)` 2-tuple
 
         Returns: None
         """
-        self._qt_path.lineTo(x, y)
+        pos = Point.with_unit(*args, unit_class=GraphicUnit)
+        self._qt_path.lineTo(pos.x.value, pos.y.value)
         self._update_qt_object_path()
-        self.current_path_position.x = x
-        self.current_path_position.y = y
+        self.current_path_position.x = pos.x
+        self.current_path_position.y = pos.y
 
     def cubic_to(self,
-                 control_1_x, control_1_y,
-                 control_2_x, control_2_y,
-                 end_x, end_y):
+                 control_1,
+                 control_2,
+                 end):
         """Draw a cubic spline from the current position to a new point.
 
         Moves `self.current_path_position` to the new end point.
 
         Args:
-            control_1_x (float): The local x position of the 1st control point
-            control_1_y (float): The local y position of the 1st control point
-            control_2_x (float): The local x position of the 2nd control point
-            control_2_y (float): The local y position of the 2nd control point
-            end_x (float): The local x position of the end point
-            end_y (float): The local y position of the end point
+            control_1_x (Point): The local position of the 1st control point
+            control_2_x (Point): The local position of the 2nd control point
+            end_x (Point): The local position of the end point
 
         Returns: None
         """
+        control_1_point = Point.with_unit(control_1, unit_class=GraphicUnit)
+        control_2_point = Point.with_unit(control_2, unit_class=GraphicUnit)
+        end_point = Point.with_unit(end, unit_class=GraphicUnit)
         self._qt_path.cubicTo(
-            control_1_x, control_1_y,
-            control_2_x, control_2_y,
-            end_x, end_y)
+            control_1_point.x.value,
+            control_1_point.y.value,
+            control_2_point.x.value,
+            control_2_point.y.value,
+            end_point.x.value,
+            end_point.y.value)
         self._update_qt_object_path()
-        self.current_path_position.x = end_x
-        self.current_path_position.y = end_y
+        self.current_path_position.x = end_point.x
+        self.current_path_position.y = end_point.y
 
-    def move_to(self, new_x, new_y):
+    def move_to(self, *args):
         """Close the current sub-path and start a new one.
 
         Args:
-            new_x: The new x coordinate to begin the new sub-path
-            new_y: The new y coordinate to begin the new sub-path
+            The position of the new line ending, specified by one of:
+                - A Point
+                - An `x, y` pair outside of a tuple
+                - An `(x, y)` 2-tuple
 
         Returns: None
         """
-        self._qt_path.moveTo(new_x, new_y)
-        self.current_path_position.x = new_x
-        self.current_path_position.y = new_y
+        pos = Point.with_unit(*args, unit_class=GraphicUnit)
+        self._qt_path.moveTo(pos.x.value, pos.y.value)
+        self.current_path_position.x = pos.x
+        self.current_path_position.y = pos.y
         self._update_qt_object_path()
 
     def close_subpath(self):

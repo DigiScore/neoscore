@@ -24,19 +24,19 @@ brown.setup()
 
 
 path = Path((0, 0), Pen('#f29000'), Brush('#eeeeee'))
-path.line_to(30, 40)
-path.cubic_to(30, 40, 90, 60, 100, 100)
-path.cubic_to(80, 80, 10, 120, 50, 75)
+path.line_to((30, 40))
+path.cubic_to((30, 40), (90, 60), (100, 100))
+path.cubic_to((80, 80), (10, 120), (50, 75))
 path.close_subpath()
 path.render()
 
 glyph = Glyph((50, 100), '\uE118', brown.music_font)
 glyph.render()
 
-line = Path.straight_line(50, 50, 50, 50)
+line = Path.straight_line((50, 50), (50, 50))
 line.render()
 
-Path.straight_line(0, 0, 200, 200).render()
+Path.straight_line((0, 0), (200, 200)).render()
 
 
 text = TextObject((120, 10), 'hello')

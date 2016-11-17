@@ -50,9 +50,9 @@ class TestPathInterface(unittest.TestCase):
 
     def test_cubic_to(self):
         test_object = PathInterface((5, 6))
-        test_object.cubic_to(10, 11,
-                             0, 1,
-                             5, 6)
+        test_object.cubic_to((10, 11),
+                             (0, 1),
+                             (5, 6))
         assert(test_object.current_path_position.x == 5)
         assert(test_object.current_path_position.y == 6)
         assert(test_object._qt_path.currentPosition().x() == 5)

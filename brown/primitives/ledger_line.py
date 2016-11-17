@@ -23,11 +23,11 @@ class LedgerLine(StaffObject):
         # HACK --- length should be handled more elegantly later
         self._length = length if length else 1.75 * self.root_staff.staff_unit
         self._grob = Path.straight_line(
-            self.position_x,
-            self.root_staff._staff_pos_to_rel_pixels(self.staff_position),
-            self.length,
-            0,
-            self.parent.grob
+            (self.position_x,
+             self.root_staff._staff_pos_to_rel_pixels(self.staff_position)),
+            (self.length,
+             0),
+            parent=self.parent.grob
         )
 
     ######## PUBLIC PROPERTIES ########

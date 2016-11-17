@@ -14,16 +14,15 @@ class Stem(StaffObject):
             staff_position_end (int): Staff position where the stem ends
         """
         super().__init__(parent, position_x)
+        # TODO: Clean up
         self._staff_position_start = staff_position_start
         self._staff_position_end = staff_position_end
         y_pos = self.root_staff._staff_pos_to_rel_pixels(self.staff_position_start)
         y_delta = (self.staff_position_start - self.staff_position_end) * self.root_staff.staff_unit
         self._grob = Path.straight_line(
-            self.position_x,
-            y_pos,
-            0,
-            y_delta,
-            self.parent.grob
+            (self.position_x, y_pos),
+            (0, y_delta),
+            parent=self.parent.grob
         )
 
     ######## PUBLIC PROPERTIES ########
