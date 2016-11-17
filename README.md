@@ -2,6 +2,8 @@
 
 ## A (very early) WIP Graphic Music Notation API
 
+[![Build Status](https://travis-ci.org/ajyoon/brown.svg?branch=master)](https://travis-ci.org/ajyoon/brown)
+
 Brown is a vector graphics API with an inclination
 toward music notation.
 
