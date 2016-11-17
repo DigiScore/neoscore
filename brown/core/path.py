@@ -97,7 +97,10 @@ class Path(GraphicObject):
 
         Returns: None
         """
-        self._interface.line_to(Point(*args))
+        pos = Point(*args)
+        self._interface.line_to(pos)
+        self.current_path_position.x = pos.x
+        self.current_path_position.y = pos.y
 
     def cubic_to(self,
                  control_1,
@@ -114,10 +117,15 @@ class Path(GraphicObject):
 
         Returns: None
         """
+        # Ensure end_pos is a well-formed Point because it's needed to update
+        # self.current_path_position
+        end_pos = Point(end)
         self._interface.cubic_to(
             control_1,
             control_2,
-            end)
+            end_pos)
+        self.current_path_position.x = end_pos.x
+        self.current_path_position.y = end_pos.y
 
     def move_to(self, *args):
         """Close the current sub-path and start a new one.
