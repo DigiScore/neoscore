@@ -1,4 +1,5 @@
 from brown.core.layout_controller import LayoutController
+from brown.utils.mm import Mm
 
 
 class NewPage(LayoutController):
@@ -13,7 +14,7 @@ class NewPage(LayoutController):
                 line on the next page.
         """
         super().__init__(flowable_frame, x)
-        self.offset_y = offset_y
+        self.offset_y = offset_y if offset_y else Mm(0)
 
     ######## PUBLIC PROPERTIES ########
 

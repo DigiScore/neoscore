@@ -62,8 +62,8 @@ class TestPath(unittest.TestCase):
     def test_cubic_to(self):
         test_path = Path((5, 6))
         test_path.cubic_to((10, 11),
-                             (0, 1),
-                             (5, 6))
+                           (0, 1),
+                           (5, 6))
         assert(test_path.current_path_position.x == 5)
         assert(test_path.current_path_position.y == 6)
         assert(test_path._interface.current_path_position.x == 5)

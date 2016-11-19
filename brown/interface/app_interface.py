@@ -64,7 +64,7 @@ class AppInterface:
         """Open a window showing a preview of the document."""
         print('Launching Qt Application instance')
         self.view.show()
-        self.app.exec_()
+        self.app.exit(self.app.exec_())
 
     def destroy(self):
         """Destroy the window and all global interface-level data."""

@@ -9,13 +9,13 @@ class Paper:
                  gutter=0):
         """
         Args:
-            width (float): The paper width in mm.
-            height (float): The paper height in mm.
-            margin_top (float): The paper top margin in mm.
-            margin_right (float): The paper right margin in mm.
-            margin_bottom (float): The paper bottom margin in mm.
-            margin_left (float): The paper left margin in mm.
-            gutter (float): The paper gutter in mm.
+            width (BaseUnit): The paper width.
+            height (BaseUnit): The paper height.
+            margin_top (BaseUnit): The paper top margin.
+            margin_right (BaseUnit): The paper right margin.
+            margin_bottom (BaseUnit): The paper bottom margin.
+            margin_left (BaseUnit): The paper left margin.
+            gutter (BaseUnit): The paper gutter.
         """
         self.width = width
         self.height = height
@@ -45,7 +45,7 @@ class Paper:
 
     @property
     def width(self):
-        """float: The page width in mm"""
+        """BaseUnit: The page width"""
         return self._width
 
     @width.setter
@@ -54,7 +54,7 @@ class Paper:
 
     @property
     def height(self):
-        """float: The page height in mm"""
+        """BaseUnit: The page height"""
         return self._height
 
     @height.setter
@@ -63,7 +63,7 @@ class Paper:
 
     @property
     def margin_top(self):
-        """float: The top margin in mm"""
+        """BaseUnit: The top margin"""
         return self._margin_top
 
     @margin_top.setter
@@ -72,7 +72,7 @@ class Paper:
 
     @property
     def margin_right(self):
-        """float: The right margin in mm"""
+        """BaseUnit: The right margin"""
         return self._margin_right
 
     @margin_right.setter
@@ -81,7 +81,7 @@ class Paper:
 
     @property
     def margin_bottom(self):
-        """float: The bottom margin in mm"""
+        """BaseUnit: The bottom margin"""
         return self._margin_bottom
 
     @margin_bottom.setter
@@ -90,7 +90,7 @@ class Paper:
 
     @property
     def margin_left(self):
-        """float: The left margin in mm"""
+        """BaseUnit: The left margin"""
         return self._margin_left
 
     @margin_left.setter
@@ -99,7 +99,7 @@ class Paper:
 
     @property
     def gutter(self):
-        """float: The page gutter in mm.
+        """BaseUnit: The page gutter.
 
         TODO: Gutter support is not fully implemented.
         """
@@ -111,11 +111,11 @@ class Paper:
 
     @property
     def live_width(self):
-        """The printable width of the page in mm"""
+        """The printable width of the page"""
         return (self.width - self.gutter -
                 self.margin_left - self.margin_right)
 
     @property
     def live_height(self):
-        """The printable height of the page in mm"""
+        """The printable height of the page"""
         return self.height - self.margin_bottom - self.margin_top

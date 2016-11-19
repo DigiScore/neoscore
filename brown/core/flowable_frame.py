@@ -1,6 +1,6 @@
-from brown.utils import units
 from brown.utils.point import Point
 from brown.core import brown
+from brown.utils.mm import Mm
 from brown.core.layout_controller import LayoutController
 from brown.core.auto_new_line import AutoNewLine
 from brown.core.auto_new_page import AutoNewPage
@@ -21,7 +21,7 @@ class FlowableFrame:
         self.width = width
         self.height = height
         if y_padding is None:
-            self.y_padding = units.mm * 20
+            self.y_padding = Mm(20)
         else:
             self.y_padding = y_padding
 
@@ -119,11 +119,11 @@ class FlowableFrame:
         Returns: None
         """
         self.auto_layout_controllers = []
-        live_page_width = brown.document.paper.live_width * units.mm
-        live_page_height = brown.document.paper.live_height * units.mm
+        live_page_width = brown.document.paper.live_width
+        live_page_height = brown.document.paper.live_height
         # The progress the layout generation has reached along the frame's width.
         # When the entire flowable has been covered, this value will == self.width
-        x_progress = 0
+        x_progress = Mm(0)
         # Current position on the page relative to the top left corner of the live page area
         current_page_x = self.x
         current_page_y = self.y
@@ -136,11 +136,11 @@ class FlowableFrame:
             if current_page_y > live_page_height:
                 self.auto_layout_controllers.append(
                     AutoNewPage(self, x_progress))
-                current_page_y = 0
+                current_page_y = Mm(0)
             else:
                 self.auto_layout_controllers.append(
                     AutoNewLine(self, x_progress, self.y_padding))
-                current_page_x = 0
+                current_page_x = Mm(0)
 
     def _local_space_to_doc_space(self, point):
         """Convert a position inside the frame to its position in the document.
@@ -148,13 +148,14 @@ class FlowableFrame:
         Coordinates relative to the top left corner of the first page.
 
         Args:
-            local_point (tuple or Point): An x-y coordinate in pixels.
+            local_point (tuple or Point): An x-y coordinate in flowable space
 
-        Returns: tuple(float: x, float: y) coordinates in pixels
         Returns:
-            Point: A point in pixels
+            Point: An x-y coordinate in document space
         """
+        print('point y: ', point[1])
         local_point = Point(point)
+        print('local point y: ', local_point.y)
         # Seek to the page and line-on-page based on auto layout controllers
         self._generate_auto_layout_controllers()
         page_num = 1
@@ -167,24 +168,26 @@ class FlowableFrame:
         for controller in self.auto_layout_controllers:
             if controller.x > local_point.x:
                 break
-            remaining_x -= (brown.document.paper.live_width * units.mm -
+            remaining_x -= (brown.document.paper.live_width -
                             current_x_offset)
             if isinstance(controller, AutoNewLine):
                 line_on_page += 1
-                current_x_offset = 0
+                current_x_offset = Mm(0)
                 current_y_offset += self.height + controller.offset_y
             elif isinstance(controller, AutoNewPage):
                 page_num += 1
                 line_on_page = 1
-                current_x_offset = 0
+                current_x_offset = Mm(0)
                 current_y_offset = controller.offset_y
+                print('current_y_offset changed to', current_y_offset)
         # Locate current page origin in doc space and apply offsets
-        # print('remaining x is', remaining_x)
-        # print('page num is ', page_num)
-        # print('line on page is ', line_on_page)
+        print('remaining x is', remaining_x)
+        print('page num is ', page_num)
+        print('line on page is ', line_on_page)
         page_x, page_y = brown.document._page_origin_in_doc_space(page_num)
-        # print('page coords: ', page_x, page_y)
+        print('page coords: ', page_x, page_y)
         line_x = page_x + current_x_offset
         line_y = page_y + current_y_offset
-        # print('line coords: ', line_x, line_y)
+        print('line coords: ', line_x, line_y)
+        print('local point y: ', local_point.y)
         return Point(line_x + remaining_x, line_y + local_point.y)

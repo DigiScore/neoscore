@@ -40,6 +40,11 @@ class Point:
 
         self._iter_index = 0
 
+    ######## SPECIAL METHODS ########
+
+    def __repr__(self):
+        return '{}({}, {})'.format(type(self).__name__, self.x, self.y)
+
     ######## PRIVATE CLASS METHODS ########
 
     @classmethod

@@ -64,6 +64,9 @@ class BaseUnit:
     def __str__(self):
         return '{} {}'.format(self.value, self._unit_name_plural)
 
+    def __repr__(self):
+        return '{}({})'.format(type(self).__name__, self.value)
+
     # Comparisons --------------------------------
 
     def __lt__(self, other):

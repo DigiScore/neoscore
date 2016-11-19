@@ -1,8 +1,8 @@
 from brown.config import config
 from brown.core import brown
-from brown.utils import units
 from brown.utils.point import Point
 from brown.core.paper import Paper
+from brown.utils.mm import Mm
 
 
 
@@ -35,7 +35,7 @@ class Document:
     @property
     def _page_display_gap(self):
         """float: The visual horizontal gap between pages, in pixels."""
-        return units.mm * 15
+        return Mm(15)
 
     ######## PRIVATE METHODS ########
 
@@ -57,9 +57,8 @@ class Document:
         if page_number < 1:
             raise ValueError('page_number must be 1 or greater.')
         # Left edge of paper (not including margin/gutter)
-        page_pix_width = self.paper.width * units.mm
-        x_page_left = ((page_number - 1) *
-                       (page_pix_width + self._page_display_gap))
-        x_page_origin = x_page_left + (self.paper.margin_left * units.mm)
-        y_page_origin = (self.paper.margin_top) * units.mm
+        x_page_left = ((self.paper.width + self._page_display_gap) *
+                       (page_number - 1))
+        x_page_origin = x_page_left + self.paper.margin_left
+        y_page_origin = self.paper.margin_top
         return Point(x_page_origin, y_page_origin)
