@@ -87,8 +87,7 @@ class Point:
     def x(self, value):
         value_changed = value != self._x
         self._x = value
-        if value_changed:
-            self.setters_hook()
+        self.setters_hook()
 
     @property
     def y(self):
@@ -99,8 +98,7 @@ class Point:
     def y(self, value):
         value_changed = value != self._y
         self._y = value
-        if value_changed:
-            self.setters_hook()
+        self.setters_hook()
 
 
     ######## PUBLIC METHODS ########
