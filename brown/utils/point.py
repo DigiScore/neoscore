@@ -26,13 +26,13 @@ class Point:
             - An existing Point
         """
         if len(args) == 2:
-            self.x, self.y = args
+            self._x, self._y = args
         elif len(args) == 1:
             if isinstance(args[0], tuple):
-                self.x, self.y = args[0]
+                self._x, self._y = args[0]
             elif isinstance(args[0], Point):
-                self.x = args[0].x
-                self.y = args[0].y
+                self._x = args[0].x
+                self._y = args[0].y
             else:
                 raise ValueError('Invalid args for Point.__init__()')
         else:
@@ -75,6 +75,33 @@ class Point:
         point = cls(*args)
         point.to_unit(unit_class)
         return point
+
+    ######## PUBLIC PROPERTIES ########
+
+    @property
+    def x(self):
+        """BaseUnit, int, or float: The x coordinate of the point."""
+        return self._x
+
+    @x.setter
+    def x(self, value):
+        value_changed = value != self._x
+        self._x = value
+        if value_changed:
+            self.on_change()
+
+    @property
+    def y(self):
+        """BaseUnit, int, or float: The y coordinate of the point."""
+        return self._y
+
+    @y.setter
+    def y(self, value):
+        value_changed = value != self._y
+        self._y = value
+        if value_changed:
+            self.on_change()
+
 
     ######## PUBLIC METHODS ########
 
@@ -147,9 +174,3 @@ class Point:
             return self.x
         else:
             return self.y
-
-    def __setattr__(self, name, value):
-        """Overload of setattr which provides an optional function hook."""
-        if not hasattr(self, name) or getattr(self, name) != value:
-            self.on_change()
-        super().__setattr__(name, value)
