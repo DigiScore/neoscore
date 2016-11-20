@@ -12,7 +12,7 @@ class PathElement(InvisibleObject):
 
     # TODO: Revisit and decide if this is a good way to go about this.
     """
-    def __init__(self, pos, parent, parent_path, path_element_interface):
+    def __init__(self, path_element_interface, parent, parent_path):
         """
         Args:
             pos (Point[GraphicUnit] or tuple): The position of the object
@@ -23,7 +23,7 @@ class PathElement(InvisibleObject):
                 for this element.
         """
         self._path_element_interface = path_element_interface
-        super().__init__(pos, parent=parent)
+        super().__init__(self._path_element_interface.pos, parent=parent)
         self.parent_path = parent_path
 
     @property
@@ -85,6 +85,5 @@ class PathElement(InvisibleObject):
         if self.parent == self.parent_path:
             self._path_element_interface.pos = self.pos
         else:
-            print(self.pos_relative_to_item(self.parent_path))
             self._path_element_interface.pos = self.pos_relative_to_item(
                 self.parent_path)

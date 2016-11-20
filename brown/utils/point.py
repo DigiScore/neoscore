@@ -88,7 +88,7 @@ class Point:
         value_changed = value != self._x
         self._x = value
         if value_changed:
-            self.on_change()
+            self.setters_hook()
 
     @property
     def y(self):
@@ -100,7 +100,7 @@ class Point:
         value_changed = value != self._y
         self._y = value
         if value_changed:
-            self.on_change()
+            self.setters_hook()
 
 
     ######## PUBLIC METHODS ########
@@ -116,10 +116,10 @@ class Point:
         self.x = unit_class(self.x)
         self.y = unit_class(self.y)
 
-    def on_change(self):
+    def setters_hook(self):
         """Optional method to be called when an attribute changes.
 
-        To set a change hook, instantiate a Point and set its `on_change`
+        To set a change hook, instantiate a Point and set its `setters_hook`
         method to some arbitrary function. Any time an attribute is changed,
         this function will be called.
 
@@ -128,7 +128,7 @@ class Point:
             ...     def __init__(self):
             ...         self.point_setter_hook_called = False
             ...         self.point = Point(0, 0)
-            ...         self.point.on_change = self.handle_hook
+            ...         self.point.setters_hook = self.handle_hook
             ...
             ...     def handle_hook(self):
             ...         self.point_setter_hook_called = True

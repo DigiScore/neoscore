@@ -118,12 +118,21 @@ class Path(GraphicObject):
         rel_pos = Point(pos)
         if parent is None or parent == self:  # parent == self
             self._interface.line_to(rel_pos)
+            if not len(self.elements):
+                # HACK: Append initial move_to
+                self.elements.append(PathElement(
+                    self._interface.element_at(0), self, self))
             self.elements.append(PathElement(
-                rel_pos, self, self, self._interface.element_at(-1)))
+                self._interface.element_at(-1), self, self))
         else:
-            self._interface.line_to((0, 0))  # HACK: Initialize element to 0, 0
+            self._interface.line_to((0, 0))
+            if not len(self.elements):
+                # HACK: Append initial move_to
+                self.elements.append(PathElement(
+                    self._interface.element_at(0), self, self))
             self.elements.append(PathElement(
-                rel_pos, parent, self, self._interface.element_at(-1)))
+                self._interface.element_at(-1), parent, self))
+            self.elements[-1].pos = rel_pos
             self.elements[-1]._update_element_interface_pos()
 
     def cubic_to(self, control_1, control_2, end, parent=None):
@@ -148,7 +157,7 @@ class Path(GraphicObject):
                 control_2,
                 rel_pos)
             self.elements.append(PathElement(
-                rel_pos, self, self, self._interface.element_at(-1)))
+                self._interface.element_at(-1), self, self))
         else:
             raise NotImplementedError
             self._interface.cubic_to(
@@ -156,7 +165,8 @@ class Path(GraphicObject):
                 control_2,
                 rel_pos)  # TODO: How to handle parentage with curves?
             self.elements.append(PathElement(
-                rel_pos, parent, self, self._interface.element_at(-1)))
+                self._interface.element_at(-1), parent, self))
+            self.elements[-1].pos = rel_pos
 
     def move_to(self, pos, parent=None):
         """Close the current sub-path and start a new one.
@@ -170,7 +180,7 @@ class Path(GraphicObject):
         if parent is None:
             self._interface.move_to(rel_pos)
             self.elements.append(PathElement(
-                rel_pos, self, self, self._interface.element_at(-1)))
+                self._interface.element_at(-1), self, self))
         else:
             raise NotImplementedError
 

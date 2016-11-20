@@ -38,15 +38,27 @@ class TestPathInterface(unittest.TestCase):
         test_path = PathInterface((5, 6))
         assert(test_path.current_path_y == test_path.current_path_position.y)
 
+    def test_initial_element_count_is_0(self):
+        test_path = PathInterface((5, 6))
+        assert(test_path._qt_path.elementCount() == 0)
+
     def test_line_to(self):
         test_path = PathInterface((5, 6))
         test_path.line_to((10, 12))
         assert(test_path.current_path_position.x == 10)
         assert(test_path.current_path_position.y == 12)
+        assert(test_path._qt_path == test_path._qt_object.path())
         assert(test_path._qt_path.currentPosition().x() == 10)
         assert(test_path._qt_path.currentPosition().y() == 12)
+        assert(test_path._qt_path.elementCount() == 2)
         # TODO: Actually inspect contents of path and make sure they
         #       are as expected
+
+    # def test_confirm_line_to_insanity(self):
+    #     test_path = PathInterface((5, 6))
+    #     test_path.line_to((0, 0))
+    #     assert(test_path._qt_path.elementAt(0).isMoveTo() == True)
+    #     assert(test_path._qt_path.elementAt(1).isLineTo() == False)
 
     def test_cubic_to(self):
         test_path = PathInterface((5, 6))

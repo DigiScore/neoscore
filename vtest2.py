@@ -25,8 +25,11 @@ brown.setup()
 glyph = Glyph((50, 100), '\uE118', brown.music_font)
 glyph.render()
 
-path = Path((0, 0), Pen('#f29000'), Brush('#eeeeee'))
-path.line_to((100, 200), parent=glyph)
+path = Path((0, 0), Pen('#000000'), Brush('#eeeeee'))
+#path.line_to((25, 25))
+#path.line_to((25, 50))
+#path.line_to((0, 50))
+path.line_to((0, 0), parent=glyph)
 path.render()
 
 

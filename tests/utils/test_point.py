@@ -73,12 +73,12 @@ class TestPoint(unittest.TestCase):
         with pytest.raises(TypeError):
             test_point['nonsense index']
 
-    def test_on_change_setter_hook(self):
+    def test_setters_hook_setter_hook(self):
         class PointHolder:
             def __init__(self):
                 self.point_setter_hook_called = False
                 self.point = Point(0, 0)
-                self.point.on_change = self.handle_hook
+                self.point.setters_hook = self.handle_hook
 
             def handle_hook(self):
                 self.point_setter_hook_called = True
@@ -87,12 +87,12 @@ class TestPoint(unittest.TestCase):
         test_instance.point.x = 1
         assert(test_instance.point_setter_hook_called is True)
 
-    def test_on_change_setter_hook_with_same_value_set(self):
+    def test_setters_hook_setter_hook_with_same_value_set(self):
         class PointHolder:
             def __init__(self):
                 self.point_setter_hook_called = False
                 self.point = Point(0, 0)
-                self.point.on_change = self.handle_hook
+                self.point.setters_hook = self.handle_hook
 
             def handle_hook(self):
                 self.point_setter_hook_called = True

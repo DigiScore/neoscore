@@ -8,6 +8,14 @@ from brown.interface.graphic_object_interface import GraphicObjectInterface
 from brown.interface.path_element_interface import PathElementInterface
 
 
+"""
+Notes on Qt path quirks:
+* At creation time, paths have an elementCount() of 0,
+  but after a line is created, elementCount() == 2. First element
+  is a moveTo to the origin; second is the lineTo you asked for
+"""
+
+
 class PathInterface(GraphicObjectInterface):
     """Interface for a generic graphic path object."""
     def __init__(self, pos, pen=None, brush=None, parent=None):

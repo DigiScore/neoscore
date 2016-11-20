@@ -30,7 +30,7 @@ class PathElementInterface:
         self._index = index
         self._pos = Point.with_unit(qt_object.x, qt_object.y,
                                     unit_class=GraphicUnit)
-        self._pos.on_change = self._update_element_in_parent_path
+        self._pos.setters_hook = self._update_element_in_parent_path
 
     ######## PUBLIC PROPERTIES ########
 
@@ -41,7 +41,7 @@ class PathElementInterface:
     @pos.setter
     def pos(self, value):
         self._pos = value
-        self._pos.on_change = self._update_element_in_parent_path
+        self._pos.setters_hook = self._update_element_in_parent_path
         self._update_element_in_parent_path()
 
     @property

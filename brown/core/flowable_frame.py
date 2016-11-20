@@ -182,15 +182,15 @@ class FlowableFrame:
                 line_on_page = 1
                 current_x_offset = Mm(0)
                 current_y_offset = controller.offset_y
-                print('current_y_offset changed to', current_y_offset)
+                # print('current_y_offset changed to', current_y_offset)
         # Locate current page origin in doc space and apply offsets
-        print('remaining x is', remaining_x)
-        print('page num is ', page_num)
-        print('line on page is ', line_on_page)
+        # print('remaining x is', remaining_x)
+        # print('page num is ', page_num)
+        # print('line on page is ', line_on_page)
         page_x, page_y = brown.document._page_origin_in_doc_space(page_num)
-        print('page coords: ', page_x, page_y)
+        # print('page coords: ', page_x, page_y)
         line_x = page_x + current_x_offset
         line_y = page_y + current_y_offset
-        print('line coords: ', line_x, line_y)
-        print('local point y: ', local_point.y)
+        # print('line coords: ', line_x, line_y)
+        # print('local point y: ', local_point.y)
         return Point(line_x + remaining_x, line_y + local_point.y)
