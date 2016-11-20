@@ -89,6 +89,29 @@ class Point:
         self.x = unit_class(self.x)
         self.y = unit_class(self.y)
 
+    def on_change(self):
+        """Optional method to be called when an attribute changes.
+
+        To set a change hook, instantiate a Point and set its `on_change`
+        method to some arbitrary function. Any time an attribute is changed,
+        this function will be called.
+
+        Example:
+            >>> class PointHolder:
+            ...     def __init__(self):
+            ...         self.point_setter_hook_called = False
+            ...         self.point = Point(0, 0)
+            ...         self.point.on_change = self.handle_hook
+            ...
+            ...     def handle_hook(self):
+            ...         self.point_setter_hook_called = True
+            >>> test_instance = PointHolder()
+            >>> test_instance.point.x = 1  # Change x, triggering hook
+            >>> test_instance.point_setter_hook_called
+            True
+        """
+        pass
+
     ######## SPECIAL METHODS ########
 
     def __iter__(self):
@@ -124,3 +147,9 @@ class Point:
             return self.x
         else:
             return self.y
+
+    def __setattr__(self, name, value):
+        """Overload of setattr which provides an optional function hook."""
+        if not hasattr(self, name) or getattr(self, name) != value:
+            self.on_change()
+        super().__setattr__(name, value)
