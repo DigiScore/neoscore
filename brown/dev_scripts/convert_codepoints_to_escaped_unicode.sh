@@ -15,7 +15,7 @@ do
     if [ "$1" = "-h" ] || [ "$1" = "-help" ] || [ "$1" = "--h" ] || [ "$1" = "--help" ]; then
         help_and_exit
     else
-        FILE_ARRAY+="$1"
+        FILE_ARRAY+=("$1")
     fi
     shift
 done
