@@ -57,19 +57,31 @@ class PathElementInterface:
         return self._index
 
     @property
-    def is_curve_to(self):
-        """bool: Whether this element is a curve-to element."""
-        return self._qt_object.isCurveTo()
+    def is_move_to(self):
+        """bool: Whether this element is a move-to element."""
+        return self._qt_object.type == 0
 
     @property
     def is_line_to(self):
         """bool: Whether this element is a line-to element."""
-        return self._qt_object.isLineTo()
+        return self._qt_object.type == 1
 
     @property
-    def is_move_to(self):
-        """bool: Whether this element is a move-to element."""
-        return self._qt_object.isMoveTo()
+    def is_curve_to(self):
+        """bool: Whether this element is a curve-to element."""
+        # TODO: This is not accurate.
+        #       When creating a curve, Qt marks the first control point
+        #       as being a CurveToElement, and all following as
+        #       CurveToDataElement's --- need to work around this so that
+        #       the control points and clearly marked differently from the
+        #       end point.
+        return self._qt_object.type == 2
+
+    @property
+    def is_control_point(self):
+        """bool: Whether this element is a control point element"""
+        # TODO: This is not accurate. See above
+        return self._qt_object.type == 3
 
     ######## PRIVATE PROPERTIES ########
 

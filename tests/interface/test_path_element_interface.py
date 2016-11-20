@@ -1,3 +1,4 @@
+import pytest
 import unittest
 
 from brown.core import brown
@@ -53,3 +54,51 @@ class TestPathElementInterface(unittest.TestCase):
         test_element.pos.x = 100
         assert(test_path._qt_path.elementAt(1).x == 100)
         assert(test_path._qt_object.path() == test_path._qt_path)
+
+    def test_is_move_to(self):
+        test_path = PathInterface((5, 6))
+        test_path.move_to((10, 11))
+        qt_element = test_path._qt_path.elementAt(0)
+        test_element = PathElementInterface(qt_element, test_path, 0)
+        assert(test_element.is_move_to is True)
+        assert(test_element.is_line_to is False)
+        assert(test_element.is_curve_to is False)
+        assert(test_element.is_control_point is False)
+
+    def test_is_line_to(self):
+        test_path = PathInterface((5, 6))
+        test_path.line_to((10, 11))
+        qt_element = test_path._qt_path.elementAt(1)
+        test_element = PathElementInterface(qt_element, test_path, 0)
+        assert(test_element.is_move_to is False)
+        assert(test_element.is_line_to is True)
+        assert(test_element.is_curve_to is False)
+        assert(test_element.is_control_point is False)
+
+    @pytest.mark.xfail
+    def test_curves_and_control_points(self):
+        # This behavior is correct, but not yet implemented
+
+        test_path = PathInterface((5, 6))
+        test_path.cubic_to((10, 11), (20, 0), (50, 30))
+
+        qt_element_1 = test_path._qt_path.elementAt(1)
+        test_element_1 = PathElementInterface(qt_element_1, test_path, 0)
+        assert(test_element_1.is_move_to is False)
+        assert(test_element_1.is_line_to is False)
+        assert(test_element_1.is_curve_to is False)
+        assert(test_element_1.is_control_point is True)
+
+        qt_element_2 = test_path._qt_path.elementAt(2)
+        test_element_2 = PathElementInterface(qt_element_2, test_path, 0)
+        assert(test_element_2.is_move_to is False)
+        assert(test_element_2.is_line_to is False)
+        assert(test_element_2.is_curve_to is False)
+        assert(test_element_2.is_control_point is True)
+
+        qt_element_3 = test_path._qt_path.elementAt(3)
+        test_element_3 = PathElementInterface(qt_element_3, test_path, 0)
+        assert(test_element_3.is_move_to is False)
+        assert(test_element_3.is_line_to is False)
+        assert(test_element_3.is_curve_to is True)
+        assert(test_element_3.is_control_point is False)

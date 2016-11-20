@@ -55,8 +55,7 @@ class PathInterface(GraphicObjectInterface):
 
     @property
     def current_path_position(self):
-        """
-        Point[GraphicUnit]: The current relative drawing position.
+        """Point[GraphicUnit]: The current relative drawing position.
 
         This is the location from which operations like line_to() will draw,
         relative to the position of the Path (`self.x` and `self.y`).
@@ -65,12 +64,14 @@ class PathInterface(GraphicObjectInterface):
         the move_to() method, implicitly closing the current sub-path and
         beginning a new one.
         """
-        return self._current_path_position
+        if self.element_count:
+            return self.element_at(-1).pos
+        else:
+            return Point(0, 0)
 
     @property
     def current_path_x(self):
-        """
-        GraphicUnit: The current relative drawing x-axis position
+        """GraphicUnit: The current relative drawing x-axis position
 
         This property is read-only. To move the current position, use
         the move_to() method, implicitly closing the current sub-path and
@@ -80,14 +81,18 @@ class PathInterface(GraphicObjectInterface):
 
     @property
     def current_path_y(self):
-        """
-        GraphicUnit: The current relative drawing y-axis position
+        """GraphicUnit: The current relative drawing y-axis position
 
         This property is read-only. To move the current position, use
         the move_to() method, implicitly closing the current sub-path and
         beginning a new one.
         """
         return self.current_path_position.y
+
+    @property
+    def element_count(self):
+        """int: The number of elements in the path."""
+        return self._qt_path.elementCount()
 
     ######## Public Methods ########
 
@@ -105,8 +110,6 @@ class PathInterface(GraphicObjectInterface):
         target = Point.with_unit(pos, unit_class=GraphicUnit)
         self._qt_path.lineTo(target.x.value, target.y.value)
         self._update_qt_object_path()
-        self.current_path_position.x = target.x
-        self.current_path_position.y = target.y
 
     def cubic_to(self,
                  control_1,
@@ -134,8 +137,6 @@ class PathInterface(GraphicObjectInterface):
             end_point.x.value,
             end_point.y.value)
         self._update_qt_object_path()
-        self.current_path_position.x = end_point.x
-        self.current_path_position.y = end_point.y
 
     def move_to(self, pos):
         """Close the current sub-path and start a new one.
@@ -147,8 +148,6 @@ class PathInterface(GraphicObjectInterface):
         """
         target = Point.with_unit(pos, unit_class=GraphicUnit)
         self._qt_path.moveTo(target.x.value, target.y.value)
-        self.current_path_position.x = target.x
-        self.current_path_position.y = target.y
         self._update_qt_object_path()
 
     def close_subpath(self):
@@ -159,8 +158,6 @@ class PathInterface(GraphicObjectInterface):
         Returns: None
         """
         self._qt_path.closeSubpath()
-        self.current_path_position.x = 0
-        self.current_path_position.y = 0
         self._update_qt_object_path()
 
     def element_at(self, index):
@@ -174,7 +171,7 @@ class PathInterface(GraphicObjectInterface):
         # TODO: Implement a list-like iterable wrapper around path elements?
         """
         if index < 0:
-            qt_index = self._qt_path.elementCount() + index
+            qt_index = self.element_count + index
         else:
             qt_index = index
         return PathElementInterface(self._qt_path.elementAt(qt_index),

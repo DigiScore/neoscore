@@ -164,6 +164,7 @@ class Path(GraphicObject):
                 control_1,
                 control_2,
                 rel_pos)
+            # TODO: Need to append control points to elements list as well
             self.elements.append(PathElement(
                 self._interface.element_at(-1), self, self))
         else:
