@@ -109,6 +109,8 @@ class GraphicObject(ABC):
 
         Returns: Point
         """
+        if self.parent == other:
+            return self.pos
         return self._interface.pos_relative_to_item(other._interface)
 
     def render(self):

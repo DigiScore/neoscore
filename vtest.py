@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
 import random
+import sys
 
-from brown.utils import units
+from brown.utils.mm import Mm
 from brown.core import brown
 from brown.core.font import Font
 from brown.core.text_object import TextObject
@@ -38,12 +39,14 @@ line.render()
 
 Path.straight_line((0, 0), (200, 200)).render()
 
+brown.show()
+sys.exit()
 
 text = TextObject((120, 10), 'hello')
 text.brush = Brush('#00ffff')
 text.render()
 
-staff = Staff((0, 150), 300, 1)
+staff = Staff((Mm(0), Mm(150)), Mm(300), Mm(1))
 staff.render()
 
 clef = Clef(staff, 0, 'alto')
@@ -76,9 +79,9 @@ chordrest.render()
 # Path.straight_line(270, 0, 0, 100).render()
 
 # Test hacky use of flowable coordinate space
-flow = FlowableFrame((0, 0), 350000, 400)
+flow = FlowableFrame((Mm(0), Mm(0)), Mm(3500), Mm(20))
 for i in range(1000):
-    x, y = flow._local_space_to_doc_space((i * 20, random.randint(0, 250)))
+    x, y = flow._local_space_to_doc_space((Mm(i * 2), Mm(random.randint(0, 20))))
     glyph = Glyph((x, y), '\uE118', brown.music_font)
     glyph.render()
 

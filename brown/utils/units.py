@@ -17,4 +17,4 @@ cm = mm * 10
 # in a staff. For now, this depends on the assumption that
 # all staves will have exactly 5 lines, and that all staves
 # are the same size, as defined in config.DEFAULT_STAFF_HEIGHT
-staff_unit = mm * config.DEFAULT_STAFF_UNIT
+staff_unit = config.DEFAULT_STAFF_UNIT

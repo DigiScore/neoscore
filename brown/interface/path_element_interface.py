@@ -78,5 +78,6 @@ class PathElementInterface:
 
         Returns: None
         """
+        print('updating element in parent path!')
         self.parent_path.set_element_position_at(self.index, self.pos)
         self.parent_path._update_qt_object_path()

@@ -54,3 +54,11 @@ class TestGraphicObject(unittest.TestCase):
         relative_x, relative_y = grob.pos_relative_to_item(other)
         assert(relative_x.value == 95)
         assert(relative_y.value == 94)
+
+    def test_pos_relative_to_item_thorugh_parent(self):
+        parent = MockGraphicObject((100, 100))
+        grob = MockGraphicObject((1, 1), parent=parent)
+        other = MockGraphicObject((5, 6))
+        relative_x, relative_y = grob.pos_relative_to_item(other)
+        assert(relative_x.value == 96)
+        assert(relative_y.value == 95)

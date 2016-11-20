@@ -147,7 +147,7 @@ class PathInterface(GraphicObjectInterface):
 
         Returns: PathElementInterface
 
-        # TODO: Implement a list-like iterable wrapper around path elements.
+        # TODO: Implement a list-like iterable wrapper around path elements?
         """
         if index < 0:
             qt_index = self._qt_path.elementCount() + index

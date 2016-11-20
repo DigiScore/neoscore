@@ -54,16 +54,19 @@ class TestPath(unittest.TestCase):
     def test_line_to(self):
         test_path = Path((5, 6))
         test_path.line_to((10, 12))
+        assert(len(test_path.elements) == 1)
+        assert(test_path.elements[-1].pos.x == 10)
         assert(test_path.current_path_position.x == 10)
         assert(test_path.current_path_position.y == 12)
         assert(test_path._interface.current_path_position.x == 10)
         assert(test_path._interface.current_path_position.y == 12)
 
-    # def test_line_to_with_parent(self):
-    #     test_path = Path((5, 6))
-    #     parent = MockGraphicObject((100, 100))
-    #     test_path.line_to(Point(0, 0), parent)
-
+    def test_line_to_with_parent(self):
+        test_path = Path((5, 6))
+        parent = MockGraphicObject((100, 50))
+        test_path.line_to(Point(1, 3), parent)
+        assert(test_path.elements[-1]._path_element_interface.pos.x == 96)
+        assert(test_path.elements[-1]._path_element_interface.pos.y == 47)
 
     def test_cubic_to(self):
         test_path = Path((5, 6))

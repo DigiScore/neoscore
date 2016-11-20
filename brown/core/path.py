@@ -1,6 +1,7 @@
 from brown.interface.path_interface import PathInterface
 from brown.core.graphic_object import GraphicObject
 from brown.utils.point import Point
+from brown.utils.graphic_unit import GraphicUnit
 from brown.core.path_element import PathElement
 
 
@@ -24,6 +25,7 @@ class Path(GraphicObject):
         self._interface = Path._interface_class((0, 0))
         super().__init__(pos, pen, brush, parent)
         self._current_path_position = Point(0, 0)
+        self.elements = []
 
     ######## CLASSMETHODS ########
 
@@ -58,7 +60,10 @@ class Path(GraphicObject):
         the move_to() method, implicitly closing the current sub-path and
         beginning a new one.
         """
-        return self._current_path_position
+        if self.elements:
+            return self.elements[-1].pos_relative_to_item(self)
+        else:
+            return Point.with_unit((0, 0), unit_class=GraphicUnit)
 
     @property
     def current_path_x(self):
@@ -84,19 +89,6 @@ class Path(GraphicObject):
 
     ######## Public Methods ########
 
-
-    def element_at(self, index):
-        """Find the element at a given index and return it.
-
-        Args:
-            index (int): The element index. Use -1 for the last index.
-
-        Returns: PathElementInterface
-
-        # TODO: Implement a list-like iterable wrapper around path elements.
-        """
-        pass
-
     def set_element_position_at(self, index, pos):
         """Set the element at an index to a given position.
 
@@ -110,7 +102,8 @@ class Path(GraphicObject):
         # TODO: Make index error guards when proper element list is made
         self._qt_path.setElementPositionAt(index, float(pos[0]), float(pos[0]))
 
-    def line_to(self, pos):
+
+    def line_to(self, pos, parent=None):
         """Draw a path from the current position to a new point.
 
         Connect a path from the current position to a new position specified
@@ -118,18 +111,22 @@ class Path(GraphicObject):
 
         Args:
             pos (Point or tuple): The target position
+            parent (GraphicObject or None):
 
         Returns: None
         """
-        target = Point(pos)
-        self._interface.line_to(target)
-        self.current_path_position.x = target.x
-        self.current_path_position.y = target.y
+        rel_pos = Point(pos)
+        if parent is None or parent == self:  # parent == self
+            self._interface.line_to(rel_pos)
+            self.elements.append(PathElement(
+                rel_pos, self, self, self._interface.element_at(-1)))
+        else:
+            self._interface.line_to((0, 0))  # HACK: Initialize element to 0, 0
+            self.elements.append(PathElement(
+                rel_pos, parent, self, self._interface.element_at(-1)))
+            self.elements[-1]._update_element_interface_pos()
 
-    def cubic_to(self,
-                 control_1,
-                 control_2,
-                 end):
+    def cubic_to(self, control_1, control_2, end, parent=None):
         """Draw a cubic spline from the current position to a new point.
 
         Moves `self.current_path_position` to the new end point.
@@ -138,20 +135,30 @@ class Path(GraphicObject):
             control_1_x (Point): The local position of the 1st control point
             control_2_x (Point): The local position of the 2nd control point
             end_x (Point): The local position of the end point
+            parent (GraphicObject or None):
 
         Returns: None
         """
         # Ensure end_pos is a well-formed Point because it's needed to update
         # self.current_path_position
-        end_pos = Point(end)
-        self._interface.cubic_to(
-            control_1,
-            control_2,
-            end_pos)
-        self.current_path_position.x = end_pos.x
-        self.current_path_position.y = end_pos.y
+        rel_pos = Point(end)
+        if parent is None:
+            self._interface.cubic_to(
+                control_1,
+                control_2,
+                rel_pos)
+            self.elements.append(PathElement(
+                rel_pos, self, self, self._interface.element_at(-1)))
+        else:
+            raise NotImplementedError
+            self._interface.cubic_to(
+                control_1,
+                control_2,
+                rel_pos)  # TODO: How to handle parentage with curves?
+            self.elements.append(PathElement(
+                rel_pos, parent, self, self._interface.element_at(-1)))
 
-    def move_to(self, pos):
+    def move_to(self, pos, parent=None):
         """Close the current sub-path and start a new one.
 
         Args:
@@ -159,18 +166,19 @@ class Path(GraphicObject):
 
         Returns: None
         """
-        target = Point(pos)
-        self._interface.move_to(target)
-        self.current_path_position.x = target.x
-        self.current_path_position.y = target.y
+        rel_pos = Point(pos)
+        if parent is None:
+            self._interface.move_to(rel_pos)
+            self.elements.append(PathElement(
+                rel_pos, self, self, self._interface.element_at(-1)))
+        else:
+            raise NotImplementedError
 
-    def close_subpath(self):
+    def close_subpath(self, parent=None):
         """Close the current sub-path and start a new one at (0, 0).
 
         This is equivalent to `move_to(0, 0)`
 
         Returns: None
         """
-        self._interface.close_subpath
-        self.current_path_position.x = 0
-        self.current_path_position.y = 0
+        self.move_to((0, 0), parent)

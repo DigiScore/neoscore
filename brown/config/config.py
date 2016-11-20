@@ -1,4 +1,5 @@
 import os
+from brown.utils.mm import Mm
 
 
 class InvalidConfigError(Exception):
@@ -28,4 +29,4 @@ DEFAULT_MUSIC_FONT_NAME = 'Bravura'
 PRINT_PPI = 300
 
 # Staff Height
-DEFAULT_STAFF_UNIT = 1  # in millimeters
+DEFAULT_STAFF_UNIT = Mm(1)
