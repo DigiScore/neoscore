@@ -101,6 +101,16 @@ class GraphicObject(ABC):
 
     ######## PUBLIC METHODS ########
 
+    def pos_relative_to_item(self, other):
+        """Find this object's position relative to another GraphicObject
+
+        Args:
+            other (GraphicObject): The object to map from
+
+        Returns: Point
+        """
+        return self._interface.pos_relative_to_item(other._interface)
+
     def render(self):
         """Render the line to the scene.
 
