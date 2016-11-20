@@ -1,7 +1,10 @@
+from warnings import warn
+
 from PyQt5 import QtWidgets
 from PyQt5 import QtGui
 
 from brown.core import brown
+from brown.utils.path_element_type import PathElementType
 from brown.utils.point import Point
 from brown.utils.graphic_unit import GraphicUnit
 
@@ -18,12 +21,20 @@ class PathElementInterface:
     # TODO: Does this work?
     """
 
-    def __init__(self, qt_object, parent_path, index):
+    def __init__(self, qt_object, parent_path, index, element_type=None):
         """
         Args:
             qt_object (QtGui.Element): The Qt object this element refers to
             parent_path (PathInterface): The path this element belongs to
             index (int): The position of this element in the parent path.
+            element_type (int): The type of element this represents. If None,
+                this will attempt to guess the type. Type guessing for move_to
+                and line_to elements is guaranteed to be accurate, but
+                for distinguishing curves and control points is unsafe and
+                will throw a ValueError
+
+        Raises:
+            ValueError:
         """
         self._qt_object = qt_object
         self._parent_path = parent_path
@@ -31,6 +42,17 @@ class PathElementInterface:
         self._pos = Point.with_unit(qt_object.x, qt_object.y,
                                     unit_class=GraphicUnit)
         self._pos.setters_hook = self._update_element_in_parent_path
+        if isinstance(element_type, int):
+            # TODO: Clean up this logic
+            self._element_type = PathElementType(element_type)
+        elif isinstance(element_type, PathElementType):
+            self._element_type = element_type
+        else:
+            if self._qt_object.type in [0, 1]:
+                self._element_type = PathElementType(element_type)
+            else:
+                raise ValueError('Cannot infer element_type, '
+                                 'must be passed explicitly')
 
     ######## PUBLIC PROPERTIES ########
 
@@ -57,31 +79,18 @@ class PathElementInterface:
         return self._index
 
     @property
-    def is_move_to(self):
-        """bool: Whether this element is a move-to element."""
-        return self._qt_object.type == 0
+    def element_type(self):
+        """PathElementType: Enumeration for the type of element.
 
-    @property
-    def is_line_to(self):
-        """bool: Whether this element is a line-to element."""
-        return self._qt_object.type == 1
-
-    @property
-    def is_curve_to(self):
-        """bool: Whether this element is a curve-to element."""
+        This value is read-only.
+        """
         # TODO: This is not accurate.
         #       When creating a curve, Qt marks the first control point
         #       as being a CurveToElement, and all following as
-        #       CurveToDataElement's --- need to work around this so that
+        #       CurveToDataElement's--- need to work around this so that
         #       the control points and clearly marked differently from the
         #       end point.
-        return self._qt_object.type == 2
-
-    @property
-    def is_control_point(self):
-        """bool: Whether this element is a control point element"""
-        # TODO: This is not accurate. See above
-        return self._qt_object.type == 3
+        return self._element_type
 
     ######## PRIVATE PROPERTIES ########
 

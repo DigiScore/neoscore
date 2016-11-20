@@ -26,6 +26,16 @@ class PathElement(InvisibleObject):
         super().__init__(self._path_element_interface.pos, parent=parent)
         self.parent_path = parent_path
 
+    ######## PUBLIC PROPERTIES ########
+
+    @property
+    def element_type(self):
+        """PathElementType: Enumeration for the type of element.
+
+        This value is read-only.
+        """
+        return self._path_element_interface.element_type
+
     @property
     def pos(self):
         # Proxy for super getter so that setter can be extended.

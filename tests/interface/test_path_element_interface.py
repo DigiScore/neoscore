@@ -6,6 +6,7 @@ from brown.utils.point import Point
 from brown.interface.path_interface import PathInterface
 from mock_graphic_object_interface import MockGraphicObjectInterface
 from brown.interface.path_element_interface import PathElementInterface
+from brown.utils.path_element_type import PathElementType
 
 
 class TestPathElementInterface(unittest.TestCase):
@@ -21,9 +22,7 @@ class TestPathElementInterface(unittest.TestCase):
         assert(float(test_element.pos.x) == 10)
         assert(float(test_element.pos.y) == 11)
         assert(test_element.parent_path == test_path)
-        assert(test_element.is_line_to is True)
-        assert(test_element.is_move_to is False)
-        assert(test_element.is_curve_to is False)
+        assert(test_element.element_type == PathElementType.line_to)
         assert(test_element.index == 1)
         assert(test_element._qt_object == qt_element)
 
@@ -60,20 +59,14 @@ class TestPathElementInterface(unittest.TestCase):
         test_path.move_to((10, 11))
         qt_element = test_path._qt_path.elementAt(0)
         test_element = PathElementInterface(qt_element, test_path, 0)
-        assert(test_element.is_move_to is True)
-        assert(test_element.is_line_to is False)
-        assert(test_element.is_curve_to is False)
-        assert(test_element.is_control_point is False)
+        assert(test_element.element_type == PathElementType.move_to)
 
     def test_is_line_to(self):
         test_path = PathInterface((5, 6))
         test_path.line_to((10, 11))
         qt_element = test_path._qt_path.elementAt(1)
         test_element = PathElementInterface(qt_element, test_path, 0)
-        assert(test_element.is_move_to is False)
-        assert(test_element.is_line_to is True)
-        assert(test_element.is_curve_to is False)
-        assert(test_element.is_control_point is False)
+        assert(test_element.element_type == PathElementType.line_to)
 
     @pytest.mark.xfail
     def test_curves_and_control_points(self):
@@ -84,21 +77,12 @@ class TestPathElementInterface(unittest.TestCase):
 
         qt_element_1 = test_path._qt_path.elementAt(1)
         test_element_1 = PathElementInterface(qt_element_1, test_path, 0)
-        assert(test_element_1.is_move_to is False)
-        assert(test_element_1.is_line_to is False)
-        assert(test_element_1.is_curve_to is False)
-        assert(test_element_1.is_control_point is True)
+        assert(test_element_1.element_type == PathElementType.control_point)
 
         qt_element_2 = test_path._qt_path.elementAt(2)
         test_element_2 = PathElementInterface(qt_element_2, test_path, 0)
-        assert(test_element_2.is_move_to is False)
-        assert(test_element_2.is_line_to is False)
-        assert(test_element_2.is_curve_to is False)
-        assert(test_element_2.is_control_point is True)
+        assert(test_element_2.element_type == PathElementType.control_point)
 
         qt_element_3 = test_path._qt_path.elementAt(3)
         test_element_3 = PathElementInterface(qt_element_3, test_path, 0)
-        assert(test_element_3.is_move_to is False)
-        assert(test_element_3.is_line_to is False)
-        assert(test_element_3.is_curve_to is True)
-        assert(test_element_3.is_control_point is False)
+        assert(test_element_3.element_type == PathElementType.curve_to)
