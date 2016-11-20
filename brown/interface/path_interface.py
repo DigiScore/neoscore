@@ -155,11 +155,26 @@ class PathInterface(GraphicObjectInterface):
 
         # TODO: Implement a list-like iterable wrapper around path elements.
         """
-        if index == -1:
-            qt_index = self._qt_path.elementCount() - 1
+        if index < 0:
+            qt_index = self._qt_path.elementCount() + index
         else:
             qt_index = index
-        return PathElementInterface(self._qt_path.elementAt(qt_index), self)
+        return PathElementInterface(self._qt_path.elementAt(qt_index),
+                                    self,
+                                    qt_index)
+
+    def set_element_position_at(self, index, pos):
+        """Set the element at an index to a given position.
+
+        Args:
+            index (int): The element index to modify
+            pos (Point[GraphicUnit] or tuple): The new position
+                for the element.
+
+        Returns: None
+        """
+        # TODO: Make index error guards when proper element list is made
+        self._qt_path.setElementPositionAt(index, float(pos[0]), float(pos[0]))
 
     def render(self):
         """Render the line to the scene.
