@@ -102,7 +102,6 @@ class Path(GraphicObject):
         # TODO: Make index error guards when proper element list is made
         self._qt_path.setElementPositionAt(index, float(pos[0]), float(pos[0]))
 
-
     def line_to(self, pos, parent=None):
         """Draw a path from the current position to a new point.
 
@@ -125,7 +124,16 @@ class Path(GraphicObject):
             self.elements.append(PathElement(
                 self._interface.element_at(-1), self, self))
         else:
-            self._interface.line_to((0, 0))
+            # HACK: Add some arbitrary offset to the temporary line-to
+            #       position so that Qt doesn't convert it into a move-to
+            #       (see note at top of path_interface).
+            #       This could be avoided by either:
+            #         1) Fixing this Qt bug (feature?) in path_interface
+            #         2) Calculating the target line_to position directly
+            #            here, probably saving a bit of efficiency too.
+            #       (probably should do both)
+            self._interface.line_to((float(self.pos.x) + 1,
+                                     float(self.pos.x) + 1))
             if not len(self.elements):
                 # HACK: Append initial move_to
                 self.elements.append(PathElement(

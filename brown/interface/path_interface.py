@@ -13,6 +13,22 @@ Notes on Qt path quirks:
 * At creation time, paths have an elementCount() of 0,
   but after a line is created, elementCount() == 2. First element
   is a moveTo to the origin; second is the lineTo you asked for
+* If a lineTo is drawn to (0, 0), a moveTo 0, 0 is performed instead:
+
+
+    def test_confirm_line_to_insanity(self):
+        line_to_origin = PathInterface((5, 6))
+        line_to_origin.line_to((0, 0))
+        assert(line_to_origin._qt_path == line_to_origin._qt_object.path())
+        assert(line_to_origin._qt_path.elementCount() == 1)
+        assert(line_to_origin._qt_path.elementAt(0).isMoveTo() == True)
+        line_to_elsewhere = PathInterface((5, 6))
+        line_to_elsewhere.line_to((1, 0))
+        assert(line_to_elsewhere._qt_path == line_to_elsewhere._qt_object.path())
+        assert(line_to_elsewhere._qt_path.elementCount() == 2)
+        assert(line_to_elsewhere._qt_path.elementAt(0).isMoveTo() == True)
+        assert(line_to_elsewhere._qt_path.elementAt(1).isLineTo() == True)
+
 """
 
 

@@ -85,7 +85,6 @@ class Point:
 
     @x.setter
     def x(self, value):
-        value_changed = value != self._x
         self._x = value
         self.setters_hook()
 
@@ -96,7 +95,6 @@ class Point:
 
     @y.setter
     def y(self, value):
-        value_changed = value != self._y
         self._y = value
         self.setters_hook()
 

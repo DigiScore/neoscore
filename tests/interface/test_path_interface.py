@@ -54,12 +54,6 @@ class TestPathInterface(unittest.TestCase):
         # TODO: Actually inspect contents of path and make sure they
         #       are as expected
 
-    # def test_confirm_line_to_insanity(self):
-    #     test_path = PathInterface((5, 6))
-    #     test_path.line_to((0, 0))
-    #     assert(test_path._qt_path.elementAt(0).isMoveTo() == True)
-    #     assert(test_path._qt_path.elementAt(1).isLineTo() == False)
-
     def test_cubic_to(self):
         test_path = PathInterface((5, 6))
         test_path.cubic_to((10, 11),
