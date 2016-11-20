@@ -168,7 +168,10 @@ class PathInterface(GraphicObjectInterface):
         Returns: None
         """
         # TODO: Make index error guards when proper element list is made
-        self._qt_path.setElementPositionAt(index, float(pos[0]), float(pos[0]))
+        pos_x = float(pos[0])
+        pos_y = float(pos[1])
+        print('setting element at index {} to ({}, {})'.format(index, pos_x, pos_y))
+        self._qt_path.setElementPositionAt(index, pos_x, pos_y)
 
     def render(self):
         """Render the line to the scene.
