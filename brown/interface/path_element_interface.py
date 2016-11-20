@@ -49,7 +49,7 @@ class PathElementInterface:
             self._element_type = element_type
         else:
             if self._qt_object.type in [0, 1]:
-                self._element_type = PathElementType(element_type)
+                self._element_type = PathElementType(self._qt_object.type)
             else:
                 raise ValueError('Cannot infer element_type, '
                                  'must be passed explicitly')
