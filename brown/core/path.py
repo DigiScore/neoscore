@@ -1,6 +1,7 @@
 from brown.interface.path_interface import PathInterface
 from brown.core.graphic_object import GraphicObject
 from brown.utils.point import Point
+from brown.core.path_element import PathElement
 
 
 class Path(GraphicObject):
@@ -83,24 +84,47 @@ class Path(GraphicObject):
 
     ######## Public Methods ########
 
-    def line_to(self, *args):
+
+    def element_at(self, index):
+        """Find the element at a given index and return it.
+
+        Args:
+            index (int): The element index. Use -1 for the last index.
+
+        Returns: PathElementInterface
+
+        # TODO: Implement a list-like iterable wrapper around path elements.
+        """
+        pass
+
+    def set_element_position_at(self, index, pos):
+        """Set the element at an index to a given position.
+
+        Args:
+            index (int): The element index to modify
+            pos (Point[GraphicUnit] or tuple): The new position
+                for the element.
+
+        Returns: None
+        """
+        # TODO: Make index error guards when proper element list is made
+        self._qt_path.setElementPositionAt(index, float(pos[0]), float(pos[0]))
+
+    def line_to(self, pos):
         """Draw a path from the current position to a new point.
 
         Connect a path from the current position to a new position specified
         by `x` and `y`, and move `self.current_path_position` to the new point.
 
         Args:
-            The position of the new line ending, specified by one of:
-                - A Point
-                - An `x, y` pair outside of a tuple
-                - An `(x, y)` 2-tuple
+            pos (Point or tuple): The target position
 
         Returns: None
         """
-        pos = Point(*args)
-        self._interface.line_to(pos)
-        self.current_path_position.x = pos.x
-        self.current_path_position.y = pos.y
+        target = Point(pos)
+        self._interface.line_to(target)
+        self.current_path_position.x = target.x
+        self.current_path_position.y = target.y
 
     def cubic_to(self,
                  control_1,
@@ -127,21 +151,18 @@ class Path(GraphicObject):
         self.current_path_position.x = end_pos.x
         self.current_path_position.y = end_pos.y
 
-    def move_to(self, *args):
+    def move_to(self, pos):
         """Close the current sub-path and start a new one.
 
         Args:
-            The position of the new line ending, specified by one of:
-                - A Point
-                - An `x, y` pair outside of a tuple
-                - An `(x, y)` 2-tuple
+            pos (Point or tuple): The target position
 
         Returns: None
         """
-        pos = Point(*args)
-        self._interface.move_to(pos)
-        self.current_path_position.x = pos.x
-        self.current_path_position.y = pos.y
+        target = Point(pos)
+        self._interface.move_to(target)
+        self.current_path_position.x = target.x
+        self.current_path_position.y = target.y
 
     def close_subpath(self):
         """Close the current sub-path and start a new one at (0, 0).

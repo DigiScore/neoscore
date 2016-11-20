@@ -40,7 +40,7 @@ class TestPathInterface(unittest.TestCase):
 
     def test_line_to(self):
         test_path = PathInterface((5, 6))
-        test_path.line_to(10, 12)
+        test_path.line_to((10, 12))
         assert(test_path.current_path_position.x == 10)
         assert(test_path.current_path_position.y == 12)
         assert(test_path._qt_path.currentPosition().x() == 10)
@@ -62,7 +62,7 @@ class TestPathInterface(unittest.TestCase):
 
     def test_move_to(self):
         test_path = PathInterface((5, 6))
-        test_path.move_to(10, 11)
+        test_path.move_to((10, 11))
         assert(test_path.current_path_position.x == 10)
         assert(test_path.current_path_position.y == 11)
         assert(test_path._qt_path.currentPosition().x() == 10)

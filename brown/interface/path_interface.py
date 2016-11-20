@@ -67,25 +67,22 @@ class PathInterface(GraphicObjectInterface):
 
     ######## Public Methods ########
 
-    def line_to(self, *args):
+    def line_to(self, pos):
         """Draw a path from the current position to a new point.
 
         Connect a path from the current position to a new position specified
-        by `x` and `y`, and move `self.current_path_position` to the new point.
+        by `pos`, and move `self.current_path_position` to the new point.
 
         Args:
-            The position of the new line ending, specified by one of:
-                - A Point
-                - An `x, y` pair outside of a tuple
-                - An `(x, y)` 2-tuple
+            pos (Point or tuple): The target position
 
         Returns: None
         """
-        pos = Point.with_unit(*args, unit_class=GraphicUnit)
-        self._qt_path.lineTo(pos.x.value, pos.y.value)
+        target = Point.with_unit(pos, unit_class=GraphicUnit)
+        self._qt_path.lineTo(target.x.value, target.y.value)
         self._update_qt_object_path()
-        self.current_path_position.x = pos.x
-        self.current_path_position.y = pos.y
+        self.current_path_position.x = target.x
+        self.current_path_position.y = target.y
 
     def cubic_to(self,
                  control_1,
@@ -116,21 +113,18 @@ class PathInterface(GraphicObjectInterface):
         self.current_path_position.x = end_point.x
         self.current_path_position.y = end_point.y
 
-    def move_to(self, *args):
+    def move_to(self, pos):
         """Close the current sub-path and start a new one.
 
         Args:
-            The position of the new line ending, specified by one of:
-                - A Point
-                - An `x, y` pair outside of a tuple
-                - An `(x, y)` 2-tuple
+            pos (Point or tuple): The target position
 
         Returns: None
         """
-        pos = Point.with_unit(*args, unit_class=GraphicUnit)
-        self._qt_path.moveTo(pos.x.value, pos.y.value)
-        self.current_path_position.x = pos.x
-        self.current_path_position.y = pos.y
+        target = Point.with_unit(pos, unit_class=GraphicUnit)
+        self._qt_path.moveTo(target.x.value, target.y.value)
+        self.current_path_position.x = target.x
+        self.current_path_position.y = target.y
         self._update_qt_object_path()
 
     def close_subpath(self):
@@ -186,7 +180,8 @@ class PathInterface(GraphicObjectInterface):
     ######## PRIVATE METHODS ########
 
     def _update_qt_object_path(self):
-        """
-        Synchronize the contents of self._qt_path to self._qt_object
+        """Synchronize the contents of self._qt_path to self._qt_object
+
+        Returns: None
         """
         self._qt_object.setPath(self._qt_path)
