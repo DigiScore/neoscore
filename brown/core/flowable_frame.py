@@ -11,11 +11,11 @@ class FlowableFrame:
     def __init__(self, pos, width, height, y_padding=None):
         """
         Args:
-            pos (Point or tuple): Starting position in pixels relative to
+            pos (Point or tuple): Starting position in relative to
                 the top left corner of the live document area of the first page
-            width (float): width of the frame in pixels
-            height (float): height of the frame in pixels
-            y_padding (float): The min gap between frame sections in pixels
+            width (GraphicUnit): width of the frame
+            height (GraphicUnit): height of the frame
+            y_padding (GraphicUnit): The min gap between frame sections
         """
         self.pos = Point(pos)
         self.width = width
@@ -38,6 +38,7 @@ class FlowableFrame:
 
     @property
     def x(self):
+        """GraphicUnit:"""
         return self.pos.x
 
     @x.setter
@@ -46,6 +47,7 @@ class FlowableFrame:
 
     @property
     def y(self):
+        """GraphicUnit:"""
         return self.pos.y
 
     @y.setter
@@ -54,6 +56,7 @@ class FlowableFrame:
 
     @property
     def width(self):
+        """GraphicUnit:"""
         return self._width
 
     @width.setter
@@ -62,6 +65,7 @@ class FlowableFrame:
 
     @property
     def height(self):
+        """GraphicUnit:"""
         return self._height
 
     @height.setter
@@ -70,6 +74,7 @@ class FlowableFrame:
 
     @property
     def y_padding(self):
+        """GraphicUnit:"""
         return self._y_padding
 
     @y_padding.setter
@@ -153,9 +158,7 @@ class FlowableFrame:
         Returns:
             Point: An x-y coordinate in document space
         """
-        print('point y: ', point[1])
         local_point = Point(point)
-        print('local point y: ', local_point.y)
         # Seek to the page and line-on-page based on auto layout controllers
         self._generate_auto_layout_controllers()
         page_num = 1

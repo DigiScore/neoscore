@@ -135,7 +135,7 @@ class TestFlowableFrame(unittest.TestCase):
         test_frame = FlowableFrame((Mm(10), Mm(11)),
                                    width=Mm(1000), height=Mm(100),
                                    y_padding=Mm(20))
-        x_val = test_frame._local_space_to_doc_space((Mm(100), Mm(40)))[0]
+        x_val = test_frame._local_space_to_doc_space((Mm(100), Mm(40))).x
         page_origin = brown.document._page_origin_in_doc_space(1)
         assert(x_val == page_origin[0] + 10 + 100)
 
@@ -143,18 +143,16 @@ class TestFlowableFrame(unittest.TestCase):
         test_frame = FlowableFrame((Mm(10), Mm(11)),
                                    width=Mm(1000), height=Mm(100),
                                    y_padding=Mm(20))
-        y_val = test_frame._local_space_to_doc_space((Mm(100), Mm(40)))[1]
+        y_val = test_frame._local_space_to_doc_space((Mm(100), Mm(40))).y
         assert(y_val == Mm(40) + Mm(11) + brown.document.paper.margin_top)
 
     def test_local_space_to_doc_space_x_in_second_line(self):
         test_frame = FlowableFrame((Mm(17), Mm(11)),
                                    width=Mm(10000), height=Mm(20),
                                    y_padding=Mm(5))
-        local_x_val = Mm(300)
-        local_y_val = Mm(5)
-        x_val = test_frame._local_space_to_doc_space((local_x_val, local_y_val))[0]
+        x_val = test_frame._local_space_to_doc_space((Mm(300), Mm(5))).x
         first_line_width = brown.document.paper.live_width - Mm(17)
-        expected = (local_x_val - first_line_width +
+        expected = (Mm(300) - first_line_width +
                     brown.document.paper.margin_left)
         assert(x_val == expected)
 
@@ -164,7 +162,7 @@ class TestFlowableFrame(unittest.TestCase):
                                    y_padding=Mm(5))
         local_x_val = Mm(300)
         local_y_val = Mm(5)
-        y_val = test_frame._local_space_to_doc_space((local_x_val, local_y_val))[1]
+        y_val = test_frame._local_space_to_doc_space((local_x_val, local_y_val)).y
         page_origin = brown.document._page_origin_in_doc_space(1)
         second_line_y = (Mm(11) + test_frame.height + test_frame.y_padding +
                          page_origin[1])
@@ -186,7 +184,7 @@ class TestFlowableFrame(unittest.TestCase):
         test_frame = FlowableFrame((Mm(17), Mm(11)),
                                    width=Mm(10000), height=Mm(15),
                                    y_padding=Mm(5))
-        y_val = test_frame._local_space_to_doc_space((Mm(350), Mm(5)))[1]
+        y_val = test_frame._local_space_to_doc_space((Mm(350), Mm(5))).y
         page_origin = brown.document._page_origin_in_doc_space(1)
         expected = (page_origin[1] + Mm(11) + Mm(5) +
                     ((test_frame.height + test_frame.y_padding) * 2))
@@ -196,7 +194,7 @@ class TestFlowableFrame(unittest.TestCase):
         test_frame = FlowableFrame((Mm(17), Mm(11)),
                                    width=Mm(10000), height=Mm(15),
                                    y_padding=Mm(5))
-        x_val = test_frame._local_space_to_doc_space((Mm(2100), Mm(40)))[0]
+        x_val = test_frame._local_space_to_doc_space((Mm(2100), Mm(40))).x
         live_width = brown.document.paper.live_width
         page_origin = brown.document._page_origin_in_doc_space(2)
         num_full_lines = 13
@@ -208,7 +206,7 @@ class TestFlowableFrame(unittest.TestCase):
         test_frame = FlowableFrame((Mm(17), Mm(11)),
                                    width=Mm(10000), height=Mm(300),
                                    y_padding=Mm(5))
-        y_val = test_frame._local_space_to_doc_space((Mm(16000), Mm(40)))[1]
+        y_val = test_frame._local_space_to_doc_space((Mm(16000), Mm(40))).y
         page_origin = brown.document._page_origin_in_doc_space(2)
         expected = page_origin[1] + Mm(40)
         self.assertAlmostEqual(y_val, expected)

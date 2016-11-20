@@ -5,6 +5,7 @@ from brown.core import brown
 from brown.utils.point import Point
 from brown.utils.graphic_unit import GraphicUnit
 from brown.interface.graphic_object_interface import GraphicObjectInterface
+from brown.interface.path_element_interface import PathElementInterface
 
 
 class PathInterface(GraphicObjectInterface):
@@ -143,6 +144,22 @@ class PathInterface(GraphicObjectInterface):
         self.current_path_position.x = 0
         self.current_path_position.y = 0
         self._update_qt_object_path()
+
+    def element_at(self, index):
+        """Find the element at a given index and return it.
+
+        Args:
+            index (int): The element index. Use -1 for the last index.
+
+        Returns: PathElementInterface
+
+        # TODO: Implement a list-like iterable wrapper around path elements.
+        """
+        if index == -1:
+            qt_index = self._qt_path.elementCount() - 1
+        else:
+            qt_index = index
+        return PathElementInterface(self._qt_path.elementAt(qt_index))
 
     def render(self):
         """Render the line to the scene.

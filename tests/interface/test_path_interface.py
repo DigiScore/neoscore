@@ -79,3 +79,13 @@ class TestPathInterface(unittest.TestCase):
         assert(test_object._qt_path.currentPosition().y() == 0)
         # TODO: Actually inspect contents of path and make sure they
         #       are as expected
+
+    def test_element_at(self):
+        test_object = PathInterface((5, 6))
+        test_object.line_to((10, 11))
+        last_element = test_object.element_at(-1)
+        assert(float(last_element.pos.x) == 10)
+        assert(float(last_element.pos.y) == 11)
+        assert(last_element.is_line_to is True)
+        assert(last_element.is_move_to is False)
+        assert(last_element.is_curve_to is False)

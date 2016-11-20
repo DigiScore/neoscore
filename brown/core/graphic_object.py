@@ -14,10 +14,10 @@ class GraphicObject(ABC):
         """
         Args:
             pos (Point[GraphicUnit] or tuple): The position of the object
-                relative to the document.
+                relative to its parent
             pen (Pen): The pen to draw outlines with.
             brush (Brush): The brush to draw outlines with.
-            parent (GraphicObject): The parent (core-level) object or None
+            parent (GraphicObject): The parent object or None
         """
         self.pos = pos
         self.pen = pen
