@@ -17,7 +17,7 @@ with open(os.path.join(smufl_dir, 'ranges.json'), 'r') as ranges_file:
     ranges = json.load(ranges_file)
 
 
-def look_up_glyph_name(name):
+def get_basic_glyph_info(name):
     """Find the {"codepoint", "description"} dict for a given glyph name.
 
     Args:
@@ -49,7 +49,7 @@ def char_from_glyph_name(name):
         KeyError: If no glyph with `name` can be found
     """
     try:
-        return look_up_glyph_name(name)['codepoint']
+        return get_basic_glyph_info(name)['codepoint']
     except KeyError:
         raise KeyError
 
@@ -67,6 +67,49 @@ def description_from_glyph_name(name):
         KeyError: If no glyph with `name` can be found
     """
     try:
-        return look_up_glyph_name(name)['description']
+        return get_basic_glyph_info(name)['description']
     except KeyError:
         raise KeyError
+
+
+def get_glyph_range_key(name):
+    """Find the range the glyph with `name` belongs to.
+
+    Args:
+        name (str): The name of the glyph
+
+    Returns:
+        str: The key for `ranges` of the range the glyph belongs in
+
+    Raises:
+        KeyError: If no glyph with `name` can be found in `ranges`
+    """
+    for range_name, value in ranges.items():
+        if name in value['glyphs']:
+            return range_name
+    else:
+        raise KeyError('Could not find glyph name "{}".')
+
+
+def get_glyph_classes(name):
+    """Find all of the classes the glyph with `name` belongs in.
+
+    Args:
+        name (str): The name of the glyph
+
+    Returns:
+        set[str]: The classes the glyph belongs in
+
+    Raises:
+        KeyError: If no glyph with `name` can be found in `ranges`
+
+    Warning:
+        This is potentially a slow function. If it starts being used a lot,
+        probably consider building a more efficient data structure around
+        this look-up.
+    """
+    matches = set()
+    for class_name, class_glyphs in classes.items():
+        if name in class_glyphs:
+            matches.add(class_name)
+    return matches
