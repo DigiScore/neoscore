@@ -18,12 +18,15 @@ class PathElementInterface:
     # TODO: Does this work?
     """
 
-    def __init__(self, qt_object):
+    def __init__(self, qt_object, parent_path):
         """
         Args:
             qt_object (QPainterPath.Element)"""
         self._qt_object = qt_object
-        self._pos = Point(GraphicUnit(qt_object.x), GraphicUnit(qt_object.y))
+        self._parent_path = parent_path
+        self._pos = Point.with_unit(qt_object.x, qt_object.y,
+                                    unit_class=GraphicUnit)
+        self._pos.on_change = self.parent_path._update_qt_object_path()
 
     ######## PUBLIC PROPERTIES ########
 
@@ -36,6 +39,14 @@ class PathElementInterface:
         self._pos = value
         self._qt_object.x = float(value.x)
         self._qt_object.y = float(value.y)
+        self.parent_path._update_qt_object_path()
+
+    @property
+    def parent_path(self):
+        """PathInterface: The path this element belongs to.
+
+        This property is read-only."""
+        return self._parent_path
 
     @property
     def is_curve_to(self):

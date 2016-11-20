@@ -159,7 +159,7 @@ class PathInterface(GraphicObjectInterface):
             qt_index = self._qt_path.elementCount() - 1
         else:
             qt_index = index
-        return PathElementInterface(self._qt_path.elementAt(qt_index))
+        return PathElementInterface(self._qt_path.elementAt(qt_index), self)
 
     def render(self):
         """Render the line to the scene.
