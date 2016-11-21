@@ -1,6 +1,8 @@
 from PyQt5 import QtWidgets
 from PyQt5 import QtGui
 
+import json
+
 
 class FontRegistrationError(Exception):
     """Exception raised when a font is loaded from disk unsuccessfully."""
@@ -20,6 +22,7 @@ class AppInterface:
         self.scene = None
         self.current_pen = None
         self.current_brush = None
+        self.registered_music_fonts = {}
 
     ######## PUBLIC PROPERTIES ########
 

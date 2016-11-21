@@ -18,7 +18,7 @@ with open(os.path.join(smufl_dir, 'ranges.json'), 'r') as ranges_file:
 
 
 def get_basic_glyph_info(name):
-    """Find the {"codepoint", "description"} dict for a given glyph name.
+    """Find the {"codepoint", "description"} dict for a canonical glyph name.
 
     Args:
         name (str): The name of the glyph

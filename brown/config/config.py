@@ -23,6 +23,8 @@ DEFAULT_TEXT_FONT_NAME = 'Cormorant Garamond'
 # Music Glyph Font
 DEFAULT_MUSIC_FONT_PATH = os.path.join(
     RESOURCES_DIR, 'fonts', 'Bravura.otf')
+DEFAULT_MUSIC_FONT_METADATA_PATH = os.path.join(
+    RESOURCES_DIR, 'fonts', 'bravura_metadata.json')
 DEFAULT_MUSIC_FONT_NAME = 'Bravura'
 
 # Print PPI
