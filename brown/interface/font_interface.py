@@ -1,6 +1,9 @@
 from PyQt5 import QtGui
 
 from brown.core import brown
+from brown.utils.point import Point
+from brown.utils.rect import Rect
+from brown.utils.graphic_unit import GraphicUnit
 
 
 class UnknownFontFamilyError(Exception):
@@ -41,3 +44,30 @@ class FontInterface:
     @property
     def descent(self):
         return self._qt_font_metrics_object.descent()
+
+    @property
+    def em_size(self):
+        """GraphicUnit: The em size for the font.
+
+        REMINDER: Keep an eye on this. It's actually being calculated
+        from the x-height of the font. Depending on the Qt specifics,
+        this may or may not work as expected.
+        """
+        return GraphicUnit(self._qt_font_metrics_object.xHeight())
+
+    ######## PUBLIC METHODS ########
+
+    def tight_bounding_rect_around(self, text):
+        """Calculate the tight bounding rectangle around a string in this font.
+
+        Args:
+            text (str): The text to calculate around.
+
+        Returns:
+            Rect[GraphicUnit]
+        """
+        qt_rect = self._qt_font_metrics_object.tightBoundingRect(text)
+        return Rect(GraphicUnit(qt_rect.x()),
+                    GraphicUnit(qt_rect.y()),
+                    GraphicUnit(qt_rect.width()),
+                    GraphicUnit(qt_rect.height()))

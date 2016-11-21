@@ -10,10 +10,10 @@ class Font:
         self.size = size
         self.weight = weight
         self.italic = italic
-        self._interface = Font._interface_class(self.family_name,
-                                                self.size,
-                                                self.weight,
-                                                self.italic)
+        self._interface = type(self)._interface_class(self.family_name,
+                                                      self.size,
+                                                      self.weight,
+                                                      self.italic)
 
     ######## PUBLIC PROPERTIES ########
 
@@ -24,3 +24,11 @@ class Font:
     @property
     def descent(self):
         return self._interface.descent
+
+    @property
+    def em_size(self):
+        """GraphicUnit: The em size for the font."""
+        return self._interface.em_size
+
+    # TODO: May need to handle size changes. In this case, be sure
+    #       to update cached em_size in MusicFont subclass.

@@ -3,6 +3,7 @@ from brown.interface.app_interface import AppInterface
 from brown.core.brush import Brush
 from brown.core.pen import Pen
 from brown.core.font import Font
+from brown.core.music_font import MusicFont
 from brown.core.paper import Paper
 from brown.core.document import Document
 from brown.utils import units
@@ -37,7 +38,7 @@ def setup(initial_paper=None):
     _app_interface.pen = current_pen._interface
     _app_interface.brush = current_brush._interface
     _app_interface.register_font(config.DEFAULT_MUSIC_FONT_PATH)
-    music_font = Font(config.DEFAULT_MUSIC_FONT_NAME, 35)
+    music_font = MusicFont(config.DEFAULT_MUSIC_FONT_NAME, 35)
     text_font = Font(config.DEFAULT_TEXT_FONT_NAME, 12, 1, False)
     document = Document(initial_paper)
 

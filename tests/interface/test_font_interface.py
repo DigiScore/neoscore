@@ -42,3 +42,7 @@ class TestFontInterface(unittest.TestCase):
         test_font = FontInterface('Bravura', 12, 1, False)
         assert(isinstance(test_font._qt_font_metrics_object, QtGui.QFontMetricsF))
         # TODO: Revisit me once fonts and smufl get more attention
+
+    def test_em_size(self):
+        test_font = FontInterface('Bravura', 1000, 1, False)
+        assert(int(test_font.em_size) == 1000)

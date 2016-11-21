@@ -16,14 +16,18 @@ from brown.primitives.notehead import Notehead
 from brown.primitives.chordrest import ChordRest
 from brown.primitives.ledger_line import LedgerLine
 from brown.core.flowable_frame import FlowableFrame
+from brown.utils.graphic_unit import GraphicUnit
 
 from brown.config import config
 
 
 brown.setup()
 
-glyph = Glyph((50, 100), '\uE118', brown.music_font)
+glyph = Glyph((50, 100), '\uE0A4', brown.music_font)
 glyph.render()
+new_y = GraphicUnit(100) + (glyph.font.em_size / 4)
+glyph2 = Glyph((50, new_y), '\uE0A4', brown.music_font)
+glyph2.render()
 
 path = Path((0, 0), Pen('#000000'), Brush('#eeeeee'))
 #path.line_to((25, 25))
