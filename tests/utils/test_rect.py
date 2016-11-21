@@ -2,25 +2,10 @@ import pytest
 
 from brown.utils.point import Point
 from brown.utils.rect import Rect
+from brown.utils.graphic_unit import GraphicUnit
 
 
-def test_rect_init_two_points():
-    rect = Rect(Point(1, 2), Point(100, 102))
-    assert(rect.x == 1)
-    assert(rect.y == 2)
-    assert(rect.width == 99)
-    assert(rect.height == 100)
-
-
-def test_rect_init_two_tuples():
-    rect = Rect((1, 2), (100, 102))
-    assert(rect.x == 1)
-    assert(rect.y == 2)
-    assert(rect.width == 99)
-    assert(rect.height == 100)
-
-
-def test_rect_init_four_positions():
+def test_rect_init():
     rect = Rect(1, 2, 99, 100)
     assert(rect.x == 1)
     assert(rect.y == 2)
@@ -28,6 +13,13 @@ def test_rect_init_four_positions():
     assert(rect.height == 100)
 
 
-def test_rect_init_invalid():
-    with pytest.raises(TypeError):
-        Rect(1, 2, 99)
+def test_rect_with_unit():
+    rect = Rect.with_unit(1, 2, 99, 100, GraphicUnit)
+    assert(isinstance(rect.x, GraphicUnit))
+    assert(rect.x == GraphicUnit(1))
+    assert(isinstance(rect.y, GraphicUnit))
+    assert(rect.y == GraphicUnit(2))
+    assert(isinstance(rect.width, GraphicUnit))
+    assert(rect.width == GraphicUnit(99))
+    assert(isinstance(rect.height, GraphicUnit))
+    assert(rect.height == GraphicUnit(100))

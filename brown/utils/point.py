@@ -68,6 +68,9 @@ class Point:
 
         Warning: Due to the flexibility of constructor options in Points,
             `unit_class` must be passed as a keyword argument.
+
+        TODO: Fix unnecessary explicit kwarg,
+              rework constructor signature if needed.
         """
         if unit_class is None:
             raise TypeError('unit_class must be set to a BaseUnit or subclass.'

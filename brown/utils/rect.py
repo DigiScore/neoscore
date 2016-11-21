@@ -5,29 +5,37 @@ class Rect:
 
     """A rectangle data object."""
 
-    def __init__(self, *args):
+    def __init__(self, x, y, width, height):
         """
         Args:
-            Either:
-                start (Point or tuple): The top left corner of the rectangle
-                end (Point or tuple): The bottom right corner of the rectangle
-            Or:
-                x (int, float, or BaseUnit): The starting x position
-                y (int, float, or BaseUnit): The starting y position
-                width (int, float, or BaseUnit): The width of the rectangle
-                height (int, float, or BaseUnit): The height of the rectangle
+            x (int, float, or BaseUnit): The starting x position
+            y (int, float, or BaseUnit): The starting y position
+            width (int, float, or BaseUnit): The width of the rectangle
+            height (int, float, or BaseUnit): The height of the rectangle
         """
-        if len(args) == 2:
-            self._x, self._y = args[0]
-            self._width = args[1][0] - self._x
-            self._height = args[1][1] - self._y
-        elif len(args) == 4:
-            self._x = args[0]
-            self._y = args[1]
-            self._width = args[2]
-            self._height = args[3]
-        else:
-            raise TypeError('Invalid init signature for Rect')
+        self._x = x
+        self._y = y
+        self._width = width
+        self._height = height
+
+    ######## CLASS METHODS ########
+
+    @classmethod
+    def with_unit(cls, x, y, width, height, unit_class):
+        """Initialize a Rect and convert its values to a unit.
+
+        Args:
+            x (int, float, or BaseUnit): The starting x position
+            y (int, float, or BaseUnit): The starting y position
+            width (int, float, or BaseUnit): The width of the rectangle
+            height (int, float, or BaseUnit): The height of the rectangle
+            unit_class (type): A BaseUnit class
+
+        Returns: Rect
+        """
+        return cls(unit_class(x), unit_class(y),
+                   unit_class(width), unit_class(height))
+
 
     ######## PUBLIC PROPERTIES ########
 
