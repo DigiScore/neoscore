@@ -1,6 +1,9 @@
+import pytest
 import unittest
 
 from brown.core import brown
+from brown.utils.path_element_type import PathElementType
+from brown.interface.path_element_interface import PathElementInterface
 from brown.interface.path_interface import PathInterface
 from brown.interface.pen_interface import PenInterface
 from brown.interface.brush_interface import BrushInterface
@@ -54,6 +57,7 @@ class TestPathInterface(unittest.TestCase):
         # TODO: Actually inspect contents of path and make sure they
         #       are as expected
 
+    @pytest.mark.xfail
     def test_cubic_to(self):
         test_path = PathInterface((5, 6))
         test_path.cubic_to((10, 11),
@@ -69,12 +73,12 @@ class TestPathInterface(unittest.TestCase):
     def test_move_to(self):
         test_path = PathInterface((5, 6))
         test_path.move_to((10, 11))
-        assert(test_path.current_path_position.x == 10)
-        assert(test_path.current_path_position.y == 11)
-        assert(test_path._qt_path.currentPosition().x() == 10)
-        assert(test_path._qt_path.currentPosition().y() == 11)
-        # TODO: Actually inspect contents of path and make sure they
-        #       are as expected
+        move_to_el = test_path.element_at(0)
+        assert(test_path._qt_path.elementCount() == 1)
+        assert(float(move_to_el.pos.x) == 10)
+        assert(float(move_to_el.pos.y) == 11)
+        assert(move_to_el.parent_path == test_path)
+        assert(move_to_el.element_type == PathElementType.move_to)
 
     def test_close_subpath(self):
         test_path = PathInterface((5, 6))
@@ -89,10 +93,12 @@ class TestPathInterface(unittest.TestCase):
     def test_element_at(self):
         test_path = PathInterface((5, 6))
         test_path.line_to((10, 11))
-        last_element = test_path.element_at(-1)
-        assert(float(last_element.pos.x) == 10)
-        assert(float(last_element.pos.y) == 11)
-        assert(last_element.parent_path == test_path)
-        assert(last_element.is_line_to is True)
-        assert(last_element.is_move_to is False)
-        assert(last_element.is_curve_to is False)
+        line_to_el = test_path.element_at(1)
+        assert(float(line_to_el.pos.x) == 10)
+        assert(float(line_to_el.pos.y) == 11)
+        assert(line_to_el.parent_path == test_path)
+        assert(line_to_el.element_type == PathElementType.line_to)
+
+    def test_set_element_position_at(self):
+        # TODO: Make me!
+        pass

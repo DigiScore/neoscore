@@ -40,14 +40,13 @@ class PathInterface(GraphicObjectInterface):
                 relative to the document.
             pen (PenInterface): The pen to draw outlines with.
             brush (BrushInterface): The brush to draw outlines with.
-            parent (GraphicObjectInterface):
+            parent (GraphicObjectInterface): The parent object
         """
         self._qt_path = QtGui.QPainterPath()
         self._qt_object = QtWidgets.QGraphicsPathItem(self._qt_path)
         self.pos = pos
         self.pen = pen
         self.brush = brush
-        self._current_path_position = Point(0, 0)
         self.parent = parent
 
     ######## PUBLIC PROPERTIES ########
@@ -170,6 +169,7 @@ class PathInterface(GraphicObjectInterface):
         # TODO: Implement a list-like iterable wrapper around path elements?
         """
         if index < 0:
+            # Allow pythonic negative indexing
             qt_index = self.element_count + index
         else:
             qt_index = index
@@ -187,10 +187,13 @@ class PathInterface(GraphicObjectInterface):
 
         Returns: None
         """
-        # TODO: Make index error guards when proper element list is made
+        if index > self._qt_path.elementCount():
+            raise IndexError(
+                'Element index {} out of bounds (max is {})'.format(
+                    index, self._qt_path.elementCount()))
         pos_x = float(pos[0])
         pos_y = float(pos[1])
-        print('setting element at index {} to ({}, {})'.format(index, pos_x, pos_y))
+        #print('setting element at index {} to ({}, {})'.format(index, pos_x, pos_y))
         self._qt_path.setElementPositionAt(index, pos_x, pos_y)
 
     def render(self):
