@@ -166,3 +166,21 @@ def test__round__():
     assert(isinstance(round(BaseUnit(2.21999)), BaseUnit))
     assert(round(BaseUnit(2.21999)).value == 2)
     assert(round(BaseUnit(2.21999), 1).value == 2.2)
+
+
+def test__rmul__():
+    assert(isinstance(1 * BaseUnit(2), BaseUnit))
+    assert(isinstance(BaseUnit(2) * MockUnit(2), BaseUnit))
+    assert((1 * BaseUnit(2)).value == BaseUnit(2))
+
+
+def test__rtruediv__():
+    assert(isinstance(1 / BaseUnit(2), BaseUnit))
+    assert(isinstance(BaseUnit(1) / MockUnit(2), BaseUnit))
+    assert((1 / BaseUnit(2)).value == BaseUnit(0.5))
+
+
+def test__rfloordiv__():
+    assert(isinstance(1 // BaseUnit(2), BaseUnit))
+    assert(isinstance(BaseUnit(1) // MockUnit(2), BaseUnit))
+    assert((1 // BaseUnit(2)).value == 0)

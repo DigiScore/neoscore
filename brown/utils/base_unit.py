@@ -21,9 +21,11 @@ class BaseUnit:
         >>> print(Inch(1) + 1)
         2 inches
 
-    If an `int` or `float` are on the left hand side of an operator,
-    a TypeError will be raised.
+    If an `int` or `float` are on the left hand side of any operator
+    except `*`, `/`, or `//`, a TypeError will be raised.
 
+        >>> print(2 * Inch(1))
+        2 inches
         >>> print(1 + Inch(1))
         Traceback (most recent call last):
          ...
@@ -83,7 +85,7 @@ class BaseUnit:
     def __repr__(self):
         return '{}({})'.format(type(self).__name__, self.value)
 
-    # Comparisons --------------------------------
+    # Comparisons -------------------------------------------------------------
 
     def __lt__(self, other):
         return self.value < self.__class__(other).value
@@ -103,7 +105,7 @@ class BaseUnit:
     def __ge__(self, other):
         return self.value >= self.__class__(other).value
 
-    # Operators ----------------------------------
+    # Operators ---------------------------------------------------------------
 
     def __add__(self, other):
         return self.__class__(self.value + self.__class__(other).value)
@@ -144,3 +146,14 @@ class BaseUnit:
 
     def __round__(self, ndigits=None):
         return self.__class__(round(self.value, ndigits))
+
+    # Reverse Operators -------------------------------------------------------
+
+    def __rmul__(self, other):
+        return self.__class__(other * self.value)
+
+    def __rtruediv__(self, other):
+        return self.__class__(other / self.value)
+
+    def __rfloordiv__(self, other):
+        return self.__class__(other // self.value)
