@@ -82,3 +82,11 @@ def test_convert_all_to_unit_dict_in_dict():
     assert(isinstance(iterable['b'], dict))
     assert(isinstance(iterable['b'][6], GraphicUnit))
     assert(iterable['b'][6] == GraphicUnit(7))
+
+
+def test_convert_all_to_unit_handles_strings_correctly():
+    iterable = {'a': 5, 'b': ['abcd', 2]}
+    convert_all_to_unit(iterable, GraphicUnit)
+    assert(isinstance(iterable['b'][1], GraphicUnit))
+    assert(iterable['b'][1] == GraphicUnit(2))
+    assert(iterable['b'][0] == 'abcd')

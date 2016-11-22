@@ -8,7 +8,7 @@ from brown.core.font import Font
 from brown.core.music_font import MusicFont
 from brown.core.paper import Paper
 from brown.core.document import Document
-from brown.utils import units
+from brown.utils.graphic_unit import GraphicUnit
 
 
 # Fetch and initialize app interface
@@ -45,8 +45,7 @@ def setup(initial_paper=None):
     _, music_font_json = register_music_font(
         config.DEFAULT_MUSIC_FONT_PATH,
         config.DEFAULT_MUSIC_FONT_METADATA_PATH)
-    registered_music_fonts[config.DEFAULT_MUSIC_FONT_NAME] = music_font_json
-    music_font = MusicFont(config.DEFAULT_MUSIC_FONT_NAME, 35)
+    music_font = MusicFont(config.DEFAULT_MUSIC_FONT_NAME, 35, GraphicUnit)
     text_font = Font(config.DEFAULT_TEXT_FONT_NAME, 12, 1, False)
     document = Document(initial_paper)
 
@@ -86,6 +85,7 @@ def register_music_font(font_file_path, metadata_path):
         raise json.JSONDecodeError(
             'Invalid JSON metadata in music font '
             'metadata file {}'.format(metadata_path))
+    registered_music_fonts[config.DEFAULT_MUSIC_FONT_NAME] = metadata
     return font_id, metadata
 
 

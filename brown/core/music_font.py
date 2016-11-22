@@ -2,6 +2,7 @@ from brown.interface.font_interface import FontInterface
 from brown.core import brown
 from brown.core.font import Font
 from brown.utils import smufl
+from brown.utils.units_helpers import convert_all_to_unit
 
 
 class MusicFontMetadataNotFoundError(Exception):
@@ -15,14 +16,17 @@ class MusicFont(Font):
 
     _interface_class = FontInterface
 
-    def __init__(self, family_name, size):
+    def __init__(self, family_name, size, default_unit=None):
         super().__init__(family_name, size, 1, False)
+        self.default_unit = default_unit
         self._cached_em_size = self._calculate_approximate_em_size()
         try:
             self.metadata = brown.registered_music_fonts[family_name]
+            if self.default_unit:
+                convert_all_to_unit(self.metadata, self.default_unit)
         except KeyError:
             raise MusicFontMetadataNotFoundError
-        engraving_defaults = self.metadata['engravingDefaults']
+        self._engraving_defaults = self.metadata['engravingDefaults']
 
     ######## PUBLIC PROPERTIES ########
 
@@ -33,7 +37,8 @@ class MusicFont(Font):
 
     @property
     def engraving_defaults(self):
-        raise NotImplementedError
+        """dict: The SMuFL engraving defaults information for this font"""
+        return self._engraving_defaults
 
     ######## PRIVATE METHODS ########
 
