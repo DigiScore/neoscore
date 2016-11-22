@@ -45,4 +45,4 @@ class TestFontInterface(unittest.TestCase):
 
     def test_em_size(self):
         test_font = FontInterface('Bravura', 1000, 1, False)
-        assert(int(test_font.em_size) == 1000)
+        assert(int(test_font.em_size) == 366)

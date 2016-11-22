@@ -1,4 +1,5 @@
 from brown.utils import units
+from brown.utils.mm import Mm
 from brown.utils.point import Point
 from brown.utils.graphic_unit import GraphicUnit
 from brown.config import config
@@ -13,22 +14,22 @@ class Staff:
     def __init__(self, pos, length, staff_unit=None, line_count=5):
         """TODO: Document me!"""
         # TODO: Implement units in staff land
-        # pos_point = Point.with_unit(pos, unit_class=GraphicUnit)
+        # pos_point = Point.with_unit(pos, unit=GraphicUnit)
         self._pos = Point(pos)
         self._x = self._pos.x
         self._y = self._pos.x
         self._line_count = line_count
         self._length = length
         if staff_unit:
-            self.staff_unit = staff_unit * units.mm
+            self.staff_unit = staff_unit
         else:
-            self.staff_unit = config.DEFAULT_STAFF_UNIT * units.mm
+            self.staff_unit = config.DEFAULT_STAFF_UNIT
         self._contents = []
         self._grob = Path(self.pos)
         # Draw the staff lines
         for i in range(self.line_count):
-            self.grob.move_to(0, i * self.staff_unit)
-            self.grob.line_to(self.length, i * self.staff_unit)
+            self.grob.move_to((Mm(0), self.staff_unit * i))
+            self.grob.line_to((self.length, self.staff_unit * i))
         # TODO: More fully implement arbitrary numbers of staff lines
 
     ######## PUBLIC PROPERTIES ########
@@ -204,8 +205,8 @@ class Staff:
         Example:
             # TODO: Make me
         """
-        return (self._staff_pos_to_top_down(staff_position) *
-                (self.staff_unit / 2))
+        return ((self.staff_unit / 2) *
+                self._staff_pos_to_top_down(staff_position))
 
     def _position_inside_staff(self, position):
         """bool: Determine if a position is inside the staff.

@@ -31,14 +31,14 @@ class TestStaff(unittest.TestCase):
     def test_height(self):
         # 5 lines
         self.assertAlmostEqual(
-            Staff((0, 0), 100, staff_unit=1.5, line_count=5).height, 6 * units.mm)
+            Staff((0, 0), 100, staff_unit=1.5, line_count=5).height, 6)
         self.assertAlmostEqual(
-            Staff((0, 0), 100, staff_unit=1, line_count=5).height, 4 * units.mm)
+            Staff((0, 0), 100, staff_unit=1, line_count=5).height, 4)
         # 4 lines
         self.assertAlmostEqual(
-            Staff((0, 0), 100, staff_unit=1.5, line_count=4).height, 4.5 * units.mm)
+            Staff((0, 0), 100, staff_unit=1.5, line_count=4).height, 4.5)
         self.assertAlmostEqual(
-            Staff((0, 0), 100, staff_unit=1, line_count=4).height, 3 * units.mm)
+            Staff((0, 0), 100, staff_unit=1, line_count=4).height, 3)
 
     def test_active_clef_at_with_explicit_clefs(self):
         test_staff = Staff((0, 0), 100)

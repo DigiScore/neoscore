@@ -33,7 +33,10 @@ class TestGlyph(unittest.TestCase):
         assert(test_object.font == self.font)
         assert(test_object.parent == mock_parent)
 
+    @pytest.mark.skip
     def test_non_music_font_raises_error(self):
+        # Depending on implementation decision in MusicGlyph, this may or may
+        # not be needed
         with pytest.raises(TypeError):
             normal_font = Font('Bravura', 12, 2, False)
             MusicGlyph((5, 6), 'accidentalFlat', normal_font)
