@@ -1,27 +1,5 @@
-import pytest
-import unittest
-
-
-from brown.utils.units_helpers import (
-    convert_contents_to_unit_in_place,
-    convert_all_to_unit,
-)
+from brown.utils.units_helpers import convert_all_to_unit
 from brown.utils.graphic_unit import GraphicUnit
-
-
-def test_convert_contents_to_unit_in_place():
-    working_list = [1, 2]
-    convert_contents_to_unit_in_place(working_list, GraphicUnit)
-    assert(all(isinstance(el, GraphicUnit) for el in working_list))
-    assert(working_list[0] == GraphicUnit(1))
-    assert(working_list[1] == GraphicUnit(2))
-
-
-def test_convert_contents_to_unit_in_place_with_non_numerical_elements():
-    working_list = [1, 2, 'foo']
-    convert_contents_to_unit_in_place(working_list, GraphicUnit)
-    assert(working_list[0] == GraphicUnit(1))
-    assert(working_list[1] == GraphicUnit(2))
 
 
 def test_convert_all_to_unit_simple_dict():

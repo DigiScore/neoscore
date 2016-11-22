@@ -5,22 +5,6 @@ TODO: Remember to merge me
 """
 
 
-def convert_contents_to_unit_in_place(working_list, unit):
-    """Convert all numerical elements in an iterable to a unit.
-
-    Args:
-        working_list (list): The list to operate on
-        unit (type): The unit to convert numerical elements to
-
-    Returns: None
-    """
-    for i in range(len(working_list)):
-        try:
-            working_list[i] = unit(working_list[i])
-        except TypeError:
-            continue
-
-
 def _call_on_immutable(iterable, unit):
     """Recursively convert all numbers in an immutable iterable.
 
@@ -38,7 +22,6 @@ def _call_on_immutable(iterable, unit):
     mutable_iterable = list(iterable)
     convert_all_to_unit(mutable_iterable, unit)
     return original_type(mutable_iterable)
-
 
 
 def convert_all_to_unit(iterable, unit):
