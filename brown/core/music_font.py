@@ -2,7 +2,7 @@ from brown.interface.font_interface import FontInterface
 from brown.core import brown
 from brown.core.font import Font
 from brown.utils import smufl
-from brown.utils.units_helpers import convert_all_to_unit
+from brown.utils.units import convert_all_to_unit
 
 
 class MusicFontMetadataNotFoundError(Exception):

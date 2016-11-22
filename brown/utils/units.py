@@ -1,4 +1,4 @@
-"""Various interoperable units classes"""
+"""Various interoperable units classes and some related helper functions."""
 
 
 class Unit:
@@ -11,8 +11,7 @@ class Unit:
     Common operators (`+`, `-`, `/`, etc.) are supported between them.
     Return values from these operations are given in the type on the left.
 
-        >>> from brown.utils.inch import Inch
-        >>> from brown.utils.mm import Mm
+        >>> from brown.utils.units import Inch, Mm
         >>> print(Inch(1) + Mm(1))
         1.0393700787401574 inches
 
@@ -187,3 +186,72 @@ class Mm(Unit):
 
     # (all other functionality implemented in Unit)
     pass
+
+
+def _call_on_immutable(iterable, unit):
+    """Recursively convert all numbers in an immutable iterable.
+
+    This is a helper function for convert_all_to_unit
+
+    Args:
+        iterable [tuple]: The iterable to recursive convert
+        unit (type): The unit to convert numerical elements to
+
+    Returns:
+        An iterable the same type of the input.
+        (set --> set, tuple --> tuple, etc.)
+    """
+    original_type = type(iterable)
+    mutable_iterable = list(iterable)
+    convert_all_to_unit(mutable_iterable, unit)
+    return original_type(mutable_iterable)
+
+
+def convert_all_to_unit(iterable, unit):
+    """Recursively convert all numbers found in an iterable to a unit in place.
+
+    This function works in place. Immutable structures (namely tuples) found
+    within `iterable` will be replaced. `iterable` itself may not be immutable.
+
+    In dictionaries, *only values* will be converted. Keys will be left as-is.
+
+    Args:
+        iterable [list, dict]: The iterable to recursive convert
+        unit (type): The unit to convert numerical elements to
+
+    Returns:
+        None
+
+    Raises:
+        TypeError: If `iterable` is not an iterable or is immutable
+    """
+    if isinstance(iterable, dict):
+        for key, value in iterable.items():
+            if unit._is_acceptable_type(value):
+                iterable[key] = unit(value)
+            elif isinstance(value, (list, dict)):
+                convert_all_to_unit(iterable[key], unit)
+            elif isinstance(value, (tuple, set)):
+                try:
+                    iterable[key] = _call_on_immutable(iterable[key], unit)
+                except TypeError:
+                    continue
+            else:
+                # Nothing left to do at this item, continue
+                continue
+    elif isinstance(iterable, list):
+        for i in range(len(iterable)):
+            if unit._is_acceptable_type(iterable[i]):
+                iterable[i] = unit(iterable[i])
+            elif isinstance(iterable[i], (list, dict)):
+                convert_all_to_unit(iterable[i], unit)
+            elif isinstance(iterable[i], (tuple, set)):
+                try:
+                    iterable[i] = _call_on_immutable(iterable[i], unit)
+                except TypeError:
+                    continue
+            else:
+                # Nothing left to do at this item, continue
+                continue
+    else:
+        raise TypeError
