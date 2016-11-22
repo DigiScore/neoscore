@@ -26,7 +26,7 @@ from brown.config import config
 
 
 
-class BaseUnit:
+class Unit:
     """A base class for custom units"""
 
     ######## SPECIAL METHODS ########
@@ -43,7 +43,7 @@ class BaseUnit:
 
 
 
-class Pixel(BaseUnit):
+class Pixel(Unit):
 
     def __init__(self, val):
         if isinstance(val, (int, float)):
@@ -85,7 +85,7 @@ def _convert_units(value, target_type):
 
     Args:
         value (Any): The input typed unit value
-        target_type (BaseUnit subclass): The target type to retrieve the value in
+        target_type (Unit subclass): The target type to retrieve the value in
 
     Returns:
         int or float: Value as it would be expressed in `target_type` units

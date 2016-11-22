@@ -3,7 +3,7 @@ import pytest
 
 from brown.utils.point import Point
 
-from brown.utils.base_unit import BaseUnit
+from brown.utils.unit import Unit
 from brown.utils.mm import Mm
 
 
@@ -26,11 +26,11 @@ class TestPoint(unittest.TestCase):
         assert(test_point.y == 6)
 
     def test_init_with_unit(self):
-        test_point = Point.with_unit(5, 6, unit=BaseUnit)
-        assert(isinstance(test_point.x, BaseUnit))
-        assert(isinstance(test_point.y, BaseUnit))
-        assert(test_point.x == BaseUnit(5))
-        assert(test_point.y == BaseUnit(6))
+        test_point = Point.with_unit(5, 6, unit=Unit)
+        assert(isinstance(test_point.x, Unit))
+        assert(isinstance(test_point.y, Unit))
+        assert(test_point.x == Unit(5))
+        assert(test_point.y == Unit(6))
 
     def test_with_unit_fails_if_unit_not_set(self):
         with pytest.raises(TypeError):
@@ -38,19 +38,19 @@ class TestPoint(unittest.TestCase):
 
     def test_to_unit_from_int(self):
         test_point = Point(5, 6)
-        test_point.to_unit(BaseUnit)
-        assert(isinstance(test_point.x, BaseUnit))
-        assert(isinstance(test_point.y, BaseUnit))
-        assert(test_point.x == BaseUnit(5))
-        assert(test_point.y == BaseUnit(6))
+        test_point.to_unit(Unit)
+        assert(isinstance(test_point.x, Unit))
+        assert(isinstance(test_point.y, Unit))
+        assert(test_point.x == Unit(5))
+        assert(test_point.y == Unit(6))
 
     def test_to_unit_from_other_unit(self):
-        test_point = Point(BaseUnit(1), BaseUnit(2))
+        test_point = Point(Unit(1), Unit(2))
         test_point.to_unit(Mm)
         assert(isinstance(test_point.x, Mm))
         assert(isinstance(test_point.y, Mm))
-        self.assertAlmostEqual(test_point.x, Mm(BaseUnit(1)))
-        self.assertAlmostEqual(test_point.y, Mm(BaseUnit(2)))
+        self.assertAlmostEqual(test_point.x, Mm(Unit(1)))
+        self.assertAlmostEqual(test_point.y, Mm(Unit(2)))
 
     def test_iteration(self):
         test_point = Point(5, 6)

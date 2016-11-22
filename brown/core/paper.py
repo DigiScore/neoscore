@@ -9,13 +9,13 @@ class Paper:
                  gutter=0):
         """
         Args:
-            width (BaseUnit): The paper width.
-            height (BaseUnit): The paper height.
-            margin_top (BaseUnit): The paper top margin.
-            margin_right (BaseUnit): The paper right margin.
-            margin_bottom (BaseUnit): The paper bottom margin.
-            margin_left (BaseUnit): The paper left margin.
-            gutter (BaseUnit): The paper gutter.
+            width (Unit): The paper width.
+            height (Unit): The paper height.
+            margin_top (Unit): The paper top margin.
+            margin_right (Unit): The paper right margin.
+            margin_bottom (Unit): The paper bottom margin.
+            margin_left (Unit): The paper left margin.
+            gutter (Unit): The paper gutter.
         """
         self.width = width
         self.height = height
@@ -45,7 +45,7 @@ class Paper:
 
     @property
     def width(self):
-        """BaseUnit: The page width"""
+        """Unit: The page width"""
         return self._width
 
     @width.setter
@@ -54,7 +54,7 @@ class Paper:
 
     @property
     def height(self):
-        """BaseUnit: The page height"""
+        """Unit: The page height"""
         return self._height
 
     @height.setter
@@ -63,7 +63,7 @@ class Paper:
 
     @property
     def margin_top(self):
-        """BaseUnit: The top margin"""
+        """Unit: The top margin"""
         return self._margin_top
 
     @margin_top.setter
@@ -72,7 +72,7 @@ class Paper:
 
     @property
     def margin_right(self):
-        """BaseUnit: The right margin"""
+        """Unit: The right margin"""
         return self._margin_right
 
     @margin_right.setter
@@ -81,7 +81,7 @@ class Paper:
 
     @property
     def margin_bottom(self):
-        """BaseUnit: The bottom margin"""
+        """Unit: The bottom margin"""
         return self._margin_bottom
 
     @margin_bottom.setter
@@ -90,7 +90,7 @@ class Paper:
 
     @property
     def margin_left(self):
-        """BaseUnit: The left margin"""
+        """Unit: The left margin"""
         return self._margin_left
 
     @margin_left.setter
@@ -99,7 +99,7 @@ class Paper:
 
     @property
     def gutter(self):
-        """BaseUnit: The page gutter.
+        """Unit: The page gutter.
 
         TODO: Gutter support is not fully implemented.
         """

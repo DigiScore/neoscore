@@ -1,10 +1,10 @@
-from brown.utils.base_unit import BaseUnit
+from brown.utils.unit import Unit
 
 
-class Inch(BaseUnit):
-    # TODO: When stable, copy and tailor docstring from BaseUnit
+class Inch(Unit):
+    # TODO: When stable, copy and tailor docstring from Unit
     _unit_name_plural = 'inches'
-    _base_units_per_self_unit = 300
+    _units_per_self_unit = 300
 
-    # (all other functionality implemented in BaseUnit)
+    # (all other functionality implemented in Unit)
     pass

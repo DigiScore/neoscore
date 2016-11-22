@@ -8,10 +8,10 @@ class Rect:
     def __init__(self, x, y, width, height):
         """
         Args:
-            x (int, float, or BaseUnit): The starting x position
-            y (int, float, or BaseUnit): The starting y position
-            width (int, float, or BaseUnit): The width of the rectangle
-            height (int, float, or BaseUnit): The height of the rectangle
+            x (int, float, or Unit): The starting x position
+            y (int, float, or Unit): The starting y position
+            width (int, float, or Unit): The width of the rectangle
+            height (int, float, or Unit): The height of the rectangle
         """
         self._x = x
         self._y = y
@@ -25,11 +25,11 @@ class Rect:
         """Initialize a Rect and convert its values to a unit.
 
         Args:
-            x (int, float, or BaseUnit): The starting x position
-            y (int, float, or BaseUnit): The starting y position
-            width (int, float, or BaseUnit): The width of the rectangle
-            height (int, float, or BaseUnit): The height of the rectangle
-            unit (type): A BaseUnit class
+            x (int, float, or Unit): The starting x position
+            y (int, float, or Unit): The starting y position
+            width (int, float, or Unit): The width of the rectangle
+            height (int, float, or Unit): The height of the rectangle
+            unit (type): A Unit class
 
         Returns: Rect
         """
@@ -41,22 +41,22 @@ class Rect:
 
     @property
     def x(self):
-        """x (int, float, or BaseUnit): The starting x position"""
+        """x (int, float, or Unit): The starting x position"""
         return self._x
 
     @property
     def y(self):
-        """y (int, float, or BaseUnit): The starting y position"""
+        """y (int, float, or Unit): The starting y position"""
         return self._y
 
     @property
     def width(self):
-        """width (int, float, or BaseUnit): The width of the rectangle"""
+        """width (int, float, or Unit): The width of the rectangle"""
         return self._width
 
     @property
     def height(self):
-        """height (int, float, or BaseUnit): The height of the rectangle"""
+        """height (int, float, or Unit): The height of the rectangle"""
         return self._height
 
     # TODO: work out setters

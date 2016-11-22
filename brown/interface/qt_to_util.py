@@ -10,7 +10,7 @@ def qt_point_to_point(qt_point, unit=None):
 
     Args:
         qt_point (QPoint or QPointF): The source point
-        unit (BaseUnit): An optional unit to convert
+        unit (Unit): An optional unit to convert
             values to in the output `Point`. If omitted, values
             in the output `Point` will be plain `int` or `float` values.
 
@@ -28,7 +28,7 @@ def qt_rect_to_rect(qt_rect, unit=None):
 
     Args:
         qt_rect (QRect or QRectF): The source rect
-        unit (BaseUnit): An optional unit to convert
+        unit (Unit): An optional unit to convert
             values to in the output `Rect`. If omitted, values
             in the output `Rect` will be plain `int` or `float` values.
 

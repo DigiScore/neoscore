@@ -1,8 +1,8 @@
-class BaseUnit:
+class Unit:
     """
     A fundamental base unit acting as a common ground for unit conversions.
 
-    BaseUnit objects enable easy conversion from one unit to another and
+    Unit objects enable easy conversion from one unit to another and
     convenient operations between them.
 
     Common operators (`+`, `-`, `/`, etc.) are supported between them.
@@ -13,7 +13,7 @@ class BaseUnit:
         >>> print(Inch(1) + Mm(1))
         1.0393700787401574 inches
 
-    If a `BaseUnit` (or subclass) is to the left of an `int` or `float`,
+    If a `Unit` (or subclass) is to the left of an `int` or `float`,
     the value on the right will be converted to the left object's type
     before performing the operation. The resulting value will be a new
     object of the left-side object's type.
@@ -34,17 +34,17 @@ class BaseUnit:
 
     # For use in __str__(). Subclasses should override this.
     _unit_name_plural = 'base units'
-    # Ratio of this class's units to BaseUnits.
+    # Ratio of this class's units to Units.
     # Subclasses should override this.
-    _base_units_per_self_unit = 1
+    _units_per_self_unit = 1
 
     def __init__(self, value):
         """
         Args:
-            value (int, float, BaseUnit): The value of the unit.
+            value (int, float, Unit): The value of the unit.
                 `int` and `float` literals will be stored directly
                 into `self.value`. Any value which is a unit subclass of
-                `BaseUnit` will be converted to that value in this unit.
+                `Unit` will be converted to that value in this unit.
         """
         if not type(self)._is_acceptable_type(value):
             raise TypeError(
@@ -54,14 +54,14 @@ class BaseUnit:
         elif type(value) == type(self):
             # Same type as self, just duplicate value
             self.value = value.value
-        elif isinstance(value, BaseUnit):
+        elif isinstance(value, Unit):
             # Convertible type, so convert value
-            self.value = ((value._base_units_per_self_unit * value.value) /
-                          self._base_units_per_self_unit)
+            self.value = ((value._units_per_self_unit * value.value) /
+                          self._units_per_self_unit)
             if isinstance(self.value, float) and self.value.is_integer():
                 self.value = int(self.value)
         else:
-            raise AssertionError('Leaky type in BaseUnit. This is a bug!')
+            raise AssertionError('Leaky type in Unit. This is a bug!')
 
     ######## PRIVATE CLASS METHODS ########
 
@@ -75,7 +75,7 @@ class BaseUnit:
         Returns:
             bool
         """
-        return isinstance(value, (int, float, BaseUnit))
+        return isinstance(value, (int, float, Unit))
 
     ######## SPECIAL METHODS ########
 

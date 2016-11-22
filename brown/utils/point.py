@@ -56,7 +56,7 @@ class Point:
             - An `(x, y)` 2-tuple
             - An existing Point
         kwargs:
-            unit (type): A BaseUnit class.
+            unit (type): A Unit class.
 
         Example:
             >>> from brown.utils.inch import Inch
@@ -73,7 +73,7 @@ class Point:
               rework constructor signature if needed.
         """
         if unit is None:
-            raise TypeError('unit must be set to a BaseUnit or subclass.'
+            raise TypeError('unit must be set to a Unit or subclass.'
                             ' (Did you forget to pass it as a kwarg?)')
         point = cls(*args)
         point.to_unit(unit)
@@ -83,7 +83,7 @@ class Point:
 
     @property
     def x(self):
-        """BaseUnit, int, or float: The x coordinate of the point."""
+        """Unit, int, or float: The x coordinate of the point."""
         return self._x
 
     @x.setter
@@ -93,7 +93,7 @@ class Point:
 
     @property
     def y(self):
-        """BaseUnit, int, or float: The y coordinate of the point."""
+        """Unit, int, or float: The y coordinate of the point."""
         return self._y
 
     @y.setter
@@ -108,7 +108,7 @@ class Point:
         """Translate coordinates to be of a certain unit type.
 
         Args:
-            unit (type): A BaseUnit class.
+            unit (type): A Unit class.
 
         Returns: None
         """
