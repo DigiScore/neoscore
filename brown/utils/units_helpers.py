@@ -5,48 +5,43 @@ TODO: Remember to merge me
 """
 
 
-def convert_contents_to_unit_in_place(working_list, unit_class):
+def convert_contents_to_unit_in_place(working_list, unit):
     """Convert all numerical elements in an iterable to a unit.
 
     Args:
         working_list (list): The list to operate on
-        unit_class (type): The unit to convert numerical elements to
+        unit (type): The unit to convert numerical elements to
 
     Returns: None
     """
     for i in range(len(working_list)):
         try:
-            working_list[i] = unit_class(working_list[i])
+            working_list[i] = unit(working_list[i])
         except TypeError:
             continue
 
 
-def recursively_convert_contents_to_unit_out_of_place(iterable, unit_class):
-    """Recursively convert all numbers found in an iterable to a unit out of place.
+def _call_on_immutable(iterable, unit):
+    """Recursively convert all numbers in an immutable iterable.
 
-    This function works in place. Immutable structures (namely tuples) found
-    within `iterable` will be replaced. `iterable` itself may not be immutable.
-
-    In dictionaries, *only values* will be converted. Keys will be left as-is.
+    This is a helper function for convert_all_to_unit
 
     Args:
-        iterable [set, list, dict]: The iterable to recursive convert
-        unit_class (type): The unit to convert numerical elements to
+        iterable [tuple]: The iterable to recursive convert
+        unit (type): The unit to convert numerical elements to
 
     Returns:
-        None
-
-    Raises:
-        TypeError: If `iterable` is not an iterable or is immutable
+        An iterable the same type of the input.
+        (set --> set, tuple --> tuple, etc.)
     """
     original_type = type(iterable)
     mutable_iterable = list(iterable)
-    recursively_convert_contents_to_unit_in_place(mutable_iterable, unit_class)
+    convert_all_to_unit(mutable_iterable, unit)
     return original_type(mutable_iterable)
 
 
 
-def recursively_convert_contents_to_unit_in_place(iterable, unit_class):
+def convert_all_to_unit(iterable, unit):
     """Recursively convert all numbers found in an iterable to a unit in place.
 
     This function works in place. Immutable structures (namely tuples) found
@@ -56,7 +51,7 @@ def recursively_convert_contents_to_unit_in_place(iterable, unit_class):
 
     Args:
         iterable [list, dict]: The iterable to recursive convert
-        unit_class (type): The unit to convert numerical elements to
+        unit (type): The unit to convert numerical elements to
 
     Returns:
         None
@@ -66,24 +61,24 @@ def recursively_convert_contents_to_unit_in_place(iterable, unit_class):
     """
     if isinstance(iterable, dict):
         for key, value in iterable.items():
-            if unit_class._is_acceptable_type(value):
-                iterable[key] = unit_class(value)
+            if unit._is_acceptable_type(value):
+                iterable[key] = unit(value)
             elif isinstance(value, (list, dict)):
-                recursively_convert_contents_to_unit_in_place(iterable[key], unit_class)
+                convert_all_to_unit(iterable[key], unit)
             else:
                 try:
-                    iterable[key] = recursively_convert_contents_to_unit_out_of_place(iterable[key], unit_class)
+                    iterable[key] = _call_on_immutable(iterable[key], unit)
                 except TypeError:
                     continue
     elif isinstance(iterable, list):
         for i in range(len(iterable)):
-            if unit_class._is_acceptable_type(iterable[i]):
-                iterable[i] = unit_class(iterable[i])
+            if unit._is_acceptable_type(iterable[i]):
+                iterable[i] = unit(iterable[i])
             elif isinstance(iterable[i], (list, dict)):
-                recursively_convert_contents_to_unit_in_place(iterable[i], unit_class)
+                convert_all_to_unit(iterable[i], unit)
             else:
                 try:
-                    iterable[i] = recursively_convert_contents_to_unit_out_of_place(iterable[i], unit_class)
+                    iterable[i] = _call_on_immutable(iterable[i], unit)
                 except TypeError:
                     continue
     else:
