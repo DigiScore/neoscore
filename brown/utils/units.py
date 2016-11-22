@@ -188,6 +188,14 @@ class Mm(Unit):
     pass
 
 
+class Cm(Unit):
+    _unit_name_plural = 'centimeters'
+    _base_units_per_self_unit = 1.18110236220472
+
+    # (all other functionality implemented in Unit)
+    pass
+
+
 def _call_on_immutable(iterable, unit):
     """Recursively convert all numbers in an immutable iterable.
 
