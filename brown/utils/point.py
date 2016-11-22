@@ -48,7 +48,7 @@ class Point:
     ######## PRIVATE CLASS METHODS ########
 
     @classmethod
-    def with_unit(cls, *args, unit_class=None):
+    def with_unit(cls, *args, unit=None):
         """Create a Point and ensure its coordinates are in a type of unit.
 
         *args: One of:
@@ -56,27 +56,27 @@ class Point:
             - An `(x, y)` 2-tuple
             - An existing Point
         kwargs:
-            unit_class (type): A BaseUnit class.
+            unit (type): A BaseUnit class.
 
         Example:
             >>> from brown.utils.inch import Inch
-            >>> p = Point.with_unit(2, 3, unit_class=Inch)
+            >>> p = Point.with_unit(2, 3, unit=Inch)
             >>> print(p.x)
             2 inches
             >>> print(p.y)
             3 inches
 
         Warning: Due to the flexibility of constructor options in Points,
-            `unit_class` must be passed as a keyword argument.
+            `unit` must be passed as a keyword argument.
 
         TODO: Fix unnecessary explicit kwarg,
               rework constructor signature if needed.
         """
-        if unit_class is None:
-            raise TypeError('unit_class must be set to a BaseUnit or subclass.'
+        if unit is None:
+            raise TypeError('unit must be set to a BaseUnit or subclass.'
                             ' (Did you forget to pass it as a kwarg?)')
         point = cls(*args)
-        point.to_unit(unit_class)
+        point.to_unit(unit)
         return point
 
     ######## PUBLIC PROPERTIES ########
@@ -104,16 +104,16 @@ class Point:
 
     ######## PUBLIC METHODS ########
 
-    def to_unit(self, unit_class):
+    def to_unit(self, unit):
         """Translate coordinates to be of a certain unit type.
 
         Args:
-            unit_class (type): A BaseUnit class.
+            unit (type): A BaseUnit class.
 
         Returns: None
         """
-        self.x = unit_class(self.x)
-        self.y = unit_class(self.y)
+        self.x = unit(self.x)
+        self.y = unit(self.y)
 
     def setters_hook(self):
         """Optional method to be called when an attribute changes.

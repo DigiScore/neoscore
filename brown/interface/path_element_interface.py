@@ -40,7 +40,7 @@ class PathElementInterface:
         self._parent_path = parent_path
         self._index = index
         self._pos = Point.with_unit(qt_object.x, qt_object.y,
-                                    unit_class=GraphicUnit)
+                                    unit=GraphicUnit)
         self._pos.setters_hook = self._update_element_in_parent_path
         if isinstance(element_type, int):
             # TODO: Clean up this logic

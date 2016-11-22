@@ -21,7 +21,7 @@ class Rect:
     ######## CLASS METHODS ########
 
     @classmethod
-    def with_unit(cls, x, y, width, height, unit_class):
+    def with_unit(cls, x, y, width, height, unit):
         """Initialize a Rect and convert its values to a unit.
 
         Args:
@@ -29,12 +29,12 @@ class Rect:
             y (int, float, or BaseUnit): The starting y position
             width (int, float, or BaseUnit): The width of the rectangle
             height (int, float, or BaseUnit): The height of the rectangle
-            unit_class (type): A BaseUnit class
+            unit (type): A BaseUnit class
 
         Returns: Rect
         """
-        return cls(unit_class(x), unit_class(y),
-                   unit_class(width), unit_class(height))
+        return cls(unit(x), unit(y),
+                   unit(width), unit(height))
 
 
     ######## PUBLIC PROPERTIES ########

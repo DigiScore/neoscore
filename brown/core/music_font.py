@@ -18,7 +18,11 @@ class MusicFont(Font):
     def __init__(self, family_name, size):
         super().__init__(family_name, size, 1, False)
         self._cached_em_size = self._calculate_approximate_em_size()
-        self.metadata = brown.registered_music_fonts[family_name]
+        try:
+            self.metadata = brown.registered_music_fonts[family_name]
+        except KeyError:
+            raise MusicFontMetadataNotFoundError
+        engraving_defaults = self.metadata['engravingDefaults']
 
     ######## PUBLIC PROPERTIES ########
 
@@ -26,6 +30,10 @@ class MusicFont(Font):
     def em_size(self):
         """GraphicUnit: The em size for the font."""
         return self._cached_em_size
+
+    @property
+    def engraving_defaults(self):
+        raise NotImplementedError
 
     ######## PRIVATE METHODS ########
 

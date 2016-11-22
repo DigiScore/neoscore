@@ -63,7 +63,7 @@ class Path(GraphicObject):
         if self.elements:
             return self.elements[-1].pos_relative_to_item(self)
         else:
-            return Point.with_unit((0, 0), unit_class=GraphicUnit)
+            return Point.with_unit((0, 0), unit=GraphicUnit)
 
     @property
     def current_path_x(self):

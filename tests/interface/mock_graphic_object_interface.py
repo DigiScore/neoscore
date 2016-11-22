@@ -13,7 +13,7 @@ class MockGraphicObjectInterface(GraphicObjectInterface):
     """Only need to implement init for a functional mock subclass"""
 
     def __init__(self, pos, pen=None, brush=None, parent=None):
-        pos_point = Point.with_unit(pos, unit_class=BaseUnit)
+        pos_point = Point.with_unit(pos, unit=BaseUnit)
         self._qt_object = QtWidgets.QGraphicsRectItem(
             pos_point.x.value, pos_point.y.value, 10, 10)
         self.pos = pos_point

@@ -26,13 +26,13 @@ class TestPoint(unittest.TestCase):
         assert(test_point.y == 6)
 
     def test_init_with_unit(self):
-        test_point = Point.with_unit(5, 6, unit_class=BaseUnit)
+        test_point = Point.with_unit(5, 6, unit=BaseUnit)
         assert(isinstance(test_point.x, BaseUnit))
         assert(isinstance(test_point.y, BaseUnit))
         assert(test_point.x == BaseUnit(5))
         assert(test_point.y == BaseUnit(6))
 
-    def test_with_unit_fails_if_unit_class_not_set(self):
+    def test_with_unit_fails_if_unit_not_set(self):
         with pytest.raises(TypeError):
             Point.with_unit(5, 6)
 

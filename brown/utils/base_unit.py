@@ -44,6 +44,9 @@ class BaseUnit:
                 into `self.value`. Any value which is a unit subclass of
                 `BaseUnit` will be converted to that value in this unit.
         """
+        if not type(self)._is_acceptable_type(value):
+            raise TypeError(
+                'Unsupported value type "{}"'.format(type(value).__name__))
         if isinstance(value, (int, float)):
             self.value = value
         elif type(value) == type(self):
@@ -56,8 +59,21 @@ class BaseUnit:
             if isinstance(self.value, float) and self.value.is_integer():
                 self.value = int(self.value)
         else:
-            raise TypeError(
-                'Unsupported value type "{}"'.format(type(value).__name__))
+            raise AssertionError('Leaky type in BaseUnit. This is a bug!')
+
+    ######## PRIVATE CLASS METHODS ########
+
+    @classmethod
+    def _is_acceptable_type(cls, value):
+        """Tell if an object can be converted to this unit.
+
+        Args:
+            value (Any): The value to test
+
+        Returns:
+            bool
+        """
+        return isinstance(value, (int, float, BaseUnit))
 
     ######## SPECIAL METHODS ########
 

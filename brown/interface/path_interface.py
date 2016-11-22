@@ -105,7 +105,7 @@ class PathInterface(GraphicObjectInterface):
 
         Returns: None
         """
-        target = Point.with_unit(pos, unit_class=GraphicUnit)
+        target = Point.with_unit(pos, unit=GraphicUnit)
         self._qt_path.lineTo(target.x.value, target.y.value)
         self._update_qt_object_path()
 
@@ -124,9 +124,9 @@ class PathInterface(GraphicObjectInterface):
 
         Returns: None
         """
-        control_1_point = Point.with_unit(control_1, unit_class=GraphicUnit)
-        control_2_point = Point.with_unit(control_2, unit_class=GraphicUnit)
-        end_point = Point.with_unit(end, unit_class=GraphicUnit)
+        control_1_point = Point.with_unit(control_1, unit=GraphicUnit)
+        control_2_point = Point.with_unit(control_2, unit=GraphicUnit)
+        end_point = Point.with_unit(end, unit=GraphicUnit)
         self._qt_path.cubicTo(
             control_1_point.x.value,
             control_1_point.y.value,
@@ -144,7 +144,7 @@ class PathInterface(GraphicObjectInterface):
 
         Returns: None
         """
-        target = Point.with_unit(pos, unit_class=GraphicUnit)
+        target = Point.with_unit(pos, unit=GraphicUnit)
         self._qt_path.moveTo(target.x.value, target.y.value)
         self._update_qt_object_path()
 

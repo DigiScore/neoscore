@@ -46,7 +46,7 @@ class PathElement(InvisibleObject):
     def pos(self, value):
         # Use super setter, but also propogate change to interface
         # super().pos.fset(self, value)
-        self._pos = Point.with_unit(value, unit_class=GraphicUnit)
+        self._pos = Point.with_unit(value, unit=GraphicUnit)
         self._interface.pos = self._pos
         self._path_element_interface.pos = value
 
