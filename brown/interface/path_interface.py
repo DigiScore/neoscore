@@ -10,9 +10,11 @@ from brown.interface.path_element_interface import PathElementInterface
 
 """
 Notes on Qt path quirks:
+
 * At creation time, paths have an elementCount() of 0,
   but after a line is created, elementCount() == 2. First element
   is a moveTo to the origin; second is the lineTo you asked for
+
 * If a lineTo is drawn to (0, 0), a moveTo 0, 0 is performed instead:
 
     line_to_origin = PathInterface((5, 6))
@@ -28,6 +30,22 @@ Notes on Qt path quirks:
     assert(line_to_elsewhere._qt_path.elementAt(1).isLineTo() == True)
     # (All pass)
 
+* QPainterPath::ElementType is ambiguous in differentiating between
+  curve control points and curve end points. They are stored sequentially
+  in the path element list; the first element in the sequence is a
+  CurveToElement (enum 2), all following elements in the curve are
+  CurveToDataElement (enum 3). Despite this, all elements until the last
+  in the sequence are control points; the final element is the curve end point.
+
+  For instance, if a cubic line is drawn with two control points, they are
+  stored in the element list like so:
+
+    cubic_to((0, 5), (10, 5), (10, 0))
+    ---> Qt element list == [CurveToElement, CurveToDataElement, CurveToDataElement]
+
+  Which the brown API translates to:
+
+    ---> brown element list == [control_point, control_point, curve_to]
 """
 
 
@@ -173,9 +191,23 @@ class PathInterface(GraphicObjectInterface):
             qt_index = self.element_count + index
         else:
             qt_index = index
-        return PathElementInterface(self._qt_path.elementAt(qt_index),
-                                    self,
-                                    qt_index)
+        qt_element = self._qt_path.elementAt(qt_index)
+        # Determine the element type
+        if qt_element.type in [0, 1]:
+            element_type = qt_element.type
+        elif qt_element.type == 2:
+            # First element in curve sequence is always a control point
+            element_type = 3
+        else:
+            # Otherwise to distinguish control point from curve,
+            # look right and find if this is the last element before
+            # something other than 3. See module note for more detail.
+            if (qt_index == self.element_count or
+                    self._qt_path.elementAt(qt_index + 1).type != 3):
+                element_type = 2
+            else:
+                element_type = 3
+        return PathElementInterface(qt_element, self, qt_index, element_type)
 
     def set_element_position_at(self, index, pos):
         """Set the element at an index to a given position.

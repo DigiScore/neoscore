@@ -57,7 +57,6 @@ class TestPathInterface(unittest.TestCase):
         # TODO: Actually inspect contents of path and make sure they
         #       are as expected
 
-    @pytest.mark.xfail
     def test_cubic_to(self):
         test_path = PathInterface((5, 6))
         test_path.cubic_to((10, 11),

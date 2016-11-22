@@ -68,7 +68,6 @@ class TestPathElementInterface(unittest.TestCase):
         test_element = PathElementInterface(qt_element, test_path, 0)
         assert(test_element.element_type == PathElementType.line_to)
 
-    @pytest.mark.xfail
     def test_curves_and_control_points(self):
         # This behavior is correct, but not yet implemented
 
