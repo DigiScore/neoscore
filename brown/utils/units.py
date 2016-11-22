@@ -11,8 +11,8 @@ class Unit:
     Common operators (`+`, `-`, `/`, etc.) are supported between them.
     Return values from these operations are given in the type on the left.
 
-        >>> from brown.utils.units import Inch
-        >>> from brown.utils.units import Mm
+        >>> from brown.utils.inch import Inch
+        >>> from brown.utils.mm import Mm
         >>> print(Inch(1) + Mm(1))
         1.0393700787401574 inches
 
@@ -39,7 +39,7 @@ class Unit:
     _unit_name_plural = 'base units'
     # Ratio of this class's units to Units.
     # Subclasses should override this.
-    _units_per_self_unit = 1
+    _base_units_per_self_unit = 1
 
     def __init__(self, value):
         """
@@ -59,8 +59,8 @@ class Unit:
             self.value = value.value
         elif isinstance(value, Unit):
             # Convertible type, so convert value
-            self.value = ((value._units_per_self_unit * value.value) /
-                          self._units_per_self_unit)
+            self.value = ((value._base_units_per_self_unit * value.value) /
+                          self._base_units_per_self_unit)
             if isinstance(self.value, float) and self.value.is_integer():
                 self.value = int(self.value)
         else:
@@ -165,7 +165,7 @@ class Unit:
 class GraphicUnit(Unit):
     # TODO: When stable, copy and tailor docstring from Unit
     _unit_name_plural = 'pixels'
-    _units_per_self_unit = 1
+    _base_units_per_self_unit = 1
 
     # (all other functionality implemented in Unit)
     pass
@@ -174,7 +174,7 @@ class GraphicUnit(Unit):
 class Inch(Unit):
     # TODO: When stable, copy and tailor docstring from Unit
     _unit_name_plural = 'inches'
-    _units_per_self_unit = 300
+    _base_units_per_self_unit = 300
 
     # (all other functionality implemented in Unit)
     pass
@@ -183,7 +183,7 @@ class Inch(Unit):
 class Mm(Unit):
     # TODO: When stable, copy and tailor docstring from Unit
     _unit_name_plural = 'millimeters'
-    _units_per_self_unit = 11.811023622047244
+    _base_units_per_self_unit = 11.811023622047244
 
     # (all other functionality implemented in Unit)
     pass

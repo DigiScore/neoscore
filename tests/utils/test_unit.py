@@ -4,7 +4,7 @@ from brown.utils.units import Unit
 
 
 class MockUnit(Unit):
-    _units_per_self_unit = 2
+    _base_units_per_self_unit = 2
     pass
 
 
@@ -35,6 +35,10 @@ def test_init_from_incompatible_type_fails():
 
 def test__str__():
     assert(str(Unit(1)) == '1 base units')
+
+
+def test__repr__():
+    assert(repr(Unit(1)) == 'Unit(1)')
 
 
 def test__lt__():
