@@ -6,7 +6,7 @@ Dict keys are strings and values are tuples of args to `Paper.__init__()`
 Template names are case-insensitive.
 """
 
-from brown.utils.mm import Mm
+from brown.utils.units import Mm
 
 
 paper_templates = {

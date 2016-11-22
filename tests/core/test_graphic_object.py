@@ -2,7 +2,7 @@ import os
 import unittest
 
 from brown.core import brown
-from brown.utils.graphic_unit import GraphicUnit
+from brown.utils.units import GraphicUnit
 from brown.utils.point import Point
 from brown.core.pen import Pen
 from brown.core.brush import Brush

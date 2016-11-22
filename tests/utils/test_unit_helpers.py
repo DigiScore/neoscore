@@ -1,5 +1,5 @@
 from brown.utils.units_helpers import convert_all_to_unit
-from brown.utils.graphic_unit import GraphicUnit
+from brown.utils.units import GraphicUnit
 
 
 def test_convert_all_to_unit_simple_dict():

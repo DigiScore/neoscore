@@ -1,6 +1,6 @@
 from abc import ABC
 
-from brown.utils.graphic_unit import GraphicUnit
+from brown.utils.units import GraphicUnit
 from brown.utils.point import Point
 
 

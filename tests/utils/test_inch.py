@@ -1,7 +1,7 @@
 import unittest
 
-from brown.utils.unit import Unit
-from brown.utils.inch import Inch
+from brown.utils.units import Unit
+from brown.utils.units import Inch
 
 
 class TestInch(unittest.TestCase):

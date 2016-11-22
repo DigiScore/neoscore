@@ -4,7 +4,7 @@ from brown.core import brown
 from brown.interface.pen_interface import PenInterface
 from brown.interface.brush_interface import BrushInterface
 from brown.utils.point import Point
-from brown.utils.graphic_unit import GraphicUnit
+from brown.utils.units import GraphicUnit
 
 from mock_graphic_object_interface import MockGraphicObjectInterface
 

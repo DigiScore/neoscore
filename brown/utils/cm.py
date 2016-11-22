@@ -1,4 +1,4 @@
-from brown.utils.unit import Unit
+from brown.utils.units import Unit
 
 
 class Cm(Unit):

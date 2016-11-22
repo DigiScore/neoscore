@@ -59,7 +59,7 @@ class Point:
             unit (type): A Unit class.
 
         Example:
-            >>> from brown.utils.inch import Inch
+            >>> from brown.utils.units import Inch
             >>> p = Point.with_unit(2, 3, unit=Inch)
             >>> print(p.x)
             2 inches

@@ -1,7 +1,7 @@
 import unittest
 
-from brown.utils.unit import Unit
-from brown.utils.graphic_unit import GraphicUnit
+from brown.utils.units import Unit
+from brown.utils.units import GraphicUnit
 
 
 class TestGraphicUnit(unittest.TestCase):

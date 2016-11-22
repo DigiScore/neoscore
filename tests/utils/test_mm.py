@@ -1,7 +1,7 @@
 import unittest
 
-from brown.utils.unit import Unit
-from brown.utils.mm import Mm
+from brown.utils.units import Unit
+from brown.utils.units import Mm
 
 
 class TestMm(unittest.TestCase):

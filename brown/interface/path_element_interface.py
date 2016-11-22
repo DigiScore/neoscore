@@ -6,7 +6,7 @@ from PyQt5 import QtGui
 from brown.core import brown
 from brown.utils.path_element_type import PathElementType
 from brown.utils.point import Point
-from brown.utils.graphic_unit import GraphicUnit
+from brown.utils.units import GraphicUnit
 
 
 class PathElementInterface:

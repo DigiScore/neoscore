@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets
 
 from brown.interface.graphic_object_interface import GraphicObjectInterface
-from brown.utils.unit import Unit
+from brown.utils.units import Unit
 from brown.utils.point import Point
 
 

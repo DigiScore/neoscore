@@ -2,7 +2,7 @@ import unittest
 
 from brown.core import brown
 from brown.utils.point import Point
-from brown.utils.mm import Mm
+from brown.utils.units import Mm
 from brown.core.path import Path
 from brown.core.path_element import PathElement
 from mock_graphic_object import MockGraphicObject

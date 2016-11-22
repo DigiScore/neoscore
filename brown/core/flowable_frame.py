@@ -1,6 +1,6 @@
 from brown.utils.point import Point
 from brown.core import brown
-from brown.utils.mm import Mm
+from brown.utils.units import Mm
 from brown.core.layout_controller import LayoutController
 from brown.core.auto_new_line import AutoNewLine
 from brown.core.auto_new_page import AutoNewPage

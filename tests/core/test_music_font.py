@@ -4,7 +4,7 @@ import unittest
 from brown.config import config
 from brown.core import brown
 from brown.core.music_font import MusicFont
-from brown.utils.graphic_unit import GraphicUnit
+from brown.utils.units import GraphicUnit
 
 
 class TestMusicFont(unittest.TestCase):

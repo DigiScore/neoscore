@@ -2,7 +2,7 @@ import pytest
 
 from brown.utils.point import Point
 from brown.utils.rect import Rect
-from brown.utils.graphic_unit import GraphicUnit
+from brown.utils.units import GraphicUnit
 
 
 def test_rect_init():

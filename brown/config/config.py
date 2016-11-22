@@ -1,5 +1,5 @@
 import os
-from brown.utils.mm import Mm
+from brown.utils.units import Mm
 
 
 class InvalidConfigError(Exception):

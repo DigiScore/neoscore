@@ -3,7 +3,7 @@
 import random
 import sys
 
-from brown.utils.mm import Mm
+from brown.utils.units import Mm
 from brown.core import brown
 from brown.core.font import Font
 from brown.core.text_object import TextObject

@@ -2,7 +2,7 @@ from brown.config import config
 from brown.core import brown
 from brown.utils.point import Point
 from brown.core.paper import Paper
-from brown.utils.mm import Mm
+from brown.utils.units import Mm
 
 
 

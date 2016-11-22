@@ -1,7 +1,7 @@
 from brown.interface.path_interface import PathInterface
 from brown.core.graphic_object import GraphicObject
 from brown.utils.point import Point
-from brown.utils.graphic_unit import GraphicUnit
+from brown.utils.units import GraphicUnit
 from brown.core.path_element import PathElement
 
 

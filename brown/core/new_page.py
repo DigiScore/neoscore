@@ -1,5 +1,5 @@
 from brown.core.layout_controller import LayoutController
-from brown.utils.mm import Mm
+from brown.utils.units import Mm
 
 
 class NewPage(LayoutController):

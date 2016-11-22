@@ -2,7 +2,7 @@ import unittest
 import pytest
 
 from brown.core import brown
-from brown.utils.mm import Mm
+from brown.utils.units import Mm
 from brown.core.document import Document
 from brown.core.paper import Paper
 

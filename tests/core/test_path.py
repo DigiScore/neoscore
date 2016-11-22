@@ -6,7 +6,7 @@ from brown.core.path import Path
 from brown.utils.point import Point
 from brown.core.pen import Pen
 from brown.core.brush import Brush
-from brown.utils.graphic_unit import GraphicUnit
+from brown.utils.units import GraphicUnit
 from mock_graphic_object import MockGraphicObject
 
 

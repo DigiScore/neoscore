@@ -3,7 +3,7 @@ import unittest
 
 from brown.core.paper import Paper
 from brown.core import brown
-from brown.utils.mm import Mm
+from brown.utils.units import Mm
 from brown.core.flowable_frame import FlowableFrame
 from brown.core.auto_new_line import AutoNewLine
 from brown.core.auto_new_page import AutoNewPage

@@ -8,7 +8,7 @@ from brown.core.font import Font
 from brown.core.music_font import MusicFont
 from brown.core.paper import Paper
 from brown.core.document import Document
-from brown.utils.graphic_unit import GraphicUnit
+from brown.utils.units import GraphicUnit
 
 
 # Fetch and initialize app interface
