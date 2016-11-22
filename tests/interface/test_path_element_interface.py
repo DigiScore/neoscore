@@ -18,7 +18,7 @@ class TestPathElementInterface(unittest.TestCase):
         test_path = PathInterface((5, 6))
         test_path.line_to((10, 11))
         qt_element = test_path._qt_path.elementAt(1)
-        test_element = PathElementInterface(qt_element, test_path, 1)
+        test_element = PathElementInterface(qt_element, test_path, 1, 1)
         assert(float(test_element.pos.x) == 10)
         assert(float(test_element.pos.y) == 11)
         assert(test_element.parent_path == test_path)
@@ -30,7 +30,7 @@ class TestPathElementInterface(unittest.TestCase):
         test_path = PathInterface((5, 6))
         test_path.line_to((10, 11))
         qt_element = test_path._qt_path.elementAt(1)
-        test_element = PathElementInterface(qt_element, test_path, 1)
+        test_element = PathElementInterface(qt_element, test_path, 1, 1)
         # Test x change
         test_element.pos.x = 100
         assert(test_path._qt_path.elementAt(1).x == 100)
@@ -44,7 +44,7 @@ class TestPathElementInterface(unittest.TestCase):
         test_path = PathInterface((5, 6))
         test_path.line_to((10, 11))
         qt_element = test_path._qt_path.elementAt(1)
-        test_element = PathElementInterface(qt_element, test_path, 1)
+        test_element = PathElementInterface(qt_element, test_path, 1, 1)
         test_element.pos = Point(50, 51)
         assert(test_element.pos.x == 50)
         assert(test_element.pos.y == 51)
@@ -58,14 +58,14 @@ class TestPathElementInterface(unittest.TestCase):
         test_path = PathInterface((5, 6))
         test_path.move_to((10, 11))
         qt_element = test_path._qt_path.elementAt(0)
-        test_element = PathElementInterface(qt_element, test_path, 0)
+        test_element = PathElementInterface(qt_element, test_path, 0, 0)
         assert(test_element.element_type == PathElementType.move_to)
 
     def test_is_line_to(self):
         test_path = PathInterface((5, 6))
         test_path.line_to((10, 11))
         qt_element = test_path._qt_path.elementAt(1)
-        test_element = PathElementInterface(qt_element, test_path, 0)
+        test_element = PathElementInterface(qt_element, test_path, 0, 1)
         assert(test_element.element_type == PathElementType.line_to)
 
     def test_curves_and_control_points(self):
@@ -75,13 +75,13 @@ class TestPathElementInterface(unittest.TestCase):
         test_path.cubic_to((10, 11), (20, 0), (50, 30))
 
         qt_element_1 = test_path._qt_path.elementAt(1)
-        test_element_1 = PathElementInterface(qt_element_1, test_path, 0)
+        test_element_1 = PathElementInterface(qt_element_1, test_path, 0, 3)
         assert(test_element_1.element_type == PathElementType.control_point)
 
         qt_element_2 = test_path._qt_path.elementAt(2)
-        test_element_2 = PathElementInterface(qt_element_2, test_path, 0)
+        test_element_2 = PathElementInterface(qt_element_2, test_path, 0, 3)
         assert(test_element_2.element_type == PathElementType.control_point)
 
         qt_element_3 = test_path._qt_path.elementAt(3)
-        test_element_3 = PathElementInterface(qt_element_3, test_path, 0)
+        test_element_3 = PathElementInterface(qt_element_3, test_path, 0, 2)
         assert(test_element_3.element_type == PathElementType.curve_to)
