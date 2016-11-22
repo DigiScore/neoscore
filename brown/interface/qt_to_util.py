@@ -1,6 +1,8 @@
 """Various helper functions to convert Qt objects to util objects"""
 
 
+from PyQt5.QtCore import QPoint, QPointF, QRect, QRectF
+
 from brown.utils.rect import Rect
 from brown.utils.point import Point
 
@@ -23,6 +25,28 @@ def qt_point_to_point(qt_point, unit=None):
         return Point(qt_point.x(), qt_point.y())
 
 
+def point_to_qt_point(point):
+    """Create a QPoint from a Point
+
+    Args:
+        point (Point): The source point
+
+    Returns: QPoint
+    """
+    return QPoint(int(point.x), int(point.y))
+
+
+def point_to_qt_point_f(point):
+    """Create a QPointF from a Point
+
+    Args:
+        point (Point): The source point
+
+    Returns: QPointF
+    """
+    return QPointF(float(point.x), float(point.y))
+
+
 def qt_rect_to_rect(qt_rect, unit=None):
     """Create a Rect from a QRect or QRectF
 
@@ -41,3 +65,27 @@ def qt_rect_to_rect(qt_rect, unit=None):
     else:
         return Rect(qt_rect.x(), qt_rect.y(),
                     qt_rect.width(), qt_rect.height())
+
+
+def rect_to_qt_rect(rect):
+    """Create a QRect from a Rect
+
+    Args:
+        rect (Rect): The source rect
+
+    Returns: QRect
+    """
+    return QRect(int(rect.x), int(rect.y),
+                 int(rect.width), int(rect.height))
+
+
+def rect_to_qt_rect_f(rect):
+    """Create a QRectF from a Rect
+
+    Args:
+        rect (Rect): The source rect
+
+    Returns: QRectF
+    """
+    return QRectF(float(rect.x), float(rect.y),
+                  float(rect.width), float(rect.height))
