@@ -9,6 +9,10 @@ class Glyph(TextObject):
     """
     Same as a TextObject with the limitation that its text
     can have at most one character
+
+    TODO: Maybe override initializer to use a more semantic kwarg of `char`
+          instead of `text`
+    TODO: Maybe rename glyph to GlyphObject for consistency?
     """
 
     ######## PUBLIC PROPERTIES ########

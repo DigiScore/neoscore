@@ -13,6 +13,14 @@ with open(os.path.join(smufl_dir, 'classes.json'), 'r') as classes_file:
 with open(os.path.join(smufl_dir, 'glyphnames.json'), 'r') as glyphnames_file:
     glyph_names = json.load(glyphnames_file)
 
+reversed_glyph_names = {
+    glyph_names[name]['codepoint']: {
+        'canonicalName': name,
+        'description': glyph_names[name]['description']}
+    for name in glyph_names
+}
+
+
 with open(os.path.join(smufl_dir, 'ranges.json'), 'r') as ranges_file:
     ranges = json.load(ranges_file)
 

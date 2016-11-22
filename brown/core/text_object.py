@@ -45,6 +45,7 @@ class TextObject(GraphicObject):
 
     @property
     def font(self):
+        """Font: The text font"""
         return self._font
 
     @font.setter
