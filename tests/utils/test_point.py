@@ -3,8 +3,7 @@ import pytest
 
 from brown.utils.point import Point
 
-from brown.utils.units import Unit
-from brown.utils.units import Mm
+from brown.utils.units import Unit, Mm
 
 
 class TestPoint(unittest.TestCase):

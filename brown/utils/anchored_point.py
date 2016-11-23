@@ -1,9 +1,20 @@
-class Point:
-    """A simple 2-d point class.
+from brown.utils.point import Point
 
-    Its x and y values may be accessed by name, iteration, and indexing:
 
-        >>> p = Point(5, 6)
+class AnchoredPoint(Point):
+    """A Point with a parent anchor.
+
+    This is identical to a Point except that it has an additional
+    `parent` attribute. Its coordinates are then considered to be
+    relative to the parent.
+
+    Like a `Point`, the x and y values may be accessed by name,
+    iteration, and indexing; however the `parent` attribute can
+    only be accessed by name:
+
+        >>> from brown.core.glyph import Glyph
+        >>> some_grob = Glyph((10, 11), 'A')
+        >>> p = AnchoredPoint(5, 6, some_grob)
         >>> p.x == p[0] == 5
         True
         >>> p.y == p[1] == 6
@@ -13,23 +24,31 @@ class Point:
         5
         >>> y
         6
+        # The `parent` attribute must be referenced by index
+        >>> p[2]
+        Traceback (most recent call last):
+        ...
+        IndexError: Only valid indices for AnchoredPoint are 0 and 1 (got 2)
+        >>> p.parent == some_grob
+        True
 
     """
     def __init__(self, *args):
         """
         *args: One of:
-            - An `x, y` pair outside of a tuple
-            - An `(x, y)` 2-tuple
-            - An existing Point
+            - An `x, y, parent` pair outside of a tuple
+            - An `(x, y, parent)` 3-tuple
+            - An existing AnchoredPoint
         """
-        if len(args) == 2:
-            self._x, self._y = args
+        if len(args) == 3:
+            self._x, self._y, self._parent = args
         elif len(args) == 1:
             if isinstance(args[0], tuple):
-                self._x, self._y = args[0]
-            elif isinstance(args[0], Point):
+                self._x, self._y, self._parent = args[0]
+            elif isinstance(args[0], type(self)):
                 self._x = args[0].x
                 self._y = args[0].y
+                self._parent = args[0].parent
             else:
                 raise ValueError('Invalid args for {}.__init__()'.format(
                     type(self).__name__))
@@ -38,6 +57,7 @@ class Point:
                 type(self).__name__))
 
         self._iter_index = 0
+
 
     ######## SPECIAL METHODS ########
 
@@ -51,15 +71,18 @@ class Point:
         """Create a Point and ensure its coordinates are in a type of unit.
 
         *args: One of:
-            - An `x, y` pair outside of a tuple
-            - An `(x, y)` 2-tuple
-            - An existing Point
+            - An `x, y, parent` pair outside of a tuple
+            - An `(x, y, parent)` 3-tuple
+            - An existing AnchoredPoint
+
         kwargs:
             unit (type): A Unit class.
 
         Example:
             >>> from brown.utils.units import Inch
-            >>> p = Point.with_unit(2, 3, unit=Inch)
+            >>> from brown.core.glyph import Glyph
+            >>> some_grob = Glyph((10, 11), 'A')
+            >>> p = AnchoredPoint.with_unit(2, 3, unit=Inch)
             >>> print(p.x)
             2 inches
             >>> print(p.y)
@@ -100,19 +123,14 @@ class Point:
         self._y = value
         self.setters_hook()
 
+    @property
+    def parent(self):
+        return self._parent
 
-    ######## PUBLIC METHODS ########
-
-    def to_unit(self, unit):
-        """Translate coordinates to be of a certain unit type.
-
-        Args:
-            unit (type): A Unit class.
-
-        Returns: None
-        """
-        self.x = unit(self.x)
-        self.y = unit(self.y)
+    @parent.setter
+    def parent(self, value):
+        self._parent = value
+        self.setters_hook()
 
     def setters_hook(self):
         """Optional method to be called when an attribute changes.
@@ -125,7 +143,7 @@ class Point:
             >>> class PointHolder:
             ...     def __init__(self):
             ...         self.point_setter_hook_called = False
-            ...         self.point = Point(0, 0)
+            ...         self.point = AnchoredPoint(0, 0)
             ...         self.point.setters_hook = self.handle_hook
             ...
             ...     def handle_hook(self):
@@ -136,42 +154,3 @@ class Point:
             True
         """
         pass
-
-    ######## SPECIAL METHODS ########
-
-    def __iter__(self):
-        return self
-
-    def __getitem__(self, key):
-        """Index into a Point, where 0 is x and 1 is y.
-
-        Args:
-            key (int): The indexing key
-
-        Raises:
-            TypeError: For all non-int `key` values
-            IndexError: For all int `key` values other than `0` and `1`
-
-        QUESTION: Should negative indexing be supported? Might be confusing.
-        """
-        if not isinstance(key, int):
-            raise TypeError('Point keys must be of type `int`.')
-        if key == 0:
-            return self.x
-        elif key == 1:
-            return self.y
-        else:
-            raise IndexError('Only valid indices for {} '
-                             'are 0 and 1 (Got {})'.format(
-                                 type(self).__name__, key))
-
-    def __next__(self):
-        """Support iteration over a Point for indices 0 and 1."""
-        if self._iter_index > 1:
-            self._iter_index = 0
-            raise StopIteration
-        self._iter_index += 1
-        if self._iter_index == 1:
-            return self.x
-        else:
-            return self.y
