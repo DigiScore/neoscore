@@ -2,6 +2,8 @@ import unittest
 import pytest
 
 from brown.utils.point import Point
+from brown.utils.anchored_point import AnchoredPoint
+
 
 from brown.utils.units import Unit, Mm
 
@@ -20,6 +22,12 @@ class TestPoint(unittest.TestCase):
 
     def test_init_with_existing_Point(self):
         existing_point = Point(5, 6)
+        test_point = Point(existing_point)
+        assert(test_point.x == 5)
+        assert(test_point.y == 6)
+
+    def test_init_with_existing_AnchoredPoint(self):
+        existing_point = AnchoredPoint(5, 6, None)
         test_point = Point(existing_point)
         assert(test_point.x == 5)
         assert(test_point.y == 6)
@@ -103,3 +111,11 @@ class TestPoint(unittest.TestCase):
         assert(test_instance.point.x == 0)
         test_instance.point.x = 0
         assert(test_instance.point_setter_hook_called is True)
+
+    def test__eq__(self):
+        p1 = Point(5, 6)
+        p2 = Point(5, 6)
+        p3 = Point(5, 7)
+        assert(p1 == p2)
+        assert(p1 != p3)
+        assert(p1 != (5, 6))

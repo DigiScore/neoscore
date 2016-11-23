@@ -139,6 +139,12 @@ class Point:
 
     ######## SPECIAL METHODS ########
 
+    def __eq__(self, other):
+        if isinstance(other, type(self)):
+            return self.x == other.x and self.y == other.y
+        else:
+            return False
+
     def __iter__(self):
         return self
 
