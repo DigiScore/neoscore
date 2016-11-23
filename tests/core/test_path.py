@@ -3,6 +3,7 @@ import unittest
 
 from brown.core import brown
 from brown.core.path import Path
+from brown.utils.path_element_type import PathElementType
 from brown.utils.point import Point
 from brown.core.pen import Pen
 from brown.core.brush import Brush
@@ -19,22 +20,22 @@ class TestPath(unittest.TestCase):
         mock_parent = MockGraphicObject((0, 0), parent=None)
         test_pen = Pen('#eeeeee')
         test_brush = Brush('#dddddd')
-        test_path = Path((5, 6), test_pen, test_brush, mock_parent)
-        assert(isinstance(test_path.pos, Point))
-        assert(test_path.x == 5)
-        assert(test_path._interface.x == 5)
-        assert(test_path.y == 6)
-        assert(test_path._interface.y == 6)
-        assert(isinstance(test_path.current_path_position, Point))
-        assert(isinstance(test_path._interface.current_path_position, Point))
-        assert(test_path.current_path_x == 0)
-        assert(test_path._interface.current_path_x == 0)
-        assert(test_path.current_path_y == 0)
-        assert(test_path._interface.current_path_y == 0)
-        assert(test_path.pen == test_pen)
-        assert(test_path._interface.pen == test_pen._interface)
-        assert(test_path.brush == test_brush)
-        assert(test_path._interface.brush == test_brush._interface)
+        path = Path((5, 6), test_pen, test_brush, mock_parent)
+        assert(isinstance(path.pos, Point))
+        assert(path.x == 5)
+        assert(path._interface.x == 5)
+        assert(path.y == 6)
+        assert(path._interface.y == 6)
+        assert(isinstance(path.current_path_position, Point))
+        assert(isinstance(path._interface.current_path_position, Point))
+        assert(path.current_path_x == 0)
+        assert(path._interface.current_path_x == 0)
+        assert(path.current_path_y == 0)
+        assert(path._interface.current_path_y == 0)
+        assert(path.pen == test_pen)
+        assert(path._interface.pen == test_pen._interface)
+        assert(path.brush == test_brush)
+        assert(path._interface.brush == test_brush._interface)
 
     def test_straight_line(self):
         test_line = Path.straight_line((5, 6), (10, 11))
@@ -52,50 +53,98 @@ class TestPath(unittest.TestCase):
             test_line.current_path_position = (7, 8)
 
     def test_line_to(self):
-        test_path = Path((5, 6))
-        test_path.line_to((10, 12))
-        assert(len(test_path.elements) == 2)
-        assert(test_path.elements[-1].pos.x == 10)
-        assert(test_path.current_path_position.x == 10)
-        assert(test_path.current_path_position.y == 12)
-        assert(test_path._interface.current_path_position.x == 10)
-        assert(test_path._interface.current_path_position.y == 12)
+        path = Path((5, 6))
+        path.line_to((10, 12))
+        assert(len(path.elements) == 2)
+        assert(path.elements[-1].pos.x == 10)
+        assert(path.current_path_position.x == 10)
+        assert(path.current_path_position.y == 12)
+        assert(path._interface.current_path_position.x == 10)
+        assert(path._interface.current_path_position.y == 12)
 
     def test_line_to_with_parent(self):
-        test_path = Path((5, 6))
+        path = Path((5, 6))
         parent = MockGraphicObject((100, 50))
-        test_path.line_to(Point(1, 3), parent)
-        assert(test_path.elements[-1]._path_element_interface.pos.x == 96)
-        assert(test_path.elements[-1]._path_element_interface.pos.y == 47)
+        path.line_to(Point(1, 3), parent)
+        assert(path.elements[-1]._path_element_interface.pos.x == 96)
+        assert(path.elements[-1]._path_element_interface.pos.y == 47)
 
-    def test_cubic_to(self):
-        test_path = Path((5, 6))
-        test_path.cubic_to((10, 11),
-                           (0, 1),
-                           (5, 6))
-        assert(test_path.current_path_position.x == 5)
-        assert(test_path.current_path_position.y == 6)
-        assert(test_path._interface.current_path_position.x == 5)
-        assert(test_path._interface.current_path_position.y == 6)
-        # TODO: Actually inspect contents of path and make sure they
-        #       are as expected
+    def test_cubic_to_with_no_parents(self):
+        path = Path((5, 6))
+        path.cubic_to((10, 11),
+                      (0, 1),
+                      (5, 6))
+        assert(len(path.elements) == 4)
+        assert(path.elements[0].element_type == PathElementType.move_to)
+        assert(path.elements[0].pos == Point(0, 0))
+        assert(path.elements[1].element_type == PathElementType.control_point)
+        assert(path.elements[1].pos == Point(10, 11))
+        assert(path.elements[2].element_type == PathElementType.control_point)
+        assert(path.elements[2].pos == Point(0, 1))
+        assert(path.elements[3].element_type == PathElementType.curve_to)
+        assert(path.elements[3].pos == Point(5, 6))
+        assert(path.current_path_position.x == 5)
+        assert(path.current_path_position.y == 6)
+        # Verify interface results
+        assert(path._interface.element_at(0).element_type == PathElementType.move_to)
+        assert(path._interface.element_at(0).pos == Point(0, 0))
+        assert(path._interface.element_at(1).element_type == PathElementType.control_point)
+        assert(path._interface.element_at(1).pos == Point(10, 11))
+        assert(path._interface.element_at(2).element_type == PathElementType.control_point)
+        assert(path._interface.element_at(2).pos == Point(0, 1))
+        assert(path._interface.element_at(3).element_type == PathElementType.curve_to)
+        assert(path._interface.element_at(3).pos == Point(5, 6))
+        assert(path._interface.current_path_position.x == 5)
+        assert(path._interface.current_path_position.y == 6)
+
+    def test_cubic_to_with_parents(self):
+        path = Path((0, 0))
+        parent = MockGraphicObject((100, 50))
+        path.cubic_to((10, 11, parent),
+                      (0, 1, parent),
+                      (5, 6, parent))
+        assert(len(path.elements) == 4)
+        assert(path.elements[0].element_type == PathElementType.move_to)
+        assert(path.elements[0].pos == Point(0, 0))
+        assert(path.elements[1].element_type == PathElementType.control_point)
+        assert(path.elements[1].pos == Point(10, 11))
+        assert(path.elements[1].parent == parent)
+        assert(path.elements[2].element_type == PathElementType.control_point)
+        assert(path.elements[2].pos == Point(0, 1))
+        assert(path.elements[2].parent == parent)
+        assert(path.elements[3].element_type == PathElementType.curve_to)
+        assert(path.elements[3].pos == Point(5, 6))
+        assert(path.elements[3].parent == parent)
+        assert(path.current_path_position.x == 105)
+        assert(path.current_path_position.y == 56)
+        # Verify interface results
+        assert(path._interface.element_at(0).element_type == PathElementType.move_to)
+        assert(path._interface.element_at(0).pos == Point(0, 0))
+        assert(path._interface.element_at(1).element_type == PathElementType.control_point)
+        assert(path._interface.element_at(1).pos == Point(110, 61))
+        assert(path._interface.element_at(2).element_type == PathElementType.control_point)
+        assert(path._interface.element_at(2).pos == Point(100, 51))
+        assert(path._interface.element_at(3).element_type == PathElementType.curve_to)
+        assert(path._interface.element_at(3).pos == Point(105, 56))
+        assert(path._interface.current_path_position.x == 105)
+        assert(path._interface.current_path_position.y == 56)
 
     def test_move_to(self):
-        test_path = Path((5, 6))
-        test_path.move_to((10, 11))
-        assert(test_path.current_path_position.x == 10)
-        assert(test_path.current_path_position.y == 11)
-        assert(test_path._interface.current_path_position.x == 10)
-        assert(test_path._interface.current_path_position.y == 11)
+        path = Path((5, 6))
+        path.move_to((10, 11))
+        assert(path.current_path_position.x == 10)
+        assert(path.current_path_position.y == 11)
+        assert(path._interface.current_path_position.x == 10)
+        assert(path._interface.current_path_position.y == 11)
         # TODO: Actually inspect contents of path and make sure they
         #       are as expected
 
     def test_close_subpath(self):
-        test_path = Path((5, 6))
-        test_path.close_subpath()
-        assert(test_path.current_path_position.x == 0)
-        assert(test_path.current_path_position.y == 0)
-        assert(test_path._interface.current_path_position.x == 0)
-        assert(test_path._interface.current_path_position.y == 0)
+        path = Path((5, 6))
+        path.close_subpath()
+        assert(path.current_path_position.x == 0)
+        assert(path.current_path_position.y == 0)
+        assert(path._interface.current_path_position.x == 0)
+        assert(path._interface.current_path_position.y == 0)
         # TODO: Actually inspect contents of path and make sure they
         #       are as expected

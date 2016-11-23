@@ -36,6 +36,10 @@ path = Path((0, 0), Pen('#000000'), Brush('#eeeeee'))
 path.line_to((0, 0), parent=glyph)
 path.render()
 
+curve = Path((0, 0), Pen('#000000'), Brush('#eeeeee'))
+curve.cubic_to((0, 50, glyph), (50, 0, glyph), (0, -50, glyph))
+curve.render()
+
 
 
 brown.show()

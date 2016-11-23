@@ -1,6 +1,7 @@
 from brown.interface.path_interface import PathInterface
 from brown.core.graphic_object import GraphicObject
 from brown.utils.point import Point
+from brown.utils.anchored_point import AnchoredPoint
 from brown.utils.units import GraphicUnit
 from brown.core.path_element import PathElement
 
@@ -113,69 +114,73 @@ class Path(GraphicObject):
             parent (GraphicObject or None):
 
         Returns: None
+
+        # TODO: Integrate AnchoredPoint here
         """
         rel_pos = Point(pos)
-        if parent is None or parent == self:  # parent == self
-            self._interface.line_to(rel_pos)
-            if not len(self.elements):
-                # HACK: Append initial move_to
-                self.elements.append(PathElement(
-                    self._interface.element_at(0), self, self))
+        point_parent = parent if parent else self
+        # HACK: Add some arbitrary offset to the temporary line-to
+        #       position so that Qt doesn't convert it into a move-to
+        #       (see note at top of path_interface).
+        #       This could be avoided by either:
+        #         1) Fixing this Qt bug (feature?) in path_interface
+        #         2) Calculating the target line_to position directly
+        #            here, probably saving a bit of efficiency too.
+        #       (probably should do both)
+        self._interface.line_to((float(rel_pos.x) + 1,
+                                 float(rel_pos.y) + 1))
+        if not len(self.elements):
+            # HACK: Append initial move_to
             self.elements.append(PathElement(
-                self._interface.element_at(-1), self, self))
-        else:
-            # HACK: Add some arbitrary offset to the temporary line-to
-            #       position so that Qt doesn't convert it into a move-to
-            #       (see note at top of path_interface).
-            #       This could be avoided by either:
-            #         1) Fixing this Qt bug (feature?) in path_interface
-            #         2) Calculating the target line_to position directly
-            #            here, probably saving a bit of efficiency too.
-            #       (probably should do both)
-            self._interface.line_to((float(self.pos.x) + 1,
-                                     float(self.pos.x) + 1))
-            if not len(self.elements):
-                # HACK: Append initial move_to
-                self.elements.append(PathElement(
-                    self._interface.element_at(0), self, self))
-            self.elements.append(PathElement(
-                self._interface.element_at(-1), parent, self))
-            self.elements[-1].pos = rel_pos
-            self.elements[-1]._update_element_interface_pos()
+                self._interface.element_at(0), self, self))
+        self.elements.append(PathElement(
+            self._interface.element_at(-1), point_parent, self))
+        self.elements[-1].pos = rel_pos
+        self.elements[-1]._update_element_interface_pos()
 
-    def cubic_to(self, control_1, control_2, end, parent=None):
+    def cubic_to(self, control_1, control_2, end):
         """Draw a cubic spline from the current position to a new point.
 
         Moves `self.current_path_position` to the new end point.
 
         Args:
-            control_1_x (Point): The local position of the 1st control point
-            control_2_x (Point): The local position of the 2nd control point
-            end_x (Point): The local position of the end point
-            parent (GraphicObject or None):
+            control_1_x (Point, AnchoredPoint, or tuple): The position of the
+                1st control point with an optional parent. If a parent is
+                provided, the coordinate will be relative to that.
+            control_2_x (Point, AnchoredPoint, or tuple): The position of the
+                2nd control point with an optional parent. If a parent is
+                provided, the coordinate will be relative to that.
+            end_x (Point, AnchoredPoint, or tuple): The position of the
+                1st control point with an optional parent. If a parent is
+                provided, the coordinate will be relative to that.
 
         Returns: None
+
+        Notes:
+            The points may be passed in any valid set of initialization
+            arguments for AnchoredPoint objects. See the docs on AnchoredPoint
+            for a more thorough explanation.
         """
-        # Ensure end_pos is a well-formed Point because it's needed to update
-        # self.current_path_position
-        rel_pos = Point(end)
-        if parent is None:
-            self._interface.cubic_to(
-                control_1,
-                control_2,
-                rel_pos)
-            # TODO: Need to append control points to elements list as well
+        norm_control_1 = AnchoredPoint(control_1)
+        norm_control_2 = AnchoredPoint(control_2)
+        norm_end = AnchoredPoint(end)
+        for point in [norm_control_1, norm_control_2, norm_end]:
+            if not point.parent:
+                point.parent = self
+        self._interface.cubic_to(
+            (norm_control_1.x, norm_control_1.y),
+            (norm_control_2.x, norm_control_2.y),
+            (norm_end.x, norm_end.y))
+        if not len(self.elements):
+            # HACK: Append initial move_to
             self.elements.append(PathElement(
-                self._interface.element_at(-1), self, self))
-        else:
-            raise NotImplementedError
-            self._interface.cubic_to(
-                control_1,
-                control_2,
-                rel_pos)  # TODO: How to handle parentage with curves?
+                self._interface.element_at(0), self, self))
+        for i, point in zip(range(-3, 0),
+                            [norm_control_1, norm_control_2, norm_end]):
             self.elements.append(PathElement(
-                self._interface.element_at(-1), parent, self))
-            self.elements[-1].pos = rel_pos
+                self._interface.element_at(i), point.parent, self))
+            self.elements[-1].pos = Point(point)
+            self.elements[-1]._update_element_interface_pos()
 
     def move_to(self, pos, parent=None):
         """Close the current sub-path and start a new one.
