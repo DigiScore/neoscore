@@ -129,15 +129,35 @@ class TestPath(unittest.TestCase):
         assert(path._interface.current_path_position.x == 105)
         assert(path._interface.current_path_position.y == 56)
 
-    def test_move_to(self):
+    def test_move_to_with_no_parent(self):
         path = Path((5, 6))
         path.move_to((10, 11))
+        assert(len(path.elements) == 1)
+        assert(path.elements[0].element_type == PathElementType.move_to)
+        assert(path.elements[0].pos == Point(10, 11))
         assert(path.current_path_position.x == 10)
         assert(path.current_path_position.y == 11)
+        # Verify interface results
+        assert(path._interface.element_at(0).element_type == PathElementType.move_to)
+        assert(path._interface.element_at(0).pos == Point(10, 11))
         assert(path._interface.current_path_position.x == 10)
         assert(path._interface.current_path_position.y == 11)
-        # TODO: Actually inspect contents of path and make sure they
-        #       are as expected
+
+    def test_move_to_with_parent(self):
+        path = Path((0, 0))
+        parent = MockGraphicObject((100, 50))
+        path.move_to((10, 11), parent)
+        assert(len(path.elements) == 1)
+        assert(path.elements[0].element_type == PathElementType.move_to)
+        assert(path.elements[0].pos == Point(10, 11))
+        assert(path.elements[0].parent == parent)
+        assert(path.current_path_position.x == 110)
+        assert(path.current_path_position.y == 61)
+        # Verify interface results
+        assert(path._interface.element_at(0).element_type == PathElementType.move_to)
+        assert(path._interface.element_at(0).pos == Point(110, 61))
+        assert(path._interface.current_path_position.x == 110)
+        assert(path._interface.current_path_position.y == 61)
 
     def test_close_subpath(self):
         path = Path((5, 6))

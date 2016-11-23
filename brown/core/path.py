@@ -117,7 +117,7 @@ class Path(GraphicObject):
 
         # TODO: Integrate AnchoredPoint here
         """
-        rel_pos = Point(pos)
+        point = Point(pos)
         point_parent = parent if parent else self
         # HACK: Add some arbitrary offset to the temporary line-to
         #       position so that Qt doesn't convert it into a move-to
@@ -127,16 +127,43 @@ class Path(GraphicObject):
         #         2) Calculating the target line_to position directly
         #            here, probably saving a bit of efficiency too.
         #       (probably should do both)
-        self._interface.line_to((float(rel_pos.x) + 1,
-                                 float(rel_pos.y) + 1))
+        self._interface.line_to((float(point.x) + 1,
+                                 float(point.y) + 1))
         if not len(self.elements):
             # HACK: Append initial move_to
             self.elements.append(PathElement(
                 self._interface.element_at(0), self, self))
         self.elements.append(PathElement(
             self._interface.element_at(-1), point_parent, self))
-        self.elements[-1].pos = rel_pos
+        self.elements[-1].pos = point
         self.elements[-1]._update_element_interface_pos()
+
+    def move_to(self, pos, parent=None):
+        """Close the current sub-path and start a new one.
+
+        Args:
+            pos (Point or tuple): The target position
+
+        Returns: None
+        """
+        point = Point(pos)
+        parent = parent if parent else self
+        # TODO: When above HACK re line_to et al is resolved,
+        #       confirm this is working as expected.
+        self._interface.move_to(point)
+        self.elements.append(PathElement(
+            self._interface.element_at(-1), parent, self))
+        self.elements[-1].pos = point
+        self.elements[-1]._update_element_interface_pos()
+
+    def close_subpath(self, parent=None):
+        """Close the current sub-path and start a new one at (0, 0).
+
+        This is equivalent to `move_to(0, 0)`
+
+        Returns: None
+        """
+        self.move_to((0, 0), parent)
 
     def cubic_to(self, control_1, control_2, end):
         """Draw a cubic spline from the current position to a new point.
@@ -181,28 +208,3 @@ class Path(GraphicObject):
                 self._interface.element_at(i), point.parent, self))
             self.elements[-1].pos = Point(point)
             self.elements[-1]._update_element_interface_pos()
-
-    def move_to(self, pos, parent=None):
-        """Close the current sub-path and start a new one.
-
-        Args:
-            pos (Point or tuple): The target position
-
-        Returns: None
-        """
-        rel_pos = Point(pos)
-        if parent is None:
-            self._interface.move_to(rel_pos)
-            self.elements.append(PathElement(
-                self._interface.element_at(-1), self, self))
-        else:
-            raise NotImplementedError
-
-    def close_subpath(self, parent=None):
-        """Close the current sub-path and start a new one at (0, 0).
-
-        This is equivalent to `move_to(0, 0)`
-
-        Returns: None
-        """
-        self.move_to((0, 0), parent)
