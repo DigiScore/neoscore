@@ -156,14 +156,19 @@ class Path(GraphicObject):
         self.elements[-1].pos = point
         self.elements[-1]._update_element_interface_pos()
 
-    def close_subpath(self, parent=None):
+    def close_subpath(self):
         """Close the current sub-path and start a new one at (0, 0).
 
-        This is equivalent to `move_to(0, 0)`
+        This is equivalent to `move_to((0, 0))`
 
         Returns: None
+
+        Note:
+            This convenience method does not support point parentage.
+            If you need to anchor the new move_to point, use an explicit
+            move_to((0, 0), parent) instead.
         """
-        self.move_to((0, 0), parent)
+        self.move_to((0, 0))
 
     def cubic_to(self, control_1, control_2, end):
         """Draw a cubic spline from the current position to a new point.

@@ -161,10 +161,16 @@ class TestPath(unittest.TestCase):
 
     def test_close_subpath(self):
         path = Path((5, 6))
+        path.line_to((10, 10))
+        path.line_to((10, 100))
         path.close_subpath()
+        assert(len(path.elements) == 4)
+        assert(path.elements[3].element_type == PathElementType.move_to)
+        assert(path.elements[3].pos == Point(0, 0))
         assert(path.current_path_position.x == 0)
         assert(path.current_path_position.y == 0)
+        # Verify interface results
+        assert(path._interface.element_at(3).element_type == PathElementType.move_to)
+        assert(path._interface.element_at(3).pos == Point(0, 0))
         assert(path._interface.current_path_position.x == 0)
         assert(path._interface.current_path_position.y == 0)
-        # TODO: Actually inspect contents of path and make sure they
-        #       are as expected

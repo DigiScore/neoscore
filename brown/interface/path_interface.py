@@ -207,6 +207,13 @@ class PathInterface(GraphicObjectInterface):
                 element_type = 2
             else:
                 element_type = 3
+            # TODO: Somehow there is a race condition being introduced here.
+            #       Tests sometimes fail saying what should be a curve_to
+            #       is actually being set as a control_point here.
+            #
+            #       Possibly something like Qt is populating the QPainterPath
+            #       element list in another thread, and this code is reaching
+            #       it earlier than expected.
         return PathElementInterface(qt_element, self, qt_index, element_type)
 
     def set_element_position_at(self, index, pos):
