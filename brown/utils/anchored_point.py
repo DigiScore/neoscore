@@ -2,7 +2,7 @@ from brown.utils.point import Point
 
 
 class AnchoredPoint(Point):
-    """A Point with a parent anchor.
+    """A Point with an optional parent anchor.
 
     This is identical to a Point except that it has an additional
     `parent` attribute. Its coordinates are then considered to be
@@ -36,25 +36,34 @@ class AnchoredPoint(Point):
     def __init__(self, *args):
         """
         *args: One of:
-            - An `x, y, parent` pair outside of a tuple
+            - An `x, y, parent` pair outside of a tuple (parent will be None)
+            - An `(x, y)` pair (parent will be None)
+            - An `x, y, parent` triple outside of a tuple
             - An `(x, y, parent)` 3-tuple
             - An existing AnchoredPoint
+            - An existing Point (parent will be None)
         """
-        if len(args) == 3:
-            self._x, self._y, self._parent = args
-        elif len(args) == 1:
+        if len(args) == 1:
             if isinstance(args[0], tuple):
-                self._x, self._y, self._parent = args[0]
-            elif isinstance(args[0], type(self)):
+                self._x = args[0][0]
+                self._y = args[0][1]
+                self._parent = args[0][2] if len(args[0]) == 3 else None
+            elif isinstance(args[0], Point):
                 self._x = args[0].x
                 self._y = args[0].y
-                self._parent = args[0].parent
+                self._parent = (args[0].parent
+                                if isinstance(args[0], type(self)) else None)
             else:
                 raise ValueError('Invalid args for {}.__init__()'.format(
                     type(self).__name__))
+        elif len(args) == 2:
+            self._x, self._y = args
+            self._parent = None
+        elif len(args) == 3:
+            self._x, self._y, self._parent = args
         else:
             raise ValueError('Invalid args for {}.__init__()'.format(
-                type(self).__name__))
+                    type(self).__name__))
 
         self._iter_index = 0
 
@@ -104,27 +113,8 @@ class AnchoredPoint(Point):
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def x(self):
-        """Unit, int, or float: The x coordinate of the point."""
-        return self._x
-
-    @x.setter
-    def x(self, value):
-        self._x = value
-        self.setters_hook()
-
-    @property
-    def y(self):
-        """Unit, int, or float: The y coordinate of the point."""
-        return self._y
-
-    @y.setter
-    def y(self, value):
-        self._y = value
-        self.setters_hook()
-
-    @property
     def parent(self):
+        """GraphicObject or None: The parent of this point"""
         return self._parent
 
     @parent.setter

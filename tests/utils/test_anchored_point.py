@@ -7,6 +7,7 @@ from brown.config import config
 from brown.core.font import Font
 from brown.core.glyph import Glyph
 from brown.utils.anchored_point import AnchoredPoint
+from brown.utils.point import Point
 from brown.utils.units import Unit, Mm
 
 
@@ -20,6 +21,18 @@ class TestAnchoredPoint(unittest.TestCase):
             self.test_font_file_path)
         self.font = Font('Bravura', 12, 1, False)
         self.test_parent = Glyph((5, 6), 'a', self.font)
+
+    def test_init_with_pair(self):
+        test_point = AnchoredPoint(5, 6)
+        assert(test_point.x == 5)
+        assert(test_point.y == 6)
+        assert(test_point.parent is None)
+
+    def test_init_with_2_tuple(self):
+        test_point = AnchoredPoint((5, 6))
+        assert(test_point.x == 5)
+        assert(test_point.y == 6)
+        assert(test_point.parent is None)
 
     def test_init_with_triple(self):
         test_point = AnchoredPoint(5, 6, self.test_parent)
@@ -39,6 +52,13 @@ class TestAnchoredPoint(unittest.TestCase):
         assert(test_point.x == 5)
         assert(test_point.y == 6)
         assert(test_point.parent == self.test_parent)
+
+    def test_init_with_existing_Point(self):
+        existing_point = Point(5, 6)
+        test_point = AnchoredPoint(existing_point)
+        assert(test_point.x == 5)
+        assert(test_point.y == 6)
+        assert(test_point.parent is None)
 
     def test_init_with_unit(self):
         test_point = AnchoredPoint.with_unit(5, 6, self.test_parent, unit=Unit)
