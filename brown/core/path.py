@@ -34,6 +34,8 @@ class Path(GraphicObject):
     def straight_line(cls, start, stop, pen=None, brush=None, parent=None):
         """Path: Constructor for a straight line
 
+        # TODO: Should parentable points be supported here?
+
         Args:
             start (Point): Starting position relative to the parent
             stop (Point): Ending position relative to the parent.
@@ -90,35 +92,32 @@ class Path(GraphicObject):
 
     ######## Public Methods ########
 
-    def set_element_position_at(self, index, pos):
-        """Set the element at an index to a given position.
-
-        Args:
-            index (int): The element index to modify
-            pos (Point[GraphicUnit] or tuple): The new position
-                for the element.
-
-        Returns: None
-        """
-        # TODO: Make index error guards when proper element list is made
-        self._qt_path.setElementPositionAt(index, float(pos[0]), float(pos[0]))
-
-    def line_to(self, pos, parent=None):
+    def line_to(self, *args):
         """Draw a path from the current position to a new point.
 
         Connect a path from the current position to a new position specified
         by `x` and `y`, and move `self.current_path_position` to the new point.
 
-        Args:
-            pos (Point or tuple): The target position
-            parent (GraphicObject or None):
+        A point parent may be passed as well, anchored the target point to
+        a separate GraphicObject. In this case, the coordinates passed will be
+        considered relative to the parent.
+
+        *args:
+            Any valid set of args to initialize an AnchoredPoint:
+            - An `x, y` pair outside of a tuple (parent will be None)
+            - An `(x, y)` pair (parent will be None)
+            - An `x, y, parent` triple outside of a tuple
+            - An `(x, y, parent)` 3-tuple
+            - An `(x, y)` pair and a `parent`
+            - An `Point` and a `parent`
+            - An existing `AnchoredPoint`
+            - An existing `Point` (parent will be None)
 
         Returns: None
-
-        # TODO: Integrate AnchoredPoint here
         """
-        point = Point(pos)
-        point_parent = parent if parent else self
+        point = AnchoredPoint(*args)
+        if point.parent is None:
+            point.parent = self
         # HACK: Add some arbitrary offset to the temporary line-to
         #       position so that Qt doesn't convert it into a move-to
         #       (see note at top of path_interface).
@@ -134,25 +133,38 @@ class Path(GraphicObject):
             self.elements.append(PathElement(
                 self._interface.element_at(0), self, self))
         self.elements.append(PathElement(
-            self._interface.element_at(-1), point_parent, self))
+            self._interface.element_at(-1), point.parent, self))
         self.elements[-1].pos = point
         self.elements[-1]._update_element_interface_pos()
 
-    def move_to(self, pos, parent=None):
+    def move_to(self, *args):
         """Close the current sub-path and start a new one.
 
-        Args:
-            pos (Point or tuple): The target position
+        A point parent may be passed as well, anchored the target point to
+        a separate GraphicObject. In this case, the coordinates passed will be
+        considered relative to the parent.
+
+        *args:
+            Any valid set of args to initialize an AnchoredPoint:
+            - An `x, y` pair outside of a tuple (parent will be None)
+            - An `(x, y)` pair (parent will be None)
+            - An `x, y, parent` triple outside of a tuple
+            - An `(x, y, parent)` 3-tuple
+            - An `(x, y)` pair and a `parent`
+            - An `Point` and a `parent`
+            - An existing `AnchoredPoint`
+            - An existing `Point` (parent will be None)
 
         Returns: None
         """
-        point = Point(pos)
-        parent = parent if parent else self
+        point = AnchoredPoint(*args)
+        if point.parent is None:
+            point.parent = self
         # TODO: When above HACK re line_to et al is resolved,
         #       confirm this is working as expected.
         self._interface.move_to(point)
         self.elements.append(PathElement(
-            self._interface.element_at(-1), parent, self))
+            self._interface.element_at(-1), point.parent, self))
         self.elements[-1].pos = point
         self.elements[-1]._update_element_interface_pos()
 

@@ -46,6 +46,18 @@ class TestAnchoredPoint(unittest.TestCase):
         assert(test_point.y == 6)
         assert(test_point.parent == self.test_parent)
 
+    def test_init_with_2_tuple_and_parent(self):
+        test_point = AnchoredPoint((5, 6), self.test_parent)
+        assert(test_point.x == 5)
+        assert(test_point.y == 6)
+        assert(test_point.parent == self.test_parent)
+
+    def test_init_with_point_and_parent(self):
+        test_point = AnchoredPoint(Point(5, 6), self.test_parent)
+        assert(test_point.x == 5)
+        assert(test_point.y == 6)
+        assert(test_point.parent == self.test_parent)
+
     def test_init_with_existing_AnchoredPoint(self):
         existing_point = AnchoredPoint(5, 6, self.test_parent)
         test_point = AnchoredPoint(existing_point)

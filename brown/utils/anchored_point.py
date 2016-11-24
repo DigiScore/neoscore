@@ -36,12 +36,25 @@ class AnchoredPoint(Point):
     def __init__(self, *args):
         """
         *args: One of:
-            - An `x, y, parent` pair outside of a tuple (parent will be None)
+            - An `x, y` pair outside of a tuple (parent will be None)
             - An `(x, y)` pair (parent will be None)
             - An `x, y, parent` triple outside of a tuple
             - An `(x, y, parent)` 3-tuple
-            - An existing AnchoredPoint
-            - An existing Point (parent will be None)
+            - An `(x, y)` pair and a `parent`
+            - An `Point` and a `parent`
+            - An existing `AnchoredPoint`
+            - An existing `Point` (parent will be None)
+
+        All of the following are valid init signatures:
+
+            >>> AnchoredPoint(5, 6)
+            >>> AnchoredPoint((5, 6))
+            >>> AnchoredPoint(5, 6, some_grob)
+            >>> AnchoredPoint((5, 6, some_grob))
+            >>> AnchoredPoint((5, 6), some_grob)
+            >>> AnchoredPoint(some_existing_point, some_grob)
+            >>> AnchoredPoint(some_existing_anchored_point)
+            >>> AnchoredPoint(some_existing_point)
         """
         if len(args) == 1:
             if isinstance(args[0], tuple):
@@ -57,8 +70,12 @@ class AnchoredPoint(Point):
                 raise ValueError('Invalid args for {}.__init__()'.format(
                     type(self).__name__))
         elif len(args) == 2:
-            self._x, self._y = args
-            self._parent = None
+            if isinstance(args[0], (tuple, Point)):
+                self._x, self._y = args[0]
+                self._parent = args[1]
+            else:
+                self._x, self._y = args
+                self._parent = None
         elif len(args) == 3:
             self._x, self._y, self._parent = args
         else:
@@ -90,10 +107,11 @@ class AnchoredPoint(Point):
         """Create an AnchoredPoint and ensure its coordinates are in a type of unit.
 
         *args: One of:
-            - An `x, y, parent` pair outside of a tuple (parent will be None)
+            - An `x, y` pair outside of a tuple (parent will be None)
             - An `(x, y)` pair (parent will be None)
             - An `x, y, parent` triple outside of a tuple
             - An `(x, y, parent)` 3-tuple
+            - An `(x, y)` pair and a `parent`
             - An existing AnchoredPoint
             - An existing Point (parent will be None)
 
