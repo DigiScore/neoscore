@@ -9,6 +9,10 @@ class GraphicObject(ABC):
 
     All classes in `core` which have the ability to be displayed
     should be subclasses of this.
+
+    TODO: Flesh out the expected way subclasses should be made.
+          Right now it's pretty patchy -- _interface isn't even documented
+          at all...
     """
     def __init__(self, pos, pen=None, brush=None, parent=None):
         """
@@ -28,76 +32,72 @@ class GraphicObject(ABC):
 
     @property
     def pos(self):
-        """Point: The starting point of the frame on the first page."""
+        """Point: The position of the object relative to its parent."""
         return self._pos
 
     @pos.setter
     def pos(self, value):
         self._pos = Point.with_unit(value, unit=GraphicUnit)
-        self._interface.pos = self._pos
+        if self._interface:
+            self._interface.pos = self._pos
 
     @property
     def x(self):
-        """
-        GraphicUnit: The x position of the Path relative to the document
-        """
+        """Unit: The x position of the object relative to its parent."""
         return self.pos.x
 
     @x.setter
     def x(self, value):
         self.pos.x = value
-        self._interface.x = value
+        if self._interface:
+            self._interface.x = value
 
     @property
     def y(self):
-        """
-        GraphicUnit: The y position of the Path relative to the document
-        """
+        """Unit: The x position of the object relative to its parent."""
         return self.pos.y
 
     @y.setter
     def y(self, value):
         self.pos.y = value
-        self._interface.y = value
+        if self._interface:
+            self._interface.y = value
 
     @property
     def pen(self):
-        """
-        Pen: The pen to draw outlines with
-        """
+        """Pen: The pen to draw outlines with"""
         return self._pen
 
     @pen.setter
     def pen(self, value):
         self._pen = value
-        if self._pen:
+        if self._pen and self._interface:
             self._interface.pen = self._pen._interface
 
     @property
     def brush(self):
-        """
-        Brush: The brush to draw outlines with
-        """
+        """Brush: The brush to draw outlines with"""
         return self._brush
 
     @brush.setter
     def brush(self, value):
         self._brush = value
-        if self._brush:
+        if self._brush and self._interface:
             self._interface.brush = self._brush._interface
 
     @property
     def parent(self):
-        """The parent object"""
+        """GraphicObject: The parent object"""
         return self._parent
 
     @parent.setter
     def parent(self, value):
         self._parent = value
-        if value is not None:
-            self._interface.parent = value._interface
-        else:
-            self._interface.parent = None
+        if self._interface:
+            if value is not None:
+                self._interface.parent = value._interface
+            else:
+                self._interface.parent = None
 
     ######## PUBLIC METHODS ########
 
@@ -114,7 +114,7 @@ class GraphicObject(ABC):
         return self._interface.pos_relative_to_item(other._interface)
 
     def render(self):
-        """Render the line to the scene.
+        """Render the object to the scene.
 
         Returns: None
         """

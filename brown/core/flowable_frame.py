@@ -125,6 +125,11 @@ class FlowableFrame:
 
         TODO: Keep the results of this computation so it only has to be
               performed when the auto layout controllers might have changed.
+
+        TODO: It will help reduce edge cases and make things simpler if
+              every flowable frame started with a new line. Currently there
+              is an awkward implicit line start whose position comes from
+              self.pos and results in a lot of confusing edge case code
         """
         self.auto_layout_controllers = []
         live_page_width = brown.document.paper.live_width
@@ -188,7 +193,7 @@ class FlowableFrame:
         """Find the distance of an x-pos to the left edge of its laid-out line.
 
         Args:
-            x (Unit): The local x coordinate.
+            x (Unit): The local x-position.
 
         Returns: Unit
         """
@@ -220,3 +225,16 @@ class FlowableFrame:
         """
         return (self._x_pos_rel_to_line_start(x) -
                 brown.document.paper.live_width)
+
+    def _last_break_at(self, x):
+        """
+        Find the last line/page break that occured before a given local x-pos
+
+        Args:
+            pos (Point): A local x-position
+
+        Returns:
+            NewLine:
+        """
+        # TODO: Make me!
+        raise NotImplementedError
