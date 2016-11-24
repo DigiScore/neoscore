@@ -70,19 +70,32 @@ class AnchoredPoint(Point):
 
     ######## SPECIAL METHODS ########
 
+    def __eq__(self, other):
+        """Two AnchoredPoints are equal if their attributes are all equal."""
+        if isinstance(other, type(self)):
+            return (self.x == other.x and
+                    self.y == other.y and
+                    self.parent == other.parent)
+        else:
+            return False
+
     def __repr__(self):
-        return '{}({}, {})'.format(type(self).__name__, self.x, self.y)
+        return '{}({}, {}, parent={})'.format(type(self).__name__,
+                                              self.x, self.y, self.parent)
 
     ######## PRIVATE CLASS METHODS ########
 
     @classmethod
     def with_unit(cls, *args, unit=None):
-        """Create a Point and ensure its coordinates are in a type of unit.
+        """Create an AnchoredPoint and ensure its coordinates are in a type of unit.
 
         *args: One of:
-            - An `x, y, parent` pair outside of a tuple
+            - An `x, y, parent` pair outside of a tuple (parent will be None)
+            - An `(x, y)` pair (parent will be None)
+            - An `x, y, parent` triple outside of a tuple
             - An `(x, y, parent)` 3-tuple
             - An existing AnchoredPoint
+            - An existing Point (parent will be None)
 
         kwargs:
             unit (type): A Unit class.

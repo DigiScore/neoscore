@@ -140,6 +140,7 @@ class Point:
     ######## SPECIAL METHODS ########
 
     def __eq__(self, other):
+        """Two Points are equal if their attributes are all equal."""
         if isinstance(other, type(self)):
             return self.x == other.x and self.y == other.y
         else:

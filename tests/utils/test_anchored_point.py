@@ -112,3 +112,14 @@ class TestAnchoredPoint(unittest.TestCase):
         assert(test_instance.point.parent == self.test_parent)
         test_instance.point.parent = self.test_parent
         assert(test_instance.point_setter_hook_called is True)
+
+    def test__eq__(self):
+        test_point = AnchoredPoint(5, 6, self.test_parent)
+        test_point_eq = AnchoredPoint(5, 6, self.test_parent)
+        test_point_ne_1 = AnchoredPoint(1, 6, self.test_parent)
+        test_point_ne_2 = AnchoredPoint(5, 7, self.test_parent)
+        test_point_ne_3 = AnchoredPoint(5, 7, None)
+        assert(test_point == test_point_eq)
+        assert(test_point != test_point_ne_1)
+        assert(test_point != test_point_ne_2)
+        assert(test_point != test_point_ne_3)
