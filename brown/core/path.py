@@ -182,19 +182,42 @@ class Path(GraphicObject):
         """
         self.move_to((0, 0))
 
-    def cubic_to(self, control_1, control_2, end):
-        """Draw a cubic spline from the current position to a new point.
+    def quad_to(self, control, end):
+        """Draw a quadratic bezier curve from the current position to a new point.
 
         Moves `self.current_path_position` to the new end point.
 
         Args:
-            control_1_x (Point, AnchoredPoint, or tuple): The position of the
+            control_1 (Point, AnchoredPoint, or tuple): The position of the
                 1st control point with an optional parent. If a parent is
                 provided, the coordinate will be relative to that.
-            control_2_x (Point, AnchoredPoint, or tuple): The position of the
+            end (Point, AnchoredPoint, or tuple): The position of the
+                1st control point with an optional parent. If a parent is
+                provided, the coordinate will be relative to that.
+
+        Returns: None
+
+        Notes:
+            The points may be passed in any valid set of initialization
+            arguments for AnchoredPoint objects. See the docs on AnchoredPoint
+            for a more thorough explanation.
+        """
+        # TODO: Implement me! (Priority Low)
+        raise NotImplementedError
+
+    def cubic_to(self, control_1, control_2, end):
+        """Draw a cubic bezier curve from the current position to a new point.
+
+        Moves `self.current_path_position` to the new end point.
+
+        Args:
+            control_1 (Point, AnchoredPoint, or tuple): The position of the
+                1st control point with an optional parent. If a parent is
+                provided, the coordinate will be relative to that.
+            control_2 (Point, AnchoredPoint, or tuple): The position of the
                 2nd control point with an optional parent. If a parent is
                 provided, the coordinate will be relative to that.
-            end_x (Point, AnchoredPoint, or tuple): The position of the
+            end (Point, AnchoredPoint, or tuple): The position of the
                 1st control point with an optional parent. If a parent is
                 provided, the coordinate will be relative to that.
 
