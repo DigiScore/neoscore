@@ -1,20 +1,23 @@
-from brown.utils import units
-from brown.utils.units import Mm
-from brown.utils.point import Point
 from brown.utils.units import GraphicUnit
+from brown.utils.point import Point
 from brown.config import config
-from brown.core import brown
 from brown.core.path import Path
 from brown.primitives.clef import Clef
 
 
 
 class Staff:
+    """A staff capable of holding `StaffObject`s"""
 
     def __init__(self, pos, length, staff_unit=None, line_count=5):
-        """TODO: Document me!"""
-        # TODO: Implement units in staff land
-        # pos_point = Point.with_unit(pos, unit=GraphicUnit)
+        """
+        Args:
+            pos (Point): The position of the top-left corner of the staff
+            length (Unit): The horizontal length of the staff
+            staff_unit (Unit): The distance between two lines in the staff.
+                If not set, this will default to config.DEFAULT_STAFF_UNIT
+            line_count (int): The number of lines in the staff.
+        """
         self._pos = Point(pos)
         self._x = self._pos.x
         self._y = self._pos.x
@@ -28,86 +31,92 @@ class Staff:
         self._grob = Path(self.pos)
         # Draw the staff lines
         for i in range(self.line_count):
-            self.grob.move_to((Mm(0), self.staff_unit * i))
+            self.grob.move_to((GraphicUnit(0), self.staff_unit * i))
             self.grob.line_to((self.length, self.staff_unit * i))
-        # TODO: More fully implement arbitrary numbers of staff lines
 
     ######## PUBLIC PROPERTIES ########
 
     @property
     def grob(self):
-        """The core graphical object representation of the staff"""
+        """The core graphical object representation of the staff.
+
+        This property is read-only.
+        """
         return self._grob
 
     @property
     def pos(self):
+        """Point: The position of the staff.
+
+        This property is read-only. TODO: Low priority: implement setter?
+        """
         return self._pos
 
     @property
     def x(self):
-        """GraphicUnit: x coordinate of the left side of the staff"""
-        return self.pos.x
+        """GraphicUnit: x coordinate of the left side of the staff.
 
-    # @x.setter
-    # def x(self, value):
-    #     self._x = value
+        This property is read-only. TODO: Low priority: implement setter?
+        """
+        return self.pos.x
 
     @property
     def y(self):
-        """GraphicUnit: y coordinate of the left side of the staff"""
-        return self.pos.x
+        """GraphicUnit: y coordinate of the left side of the staff.
 
-    # @y.setter
-    # def y(self, value):
-    #     self._y = value
+        This property is read-only. TODO: Low priority: implement setter?
+        """
+        return self.pos.x
 
     @property
     def length(self):
-        """GraphicUnit: length coordinate of the left side of the staff"""
-        return self._length
+        """GraphicUnit: length coordinate of the left side of the staff.
 
-    # @length.setter
-    # def length(self, value):
-    #     self._length = value
+        This property is read-only. TODO: Low priority: implement setter?
+        """
+        return self._length
 
     @property
     def height(self):
-        """GraphicUnit: The height of the staff in pixels from top to bottom line."""
-        # TODO: How should the height of a 1 line staff be defined?
+        """GraphicUnit: The height of the staff from top to bottom line.
+
+        If the staff only has one line, its height is defined as 0.
+
+        This property is read-only.
+        """
         return (self.line_count - 1) * self.staff_unit
 
     @property
     def line_count(self):
-        """int: The number of lines in the staff"""
+        """int: The number of lines in the staff
+
+        This property is read-only. TODO: Low priority: implement setter?
+        """
         return self._line_count
 
     @property
     def contents(self):
-        """list[StaffObject]: A list of staff objects belonging to the staff"""
+        """list[StaffObject]: A list of staff objects belonging to the staff
+
+        This property is read-only. TODO: Low priority: implement setter?
+        """
         return self._contents
 
     @property
     def highest_position(self):
-        """int: The staff position of the top line"""
+        """int: The staff position of the top line
+
+        This property is read-only
+        """
         return self.line_count - 1
 
     @property
     def lowest_position(self):
-        """int: The staff position of the bottom line"""
+        """int: The staff position of the bottom line
+
+        This property is read-only.
+        """
         return (self.line_count - 1) * -1
-
-    ######## PRIVATE METHODS ########
-
-    def _register_staff_object(self, staff_object):
-        """Add a StaffObject to `self.contents`.
-
-        Args:
-            staff_object (StaffObject): The object to add to `self.contents`
-
-        Warning:
-            This does not set `staff_object.staff` to self"""
-        self._contents.append(staff_object)
-        staff_object.staff = self
 
     ######## PUBLIC METHODS ########
 
@@ -244,3 +253,14 @@ class Staff:
             else:
                 end = self.highest_position
             return {pos for pos in range(start, end, 2 * direction)}
+
+    def _register_staff_object(self, staff_object):
+        """Add a StaffObject to `self.contents`.
+
+        Args:
+            staff_object (StaffObject): The object to add to `self.contents`
+
+        Warning:
+            This does not set `staff_object.staff` to self"""
+        self._contents.append(staff_object)
+        staff_object.staff = self

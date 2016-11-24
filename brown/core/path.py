@@ -239,7 +239,8 @@ class Path(GraphicObject):
             (norm_control_2.x, norm_control_2.y),
             (norm_end.x, norm_end.y))
         if not len(self.elements):
-            # HACK: Append initial move_to
+            # If this was the first action in this path,
+            # we need to append the initial implicit move_to
             self.elements.append(PathElement(
                 self._interface.element_at(0), self, self))
         for i, point in zip(range(-3, 0),
