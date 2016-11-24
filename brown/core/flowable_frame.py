@@ -1,6 +1,6 @@
 from brown.utils.point import Point
 from brown.core import brown
-from brown.utils.units import Mm
+from brown.utils.units import Mm, Unit
 from brown.core.layout_controller import LayoutController
 from brown.core.auto_new_line import AutoNewLine
 from brown.core.auto_new_page import AutoNewPage
@@ -122,6 +122,9 @@ class FlowableFrame:
             This overwrites the contents of self.auto_layout_controllers
 
         Returns: None
+
+        TODO: Keep the results of this computation so it only has to be
+              performed when the auto layout controllers might have changed.
         """
         self.auto_layout_controllers = []
         live_page_width = brown.document.paper.live_width
@@ -129,23 +132,27 @@ class FlowableFrame:
         # The progress the layout generation has reached along the frame's width.
         # When the entire flowable has been covered, this value will == self.width
         x_progress = Mm(0)
-        # Current position on the page relative to the top left corner of the live page area
-        current_page_x = self.x
-        current_page_y = self.y
+        # Current position on the page relative to the top left corner
+        # of the live page area
+        pos_on_page = Point(self.pos)
+        page_number = 1
         while True:
-            delta_x = live_page_width - current_page_x
+            delta_x = live_page_width - pos_on_page.x
             x_progress += delta_x
-            current_page_y = current_page_y + self.height + self.y_padding
+            pos_on_page.y = pos_on_page.y + self.height + self.y_padding
             if x_progress >= self.width:
                 break
-            if current_page_y > live_page_height:
+            if pos_on_page.y > live_page_height:
+                pos_on_page.y = Mm(0)
+                page_number += 1
+                doc_pos = brown.document._page_pos_to_doc(pos_on_page, page_number)
                 self.auto_layout_controllers.append(
-                    AutoNewPage(self, x_progress))
-                current_page_y = Mm(0)
+                    AutoNewPage(self, x_progress, doc_pos))
             else:
+                pos_on_page.x = Mm(0)
+                doc_pos = brown.document._page_pos_to_doc(pos_on_page, page_number)
                 self.auto_layout_controllers.append(
-                    AutoNewLine(self, x_progress, self.y_padding))
-                current_page_x = Mm(0)
+                    AutoNewLine(self, x_progress, doc_pos, self.y_padding))
 
     def _local_space_to_doc_space(self, point):
         """Convert a position inside the frame to its position in the document.
@@ -162,9 +169,9 @@ class FlowableFrame:
         # Seek to the page and line-on-page based on auto layout controllers
         self._generate_auto_layout_controllers()
         page_num = 1
-        line_on_page = 1
-        current_x_offset = self.x  # Offsets relative to ideal line start
-        current_y_offset = self.y  # on left margin
+        # Current position on the page relative to the top left corner
+        # of the live page area
+        pos_on_page = Point(self.pos)
         remaining_x = local_point.x
         # Calculate position relative to the top left corner of the live page
         # area of the current page
@@ -172,25 +179,59 @@ class FlowableFrame:
             if controller.x > local_point.x:
                 break
             remaining_x -= (brown.document.paper.live_width -
-                            current_x_offset)
+                            pos_on_page.x)
             if isinstance(controller, AutoNewLine):
-                line_on_page += 1
-                current_x_offset = Mm(0)
-                current_y_offset += self.height + controller.offset_y
+                pos_on_page.x = Mm(0)
+                pos_on_page.y += self.height + controller.offset_y
             elif isinstance(controller, AutoNewPage):
                 page_num += 1
-                line_on_page = 1
-                current_x_offset = Mm(0)
-                current_y_offset = controller.offset_y
-                # print('current_y_offset changed to', current_y_offset)
+                pos_on_page.x = Mm(0)
+                pos_on_page.y = controller.offset_y
+                # print('pos_on_page.y changed to', pos_on_page.y)
         # Locate current page origin in doc space and apply offsets
         # print('remaining x is', remaining_x)
         # print('page num is ', page_num)
-        # print('line on page is ', line_on_page)
         page_x, page_y = brown.document._page_origin_in_doc_space(page_num)
         # print('page coords: ', page_x, page_y)
-        line_x = page_x + current_x_offset
-        line_y = page_y + current_y_offset
+        line_x = page_x + pos_on_page.x
+        line_y = page_y + pos_on_page.y
         # print('line coords: ', line_x, line_y)
         # print('local point y: ', local_point.y)
         return Point(line_x + remaining_x, line_y + local_point.y)
+
+    def _x_pos_rel_to_line_start(self, x):
+        """Find the distance of an x-pos to the left edge of its laid-out line.
+
+        Args:
+            x (Unit): The local x coordinate.
+
+        Returns: Unit
+        """
+        # Seek to the page and line-on-page based on auto layout controllers
+        self._generate_auto_layout_controllers()
+        current_x_offset = self.x  # Offsets relative to ideal line start
+        remaining_x = x
+        # Calculate position relative to the top left corner of the live page
+        # area of the current page
+        for controller in self.auto_layout_controllers:
+            if controller.x > x:
+                break
+            remaining_x -= (brown.document.paper.live_width -
+                            current_x_offset)
+            if isinstance(controller, AutoNewLine):
+                current_x_offset = Mm(0)
+            elif isinstance(controller, AutoNewPage):
+                current_x_offset = Mm(0)
+                # print('current_y_offset changed to', current_y_offset)
+        return remaining_x
+
+    def _x_pos_rel_to_line_end(self, x):
+        """Find the distance of an x-pos to the right edge of its laid-out line.
+
+        Args:
+            x (Unit): The local x coordinate.
+
+        Returns: Unit
+        """
+        return (self._x_pos_rel_to_line_start(x) -
+                brown.document.paper.live_width)
