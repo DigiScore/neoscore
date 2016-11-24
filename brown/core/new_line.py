@@ -47,12 +47,30 @@ class NewLine(LayoutController):
         return self._page_pos
 
     @property
-    def doc_pos(self):
-        """Point: The position of the new page's top left corner in doc space
+    def doc_start_pos(self):
+        """Point: The position of the new line's top left corner in doc space
 
         This property is read-only
         """
         return brown.document._page_pos_to_doc(self.page_pos, self.page_number)
+
+    @property
+    def doc_end_pos(self):
+        """Point: The position of the new line's bottom right corner in doc space
+
+        This property is read-only
+        """
+        return self.doc_start_pos + Point(self.length, self.flowable_frame.height)
+
+
+    @property
+    def length(self):
+        """Unit: The length of the line.
+
+        This property is read-only.
+        """
+        # TODO: When breaks are made more flexible this needs to be updated.
+        return brown.document.paper.live_width - self.page_pos.x
 
     ######## PRIVATE PROPERTIES ########
 

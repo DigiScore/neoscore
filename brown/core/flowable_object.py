@@ -37,6 +37,75 @@ class FlowableObject(GraphicObject):
     ######## PUBLIC PROPERTIES ########
 
     @property
+    def pos(self):
+        """Point: The position of the object relative to its parent."""
+        return self._pos
+
+    @pos.setter
+    def pos(self, value):
+        self._pos = Point.with_unit(value, unit=GraphicUnit)
+        #if self._interface:
+        #    self._interface.pos = self._pos
+
+    @property
+    def x(self):
+        """Unit: The x position of the object relative to its parent."""
+        return self.pos.x
+
+    @x.setter
+    def x(self, value):
+        self.pos.x = value
+        #if self._interface:
+        #    self._interface.x = value
+
+    @property
+    def y(self):
+        """Unit: The x position of the object relative to its parent."""
+        return self.pos.y
+
+    @y.setter
+    def y(self, value):
+        self.pos.y = value
+        #if self._interface:
+        #    self._interface.y = value
+
+    @property
+    def pen(self):
+        """Pen: The pen to draw outlines with"""
+        return self._pen
+
+    @pen.setter
+    def pen(self, value):
+        self._pen = value
+        #if self._pen and self._interface:
+        #    self._interface.pen = self._pen._interface
+
+    @property
+    def brush(self):
+        """Brush: The brush to draw outlines with"""
+        return self._brush
+
+    @brush.setter
+    def brush(self, value):
+        self._brush = value
+        #if self._brush and self._interface:
+            #self._interface.brush = self._brush._interface
+
+    @property
+    def parent(self):
+        """GraphicObject: The parent object"""
+        return self._parent
+
+    @parent.setter
+    def parent(self, value):
+        self._parent = value
+        #if self._interface:
+        #    if value is not None:
+        #        self._interface.parent = value._interface
+        #    else:
+        #        self._interface.parent = None
+
+    @property
     def frame(self):
         """FlowableFrame: The frame this object belongs in."""
         return self._frame
@@ -86,16 +155,35 @@ class FlowableObject(GraphicObject):
 
         Returns: None
         """
-        if self.frame._x_pos_rel_to_line_end(self.x + self.width) < 0:
+        # HACK: This whole thing is spaghetti and should be rewritten
+        #       once the first-newline edge case is resolved and
+        #       more sane helper functions are integrated into frames
+        #       and this class.
+        if self.frame._x_pos_rel_to_line_end(self.x) > self.width:
+            print(self.x)
+            print(self.width)
+            print(self.frame._x_pos_rel_to_line_end(self.x + self.width))
             # This fits completely in the frame
             self._render_complete()
             return
+        remaining_x = self.width
         # Render start
-        # ...
+        remaining_x -= self.frame._x_pos_rel_to_line_end(self.pos.x)
+        first_break_i = self.frame._last_break_index_at(self.pos.x)
+        self._render_before_break(
+            self.frame._local_space_to_doc_space(self.pos),
+            self.frame.auto_layout_controllers[first_break_i].doc_end_pos)
         # Iterate through remaining width
-        # ...
+        for active_break_i in range(first_break_i, len(self.frame.auto_layout_controllers)):
+            current_break = self.frame.auto_layout_controllers[active_break_i]
+            if remaining_x < current_break.length:
+                break
+            remaining_x -= current_break.length
+            self._render_spanning_continuation(current_break.doc_start_pos,
+                                               current_break.doc_end_pos)
         # Render end
-        raise NotImplementedError
+        self._render_after_break(current_break.doc_start_pos,
+                                 current_break.doc_start_pos + Point(remaining_x, 0))
 
     ######## PRIVATE METHODS ########
 

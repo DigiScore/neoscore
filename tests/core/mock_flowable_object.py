@@ -22,6 +22,7 @@ class MockFlowableObject(FlowableObject):
         line.line_to((self.x + self.width, self.y))
         line.render()
         self._interfaces.append(line)
+        print('rendering complete')
 
     def _render_before_break(self, start, stop):
         """Render the beginning of the object up to a stopping point.
@@ -31,8 +32,8 @@ class MockFlowableObject(FlowableObject):
         beginning portion of the object up to the break.
 
         Args:
-            start (Point): The starting point for drawing.
-            stop (Point): The stopping point for drawing.
+            start (Point): The starting doc-space point for drawing.
+            stop (Point): The stopping doc-space point for drawing.
 
         Returns: None
 
@@ -43,6 +44,7 @@ class MockFlowableObject(FlowableObject):
         line.line_to(stop)
         line.render()
         self._interfaces.append(line)
+        print('Rendering before break')
 
     def _render_after_break(self, start, stop):
         """Render the continuation of an object after a break.
@@ -52,8 +54,8 @@ class MockFlowableObject(FlowableObject):
         ending portion of an object after a break.
 
         Args:
-            start (Point): The starting point for drawing.
-            stop (Point): The stopping point for drawing.
+            start (Point): The starting doc-space point for drawing.
+            stop (Point): The stopping doc-space point for drawing.
 
         Returns: None
 
@@ -64,6 +66,7 @@ class MockFlowableObject(FlowableObject):
         line.line_to(stop)
         line.render()
         self._interfaces.append(line)
+        print('Rendering after break')
 
     def _render_spanning_continuation(self, start, stop):
         """
@@ -74,8 +77,8 @@ class MockFlowableObject(FlowableObject):
         portion of the object surrounded by breaks on either side.
 
         Args:
-            start (Point): The starting point for drawing.
-            stop (Point): The stopping point for drawing.
+            start (Point): The starting doc-space point for drawing.
+            stop (Point): The stopping doc-space point for drawing.
 
         Returns: None
 
@@ -86,3 +89,4 @@ class MockFlowableObject(FlowableObject):
         line.line_to(stop)
         line.render()
         self._interfaces.append(line)
+        print('Rendering spanning continuation')

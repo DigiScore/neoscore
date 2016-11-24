@@ -6,6 +6,11 @@ from brown.core.auto_new_line import AutoNewLine
 from brown.core.auto_new_page import AutoNewPage
 
 
+class OutOfBoundsError(Exception):
+    """Exception raised when a point lies outside of a FlowableFrame"""
+    pass
+
+
 class FlowableFrame:
 
     def __init__(self, pos, width, height, y_padding=None):
@@ -17,13 +22,12 @@ class FlowableFrame:
             height (GraphicUnit): height of the frame
             y_padding (GraphicUnit): The min gap between frame sections
         """
-        self.pos = Point(pos)
-        self.width = width
-        self.height = height
-        if y_padding is None:
-            self.y_padding = Mm(20)
-        else:
-            self.y_padding = y_padding
+        self._pos = Point(pos)
+        self._width = width
+        self._height = height
+        self._y_padding = y_padding if y_padding else Mm(20)
+        self._auto_layout_controllers = []
+        self._generate_auto_layout_controllers()
 
     ######## PUBLIC PROPERTIES ########
 
@@ -35,6 +39,7 @@ class FlowableFrame:
     @pos.setter
     def pos(self, value):
         self._pos = value
+        self._generate_auto_layout_controllers()
 
     @property
     def x(self):
@@ -44,6 +49,7 @@ class FlowableFrame:
     @x.setter
     def x(self, value):
         self.pos.x = value
+        self._generate_auto_layout_controllers()
 
     @property
     def y(self):
@@ -53,6 +59,7 @@ class FlowableFrame:
     @y.setter
     def y(self, value):
         self.pos.y = value
+        self._generate_auto_layout_controllers()
 
     @property
     def width(self):
@@ -62,6 +69,7 @@ class FlowableFrame:
     @width.setter
     def width(self, value):
         self._width = value
+        self._generate_auto_layout_controllers()
 
     @property
     def height(self):
@@ -71,6 +79,7 @@ class FlowableFrame:
     @height.setter
     def height(self, value):
         self._height = value
+        self._generate_auto_layout_controllers()
 
     @property
     def y_padding(self):
@@ -80,6 +89,7 @@ class FlowableFrame:
     @y_padding.setter
     def y_padding(self, value):
         self._y_padding = value
+        self._generate_auto_layout_controllers()
 
     @property
     def layout_controllers(self):
@@ -96,19 +106,12 @@ class FlowableFrame:
             # TODO: Maybe remove type guards?
             raise TypeError
         self._layout_controllers = value
+        self._generate_auto_layout_controllers()
 
     @property
     def auto_layout_controllers(self):
         """list[LayoutController]: Auto-generated controllers for layout"""
         return self._auto_layout_controllers
-
-    @auto_layout_controllers.setter
-    def auto_layout_controllers(self, value):
-        if (not isinstance(value, list) or
-                not all(isinstance(c, LayoutController) for c in value)):
-            # TODO: Maybe remove type guards?
-            raise TypeError
-        self._auto_layout_controllers = value
 
     ######## PRIVATE METHODS ########
 
@@ -122,16 +125,8 @@ class FlowableFrame:
             This overwrites the contents of self.auto_layout_controllers
 
         Returns: None
-
-        TODO: Keep the results of this computation so it only has to be
-              performed when the auto layout controllers might have changed.
-
-        TODO: It will help reduce edge cases and make things simpler if
-              every flowable frame started with a new line. Currently there
-              is an awkward implicit line start whose position comes from
-              self.pos and results in a lot of confusing edge case code
         """
-        self.auto_layout_controllers = []
+        self._auto_layout_controllers = []
         live_page_width = brown.document.paper.live_width
         live_page_height = brown.document.paper.live_height
         # The progress the layout generation has reached along the frame's width.
@@ -141,6 +136,9 @@ class FlowableFrame:
         # of the live page area
         pos_on_page = Point(self.pos)
         page_number = 1
+        # Attach initial starting NewLine
+        self.auto_layout_controllers.append(
+            AutoNewPage(self, x_progress, page_number, pos_on_page))
         while True:
             delta_x = live_page_width - pos_on_page.x
             x_progress += delta_x
@@ -170,24 +168,11 @@ class FlowableFrame:
             Point: An x-y coordinate in document space
         """
         local_point = Point(point)
-        self._generate_auto_layout_controllers()
-        remaining_x = local_point.x
-        current_line_pos = self.pos
-        # Seek to the page and line-on-page based on auto layout controllers
-        for i, controller in enumerate(self.auto_layout_controllers):
-            distance_to_line_end = (brown.document.paper.live_width -
-                                    current_line_pos.x)
-            if distance_to_line_end > remaining_x:
-                break
-            remaining_x -= distance_to_line_end
-            current_line_pos = controller.page_pos
-        # Final position is line_pos + remaining offsets
-        if i == 0:
-            # No line break crossed - line start is == flowable start
-            line_pos = brown.document._page_pos_to_doc(self.pos, 1)
-        else:
-            line_pos = self.auto_layout_controllers[i - 1].doc_pos
-        return Point(line_pos.x + remaining_x, line_pos.y + local_point.y)
+        last_break_before = self._last_break_at(local_point.x)
+        line_start_doc_pos = last_break_before.doc_start_pos
+        offset_from_line_start = Point(local_point.x - last_break_before.x,
+                                       local_point.y)
+        return line_start_doc_pos + offset_from_line_start
 
     def _x_pos_rel_to_line_start(self, x):
         """Find the distance of an x-pos to the left edge of its laid-out line.
@@ -197,23 +182,9 @@ class FlowableFrame:
 
         Returns: Unit
         """
-        # Seek to the page and line-on-page based on auto layout controllers
         self._generate_auto_layout_controllers()
-        current_x_offset = self.x  # Offsets relative to ideal line start
-        remaining_x = x
-        # Calculate position relative to the top left corner of the live page
-        # area of the current page
-        for controller in self.auto_layout_controllers:
-            if controller.x > x:
-                break
-            remaining_x -= (brown.document.paper.live_width -
-                            current_x_offset)
-            if isinstance(controller, AutoNewLine):
-                current_x_offset = Mm(0)
-            elif isinstance(controller, AutoNewPage):
-                current_x_offset = Mm(0)
-                # print('current_y_offset changed to', current_y_offset)
-        return remaining_x
+        line_start = self._last_break_at(x)
+        return x - line_start.x
 
     def _x_pos_rel_to_line_end(self, x):
         """Find the distance of an x-pos to the right edge of its laid-out line.
@@ -236,5 +207,34 @@ class FlowableFrame:
         Returns:
             NewLine:
         """
-        # TODO: Make me!
-        raise NotImplementedError
+        self._generate_auto_layout_controllers()
+        remaining_x = x
+        for controller in self.auto_layout_controllers:
+            remaining_x -= controller.length
+            if remaining_x < 0:
+                return controller
+        else:
+            raise OutOfBoundsError(
+                'Position ({}, {}) lies outside of its FlowableFrame'.format(
+                    x, '--'))
+
+    def _last_break_index_at(self, x):
+        """
+        Like `_last_break_at`, but returns the break index instead of the break
+
+        Args:
+            pos (Point): A local x-position
+
+        Returns:
+            int
+        """
+        self._generate_auto_layout_controllers()
+        remaining_x = x
+        remaining_x -= brown.document.paper.live_width - self.pos.x
+        if remaining_x < 0:
+            return None
+        for i, controller in enumerate(self.auto_layout_controllers):
+            remaining_x -= brown.document.paper.live_width
+            if remaining_x < 0:
+                return i
+        raise AssertionError("This shouldn't be possible")
