@@ -155,35 +155,29 @@ class FlowableObject(GraphicObject):
 
         Returns: None
         """
-        # HACK: This whole thing is spaghetti and should be rewritten
-        #       once the first-newline edge case is resolved and
-        #       more sane helper functions are integrated into frames
-        #       and this class.
-        if self.frame._x_pos_rel_to_line_end(self.x) > self.width:
-            print(self.x)
-            print(self.width)
-            print(self.frame._x_pos_rel_to_line_end(self.x + self.width))
-            # This fits completely in the frame
+        remaining_x = self.width
+        remaining_x -= self.frame._x_pos_rel_to_line_end(self.x)
+        if remaining_x < 0:
             self._render_complete()
             return
-        remaining_x = self.width
-        # Render start
-        remaining_x -= self.frame._x_pos_rel_to_line_end(self.pos.x)
-        first_break_i = self.frame._last_break_index_at(self.pos.x)
+        first_line_i = self.frame._last_break_index_at(self.x)
+        # Render before break
         self._render_before_break(
             self.frame._local_space_to_doc_space(self.pos),
-            self.frame.auto_layout_controllers[first_break_i].doc_end_pos)
+            self.frame.auto_layout_controllers[first_line_i].doc_end_pos)
         # Iterate through remaining width
-        for active_break_i in range(first_break_i, len(self.frame.auto_layout_controllers)):
-            current_break = self.frame.auto_layout_controllers[active_break_i]
-            if remaining_x < current_break.length:
+        for current_line_i in range(first_line_i + 1, len(self.frame.auto_layout_controllers)):
+            current_line = self.frame.auto_layout_controllers[current_line_i]
+            remaining_x -= current_line.length
+            if remaining_x > 0:
+                # Render spanning continuation
+                self._render_spanning_continuation(current_line.doc_start_pos,
+                                                   current_line.doc_end_pos)
+            else:
                 break
-            remaining_x -= current_break.length
-            self._render_spanning_continuation(current_break.doc_start_pos,
-                                               current_break.doc_end_pos)
         # Render end
-        self._render_after_break(current_break.doc_start_pos,
-                                 current_break.doc_start_pos + Point(remaining_x, 0))
+        self._render_after_break(current_line.doc_start_pos,
+                                 current_line.doc_start_pos + Point(remaining_x, 0))
 
     ######## PRIVATE METHODS ########
 

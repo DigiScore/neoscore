@@ -206,15 +206,7 @@ class FlowableFrame:
         Returns:
             NewLine:
         """
-        remaining_x = x
-        for controller in self.auto_layout_controllers:
-            remaining_x -= controller.length
-            if remaining_x < 0:
-                return controller
-        else:
-            raise OutOfBoundsError(
-                'Position ({}, {}) lies outside of its FlowableFrame'.format(
-                    x, '--'))
+        return self.auto_layout_controllers[self._last_break_index_at(x)]
 
     def _last_break_index_at(self, x):
         """
@@ -227,11 +219,11 @@ class FlowableFrame:
             int
         """
         remaining_x = x
-        remaining_x -= brown.document.paper.live_width - self.pos.x
-        if remaining_x < 0:
-            return None
         for i, controller in enumerate(self.auto_layout_controllers):
-            remaining_x -= brown.document.paper.live_width
+            remaining_x -= controller.length
             if remaining_x < 0:
                 return i
-        raise AssertionError("This shouldn't be possible")
+        else:
+            raise OutOfBoundsError(
+                'Position ({}, {}) lies outside of its FlowableFrame'.format(
+                    x, '--'))

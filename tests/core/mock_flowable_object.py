@@ -89,4 +89,4 @@ class MockFlowableObject(FlowableObject):
         line.line_to(stop)
         line.render()
         self._interfaces.append(line)
-        print('Rendering spanning continuation')
+        print('Rendering spanning continuation from {} to {}'.format(start, stop))
