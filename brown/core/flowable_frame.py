@@ -182,7 +182,6 @@ class FlowableFrame:
 
         Returns: Unit
         """
-        self._generate_auto_layout_controllers()
         line_start = self._last_break_at(x)
         return x - line_start.x
 
@@ -207,7 +206,6 @@ class FlowableFrame:
         Returns:
             NewLine:
         """
-        self._generate_auto_layout_controllers()
         remaining_x = x
         for controller in self.auto_layout_controllers:
             remaining_x -= controller.length
@@ -228,7 +226,6 @@ class FlowableFrame:
         Returns:
             int
         """
-        self._generate_auto_layout_controllers()
         remaining_x = x
         remaining_x -= brown.document.paper.live_width - self.pos.x
         if remaining_x < 0:
