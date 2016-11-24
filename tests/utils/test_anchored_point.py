@@ -135,3 +135,27 @@ class TestAnchoredPoint(unittest.TestCase):
         assert(test_point != test_point_ne_1)
         assert(test_point != test_point_ne_2)
         assert(test_point != test_point_ne_3)
+
+    def test__add__(self):
+        p1 = AnchoredPoint(1, 2)
+        p2 = AnchoredPoint(3, 4, None)
+        p3 = AnchoredPoint(5, 6, self.test_parent)
+        p4 = AnchoredPoint(7, 8, self.test_parent)
+        assert(p1 + p2 == AnchoredPoint(4, 6))
+        assert(p3 + p4 == AnchoredPoint(12, 14, self.test_parent))
+        with pytest.raises(TypeError):
+            p2 + p3
+        with pytest.raises(TypeError):
+            p2 + 5
+
+    def test__sub__(self):
+        p1 = AnchoredPoint(1, 2)
+        p2 = AnchoredPoint(3, 4, None)
+        p3 = AnchoredPoint(5, 6, self.test_parent)
+        p4 = AnchoredPoint(7, 8, self.test_parent)
+        assert(p1 - p2 == AnchoredPoint(-2, -2))
+        assert(p3 - p4 == AnchoredPoint(-2, -2, self.test_parent))
+        with pytest.raises(TypeError):
+            p2 - p3
+        with pytest.raises(TypeError):
+            p2 - 5

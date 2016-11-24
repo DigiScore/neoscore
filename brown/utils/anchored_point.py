@@ -96,6 +96,26 @@ class AnchoredPoint(Point):
         else:
             return False
 
+    def __add__(self, other):
+        """`Point`s are added by adding their x and y values in a new `Point`"""
+        if not isinstance(other, type(self)):
+            raise TypeError('Cannot add "{}" and "{}"'.format(
+                type(self).__name__, type(other).__name__))
+        elif self.parent != other.parent:
+            raise TypeError('Cannot add "{}"s with different parents'.format(
+                type(self).__name__))
+        return type(self)(self.x + other.x, self.y + other.y, self.parent)
+
+    def __sub__(self, other):
+        """`Point`s are subtracted by adding their x and y values in a new `Point`"""
+        if not isinstance(other, type(self)):
+            raise TypeError('Cannot subtract "{}" and "{}"'.format(
+                type(self).__name__, type(other).__name__))
+        elif self.parent != other.parent:
+            raise TypeError('Cannot subtract "{}"s with different parents'.format(
+                type(self).__name__))
+        return type(self)(self.x - other.x, self.y - other.y, self.parent)
+
     def __repr__(self):
         return '{}({}, {}, parent={})'.format(type(self).__name__,
                                               self.x, self.y, self.parent)

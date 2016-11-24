@@ -119,3 +119,17 @@ class TestPoint(unittest.TestCase):
         assert(p1 == p2)
         assert(p1 != p3)
         assert(p1 != (5, 6))
+
+    def test__add__(self):
+        p1 = Point(1, 2)
+        p2 = Point(3, 4)
+        assert(p1 + p2 == Point(4, 6))
+        with pytest.raises(TypeError):
+            p1 + 1
+
+    def test__sub__(self):
+        p1 = Point(1, 2)
+        p2 = Point(3, 4)
+        assert(p1 - p2 == Point(-2, -2))
+        with pytest.raises(TypeError):
+            p1 - 1

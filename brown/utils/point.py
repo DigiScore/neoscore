@@ -146,6 +146,20 @@ class Point:
         else:
             return False
 
+    def __add__(self, other):
+        """`Point`s are added by adding their x and y values in a new `Point`"""
+        if not isinstance(other, type(self)):
+            raise TypeError('Cannot add "{}" and "{}"'.format(
+                type(self).__name__, type(other).__name__))
+        return type(self)(self.x + other.x, self.y + other.y)
+
+    def __sub__(self, other):
+        """`Point`s are subtracted by adding their x and y values in a new `Point`"""
+        if not isinstance(other, type(self)):
+            raise TypeError('Cannot subtract "{}" and "{}"'.format(
+                type(self).__name__, type(other).__name__))
+        return type(self)(self.x - other.x, self.y - other.y)
+
     def __iter__(self):
         return self
 
