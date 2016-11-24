@@ -33,7 +33,7 @@ path = Path((0, 0), Pen('#000000'), Brush('#eeeeee'))
 #path.line_to((25, 25))
 #path.line_to((25, 50))
 #path.line_to((0, 50))
-path.line_to((0, 0), parent=glyph)
+path.line_to(0, 0, glyph)
 path.render()
 
 curve = Path((0, 0), Pen('#000000'), Brush('#eeeeee'))

@@ -98,6 +98,7 @@ class AnchoredPoint(Point):
 
     def __add__(self, other):
         """`Point`s are added by adding their x and y values in a new `Point`"""
+        # TODO: Make this less ugly
         if not isinstance(other, type(self)):
             raise TypeError('Cannot add "{}" and "{}"'.format(
                 type(self).__name__, type(other).__name__))
@@ -108,6 +109,7 @@ class AnchoredPoint(Point):
 
     def __sub__(self, other):
         """`Point`s are subtracted by adding their x and y values in a new `Point`"""
+        # TODO: Make this less ugly
         if not isinstance(other, type(self)):
             raise TypeError('Cannot subtract "{}" and "{}"'.format(
                 type(self).__name__, type(other).__name__))

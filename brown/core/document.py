@@ -40,7 +40,7 @@ class Document:
     ######## PRIVATE METHODS ########
 
     def _page_origin_in_doc_space(self, page_number):
-        """Find the position in pixels of the origin of the live area of a page.
+        """Find the position of the origin of the live page area.
 
         The origin is the top left corner of the live area, equivalent to
         the real page corner plus margins and gutter.
@@ -48,11 +48,8 @@ class Document:
         Args:
             page_number (int): The number of the page to locate
 
-        Returns: tuple(float, float): An x, y coordinate in pixels
         Returns:
-            Point: A point in pixels
-
-        Note: Assumes left-to right layout
+            Point: The position of the origin of the given page.
         """
         if page_number < 1:
             raise ValueError('page_number must be 1 or greater.')
@@ -62,3 +59,18 @@ class Document:
         x_page_origin = x_page_left + self.paper.margin_left
         y_page_origin = self.paper.margin_top
         return Point(x_page_origin, y_page_origin)
+
+    def _page_pos_to_doc(self, pos, page_number):
+        """Take a position on a page number and find its doc-space position
+
+        The origin is the top left corner of the live area, equivalent to
+        the real page corner plus margins and gutter.
+
+        Args:
+            pos (Point): The position relative to the origin of the
+                live page area
+
+        Returns:
+            Point: A document-space position
+        """
+        return pos + self._page_origin_in_doc_space(page_number)

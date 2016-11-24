@@ -3,7 +3,7 @@
 import random
 import sys
 
-from brown.utils.units import Mm
+from brown.utils.units import Mm, GraphicUnit
 from brown.core import brown
 from brown.core.font import Font
 from brown.core.text_object import TextObject
@@ -39,8 +39,6 @@ line.render()
 
 Path.straight_line((0, 0), (200, 200)).render()
 
-brown.show()
-sys.exit()
 
 text = TextObject((120, 10), 'hello')
 text.brush = Brush('#00ffff')
@@ -49,18 +47,18 @@ text.render()
 staff = Staff((Mm(0), Mm(150)), Mm(300), Mm(1))
 staff.render()
 
-clef = Clef(staff, 0, 'alto')
+clef = Clef(staff, GraphicUnit(0), 'alto')
 clef.render()
 
-clef = Clef(staff, 150, 'treble')
+clef = Clef(staff, GraphicUnit(150), 'treble')
 clef.render()
 
 pitches = ["d'", "e'", "f'", "g'", "a'", "b'",
            "c''", "d''", "e''", "f''"]
 for i, pitch in enumerate(pitches):
-    Notehead(staff, i * 20 + 30, pitch).render()
+    Notehead(staff, GraphicUnit(i * 20 + 30), pitch).render()
 
-lone_note = Notehead(staff, 180, "c'")
+lone_note = Notehead(staff, GraphicUnit(180), "c'")
 lone_note.render()
 
 # dummy ledgers
@@ -69,7 +67,7 @@ lone_note.render()
 
 # # chordrest
 chord_pitches = ["c", "c'", "en'", "gf'", "as'"]
-chordrest = ChordRest(staff, chord_pitches, 270)
+chordrest = ChordRest(staff, chord_pitches, GraphicUnit(270))
 chordrest.render()
 
 # # one note chordrest high above the staff
@@ -79,7 +77,7 @@ chordrest.render()
 # Path.straight_line(270, 0, 0, 100).render()
 
 # Test hacky use of flowable coordinate space
-flow = FlowableFrame((Mm(0), Mm(0)), Mm(3500), Mm(20))
+flow = FlowableFrame((Mm(20), Mm(0)), Mm(3500), Mm(20))
 for i in range(1000):
     x, y = flow._local_space_to_doc_space((Mm(i * 2), Mm(random.randint(0, 20))))
     glyph = Glyph((x, y), '\uE118', brown.music_font)

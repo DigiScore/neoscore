@@ -2,6 +2,7 @@ import unittest
 import pytest
 
 from brown.core import brown
+from brown.utils.point import Point
 from brown.utils.units import Mm
 from brown.core.document import Document
 from brown.core.paper import Paper
@@ -76,3 +77,17 @@ class TestDocument(unittest.TestCase):
             test_doc._page_origin_in_doc_space(0)
         with pytest.raises(ValueError):
             test_doc._page_origin_in_doc_space(-1)
+
+    def test_page_pos_to_doc_on_third_page(self):
+        width = Mm(200)
+        left_margin = Mm(13)
+        top_margin = Mm(21)
+        test_paper = Paper(width, Mm(250),
+                           top_margin, Mm(10), Mm(20), left_margin, 0)
+        test_doc = Document(test_paper)
+        doc_pos = test_doc._page_pos_to_doc(
+            Point.with_unit(10, 11, unit=Mm), 3)
+        expected_x = (left_margin +
+                      ((width + test_doc._page_display_gap) * 2)) + Mm(10)
+        expected_y = top_margin + Mm(11)
+        assert(doc_pos == Point(expected_x, expected_y))

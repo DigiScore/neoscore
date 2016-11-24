@@ -1,11 +1,11 @@
-from brown.core.layout_controller import LayoutController
+from brown.core.new_line import NewLine
 from brown.utils.units import Mm
 
 
-class NewPage(LayoutController):
+class NewPage(NewLine):
     """A line break controller."""
 
-    def __init__(self, flowable_frame, x, offset_y=0):
+    def __init__(self, flowable_frame, x, page_number, page_pos, offset_y=0):
         """
         Args:
             flowable_frame (FlowableFrame): The parent frame.
@@ -13,24 +13,17 @@ class NewPage(LayoutController):
             offset_y (float): The space in pixels above the first
                 line on the next page.
         """
-        super().__init__(flowable_frame, x)
-        self.offset_y = offset_y if offset_y else Mm(0)
+        if not offset_y:
+            offset_y = Mm(0)
+        super().__init__(flowable_frame, x, page_number, page_pos, offset_y)
 
     ######## PUBLIC PROPERTIES ########
 
     @property
     def offset_y(self):
-        """
-        (float): The space in pixels above the first line on the next page.
-        """
+        """float: The space in pixels above the first line on the next page."""
         return self._offset_y
 
     @offset_y.setter
     def offset_y(self, value):
         self._offset_y = value
-
-    ######## PRIVATE PROPERTIES ########
-
-    @property
-    def _is_automatic(self):
-        return False

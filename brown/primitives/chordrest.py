@@ -1,3 +1,4 @@
+from brown.utils.units import GraphicUnit
 from brown.primitives.notehead import Notehead
 from brown.primitives.staff_object import StaffObject
 from brown.primitives.ledger_line import LedgerLine
@@ -18,9 +19,10 @@ class ChordRest(StaffObject):
         super().__init__(parent, position_x)
         self._noteheads = []
         self._ledgers = []
-        self._grob = InvisibleObject((self.position_x, 0), self.parent.grob)
+        self._grob = InvisibleObject((self.position_x, GraphicUnit(0)),
+                                     self.parent.grob)
         for pitch in noteheads:
-            self._noteheads.append(Notehead(self, 0, pitch))
+            self._noteheads.append(Notehead(self, GraphicUnit(0), pitch))
         self._duration = duration
         self._stem = None
 

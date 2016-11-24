@@ -248,3 +248,17 @@ class TestFlowableFrame(unittest.TestCase):
             expected = (page_origin[1] +
                         line_and_padding_height * line_on_page)
             self.assertAlmostEqual(y_val, expected)
+
+    def test_x_pos_rel_to_line_start(self):
+        test_frame = FlowableFrame((Mm(10), Mm(0)),
+                                   width=Mm(10000), height=Mm(90),
+                                   y_padding=Mm(5))
+        # brown.document.paper.live_width == Mm(160)
+        assert(test_frame._x_pos_rel_to_line_start(Mm(170)) == Mm(20))
+
+    def test_x_pos_rel_to_line_end(self):
+        test_frame = FlowableFrame((Mm(10), Mm(0)),
+                                   width=Mm(10000), height=Mm(90),
+                                   y_padding=Mm(5))
+        # brown.document.paper.live_width == Mm(160)
+        assert(test_frame._x_pos_rel_to_line_end(Mm(170)) == Mm(-140))
