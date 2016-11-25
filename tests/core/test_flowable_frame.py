@@ -255,6 +255,19 @@ class TestFlowableFrame(unittest.TestCase):
                         line_and_padding_height * line_on_page)
             self.assertAlmostEqual(y_val, expected)
 
+    def test_local_space_to_doc_space_raises_out_of_bounds_correctly(self):
+        test_frame = FlowableFrame((Mm(17), Mm(11)),
+                                   width=Mm(10000), height=Mm(15),
+                                   y_padding=Mm(5))
+        with pytest.raises(OutOfBoundsError):
+            test_frame._local_space_to_doc_space((-1, 1))
+        with pytest.raises(OutOfBoundsError):
+            test_frame._local_space_to_doc_space((1, -1))
+        with pytest.raises(OutOfBoundsError):
+            test_frame._local_space_to_doc_space((Mm(12000), 1))
+        with pytest.raises(OutOfBoundsError):
+            test_frame._local_space_to_doc_space((1, Mm(16)))
+
     def test_x_pos_rel_to_line_start(self):
         test_frame = FlowableFrame((Mm(10), Mm(0)),
                                    width=Mm(10000), height=Mm(90),

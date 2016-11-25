@@ -168,6 +168,10 @@ class FlowableFrame:
             Point: An x-y coordinate in document space
         """
         local_point = Point(point)
+        if (local_point.x < 0 or local_point.y < 0 or
+                local_point.x > self.width or local_point.y > self.height):
+            raise OutOfBoundsError(
+                '{} lies outside of the FlowableFrame'.format(local_point))
         last_break_before = self._last_break_at(local_point.x)
         line_start_doc_pos = last_break_before.doc_start_pos
         offset_from_line_start = Point(local_point.x - last_break_before.x,
@@ -225,5 +229,4 @@ class FlowableFrame:
                 return i
         else:
             raise OutOfBoundsError(
-                'Position ({}, {}) lies outside of its FlowableFrame'.format(
-                    x, '--'))
+                'x={} lies outside of this FlowableFrame'.format(x))
