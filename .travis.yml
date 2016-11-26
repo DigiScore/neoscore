@@ -2,10 +2,6 @@ language: python
 sudo: required
 dist: xenial
 
-branches:
-  except:
-    - master
-
 python:
   - "3.5"
 
@@ -16,5 +12,11 @@ install:
  - pip3 install -r tests/test_requirements.txt
  - pip3 install -e ./
 
+before_script:
+  # Set up X server for Qt tests
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3 # give xvfb some time to start
+
 script:
- - pytest
+ - nosetests --processes=1 --process-restartworker
