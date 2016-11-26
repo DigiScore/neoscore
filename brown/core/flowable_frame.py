@@ -25,7 +25,7 @@ class FlowableFrame:
         self._pos = Point(pos)
         self._width = width
         self._height = height
-        self._y_padding = y_padding if y_padding else Mm(20)
+        self._y_padding = y_padding if y_padding else Mm(5)
         self._auto_layout_controllers = []
         self._generate_auto_layout_controllers()
 
@@ -101,10 +101,6 @@ class FlowableFrame:
 
     @layout_controllers.setter
     def layout_controllers(self, value):
-        if (not isinstance(value, list) or
-                not all(isinstance(c, LayoutController) for c in value)):
-            # TODO: Maybe remove type guards?
-            raise TypeError
         self._layout_controllers = value
         self._generate_auto_layout_controllers()
 

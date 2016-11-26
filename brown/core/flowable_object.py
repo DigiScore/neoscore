@@ -1,8 +1,6 @@
-from brown.core.flowable_frame import FlowableFrame
 from brown.core.graphic_object import GraphicObject
 from brown.utils.point import Point
 from brown.utils.units import GraphicUnit
-
 
 
 class FlowableObject(GraphicObject):
@@ -156,28 +154,36 @@ class FlowableObject(GraphicObject):
         Returns: None
         """
         remaining_x = self.width
-        remaining_x -= self.frame._x_pos_rel_to_line_end(self.x)
+        print(remaining_x)
+        remaining_x += self.frame._x_pos_rel_to_line_end(self.x)
         if remaining_x < 0:
             self._render_complete()
             return
         first_line_i = self.frame._last_break_index_at(self.x)
         # Render before break
-        self._render_before_break(
-            self.frame._local_space_to_doc_space(self.pos),
-            self.frame.auto_layout_controllers[first_line_i].doc_end_pos)
+        current_line = self.frame.auto_layout_controllers[first_line_i]
+        render_start_pos = self.frame._local_space_to_doc_space(self.pos)
+        render_end_pos = render_start_pos + Point(-1 * self.frame._x_pos_rel_to_line_end(self.x), 0)
+        self._render_before_break(render_start_pos, render_end_pos)
         # Iterate through remaining width
         for current_line_i in range(first_line_i + 1, len(self.frame.auto_layout_controllers)):
             current_line = self.frame.auto_layout_controllers[current_line_i]
-            remaining_x -= current_line.length
-            if remaining_x > 0:
+            if remaining_x > current_line.length:
+                remaining_x -= current_line.length
                 # Render spanning continuation
-                self._render_spanning_continuation(current_line.doc_start_pos,
-                                                   current_line.doc_end_pos)
+                render_start_pos = self.frame._local_space_to_doc_space(
+                    Point(current_line.x, self.y))
+                render_end_pos = render_start_pos + Point(current_line.length, 0)
+                self._render_spanning_continuation(render_start_pos,
+                                                   render_end_pos)
             else:
                 break
         # Render end
-        self._render_after_break(current_line.doc_start_pos,
-                                 current_line.doc_start_pos + Point(remaining_x, 0))
+        render_start_pos = self.frame._local_space_to_doc_space(
+                    Point(current_line.x, self.y))
+        render_end_pos = render_start_pos + Point(remaining_x, 0)
+        self._render_after_break(render_start_pos,
+                                 render_end_pos)
 
     ######## PRIVATE METHODS ########
 

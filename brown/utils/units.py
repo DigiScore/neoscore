@@ -163,7 +163,7 @@ class Unit:
 
 class GraphicUnit(Unit):
     # TODO: When stable, copy and tailor docstring from Unit
-    _unit_name_plural = 'pixels'
+    _unit_name_plural = 'graphic units'
     _base_units_per_self_unit = 1
 
     # (all other functionality implemented in Unit)
@@ -181,7 +181,7 @@ class Inch(Unit):
 
 class Mm(Unit):
     # TODO: When stable, copy and tailor docstring from Unit
-    _unit_name_plural = 'millimeters'
+    _unit_name_plural = 'mm'
     _base_units_per_self_unit = 11.811023622047244
 
     # (all other functionality implemented in Unit)
@@ -189,7 +189,7 @@ class Mm(Unit):
 
 
 class Cm(Unit):
-    _unit_name_plural = 'centimeters'
+    _unit_name_plural = 'cm'
     _base_units_per_self_unit = 1.18110236220472
 
     # (all other functionality implemented in Unit)

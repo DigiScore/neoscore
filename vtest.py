@@ -78,13 +78,19 @@ chordrest.render()
 # Path.straight_line(270, 0, 0, 100).render()
 
 # Test hacky use of flowable coordinate space
-flow = FlowableFrame((Mm(0), Mm(0)), Mm(3500), Mm(20))
+flow = FlowableFrame((Mm(0), Mm(0)), Mm(35000), Mm(20), Mm(20))
 for i in range(1000):
     x, y = flow._local_space_to_doc_space((Mm(i * 2), Mm(random.randint(0, 20))))
     glyph = Glyph((x, y), '\uE118', brown.music_font)
     glyph.render()
 
-mock = MockFlowableObject((Mm(0), Mm(0)), Mm(3400), flow)
+mock = MockFlowableObject((Mm(20), Mm(10)), Mm(3400), flow)
 mock.render()
+
+mock2 = MockFlowableObject((Mm(20), Mm(20)), Mm(50), flow)
+mock2.render()
+
+mock3 = MockFlowableObject((Mm(0), Mm(15)), Mm(180), flow)
+mock3.render()
 
 brown.show()

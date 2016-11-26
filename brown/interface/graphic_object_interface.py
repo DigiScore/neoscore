@@ -2,7 +2,9 @@ from PyQt5 import QtGui
 
 from abc import ABC
 
-
+from brown.config import config
+from brown.interface.pen_interface import PenInterface
+from brown.interface.brush_interface import BrushInterface
 from brown.utils.units import GraphicUnit
 from brown.utils.point import Point
 
@@ -71,11 +73,17 @@ class GraphicObjectInterface(ABC):
 
     @pen.setter
     def pen(self, value):
-        self._pen = value
-        if self._pen:
-            self._qt_object.setPen(self._pen._qt_object)
+        if value:
+            if isinstance(value, str):
+                value = PenInterface(value)
+            elif isinstance(value, PenInterface):
+                pass
+            else:
+                raise TypeError
         else:
-            self._qt_object.setPen(QtGui.QPen())
+            value = PenInterface(config.DEFAULT_PEN_COLOR)
+        self._pen = value
+        self._qt_object.setPen(self._pen._qt_object)
 
     @property
     def brush(self):
@@ -86,11 +94,17 @@ class GraphicObjectInterface(ABC):
 
     @brush.setter
     def brush(self, value):
-        self._brush = value
-        if self._brush:
-            self._qt_object.setBrush(self._brush._qt_object)
+        if value:
+            if isinstance(value, str):
+                value = BrushInterface(value)
+            elif isinstance(value, BrushInterface):
+                pass
+            else:
+                raise TypeError
         else:
-            self._qt_object.setBrush(QtGui.QBrush())
+            value = BrushInterface(config.DEFAULT_BRUSH_COLOR)
+        self._brush = value
+        self._qt_object.setBrush(self._brush._qt_object)
 
     @property
     def parent(self):

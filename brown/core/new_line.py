@@ -60,8 +60,7 @@ class NewLine(LayoutController):
 
         This property is read-only
         """
-        return self.doc_start_pos + Point(self.length, self.flowable_frame.height)
-
+        return self.doc_start_pos + Point(self.length, self.height)
 
     @property
     def length(self):
@@ -71,6 +70,15 @@ class NewLine(LayoutController):
         """
         # TODO: When breaks are made more flexible this needs to be updated.
         return brown.document.paper.live_width - self.page_pos.x
+
+    @property
+    def height(self):
+        """Unit: The height of the line.
+
+        This property is read-only.
+        """
+        # TODO: When breaks are made more flexible this needs to be updated.
+        return self.flowable_frame.height
 
     ######## PRIVATE PROPERTIES ########
 

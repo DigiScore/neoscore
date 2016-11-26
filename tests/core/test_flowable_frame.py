@@ -10,8 +10,7 @@ from brown.core.auto_new_line import AutoNewLine
 from brown.core.auto_new_page import AutoNewPage
 
 
-# TODO: Regularize these tests and ensure that they are testing what they
-#       say they are!!!
+# TODO: These tests could use some more cleanups...
 
 
 class TestFlowableFrame(unittest.TestCase):
