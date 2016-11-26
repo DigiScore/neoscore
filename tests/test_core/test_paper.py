@@ -1,5 +1,5 @@
 import unittest
-import pytest
+from nose.tools import assert_raises
 
 from brown.core import brown
 from brown.utils.units import Mm

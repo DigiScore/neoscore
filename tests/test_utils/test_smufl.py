@@ -1,4 +1,4 @@
-import pytest
+from nose.tools import assert_raises
 
 from brown.utils import smufl
 
@@ -14,19 +14,19 @@ def test_get_basic_glyph_info():
     assert(smufl.get_basic_glyph_info("6stringTabClef") ==
            {"codepoint": "\uE06D",
             "description": "6-string tab clef"})
-    with pytest.raises(KeyError):
+    with assert_raises(KeyError):
         smufl.get_basic_glyph_info("nonexistent name")
 
 
 def test_char_from_glyph_name():
     assert(smufl.char_from_glyph_name("6stringTabClef") == "\uE06D")
-    with pytest.raises(KeyError):
+    with assert_raises(KeyError):
         smufl.char_from_glyph_name("nonexistent name")
 
 
 def test_description_from_glyph_name():
     assert(smufl.description_from_glyph_name("6stringTabClef") == "6-string tab clef")
-    with pytest.raises(KeyError):
+    with assert_raises(KeyError):
         smufl.description_from_glyph_name("nonexistent name")
 
 
@@ -40,7 +40,7 @@ def test_description_from_glyph_name():
 
 def test_glyph_range_key():
     assert(smufl.get_glyph_range_key("accdnRH3RanksPiccolo") == 'accordion')
-    with pytest.raises(KeyError):
+    with assert_raises(KeyError):
         smufl.get_glyph_range_key("nonexistent name")
 
 

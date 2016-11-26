@@ -1,5 +1,5 @@
 import unittest
-import pytest
+from nose.tools import assert_raises
 
 from brown.utils.point import Point
 from brown.utils.anchored_point import AnchoredPoint
@@ -40,7 +40,7 @@ class TestPoint(unittest.TestCase):
         assert(test_point.y == Unit(6))
 
     def test_with_unit_fails_if_unit_not_set(self):
-        with pytest.raises(TypeError):
+        with assert_raises(TypeError):
             Point.with_unit(5, 6)
 
     def test_to_unit_from_int(self):
@@ -73,11 +73,11 @@ class TestPoint(unittest.TestCase):
 
     def test_indexing_with_invalid_raises_IndexError(self):
         test_point = Point(5, 6)
-        with pytest.raises(IndexError):
+        with assert_raises(IndexError):
             test_point[3]
-        with pytest.raises(IndexError):
+        with assert_raises(IndexError):
             test_point[-1]
-        with pytest.raises(TypeError):
+        with assert_raises(TypeError):
             test_point['nonsense index']
 
     def test_setters_hook_setter_hook(self):
@@ -124,12 +124,12 @@ class TestPoint(unittest.TestCase):
         p1 = Point(1, 2)
         p2 = Point(3, 4)
         assert(p1 + p2 == Point(4, 6))
-        with pytest.raises(TypeError):
+        with assert_raises(TypeError):
             p1 + 1
 
     def test__sub__(self):
         p1 = Point(1, 2)
         p2 = Point(3, 4)
         assert(p1 - p2 == Point(-2, -2))
-        with pytest.raises(TypeError):
+        with assert_raises(TypeError):
             p1 - 1

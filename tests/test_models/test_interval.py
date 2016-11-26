@@ -1,4 +1,4 @@
-import pytest
+from nose.tools import assert_raises
 from brown.models.interval import Interval, InvalidIntervalError
 
 
@@ -42,109 +42,109 @@ def test_interval_simple_distance():
 
 
 def test_interval_0_distance_fails():
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('ad0')
 
 
 def test_interval_no_direction_fails():
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('M2')
 
 
 def test_interval_no_quality_fails():
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('a2')
 
 
 def test_interval_no_distance_fails():
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('aM')
 
 
 def test_interval_major_minor_unison_and_compounds_fail():
     # Unison
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('am1')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('aM1')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('dm1')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('dM1')
     # Unison Compounds
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('am8')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('aM8')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('dm8')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('dM8')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('am15')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('aM15')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('dm15')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('dM15')
 
 
 def test_interval_major_minor_fourths_and_compounds_fail():
     # Fourths
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('am4')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('aM4')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('dm4')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('dM4')
     # Fourth Compounds
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('am11')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('aM11')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('dm11')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('dM11')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('am18')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('aM18')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('dm18')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('dM18')
 
 
 def test_interval_major_minor_fifths_and_compounds_fail():
     # Fifths
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('am5')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('aM5')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('dm5')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('dM5')
     # Fifth Compounds
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('am12')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('aM12')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('dm12')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('dM12')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('am19')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('aM19')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('dm19')
-    with pytest.raises(InvalidIntervalError):
+    with assert_raises(InvalidIntervalError):
         Interval('dM19')
 
 

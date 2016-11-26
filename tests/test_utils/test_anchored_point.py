@@ -1,6 +1,6 @@
 import os
 import unittest
-import pytest
+from nose.tools import assert_raises
 
 from brown.core import brown
 from brown.config import config
@@ -81,16 +81,16 @@ class TestAnchoredPoint(unittest.TestCase):
         assert(test_point.parent == self.test_parent)
 
     def test_with_unit_fails_if_unit_not_set(self):
-        with pytest.raises(TypeError):
+        with assert_raises(TypeError):
             AnchoredPoint.with_unit(5, 6, self.test_parent)
 
     def test_indexing_with_invalid_raises_IndexError(self):
         test_point = AnchoredPoint(5, 6, self.test_parent)
-        with pytest.raises(IndexError):
+        with assert_raises(IndexError):
             test_point[3]
-        with pytest.raises(IndexError):
+        with assert_raises(IndexError):
             test_point[-1]
-        with pytest.raises(TypeError):
+        with assert_raises(TypeError):
             test_point['nonsense index']
 
     def test_setters_hook_parent_setter_hook(self):
@@ -143,9 +143,9 @@ class TestAnchoredPoint(unittest.TestCase):
         p4 = AnchoredPoint(7, 8, self.test_parent)
         assert(p1 + p2 == AnchoredPoint(4, 6))
         assert(p3 + p4 == AnchoredPoint(12, 14, self.test_parent))
-        with pytest.raises(TypeError):
+        with assert_raises(TypeError):
             p2 + p3
-        with pytest.raises(TypeError):
+        with assert_raises(TypeError):
             p2 + 5
 
     def test__sub__(self):
@@ -155,7 +155,7 @@ class TestAnchoredPoint(unittest.TestCase):
         p4 = AnchoredPoint(7, 8, self.test_parent)
         assert(p1 - p2 == AnchoredPoint(-2, -2))
         assert(p3 - p4 == AnchoredPoint(-2, -2, self.test_parent))
-        with pytest.raises(TypeError):
+        with assert_raises(TypeError):
             p2 - p3
-        with pytest.raises(TypeError):
+        with assert_raises(TypeError):
             p2 - 5

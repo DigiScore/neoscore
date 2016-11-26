@@ -1,4 +1,4 @@
-import pytest
+from nose.tools import assert_raises
 import unittest
 
 from brown.core.paper import Paper
@@ -196,13 +196,13 @@ class TestFlowableFrame(unittest.TestCase):
 
     def test_local_space_to_doc_space_raises_out_of_bounds_correctly(self):
         test_frame = FlowableFrame((Mm(17), Mm(11)), Mm(500), Mm(15), Mm(5))
-        with pytest.raises(OutOfBoundsError):
+        with assert_raises(OutOfBoundsError):
             test_frame._local_space_to_doc_space((-1, 1))
-        with pytest.raises(OutOfBoundsError):
+        with assert_raises(OutOfBoundsError):
             test_frame._local_space_to_doc_space((1, -1))
-        with pytest.raises(OutOfBoundsError):
+        with assert_raises(OutOfBoundsError):
             test_frame._local_space_to_doc_space((Mm(12000), 1))
-        with pytest.raises(OutOfBoundsError):
+        with assert_raises(OutOfBoundsError):
             test_frame._local_space_to_doc_space((1, Mm(16)))
 
     def test_x_pos_rel_to_line_start(self):
@@ -224,5 +224,5 @@ class TestFlowableFrame(unittest.TestCase):
 
     def test_last_break_at_raises_out_of_bounds_when_needed(self):
         test_frame = FlowableFrame((Mm(10), Mm(0)), Mm(10000), Mm(90), Mm(5))
-        with pytest.raises(OutOfBoundsError):
+        with assert_raises(OutOfBoundsError):
             test_frame._last_break_at(Mm(10000000))

@@ -1,4 +1,4 @@
-import pytest
+from nose.tools import assert_raises
 from brown.primitives.staff import Staff
 from brown.primitives.staff_object import StaffObject, NoAncestorStaffError
 
@@ -33,5 +33,5 @@ def test_find_root_staff_with_no_staff_raises_error():
     class ChildObject(StaffObject):
         pass
 
-    with pytest.raises(NoAncestorStaffError):
+    with assert_raises(NoAncestorStaffError):
         ChildObject(None, 0)

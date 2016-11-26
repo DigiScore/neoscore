@@ -1,4 +1,4 @@
-import pytest
+from nose.tools import assert_raises
 import unittest
 
 from brown.core import brown
@@ -49,7 +49,7 @@ class TestPath(unittest.TestCase):
 
     def test_current_path_pos_has_no_setter(self):
         test_line = Path((0, 0))
-        with pytest.raises(AttributeError):
+        with assert_raises(AttributeError):
             test_line.current_path_position = (7, 8)
 
     def test_line_to(self):

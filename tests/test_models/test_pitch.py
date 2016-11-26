@@ -1,4 +1,4 @@
-import pytest
+from nose.tools import assert_raises
 
 from brown.models.pitch import Pitch, InvalidPitchDescriptionError
 
@@ -13,7 +13,7 @@ def test_pitch_init_common_case():
 
 
 def test_pitch_init_no_letter_fails():
-    with pytest.raises(InvalidPitchDescriptionError):
+    with assert_raises(InvalidPitchDescriptionError):
         Pitch('s,')
 
 

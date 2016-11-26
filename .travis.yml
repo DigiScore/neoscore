@@ -19,4 +19,4 @@ before_script:
   - sleep 3 # give xvfb some time to start
 
 script:
- - nosetests --processes=1 --process-restartworker
+ - nosetests -v --processes=1 --process-restartworker

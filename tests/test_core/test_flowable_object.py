@@ -1,4 +1,4 @@
-import pytest
+from nose.tools import assert_raises
 import unittest
 
 from brown.core.flowable_object import FlowableObject

@@ -1,6 +1,6 @@
 import os
-import pytest
 import unittest
+from nose.tools import assert_raises, nottest
 
 import time
 
@@ -44,12 +44,12 @@ class TestAppInterface(unittest.TestCase):
         # because Qt stores flags by bitwise OR-ing them)
         assert(int(self.interface.view.renderHints() & QtGui.QPainter.Antialiasing))
 
-    @pytest.mark.skip
+    @nottest
     def test_show(self):
         # TODO: How to test this?
         pass
 
-    @pytest.mark.skip
+    @nottest
     def test_destroy(self):
         # TODO: How to test this?
         pass
@@ -79,5 +79,5 @@ class TestAppInterface(unittest.TestCase):
         self.interface = AppInterface()
         self.interface.create_document()
         test_font_file_path = "path that doesn't exist"
-        with pytest.raises(FontRegistrationError):
+        with assert_raises(FontRegistrationError):
             self.interface.register_font(test_font_file_path)

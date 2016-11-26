@@ -1,4 +1,4 @@
-import pytest
+from nose.tools import assert_raises
 import unittest
 
 from PyQt5 import QtWidgets
@@ -30,12 +30,12 @@ class TestBrushInterface(unittest.TestCase):
         assert(brush.color == color_str)
 
     def test_color_with_bad_rgb_tuple_len_fails(self):
-        with pytest.raises(TypeError):
+        with assert_raises(TypeError):
             color_tuple = (0, 255)
             brush = BrushInterface(color_tuple)
 
     def test_color_with_nonsense_input_fails(self):
-        with pytest.raises(TypeError):
+        with assert_raises(TypeError):
             nonsense_args = list('foo')
             brush = BrushInterface(nonsense_args)
 

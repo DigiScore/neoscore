@@ -1,7 +1,7 @@
 import os
 import unittest
 
-import pytest
+from nose.tools import assert_raises
 
 from brown.core import brown
 from brown.core.glyph import Glyph, InvalidGlyphLengthError
@@ -38,7 +38,7 @@ class TestGlyph(unittest.TestCase):
         assert(test_object.parent is None)
 
     def test_prevent_multi_chars_text(self):
-        with pytest.raises(InvalidGlyphLengthError):
+        with assert_raises(InvalidGlyphLengthError):
             Glyph((5, 6), 'more than one char')
 
     def test_text_setter_changes_interface(self):
