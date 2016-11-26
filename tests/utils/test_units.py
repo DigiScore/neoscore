@@ -139,6 +139,12 @@ class TestUnite(unittest.TestCase):
         assert((pow(Unit(2), 2, 3)).value == 1)
         assert((pow(Unit(2), MockUnit(1), 3)).value == 1)
 
+    def test__neg__(self):
+        assert(-Unit(2) == Unit(-(2)))
+
+    def test__pos__(self):
+        assert(+Unit(-2) == Unit(+(-2)))
+
     def test__int__(self):
         assert(isinstance(int(Unit(2.0)), int))
         assert(int(Unit(2.0)) == 2)

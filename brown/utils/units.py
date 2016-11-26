@@ -240,13 +240,8 @@ def convert_all_to_unit(iterable, unit):
             elif isinstance(value, (list, dict)):
                 convert_all_to_unit(iterable[key], unit)
             elif isinstance(value, (tuple, set)):
-                try:
-                    iterable[key] = _call_on_immutable(iterable[key], unit)
-                except TypeError:
-                    continue
-            else:
-                # Nothing left to do at this item, continue
-                continue
+                iterable[key] = _call_on_immutable(iterable[key], unit)
+            # (else: continue --- nothing to do here)
     elif isinstance(iterable, list):
         for i in range(len(iterable)):
             if unit._is_acceptable_type(iterable[i]):
@@ -254,12 +249,7 @@ def convert_all_to_unit(iterable, unit):
             elif isinstance(iterable[i], (list, dict)):
                 convert_all_to_unit(iterable[i], unit)
             elif isinstance(iterable[i], (tuple, set)):
-                try:
-                    iterable[i] = _call_on_immutable(iterable[i], unit)
-                except TypeError:
-                    continue
-            else:
-                # Nothing left to do at this item, continue
-                continue
+                iterable[i] = _call_on_immutable(iterable[i], unit)
+            # (else: continue --- nothing to do here)
     else:
         raise TypeError

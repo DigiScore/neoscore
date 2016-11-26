@@ -12,3 +12,6 @@ virtualenv
 .cache
 *.egg-info
 .coverage
+
+# Coverage
+htmlcov

@@ -1,15 +1,17 @@
+import pytest
+
 from brown.utils.units import convert_all_to_unit
 from brown.utils.units import GraphicUnit
 
 
 def test_convert_all_to_unit_simple_dict():
-    iterable = {'a': 1, 'b': 2, 'c': 3}
+    iterable = {'a': 1, 'b': GraphicUnit(2), 'c': 'h'}
     convert_all_to_unit(iterable, GraphicUnit)
     assert(iterable['a'] == GraphicUnit(1))
 
 
 def test_convert_all_to_unit_simple_list():
-    iterable = [1, 2, 3]
+    iterable = [1, GraphicUnit(2), 'b']
     convert_all_to_unit(iterable, GraphicUnit)
     assert(iterable[0] == GraphicUnit(1))
 
@@ -68,3 +70,8 @@ def test_convert_all_to_unit_handles_strings_correctly():
     assert(isinstance(iterable['b'][1], GraphicUnit))
     assert(iterable['b'][1] == GraphicUnit(2))
     assert(iterable['b'][0] == 'abcd')
+
+
+def test_convert_all_to_unit_raises_error_on_bad_input():
+    with pytest.raises(TypeError):
+        convert_all_to_unit('invalid argument type', GraphicUnit)
