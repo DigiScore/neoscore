@@ -1,11 +1,19 @@
 from brown.core.flowable_object import FlowableObject
 from brown.interface.path_interface import PathInterface
 from brown.utils.point import Point
+from brown.utils.units import Mm
 
 
 class MockFlowableObject(FlowableObject):
 
     """A mock concrete FlowableObject for testing"""
+
+    def _draw_mock_staff_line(self, path, length):
+        for i in range(4):
+            y_offset = Mm(1) * i
+            path.move_to((0, y_offset))
+            path.line_to((length, y_offset))
+
 
     def _render_complete(self):
         """Render the entire object.
@@ -20,7 +28,7 @@ class MockFlowableObject(FlowableObject):
               for correct rendering.
         """
         line = PathInterface(self.document_pos, self.pen, self.brush, self.parent)
-        line.line_to((self.width, 0))
+        self._draw_mock_staff_line(line, self.width)
         line.render()
         self._interfaces.append(line)
 
@@ -42,7 +50,7 @@ class MockFlowableObject(FlowableObject):
         """
         line = PathInterface(start, '#ff0000', self.brush, self.parent)
         delta = stop - start
-        line.line_to(delta)
+        self._draw_mock_staff_line(line, delta.x)
         line.render()
         self._interfaces.append(line)
 
@@ -64,7 +72,7 @@ class MockFlowableObject(FlowableObject):
         """
         line = PathInterface(start, '#00ff00', self.brush, self.parent)
         delta = stop - start
-        line.line_to(delta)
+        self._draw_mock_staff_line(line, delta.x)
         line.render()
         self._interfaces.append(line)
 
@@ -87,6 +95,6 @@ class MockFlowableObject(FlowableObject):
         """
         line = PathInterface(start, '#0000ff', self.brush, self.parent)
         delta = stop - start
-        line.line_to(delta)
+        self._draw_mock_staff_line(line, delta.x)
         line.render()
         self._interfaces.append(line)

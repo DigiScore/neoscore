@@ -69,8 +69,8 @@ class TestAppInterface(unittest.TestCase):
         assert(self.interface.current_brush == test_brush)
 
     def test_register_font(self):
-        self.interface.create_document()
         self.interface = AppInterface()
+        self.interface.create_document()
         test_font_file_path = os.path.join(config.RESOURCES_DIR, 'fonts', 'Bravura.otf')
         font_id = self.interface.register_font(test_font_file_path)
         assert(QtGui.QFontDatabase.applicationFontFamilies(font_id) == ['Bravura'])
