@@ -1,80 +1,33 @@
 from brown.utils.units import GraphicUnit
 from brown.utils.point import Point
 from brown.config import config
-from brown.core.path import Path
 from brown.primitives.clef import Clef
+from brown.interface.path_interface import PathInterface
+from brown.core.flowable_object import FlowableObject
 
 
-
-class Staff:
+class Staff(FlowableObject):
     """A staff capable of holding `StaffObject`s"""
 
-    def __init__(self, pos, length, staff_unit=None, line_count=5):
+    def __init__(self, pos, width, frame, staff_unit=None, line_count=5):
         """
         Args:
             pos (Point): The position of the top-left corner of the staff
-            length (Unit): The horizontal length of the staff
+            width (Unit): The horizontal width of the staff
             staff_unit (Unit): The distance between two lines in the staff.
                 If not set, this will default to config.DEFAULT_STAFF_UNIT
             line_count (int): The number of lines in the staff.
         """
-        self._pos = Point(pos)
-        self._x = self._pos.x
-        self._y = self._pos.x
+        super().__init__(pos, width, frame)
         self._line_count = line_count
-        self._length = length
+        self._width = width
         if staff_unit:
             self.staff_unit = staff_unit
         else:
             self.staff_unit = config.DEFAULT_STAFF_UNIT
         self._contents = []
-        self._grob = Path(self.pos)
-        # Draw the staff lines
-        for i in range(self.line_count):
-            self.grob.move_to((GraphicUnit(0), self.staff_unit * i))
-            self.grob.line_to((self.length, self.staff_unit * i))
 
     ######## PUBLIC PROPERTIES ########
-
-    @property
-    def grob(self):
-        """The core graphical object representation of the staff.
-
-        This property is read-only.
-        """
-        return self._grob
-
-    @property
-    def pos(self):
-        """Point: The position of the staff.
-
-        This property is read-only. TODO: Low priority: implement setter?
-        """
-        return self._pos
-
-    @property
-    def x(self):
-        """GraphicUnit: x coordinate of the left side of the staff.
-
-        This property is read-only. TODO: Low priority: implement setter?
-        """
-        return self.pos.x
-
-    @property
-    def y(self):
-        """GraphicUnit: y coordinate of the left side of the staff.
-
-        This property is read-only. TODO: Low priority: implement setter?
-        """
-        return self.pos.x
-
-    @property
-    def length(self):
-        """GraphicUnit: length coordinate of the left side of the staff.
-
-        This property is read-only. TODO: Low priority: implement setter?
-        """
-        return self._length
 
     @property
     def height(self):
@@ -164,14 +117,99 @@ class Staff:
         else:
             return clef._natural_midi_number_at_top_staff_line
 
-    def render(self):
-        """Render the staff.
+    ######## PRIVATE METHODS ########
+
+    def _draw_staff_span(self, start, length):
+        """Draw a section of the staff in the given path.
+
+        This is a helper method for the rendering methods.
+
+        Args:
+            start (Point): The starting doc-space point for drawing.
+            stop (Point): The stopping doc-space point for drawing.
+
+        Returns: None"""
+        path = PathInterface(start, '#ff0000', self.brush, self.parent)
+        for i in range(self.line_count):
+            y_offset = self.staff_unit * i
+            path.move_to((GraphicUnit(0), y_offset))
+            path.line_to((length, y_offset))
+        path.render()
+        self._interfaces.append(path)
+
+    def _render_complete(self):
+        """Render the entire object.
+
+        For use in flowable containers when rendering a FlowableObject
+        which happens to completely fit within a span of the FlowableFrame.
+        This function should render the entire object at `self.pos`
 
         Returns: None
-        """
-        self.grob.render()
 
-    ######## PRIVATE METHODS ########
+        Note: FlowableObject subclasses should implement this
+              for correct rendering.
+        """
+        # Draw the staff lines
+        print('rendering complete')
+        self._draw_staff_span(self.pos, self.width)
+
+    def _render_before_break(self, start, stop):
+        """Render the beginning of the object up to a stopping point.
+
+        For use in flowable containers when rendering an object that
+        crosses a line or page break. This function should render the
+        beginning portion of the object up to the break.
+
+        Args:
+            start (Point): The starting doc-space point for drawing.
+            stop (Point): The stopping doc-space point for drawing.
+
+        Returns: None
+
+        Note: FlowableObject subclasses should implement this
+              for correct rendering.
+        """
+        delta = stop - start
+        self._draw_staff_span(start, delta.x)
+
+    def _render_after_break(self, start, stop):
+        """Render the continuation of an object after a break.
+
+        For use in flowable containers when rendering an object that
+        crosses a line or page break. This function should render the
+        ending portion of an object after a break.
+
+        Args:
+            start (Point): The starting doc-space point for drawing.
+            stop (Point): The stopping doc-space point for drawing.
+
+        Returns: None
+
+        Note: FlowableObject subclasses should implement this
+              for correct rendering.
+        """
+        delta = stop - start
+        self._draw_staff_span(start, delta.x)
+
+    def _render_spanning_continuation(self, start, stop):
+        """
+        Render the continuation of an object after a break and before another.
+
+        For use in flowable containers when rendering an object that
+        crosses two breaks. This function should render the
+        portion of the object surrounded by breaks on either side.
+
+        Args:
+            start (Point): The starting doc-space point for drawing.
+            stop (Point): The stopping doc-space point for drawing.
+
+        Returns: None
+
+        Note: FlowableObject subclasses should implement this
+              for correct rendering.
+        """
+        delta = stop - start
+        self._draw_staff_span(start, delta.x)
 
     def _staff_pos_to_top_down(self, centered_value):
         """Convert a staff position to its top-down equivalent.
