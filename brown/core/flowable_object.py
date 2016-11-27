@@ -1,6 +1,12 @@
 from brown.core.graphic_object import GraphicObject
 from brown.utils.point import Point
 from brown.utils.units import GraphicUnit
+from brown.core.flowable_frame import FlowableFrame
+
+
+class NoAncestorFlowableFrameError(Exception):
+    """Raised when no frame is found in the parentage sequence of a FlowableObject"""
+    pass
 
 
 class FlowableObject(GraphicObject):
@@ -16,7 +22,7 @@ class FlowableObject(GraphicObject):
     `self.render()` instead of the private render helper methods.
     """
 
-    def __init__(self, pos, breakable_width, frame, pen=None, brush=None, parent=None):
+    def __init__(self, pos, breakable_width, parent, pen=None, brush=None):
         """
         Args:
             pos (Point[Unit] or tuple): The position of the object
@@ -30,9 +36,12 @@ class FlowableObject(GraphicObject):
         """
         self._interface_list = []
         self._breakable_width = breakable_width
-        self._frame = frame
-        # TODO: Ensure that parent and ancestors all share the same `frame`
+        # TODO: Unify constructor signature argument order across codebase
         super().__init__(pos, pen, brush, parent)
+
+    # TODO: Combine frame and parent more seamlessly.
+    #       Earlier implementation of StaffObject parent/staff
+    #       is a good model for this.
 
     ######## PUBLIC PROPERTIES ########
 
@@ -107,12 +116,17 @@ class FlowableObject(GraphicObject):
 
     @property
     def frame(self):
-        """FlowableFrame: The frame this object belongs in."""
-        return self._frame
+        """FlowableFrame: The frame this object belongs in.
 
-    @frame.setter
-    def frame(self, value):
-        self._frame = value
+        This property is read-only
+        """
+        try:
+            ancestor = self.parent
+            while not isinstance(ancestor, FlowableFrame):
+                ancestor = ancestor.parent
+            return ancestor
+        except AttributeError:
+            raise NoAncestorFlowableFrameError
 
     @property
     def breakable_width(self):
