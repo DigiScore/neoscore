@@ -11,15 +11,17 @@ class FlowableObject(GraphicObject):
     render-time. For instance a long line may be cut across line/page breaks
     in the frame.
 
-    TODO: Elaborate more
+    To make a concrete FlowableObject class which doesn't break across lines
+    (e.g. atomic glyphs), set `self.breakable_width = 0` and override
+    `self.render()` instead of the private render helper methods.
     """
 
-    def __init__(self, pos, width, frame, pen=None, brush=None, parent=None):
+    def __init__(self, pos, breakable_width, frame, pen=None, brush=None, parent=None):
         """
         Args:
             pos (Point[Unit] or tuple): The position of the object
                 relative to its parent
-            width (Unit): The drawable width of this object.
+            breakable_width (Unit): The drawable breakable_width of this object.
             frame (FlowableFrame): The FlowableFrame this object belongs in.
             pen (Pen): The pen to draw outlines with.
             brush (Brush): The brush to draw outlines with.
@@ -27,7 +29,7 @@ class FlowableObject(GraphicObject):
                 parents of `FlowableObject`s must all have the same `frame`
         """
         self._interface_list = []
-        self._width = width
+        self._breakable_width = breakable_width
         self._frame = frame
         # TODO: Ensure that parent and ancestors all share the same `frame`
         super().__init__(pos, pen, brush, parent)
@@ -113,15 +115,15 @@ class FlowableObject(GraphicObject):
         self._frame = value
 
     @property
-    def width(self):
-        """Unit: The width of the object.
+    def breakable_width(self):
+        """Unit: The breakable_width of the object.
 
         This is used to determine how and where rendering cuts should be made.
         """
-        return self._width
+        return self._breakable_width
 
-    @width.setter
-    def width(self, value):
+    @breakable_width.setter
+    def breakable_width(self, value):
         # TODO: Maybe implement me?
         raise NotImplementedError
 
@@ -153,7 +155,7 @@ class FlowableObject(GraphicObject):
 
         Returns: None
         """
-        remaining_x = self.width
+        remaining_x = self.breakable_width
         print(remaining_x)
         remaining_x += self.frame._x_pos_rel_to_line_end(self.x)
         if remaining_x < 0:
@@ -165,7 +167,7 @@ class FlowableObject(GraphicObject):
         render_start_pos = self.frame._local_space_to_doc_space(self.pos)
         render_end_pos = render_start_pos + Point(-1 * self.frame._x_pos_rel_to_line_end(self.x), 0)
         self._render_before_break(render_start_pos, render_end_pos)
-        # Iterate through remaining width
+        # Iterate through remaining breakable_width
         for current_line_i in range(first_line_i + 1, len(self.frame.auto_layout_controllers)):
             current_line = self.frame.auto_layout_controllers[current_line_i]
             if remaining_x > current_line.length:

@@ -43,7 +43,6 @@ class TestStaff(unittest.TestCase):
         self.assertAlmostEqual(
             Staff((0, 0), 100, self.frame, staff_unit=1, line_count=4).height, 3)
 
-    @unittest.expectedFailure
     def test_active_clef_at_with_explicit_clefs(self):
         test_staff = Staff((0, 0), 100, self.frame)
         test_treble_clef = Clef(test_staff, 0,  'treble')
@@ -58,7 +57,6 @@ class TestStaff(unittest.TestCase):
         # No clef specified - should default to None (implicit treble)
         assert(test_staff.active_clef_at(5) is None)
 
-    @unittest.expectedFailure
     def test_middle_c_at_with_explicit_clefs(self):
         test_staff = Staff((0, 0), 100, self.frame)
         test_treble_clef = Clef(test_staff, 0,  'treble')
@@ -73,7 +71,6 @@ class TestStaff(unittest.TestCase):
         # No clef specified - should default to treble
         assert(test_staff.middle_c_at(5) == -6)
 
-    @unittest.expectedFailure
     def test_natural_midi_number_of_top_line_at_with_explicit_clefs(self):
         test_staff = Staff((0, 0), 100, self.frame)
         test_treble_clef = Clef(test_staff, 0,  'treble')

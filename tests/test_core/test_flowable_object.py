@@ -23,7 +23,7 @@ class TestFlowableObject(unittest.TestCase):
         self.assertEqual(test_object.pos, Point(Mm(1), Mm(2)))
         self.assertEqual(test_object.x, Mm(1))
         self.assertEqual(test_object.y, Mm(2))
-        self.assertEqual(test_object.width, Mm(50))
+        self.assertEqual(test_object.breakable_width, Mm(50))
         self.assertEqual(test_object.frame, self.frame)
 
     def test_document_pos(self):
