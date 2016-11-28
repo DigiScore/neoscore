@@ -24,7 +24,7 @@ class Path(GraphicObject):
         # changes to not-yet-existing interface
 
         self._interface = Path._interface_class((0, 0))
-        super().__init__(pos, pen, brush, parent)
+        super().__init__(pos, 0, pen, brush, parent)
         self._current_path_position = Point(0, 0)
         self.elements = []
 
@@ -249,3 +249,10 @@ class Path(GraphicObject):
                 self._interface.element_at(i), point.parent, self))
             self.elements[-1].pos = Point(point)
             self.elements[-1]._update_element_interface_pos()
+
+    def _render_complete(self):
+        """Render the entire object.
+
+        Returns: None
+        """
+        self._interface.render()

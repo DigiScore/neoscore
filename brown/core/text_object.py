@@ -53,3 +53,10 @@ class TextObject(GraphicObject):
         self._font = value
         if self._interface:
             self._interface.font = value._interface
+
+    def _render_complete(self):
+        """Render the entire object.
+
+        Returns: None
+        """
+        self._interface.render()

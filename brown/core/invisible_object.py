@@ -17,4 +17,11 @@ class InvisibleObject(GraphicObject):
         # so that attribute setters don't try to push
         # changes to not-yet-existing interface
         self._interface = InvisibleObject._interface_class((0, 0))
-        super().__init__(pos, None, None, parent)
+        super().__init__(pos, 0, None, None, parent)
+
+    def _render_complete(self):
+        """Render the entire object.
+
+        Returns: None
+        """
+        self._interface.render()
