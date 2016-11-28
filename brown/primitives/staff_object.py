@@ -1,4 +1,4 @@
-from brown.core.flowable_object import FlowableObject
+from brown.utils.units import GraphicUnit
 from brown.utils.units import Mm
 from brown.utils.point import Point
 
@@ -8,7 +8,7 @@ class NoAncestorStaffError(Exception):
     pass
 
 
-class StaffObject(FlowableObject):
+class StaffObject(GraphicUnit):
 
     """An object in a staff """
 
@@ -17,7 +17,9 @@ class StaffObject(FlowableObject):
         Args:
             TODO: Docs!
         """
-        super().__init__(pos, breakable_width, parent)
+        super().__init__(pos=pos,
+                         breakable_width=breakable_width,
+                         parent=parent)
         self._parent = parent
         self.root_staff._register_staff_object(self)
 

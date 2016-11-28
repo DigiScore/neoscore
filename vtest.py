@@ -17,7 +17,6 @@ from brown.primitives.notehead import Notehead
 from brown.primitives.chordrest import ChordRest
 from brown.primitives.ledger_line import LedgerLine
 from brown.core.flowable_frame import FlowableFrame
-from tests.test_core.mock_flowable_object import MockFlowableObject
 
 from brown.config import config
 

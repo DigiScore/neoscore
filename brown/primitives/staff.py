@@ -3,10 +3,10 @@ from brown.utils.point import Point
 from brown.config import config
 from brown.primitives.clef import Clef
 from brown.interface.path_interface import PathInterface
-from brown.core.flowable_object import FlowableObject
+from brown.core.graphic_object import GraphicObject
 
 
-class Staff(FlowableObject):
+class Staff(GraphicObject):
     """A staff capable of holding `StaffObject`s"""
 
     def __init__(self, pos, width, frame, staff_unit=None, line_count=5):
@@ -18,7 +18,8 @@ class Staff(FlowableObject):
                 If not set, this will default to config.DEFAULT_STAFF_UNIT
             line_count (int): The number of lines in the staff.
         """
-        super().__init__(pos, width, frame)
+        self._interface = PathInterface(pos)
+        super().__init__(pos, width, parent=frame)
         self._line_count = line_count
         self._width = width
         if staff_unit:
@@ -129,13 +130,10 @@ class Staff(FlowableObject):
             stop (Point): The stopping doc-space point for drawing.
 
         Returns: None"""
-        path = PathInterface(start, '#ff0000', self.brush, self.parent)
         for i in range(self.line_count):
             y_offset = self.staff_unit * i
-            path.move_to((GraphicUnit(0), y_offset))
-            path.line_to((length, y_offset))
-        path.render()
-        self._interfaces.append(path)
+            self._interface.move_to(Point(GraphicUnit(0), y_offset) + start)
+            self._interface.line_to(Point(length, y_offset) + start)
 
     def _render_complete(self):
         """Render the entire object.

@@ -185,6 +185,8 @@ class GraphicObject(ABC):
         else:
             self._render_complete()
 
+    ######## PRIVATE METHODS ########
+
     def _render_flowable(self):
         """Render the line to the scene, dispatching partial rendering calls
         when needed if an object flows across a break in the frame.
@@ -226,8 +228,6 @@ class GraphicObject(ABC):
         # TODO: May change the way this is handled to letting helper functions
         #       do the interface render()
         self._interface.render()
-
-    ######## PRIVATE METHODS ########
 
     def _render_complete(self):
         """Render the entire object.
