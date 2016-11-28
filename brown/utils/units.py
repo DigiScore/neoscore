@@ -196,6 +196,145 @@ class Cm(Unit):
     pass
 
 
+class StaffUnit(Unit):
+
+    _unit_name_plural = 'staff units'
+
+    def __init__(self, value, staff=None):
+        """
+        Args:
+            value (int, float, Unit): The value of the unit.
+                `int` and `float` literals will be stored directly
+                into `self.value`. Any value which is a unit subclass of
+                `Unit` will be converted to that value in this unit.
+            staff (Staff): The staff which this unit's real value
+                is in relation with.
+
+        May be initialized in 3 ways:
+            * StaffUnit(some_int_or_float, a_staff)
+            * StaffUnit(some_unit_value, a_staff)
+            * StaffUnit(some_existing_staff_unit, a_new_staff)
+            * StaffUnit(some_existing_staff_unit)
+        """
+        if not staff:
+            if isinstance(value, type(self)):
+                self.value = value.value
+                self.staff = value.staff
+                return
+            else:
+                raise TypeError
+        self.staff = staff
+        if isinstance(value, (int, float)):
+            self.value = value
+        elif isinstance(value, Unit):
+            if isinstance(value, type(self)):
+                # v1 r1 == v2 r2
+                # v2 == (v1 r1) / r2
+                if value.staff == self.staff:
+                    self.value = value.value
+                else:
+                    self.value = ((value.value * value._staff_unit_size) /
+                                  self._staff_unit_size).value
+            else:
+                self.value = (value / self._staff_unit_size).value
+        else:
+            raise TypeError
+
+    ######## PRIVATE PROPERTIES ########
+
+    @property
+    def _staff_unit_size(self):
+        return self.staff.staff_unit
+
+    @property
+    def _base_units_per_self_unit(self):
+        """float: The base unit rate depending on the staff's unit size"""
+        return Unit(self._staff_unit_size).value
+
+    ######## SPECIAL METHODS ########
+
+    def __str__(self):
+        return '{} {}'.format(self.value, self._unit_name_plural)
+
+    def __repr__(self):
+        return '{}({}, {})'.format(type(self).__name__, self.value, self.staff)
+
+    # Comparisons -------------------------------------------------------------
+
+    def __lt__(self, other):
+        return self.value < self.__class__(other, self.staff).value
+
+    def __le__(self, other):
+        return self.value <= self.__class__(other, self.staff).value
+
+    def __eq__(self, other):
+        return self.value == self.__class__(other, self.staff).value
+
+    def __ne__(self, other):
+        return self.value != self.__class__(other, self.staff).value
+
+    def __gt__(self, other):
+        return self.value > self.__class__(other, self.staff).value
+
+    def __ge__(self, other):
+        return self.value >= self.__class__(other, self.staff).value
+
+    # Operators ---------------------------------------------------------------
+
+    def __add__(self, other):
+        return self.__class__(self.value + self.__class__(other, self.staff).value, self.staff)
+
+    def __sub__(self, other):
+        return self.__class__(self.value - self.__class__(other, self.staff).value, self.staff)
+
+    def __mul__(self, other):
+        return self.__class__(self.value * self.__class__(other, self.staff).value, self.staff)
+
+    def __truediv__(self, other):
+        return self.__class__(self.value / self.__class__(other, self.staff).value, self.staff)
+
+    def __floordiv__(self, other):
+        return self.__class__(self.value // self.__class__(other, self.staff).value, self.staff)
+
+    def __pow__(self, other, modulo=None):
+        if modulo is None:
+            return self.__class__(self.value ** self.__class__(other, self.staff).value, self.staff)
+        else:
+            # TODO: Priority low: fix this
+            return self.__class__(
+                pow(self.value, self.__class__(other, self.staff).value, modulo), self.staff)
+
+    def __neg__(self):
+        return self.__class__(-self.value, self.staff)
+
+    def __pos__(self):
+        return self.__class__(+self.value, self.staff)
+
+    def __abs__(self):
+        return self.__class__(abs(self.value), self.staff)
+
+    def __int__(self):
+        return int(self.value)
+
+    def __float__(self):
+        return float(self.value)
+
+    def __round__(self, ndigits=None):
+        return self.__class__(round(self.value, ndigits), self.staff)
+
+    # Reverse Operators -------------------------------------------------------
+
+    def __rmul__(self, other):
+        return self.__class__(other * self.value, self.staff)
+
+    def __rtruediv__(self, other):
+        return self.__class__(other / self.value, self.staff)
+
+    def __rfloordiv__(self, other):
+        return self.__class__(other // self.value, self.staff)
+
+
+
 def _call_on_immutable(iterable, unit):
     """Recursively convert all numbers in an immutable iterable.
 
