@@ -27,7 +27,7 @@ class Notehead(StaffObject):
             pitch (Pitch):
         """
         super().__init__(parent, position_x)
-        self.grob_width = 1.25 * self.root_staff.staff_unit  # TODO: Temporary testing
+        self.grob_width = 1.25 * self.staff.staff_unit  # TODO: Temporary testing
         self.pitch = pitch
         self._grob = Glyph(
             (self.position_x, self.position_y),
@@ -70,7 +70,7 @@ class Notehead(StaffObject):
             pos_x_from_staff = self.position_x + self.parent.position_x
         # HACK: There should be a general way to calculate relative positions
         #       between objects
-        return (self.root_staff.middle_c_at(pos_x_from_staff) +
+        return (self.staff.middle_c_at(pos_x_from_staff) +
                 self.pitch.staff_position_relative_to_middle_c)
 
     @property
@@ -81,7 +81,7 @@ class Notehead(StaffObject):
         Positive values extend *downward* below the top staff line
         while negative values extend *upward* above the top staff line.
         """
-        return self.root_staff._staff_pos_to_rel_pixels(self.staff_position)
+        return self.staff._staff_pos_to_rel_pixels(self.staff_position)
 
     @property
     def accidental(self):

@@ -253,6 +253,9 @@ class Staff(GraphicObject):
         return ((self.staff_unit / 2) *
                 self._staff_pos_to_top_down(staff_position))
 
+    # TODO: Implement more functions breaking apart the translation of staff
+    #       space to flowable space.
+
     def _position_inside_staff(self, position):
         """bool: Determine if a position is inside the staff.
 

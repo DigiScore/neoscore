@@ -76,8 +76,8 @@ class ChordRest(StaffObject):
         highest = self.highest_notehead.staff_position
         lowest = self.lowest_notehead.staff_position
         # Join sets of needed ledgers above and below with union operator
-        return (self.root_staff._ledgers_needed_from_position(lowest) |
-                self.root_staff._ledgers_needed_from_position(highest))
+        return (self.staff._ledgers_needed_from_position(lowest) |
+                self.staff._ledgers_needed_from_position(highest))
 
     @property
     def furthest_notehead(self):
@@ -137,7 +137,7 @@ class ChordRest(StaffObject):
     def noteheads_outside_staff(self):
         """list[Notehead]: A list of all noteheads which are above or below the staff"""
         return [note for note in self.noteheads
-                if self.root_staff._position_outside_staff(note.staff_position)]
+                if self.staff._position_outside_staff(note.staff_position)]
 
     @property
     def leftmost_notehead_outside_staff(self):
@@ -208,8 +208,8 @@ class ChordRest(StaffObject):
         Warning: This overwrites the contents of `self.ledgers`
         """
         # Calculate x position and length of ledger lines
-        x_position = self.leftmost_notehead.position_x - (0.3 * self.root_staff.staff_unit)
-        length = self.notehead_column_outside_staff_width + (0.6 * self.root_staff.staff_unit)
+        x_position = self.leftmost_notehead.position_x - (0.3 * self.staff.staff_unit)
+        length = self.notehead_column_outside_staff_width + (0.6 * self.staff.staff_unit)
         self.ledgers = []
         for staff_pos in self.ledger_line_positions:
             self.ledgers.append(

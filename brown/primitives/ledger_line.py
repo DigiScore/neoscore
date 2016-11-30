@@ -21,10 +21,10 @@ class LedgerLine(StaffObject):
         super().__init__(chordrest, position_x)
         self._staff_position = staff_position
         # HACK --- length should be handled more elegantly later
-        self._length = length if length else 1.75 * self.root_staff.staff_unit
+        self._length = length if length else 1.75 * self.staff.staff_unit
         self._grob = Path.straight_line(
             (self.position_x,
-             self.root_staff._staff_pos_to_rel_pixels(self.staff_position)),
+             self.staff._staff_pos_to_rel_pixels(self.staff_position)),
             (self.length,
              0),
             parent=self.parent.grob

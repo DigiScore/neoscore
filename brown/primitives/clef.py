@@ -82,7 +82,7 @@ class Clef(StaffObject):
         while negative values extend *upward* above the top staff line.
         """
         # Take staff_position and convert to pixels
-        return self.root_staff._staff_pos_to_rel_pixels(
+        return self.staff._staff_pos_to_rel_pixels(
             self.staff_position)
 
     @property
