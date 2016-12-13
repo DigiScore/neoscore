@@ -54,8 +54,11 @@ class TextObject(GraphicObject):
         if self._interface:
             self._interface.font = value._interface
 
-    def _render_complete(self):
+    def _render_complete(self, pos):
         """Render the entire object.
+
+        Args:
+            pos (Point): The rendering position in document space for drawing.
 
         Returns: None
         """

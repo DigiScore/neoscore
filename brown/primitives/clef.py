@@ -1,26 +1,23 @@
-from brown.config import config
-from brown.core.font import Font
-from brown.core.glyph import Glyph
-from brown.primitives.staff_object import StaffObject
-from brown.models.pitch import Pitch
+from brown.core.music_glyph import MusicGlyph
+from brown.utils.units import StaffUnit
 from brown.core import brown
 
 
-class Clef(StaffObject):
+class Clef(MusicGlyph):
 
     _baseline_staff_positions = {
-        'treble': -2,    # Treble clef baseline is middle of the G curl
+        'treble': 6,    # Treble clef baseline is middle of the G curl
         'bass': 2,      # Bass clef baseline is between the two dots
         '8vb bass': 2,  # 8vb Bass clef baseline same as regular bass clef
         'tenor': 2,     # C clef baseline is in the middle of the glyph
-        'alto': 0,
-    }
-    _smufl_codepoints = {
-        'treble': '\uE050',
-        'bass': '\uE062',
-        '8vb bass': '\uE064',
-        'tenor': '\uE05C',
-        'alto': '\uE05C',
+        'alto': 4,
+    }  # (Later when SMuFL impl is better this may not be needed)
+    _canonical_names = {
+        'treble': 'gClef',
+        'bass': 'fClef',
+        '8vb bass': 'fClef8vb',
+        'tenor': 'cClef',
+        'alto': 'cClef',
     }
     _middle_c_staff_positions = {
         'treble': -6,
@@ -37,21 +34,20 @@ class Clef(StaffObject):
         'alto': 67
     }
 
-    def __init__(self, parent, position_x, clef_type):
+    def __init__(self, staff, position_x, clef_type):
         """
         Args:
-            parent (Staff or StaffObject):
+            staff (Staff):
             position_x (float):
             pitch (Pitch):
         """
-        super().__init__(parent, position_x)
+        staff_pos_y = self._baseline_staff_positions[clef_type]  # currently wrong
+        super().__init__((position_x, StaffUnit(staff_pos_y, staff)),
+                         self._canonical_names[clef_type],
+                         brown.music_font,
+                         staff)
         self._clef_type = clef_type
-        self._grob = Glyph(
-            (self.position_x, self.position_y),
-            Clef._smufl_codepoints[self.clef_type],
-            brown.music_font,
-            self.parent.grob)
-        self.grob.position_y_baseline(self.position_y)
+        #self.position_y_baseline(staff_pos_y)
 
     ######## PUBLIC PROPERTIES ########
 
@@ -71,19 +67,8 @@ class Clef(StaffObject):
         Positive values extend *downward* below the top staff line
         while negative values extend *upward* above the top staff line.
         """
+        # TODO: Rework this
         return Clef._baseline_staff_positions[self.clef_type]
-
-    @property
-    def position_y(self):
-        """float: The y position in pixels below top of the staff.
-
-        0 means exactly at the top staff line.
-        Positive values extend *downward* below the top staff line
-        while negative values extend *upward* above the top staff line.
-        """
-        # Take staff_position and convert to pixels
-        return self.staff._staff_pos_to_rel_pixels(
-            self.staff_position)
 
     @property
     def middle_c_staff_position(self):
@@ -102,8 +87,3 @@ class Clef(StaffObject):
     def _natural_midi_number_at_top_staff_line(self):
         """int: The natural midi number of the top staff line for this clef."""
         return Clef._natural_midi_numbers_at_top_staff_line[self.clef_type]
-
-    ######## PUBLIC METHODS ########
-
-    def render(self):
-        self.grob.render()

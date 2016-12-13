@@ -21,7 +21,7 @@ class GraphicObject(ABC):
           Right now it's pretty patchy -- _interface isn't even documented
           at all...
     """
-    def __init__(self, pos, breakable_width=0,
+    def __init__(self, pos, breakable_width=Unit(0),
                  pen=None, brush=None, parent=None):
         """
         Args:
@@ -183,7 +183,7 @@ class GraphicObject(ABC):
         if self.is_in_flowable:
             self._render_flowable()
         else:
-            self._render_complete()
+            self._render_complete(self.pos)
 
     ######## PRIVATE METHODS ########
 
@@ -194,10 +194,9 @@ class GraphicObject(ABC):
         Returns: None
         """
         remaining_x = self.breakable_width
-        print(remaining_x)
         remaining_x += self.frame._x_pos_rel_to_line_end(self.x)
         if remaining_x < 0:
-            self._render_complete()
+            self._render_complete(self.frame._local_space_to_doc_space(self.pos))
             return
         first_line_i = self.frame._last_break_index_at(self.x)
         # Render before break
@@ -229,12 +228,15 @@ class GraphicObject(ABC):
         #       do the interface render()
         self._interface.render()
 
-    def _render_complete(self):
+    def _render_complete(self, pos):
         """Render the entire object.
 
         For use in flowable containers when rendering a FlowableObject
         which happens to completely fit within a span of the FlowableFrame.
         This function should render the entire object at `self.pos`
+
+        Args:
+            pos (Point): The rendering position in document space for drawing.
 
         Returns: None
 
