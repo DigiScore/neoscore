@@ -1,6 +1,6 @@
 from brown.utils.units import Unit
 from brown.utils.point import Point
-from brown.utils.math_helpers import linear_interp
+from brown.utils.math_helpers import linear_interp, clamp_value
 
 
 def test_linear_interp():
@@ -19,3 +19,11 @@ def test_linear_interp_with_units_preserves_units():
         (Unit(2), Unit(1)),
         Unit(3)
         ) == Unit(1.5))
+
+
+def test_clamp_value():
+    assert(clamp_value(-50, 3, 5) == 3)
+    assert(clamp_value(3, 3, 5) == 3)
+    assert(clamp_value(4, 3, 5) == 4)
+    assert(clamp_value(5, 3, 5) == 5)
+    assert(clamp_value(50, 3, 5) == 5)
