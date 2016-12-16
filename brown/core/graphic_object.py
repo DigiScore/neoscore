@@ -140,7 +140,7 @@ class GraphicObject(ABC):
     def document_pos(self):
         """Point: The position of the object in document space."""
         if self.is_in_flowable:
-            return self.frame._local_space_to_doc_space(self.pos)
+            return self.frame._map_to_doc(self.pos)
         else:
             raise NotImplementedError  # TODO
 
@@ -159,7 +159,7 @@ class GraphicObject(ABC):
             if type(current).__name__ == 'FlowableFrame':
                 # If it turns out we are inside a flowable frame,
                 # just short circuit and ask it where we are
-                return current._local_space_to_doc_space(self.pos)
+                return current._map_to_doc(self.pos)
         return pos * -1
 
     def pos_relative_to_item(self, other):
@@ -194,23 +194,23 @@ class GraphicObject(ABC):
         """
         # TODO: Clean up!
         remaining_x = self.breakable_width
-        remaining_x += self.frame._x_pos_rel_to_line_end(self.x)
+        remaining_x += self.frame._dist_to_line_end(self.x)
         if remaining_x < 0:
-            self._render_complete(self.frame._local_space_to_doc_space(self.pos))
+            self._render_complete(self.frame._map_to_doc(self.pos))
             return
         first_line_i = self.frame._last_break_index_at(self.x)
         # Render before break
-        current_line = self.frame.auto_layout_controllers[first_line_i]
-        render_start_pos = self.frame._local_space_to_doc_space(self.pos)
-        render_end_pos = render_start_pos + Point(-1 * self.frame._x_pos_rel_to_line_end(self.x), 0)
+        current_line = self.frame.layout_controllers[first_line_i]
+        render_start_pos = self.frame._map_to_doc(self.pos)
+        render_end_pos = render_start_pos + Point(-1 * self.frame._dist_to_line_end(self.x), 0)
         self._render_before_break(render_start_pos, render_end_pos)
         # Iterate through remaining breakable_width
-        for current_line_i in range(first_line_i + 1, len(self.frame.auto_layout_controllers)):
-            current_line = self.frame.auto_layout_controllers[current_line_i]
+        for current_line_i in range(first_line_i + 1, len(self.frame.layout_controllers)):
+            current_line = self.frame.layout_controllers[current_line_i]
             if remaining_x > current_line.length:
                 remaining_x -= current_line.length
                 # Render spanning continuation
-                render_start_pos = self.frame._local_space_to_doc_space(
+                render_start_pos = self.frame._map_to_doc(
                     Point(current_line.x, self.y))
                 render_end_pos = render_start_pos + Point(current_line.length, 0)
                 self._render_spanning_continuation(render_start_pos,
@@ -218,7 +218,7 @@ class GraphicObject(ABC):
             else:
                 break
         # Render end
-        render_start_pos = self.frame._local_space_to_doc_space(
+        render_start_pos = self.frame._map_to_doc(
                     Point(current_line.x, self.y))
         render_end_pos = render_start_pos + Point(remaining_x, 0)
         self._render_after_break(render_start_pos,

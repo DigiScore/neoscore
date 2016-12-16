@@ -47,7 +47,7 @@ text.render()
 # Test hacky use of flowable coordinate space
 flow = FlowableFrame((Mm(0), Mm(0)), Mm(35000), Mm(20), Mm(20))
 for i in range(1000):
-    x, y = flow._local_space_to_doc_space((Mm(i * 2), Mm(random.randint(0, 20))))
+    x, y = flow._map_to_doc((Mm(i * 2), Mm(random.randint(0, 20))))
     glyph = Glyph((x, y), '\uE118', brown.music_font)
     glyph.render()
 

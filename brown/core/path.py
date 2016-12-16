@@ -23,7 +23,7 @@ class Path(GraphicObject):
         super().__init__(pos, 0, pen, brush, parent)
         self._current_path_position = Point(0, 0)
         self.elements = []
-        self._interface = None
+        self._interface = []
 
     ######## CLASSMETHODS ########
 
@@ -226,11 +226,20 @@ class Path(GraphicObject):
                                          PathElementType.curve_to,
                                          self, point.parent))
 
-    def _render_complete(self, pos):
-        """Render the entire object.
+    def _render_slice(self, doc_pos, start_x, length):
+        """Render a horizontal slice of a path.
+
+        Args:
+            doc_pos (Point): The doc-space position of the slice beginning
+                (at the top-left corner of the slice)
+            start_x (Unit): The starting x position in the path of the slice
+            length (Unit): The horizontal length of the slice to be rendered
 
         Returns: None
         """
+        pass
+
+    def _render_complete(self, pos):
         self._interface = PathInterface(pos, self.pen,  # use input pos?
                                         self.brush, self.parent)
         # Position calculations will probably have to be made in reference

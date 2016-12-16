@@ -29,8 +29,8 @@ class FlowableFrame(InvisibleObject):
         self._width = width
         self._height = height
         self._y_padding = y_padding if y_padding else Mm(5)
-        self._auto_layout_controllers = []
-        self._generate_auto_layout_controllers()
+        self._layout_controllers = []
+        self._generate_layout_controllers()
 
     ######## PUBLIC PROPERTIES ########
 
@@ -90,35 +90,27 @@ class FlowableFrame(InvisibleObject):
 
     @property
     def layout_controllers(self):
-        """list[LayoutController]: Explicit controllers for layout
-
-        Layout support for explicit controllers not yet supported.
-        """
+        """list[LayoutController]: Controllers affecting flowable layout"""
         return self._layout_controllers
 
     @layout_controllers.setter
     def layout_controllers(self, value):
         self._layout_controllers = value
 
-    @property
-    def auto_layout_controllers(self):
-        """list[LayoutController]: Auto-generated controllers for layout"""
-        return self._auto_layout_controllers
-
     ######## PRIVATE METHODS ########
 
-    def _generate_auto_layout_controllers(self):
+    def _generate_layout_controllers(self):
         """Generate automatic layout controllers.
 
-        The generated controllers are stored in `self.auto_layout_controllers`
+        The generated controllers are stored in `self.layout_controllers`
         in sorted order according to ascending x position
 
         Warning:
-            This overwrites the contents of self.auto_layout_controllers
+            This overwrites the contents of self.layout_controllers
 
         Returns: None
         """
-        self._auto_layout_controllers = []
+        self._layout_controllers = []
         live_page_width = brown.document.paper.live_width
         live_page_height = brown.document.paper.live_height
         # The progress the layout generation has reached along the frame's width.
@@ -129,7 +121,7 @@ class FlowableFrame(InvisibleObject):
         pos_on_page = Point(self.pos)
         page_number = 1
         # Attach initial starting NewLine
-        self.auto_layout_controllers.append(
+        self.layout_controllers.append(
             AutoNewPage(self, x_progress, page_number, pos_on_page))
         while True:
             delta_x = live_page_width - pos_on_page.x
@@ -141,14 +133,14 @@ class FlowableFrame(InvisibleObject):
                 pos_on_page.x = Mm(0)
                 pos_on_page.y = Mm(0)
                 page_number += 1
-                self.auto_layout_controllers.append(
+                self.layout_controllers.append(
                     AutoNewPage(self, x_progress, page_number, pos_on_page))
             else:
                 pos_on_page.x = Mm(0)
-                self.auto_layout_controllers.append(
+                self.layout_controllers.append(
                     AutoNewLine(self, x_progress, page_number, pos_on_page, self.y_padding))
 
-    def _local_space_to_doc_space(self, point):
+    def _map_to_doc(self, point):
         """Convert a position inside the frame to its position in the document.
 
         Coordinates relative to the top left corner of the first page.
@@ -181,7 +173,7 @@ class FlowableFrame(InvisibleObject):
         line_start = self._last_break_at(x)
         return x - line_start.x
 
-    def _x_pos_rel_to_line_end(self, x):
+    def _dist_to_line_end(self, x):
         """Find the distance of an x-pos to the right edge of its laid-out line.
 
         Args:
@@ -202,7 +194,7 @@ class FlowableFrame(InvisibleObject):
         Returns:
             NewLine:
         """
-        return self.auto_layout_controllers[self._last_break_index_at(x)]
+        return self.layout_controllers[self._last_break_index_at(x)]
 
     def _last_break_index_at(self, x):
         """
@@ -215,7 +207,7 @@ class FlowableFrame(InvisibleObject):
             int
         """
         remaining_x = x
-        for i, controller in enumerate(self.auto_layout_controllers):
+        for i, controller in enumerate(self.layout_controllers):
             remaining_x -= controller.length
             if remaining_x < 0:
                 return i
