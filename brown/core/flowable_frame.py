@@ -1,7 +1,7 @@
 from brown.utils.point import Point
 from brown.core import brown
-from brown.utils.units import Mm, Unit
-from brown.core.layout_controller import LayoutController
+from brown.core.invisible_object import InvisibleObject
+from brown.utils.units import Mm
 from brown.core.auto_new_line import AutoNewLine
 from brown.core.auto_new_page import AutoNewPage
 
@@ -11,7 +11,7 @@ class OutOfBoundsError(Exception):
     pass
 
 
-class FlowableFrame:
+class FlowableFrame(InvisibleObject):
 
     def __init__(self, pos, width, height, y_padding=None):
         """
@@ -22,7 +22,10 @@ class FlowableFrame:
             height (GraphicUnit): height of the frame
             y_padding (GraphicUnit): The min gap between frame sections
         """
-        self._pos = Point(pos)
+        # NOTE: Position might be off, as different classes may or may not
+        #       be expecting `pos` to be relative to the live doc root,
+        #       not the true scene origin (0, 0) -- is there a difference?
+        super().__init__(pos)
         self._width = width
         self._height = height
         self._y_padding = y_padding if y_padding else Mm(5)
@@ -39,7 +42,6 @@ class FlowableFrame:
     @pos.setter
     def pos(self, value):
         self._pos = value
-        self._generate_auto_layout_controllers()
 
     @property
     def x(self):
@@ -49,7 +51,6 @@ class FlowableFrame:
     @x.setter
     def x(self, value):
         self.pos.x = value
-        self._generate_auto_layout_controllers()
 
     @property
     def y(self):
@@ -59,7 +60,6 @@ class FlowableFrame:
     @y.setter
     def y(self, value):
         self.pos.y = value
-        self._generate_auto_layout_controllers()
 
     @property
     def width(self):
@@ -69,7 +69,6 @@ class FlowableFrame:
     @width.setter
     def width(self, value):
         self._width = value
-        self._generate_auto_layout_controllers()
 
     @property
     def height(self):
@@ -79,7 +78,6 @@ class FlowableFrame:
     @height.setter
     def height(self, value):
         self._height = value
-        self._generate_auto_layout_controllers()
 
     @property
     def y_padding(self):
@@ -89,7 +87,6 @@ class FlowableFrame:
     @y_padding.setter
     def y_padding(self, value):
         self._y_padding = value
-        self._generate_auto_layout_controllers()
 
     @property
     def layout_controllers(self):
@@ -102,7 +99,6 @@ class FlowableFrame:
     @layout_controllers.setter
     def layout_controllers(self, value):
         self._layout_controllers = value
-        self._generate_auto_layout_controllers()
 
     @property
     def auto_layout_controllers(self):

@@ -1,5 +1,3 @@
-from PyQt5 import QtGui
-
 from abc import ABC
 
 from brown.config import config

@@ -8,7 +8,7 @@ from brown.core.font import Font
 from brown.core.glyph import Glyph
 from brown.utils.anchored_point import AnchoredPoint
 from brown.utils.point import Point
-from brown.utils.units import Unit, Mm
+from brown.utils.units import Unit
 
 
 class TestAnchoredPoint(unittest.TestCase):
@@ -159,3 +159,9 @@ class TestAnchoredPoint(unittest.TestCase):
             p2 - p3
         with assert_raises(TypeError):
             p2 - 5
+
+    def test__mult__(self):
+        p1 = AnchoredPoint(1, 2)
+        assert(p1 * -1) == AnchoredPoint(-1, -2)
+        p2 = AnchoredPoint(Unit(2), Unit(3))
+        assert(p2 * Unit(-1) == AnchoredPoint(Unit(-2), Unit(-3)))

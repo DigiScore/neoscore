@@ -1,7 +1,5 @@
 from abc import ABC
 
-from brown.config import config
-from brown.core.flowable_frame import FlowableFrame
 from brown.utils.units import Unit, GraphicUnit
 from brown.utils.point import Point
 
@@ -60,8 +58,6 @@ class GraphicObject(ABC):
     @pos.setter
     def pos(self, value):
         self._pos = Point.with_unit(value, unit=GraphicUnit)
-        if self._interface:
-            self._interface.pos = self._pos
 
     @property
     def x(self):
@@ -71,8 +67,6 @@ class GraphicObject(ABC):
     @x.setter
     def x(self, value):
         self.pos.x = value
-        if self._interface:
-            self._interface.x = value
 
     @property
     def y(self):
@@ -82,8 +76,6 @@ class GraphicObject(ABC):
     @y.setter
     def y(self, value):
         self.pos.y = value
-        if self._interface:
-            self._interface.y = value
 
     @property
     def breakable_width(self):
@@ -106,8 +98,6 @@ class GraphicObject(ABC):
     @pen.setter
     def pen(self, value):
         self._pen = value
-        if self._pen and self._interface:
-            self._interface.pen = self._pen._interface
 
     @property
     def brush(self):
@@ -117,8 +107,6 @@ class GraphicObject(ABC):
     @brush.setter
     def brush(self, value):
         self._brush = value
-        if self._brush and self._interface:
-            self._interface.brush = self._brush._interface
 
     @property
     def parent(self):
@@ -128,11 +116,6 @@ class GraphicObject(ABC):
     @parent.setter
     def parent(self, value):
         self._parent = value
-        if self._interface and (not self.is_in_flowable):
-            if value is not None:
-                self._interface.parent = value._interface
-            else:
-                self._interface.parent = None
 
     @property
     def frame(self):
@@ -142,7 +125,7 @@ class GraphicObject(ABC):
         """
         try:
             ancestor = self.parent
-            while not isinstance(ancestor, FlowableFrame):
+            while type(ancestor).__name__ != 'FlowableFrame':
                 ancestor = ancestor.parent
             return ancestor
         except AttributeError:
@@ -163,6 +146,22 @@ class GraphicObject(ABC):
 
     ######## PUBLIC METHODS ########
 
+    def pos_relative_to_origin(self):
+        """Find this object's position relative to the document origin.
+
+        Return: Point
+        """
+        pos = Point.with_unit((0, 0), unit=Unit)
+        current = self
+        while current is not None:
+            pos += current.pos
+            current = current.parent
+            if type(current).__name__ == 'FlowableFrame':
+                # If it turns out we are inside a flowable frame,
+                # just short circuit and ask it where we are
+                return current._local_space_to_doc_space(self.pos)
+        return pos * -1
+
     def pos_relative_to_item(self, other):
         """Find this object's position relative to another GraphicObject
 
@@ -171,9 +170,9 @@ class GraphicObject(ABC):
 
         Returns: Point
         """
-        if self.parent == other:
-            return self.pos
-        return self._interface.pos_relative_to_item(other._interface)
+        # inefficient for now - find position relative to doc root of both
+        # and find delta between the two.
+        return other.pos_relative_to_origin() - self.pos_relative_to_origin()
 
     def render(self):
         """Render the object to the scene.
@@ -193,6 +192,7 @@ class GraphicObject(ABC):
 
         Returns: None
         """
+        # TODO: Clean up!
         remaining_x = self.breakable_width
         remaining_x += self.frame._x_pos_rel_to_line_end(self.x)
         if remaining_x < 0:
@@ -223,10 +223,6 @@ class GraphicObject(ABC):
         render_end_pos = render_start_pos + Point(remaining_x, 0)
         self._render_after_break(render_start_pos,
                                  render_end_pos)
-        # Call render() on interface
-        # TODO: May change the way this is handled to letting helper functions
-        #       do the interface render()
-        self._interface.render()
 
     def _render_complete(self, pos):
         """Render the entire object.

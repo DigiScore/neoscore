@@ -1,4 +1,5 @@
 from brown.utils.point import Point
+from brown.utils.units import Unit
 
 
 class AnchoredPoint(Point):
@@ -84,11 +85,13 @@ class AnchoredPoint(Point):
 
         self._iter_index = 0
 
-
     ######## SPECIAL METHODS ########
 
     def __eq__(self, other):
-        """Two AnchoredPoints are equal if their attributes are all equal."""
+        """Two AnchoredPoints are equal if their attributes are all equal.
+
+        Return: Bool
+        """
         if isinstance(other, type(self)):
             return (self.x == other.x and
                     self.y == other.y and
@@ -97,8 +100,10 @@ class AnchoredPoint(Point):
             return False
 
     def __add__(self, other):
-        """`Point`s are added by adding their x and y values in a new `Point`"""
-        # TODO: Make this less ugly
+        """`AnchoredPoint`s may be added with each other if they share a parent
+
+        Returns: AnchoredPoint
+        """
         if not isinstance(other, type(self)):
             raise TypeError('Cannot add "{}" and "{}"'.format(
                 type(self).__name__, type(other).__name__))
@@ -108,8 +113,10 @@ class AnchoredPoint(Point):
         return type(self)(self.x + other.x, self.y + other.y, self.parent)
 
     def __sub__(self, other):
-        """`Point`s are subtracted by adding their x and y values in a new `Point`"""
-        # TODO: Make this less ugly
+        """`AnchoredPoint`s may be subtracted with each other if they share a parent
+
+        Returns: AnchoredPoint
+        """
         if not isinstance(other, type(self)):
             raise TypeError('Cannot subtract "{}" and "{}"'.format(
                 type(self).__name__, type(other).__name__))
@@ -117,6 +124,16 @@ class AnchoredPoint(Point):
             raise TypeError('Cannot subtract "{}"s with different parents'.format(
                 type(self).__name__))
         return type(self)(self.x - other.x, self.y - other.y, self.parent)
+
+    def __mul__(self, other):
+        """`AnchoredPoint`s may be multiplied with scalars.
+
+        Returns: AnchoredPoint
+        """
+        if not isinstance(other, (Unit, int, float)):
+            raise TypeError('Cannot multiply "{}" and "{}"'.format(
+                type(self).__name__, type(other).__name__))
+        return type(self)(self.x * other, self.y * other)
 
     def __repr__(self):
         return '{}({}, {}, parent={})'.format(type(self).__name__,

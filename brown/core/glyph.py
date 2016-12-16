@@ -29,8 +29,6 @@ class Glyph(TextObject):
             raise InvalidGlyphLengthError('Glyph text must be of length 1')
         else:
             self._text = value
-            if self._interface:
-                self._interface.text = value
 
     @property
     def baseline_y(self):

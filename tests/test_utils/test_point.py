@@ -133,3 +133,9 @@ class TestPoint(unittest.TestCase):
         assert(p1 - p2 == Point(-2, -2))
         with assert_raises(TypeError):
             p1 - 1
+
+    def test__mult__(self):
+        p1 = Point(1, 2)
+        assert(p1 * -1) == Point(-1, -2)
+        p2 = Point(Unit(2), Unit(3))
+        assert(p2 * Unit(-1) == Point(Unit(-2), Unit(-3)))

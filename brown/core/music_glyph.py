@@ -29,5 +29,3 @@ class MusicGlyph(Glyph):
         if not isinstance(value, MusicFont):
             raise TypeError('MusicGlyph.font must be a MusicFont')
         self._font = value
-        if self._interface:
-            self._interface.font = value._interface

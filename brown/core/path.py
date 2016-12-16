@@ -4,6 +4,7 @@ from brown.utils.point import Point
 from brown.utils.anchored_point import AnchoredPoint
 from brown.utils.units import GraphicUnit
 from brown.core.path_element import PathElement
+from brown.utils.path_element_type import PathElementType
 
 
 class Path(GraphicObject):
@@ -19,14 +20,10 @@ class Path(GraphicObject):
             brush (Brush): The brush to draw outlines with.
             parent (GraphicObject): The parent object or None
         """
-        # Hack? Initialize interface to position 0, 0
-        # so that attribute setters don't try to push
-        # changes to not-yet-existing interface
-
-        self._interface = Path._interface_class((0, 0))
         super().__init__(pos, 0, pen, brush, parent)
         self._current_path_position = Point(0, 0)
         self.elements = []
+        self._interface = None
 
     ######## CLASSMETHODS ########
 
@@ -118,24 +115,11 @@ class Path(GraphicObject):
         point = AnchoredPoint(*args)
         if point.parent is None:
             point.parent = self
-        # HACK: Add some arbitrary offset to the temporary line-to
-        #       position so that Qt doesn't convert it into a move-to
-        #       (see note at top of path_interface).
-        #       This could be avoided by either:
-        #         1) Fixing this Qt bug (feature?) in path_interface
-        #         2) Calculating the target line_to position directly
-        #            here, probably saving a bit of efficiency too.
-        #       (probably should do both)
-        self._interface.line_to((float(point.x) + 1,
-                                 float(point.y) + 1))
-        if not len(self.elements):
-            # HACK: Append initial move_to
-            self.elements.append(PathElement(
-                self._interface.element_at(0), self, self))
-        self.elements.append(PathElement(
-            self._interface.element_at(-1), point.parent, self))
-        self.elements[-1].pos = point
-        self.elements[-1]._update_element_interface_pos()
+        if len(self.elements) == 0:
+            self.elements.append(PathElement((0, 0), PathElementType.move_to,
+                                             self, self))
+        self.elements.append(PathElement(point, PathElementType.line_to,
+                                         self, point.parent))
 
     def move_to(self, *args):
         """Close the current sub-path and start a new one.
@@ -160,13 +144,8 @@ class Path(GraphicObject):
         point = AnchoredPoint(*args)
         if point.parent is None:
             point.parent = self
-        # TODO: When above HACK re line_to et al is resolved,
-        #       confirm this is working as expected.
-        self._interface.move_to(point)
-        self.elements.append(PathElement(
-            self._interface.element_at(-1), point.parent, self))
-        self.elements[-1].pos = point
-        self.elements[-1]._update_element_interface_pos()
+        self.elements.append(PathElement(point, PathElementType.move_to,
+                                         self, point.parent))
 
     def close_subpath(self):
         """Close the current sub-path and start a new one at (0, 0).
@@ -228,31 +207,44 @@ class Path(GraphicObject):
             arguments for AnchoredPoint objects. See the docs on AnchoredPoint
             for a more thorough explanation.
         """
+        if len(self.elements) == 0:
+            self.elements.append(PathElement((0, 0), PathElementType.move_to,
+                                             self, self))
         norm_control_1 = AnchoredPoint(control_1)
         norm_control_2 = AnchoredPoint(control_2)
         norm_end = AnchoredPoint(end)
         for point in [norm_control_1, norm_control_2, norm_end]:
             if not point.parent:
                 point.parent = self
-        self._interface.cubic_to(
-            (norm_control_1.x, norm_control_1.y),
-            (norm_control_2.x, norm_control_2.y),
-            (norm_end.x, norm_end.y))
-        if not len(self.elements):
-            # If this was the first action in this path,
-            # we need to append the initial implicit move_to
-            self.elements.append(PathElement(
-                self._interface.element_at(0), self, self))
-        for i, point in zip(range(-3, 0),
-                            [norm_control_1, norm_control_2, norm_end]):
-            self.elements.append(PathElement(
-                self._interface.element_at(i), point.parent, self))
-            self.elements[-1].pos = Point(point)
-            self.elements[-1]._update_element_interface_pos()
+        self.elements.append(PathElement(norm_control_1,
+                                         PathElementType.control_point,
+                                         self, point.parent))
+        self.elements.append(PathElement(norm_control_2,
+                                         PathElementType.control_point,
+                                         self, point.parent))
+        self.elements.append(PathElement(norm_end,
+                                         PathElementType.curve_to,
+                                         self, point.parent))
 
-    def _render_complete(self):
+    def _render_complete(self, pos):
         """Render the entire object.
 
         Returns: None
         """
+        self._interface = PathInterface(pos, self.pen,  # use input pos?
+                                        self.brush, self.parent)
+        # Position calculations will probably have to be made in reference
+        # to doc-space position of points in case of AnchoredPoints,
+        # so this will probably need to be revisited
+        for element in self.elements:
+            if element.element_type == PathElementType.move_to:
+                self._interface.move_to(element.pos)
+            elif element.element_type == PathElementType.line_to:
+                self._interface.line_to(element.pos)
+            elif element.element_type == PathElementType.curve_to:
+                self._interface.curve_to(element.pos)
+            elif element.element_type == PathElementType.control_point:
+                self._interface.control_point(element.pos)
+            else:
+                raise AssertionError('Unknown element_type in Path')
         self._interface.render()

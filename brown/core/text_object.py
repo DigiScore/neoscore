@@ -62,4 +62,9 @@ class TextObject(GraphicObject):
 
         Returns: None
         """
+        self._interface = self._interface_class(
+            pos,
+            self.text,
+            self.font._interface
+        )
         self._interface.render()
