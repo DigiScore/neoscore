@@ -20,20 +20,22 @@ class QClippingPath(QtWidgets.QGraphicsPathItem):
             width (Unit or None): The width of the path clipping region.
                 Use `None` to render to the end
         """
-        bounding_rect = qt_path.boundingRect()
-        adjusted_start_x = (bounding_rect.x() if start_x is None
-                            else float(start_x))
-        adjusted_width = (bounding_rect.width() if width is None
-                          else float(width))
-        self._clip_area = QtGui.QPainterPaplth()
-        self._clip_area.addRect(
-            QtCore.QRectF(adjusted_start_x, bounding_rect.y(),
-                          adjusted_width, bounding_rect.height()))
+        self.clip_start_x = start_x
+        self.clip_width = width
         super().__init__(qt_path)
 
     def paint(self, painter, *args, **kwargs):
         """Paint, clipping by `self._clip_area`.
 
         This is an overload of `QGraphicsPathItem.paint()`"""
+        bounding_rect = self.path().boundingRect()
+        adjusted_start_x = (bounding_rect.x() if self.start_x is None
+                            else float(self.start_x))
+        adjusted_width = (bounding_rect.width() if self.width is None
+                          else float(self.width))
+        self._clip_area = QtGui.QPainterPaplth()
+        self._clip_area.addRect(
+            QtCore.QRectF(adjusted_start_x, bounding_rect.y(),
+                          adjusted_width, bounding_rect.height()))
         painter.setClipPath(self._clip_area)
         super().paint(painter, *args, **kwargs)

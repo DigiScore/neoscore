@@ -18,7 +18,7 @@ glyph.render()
 glyph2 = Glyph((Mm(1000), Mm(10)), "I", parent=flow)
 glyph2.render()
 staff = Staff((Mm(0), Mm(0)), Mm(2000), flow, Mm(1))
-#staff.render()
+staff.render()
 
 clef = Clef(staff, Mm(5), 'treble')
 clef.render()

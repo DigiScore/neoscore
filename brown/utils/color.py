@@ -1,4 +1,4 @@
-from brown.utils import numbers
+from brown.utils import math_helpers
 
 
 def rgb_to_hex(color):
@@ -19,6 +19,6 @@ def rgb_to_hex(color):
         '#ffffff'
     """
     return '#{0:02x}{1:02x}{2:02x}'.format(
-        numbers.clamp_value(int(color[0]), 0, 255),
-        numbers.clamp_value(int(color[1]), 0, 255),
-        numbers.clamp_value(int(color[2]), 0, 255))
+        math_helpers.clamp_value(int(color[0]), 0, 255),
+        math_helpers.clamp_value(int(color[1]), 0, 255),
+        math_helpers.clamp_value(int(color[2]), 0, 255))

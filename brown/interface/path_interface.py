@@ -6,6 +6,7 @@ from brown.utils.point import Point
 from brown.utils.units import GraphicUnit
 from brown.interface.graphic_object_interface import GraphicObjectInterface
 from brown.interface.path_element_interface import PathElementInterface
+from brown.interface.qt_ext.q_clipping_path import QClippingPath
 
 
 """
@@ -51,7 +52,8 @@ Notes on Qt path quirks:
 
 class PathInterface(GraphicObjectInterface):
     """Interface for a generic graphic path object."""
-    def __init__(self, pos, pen=None, brush=None, parent=None):
+    def __init__(self, pos, pen=None, brush=None, parent=None,
+                 draw_start_x=None, draw_width=None):
         """
         Args:
             pos (Point[GraphicUnit] or tuple): The position of the path root
@@ -61,11 +63,14 @@ class PathInterface(GraphicObjectInterface):
             parent (GraphicObjectInterface): The parent object
         """
         self._qt_path = QtGui.QPainterPath()
-        self._qt_object = QtWidgets.QGraphicsPathItem(self._qt_path)
+        self._qt_object = QClippingPath(self._qt_path,
+                                        draw_start_x, draw_width)
         self.pos = pos
         self.pen = pen
         self.brush = brush
         self.parent = parent
+        self.draw_start_x = draw_start_x
+        self.draw_width = draw_width
 
     ######## PUBLIC PROPERTIES ########
 
@@ -232,8 +237,8 @@ class PathInterface(GraphicObjectInterface):
                     index, self._qt_path.elementCount()))
         pos_x = float(pos[0])
         pos_y = float(pos[1])
-        #print('setting element at index {} to ({}, {})'.format(index, pos_x, pos_y))
         self._qt_path.setElementPositionAt(index, pos_x, pos_y)
+        self._update_qt_object_path()
 
     def render(self):
         """Render the line to the scene.

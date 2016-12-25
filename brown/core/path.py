@@ -226,22 +226,20 @@ class Path(GraphicObject):
                                          PathElementType.curve_to,
                                          self, point.parent))
 
-    def _render_slice(self, doc_pos, start_x, length):
+    def _render_slice(self, pos, start_x=None, length=None):
         """Render a horizontal slice of a path.
 
         Args:
-            doc_pos (Point): The doc-space position of the slice beginning
+            pos (Point): The doc-space position of the slice beginning
                 (at the top-left corner of the slice)
             start_x (Unit): The starting x position in the path of the slice
             length (Unit): The horizontal length of the slice to be rendered
 
         Returns: None
         """
-        pass
-
-    def _render_complete(self, pos):
-        self._interface = PathInterface(pos, self.pen,  # use input pos?
-                                        self.brush, self.parent)
+        self._interface = PathInterface(pos, self.pen,
+                                        self.brush, self.parent,
+                                        start_x, length)
         # Position calculations will probably have to be made in reference
         # to doc-space position of points in case of AnchoredPoints,
         # so this will probably need to be revisited
@@ -257,3 +255,15 @@ class Path(GraphicObject):
             else:
                 raise AssertionError('Unknown element_type in Path')
         self._interface.render()
+
+    def _render_complete(self, pos):
+        self._render_slice(pos, start_x=None, length=None)
+
+    def _render_before_break(self, start, stop):
+        self._render_slice(start, stop)
+
+    def _render_after_break(self, start, stop):
+        self._render_slice(start, stop)
+
+    def _render_spanning_continuation(self, start, stop):
+        self._render_slice(start, stop)
