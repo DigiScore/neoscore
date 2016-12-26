@@ -2,11 +2,10 @@ from brown.utils.units import GraphicUnit
 from brown.utils.point import Point
 from brown.config import config
 from brown.primitives.clef import Clef
-from brown.interface.path_interface import PathInterface
-from brown.core.graphic_object import GraphicObject
+from brown.core.path import Path
 
 
-class Staff(GraphicObject):
+class Staff(Path):
     """A staff capable of holding `StaffObject`s"""
 
     def __init__(self, pos, width, frame, staff_unit=None, line_count=5):

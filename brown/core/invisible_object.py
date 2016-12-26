@@ -13,15 +13,8 @@ class InvisibleObject(GraphicObject):
                 relative to the document.
             parent: The parent (core-level) object or None
         """
-        # Hack? Initialize interface to position 0, 0
-        # so that attribute setters don't try to push
-        # changes to not-yet-existing interface
-        self._interface = InvisibleObject._interface_class((0, 0))
         super().__init__(pos, 0, None, None, parent)
 
-    def _render_complete(self):
-        """Render the entire object.
-
-        Returns: None
-        """
+    def _render_complete(self, pos):
+        self._interface = self._interface_class(self.pos, parent=self.parent)
         self._interface.render()

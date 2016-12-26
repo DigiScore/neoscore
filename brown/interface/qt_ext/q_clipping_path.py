@@ -29,11 +29,11 @@ class QClippingPath(QtWidgets.QGraphicsPathItem):
 
         This is an overload of `QGraphicsPathItem.paint()`"""
         bounding_rect = self.path().boundingRect()
-        adjusted_start_x = (bounding_rect.x() if self.start_x is None
-                            else float(self.start_x))
-        adjusted_width = (bounding_rect.width() if self.width is None
-                          else float(self.width))
-        self._clip_area = QtGui.QPainterPaplth()
+        adjusted_start_x = (bounding_rect.x() if self.clip_start_x is None
+                            else float(self.clip_start_x))
+        adjusted_width = (bounding_rect.width() if self.clip_width is None
+                          else float(self.clip_width))
+        self._clip_area = QtGui.QPainterPath()
         self._clip_area.addRect(
             QtCore.QRectF(adjusted_start_x, bounding_rect.y(),
                           adjusted_width, bounding_rect.height()))

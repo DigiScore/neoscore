@@ -53,7 +53,7 @@ Notes on Qt path quirks:
 class PathInterface(GraphicObjectInterface):
     """Interface for a generic graphic path object."""
     def __init__(self, pos, pen=None, brush=None, parent=None,
-                 draw_start_x=None, draw_width=None):
+                 clip_start_x=None, clip_width=None):
         """
         Args:
             pos (Point[GraphicUnit] or tuple): The position of the path root
@@ -64,13 +64,13 @@ class PathInterface(GraphicObjectInterface):
         """
         self._qt_path = QtGui.QPainterPath()
         self._qt_object = QClippingPath(self._qt_path,
-                                        draw_start_x, draw_width)
+                                        clip_start_x, clip_width)
         self.pos = pos
         self.pen = pen
         self.brush = brush
         self.parent = parent
-        self.draw_start_x = draw_start_x
-        self.draw_width = draw_width
+        self.clip_start_x = clip_start_x
+        self.clip_width = clip_width
 
     ######## PUBLIC PROPERTIES ########
 

@@ -50,3 +50,22 @@ def clamp_value(value, minimum, maximum):
         return maximum
     else:
         return value
+
+
+def min_and_max(iterable):
+    """Efficiently get the min and max of an iterable
+
+    Args:
+        iterable (Iterable): An iterable whose elements can all be
+            compared with each other
+
+    Returns: tuple(min, max)
+    """
+    minimum = iterable[0]
+    maximum = iterable[0]
+    for value in iterable:
+        if value < minimum:
+            minimum = value
+        if value > maximum:
+            maximum = value
+    return minimum, maximum

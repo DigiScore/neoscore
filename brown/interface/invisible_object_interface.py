@@ -1,6 +1,7 @@
 from PyQt5 import QtWidgets
 
 from brown.interface.graphic_object_interface import GraphicObjectInterface
+from brown.core import brown
 from brown.utils.units import Unit
 from brown.utils.point import Point
 
@@ -23,3 +24,6 @@ class InvisibleObjectInterface(GraphicObjectInterface):
         self._qt_object.setFlag(QtWidgets.QGraphicsItem.ItemHasNoContents)
         self.pos = pos_point
         self.parent = parent
+
+    def render(self):
+        brown._app_interface.scene.addItem(self._qt_object)
