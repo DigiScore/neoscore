@@ -36,6 +36,11 @@ class Rect:
         return cls(unit(x), unit(y),
                    unit(width), unit(height))
 
+    ######## SPECIAL METHODS ########
+
+    def __repr__(self):
+        return '{}({}, {}, {}, {})'.format(
+            type(self).__name__, self.x, self.y, self.width, self.height)
 
     ######## PUBLIC PROPERTIES ########
 

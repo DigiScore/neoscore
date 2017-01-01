@@ -17,8 +17,7 @@ class Staff(Path):
                 If not set, this will default to config.DEFAULT_STAFF_UNIT
             line_count (int): The number of lines in the staff.
         """
-        self._interface = PathInterface(pos)
-        super().__init__(pos, width, parent=frame)
+        super().__init__(pos, parent=frame)
         self._line_count = line_count
         self._width = width
         if staff_unit:
@@ -26,6 +25,11 @@ class Staff(Path):
         else:
             self.staff_unit = config.DEFAULT_STAFF_UNIT
         self._contents = []
+        # Construct the staff path
+        for i in range(self.line_count):
+            y_offset = self.staff_unit * i
+            self.move_to(Point(GraphicUnit(0), y_offset) + self.pos)
+            self.line_to(Point(width, y_offset) + self.pos)
 
     ######## PUBLIC PROPERTIES ########
 
@@ -118,95 +122,6 @@ class Staff(Path):
             return clef._natural_midi_number_at_top_staff_line
 
     ######## PRIVATE METHODS ########
-
-    def _draw_staff_span(self, start, length):
-        """Draw a section of the staff in the given path.
-
-        This is a helper method for the rendering methods.
-
-        Args:
-            start (Point): The starting doc-space point for drawing.
-            stop (Point): The stopping doc-space point for drawing.
-
-        Returns: None"""
-        for i in range(self.line_count):
-            y_offset = self.staff_unit * i
-            self._interface.move_to(Point(GraphicUnit(0), y_offset) + start)
-            self._interface.line_to(Point(length, y_offset) + start)
-
-    def _render_complete(self):
-        """Render the entire object.
-
-        For use in flowable containers when rendering a FlowableObject
-        which happens to completely fit within a span of the FlowableFrame.
-        This function should render the entire object at `self.pos`
-
-        Returns: None
-
-        Note: FlowableObject subclasses should implement this
-              for correct rendering.
-        """
-        # Draw the staff lines
-        print('rendering complete')
-        self._draw_staff_span(self.pos, self.width)
-
-    def _render_before_break(self, start, stop):
-        """Render the beginning of the object up to a stopping point.
-
-        For use in flowable containers when rendering an object that
-        crosses a line or page break. This function should render the
-        beginning portion of the object up to the break.
-
-        Args:
-            start (Point): The starting doc-space point for drawing.
-            stop (Point): The stopping doc-space point for drawing.
-
-        Returns: None
-
-        Note: FlowableObject subclasses should implement this
-              for correct rendering.
-        """
-        delta = stop - start
-        self._draw_staff_span(start, delta.x)
-
-    def _render_after_break(self, start, stop):
-        """Render the continuation of an object after a break.
-
-        For use in flowable containers when rendering an object that
-        crosses a line or page break. This function should render the
-        ending portion of an object after a break.
-
-        Args:
-            start (Point): The starting doc-space point for drawing.
-            stop (Point): The stopping doc-space point for drawing.
-
-        Returns: None
-
-        Note: FlowableObject subclasses should implement this
-              for correct rendering.
-        """
-        delta = stop - start
-        self._draw_staff_span(start, delta.x)
-
-    def _render_spanning_continuation(self, start, stop):
-        """
-        Render the continuation of an object after a break and before another.
-
-        For use in flowable containers when rendering an object that
-        crosses two breaks. This function should render the
-        portion of the object surrounded by breaks on either side.
-
-        Args:
-            start (Point): The starting doc-space point for drawing.
-            stop (Point): The stopping doc-space point for drawing.
-
-        Returns: None
-
-        Note: FlowableObject subclasses should implement this
-              for correct rendering.
-        """
-        delta = stop - start
-        self._draw_staff_span(start, delta.x)
 
     def _staff_pos_to_top_down(self, centered_value):
         """Convert a staff position to its top-down equivalent.

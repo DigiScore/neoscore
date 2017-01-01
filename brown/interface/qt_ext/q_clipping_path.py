@@ -1,5 +1,7 @@
 from PyQt5 import QtCore, QtWidgets, QtGui
 
+from brown.utils.units import Unit
+
 
 class QClippingPath(QtWidgets.QGraphicsPathItem):
 
@@ -53,16 +55,18 @@ class QClippingPath(QtWidgets.QGraphicsPathItem):
         if start_x is None:
             start_x = bounding_rect.x()
         else:
-            # If start_x was set behind the bounding_rect start,
-            # go with bounding_rect start
-            start_x = max(float(start_x), bounding_rect.x())
-        max_clip_width = bounding_rect.width() - start_x
+            start_x = float(Unit(start_x))
         if clip_width is None:
-            clip_width = max_clip_width
-        elif clip_width > max_clip_width:
-            clip_width = max_clip_width
+            clip_width = bounding_rect.width() - start_x
+        else:
+            clip_width = float(Unit(clip_width))
+        clipping_rect = QtCore.QRectF(start_x, bounding_rect.y(),
+                                      clip_width, bounding_rect.height())
         clipping_area = QtGui.QPainterPath()
-        clipping_area.addRect(
-            QtCore.QRectF(start_x, bounding_rect.y(),
-                          clip_width, bounding_rect.height()))
+        clipping_area.addRect(clipping_rect)
+
+        # DEBUG ##################################################
+        from brown.interface.qt_to_util import qt_rect_to_rect
+        print(qt_rect_to_rect(clipping_rect))
+
         return clipping_area

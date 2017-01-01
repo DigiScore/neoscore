@@ -203,7 +203,7 @@ class GraphicObject(ABC):
         current_line = self.frame.layout_controllers[first_line_i]
         render_start_pos = self.frame._map_to_doc(self.pos)
         render_end_pos = render_start_pos + Point(-1 * self.frame._dist_to_line_end(self.x), 0)
-        self._render_before_break(render_start_pos, render_end_pos)
+        self._render_before_break(Unit(0), render_start_pos, render_end_pos)
         # Iterate through remaining breakable_width
         for current_line_i in range(first_line_i + 1, len(self.frame.layout_controllers)):
             current_line = self.frame.layout_controllers[current_line_i]
@@ -213,7 +213,8 @@ class GraphicObject(ABC):
                 render_start_pos = self.frame._map_to_doc(
                     Point(current_line.x, self.y))
                 render_end_pos = render_start_pos + Point(current_line.length, 0)
-                self._render_spanning_continuation(render_start_pos,
+                self._render_spanning_continuation(self.breakable_width - remaining_x,
+                                                   render_start_pos,
                                                    render_end_pos)
             else:
                 break
@@ -221,7 +222,8 @@ class GraphicObject(ABC):
         render_start_pos = self.frame._map_to_doc(
                     Point(current_line.x, self.y))
         render_end_pos = render_start_pos + Point(remaining_x, 0)
-        self._render_after_break(render_start_pos,
+        self._render_after_break(self.breakable_width - remaining_x,
+                                 render_start_pos,
                                  render_end_pos)
 
     def _render_complete(self, pos):
@@ -241,7 +243,7 @@ class GraphicObject(ABC):
         """
         raise NotImplementedError
 
-    def _render_before_break(self, start, stop):
+    def _render_before_break(self, local_start_x, start, stop):
         """Render the beginning of the object up to a stopping point.
 
         For use in flowable containers when rendering an object that
@@ -249,6 +251,8 @@ class GraphicObject(ABC):
         beginning portion of the object up to the break.
 
         Args:
+            local_start_x (Unit): The local starting position of this
+                drawing segment.
             start (Point): The starting point in document space for drawing.
             stop (Point): The stopping point in document space for drawing.
 
@@ -259,7 +263,7 @@ class GraphicObject(ABC):
         """
         raise NotImplementedError
 
-    def _render_after_break(self, start, stop):
+    def _render_after_break(self, local_start_x, start, stop):
         """Render the continuation of an object after a break.
 
         For use in flowable containers when rendering an object that
@@ -267,6 +271,8 @@ class GraphicObject(ABC):
         ending portion of an object after a break.
 
         Args:
+            local_start_x (Unit): The local starting position of this
+                drawing segment.
             start (Point): The starting point in document space for drawing.
             stop (Point): The stopping point in document space for drawing.
 
@@ -277,7 +283,7 @@ class GraphicObject(ABC):
         """
         raise NotImplementedError
 
-    def _render_spanning_continuation(self, start, stop):
+    def _render_spanning_continuation(self, local_start_x, start, stop):
         """
         Render the continuation of an object after a break and before another.
 
@@ -286,6 +292,8 @@ class GraphicObject(ABC):
         portion of the object surrounded by breaks on either side.
 
         Args:
+            local_start_x (Unit): The local starting position of this
+                drawing segment.
             start (Point): The starting point in document space for drawing.
             stop (Point): The stopping point in document space for drawing.
 
