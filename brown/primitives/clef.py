@@ -1,5 +1,4 @@
 from brown.core.music_glyph import MusicGlyph
-from brown.utils.units import StaffUnit
 from brown.core import brown
 
 
@@ -42,7 +41,7 @@ class Clef(MusicGlyph):
             pitch (Pitch):
         """
         staff_pos_y = self._baseline_staff_positions[clef_type]  # currently wrong
-        super().__init__((position_x, StaffUnit(staff_pos_y, staff)),
+        super().__init__((position_x, staff.unit(staff_pos_y)),
                          self._canonical_names[clef_type],
                          brown.music_font,
                          staff)

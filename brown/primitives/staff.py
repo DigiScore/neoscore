@@ -1,4 +1,4 @@
-from brown.utils.units import GraphicUnit
+from brown.utils.units import GraphicUnit, Unit
 from brown.utils.point import Point
 from brown.config import config
 from brown.primitives.clef import Clef
@@ -20,14 +20,12 @@ class Staff(Path):
         super().__init__(pos, parent=frame)
         self._line_count = line_count
         self._width = width
-        if staff_unit:
-            self.staff_unit = staff_unit
-        else:
-            self.staff_unit = config.DEFAULT_STAFF_UNIT
+        self.unit = self._make_unit_class(staff_unit if staff_unit
+                                          else config.DEFAULT_STAFF_UNIT)
         self._contents = []
         # Construct the staff path
         for i in range(self.line_count):
-            y_offset = self.staff_unit * i
+            y_offset = self.unit(i)
             self.move_to(Point(GraphicUnit(0), y_offset) + self.pos)
             self.line_to(Point(width, y_offset) + self.pos)
 
@@ -41,7 +39,7 @@ class Staff(Path):
 
         This property is read-only.
         """
-        return (self.line_count - 1) * self.staff_unit
+        return self.unit(self.line_count - 1)
 
     @property
     def line_count(self):
@@ -123,6 +121,22 @@ class Staff(Path):
 
     ######## PRIVATE METHODS ########
 
+    @staticmethod
+    def _make_unit_class(self, staff_unit_size):
+        """Create a Unit class with a ratio of 1 to a staff unit size
+
+        Args:
+            staff_unit_size
+
+        Returns:
+            type: A new StaffUnit class specifically for use in this staff.
+        """
+        class StaffUnit(Unit):
+            _unit_name_plural = 'mm'
+            _base_units_per_self_unit = float(Unit(staff_unit_size))
+            # (all other functionality implemented in Unit)
+        return StaffUnit
+
     def _staff_pos_to_top_down(self, centered_value):
         """Convert a staff position to its top-down equivalent.
 
@@ -146,7 +160,7 @@ class Staff(Path):
         """
         return (-1 * centered_value) + self.line_count - 1
 
-    def _staff_pos_to_rel_pixels(self, staff_position):
+    def _staff_pos_to_rel_pixels(self, centered_value):
         """Convert a staff position to pixels relative to the staff.
 
         This takes a centered staff position (where 0 means the center
@@ -164,8 +178,8 @@ class Staff(Path):
         Example:
             # TODO: Make me
         """
-        return ((self.staff_unit / 2) *
-                self._staff_pos_to_top_down(staff_position))
+        return float(GraphicUnit(self.unit(
+            self._staff_pos_to_top_down(centered_value))))
 
     # TODO: Implement more functions breaking apart the translation of staff
     #       space to flowable space.

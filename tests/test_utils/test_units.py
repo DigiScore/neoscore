@@ -3,8 +3,7 @@ import unittest
 
 from brown.core import brown
 from brown.core.flowable_frame import FlowableFrame
-from brown.primitives.staff import Staff
-from brown.utils.units import Unit, Cm, Mm, Inch, GraphicUnit, StaffUnit
+from brown.utils.units import Unit, Cm, Mm, Inch, GraphicUnit
 
 
 class MockUnit(Unit):
@@ -12,7 +11,7 @@ class MockUnit(Unit):
     pass
 
 
-class TestUnite(unittest.TestCase):
+class TestUnit(unittest.TestCase):
 
     def test_init_from_int(self):
         unit = Unit(5)
@@ -215,178 +214,3 @@ class TestGraphicUnit(unittest.TestCase):
 
     def test__str__(self):
         assert(str(GraphicUnit(1)) == '1 graphic units')
-
-
-class TestStaffUnit(unittest.TestCase):
-
-    # Mm(1) == 11.811023622047244 base units
-
-    def setUp(self):
-        brown.setup()
-        self.frame = FlowableFrame((Mm(0), Mm(0)), Mm(10000), Mm(30), Mm(5))
-        self.staff = Staff((0, 0), Mm(50), self.frame, staff_unit=Mm(1))
-
-    def test_init_from_int_and_staff(self):
-        unit = StaffUnit(1, self.staff)
-        assert(unit.staff == self.staff)
-        assert(unit.value == 1)
-        self.assertAlmostEqual(unit._base_units_per_self_unit, 11.811029999999999)
-        #assert(unit == Mm(1))
-
-    def test_init_from_unit_and_staff(self):
-        unit = StaffUnit(Mm(2), self.staff)
-        assert(unit.staff == self.staff)
-        assert(unit.value == (Mm(2) / self.staff.staff_unit).value == 2)
-        self.assertAlmostEqual(unit._base_units_per_self_unit, 11.811029999999999)
-        assert(Mm(unit) == Mm(2))
-
-    def test_init_from_staff_unit_and_new_staff(self):
-        original_unit = StaffUnit(1, self.staff)
-        new_staff = Staff((0, 0), Mm(50), self.frame, staff_unit=Mm(2))
-        unit = StaffUnit(original_unit, new_staff)
-        assert(unit.value == 0.5)
-        self.assertAlmostEqual(unit._base_units_per_self_unit, 2 * (11.811029999999999))
-
-    def test_init_from_staff_unit_alone(self):
-        original_unit = StaffUnit(1, self.staff)
-        unit = StaffUnit(original_unit)
-        assert(unit.value == 1)
-        self.assertAlmostEqual(unit._base_units_per_self_unit, 11.811029999999999)
-
-    ######## OPERATORS ########
-
-    # MockUnit._base_units_per_self_unit = 2
-
-    def test__lt__(self):
-        assert(StaffUnit(1, self.staff) < StaffUnit(2, self.staff))
-        assert(not StaffUnit(1, self.staff) < StaffUnit(0, self.staff))
-        assert(StaffUnit(1, self.staff) < 5)
-        assert(StaffUnit(1, self.staff) < MockUnit(100))
-        assert(not StaffUnit(1, self.staff) < MockUnit(0))
-
-    def test__le__(self):
-        assert(StaffUnit(1, self.staff) <= StaffUnit(2, self.staff))
-        assert(StaffUnit(1, self.staff) <= StaffUnit(1, self.staff))
-        assert(not StaffUnit(1, self.staff) <= StaffUnit(0, self.staff))
-        assert(StaffUnit(1, self.staff) <= 5)
-        assert(StaffUnit(1, self.staff) <= 1)
-        assert(StaffUnit(1, self.staff) <= MockUnit(100))
-        assert(not StaffUnit(1, self.staff) <= MockUnit(0.4))
-
-    def test__eq__(self):
-        assert(StaffUnit(1, self.staff) == StaffUnit(1, self.staff))
-        assert(not StaffUnit(1, self.staff) == StaffUnit(0, self.staff))
-        assert(StaffUnit(1, self.staff) == Mm(1))
-        assert(not StaffUnit(1, self.staff) == Mm(2))
-
-    def test__ne__(self):
-        assert(StaffUnit(1, self.staff) != StaffUnit(2, self.staff))
-        assert(not StaffUnit(1, self.staff) != StaffUnit(1, self.staff))
-        assert(StaffUnit(1, self.staff) != MockUnit(1))
-        assert(not StaffUnit(1, self.staff) != Mm(1))
-        assert(StaffUnit(1, self.staff) != 2)
-        assert(not StaffUnit(1, self.staff) != 1)
-
-    def test__gt__(self):
-        assert(StaffUnit(1, self.staff) > StaffUnit(0, self.staff))
-        assert(not StaffUnit(1, self.staff) > StaffUnit(2, self.staff))
-        assert(not StaffUnit(1, self.staff) > StaffUnit(1, self.staff))
-        assert(StaffUnit(1, self.staff) > 0)
-        assert(not StaffUnit(1, self.staff) > 2)
-        assert(StaffUnit(1, self.staff) > MockUnit(0.4))
-        assert(not StaffUnit(1, self.staff) > MockUnit(100))
-
-    def test__ge__(self):
-        assert(StaffUnit(1, self.staff) >= StaffUnit(0, self.staff))
-        assert(StaffUnit(1, self.staff) >= StaffUnit(1, self.staff))
-        assert(not StaffUnit(1, self.staff) >= StaffUnit(2, self.staff))
-        assert(StaffUnit(1, self.staff) >= 0)
-        assert(StaffUnit(1, self.staff) >= 1)
-        assert(not StaffUnit(1, self.staff) >= 20)
-        assert(StaffUnit(1, self.staff) >= MockUnit(0.4))
-        assert(StaffUnit(1, self.staff) >= MockUnit(0.5))
-        assert(not StaffUnit(1, self.staff) >= MockUnit(100))
-
-    def test__add__(self):
-        assert(isinstance(StaffUnit(1, self.staff) + StaffUnit(2, self.staff), StaffUnit))
-        assert(isinstance(StaffUnit(1, self.staff) + MockUnit(2), StaffUnit))
-        assert((StaffUnit(1, self.staff) + StaffUnit(2, self.staff)).value == 3)
-        assert((StaffUnit(1, self.staff) + 2).value == 3)
-        assert((StaffUnit(1, self.staff) + Mm(1)).value == 2)
-
-    def test__sub__(self):
-        assert(isinstance(StaffUnit(1, self.staff) - StaffUnit(2, self.staff), StaffUnit))
-        assert(isinstance(StaffUnit(1, self.staff) - MockUnit(2), StaffUnit))
-        assert((StaffUnit(1, self.staff) - StaffUnit(2, self.staff)).value == -1)
-        assert((StaffUnit(1, self.staff) - 2).value == -1)
-        assert((StaffUnit(1, self.staff) - Mm(1)).value == 0)
-
-    def test__mul__(self):
-        assert(isinstance(StaffUnit(1, self.staff) * StaffUnit(2, self.staff), StaffUnit))
-        assert(isinstance(StaffUnit(1, self.staff) * MockUnit(2), StaffUnit))
-        assert((StaffUnit(1, self.staff) * StaffUnit(2, self.staff)).value == 2)
-        assert((StaffUnit(1, self.staff) * 2).value == 2)
-        self.assertAlmostEqual((StaffUnit(1, self.staff) * Mm(1)).value, 1)
-
-    def test__truediv__(self):
-        assert(isinstance(StaffUnit(1, self.staff) / StaffUnit(2, self.staff), StaffUnit))
-        assert(isinstance(StaffUnit(1, self.staff) / MockUnit(2), StaffUnit))
-        assert((StaffUnit(1, self.staff) / StaffUnit(2, self.staff)).value == 0.5)
-        assert((StaffUnit(1, self.staff) / 2).value == 0.5)
-        assert((StaffUnit(1, self.staff) / Mm(2)).value == 0.5)
-
-    def test__floordiv__(self):
-        assert(isinstance(StaffUnit(1, self.staff) // StaffUnit(2, self.staff), StaffUnit))
-        assert(isinstance(StaffUnit(1, self.staff) // MockUnit(2), StaffUnit))
-        assert((StaffUnit(1, self.staff) // StaffUnit(2, self.staff)).value == 0)
-        assert((StaffUnit(1, self.staff) // 2).value == 0)
-        assert((StaffUnit(1, self.staff) // Mm(2)).value == 0)
-
-    def test__pow__no_modulo(self):
-        assert(isinstance(StaffUnit(1, self.staff) ** StaffUnit(2, self.staff), StaffUnit))
-        assert(isinstance(StaffUnit(1, self.staff) ** MockUnit(2), StaffUnit))
-        assert((StaffUnit(2, self.staff) ** StaffUnit(2, self.staff)).value == 4)
-        assert((StaffUnit(2, self.staff) ** 2).value == 4)
-        assert((StaffUnit(2, self.staff) ** Mm(2)).value == 4)
-
-    @unittest.expectedFailure
-    def test__pow__with_modulo(self):
-        assert(isinstance(pow(StaffUnit(2, self.staff), StaffUnit(2, self.staff), 3), StaffUnit))
-        assert(isinstance(pow(StaffUnit(2, self.staff), MockUnit(2), 3), StaffUnit))
-        assert((pow(StaffUnit(2, self.staff), StaffUnit(2, self.staff), 3)).value == 1)
-        assert((pow(StaffUnit(2, self.staff), 2, 3)).value == 1)
-        assert((pow(StaffUnit(2, self.staff), MockUnit(1), 3)).value == 1)
-
-    def test__neg__(self):
-        assert(-StaffUnit(2, self.staff) == StaffUnit(-(2), self.staff))
-
-    def test__pos__(self):
-        assert(+StaffUnit(-2, self.staff) == StaffUnit(+(-2), self.staff))
-
-    def test__int__(self):
-        assert(isinstance(int(StaffUnit(2.0, self.staff)), int))
-        assert(int(StaffUnit(2.0, self.staff)) == 2)
-
-    def test__float__(self):
-        assert(isinstance(float(StaffUnit(2.0, self.staff)), float))
-        assert(float(StaffUnit(2.0, self.staff)) == 2.0)
-
-    def test__round__(self):
-        assert(isinstance(round(StaffUnit(2.21999, self.staff)), StaffUnit))
-        assert(round(StaffUnit(2.21999, self.staff)).value == 2)
-        assert(round(StaffUnit(2.21999, self.staff), 1).value == 2.2)
-
-    def test__rmul__(self):
-        assert(isinstance(1 * StaffUnit(2, self.staff), StaffUnit))
-        assert(isinstance(StaffUnit(2, self.staff) * MockUnit(2), StaffUnit))
-        assert((1 * StaffUnit(2, self.staff)).value == StaffUnit(2, self.staff))
-
-    def test__rtruediv__(self):
-        assert(isinstance(1 / StaffUnit(2, self.staff), StaffUnit))
-        assert(isinstance(StaffUnit(1, self.staff) / MockUnit(2), StaffUnit))
-        assert((1 / StaffUnit(2, self.staff)).value == StaffUnit(0.5, self.staff))
-
-    def test__rfloordiv__(self):
-        assert(isinstance(1 // StaffUnit(2, self.staff), StaffUnit))
-        assert(isinstance(StaffUnit(1, self.staff) // MockUnit(2), StaffUnit))
-        assert((1 // StaffUnit(2, self.staff)).value == 0)
