@@ -1,3 +1,5 @@
+import bisect
+
 from brown.utils.units import GraphicUnit, Unit
 from brown.utils.point import Point
 from brown.config import config
@@ -81,10 +83,13 @@ class Staff(Path):
         Returns: Clef
         """
         # TODO: Find a more efficient way to quickly look up contents by type
-        clefs_before = [item for item in self.contents
-                        if isinstance(item, Clef) and
-                        item.position_x <= position_x]
-        return max(clefs_before, key=lambda c: c.position_x, default=None)
+        clef = None
+        for item in self.contents:
+            if item.x >= position_x:
+                break
+            if isinstance(item, Clef):
+                clef = item
+        return clef
 
     def middle_c_at(self, position_x):
         """Find the vertical staff position of middle-c at a given point.
@@ -122,7 +127,7 @@ class Staff(Path):
     ######## PRIVATE METHODS ########
 
     @staticmethod
-    def _make_unit_class(self, staff_unit_size):
+    def _make_unit_class(staff_unit_size):
         """Create a Unit class with a ratio of 1 to a staff unit size
 
         Args:
@@ -230,4 +235,7 @@ class Staff(Path):
         Warning:
             This does not set `staff_object.staff` to self"""
         self._contents.append(staff_object)
+        # Maintain contents in sorted order
+        # TODO: Implement a more efficient structure/algorithm for this
+        self._contents.sort(key=lambda val: val.x)
         staff_object.staff = self

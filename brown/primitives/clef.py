@@ -46,6 +46,7 @@ class Clef(MusicGlyph):
                          brown.music_font,
                          staff)
         self._clef_type = clef_type
+        staff._register_staff_object(self)
         #self.position_y_baseline(staff_pos_y)
 
     ######## PUBLIC PROPERTIES ########
