@@ -1,8 +1,9 @@
 from brown.core.music_glyph import MusicGlyph
+from brown.primitives.staff_object import StaffObject
 from brown.core import brown
 
 
-class Clef(MusicGlyph):
+class Clef(MusicGlyph, StaffObject):
 
     _baseline_staff_positions = {
         'treble': 6,    # Treble clef baseline is middle of the G curl
@@ -41,12 +42,12 @@ class Clef(MusicGlyph):
             pitch (Pitch):
         """
         staff_pos_y = self._baseline_staff_positions[clef_type]  # currently wrong
-        super().__init__((position_x, staff.unit(staff_pos_y)),
-                         self._canonical_names[clef_type],
-                         brown.music_font,
-                         staff)
+        MusicGlyph.__init__(self, (position_x, staff.unit(staff_pos_y)),
+                            self._canonical_names[clef_type],
+                            brown.music_font,
+                            staff)
+        StaffObject.__init__(self, staff)
         self._clef_type = clef_type
-        staff._register_staff_object(self)
         #self.position_y_baseline(staff_pos_y)
 
     ######## PUBLIC PROPERTIES ########

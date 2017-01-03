@@ -65,6 +65,7 @@ class TextObject(GraphicObject):
         self._interface = self._interface_class(
             pos,
             self.text,
-            self.font._interface
+            self.font._interface,
+            parent=self.parent._interface if self.parent else None
         )
         self._interface.render()

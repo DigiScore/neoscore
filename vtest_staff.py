@@ -14,14 +14,16 @@ brown.setup()
 flow = FlowableFrame((Mm(0), Mm(0)), Mm(35000), Mm(20), Mm(10))
 flow.render()
 
-glyph = Glyph((Mm(0), Mm(10)), "H", parent=flow)
-glyph.render()
-glyph2 = Glyph((Mm(1000), Mm(10)), "I", parent=flow)
-glyph2.render()
+# glyph = Glyph((Mm(0), Mm(10)), "H", parent=flow)
+# glyph.render()
+# glyph2 = Glyph((Mm(1000), Mm(10)), "I", parent=flow)
+# glyph2.render()
 staff = Staff((Mm(0), Mm(0)), Mm(2000), flow, Mm(1))
 staff.render()
 
-clef = Clef(staff, Mm(5), 'treble')
-clef.render()
+# clef = Clef(staff, Mm(0), 'treble')
+# clef.render()
+for i in range(100):
+    Clef(staff, Mm(i*5), 'treble').render()
 
 brown.show()
