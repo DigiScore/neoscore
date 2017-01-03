@@ -238,4 +238,3 @@ class Staff(Path):
         # Maintain contents in sorted order
         # TODO: Implement a more efficient structure/algorithm for this
         self._contents.sort(key=lambda val: val.x)
-        staff_object.staff = self

@@ -1,3 +1,4 @@
+from brown.core import brown
 from brown.core.glyph import Glyph
 from brown.core.music_font import MusicFont
 
@@ -11,6 +12,8 @@ class MusicGlyph(Glyph):
     """
 
     def __init__(self, pos, canonical_name, font=None, parent=None):
+        if font is None:
+            font = brown.music_font
         # type check font is MusicFont before sending to init?
         code_point = font.glyph_info(canonical_name)['codepoint']
         super().__init__(pos, code_point, font, parent)
