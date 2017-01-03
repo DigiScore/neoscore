@@ -182,7 +182,7 @@ class Inch(Unit):
 class Mm(Unit):
     # TODO: When stable, copy and tailor docstring from Unit
     _unit_name_plural = 'mm'
-    _base_units_per_self_unit = 11.811023622047244
+    _base_units_per_self_unit = Inch._base_units_per_self_unit * 0.0393701
 
     # (all other functionality implemented in Unit)
     pass
@@ -190,7 +190,7 @@ class Mm(Unit):
 
 class Cm(Unit):
     _unit_name_plural = 'cm'
-    _base_units_per_self_unit = 1.18110236220472
+    _base_units_per_self_unit = Mm._base_units_per_self_unit * 10
 
     # (all other functionality implemented in Unit)
     pass
@@ -332,7 +332,6 @@ class StaffUnit(Unit):
 
     def __rfloordiv__(self, other):
         return self.__class__(other // self.value, self.staff)
-
 
 
 def _call_on_immutable(iterable, unit):

@@ -180,8 +180,8 @@ class TestUnite(unittest.TestCase):
 class TestCm(unittest.TestCase):
 
     def test_cm_unit_conversion(self):
-        self.assertAlmostEqual(Unit(Cm(1)), Unit(1.18110236220472))
-        self.assertAlmostEqual(Unit(Cm(2)), Unit(2.36220472440944))
+        self.assertAlmostEqual(Unit(Cm(1)), Unit(Mm._base_units_per_self_unit * 10))
+        self.assertAlmostEqual(Unit(Cm(2)), Unit(Mm._base_units_per_self_unit * 20))
 
     def test__str__(self):
         assert(str(Cm(1)) == '1 cm')
@@ -190,8 +190,8 @@ class TestCm(unittest.TestCase):
 class TestMm(unittest.TestCase):
 
     def test_mm_unit_conversion(self):
-        self.assertAlmostEqual(Unit(Mm(1)), Unit(11.8110236))
-        self.assertAlmostEqual(Unit(Mm(2)), Unit(23.6220472))
+        self.assertAlmostEqual(Unit(Mm(1)), Unit(11.811029999999999))
+        self.assertAlmostEqual(Unit(Mm(2)), Unit(23.622059999999998))
 
     def test__str__(self):
         assert(str(Mm(1)) == '1 mm')
@@ -230,14 +230,14 @@ class TestStaffUnit(unittest.TestCase):
         unit = StaffUnit(1, self.staff)
         assert(unit.staff == self.staff)
         assert(unit.value == 1)
-        self.assertAlmostEqual(unit._base_units_per_self_unit, 11.811023622047244)
+        self.assertAlmostEqual(unit._base_units_per_self_unit, 11.811029999999999)
         #assert(unit == Mm(1))
 
     def test_init_from_unit_and_staff(self):
         unit = StaffUnit(Mm(2), self.staff)
         assert(unit.staff == self.staff)
         assert(unit.value == (Mm(2) / self.staff.staff_unit).value == 2)
-        self.assertAlmostEqual(unit._base_units_per_self_unit, 11.811023622047244)
+        self.assertAlmostEqual(unit._base_units_per_self_unit, 11.811029999999999)
         assert(Mm(unit) == Mm(2))
 
     def test_init_from_staff_unit_and_new_staff(self):
@@ -245,13 +245,13 @@ class TestStaffUnit(unittest.TestCase):
         new_staff = Staff((0, 0), Mm(50), self.frame, staff_unit=Mm(2))
         unit = StaffUnit(original_unit, new_staff)
         assert(unit.value == 0.5)
-        self.assertAlmostEqual(unit._base_units_per_self_unit, 2 * (11.811023622047244))
+        self.assertAlmostEqual(unit._base_units_per_self_unit, 2 * (11.811029999999999))
 
     def test_init_from_staff_unit_alone(self):
         original_unit = StaffUnit(1, self.staff)
         unit = StaffUnit(original_unit)
         assert(unit.value == 1)
-        self.assertAlmostEqual(unit._base_units_per_self_unit, 11.811023622047244)
+        self.assertAlmostEqual(unit._base_units_per_self_unit, 11.811029999999999)
 
     ######## OPERATORS ########
 
