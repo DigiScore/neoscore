@@ -65,8 +65,4 @@ class QClippingPath(QtWidgets.QGraphicsPathItem):
         clipping_area = QtGui.QPainterPath()
         clipping_area.addRect(clipping_rect)
 
-        # DEBUG ##################################################
-        from brown.interface.qt_to_util import qt_rect_to_rect
-        print(qt_rect_to_rect(clipping_rect))
-
         return clipping_area

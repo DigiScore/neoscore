@@ -6,6 +6,7 @@ from brown.core.flowable_frame import FlowableFrame
 from brown.primitives.staff import Staff
 from brown.primitives.clef import Clef
 from brown.core.glyph import Glyph
+from brown.core.path import Path
 
 
 brown.setup()
@@ -21,9 +22,18 @@ flow.render()
 staff = Staff((Mm(0), Mm(0)), Mm(2000), flow, Mm(1))
 staff.render()
 
-# clef = Clef(staff, Mm(0), 'treble')
-# clef.render()
-for i in range(100):
-    Clef(staff, Mm(i*5), 'treble').render()
+clef = Clef(staff, Mm(0), 'treble')
+from pprint import pprint; pprint(clef.glyph_info)
+clef.render()
+
+clef_bbox = clef._bounding_rect
+path = Path(flow._map_to_doc(clef.pos))
+path.line_to((clef_bbox.width, Mm(0)))
+path.line_to((clef_bbox.width, clef_bbox.height))
+path.render()
+
+
+# for i in range(100):
+#     Clef(staff, Mm(i*5), 'treble').render()
 
 brown.show()

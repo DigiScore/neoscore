@@ -251,9 +251,13 @@ class Path(GraphicObject):
         if start_x is None:
             start_x = 0
         adjusted_pos = Point(pos.x - start_x, pos.y)
-        self._interface = PathInterface(adjusted_pos, self.pen,
-                                        self.brush, self.parent._interface,
-                                        start_x, length)
+        self._interface = PathInterface(
+            adjusted_pos,
+            self.pen,
+            self.brush,
+            self.parent._interface if self.parent else None,
+            start_x,
+            length)
         # Position calculations will probably have to be made in reference
         # to doc-space position of points in case of AnchoredPoints,
         # so this will probably need to be revisited

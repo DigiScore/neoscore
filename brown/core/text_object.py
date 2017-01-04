@@ -66,6 +66,8 @@ class TextObject(GraphicObject):
             pos,
             self.text,
             self.font._interface,
-            parent=self.parent._interface if self.parent else None
+            # Should parent be passed? pos being dispatched by renderer
+            # is in scene space...
+            # parent=self.parent._interface if self.parent else None
         )
         self._interface.render()

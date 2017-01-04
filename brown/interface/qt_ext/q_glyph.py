@@ -18,7 +18,11 @@ class QGlyph(QtWidgets.QGraphicsSimpleTextItem):
         super().__init__(*args, **kwargs)
 
     def boundingRect(self):
-        return super().boundingRect()
+        if not self._bounding_rect:
+            return super().boundingRect()
+        return self._bounding_rect
 
     def pos(self):
-        return super().pos()
+        if not self._origin_offset:
+            return super().pos()
+        return super.pos() + self._origin_offset

@@ -70,6 +70,8 @@ class Glyph(TextObject):
             self.font._interface,
             bounding_rect=self._bounding_rect,
             origin_offset=self._origin_offset,
-            parent=self.parent._interface if self.parent else None
+            # Should parent be passed? pos being dispatched by renderer
+            # is in scene space...
+            # parent=self.parent._interface if self.parent else None
         )
         self._interface.render()
