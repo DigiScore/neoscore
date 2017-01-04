@@ -2,6 +2,7 @@ from brown.interface.font_interface import FontInterface
 from brown.core import brown
 from brown.core.font import Font
 from brown.utils import smufl
+from brown.utils.units import GraphicUnit
 
 
 class MusicFontMetadataNotFoundError(Exception):
@@ -15,21 +16,23 @@ class MusicFont(Font):
 
     _interface_class = FontInterface
 
-    def __init__(self, family_name, size):
-        super().__init__(family_name, size, 1, False)
-        self._cached_em_size = self._calculate_approximate_em_size()
+    def __init__(self, family_name, staff_unit):
         try:
             self.metadata = brown.registered_music_fonts[family_name]
         except KeyError:
             raise MusicFontMetadataNotFoundError
         self._engraving_defaults = self.metadata['engravingDefaults']
+        # TODO: Investigate why staff_unit(3) is the
+        #       magic scaling factor here, and how to not rely on it
+        self._em_size = float(GraphicUnit(staff_unit(3)))
+        super().__init__(family_name, self._em_size, 1, False)
 
     ######## PUBLIC PROPERTIES ########
 
     @property
     def em_size(self):
         """GraphicUnit: The em size for the font."""
-        return self._cached_em_size
+        return self._em_size
 
     @property
     def engraving_defaults(self):

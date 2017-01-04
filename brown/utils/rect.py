@@ -45,6 +45,13 @@ class Rect:
     ######## PUBLIC PROPERTIES ########
 
     @property
+    def pos(self):
+        """Point: The starting (usually top-left) corner of the rect"""
+        # TODO: Implement this in reverse - x and y derived from pos,
+        #       as in most similar cases in the codebase
+        return Point(self.x, self.y)
+
+    @property
     def x(self):
         """x (int, float, or Unit): The starting x position"""
         return self._x

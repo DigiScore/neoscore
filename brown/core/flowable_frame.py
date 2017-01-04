@@ -152,8 +152,7 @@ class FlowableFrame(InvisibleObject):
             Point: An x-y coordinate in document space
         """
         local_point = Point(point)
-        if (local_point.x < 0 or local_point.y < 0 or
-                local_point.x > self.width or local_point.y > self.height):
+        if local_point.x < 0 or local_point.x > self.width:
             raise OutOfBoundsError(
                 '{} lies outside of the FlowableFrame'.format(local_point))
         last_break_before = self._last_break_at(local_point.x)

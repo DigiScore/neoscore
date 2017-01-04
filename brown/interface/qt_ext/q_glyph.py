@@ -13,16 +13,17 @@ class QGlyph(QtWidgets.QGraphicsSimpleTextItem):
 
         All other args are passed directly to QGraphicsSimpleTextItem
         """
+        # TODO: Remove defunct bounding rect passing logic
         self._bounding_rect = bounding_rect
         self._origin_offset = origin_offset
         super().__init__(*args, **kwargs)
 
     def boundingRect(self):
-        if not self._bounding_rect:
-            return super().boundingRect()
-        return self._bounding_rect
+        rect = super().boundingRect()
+        rect.translate(self._origin_offset * -1)
+        return rect
 
-    def pos(self):
-        if not self._origin_offset:
-            return super().pos()
-        return super.pos() + self._origin_offset
+    def paint(self, painter, option, widget):
+        # print('origin offset: {}'.format(self._origin_offset))
+        painter.translate(self._origin_offset * -1)
+        super().paint(painter, option, widget)

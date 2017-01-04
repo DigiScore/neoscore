@@ -14,7 +14,6 @@ from brown.utils.units import Mm, GraphicUnit
 # Fetch and initialize app interface
 _app_interface_class = AppInterface
 _app_interface = None
-music_font = None
 text_font = None
 document = None
 registered_music_fonts = {}
@@ -33,7 +32,6 @@ def setup(initial_paper=None):
     global _app_interface
     global current_pen
     global current_brush
-    global music_font
     global text_font
     global paper
     global document
@@ -45,7 +43,6 @@ def setup(initial_paper=None):
     _, music_font_json = register_music_font(
         config.DEFAULT_MUSIC_FONT_PATH,
         config.DEFAULT_MUSIC_FONT_METADATA_PATH)
-    music_font = MusicFont(config.DEFAULT_MUSIC_FONT_NAME, 35)
     text_font = Font(config.DEFAULT_TEXT_FONT_NAME, 12, 1, False)
     document = Document(initial_paper)
 

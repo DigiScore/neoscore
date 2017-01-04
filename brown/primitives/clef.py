@@ -6,11 +6,11 @@ from brown.core import brown
 class Clef(MusicGlyph):
 
     _baseline_staff_positions = {
-        'treble': 6,    # Treble clef baseline is middle of the G curl
-        'bass': 2,      # Bass clef baseline is between the two dots
-        '8vb bass': 2,  # 8vb Bass clef baseline same as regular bass clef
-        'tenor': 2,     # C clef baseline is in the middle of the glyph
-        'alto': 4,
+        'treble': 2,    # Treble clef baseline is middle of the G curl
+        'bass': 1,      # Bass clef baseline is between the two dots
+        '8vb bass': 1,  # 8vb Bass clef baseline same as regular bass clef
+        'tenor': 1,     # C clef baseline is in the middle of the glyph
+        'alto': 2,
     }  # (Later when SMuFL impl is better this may not be needed)
     _canonical_names = {
         'treble': 'gClef',
@@ -44,7 +44,7 @@ class Clef(MusicGlyph):
         staff_pos_y = self._baseline_staff_positions[clef_type]  # currently wrong
         MusicGlyph.__init__(self, (position_x, staff.unit(staff_pos_y)),
                             self._canonical_names[clef_type],
-                            brown.music_font,
+                            None,
                             staff)
         self._clef_type = clef_type
         #self.position_y_baseline(staff_pos_y)

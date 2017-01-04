@@ -1,10 +1,11 @@
+from brown.config import config
 from brown.core import brown
 from brown.core.glyph import Glyph
 from brown.core.music_font import MusicFont
 from brown.primitives.staff_object import StaffObject
 from brown.utils.rect import Rect
 from brown.utils.point import Point
-from brown.utils.units import convert_all_to_unit
+from brown.utils.units import GraphicUnit, convert_all_to_unit
 
 
 class MusicGlyph(Glyph, StaffObject):
@@ -17,14 +18,16 @@ class MusicGlyph(Glyph, StaffObject):
 
     def __init__(self, pos, canonical_name, font=None, parent=None):
         if font is None:
-            font = brown.music_font
+            # FIXME: find ancestor staff without initializing StaffObject
+            #         assumes that the direct parent is a Staff
+            font = MusicFont(config.DEFAULT_MUSIC_FONT_NAME,
+                             parent.unit)
         # type check font is MusicFont before sending to init?
         self._canonical_name = canonical_name
         codepoint = font.glyph_info(self.canonical_name)['codepoint']
         Glyph.__init__(self, pos, codepoint, font, parent)
         StaffObject.__init__(self, parent)
         self._generate_glyph_info()
-        from pprint import pprint;pprint(self.glyph_info)
 
     ######## PUBLIC PROPERTIES ########n
 
@@ -60,17 +63,19 @@ class MusicGlyph(Glyph, StaffObject):
     @property
     def _bounding_rect(self):
         """Rect: The bounding rect override for this glyph."""
+        # TODO: This is still a little off...
         x = self.glyph_info['glyphBBox']['bBoxSW'][0]
         y = self.glyph_info['glyphBBox']['bBoxNE'][1]
         w = self.glyph_info['glyphBBox']['bBoxNE'][0] - x
         h = (self.glyph_info['glyphBBox']['bBoxSW'][1] - y) * (-1)
-        return Rect(x, y, w, h)
+        offset = self._origin_offset
+        return Rect(x - offset.x, y - offset.y, w, h)
 
     @property
     def _origin_offset(self):
         """Point: The origin offset override for this glyph."""
-        # TODO
-        return None
+        return Point(self.staff.unit(0), GraphicUnit(self.font.ascent))
+
 
     ######## PRIVATE METHODS ########
 

@@ -5,6 +5,29 @@ from PyQt5.QtCore import QPoint, QPointF, QRect, QRectF
 
 from brown.utils.rect import Rect
 from brown.utils.point import Point
+from brown.utils.units import GraphicUnit
+
+
+def unit_to_qt_int(unit):
+    """Create a Qt integer from a Unit
+
+    Args:
+        unit (Unit): The source unit
+
+    Returns: int
+    """
+    return int(GraphicUnit(unit))
+
+
+def unit_to_qt_float(unit):
+    """Create a Qt integer from a Unit
+
+    Args:
+        unit (Unit): The source unit
+
+    Returns: float
+    """
+    return float(GraphicUnit(unit))
 
 
 def qt_point_to_point(qt_point, unit=None):
@@ -33,7 +56,7 @@ def point_to_qt_point(point):
 
     Returns: QPoint
     """
-    return QPoint(int(point.x), int(point.y))
+    return QPoint(unit_to_qt_int(point.x), unit_to_qt_int(point.y))
 
 
 def point_to_qt_point_f(point):
@@ -44,7 +67,7 @@ def point_to_qt_point_f(point):
 
     Returns: QPointF
     """
-    return QPointF(float(point.x), float(point.y))
+    return QPointF(unit_to_qt_float(point.x), unit_to_qt_float(point.y))
 
 
 def qt_rect_to_rect(qt_rect, unit=None):
@@ -75,8 +98,8 @@ def rect_to_qt_rect(rect):
 
     Returns: QRect
     """
-    return QRect(int(rect.x), int(rect.y),
-                 int(rect.width), int(rect.height))
+    return QRect(unit_to_qt_int(rect.x), unit_to_qt_int(rect.y),
+                 unit_to_qt_int(rect.width), unit_to_qt_int(rect.height))
 
 
 def rect_to_qt_rect_f(rect):
@@ -87,5 +110,5 @@ def rect_to_qt_rect_f(rect):
 
     Returns: QRectF
     """
-    return QRectF(float(rect.x), float(rect.y),
-                  float(rect.width), float(rect.height))
+    return QRectF(unit_to_qt_float(rect.x), unit_to_qt_float(rect.y),
+                  unit_to_qt_float(rect.width), unit_to_qt_float(rect.height))
