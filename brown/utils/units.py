@@ -74,10 +74,11 @@ class Unit:
         Args:
             value (Any): The value to test
 
-        Returns:
-            bool
+        Returns: bool
         """
-        return isinstance(value, (int, float, Unit))
+        return (isinstance(value, (int, float, Unit))
+                # (bool is a subclass of int but should not be allowed)
+                and not isinstance(value, bool))
 
     ######## SPECIAL METHODS ########
 
