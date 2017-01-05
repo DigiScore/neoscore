@@ -5,7 +5,7 @@ from brown.core import brown
 from brown.utils.units import Mm
 from brown.core.paper import Paper
 from brown.core.flowable_frame import FlowableFrame
-from brown.primitives.staff import Staff
+from brown.primitives.staff import Staff, NoClefError
 from brown.primitives.clef import Clef
 
 
@@ -15,21 +15,6 @@ class TestStaff(unittest.TestCase):
         brown.setup(
             Paper(*[Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]))
         self.frame = FlowableFrame((Mm(0), Mm(0)), Mm(10000), Mm(30), Mm(5))
-
-    def test_staff_pos_to_top_down(self):
-        test_staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame, line_count=5)
-        # Center of staff
-        assert(test_staff._staff_pos_to_top_down(0) == 4)
-        # Above center
-        assert(test_staff._staff_pos_to_top_down(1) == 3)
-        assert(test_staff._staff_pos_to_top_down(4) == 0)
-        assert(test_staff._staff_pos_to_top_down(5) == -1)
-        assert(test_staff._staff_pos_to_top_down(12) == -8)
-        # Below center
-        assert(test_staff._staff_pos_to_top_down(-1) == 5)
-        assert(test_staff._staff_pos_to_top_down(-4) == 8)
-        assert(test_staff._staff_pos_to_top_down(-5) == 9)
-        assert(test_staff._staff_pos_to_top_down(-12) == 16)
 
     def test_height(self):
         # 5 lines
@@ -62,22 +47,21 @@ class TestStaff(unittest.TestCase):
 
     def test_active_clef_at_with_implicit_default_clef(self):
         test_staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
-        # No clef specified - should default to None (implicit treble)
-        assert(test_staff.active_clef_at(5) is None)
+        assert(test_staff.active_clef_at(Mm(5)) is None)
 
     def test_middle_c_at_with_explicit_clefs(self):
         test_staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
         test_treble_clef = Clef(test_staff, 0,  'treble')
         test_bass_clef = Clef(test_staff, 10, 'bass')
         # Test between two clefs should be in treble mode
-        assert(test_staff.middle_c_at(5) == -6)
+        assert(test_staff.middle_c_at(5) == test_staff.unit(5))
         # Test after bass clef goes into effect
-        assert(test_staff.middle_c_at(15) == 6)
+        assert(test_staff.middle_c_at(15) == test_staff.unit(-1))
 
     def test_middle_c_at_with_implicit_default_clef(self):
         test_staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
-        # No clef specified - should default to treble
-        assert(test_staff.middle_c_at(5) == -6)
+        with assert_raises(NoClefError):
+            test_staff.middle_c_at(Mm(5))
 
     def test_natural_midi_number_of_top_line_at_with_explicit_clefs(self):
         test_staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)

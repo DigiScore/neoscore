@@ -1,28 +1,28 @@
-from brown.utils.units import GraphicUnit
+from brown.utils.units import GraphicUnit, Mm
 from brown.primitives.notehead import Notehead
+from brown.primitives.accidental import Accidental
 from brown.primitives.staff_object import StaffObject
 from brown.primitives.ledger_line import LedgerLine
 from brown.primitives.stem import Stem
-from brown.core.invisible_object import InvisibleObject
+from brown.core.object_group import ObjectGroup
+from brown.utils.point import Point
 
 
-class ChordRest(StaffObject):
+class ChordRest(ObjectGroup, StaffObject):
     # (use temporary None in duration until those are implemented)
-    def __init__(self, parent, noteheads, position_x, duration=None):
+    def __init__(self, pos_x, staff, noteheads=None, duration=None):
         '''
         Args:
-            parent (Staff or StaffObject):
+            pos_x (Unit): The horizontal position of the ChordRest
+            staff (Staff): The staff the object is attached to
             noteheads (list[Notehead]): A list of pitch strings
                 representing noteheads. An empty list indicates a rest.
-            duration (Duration): A duration value for the chord
+            duration (Duration): The duration of the ChordRest
         '''
-        super().__init__(parent, position_x)
-        self._noteheads = []
-        self._ledgers = []
-        self._grob = InvisibleObject((self.position_x, GraphicUnit(0)),
-                                     self.parent.grob)
+        ObjectGroup.__init__(self, Point(pos_x, staff.unit(0)), staff, None)
+        StaffObject.__init__(self, staff)
         for pitch in noteheads:
-            self._noteheads.append(Notehead(self, GraphicUnit(0), pitch))
+            self.register_object(Notehead(staff.unit(0), pitch, self))
         self._duration = duration
         self._stem = None
 
@@ -30,27 +30,21 @@ class ChordRest(StaffObject):
 
     @property
     def noteheads(self):
-        """list [Notehead]: The noteheads contained in this ChordRest.
+        """iter(Notehead): The noteheads contained in this ChordRest."""
+        return (item for item in self.objects if isinstance(item, Notehead))
 
-        An empty list means a rest.
-        """
-        return self._noteheads
-
-    @noteheads.setter
-    def noteheads(self, value):
-        self._noteheads = value
+    @property
+    def accidentals(self):
+        """iter(Accidental): The accidentals contained in this ChordRest."""
+        return (item for item in self.objects if isinstance(item, Accidental))
 
     @property
     def ledgers(self):
-        """list[LedgerLine]: The ledger lines contained in this ChordRest.
+        """iter(LedgerLine): The ledger lines contained in this ChordRest.
 
         An empty list means no ledgers.
         """
-        return self._ledgers
-
-    @ledgers.setter
-    def ledgers(self, value):
-        self._ledgers = value
+        return (item for item in self.objects if isinstance(item, LedgerLine))
 
     @property
     def stem(self):
@@ -116,28 +110,28 @@ class ChordRest(StaffObject):
 
     @property
     def widest_notehead(self):
-        """Notehead or None: the Notehead with the greatest `grob_width`"""
+        """Notehead or None: the Notehead with the greatest `visual_width`"""
         return max(self.noteheads,
-                   key=lambda n: n.grob_width,
+                   key=lambda n: n.visual_width,
                    default=None)
 
     @property
     def notehead_column_width(self):
-        """float: The width in pixels of the *noteheads* in the chord"""
+        """Unit: The total width of all Noteheads in the chord"""
         if not self.noteheads:
             return 0
         elif len(self.noteheads) == 1:
-            return self.widest_notehead.grob_width
+            return self.widest_notehead.visual_width
         else:
             return (self.rightmost_notehead.position_x -
                     self.leftmost_notehead.position_x +
-                    self.widest_notehead.grob_width)
+                    self.widest_notehead.visual_width)
 
     @property
     def noteheads_outside_staff(self):
-        """list[Notehead]: A list of all noteheads which are above or below the staff"""
-        return [note for note in self.noteheads
-                if self.staff._position_outside_staff(note.staff_position)]
+        """set{Notehead}: All noteheads which are above or below the staff"""
+        return set(note for note in self.noteheads
+                   if self.staff._position_outside_staff(note.staff_position))
 
     @property
     def leftmost_notehead_outside_staff(self):
@@ -155,15 +149,15 @@ class ChordRest(StaffObject):
 
     @property
     def notehead_column_outside_staff_width(self):
-        """float: The width in pixels of the *noteheads* outside the staff"""
+        """Unit: The total width of any noteheads outside the staff"""
         if not self.noteheads:
             return 0
         elif len(self.noteheads) == 1:
-            return self.widest_notehead.grob_width
+            return self.widest_notehead.visual_width
         else:
             return (self.rightmost_notehead_outside_staff.position_x -
                     self.leftmost_notehead_outside_staff.position_x +
-                    self.widest_notehead.grob_width)
+                    self.widest_notehead.visual_width)
 
     @property
     def stem_direction(self):
@@ -183,17 +177,14 @@ class ChordRest(StaffObject):
     ######## PUBLIC METHODS ########
 
     def render(self):
+        # Position noteheads and accidentals
         self._position_noteheads_horizontally()
-        self._position_accidentals_horizontally()  # Currently a stub
-        for note in self.noteheads:
-            note.render()
-        # Generate and render ledger lines
-        self._create_ledgers()
-        for ledger in self.ledgers:
-            ledger.render()
-        # Generate and render stem
-        self._create_stem()
-        self.stem.render()
+        self._position_accidentals_horizontally()
+        # Generate non-notehead group members
+        self._create_accidentals()
+        #self._create_ledgers()
+        #self._create_stem()
+        super().render()
 
     ######## PRIVATE METHODS ########
 
@@ -210,11 +201,16 @@ class ChordRest(StaffObject):
         # Calculate x position and length of ledger lines
         x_position = self.leftmost_notehead.position_x - (0.3 * self.staff.staff_unit)
         length = self.notehead_column_outside_staff_width + (0.6 * self.staff.staff_unit)
-        self.ledgers = []
+        # Flush any existing ledgers:
+        self._objects = set(item for item in self.objects
+                            if not isinstance(item, LedgerLine))
         for staff_pos in self.ledger_line_positions:
-            self.ledgers.append(
-                LedgerLine(self, x_position, staff_pos, length)
-            )
+            self.register_object(
+                LedgerLine(self, x_position, staff_pos, length))
+
+    def _create_accidentals(self):
+        """TODO"""
+        pass
 
     def _create_stem(self):
         """Creates a Stem and stores it in `self.stem`.
@@ -238,7 +234,7 @@ class ChordRest(StaffObject):
         # where 1 means right and -1 means left
         default_side = self.stem_direction * -1
         # Start last staff pos at sentinel infinity position
-        prev_staff_pos = float("inf")
+        prev_staff_pos = self.staff.unit(float("inf"))
         # Start prev_side at wrong side so first note goes on the default side
         prev_side = -1 * default_side
         for note in sorted(self.noteheads,
@@ -251,15 +247,14 @@ class ChordRest(StaffObject):
                 prev_side = default_side
             # Reposition, using prev_side (here) as the chosen side for this note
             if prev_side == -1:
-                note.position_x -= note.grob_width
+                note.position_x -= note.visual_width
             # Lastly, update prev_staff_pos
             prev_staff_pos = note.staff_position
 
     def _position_accidentals_horizontally(self):
         """Reposition accidentals so that they are laid out correctly
 
-        TODO: This is likely a non-trivial algorithm and should be
-        implemented later on...
+        TODO: Implement me
 
         Returns: None
         """

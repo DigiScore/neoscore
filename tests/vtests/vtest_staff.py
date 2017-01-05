@@ -5,6 +5,7 @@ from brown.utils.units import Mm, GraphicUnit
 from brown.core.flowable_frame import FlowableFrame
 from brown.primitives.staff import Staff
 from brown.primitives.clef import Clef
+from brown.primitives.chordrest import ChordRest
 from brown.utils.point import Point
 from brown.core.glyph import Glyph
 from brown.core.music_glyph import MusicGlyph
@@ -27,14 +28,11 @@ staff.render()
 glyph = MusicGlyph((staff.unit(10), staff.unit(0.5)), 'noteheadBlack', parent=staff)
 glyph.render()
 
-glyph2 = MusicGlyph((staff.unit(10), staff.unit(1)), 'noteheadBlack', parent=glyph)
-glyph2.render()
-
-glyph3 = MusicGlyph((staff.unit(1), staff.unit(10)), 'noteheadBlack', parent=glyph2)
-glyph3.render()
-
 treble_clef = Clef(staff, Mm(0), 'treble')
 treble_clef.render()
+
+chord = ChordRest(Mm(20), staff, ["c'", "a'"])
+chord.render()
 
 path = Path((Mm(0), Mm(0)), parent=glyph)
 path.line_to((Mm(10), Mm(3)))

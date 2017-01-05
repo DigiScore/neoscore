@@ -8,6 +8,11 @@ from brown.core.path import Path
 from brown.core.music_font import MusicFont
 
 
+class NoClefError(Exception):
+    """Exception raised when no clef is present in a Staff where needed"""
+    pass
+
+
 class Staff(Path):
     """A staff capable of holding `StaffObject`s"""
 
@@ -102,17 +107,15 @@ class Staff(Path):
         """Find the vertical staff position of middle-c at a given point.
 
         Looks for clefs and other transposing modifiers to determine
-        the position of middle-c. If no clef is present, treble is assumed.
+        the position of middle-c.
 
-        Returns:
-            int: A vertical staff position, where 0 means the center
-            line or space of the staff, higher numbers mean higher positions,
-            and lower numbers mean lower positions.
+        If no clef is present, a `NoClefError` is raised.
+
+        Returns: StaffUnit: A vertical staff position
         """
         clef = self.active_clef_at(position_x)
         if clef is None:
-            # Assume treble
-            return Clef._middle_c_staff_positions['treble']
+            raise NoClefError
         else:
             return clef.middle_c_staff_position
 
@@ -144,57 +147,10 @@ class Staff(Path):
             type: A new StaffUnit class specifically for use in this staff.
         """
         class StaffUnit(Unit):
-            _unit_name_plural = 'mm'
+            _unit_name_plural = 'staff_units'
             _base_units_per_self_unit = float(Unit(staff_unit_size))
             # (all other functionality implemented in Unit)
         return StaffUnit
-
-    def _staff_pos_to_top_down(self, centered_value):
-        """Convert a staff position to its top-down equivalent.
-
-        This takes a centered staff position (where 0 means the center
-        position positive values mean higher positions, and lower values
-        vice versa) and returns its equivalent in the top-down system
-        (where 0 means the top line of the staff, negative values
-        extend upward, and positive values extend downward).
-
-        This is mostly meant for internal purposes in the rendering
-        pipeline. Values should not be stored in objects as these values.
-
-        Args:
-            centered_value (int): A staff position in the centered system.
-
-        Returns:
-            int: A staff position in the top-down system
-
-        Example:
-            # TODO: Make me
-        """
-        return (-1 * centered_value) + self.line_count - 1
-
-    def _staff_pos_to_rel_pixels(self, centered_value):
-        """Convert a staff position to pixels relative to the staff.
-
-        This takes a centered staff position (where 0 means the center
-        position positive values mean higher positions, and lower values
-        vice versa) and returns its translation to pixels relative to the
-        top of the staff, where 0 is the top of the staff, negative values
-        extend upward, and positive values extend downward
-
-        Args:
-            centered_value (float): A staff position in the centered system.
-
-        Returns:
-            float: A y-axis pixel position relative to the top of the staff
-
-        Example:
-            # TODO: Make me
-        """
-        return float(GraphicUnit(self.unit(
-            self._staff_pos_to_top_down(centered_value))))
-
-    # TODO: Implement more functions breaking apart the translation of staff
-    #       space to flowable space.
 
     def _position_inside_staff(self, position):
         """bool: Determine if a position is inside the staff.

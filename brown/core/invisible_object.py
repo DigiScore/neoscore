@@ -1,5 +1,6 @@
 from brown.interface.invisible_object_interface import InvisibleObjectInterface
 from brown.core.graphic_object import GraphicObject
+from brown.utils.units import Unit
 
 
 class InvisibleObject(GraphicObject):
@@ -11,9 +12,9 @@ class InvisibleObject(GraphicObject):
         Args:
             pos (Point[GraphicUnit] or tuple): The position of the path root
                 relative to the document.
-            parent: The parent (core-level) object or None
+            parent: The parent object or None
         """
-        super().__init__(pos, 0, None, None, parent)
+        super().__init__(pos, Unit(0), None, None, parent)
 
     def _render_complete(self, pos):
         self._interface = self._interface_class(
