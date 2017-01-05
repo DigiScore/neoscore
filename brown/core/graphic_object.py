@@ -152,7 +152,7 @@ class GraphicObject(ABC):
 
         Return: Point
         """
-        if not isinstance(item, cls):
+        if not isinstance(item, GraphicObject):
             raise TypeError(
                 'Cannot map {} from origin'.format(type(item).__name__))
         pos = Point.with_unit((0, 0), unit=Unit)
