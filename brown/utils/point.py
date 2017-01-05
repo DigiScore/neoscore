@@ -181,6 +181,12 @@ class Point:
                 type(self).__name__, type(other).__name__))
         return type(self)(self.x * other, self.y * other)
 
+    def __abs__(self):
+        return type(self)(abs(self.x), abs(self.y))
+
+    def __round__(self, ndigits=None):
+        return type(self)(round(self.x, ndigits), round(self.y, ndigits))
+
     def __iter__(self):
         return self
 

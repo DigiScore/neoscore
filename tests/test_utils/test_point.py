@@ -134,8 +134,14 @@ class TestPoint(unittest.TestCase):
         with assert_raises(TypeError):
             p1 - 1
 
-    def test__mult__(self):
+    def test__mul__(self):
         p1 = Point(1, 2)
         assert(p1 * -1) == Point(-1, -2)
         p2 = Point(Unit(2), Unit(3))
         assert(p2 * Unit(-1) == Point(Unit(-2), Unit(-3)))
+
+    def test__abs__(self):
+        assert(abs(Point(-2, -3)) == Point(2, 3))
+
+    def test__round__(self):
+        assert(round(Point(1.05, -3.03)) == Point(1, -3))
