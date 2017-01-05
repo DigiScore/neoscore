@@ -20,11 +20,10 @@ class StaffObject:
             def __init__(self, pos, parent):
                 MusicGlyph.__init__(self, 'someGlyphName', parent)
                 StaffObject.__init__(self, parent)
-
     """
 
     def __init__(self, parent):
-        self._staff = self._find_ancestor_staff()
+        self._staff = self._find_staff(parent)
         if not self._staff:
             raise NoAncestorStaffError
         self.staff._register_staff_object(self)  # Register object with staff
@@ -38,18 +37,20 @@ class StaffObject:
 
     ######## PRIVATE METHODS ########
 
-    def _find_ancestor_staff(self):
-        """Find the first ancestor which is a Staff
+    @staticmethod
+    def _find_staff(graphic_object):
+        """Find the first staff which is `graphic_object` or an ancestor of it.
 
-        Returns: Staff
+        Returns: Staff or None
         """
-        current = self
+        current = graphic_object
         while True:
             # NOTE: This has the potential to fall into an infinite loop
             #       if cyclic parentage exists. This should be protected
             #       against in higher-up GraphicObject parent setters
             if current is None or (not hasattr(current, 'parent')):
                 return None
-            current = current.parent
-            if type(current).__name__ == 'Staff':
+            elif type(current).__name__ == 'Staff':
                 return current
+            else:
+                current = current.parent

@@ -119,20 +119,6 @@ class GraphicObjectInterface(ABC):
 
     ######## PUBLIC METHODS ########
 
-    def pos_relative_to_item(self, other):
-        """Find this object's position relative to another GraphicObjectInterface
-
-        Args:
-            other (GraphicObjectInterface): The object to map from
-
-        Returns: Point
-        """
-        x_type = type(self.pos.x)
-        y_type = type(self.pos.y)
-        rel_qt_pos = self._qt_object.mapToItem(other._qt_object,
-                                                 0, 0)
-        return Point(x_type(rel_qt_pos.x()), y_type(rel_qt_pos.y()))
-
     def render(self):
         """Render the object to the scene.
 

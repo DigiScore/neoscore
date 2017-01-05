@@ -144,35 +144,41 @@ class GraphicObject(ABC):
         else:
             raise NotImplementedError  # TODO
 
-    ######## PUBLIC METHODS ########
+    ######## CLASS METHODS ########
 
-    def pos_relative_to_origin(self):
-        """Find this object's position relative to the document origin.
+    @classmethod
+    def map_from_origin(cls, item):
+        """Find an object's position relative to the document origin.
 
         Return: Point
         """
         pos = Point.with_unit((0, 0), unit=Unit)
-        current = self
+        current = item
         while current is not None:
             pos += current.pos
             current = current.parent
             if type(current).__name__ == 'FlowableFrame':
                 # If it turns out we are inside a flowable frame,
                 # just short circuit and ask it where we are
-                return current._map_to_doc(self.pos)
-        return pos * -1
+                return current._map_to_doc(item)
+        return pos
 
-    def pos_relative_to_item(self, other):
-        """Find this object's position relative to another GraphicObject
+    @classmethod
+    def map_between_items(cls, source, destination):
+        """Find a GraphicObject's position relative to another GraphicObject
 
         Args:
-            other (GraphicObject): The object to map from
+            source (GraphicObject): The object to map from
+            destination (GraphicObject): The object to map to
 
         Returns: Point
         """
         # inefficient for now - find position relative to doc root of both
         # and find delta between the two.
-        return other.pos_relative_to_origin() - self.pos_relative_to_origin()
+        return (cls.map_from_origin(destination) -
+                cls.map_from_origin(source))
+
+    ######## PUBLIC METHODS ########
 
     def render(self):
         """Render the object to the scene.
@@ -287,7 +293,8 @@ class GraphicObject(ABC):
         """
         Render the continuation of an object after a break and before another.
 
-        For use in flowable containers when rendering an object that
+        For use in flowable containers when rendering an object
+        that
         crosses two breaks. This function should render the
         portion of the object surrounded by breaks on either side.
 

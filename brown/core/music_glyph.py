@@ -18,10 +18,9 @@ class MusicGlyph(Glyph, StaffObject):
 
     def __init__(self, pos, canonical_name, font=None, parent=None):
         if font is None:
-            # FIXME: find ancestor staff without initializing StaffObject
-            #         assumes that the direct parent is a Staff
+            staff = StaffObject._find_staff(parent)
             font = MusicFont(config.DEFAULT_MUSIC_FONT_NAME,
-                             parent.unit)
+                             staff.unit)
         # type check font is MusicFont before sending to init?
         self._canonical_name = canonical_name
         codepoint = font.glyph_info(self.canonical_name)['codepoint']
@@ -29,7 +28,7 @@ class MusicGlyph(Glyph, StaffObject):
         StaffObject.__init__(self, parent)
         self._generate_glyph_info()
 
-    ######## PUBLIC PROPERTIES ########n
+    ######## PUBLIC PROPERTIES ########
 
     @property
     def canonical_name(self):

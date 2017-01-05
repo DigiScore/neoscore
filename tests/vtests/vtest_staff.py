@@ -21,17 +21,20 @@ flow.render()
 # glyph.render()
 # glyph2 = Glyph((Mm(1000), Mm(10)), "I", parent=flow)
 # glyph2.render()
-staff = Staff((Mm(0), Mm(0)), Mm(2000), flow, Mm(2))
+staff = Staff((Mm(0), Mm(0)), Mm(2000), flow, Mm(1))
 staff.render()
 
-glyph = MusicGlyph((staff.unit(5), staff.unit(0.5)), 'noteheadBlack', parent=staff)
+glyph = MusicGlyph((staff.unit(10), staff.unit(0.5)), 'noteheadBlack', parent=staff)
 glyph.render()
+
+glyph2 = MusicGlyph((staff.unit(10), staff.unit(0)), 'noteheadBlack', parent=glyph)
+glyph2.render()
+
+glyph3 = MusicGlyph((staff.unit(1), staff.unit(10)), 'noteheadBlack', parent=glyph2)
+glyph3.render()
 
 treble_clef = Clef(staff, Mm(0), 'treble')
 treble_clef.render()
-
-bass_clef = Clef(staff, Mm(20), 'bass')
-bass_clef.render()
 
 # clef_bbox = treble_clef._bounding_rect
 # print('clef bounding box: {}'.format(clef_bbox))

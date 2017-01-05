@@ -71,7 +71,7 @@ class Path(GraphicObject):
         beginning a new one.
         """
         if self.elements:
-            return self.elements[-1].pos_relative_to_item(self)
+            return Path.map_between_items(self, self.elements[-1])
         else:
             return Point.with_unit((0, 0), unit=GraphicUnit)
 

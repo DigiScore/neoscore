@@ -77,10 +77,3 @@ class TestGraphicObjectInterface(unittest.TestCase):
         child = MockGraphicObjectInterface((100, 100))
         child.parent = parent
         assert(child._qt_object.parentItem() == child._parent._qt_object)
-
-    def test_pos_relative_to_item(self):
-        grob = MockGraphicObjectInterface((100, 100))
-        other_object = MockGraphicObjectInterface((5, 6))
-        relative_x, relative_y = grob.pos_relative_to_item(other_object)
-        assert(relative_x.value == 95)
-        assert(relative_y.value == 94)
