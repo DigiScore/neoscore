@@ -35,35 +35,8 @@ class FlowableFrame(InvisibleObject):
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def pos(self):
-        """Point: The starting point of the frame on the first page."""
-        return self._pos
-
-    @pos.setter
-    def pos(self, value):
-        self._pos = value
-
-    @property
-    def x(self):
-        """GraphicUnit:"""
-        return self.pos.x
-
-    @x.setter
-    def x(self, value):
-        self.pos.x = value
-
-    @property
-    def y(self):
-        """GraphicUnit:"""
-        return self.pos.y
-
-    @y.setter
-    def y(self, value):
-        self.pos.y = value
-
-    @property
     def width(self):
-        """GraphicUnit:"""
+        """Unit: The width (length) of the unwrapped frame"""
         return self._width
 
     @width.setter
@@ -72,7 +45,7 @@ class FlowableFrame(InvisibleObject):
 
     @property
     def height(self):
-        """GraphicUnit:"""
+        """Unit: The height of the unwrapped frame"""
         return self._height
 
     @height.setter
@@ -81,7 +54,7 @@ class FlowableFrame(InvisibleObject):
 
     @property
     def y_padding(self):
-        """GraphicUnit:"""
+        """Unit: The padding between wrapped sections of the frame"""
         return self._y_padding
 
     @y_padding.setter
@@ -140,7 +113,7 @@ class FlowableFrame(InvisibleObject):
                 self.layout_controllers.append(
                     AutoNewLine(self, x_progress, page_number, pos_on_page, self.y_padding))
 
-    def _map_to_doc(self, point):
+    def _map_to_doc(self, local_point):
         """Convert a position inside the frame to its position in the document.
 
         Coordinates relative to the top left corner of the first page.
@@ -153,7 +126,6 @@ class FlowableFrame(InvisibleObject):
 
         NOTE: This currently assumes that the frame's direct parent is None (the scene)
         """
-        local_point = Point(point)
         if local_point.x < 0 or local_point.x > self.width:
             raise OutOfBoundsError(
                 '{} lies outside of the FlowableFrame'.format(local_point))
@@ -161,7 +133,11 @@ class FlowableFrame(InvisibleObject):
         line_start_doc_pos = last_break_before.doc_start_pos
         offset_from_line_start = Point(local_point.x - last_break_before.x,
                                        local_point.y)
-        return line_start_doc_pos + offset_from_line_start
+        mapped_pos = line_start_doc_pos + offset_from_line_start
+        # Ensure x, y units are same as input point
+        # TODO: Maybe implement this functionality in Point
+        return Point(type(local_point.x)(mapped_pos.x),
+                     type(local_point.y)(mapped_pos.y))
 
     def _x_pos_rel_to_line_start(self, x):
         """Find the distance of an x-pos to the left edge of its laid-out line.

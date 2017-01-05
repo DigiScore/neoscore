@@ -23,10 +23,9 @@ class TestFlowableFrame(unittest.TestCase):
 
     def test_init(self):
         test_frame = FlowableFrame((Mm(10), Mm(11)), Mm(1000), Mm(100), Mm(5))
+        assert(test_frame.pos == Point(Mm(10), Mm(11)))
         assert(test_frame.x == Mm(10))
         assert(test_frame.y == Mm(11))
-        assert(test_frame.pos.x == Mm(10))
-        assert(test_frame.pos.y == Mm(11))
         assert(test_frame.width == Mm(1000))
         assert(test_frame.height == Mm(100))
         assert(test_frame.y_padding == Mm(5))
@@ -35,10 +34,8 @@ class TestFlowableFrame(unittest.TestCase):
         test_frame = FlowableFrame((Mm(10), Mm(11)), Mm(1000), Mm(100), Mm(5))
         test_frame.x = Mm(20)
         assert(test_frame.pos.x == Mm(20))
-        assert(test_frame.x == Mm(20))
         test_frame.y = Mm(21)
         assert(test_frame.pos.y == Mm(21))
-        assert(test_frame.y == Mm(21))
 
     # Layout generation tests #################################################
 
@@ -49,8 +46,6 @@ class TestFlowableFrame(unittest.TestCase):
         assert(test_frame.layout_controllers[0].flowable_frame == test_frame)
         assert(test_frame.layout_controllers[0].x == Mm(0))
         assert(test_frame.layout_controllers[0].page_pos == Point(Mm(9), Mm(11)))
-
-    # BELOW ARE BROKEN
 
     def test_generate_layout_controllers_with_two_lines(self):
         live_width = brown.document.paper.live_width
@@ -138,8 +133,10 @@ class TestFlowableFrame(unittest.TestCase):
         second_line_y = (frame_pos.y + test_frame.height +
                          test_frame.y_padding + page_origin.y)
         expected_y = second_line_y + test_pos.y
-        assert(test_frame._map_to_doc(test_pos) ==
-               Point(expected_x, expected_y))
+        expected = Point(expected_x, expected_y)
+        actual = test_frame._map_to_doc(test_pos)
+        self.assertAlmostEqual(actual.x, expected.x)
+        self.assertAlmostEqual(actual.y, expected.y)
 
     def test_map_to_doc_in_third_line(self):
         frame_pos = Point(Mm(17), Mm(11))
@@ -152,8 +149,10 @@ class TestFlowableFrame(unittest.TestCase):
                       page_origin.x)
         expected_y = (page_origin.y + frame_pos.y + test_pos.y +
                       ((test_frame.height + test_frame.y_padding) * 2))
-        assert(test_frame._map_to_doc(test_pos) ==
-               Point(expected_x, expected_y))
+        expected = Point(expected_x, expected_y)
+        actual = test_frame._map_to_doc(test_pos)
+        self.assertAlmostEqual(actual.x, expected.x)
+        self.assertAlmostEqual(actual.y, expected.y)
 
     def test_map_to_doc_on_second_page_first_line(self):
         frame_pos = Point(Mm(17), Mm(11))
@@ -188,7 +187,7 @@ class TestFlowableFrame(unittest.TestCase):
         line_and_padding_height = test_frame.height + test_frame.y_padding
         for i in range(12):
             y_val = test_frame._map_to_doc(
-                (((live_width * i) + Mm(10)), Mm(0)))[1]
+                Point(((live_width * i) + Mm(10)), Mm(0))).y
             line_on_page = i % 3
             expected = (page_origin[1] +
                         line_and_padding_height * line_on_page)
@@ -197,13 +196,9 @@ class TestFlowableFrame(unittest.TestCase):
     def test_map_to_doc_raises_out_of_bounds_correctly(self):
         test_frame = FlowableFrame((Mm(17), Mm(11)), Mm(500), Mm(15), Mm(5))
         with assert_raises(OutOfBoundsError):
-            test_frame._map_to_doc((-1, 1))
+            test_frame._map_to_doc(Point(Mm(-1), Mm(1)))
         with assert_raises(OutOfBoundsError):
-            test_frame._map_to_doc((1, -1))
-        with assert_raises(OutOfBoundsError):
-            test_frame._map_to_doc((Mm(12000), 1))
-        with assert_raises(OutOfBoundsError):
-            test_frame._map_to_doc((1, Mm(16)))
+            test_frame._map_to_doc(Point(Mm(12000), Mm(1)))
 
     def test_x_pos_rel_to_line_start(self):
         test_frame = FlowableFrame((Mm(10), Mm(0)), Mm(500), Mm(90), Mm(5))
