@@ -39,19 +39,6 @@ class MusicFont(Font):
         """dict: The SMuFL engraving defaults information for this font"""
         return self._engraving_defaults
 
-    ######## PRIVATE METHODS ########
-
-    def _calculate_approximate_em_size(self):
-        """Approximate the em size in the font.
-
-        HACK: Because Qt doesn't make it clear how to find the true em height,
-              we have to compute the em height by taking the height of a simple
-              notehead (1/4 em unit) and multiply it by 4.
-
-        Returns: GraphicUnit
-        """
-        return self._interface.tight_bounding_rect_around('\uE0A4').height * 4
-
     ######## PUBLIC METHODS ########
 
     def glyph_info(self, glyph_name):

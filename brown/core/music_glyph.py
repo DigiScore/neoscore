@@ -21,6 +21,8 @@ class MusicGlyph(Glyph, StaffObject):
             staff = StaffObject._find_staff(parent)
             font = MusicFont(config.DEFAULT_MUSIC_FONT_NAME,
                              staff.unit)
+        elif not isinstance(font, MusicFont):
+            raise TypeError('MusicGlyph.font must be of type MusicFont')
         # type check font is MusicFont before sending to init?
         self._canonical_name = canonical_name
         codepoint = font.glyph_info(self.canonical_name)['codepoint']
