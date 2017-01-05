@@ -27,7 +27,7 @@ staff.render()
 glyph = MusicGlyph((staff.unit(10), staff.unit(0.5)), 'noteheadBlack', parent=staff)
 glyph.render()
 
-glyph2 = MusicGlyph((staff.unit(10), staff.unit(0)), 'noteheadBlack', parent=glyph)
+glyph2 = MusicGlyph((staff.unit(10), staff.unit(1)), 'noteheadBlack', parent=glyph)
 glyph2.render()
 
 glyph3 = MusicGlyph((staff.unit(1), staff.unit(10)), 'noteheadBlack', parent=glyph2)
@@ -36,14 +36,8 @@ glyph3.render()
 treble_clef = Clef(staff, Mm(0), 'treble')
 treble_clef.render()
 
-# clef_bbox = treble_clef._bounding_rect
-# print('clef bounding box: {}'.format(clef_bbox))
-# path = Path(flow._map_to_doc(treble_clef.pos + Point(clef_bbox.x, clef_bbox.y)))
-# path.line_to((clef_bbox.width, Mm(0)))
-# path.line_to((clef_bbox.width, clef_bbox.height))
-# path.render()
-
-# for i in range(100):
-#     Clef(staff, Mm(i*5), 'treble').render()
+path = Path((Mm(0), Mm(0)), parent=glyph)
+path.line_to((Mm(10), Mm(3)))
+path.render()
 
 brown.show()

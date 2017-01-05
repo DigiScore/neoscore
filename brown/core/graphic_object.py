@@ -152,6 +152,9 @@ class GraphicObject(ABC):
 
         Return: Point
         """
+        if not isinstance(item, cls):
+            raise TypeError(
+                'Cannot map {} from origin'.format(type(item).__name__))
         pos = Point.with_unit((0, 0), unit=Unit)
         current = item
         while current is not None:
@@ -160,7 +163,7 @@ class GraphicObject(ABC):
             if type(current).__name__ == 'FlowableFrame':
                 # If it turns out we are inside a flowable frame,
                 # just short circuit and ask it where we are
-                return current._map_to_doc(item)
+                return current._map_to_doc(pos)
         return pos
 
     @classmethod
@@ -193,7 +196,7 @@ class GraphicObject(ABC):
     ######## PRIVATE METHODS ########
 
     def _render_flowable(self):
-        """Render the line to the scene, dispatching partial rendering calls
+        """Render the object to the scene, dispatching partial rendering calls
         when needed if an object flows across a break in the frame.
 
         Returns: None
@@ -202,7 +205,9 @@ class GraphicObject(ABC):
         remaining_x = self.breakable_width
         remaining_x += self.frame._dist_to_line_end(self.x)
         if remaining_x < 0:
-            self._render_complete(self.frame._map_to_doc(self.pos))
+            # self._render_complete(self.frame._map_to_doc(self.pos))
+            global_pos = GraphicObject.map_from_origin(self)
+            self._render_complete(GraphicObject.map_from_origin(self))
             return
         first_line_i = self.frame._last_break_index_at(self.x)
         # Render before break
@@ -225,8 +230,7 @@ class GraphicObject(ABC):
             else:
                 break
         # Render end
-        render_start_pos = self.frame._map_to_doc(
-                    Point(current_line.x, self.y))
+        render_start_pos = self.frame._map_to_doc(Point(current_line.x, self.y))
         render_end_pos = render_start_pos + Point(remaining_x, 0)
         self._render_after_break(self.breakable_width - remaining_x,
                                  render_start_pos,

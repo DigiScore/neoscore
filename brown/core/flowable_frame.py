@@ -150,6 +150,8 @@ class FlowableFrame(InvisibleObject):
 
         Returns:
             Point: An x-y coordinate in document space
+
+        NOTE: This currently assumes that the frame's direct parent is None (the scene)
         """
         local_point = Point(point)
         if local_point.x < 0 or local_point.x > self.width:

@@ -251,13 +251,14 @@ class Path(GraphicObject):
         if start_x is None:
             start_x = 0
         adjusted_pos = Point(pos.x - start_x, pos.y)
-        self._interface = PathInterface(
-            adjusted_pos,
-            self.pen,
-            self.brush,
-            self.parent._interface if self.parent else None,
-            start_x,
-            length)
+        self._interface = self._interface_class(
+            pos=adjusted_pos,
+            pen=self.pen,
+            brush=self.brush,
+            # Don't pass parent as part of experimental shift away from interface parentage
+            # self.parent._interface if self.parent else None,
+            clip_start_x=start_x,
+            clip_width=length)
         # Position calculations will probably have to be made in reference
         # to doc-space position of points in case of AnchoredPoints,
         # so this will probably need to be revisited
