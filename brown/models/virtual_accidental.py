@@ -19,16 +19,22 @@ class VirtualAccidental:
     ######## SPECIAL METHODS ########
 
     def __repr__(self):
+        """Represent the accidental as the code needed to instantiate it"""
         return '{}("{}")'.format(type(self).__name__,
                                  self.value_as_str)
 
     def __eq__(self, other):
+        """Two accidentals are equal if their values are equal"""
         return isinstance(other, type(self)) and self.value == other.value
 
     def __hash__(self):
+        """Hash based on the __repr__() of the accidental.
+
+        VirtualAccidentals with different values will have different hashes"""
         return hash(self.__repr__())
 
     def __lt__(self, other):
+        """An accidental is less than another if its numeric value is"""
         return isinstance(other, type(self)) and self.value < other.value
 
     ######## PUBLIC PROPERTIES ########

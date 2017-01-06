@@ -60,13 +60,33 @@ class Pitch:
     ######## SPECIAL METHODS ########
 
     def __repr__(self):
+        """Represent the pitch as the code needed to instantiate it"""
         return '{}("{}")'.format(type(self).__name__, self.string_desriptor)
 
     def __eq__(self, other):
+        """Two Pitches are equal if all of their attributes are equal
+
+        Note that two pitches with the same midi number are not
+        necessarily equal. Enharmonically equivalent pitches are
+        not equal to each other.
+
+            >>> Pitch("c") == Pitch("c")
+            True
+            >>> Pitch("c") == Pitch("bs,")
+            False
+            >>> Pitch("c").midi_number == Pitch("bs,").midi_number
+            True
+        """
         return (isinstance(other, type(self)) and
                 self.letter == other.letter and
                 self.virtual_accidental == other.virtual_accidental and
                 self.octave == other.octave)
+
+    def __hash__(self):
+        """Hash based on the __repr__() of the Pitch.
+
+        Pitches with different attributes will have different hashes"""
+        return hash(self.__repr__())
 
     ######## PUBLIC PROPERTIES ########
 
