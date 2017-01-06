@@ -18,8 +18,18 @@ class VirtualAccidental:
 
     ######## SPECIAL METHODS ########
 
+    def __repr__(self):
+        return '{}("{}")'.format(type(self).__name__,
+                                 self.value_as_str)
+
     def __eq__(self, other):
         return isinstance(other, type(self)) and self.value == other.value
+
+    def __hash__(self):
+        return hash(self.__repr__())
+
+    def __lt__(self, other):
+        return isinstance(other, type(self)) and self.value < other.value
 
     ######## PUBLIC PROPERTIES ########
 
