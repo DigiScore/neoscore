@@ -83,14 +83,14 @@ class ChordRest(ObjectGroup, StaffObject):
     @property
     def highest_notehead(self):
         """Notehead of None: The highest Notehead in the chord."""
-        return max(self.noteheads,
+        return min(self.noteheads,
                    key=lambda n: n.staff_position,
                    default=None)
 
     @property
     def lowest_notehead(self):
         """Notehead of None: The lowest Notehead in the chord."""
-        return min(self.noteheads,
+        return max(self.noteheads,
                    key=lambda n: n.staff_position,
                    default=None)
 
@@ -98,14 +98,14 @@ class ChordRest(ObjectGroup, StaffObject):
     def leftmost_notehead(self):
         """Notehead or None: the Notehead furthest to the left in the chord"""
         return min(self.noteheads,
-                   key=lambda n: n.position_x,
+                   key=lambda n: n.x,
                    default=None)
 
     @property
     def rightmost_notehead(self):
         """Notehead or None: the Notehead furthest to the right in the chord"""
         return max(self.noteheads,
-                   key=lambda n: n.position_x,
+                   key=lambda n: n.x,
                    default=None)
 
     @property
@@ -123,8 +123,8 @@ class ChordRest(ObjectGroup, StaffObject):
         elif len(self.noteheads) == 1:
             return self.widest_notehead.visual_width
         else:
-            return (self.rightmost_notehead.position_x -
-                    self.leftmost_notehead.position_x +
+            return (self.rightmost_notehead.x -
+                    self.leftmost_notehead.x +
                     self.widest_notehead.visual_width)
 
     @property
@@ -137,14 +137,14 @@ class ChordRest(ObjectGroup, StaffObject):
     def leftmost_notehead_outside_staff(self):
         """Notehead or None: the Notehead furthest to the left outside the staff"""
         return min(self.noteheads_outside_staff,
-                   key=lambda n: n.position_x,
+                   key=lambda n: n.x,
                    default=None)
 
     @property
     def rightmost_notehead_outside_staff(self):
         """Notehead or None: the Notehead furthest to the right outside the staff"""
         return max(self.noteheads_outside_staff,
-                   key=lambda n: n.position_x,
+                   key=lambda n: n.x,
                    default=None)
 
     @property
@@ -152,25 +152,27 @@ class ChordRest(ObjectGroup, StaffObject):
         """Unit: The total width of any noteheads outside the staff"""
         if not self.noteheads:
             return 0
-        elif len(self.noteheads) == 1:
+        elif len(list(self.noteheads)) == 1:
             return self.widest_notehead.visual_width
         else:
-            return (self.rightmost_notehead_outside_staff.position_x -
-                    self.leftmost_notehead_outside_staff.position_x +
+            return (self.rightmost_notehead_outside_staff.x -
+                    self.leftmost_notehead_outside_staff.x +
                     self.widest_notehead.visual_width)
 
     @property
     def stem_direction(self):
-        """int: The direction of the stem, either 1 (up) or -1 (down)
+        """int: The direction of the stem, either 1 (down) or -1 (up)
 
         Takes the notehead furthest from the center of the staff,
         and returns the opposite direction.
 
-        If the furthest is at position 0, default to -1.
+        If the furthest notehead is in the center of the staff,
+        the direction defaults to 1
         """
         furthest = self.furthest_notehead
         if furthest:
-            return 1 if furthest.staff_position < 0 else -1
+            return (1 if furthest.staff_position <= self.staff.center_pos_y
+                    else -1)
         else:
             return None
 
@@ -182,8 +184,8 @@ class ChordRest(ObjectGroup, StaffObject):
         self._position_accidentals_horizontally()
         # Generate non-notehead group members
         self._create_accidentals()
-        #self._create_ledgers()
-        #self._create_stem()
+        self._create_ledgers()
+        self._create_stem()
         super().render()
 
     ######## PRIVATE METHODS ########
@@ -199,14 +201,14 @@ class ChordRest(ObjectGroup, StaffObject):
         Warning: This overwrites the contents of `self.ledgers`
         """
         # Calculate x position and length of ledger lines
-        x_position = self.leftmost_notehead.position_x - (0.3 * self.staff.staff_unit)
-        length = self.notehead_column_outside_staff_width + (0.6 * self.staff.staff_unit)
+        pos_x = self.leftmost_notehead.x - (self.staff.unit(0.15))
+        length = self.notehead_column_outside_staff_width + (self.staff.unit(0.3))
         # Flush any existing ledgers:
         self._objects = set(item for item in self.objects
                             if not isinstance(item, LedgerLine))
         for staff_pos in self.ledger_line_positions:
             self.register_object(
-                LedgerLine(self, x_position, staff_pos, length))
+                LedgerLine(Point(pos_x, staff_pos), self, length))
 
     def _create_accidentals(self):
         """TODO"""
@@ -217,22 +219,23 @@ class ChordRest(ObjectGroup, StaffObject):
 
         Returns: None
         """
-        start = self.furthest_notehead.staff_position
-        end = start + self.stem_direction * 6
-        self._stem = Stem(self, 0, start, end)
+        start = Point(self.staff.unit(0),
+                      self.furthest_notehead.staff_position)
+        height = self.staff.unit(5) * self.stem_direction
+        self._stem = Stem(start, height, self)
+        self.register_object(self._stem)
 
     def _position_noteheads_horizontally(self):
         """Reposition noteheads so that they are laid out correctly
 
-        Decides which noteheads lie on which side of the staff, and
-        modifies positions when needed by directly changing the grobs'
-        `position_x` properties.
+        Decides which noteheads lie on which side of the staff,
+        and modifies positions when needed.
 
         Returns: None
         """
         # Find the preferred side of the stem for noteheads,
         # where 1 means right and -1 means left
-        default_side = self.stem_direction * -1
+        default_side = self.stem_direction
         # Start last staff pos at sentinel infinity position
         prev_staff_pos = self.staff.unit(float("inf"))
         # Start prev_side at wrong side so first note goes on the default side
@@ -247,7 +250,7 @@ class ChordRest(ObjectGroup, StaffObject):
                 prev_side = default_side
             # Reposition, using prev_side (here) as the chosen side for this note
             if prev_side == -1:
-                note.position_x -= note.visual_width
+                note.x -= note.visual_width
             # Lastly, update prev_staff_pos
             prev_staff_pos = note.staff_position
 

@@ -60,8 +60,12 @@ class QClippingPath(QtWidgets.QGraphicsPathItem):
             clip_width = bounding_rect.width() - start_x
         else:
             clip_width = float(Unit(clip_width))
-        clipping_rect = QtCore.QRectF(start_x, bounding_rect.y(),
-                                      clip_width, bounding_rect.height())
+        pen_padding = self.pen().width()
+        clipping_rect = QtCore.QRectF(start_x - pen_padding,
+                                      bounding_rect.y() - pen_padding,
+                                      clip_width + pen_padding,
+                                      bounding_rect.height() + pen_padding,
+        )
         clipping_area = QtGui.QPainterPath()
         clipping_area.addRect(clipping_rect)
 

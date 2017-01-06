@@ -37,136 +37,97 @@ class TestStaff(unittest.TestCase):
             Mm(3))
 
     def test_active_clef_at_with_explicit_clefs(self):
-        test_staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
-        test_treble_clef = Clef(test_staff, 0,  'treble')
-        test_bass_clef = Clef(test_staff, 10, 'bass')
+        staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
+        treble_clef = Clef(staff, 0,  'treble')
+        bass_clef = Clef(staff, 10, 'bass')
         # Test between two clefs should have treble in effect
-        assert(test_staff.active_clef_at(5) == test_treble_clef)
+        assert(staff.active_clef_at(5) == treble_clef)
         # Test after bass clef goes into effect
-        assert(test_staff.active_clef_at(15) == test_bass_clef)
+        assert(staff.active_clef_at(15) == bass_clef)
 
     def test_active_clef_at_with_implicit_default_clef(self):
-        test_staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
-        assert(test_staff.active_clef_at(Mm(5)) is None)
+        staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
+        assert(staff.active_clef_at(Mm(5)) is None)
 
     def test_middle_c_at_with_explicit_clefs(self):
-        test_staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
-        test_treble_clef = Clef(test_staff, 0,  'treble')
-        test_bass_clef = Clef(test_staff, 10, 'bass')
+        staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
+        treble_clef = Clef(staff, 0,  'treble')
+        bass_clef = Clef(staff, 10, 'bass')
         # Test between two clefs should be in treble mode
-        assert(test_staff.middle_c_at(5) == test_staff.unit(5))
+        assert(staff.middle_c_at(5) == staff.unit(5))
         # Test after bass clef goes into effect
-        assert(test_staff.middle_c_at(15) == test_staff.unit(-1))
+        assert(staff.middle_c_at(15) == staff.unit(-1))
 
     def test_middle_c_at_with_implicit_default_clef(self):
-        test_staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
+        staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
         with assert_raises(NoClefError):
-            test_staff.middle_c_at(Mm(5))
+            staff.middle_c_at(Mm(5))
 
     def test_natural_midi_number_of_top_line_at_with_explicit_clefs(self):
-        test_staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
-        test_treble_clef = Clef(test_staff, 0,  'treble')
-        test_bass_clef = Clef(test_staff, 10, 'bass')
+        staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
+        treble_clef = Clef(staff, 0,  'treble')
+        bass_clef = Clef(staff, 10, 'bass')
         # Test between two clefs should be in treble mode
-        assert(test_staff._natural_midi_number_of_top_line_at(5) == 77)
+        assert(staff._natural_midi_number_of_top_line_at(5) == 77)
         # Test after bass clef goes into effect
-        assert(test_staff._natural_midi_number_of_top_line_at(15) == 57)
+        assert(staff._natural_midi_number_of_top_line_at(15) == 57)
 
     def test_natural_midi_number_of_top_line_at_with_implicit_default_clef(self):
-        test_staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
+        staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
         # No clef specified - should default to treble
-        assert(test_staff._natural_midi_number_of_top_line_at(5) == 77)
+        assert(staff._natural_midi_number_of_top_line_at(5) == 77)
 
-    def test_position_outside_staff_with_odd_line_count(self):
-        test_staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame, line_count=5)
-        assert(test_staff._position_outside_staff(0) is False)
-        assert(test_staff._position_outside_staff(4) is False)
-        assert(test_staff._position_outside_staff(-4) is False)
-        assert(test_staff._position_outside_staff(5) is True)
-        assert(test_staff._position_outside_staff(-5) is True)
-
-    def test_position_outside_staff_with_even_line_count(self):
-        test_staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame, line_count=4)
-        assert(test_staff._position_outside_staff(0) is False)
-        assert(test_staff._position_outside_staff(3) is False)
-        assert(test_staff._position_outside_staff(-3) is False)
-        assert(test_staff._position_outside_staff(4) is True)
-        assert(test_staff._position_outside_staff(-4) is True)
+    def test_position_outside_staff_is_inverse_of_inside(self):
+        staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame, line_count=4)
+        i = -1
+        while i < 5:
+            assert(staff._position_outside_staff(staff.unit(i)) !=
+                   staff._position_inside_staff(staff.unit(i)))
+            i += 1
 
     def test_position_inside_staff_with_odd_line_count(self):
-        test_staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame, line_count=5)
-        assert(test_staff._position_inside_staff(0) is True)
-        assert(test_staff._position_inside_staff(4) is True)
-        assert(test_staff._position_inside_staff(-4) is True)
-        assert(test_staff._position_inside_staff(5) is False)
-        assert(test_staff._position_inside_staff(-5) is False)
+        staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame, line_count=5)
+        assert(staff._position_inside_staff(staff.unit(0)) is True)
+        assert(staff._position_inside_staff(staff.unit(4)) is True)
+        assert(staff._position_inside_staff(staff.unit(5)) is False)
+        assert(staff._position_inside_staff(staff.unit(-5)) is False)
 
     def test_position_inside_staff_with_even_line_count(self):
-        test_staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame, line_count=4)
-        assert(test_staff._position_inside_staff(0) is True)
-        assert(test_staff._position_inside_staff(3) is True)
-        assert(test_staff._position_inside_staff(-3) is True)
-        assert(test_staff._position_inside_staff(4) is False)
-        assert(test_staff._position_inside_staff(-4) is False)
+        staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame, line_count=4)
+        assert(staff._position_inside_staff(staff.unit(0)) is True)
+        assert(staff._position_inside_staff(staff.unit(3)) is True)
+        assert(staff._position_inside_staff(staff.unit(4)) is False)
+        assert(staff._position_inside_staff(staff.unit(-4)) is False)
 
     def test_position_on_ledger_with_odd_line_count(self):
-        test_staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame, line_count=5)
-        assert(test_staff._position_on_ledger(0) is False)
-        assert(test_staff._position_on_ledger(4) is False)
-        assert(test_staff._position_on_ledger(-4) is False)
-        assert(test_staff._position_on_ledger(6) is True)
-        assert(test_staff._position_on_ledger(-6) is True)
-        assert(test_staff._position_on_ledger(7) is False)
-        assert(test_staff._position_on_ledger(-7) is False)
-        assert(test_staff._position_on_ledger(8) is True)
-        assert(test_staff._position_on_ledger(-8) is True)
-
-    def test_position_on_ledger_with_even_line_count(self):
-        test_staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame, line_count=4)
-        assert(test_staff._position_on_ledger(0) is False)
-        assert(test_staff._position_on_ledger(3) is False)
-        assert(test_staff._position_on_ledger(-3) is False)
-        assert(test_staff._position_on_ledger(4) is False)
-        assert(test_staff._position_on_ledger(-4) is False)
-        assert(test_staff._position_on_ledger(5) is True)
-        assert(test_staff._position_on_ledger(-5) is True)
-        assert(test_staff._position_on_ledger(6) is False)
-        assert(test_staff._position_on_ledger(-6) is False)
-        assert(test_staff._position_on_ledger(7) is True)
-        assert(test_staff._position_on_ledger(-7) is True)
+        staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame, line_count=5)
+        assert(staff._position_on_ledger(staff.unit(-1)) is True)
+        assert(staff._position_on_ledger(staff.unit(-0.5)) is False)
+        assert(staff._position_on_ledger(staff.unit(0)) is False)
+        assert(staff._position_on_ledger(staff.unit(4)) is False)
+        assert(staff._position_on_ledger(staff.unit(4.5)) is False)
+        assert(staff._position_on_ledger(staff.unit(5)) is True)
 
     def test_ledgers_needed_from_position_with_odd_line_count(self):
-        test_staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame, line_count=5)
+        staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame, line_count=5)
         # Inside the staff, no ledgers
-        assert(test_staff._ledgers_needed_from_position(0) == set())
-        assert(test_staff._ledgers_needed_from_position(4) == set())
-        assert(test_staff._ledgers_needed_from_position(-4) == set())
+        assert(staff._ledgers_needed_from_position(staff.unit(0)) == set())
+        assert(staff._ledgers_needed_from_position(staff.unit(4)) == set())
         # Just outside the staff, no ledgers
-        assert(test_staff._ledgers_needed_from_position(5) == set())
-        assert(test_staff._ledgers_needed_from_position(-5) == set())
+        assert(staff._ledgers_needed_from_position(staff.unit(-0.5)) == set())
+        assert(staff._ledgers_needed_from_position(staff.unit(4.5)) == set())
         # Right on the first ledger
-        assert(test_staff._ledgers_needed_from_position(6) == {6})
-        assert(test_staff._ledgers_needed_from_position(-6) == {-6})
-        # Far above or below, multiple ledgers
-        assert(test_staff._ledgers_needed_from_position(10) == {6, 8, 10})
-        assert(test_staff._ledgers_needed_from_position(-10) == {-6, -8, -10})
-        assert(test_staff._ledgers_needed_from_position(11) == {6, 8, 10})
-        assert(test_staff._ledgers_needed_from_position(-11) == {-6, -8, -10})
-
-    def test_ledgers_needed_from_position_with_even_line_count(self):
-        test_staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame, line_count=4)
-        # Inside the staff, no ledgers
-        assert(test_staff._ledgers_needed_from_position(0) == set())
-        assert(test_staff._ledgers_needed_from_position(3) == set())
-        assert(test_staff._ledgers_needed_from_position(-3) == set())
-        # Just outside the staff, no ledgers
-        assert(test_staff._ledgers_needed_from_position(4) == set())
-        assert(test_staff._ledgers_needed_from_position(-4) == set())
-        # Right on the first ledger
-        assert(test_staff._ledgers_needed_from_position(5) == {5})
-        assert(test_staff._ledgers_needed_from_position(-5) == {-5})
-        # Far above or below, multiple ledgers
-        assert(test_staff._ledgers_needed_from_position(9) == {5, 7, 9})
-        assert(test_staff._ledgers_needed_from_position(-9) == {-5, -7, -9})
-        assert(test_staff._ledgers_needed_from_position(10) == {5, 7, 9})
-        assert(test_staff._ledgers_needed_from_position(-10) == {-5, -7, -9})
+        assert(staff._ledgers_needed_from_position(staff.unit(-1)) ==
+               {staff.unit(-1)})
+        assert(staff._ledgers_needed_from_position(staff.unit(5)) ==
+               {staff.unit(5)})
+        # Further outside with multiple ledgers, directly on lines
+        assert(staff._ledgers_needed_from_position(staff.unit(6)) ==
+               {staff.unit(6), staff.unit(5)})
+        assert(staff._ledgers_needed_from_position(staff.unit(-2)) ==
+               {staff.unit(-2), staff.unit(-1)})
+        # Further outside with multiple ledgers, between lines
+        assert(staff._ledgers_needed_from_position(staff.unit(6.5)) ==
+               {staff.unit(6), staff.unit(5)})
+        assert(staff._ledgers_needed_from_position(staff.unit(-2.5)) ==
+               {staff.unit(-2), staff.unit(-1)})

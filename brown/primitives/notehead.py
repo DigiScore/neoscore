@@ -24,7 +24,7 @@ class Notehead(MusicGlyph):
     @property
     def visual_width(self):
         """Unit: The width of the Notehead"""
-        return self.staff.unit(self.bounding_rect.width)
+        return self.staff.unit(self._bounding_rect.width)
 
     @property
     def pitch(self):
@@ -49,5 +49,5 @@ class Notehead(MusicGlyph):
         StaffUnit(0) means the top staff line, higher values
         mean lower pitches, and vice versa.
         """
-        return (self.staff.middle_c_at(self.map_between_items(self.staff, self).x) -
+        return (self.staff.middle_c_at(self.map_between_items(self.staff, self).x) +
                 self.staff.unit(self.pitch.staff_position_relative_to_middle_c))

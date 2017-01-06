@@ -72,20 +72,19 @@ class Staff(Path):
         return self._contents
 
     @property
-    def highest_position(self):
-        """int: The staff position of the top line
-
-        This property is read-only
-        """
-        return self.line_count - 1
+    def top_line_y(self):
+        """StaffUnit: The position of the top staff line"""
+        return self.unit(0)
 
     @property
-    def lowest_position(self):
-        """int: The staff position of the bottom line
+    def center_pos_y(self):
+        """StaffUnit: The position of the center staff position"""
+        return self.unit((self.line_count - 1) / 2)
 
-        This property is read-only.
-        """
-        return (self.line_count - 1) * -1
+    @property
+    def bottom_line_y(self):
+        """StaffUnit: The position of the bottom staff line"""
+        return self.unit((self.line_count - 1))
 
     ######## PUBLIC METHODS ########
 
@@ -153,41 +152,58 @@ class Staff(Path):
         return StaffUnit
 
     def _position_inside_staff(self, position):
-        """bool: Determine if a position is inside the staff.
+        """Determine if a position is inside the staff.
 
         This is true for any position within or on the outer lines.
+
+        Args:
+            position (StaffUnit): A vertical staff position
+
+        Returns: bool
         """
-        return self.lowest_position <= position <= self.highest_position
+        return self.top_line_y <= position <= self.bottom_line_y
 
     def _position_outside_staff(self, position):
-        """bool: Determine if a position is outside of the staff.
+        """Determine if a position is outside of the staff.
 
         This is true for any position not on or between the outer staff lines.
+
+        Args:
+            position (StaffUnit): A vertical staff position
+
+        Returns: bool
         """
         return not self._position_inside_staff(position)
 
     def _position_on_ledger(self, position):
-        """bool: Tell if a position is on a ledger line position"""
-        # If the position is outside the staff and self.count_count and
-        # position's evenness are different, a ledger line is needed
+        """Tell if a position is on a ledger line position
+
+        This is true for any whole-number position outside of the staff
+
+        Args:
+            position (StaffUnit): A vertical staff position
+
+        Returns: bool
+        """
         return (self._position_outside_staff(position) and
-                self.line_count % 2 != position % 2)
+                self.unit(position).value % 1 == 0)
 
     def _ledgers_needed_from_position(self, position):
-        """set{int}: Ledgers needed for a note at a given position."""
-        direction = 1 if position < 0 else -1
-        if position is None or self._position_inside_staff(position):
-            return set()
+        """Find the y positions of all ledgers needed for a given y position
+
+        Args:
+            position (StaffUnit): Any y-axis position
+
+        Returns: set{StaffUnit}
+        """
+        # Work on positions as integers for simplicity, but return as StaffUnits
+        start = int(round(self.unit(position).value))
+        if start < 0:
+            return set(self.unit(pos) for pos in range(start, 0, 1))
+        elif start > self.line_count - 1:
+            return set(self.unit(pos) for pos in range(start, self.line_count - 1, -1))
         else:
-            # Find start and end points for ledger generation
-            start = position
-            if not self._position_on_ledger(position):
-                start += direction
-            if direction == 1:
-                end = self.lowest_position
-            else:
-                end = self.highest_position
-            return {pos for pos in range(start, end, 2 * direction)}
+            return set()
 
     def _register_staff_object(self, staff_object):
         """Add a StaffObject to `self.contents`.

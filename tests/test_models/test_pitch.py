@@ -60,9 +60,20 @@ def test_diatonic_degree_in_c():
 
 def test_staff_position_relative_to_middle_c():
     assert(Pitch("c'").staff_position_relative_to_middle_c == 0)
-    assert(Pitch("cf'").staff_position_relative_to_middle_c == 0)
-    assert(Pitch("cn'").staff_position_relative_to_middle_c == 0)
     assert(Pitch("cs'").staff_position_relative_to_middle_c == 0)
-    assert(Pitch("d").staff_position_relative_to_middle_c == -3)
-    assert(Pitch("e").staff_position_relative_to_middle_c == -2.5)
-    assert(Pitch("b,,").staff_position_relative_to_middle_c == -7.5)
+    assert(Pitch("d'").staff_position_relative_to_middle_c == -0.5)
+    assert(Pitch("d''").staff_position_relative_to_middle_c == -4)
+    assert(Pitch("cn,").staff_position_relative_to_middle_c == 7)
+
+
+def test__eq__():
+    assert(Pitch("c") == Pitch("c"))
+    assert(Pitch("c,") == Pitch("c,"))
+    assert(Pitch("cs,") == Pitch("cs,"))
+
+
+def test__ne__():
+    assert(Pitch("c") != 'nonsense')
+    assert(Pitch("c") != Pitch("d"))
+    assert(Pitch("c") != Pitch("c,"))
+    assert(Pitch("c") != Pitch("cs"))

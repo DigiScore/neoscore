@@ -18,6 +18,9 @@ RESOURCES_DIR = os.path.join(BROWN_ROOT_DIR, 'resources')
 DEFAULT_PEN_COLOR = '#000000'
 DEFAULT_BRUSH_COLOR = '#000000'
 
+# Default pen thickness
+DEFAULT_PEN_THICKNESS = 2  # GraphicUnits
+
 # Paper type
 DEFAULT_PAPER_TYPE = 'A4'
 

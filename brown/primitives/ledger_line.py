@@ -1,48 +1,24 @@
-from brown.core import brown
-from brown.config import config
 from brown.core.path import Path
-from brown.primitives.staff import Staff
-from brown.models.pitch import Pitch
 from brown.primitives.staff_object import StaffObject
-from brown.utils import units
 
 
+class LedgerLine(Path, StaffObject):
 
-class LedgerLine(StaffObject):
-
-    def __init__(self, chordrest, position_x, staff_position, length=None):
+    def __init__(self, pos, parent, length=None):
         """
         Args:
-            chordrest (ChordRest): The parent chordrest for the ledger line
-            position_x (float): Position in pixels of the left edge of the line
-            staff_position (int): The staff position of the ledger line
-            length (float): Length in pixels of the ledger line
+            pos (Point(StaffUnit)):
+            parent (StaffObject or Staff):
+            length (StaffUnit): Length of the ledger line
         """
-        super().__init__(chordrest, position_x)
-        self._staff_position = staff_position
-        # HACK --- length should be handled more elegantly later
-        self._length = length if length else 1.75 * self.staff.staff_unit
-        self._grob = Path.straight_line(
-            (self.position_x,
-             self.staff._staff_pos_to_rel_pixels(self.staff_position)),
-            (self.length,
-             0),
-            parent=self.parent.grob
-        )
+        Path.__init__(self, pos, parent=parent)
+        StaffObject.__init__(self, parent=parent)
+        self._length = length if length is not None else self.staff.unit(0.75)
+        self.line_to(self.length, self.staff.unit(0))
 
     ######## PUBLIC PROPERTIES ########
-
-    @property
-    def staff_position(self):
-        """int: The centered staff position of the ledger line"""
-        return self._staff_position
 
     @property
     def length(self):
         """int: The length in staff units of the ledger line"""
         return self._length
-
-    ######## PUBLIC METHODS ########
-
-    def render(self):
-        self.grob.render()

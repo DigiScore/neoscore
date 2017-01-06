@@ -1,5 +1,6 @@
 from PyQt5 import QtGui
 
+from brown.config import config
 from brown.utils import color
 
 
@@ -9,15 +10,16 @@ class PenInterface:
     Currently only solid colors are supported.
     """
 
-    def __init__(self, color):
+    def __init__(self, color, thickness=None):
         """
         Args:
             color (str or tuple): Either a hexadecimal color string or a
                 3-tuple of RGB int's
         """
-        # TEMP: Initialize color to bright red to signal this not being
-        # overrided
+        # HACK: Initialize color to bright red to this not being set
+        #       by color setter
         self._qt_object = QtGui.QPen(QtGui.QColor('#FF0000'))
+        self.thickness = thickness
         self.color = color
 
     ######## PUBLIC PROPERTIES ########
@@ -44,3 +46,15 @@ class PenInterface:
         else:
             raise TypeError
         self._qt_object.setColor(QtGui.QColor(self._color))
+
+    @property
+    def thickness(self):
+        """Unit: The drawing thickness of the pen."""
+        return self._thickness
+
+    @thickness.setter
+    def thickness(self, value):
+        if value is None:
+            value = config.DEFAULT_PEN_THICKNESS
+        self._thickness = value
+        self._qt_object.setWidth(self._thickness)

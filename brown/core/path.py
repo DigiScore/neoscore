@@ -253,8 +253,8 @@ class Path(GraphicObject):
         adjusted_pos = Point(pos.x - start_x, pos.y)
         self._interface = self._interface_class(
             pos=adjusted_pos,
-            pen=self.pen,
-            brush=self.brush,
+            pen=self.pen._interface if self.pen else None,
+            brush=self.brush._interface if self.brush else None,
             # Don't pass parent as part of experimental shift away from interface parentage
             # self.parent._interface if self.parent else None,
             clip_start_x=start_x,

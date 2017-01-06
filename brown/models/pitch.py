@@ -33,7 +33,6 @@ class Pitch:
     _middle_c_octave = 4
     _midi_middle_c = 60
 
-
     def __init__(self, pitch):
         """
         Args:
@@ -52,10 +51,22 @@ class Pitch:
             TODO: Explain better, needs examples - most users will not be
                   familiar with lilypond pitch notation
         """
+        # These three are initialized by the pitch setter
         self._letter = None
         self._virtual_accidental = None
-        self._octave = None      # These three are initialized by the pitch setter
+        self._octave = None
         self.pitch = pitch
+
+    ######## SPECIAL METHODS ########
+
+    def __repr__(self):
+        return '{}("{}")'.format(type(self).__name__, self.string_desriptor)
+
+    def __eq__(self, other):
+        return (isinstance(other, type(self)) and
+                self.letter == other.letter and
+                self.virtual_accidental == other.virtual_accidental and
+                self.octave == other.octave)
 
     ######## PUBLIC PROPERTIES ########
 
@@ -148,24 +159,38 @@ class Pitch:
         """
         return Pitch._diatonic_degrees_in_c[self.letter]
 
-
     @property
     def staff_position_relative_to_middle_c(self):
-        """int: The pitch's staff position relative to middle C.
+        """float: The pitch's staff position relative to middle C.
 
-        Values are in staff units where positive values mean positions above
-        middle C, and negative values mean positions below it.
+        Values are in numeric pseudo-staff-units where positive
+        values mean positions below middle C, and negative values
+        mean positions above it.
 
         Examples:
             >>> Pitch("c'").staff_position_relative_to_middle_c
             0
             >>> Pitch("cs'").staff_position_relative_to_middle_c
             0
+            >>> Pitch("d'").staff_position_relative_to_middle_c
+            -0.5
             >>> Pitch("d''").staff_position_relative_to_middle_c
-            4
+            -4
             >>> Pitch("cn,").staff_position_relative_to_middle_c
-            -7
+            7
         """
         middle_c = (4 * 7) + 1  # C at octave 4
         note_pos = (self.octave * 7) + self.diatonic_degree_in_c
-        return (note_pos - middle_c) / 2
+        return (note_pos - middle_c) / -2
+
+    @property
+    def string_desriptor(self):
+        """str: The string that can be used to recreate this Pitch"""
+        descriptor = self.letter
+        if self.virtual_accidental.value is not None:
+            descriptor += self.virtual_accidental.value_as_str
+        if self.octave > 3:
+            descriptor += "'" * (self.octave - 3)
+        elif self.octave < 3:
+            descriptor += "," * (3 + (self.octave * -1))
+        return descriptor

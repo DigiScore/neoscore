@@ -34,8 +34,4 @@ treble_clef.render()
 chord = ChordRest(Mm(20), staff, ["c'", "a'"])
 chord.render()
 
-path = Path((Mm(0), Mm(0)), parent=glyph)
-path.line_to((Mm(10), Mm(3)))
-path.render()
-
 brown.show()

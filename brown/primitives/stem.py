@@ -2,47 +2,28 @@ from brown.core.path import Path
 from brown.primitives.staff_object import StaffObject
 
 
-class Stem(StaffObject):
+class Stem(Path, StaffObject):
 
-    def __init__(self, parent, position_x,
-                 staff_position_start, staff_position_end):
+    def __init__(self, start, height, parent):
         """
         Args:
+            start (Point(StaffUnit)): Starting point for the stem
+            height (StaffUnit): The height of the stem,
+                where positive extend downward.
             parent (StaffObject or Staff):
-            position_x (float):
-            staff_position_start (int): Staff position where the stem starts
-            staff_position_end (int): Staff position where the stem ends
         """
-        super().__init__(parent, position_x)
-        # TODO: Clean up
-        self._staff_position_start = staff_position_start
-        self._staff_position_end = staff_position_end
-        y_pos = self.staff._staff_pos_to_rel_pixels(self.staff_position_start)
-        y_delta = (self.staff_position_start - self.staff_position_end) * self.staff.staff_unit
-        self._grob = Path.straight_line(
-            (self.position_x, y_pos),
-            (0, y_delta),
-            parent=self.parent.grob
-        )
+        Path.__init__(self, start, parent=parent)
+        StaffObject.__init__(self, parent=parent)
+        self._height = height
+        # Draw stem path
+        self.line_to(self.staff.unit(0), self.height)
 
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def staff_position_start(self):
-        """int: The starting staff position"""
-        return self._staff_position_start
+    def height(self):
+        """StaffUnit: The height of the stem from its position.
 
-    @property
-    def staff_position_end(self):
-        """int: The ending staff position"""
-        return self._staff_position_end
-
-    @property
-    def length_px(self):
-        """int: The length in pixels of the ledger line"""
-        return self._length_px
-
-    ######## PUBLIC METHODS ########
-
-    def render(self):
-        self.grob.render()
+        Positive values extend downward, and vice versa.
+        """
+        return self._height

@@ -33,3 +33,16 @@ def test_value_as_str():
     input_types = ['f', 'n', 's', None]
     for case in input_types:
         assert(VirtualAccidental(case).value_as_str == case)
+
+
+def test__eq__():
+    assert(VirtualAccidental('f') == VirtualAccidental('f'))
+    assert(VirtualAccidental('n') == VirtualAccidental('n'))
+    assert(VirtualAccidental('s') == VirtualAccidental('s'))
+
+
+def test__ne__():
+    assert(VirtualAccidental('f') != VirtualAccidental('s'))
+    assert(VirtualAccidental('n') != VirtualAccidental('f'))
+    assert(VirtualAccidental('s') != VirtualAccidental('n'))
+    assert(VirtualAccidental('s') != 'nonsense')

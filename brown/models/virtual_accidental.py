@@ -16,6 +16,11 @@ class VirtualAccidental:
         """
         self.value = value
 
+    ######## SPECIAL METHODS ########
+
+    def __eq__(self, other):
+        return isinstance(other, type(self)) and self.value == other.value
+
     ######## PUBLIC PROPERTIES ########
 
     @property
