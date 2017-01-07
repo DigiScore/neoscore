@@ -55,7 +55,7 @@ class Path(GraphicObject):
         This is used to determine how and where rendering cuts should be made.
         """
         # TODO: Currently may not work for anchored elements
-        return max(el.x for el in self.elements)
+        return max((el.x for el in self.elements), default=GraphicUnit(0))
 
     @property
     def current_path_position(self):
@@ -170,29 +170,6 @@ class Path(GraphicObject):
         """
         self.move_to((0, 0))
 
-    def quad_to(self, control, end):
-        """Draw a quadratic bezier curve from the current position to a new point.
-
-        Moves `self.current_path_position` to the new end point.
-
-        Args:
-            control_1 (Point, AnchoredPoint, or tuple): The position of the
-                1st control point with an optional parent. If a parent is
-                provided, the coordinate will be relative to that.
-            end (Point, AnchoredPoint, or tuple): The position of the
-                1st control point with an optional parent. If a parent is
-                provided, the coordinate will be relative to that.
-
-        Returns: None
-
-        Notes:
-            The points may be passed in any valid set of initialization
-            arguments for AnchoredPoint objects. See the docs on AnchoredPoint
-            for a more thorough explanation.
-        """
-        # TODO: Implement me! (Priority Low)
-        raise NotImplementedError
-
     def cubic_to(self, control_1, control_2, end):
         """Draw a cubic bezier curve from the current position to a new point.
 
@@ -227,13 +204,13 @@ class Path(GraphicObject):
                 point.parent = self
         self.elements.append(PathElement(norm_control_1,
                                          PathElementType.control_point,
-                                         self, point.parent))
+                                         self, norm_control_1.parent))
         self.elements.append(PathElement(norm_control_2,
                                          PathElementType.control_point,
-                                         self, point.parent))
+                                         self, norm_control_2.parent))
         self.elements.append(PathElement(norm_end,
                                          PathElementType.curve_to,
-                                         self, point.parent))
+                                         self, norm_end.parent))
 
     def _render_slice(self, pos, start_x=None, length=None):
         """Render a horizontal slice of a path.
@@ -256,9 +233,8 @@ class Path(GraphicObject):
             # self.parent._interface if self.parent else None,
             clip_start_x=start_x,
             clip_width=length)
-        # Position calculations will probably have to be made in reference
-        # to doc-space position of points in case of AnchoredPoints,
-        # so this will probably need to be revisited
+        # Maintain a buffer of control points to be sent to the PathInterface
+        control_point_buffer = []
         for element in self.elements:
             if element.parent != self:
                 relative_pos = self.map_between_items(self, element)
@@ -269,9 +245,14 @@ class Path(GraphicObject):
             elif element.element_type == PathElementType.line_to:
                 self._interface.line_to(relative_pos)
             elif element.element_type == PathElementType.curve_to:
-                self._interface.curve_to(relative_pos)
+                if len(control_point_buffer) == 2:
+                    self._interface.cubic_to(*control_point_buffer, relative_pos)
+                else:
+                    # Quad to, or higher order curve not supported yet
+                    raise NotImplementedError
+                control_point_buffer = []
             elif element.element_type == PathElementType.control_point:
-                self._interface.control_point(relative_pos)
+                control_point_buffer.append(relative_pos)
             else:
                 raise AssertionError('Unknown element_type in Path')
         self._interface.render()
