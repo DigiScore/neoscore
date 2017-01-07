@@ -3,7 +3,6 @@ from brown.core.graphic_object import GraphicObject
 from brown.utils.point import Point
 from brown.utils.anchored_point import AnchoredPoint
 from brown.utils.units import GraphicUnit
-from brown.utils.math_helpers import min_and_max
 from brown.core.path_element import PathElement
 from brown.utils.path_element_type import PathElementType
 
@@ -263,14 +262,19 @@ class Path(GraphicObject):
         # to doc-space position of points in case of AnchoredPoints,
         # so this will probably need to be revisited
         for element in self.elements:
+            if element.parent != self:
+                relative_pos = self.map_between_items(self, element)
+                import pdb; pdb.set_trace()
+            else:
+                relative_pos = element.pos
             if element.element_type == PathElementType.move_to:
-                self._interface.move_to(element.pos)
+                self._interface.move_to(relative_pos)
             elif element.element_type == PathElementType.line_to:
-                self._interface.line_to(element.pos)
+                self._interface.line_to(relative_pos)
             elif element.element_type == PathElementType.curve_to:
-                self._interface.curve_to(element.pos)
+                self._interface.curve_to(relative_pos)
             elif element.element_type == PathElementType.control_point:
-                self._interface.control_point(element.pos)
+                self._interface.control_point(relative_pos)
             else:
                 raise AssertionError('Unknown element_type in Path')
         self._interface.render()

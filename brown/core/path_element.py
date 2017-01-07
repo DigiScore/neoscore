@@ -1,5 +1,3 @@
-from brown.utils.point import Point
-from brown.utils.units import GraphicUnit
 from brown.core.invisible_object import InvisibleObject
 from brown.utils.path_element_type import PathElementType
 
@@ -37,27 +35,3 @@ class PathElement(InvisibleObject):
     @element_type.setter
     def element_type(self, value):
         self._element_type = PathElementType(value)
-
-    @property
-    def pos(self):
-        return self._pos
-
-    @pos.setter
-    def pos(self, value):
-        self._pos = Point.with_unit(value, unit=GraphicUnit)
-
-    @property
-    def x(self):
-        return self.pos.x
-
-    @x.setter
-    def x(self, value):
-        self.pos.x = value
-
-    @property
-    def y(self):
-        return self.pos.y
-
-    @y.setter
-    def y(self, value):
-        self.pos.y = value

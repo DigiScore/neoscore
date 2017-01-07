@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from brown.core import brown
+from brown.utils.anchored_point import AnchoredPoint
 from brown.utils.units import Mm, GraphicUnit
 from brown.core.flowable_frame import FlowableFrame
 from brown.primitives.staff import Staff
@@ -18,10 +19,6 @@ brown.setup()
 flow = FlowableFrame((Mm(0), Mm(0)), Mm(35000), Mm(20), Mm(10))
 flow.render()
 
-# glyph = Glyph((Mm(0), Mm(10)), "H", parent=flow)
-# glyph.render()
-# glyph2 = Glyph((Mm(1000), Mm(10)), "I", parent=flow)
-# glyph2.render()
 staff = Staff((Mm(0), Mm(0)), Mm(2000), flow, Mm(1))
 staff.render()
 
@@ -33,5 +30,12 @@ treble_clef.render()
 
 chord = ChordRest(Mm(20), staff, ["c'", "as'", "fn'''", "gf"])
 chord.render()
+
+path = Path((Mm(0), Mm(0)), parent=glyph)
+path.line_to(Mm(3), Mm(-10))
+path.line_to(AnchoredPoint(Mm(1), Mm(0), chord))
+path.render()
+import pdb; pdb.set_trace()
+
 
 brown.show()
