@@ -176,6 +176,17 @@ class ChordRest(ObjectGroup, StaffObject):
         else:
             return None
 
+    @property
+    def stem_height(self):
+        """Unit: The height of the stem"""
+        min_abs_height = self.staff.unit(5)
+        fitted_abs_height = (abs(self.lowest_notehead.y -
+                                 self.highest_notehead.y) +
+                             self.staff.unit(2))
+        abs_height = max(min_abs_height, fitted_abs_height)
+        return abs_height * self.stem_direction
+
+
     ######## PUBLIC METHODS ########
 
     def render(self):
@@ -230,8 +241,7 @@ class ChordRest(ObjectGroup, StaffObject):
         """
         start = Point(self.staff.unit(0),
                       self.furthest_notehead.staff_position)
-        height = self.staff.unit(5) * self.stem_direction
-        self._stem = Stem(start, height, self,
+        self._stem = Stem(start, self.stem_height, self,
                           music_font=self.staff.default_music_font)
         self.register_object(self._stem)
 

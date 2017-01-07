@@ -1,11 +1,8 @@
 import unittest
 
 from brown.core import brown
-from brown.primitives.notehead import Notehead
 from brown.primitives.staff import Staff
 from brown.primitives.chordrest import ChordRest
-from brown.primitives.ledger_line import LedgerLine
-from brown.primitives.stem import Stem
 from brown.primitives.clef import Clef
 from brown.models.pitch import Pitch
 from brown.utils.units import Mm
@@ -83,3 +80,14 @@ class TestChordRest(unittest.TestCase):
         pitches = ["b'"]
         chord = ChordRest(Mm(1), self.staff, pitches)
         assert(chord.stem_direction == 1)
+
+    def test_stem_height_min(self):
+        pitches = ["b'"]
+        chord = ChordRest(Mm(1), self.staff, pitches)
+        assert(chord.stem_height == self.staff.unit(5))
+
+    def test_stem_height_fitted(self):
+        pitches = ["c'''", "g"]
+        chord = ChordRest(Mm(1), self.staff, pitches)
+        self.assertAlmostEqual(self.staff.unit(chord.stem_height).value,
+                               self.staff.unit(-10.5).value)
