@@ -15,8 +15,8 @@ RESOURCES_DIR = os.path.join(BROWN_ROOT_DIR, 'resources')
 ######## Defaults ##########################################
 
 # Default colors
-DEFAULT_PEN_COLOR = '#000000'
-DEFAULT_BRUSH_COLOR = '#000000'
+DEFAULT_PEN_COLOR = (0, 0, 0)
+DEFAULT_BRUSH_COLOR = (1, 1, 1)
 
 # Default pen thickness
 DEFAULT_PEN_THICKNESS = 2  # GraphicUnits

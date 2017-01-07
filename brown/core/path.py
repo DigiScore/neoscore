@@ -264,7 +264,6 @@ class Path(GraphicObject):
         for element in self.elements:
             if element.parent != self:
                 relative_pos = self.map_between_items(self, element)
-                import pdb; pdb.set_trace()
             else:
                 relative_pos = element.pos
             if element.element_type == PathElementType.move_to:

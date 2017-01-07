@@ -1,5 +1,5 @@
 from brown.interface.brush_interface import BrushInterface
-from brown.utils import color
+from brown.utils.color import Color
 
 
 class Brush:
@@ -13,33 +13,32 @@ class Brush:
     def __init__(self, color='#000000'):
         """
         Args:
-            color (str or tuple): Either a hexadecimal color string or a
-                3-tuple of RGB int's
+            color (Color or args for Color): The brush color
         """
-        self._interface = Brush._interface_class(color)
-        self.color = color
+        if isinstance(color, Color):
+            self.color = color
+        elif isinstance(color, tuple):
+            self.color = Color(*color)
+        else:
+            self.color = Color(color)
+        self._create_interface()
 
     ######## PUBLIC PROPERTIES ########
 
     @property
     def color(self):
-        """str: A hexadecimal color string value.
-
-        If this is set to an RGB tuple it will be converted to and stored
-        in hexadecimal form
-        """
+        """Color: The color for the brush"""
         return self._color
 
     @color.setter
     def color(self, value):
-        if isinstance(value, tuple):
-            if len(value) == 3:
-                self._color = color.rgb_to_hex(value)
-            else:
-                raise ValueError(
-                    'RGB tuple for BrushInterface must be len 3')
-        elif isinstance(value, str):
-            self._color = value
-        else:
-            raise TypeError
-        self._interface.color = self._color
+        self._color = value
+
+    ######## PRIVATE METHODS ########
+
+    def _create_interface(self):
+        """Construct an interface and store it in self._interface.
+
+        This should be called by self.__init__().
+        """
+        self._interface = self._interface_class(self.color)

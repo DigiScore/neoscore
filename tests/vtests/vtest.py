@@ -31,11 +31,15 @@ treble_clef.render()
 chord = ChordRest(Mm(20), staff, ["c'", "as'", "fn'''", "gf"])
 chord.render()
 
+simple_path = Path((Mm(0), Mm(0)), parent=treble_clef)
+simple_path.line_to(Mm(10), Mm(-10))
+simple_path.line_to(Mm(10), Mm(0))
+simple_path.render()
+
 path = Path((Mm(0), Mm(0)), parent=glyph)
 path.line_to(Mm(3), Mm(-10))
 path.line_to(AnchoredPoint(Mm(1), Mm(0), chord))
 path.render()
 import pdb; pdb.set_trace()
-
 
 brown.show()

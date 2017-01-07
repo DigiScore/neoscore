@@ -24,23 +24,13 @@ class BrushInterface:
 
     @property
     def color(self):
-        """str: A hexadecimal color string value.
-
-        If this is set to an RGB tuple it will be converted to and stored
-        in hexadecimal form
-        """
+        """Color: The color for the brush"""
         return self._color
 
     @color.setter
-    def color(self, value):
-        if isinstance(value, tuple):
-            if len(value) == 3:
-                self._color = color.rgb_to_hex(value)
-            else:
-                raise TypeError(
-                    'RGB tuple for BrushInterface must be len 3')
-        elif isinstance(value, str):
-            self._color = value
-        else:
-            raise TypeError
-        self._qt_object.setColor(QtGui.QColor(self._color))
+    def color(self, color):
+        self._color = color
+        self._qt_object.setColor(QtGui.QColor(color.red,
+                                              color.green,
+                                              color.blue,
+                                              color.alpha))

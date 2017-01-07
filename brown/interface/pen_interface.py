@@ -1,7 +1,6 @@
 from PyQt5 import QtGui
 
-from brown.config import config
-from brown.utils import color
+from brown.utils.units import GraphicUnit
 
 
 class PenInterface:
@@ -13,8 +12,8 @@ class PenInterface:
     def __init__(self, color, thickness=None):
         """
         Args:
-            color (str or tuple): Either a hexadecimal color string or a
-                3-tuple of RGB int's
+            color (Color): The color for the pen
+            thickness (Unit): The stroke thickness of the pen
         """
         # HACK: Initialize color to bright red to this not being set
         #       by color setter
@@ -26,26 +25,16 @@ class PenInterface:
 
     @property
     def color(self):
-        """str: A hexadecimal color string value.
-
-        If this is set to an RGB tuple it will be converted to and stored
-        in hexadecimal form
-        """
+        """Color: The color for the pen"""
         return self._color
 
     @color.setter
-    def color(self, value):
-        if isinstance(value, tuple):
-            if len(value) == 3:
-                self._color = color.rgb_to_hex(value)
-            else:
-                raise TypeError(
-                    'RGB tuple for BrushInterface must be len 3')
-        elif isinstance(value, str):
-            self._color = value
-        else:
-            raise TypeError
-        self._qt_object.setColor(QtGui.QColor(self._color))
+    def color(self, color):
+        self._color = color
+        self._qt_object.setColor(QtGui.QColor(color.red,
+                                              color.green,
+                                              color.blue,
+                                              color.alpha))
 
     @property
     def thickness(self):
@@ -60,4 +49,5 @@ class PenInterface:
         if value is None:
             value = 0
         self._thickness = value
-        self._qt_object.setWidthF(self._thickness)
+        self._qt_object.setWidthF(
+            float(GraphicUnit(self._thickness)))

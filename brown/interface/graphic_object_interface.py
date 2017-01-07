@@ -5,6 +5,7 @@ from brown.interface.pen_interface import PenInterface
 from brown.interface.brush_interface import BrushInterface
 from brown.utils.units import GraphicUnit
 from brown.utils.point import Point
+from brown.utils.color import Color
 
 
 class GraphicObjectInterface(ABC):
@@ -79,7 +80,7 @@ class GraphicObjectInterface(ABC):
             else:
                 raise TypeError
         else:
-            value = PenInterface(config.DEFAULT_PEN_COLOR)
+            value = PenInterface(Color(*config.DEFAULT_PEN_COLOR))
         self._pen = value
         self._qt_object.setPen(self._pen._qt_object)
 
@@ -100,7 +101,7 @@ class GraphicObjectInterface(ABC):
             else:
                 raise TypeError
         else:
-            value = BrushInterface(config.DEFAULT_BRUSH_COLOR)
+            value = BrushInterface(Color(*config.DEFAULT_BRUSH_COLOR))
         self._brush = value
         self._qt_object.setBrush(self._brush._qt_object)
 

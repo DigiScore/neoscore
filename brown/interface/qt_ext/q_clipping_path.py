@@ -32,7 +32,7 @@ class QClippingPath(QtWidgets.QGraphicsPathItem):
         This is an overload of `QGraphicsPathItem.paint()`"""
         clip_area = self._create_clipping_area(
             self.path(), self.clip_start_x, self.clip_width)
-        painter.setClipPath(clip_area)
+        painter.setClipRect(clip_area)
         super().paint(painter, *args, **kwargs)
 
     ######## PRIVATE METHODS ########
@@ -49,7 +49,7 @@ class QClippingPath(QtWidgets.QGraphicsPathItem):
             width (Unit or None): The width of the path clipping region.
                 Use `None` to render to the end
 
-        Returns: QPainterPath
+        Returns: QRectF
         """
         bounding_rect = painter_path.boundingRect()
         if start_x is None:
@@ -61,12 +61,7 @@ class QClippingPath(QtWidgets.QGraphicsPathItem):
         else:
             clip_width = float(Unit(clip_width))
         pen_padding = self.pen().width()
-        clipping_rect = QtCore.QRectF(start_x - pen_padding,
-                                      bounding_rect.y() - pen_padding,
-                                      clip_width + pen_padding,
-                                      bounding_rect.height() + pen_padding,
-        )
-        clipping_area = QtGui.QPainterPath()
-        clipping_area.addRect(clipping_rect)
-
-        return clipping_area
+        return QtCore.QRectF(start_x - pen_padding,
+                             bounding_rect.y() - pen_padding,
+                             clip_width + pen_padding,
+                             bounding_rect.height() + pen_padding)
