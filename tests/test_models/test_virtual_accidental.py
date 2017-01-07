@@ -33,6 +33,11 @@ class TestVirtualAccidental(unittest.TestCase):
         for case in input_types:
             assert(VirtualAccidental(case).value_as_str == case)
 
+    def test_passing_existing_virtual_accidental(self):
+        initial = VirtualAccidental('f')
+        new = VirtualAccidental(initial)
+        assert new.value == initial.value
+
     def test__eq__(self):
         assert(VirtualAccidental('f') == VirtualAccidental('f'))
         assert(VirtualAccidental('n') == VirtualAccidental('n'))

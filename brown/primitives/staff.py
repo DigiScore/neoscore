@@ -197,11 +197,13 @@ class Staff(Path):
         Returns: set{StaffUnit}
         """
         # Work on positions as integers for simplicity, but return as StaffUnits
-        start = int(round(self.unit(position).value))
+        start = int(self.unit(position).value)
         if start < 0:
-            return set(self.unit(pos) for pos in range(start, 0, 1))
+            return set(self.unit(pos)
+                       for pos in range(start, 0, 1))
         elif start > self.line_count - 1:
-            return set(self.unit(pos) for pos in range(start, self.line_count - 1, -1))
+            return set(self.unit(pos)
+                       for pos in range(start, self.line_count - 1, -1))
         else:
             return set()
 

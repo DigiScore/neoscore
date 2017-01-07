@@ -6,7 +6,7 @@ from brown.core.music_glyph import MusicGlyph
 
 class Notehead(MusicGlyph):
 
-    def __init__(self, position_x, pitch, parent=None):
+    def __init__(self, position_x, pitch, parent):
         """
         Args:
             staff (Staff)
@@ -14,7 +14,7 @@ class Notehead(MusicGlyph):
             pitch (Pitch):
         """
         self.pitch = pitch
-        # HACK: init pos to 0, 0, then set for real
+        # HACK: init pos to temporary position, then set for real
         super().__init__((position_x, Mm(0)),
                          'noteheadBlack', parent=parent)
         self.pos = Point(position_x, self.staff_position)

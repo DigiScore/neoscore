@@ -31,7 +31,7 @@ glyph.render()
 treble_clef = Clef(staff, Mm(0), 'treble')
 treble_clef.render()
 
-chord = ChordRest(Mm(20), staff, ["c'", "a'"])
+chord = ChordRest(Mm(20), staff, ["c'", "as'", "fn'''", "gf"])
 chord.render()
 
 brown.show()

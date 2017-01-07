@@ -1,63 +1,50 @@
 from brown.config import config
-from brown.core.font import Font
-from brown.core.glyph import Glyph
-from brown.primitives.staff import Staff
-from brown.models.pitch import Pitch
-from brown.primitives.staff_object import StaffObject
-from brown.core import brown
+from brown.models.virtual_accidental import (VirtualAccidental,
+                                             InvalidAccidentalError)
+from brown.core.music_glyph import MusicGlyph
 
 
-class Accidental(StaffObject):
+class NoneVirtualAccidentalInRealAccidentalError(Exception):
+    """Exception raised when an Accidental is given a `None` VirtualAccidental"""
+    pass
 
-    _smufl_codepoints = {
-        -2: '\uE264',  # Double-Flat
-        -1: '\uE260',  # Flat
-        0:  '\uE261',  # Natural
-        1:  '\uE262',  # Sharp
-        2:  '\uE263',  # Double-Sharp
+
+class Accidental(MusicGlyph):
+
+    _canonical_names = {
+        -1: 'accidentalFlat',
+        0:  'accidentalNatural',
+        1:  'accidentalSharp',
     }
 
-    def __init__(self, notehead, position_x):
+    def __init__(self, pos, kind, parent):
         """
         Args:
-            notehead (Notehead): The parent Notehead object
-            position_x (float): The x position (in pixels) relative to the notehead
+            pos (Point): The position of the accidental
+            kind (VirtualAccidental, str, int, or None):
+                The type of accidental. For convenience, any valid constructor
+                argument to VirtualAccidental (except None) may be passed.
+                `None` VirtualAccidentals are not accepted.
+            parent (StaffObject or Staff):
         """
-        self._notehead = notehead
-        super().__init__(self.notehead, position_x)
-        if self.virtual_accidental.value is not None:
-            self._grob = Glyph(
-                (self.position_x, 0),
-                Accidental._smufl_codepoints[self.virtual_accidental.value],
-                brown.music_font,
-                self.parent.grob)
-            # TODO: Baseline offset has already been performed by parent object,
-            #       how can positioning be handled correctly with a parentage system?
-            #self.grob.position_y_baseline(0)
-            self.grob_width = 1.25 * self.staff.staff_unit  # TODO: Temporary testing
-        else:
-            self._grob = None
-            self.grob_width = 0
+        try:
+            self.virtual_accidental = VirtualAccidental(kind)
+            if self.virtual_accidental.value is None:
+                raise NoneVirtualAccidentalInRealAccidentalError(
+                    "cannot create real Accidental object "
+                    "with VirtualAccidental('None')")
+        except InvalidAccidentalError as error:
+            raise error
+        canonical_name = self._canonical_names[self.virtual_accidental.value]
+        super().__init__(pos, canonical_name, parent=parent)
 
     ######## PUBLIC PROPERTIES ########
 
     @property
     def virtual_accidental(self):
-        """VirtualAccidental: What type of accidental this is.
+        """VirtualAccidental: What type of accidental this is."""
+        return self._virtual_accidental
 
-        This property is read-only. To change the accidental,
-        modify `self.notehead.pitch`.
-        """
-        return self.notehead.pitch.virtual_accidental
-
-    @property
-    def notehead(self):
-        """Notehead: The parent Notehead."""
-        return self._notehead
-
-    ######## PUBLIC METHODS ########
-
-    def render(self):
-        # Only draw if a grob exists
-        if self.grob is not None:
-            self.grob.render()
+    @virtual_accidental.setter
+    def virtual_accidental(self, value):
+        self._virtual_accidental = value

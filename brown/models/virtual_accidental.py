@@ -69,6 +69,8 @@ class VirtualAccidental:
                 self._value = int(new_value)
             else:
                 raise InvalidAccidentalError
+        elif isinstance(new_value, type(self)):
+            self._value = new_value.value
         elif new_value is None:
             self._value = None
         else:

@@ -211,8 +211,17 @@ class ChordRest(ObjectGroup, StaffObject):
                 LedgerLine(Point(pos_x, staff_pos), self, length))
 
     def _create_accidentals(self):
-        """TODO"""
-        pass
+        padding = self.staff.unit(-1.2)
+        accidentals = []
+        for notehead in self.noteheads:
+            if notehead.pitch.virtual_accidental.value is None:
+                # Don't draw imaginary accidentals
+                continue
+            accidentals.append(Accidental((padding, self.staff.unit(0)),
+                                          notehead.pitch.virtual_accidental,
+                                          notehead))
+        for accidental in accidentals:
+            self.register_object(accidental)
 
     def _create_stem(self):
         """Creates a Stem and stores it in `self.stem`.
