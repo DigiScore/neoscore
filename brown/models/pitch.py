@@ -201,7 +201,11 @@ class Pitch:
         """
         middle_c = (4 * 7) + 1  # C at octave 4
         note_pos = (self.octave * 7) + self.diatonic_degree_in_c
-        return (note_pos - middle_c) / -2
+        position = (note_pos - middle_c) / -2
+        if position % 1 == 0:
+            return int(position)
+        else:
+            return position
 
     @property
     def string_desriptor(self):

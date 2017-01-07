@@ -25,11 +25,12 @@ class AnchoredPoint(Point):
         5
         >>> y
         6
+
         # The `parent` attribute must be referenced by index
         >>> p[2]
         Traceback (most recent call last):
         ...
-        IndexError: Only valid indices for AnchoredPoint are 0 and 1 (got 2)
+        IndexError: Only valid indices for AnchoredPoint are 0 and 1 (Got 2)
         >>> p.parent == some_grob
         True
 
@@ -37,25 +38,24 @@ class AnchoredPoint(Point):
     def __init__(self, *args):
         """
         *args: One of:
-            - An `x, y` pair outside of a tuple (parent will be None)
-            - An `(x, y)` pair (parent will be None)
-            - An `x, y, parent` triple outside of a tuple
-            - An `(x, y, parent)` 3-tuple
-            - An `(x, y)` pair and a `parent`
-            - An `Point` and a `parent`
-            - An existing `AnchoredPoint`
-            - An existing `Point` (parent will be None)
+            * An `x, y` pair outside of a tuple (parent will be None)
+            * An `(x, y)` pair (parent will be None)
+            * An `x, y, parent` triple outside of a tuple
+            * An `(x, y, parent)` 3-tuple
+            * An `(x, y)` pair and a `parent`
+            * An `Point` and a `parent`
+            * An existing `AnchoredPoint`
+            * An existing `Point` (parent will be None)
 
         All of the following are valid init signatures:
-
-            >>> AnchoredPoint(5, 6)
-            >>> AnchoredPoint((5, 6))
-            >>> AnchoredPoint(5, 6, some_grob)
-            >>> AnchoredPoint((5, 6, some_grob))
-            >>> AnchoredPoint((5, 6), some_grob)
-            >>> AnchoredPoint(some_existing_point, some_grob)
-            >>> AnchoredPoint(some_existing_anchored_point)
-            >>> AnchoredPoint(some_existing_point)
+            * `AnchoredPoint(5, 6)`
+            * `AnchoredPoint((5, 6))`
+            * `AnchoredPoint(5, 6, some_grob)`
+            * `AnchoredPoint((5, 6, some_grob))`
+            * `AnchoredPoint((5, 6), some_grob)`
+            * `AnchoredPoint(some_existing_point, some_grob)`
+            * `AnchoredPoint(some_existing_anchored_point)`
+            * `AnchoredPoint(some_existing_point)`
         """
         if len(args) == 1:
             if isinstance(args[0], tuple):

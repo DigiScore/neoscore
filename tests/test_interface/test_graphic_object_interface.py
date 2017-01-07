@@ -3,8 +3,8 @@ import unittest
 from brown.core import brown
 from brown.interface.pen_interface import PenInterface
 from brown.interface.brush_interface import BrushInterface
-from brown.utils.point import Point
 from brown.utils.units import GraphicUnit
+from brown.utils.color import Color
 
 from mock_graphic_object_interface import MockGraphicObjectInterface
 
@@ -41,7 +41,7 @@ class TestGraphicObjectInterface(unittest.TestCase):
         assert(grob.y == grob._qt_object.y())
 
     def test_pen_after_init(self):
-        pen = PenInterface('#eeeeee')
+        pen = PenInterface(Color('#eeeeee'))
         grob = MockGraphicObjectInterface((5, 6), pen=pen)
         assert(grob.pen == grob._pen)
         assert(grob.pen == pen)
@@ -49,12 +49,12 @@ class TestGraphicObjectInterface(unittest.TestCase):
 
     def test_pen_setter_changes_qt_object(self):
         grob = MockGraphicObjectInterface((5, 6), pen=None)
-        pen = PenInterface('#eeeeee')
+        pen = PenInterface(Color('#eeeeee'))
         grob.pen = pen
         assert(grob._qt_object.pen() == grob.pen._qt_object)
 
     def test_brush_after_init(self):
-        brush = BrushInterface('#eeeeee')
+        brush = BrushInterface(Color('#eeeeee'))
         grob = MockGraphicObjectInterface((5, 6), brush=brush)
         assert(grob.brush == grob._brush)
         assert(grob.brush == brush)
@@ -62,7 +62,7 @@ class TestGraphicObjectInterface(unittest.TestCase):
 
     def test_brush_setter_changes_qt_object(self):
         grob = MockGraphicObjectInterface((5, 6), brush=None)
-        brush = BrushInterface('#eeeeee')
+        brush = BrushInterface(Color('#eeeeee'))
         grob.brush = brush
         assert(grob._qt_object.brush() == grob.brush._qt_object)
 

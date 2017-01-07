@@ -34,16 +34,3 @@ class TestTextObject(unittest.TestCase):
         # When no font is passed, the global brown default text_font is used
         assert(test_object.font == brown.text_font)
         assert(test_object.parent is None)
-
-    def test_text_setter_changes_interface(self):
-        test_object = TextObject((5, 6), 'testing')
-        test_object.text = 'new value'
-        assert(test_object.text == 'new value')
-        assert(test_object._interface.text == 'new value')
-
-    def test_font_setter_changes_interface(self):
-        test_object = TextObject((5, 6), 'testing')
-        new_font = Font('Bravura', 20, 1, False)
-        test_object.font = new_font
-        assert(test_object.font == new_font)
-        assert(test_object._interface.font == new_font._interface)

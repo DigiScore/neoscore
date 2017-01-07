@@ -24,10 +24,6 @@ class TextObject(GraphicObject):
         else:
             self.font = brown.text_font
         self.text = text
-        self._interface = TextObject._interface_class(
-            pos,
-            self.text,
-            self.font._interface)
         super().__init__(pos, parent=parent)
 
     @property

@@ -13,7 +13,7 @@ class Unit:
 
         >>> from brown.utils.units import Inch, Mm
         >>> print(Inch(1) + Mm(1))
-        1.0393700787401574 inches
+        1.0393701 inches
 
     If a `Unit` (or subclass) is to the left of an `int` or `float`,
     the value on the right will be converted to the left object's type

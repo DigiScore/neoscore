@@ -2,11 +2,10 @@ import os
 import unittest
 from nose.tools import assert_raises, nottest
 
-import time
-
 from PyQt5 import QtWidgets
 from PyQt5 import QtGui
 
+from brown.utils.color import Color
 from brown.interface.app_interface import AppInterface, FontRegistrationError
 from brown.interface.pen_interface import PenInterface
 from brown.interface.brush_interface import BrushInterface
@@ -57,14 +56,14 @@ class TestAppInterface(unittest.TestCase):
     def test_current_pen(self):
         self.interface = AppInterface()
         self.interface.create_document()
-        test_pen = PenInterface('#ffffff')
+        test_pen = PenInterface(Color('#ffffff'))
         self.interface.current_pen = test_pen
         assert(self.interface.current_pen == test_pen)
 
     def test_current_brush(self):
         self.interface = AppInterface()
         self.interface.create_document()
-        test_brush = BrushInterface('#ffffff')
+        test_brush = BrushInterface(Color('#ffffff'))
         self.interface.current_brush = test_brush
         assert(self.interface.current_brush == test_brush)
 
