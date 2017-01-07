@@ -246,12 +246,10 @@ class Path(GraphicObject):
 
         Returns: None
         """
-        print('rendering slice at {} from local_x {} with length {}'.format(pos, start_x, length))
-        if start_x is None:
-            start_x = 0
-        adjusted_pos = Point(pos.x - start_x, pos.y)
+        print('rendering slice at {} from local_x {} '
+              'with length {}'.format(pos, start_x, length))
         self._interface = self._interface_class(
-            pos=adjusted_pos,
+            pos=pos,
             pen=self.pen._interface if self.pen else None,
             brush=self.brush._interface if self.brush else None,
             # Don't pass parent as part of experimental shift away from interface parentage
