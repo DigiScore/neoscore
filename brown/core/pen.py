@@ -10,14 +10,16 @@ class Pen:
 
     _interface_class = PenInterface
 
-    def __init__(self, color='#000000'):
+    def __init__(self, color='#000000', thickness=None):
         """
         Args:
             color (str or tuple): Either a hexadecimal color string or a
                 3-tuple of RGB int's
+            thickness (Unit): The stroke thickness
         """
-        self._interface = Pen._interface_class(color)
         self.color = color
+        self.thickness = thickness
+        self._create_interface()
 
     ######## PUBLIC PROPERTIES ########
 
@@ -42,4 +44,21 @@ class Pen:
             self._color = value
         else:
             raise TypeError
-        self._interface.color = self._color
+
+    @property
+    def thickness(self):
+        """Unit: The stroke thickness"""
+        return self._thickness
+
+    @thickness.setter
+    def thickness(self, value):
+        self._thickness = value
+
+    ######## PRIVATE METHODS ########
+
+    def _create_interface(self):
+        """Construct an interface and store it in self._interface.
+
+        This should be called by self.__init__().
+        """
+        self._interface = self._interface_class(self.color, self.thickness)
