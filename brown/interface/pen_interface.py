@@ -49,12 +49,15 @@ class PenInterface:
 
     @property
     def thickness(self):
-        """Unit: The drawing thickness of the pen."""
+        """Unit: The drawing thickness of the pen.
+
+        If set to None, the value defaults to 0, a cosmetic pixel width.
+        """
         return self._thickness
 
     @thickness.setter
     def thickness(self, value):
         if value is None:
-            value = config.DEFAULT_PEN_THICKNESS
+            value = 0
         self._thickness = value
-        self._qt_object.setWidth(self._thickness)
+        self._qt_object.setWidthF(self._thickness)

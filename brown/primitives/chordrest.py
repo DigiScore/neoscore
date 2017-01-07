@@ -231,7 +231,8 @@ class ChordRest(ObjectGroup, StaffObject):
         start = Point(self.staff.unit(0),
                       self.furthest_notehead.staff_position)
         height = self.staff.unit(5) * self.stem_direction
-        self._stem = Stem(start, height, self)
+        self._stem = Stem(start, height, self,
+                          music_font=self.staff.default_music_font)
         self.register_object(self._stem)
 
     def _position_noteheads_horizontally(self):
