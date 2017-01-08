@@ -22,11 +22,11 @@ class LedgerLine(Path, StaffObject):
         self.pen = Pen(thickness=thickness)
         self.base_length = base_length
         self.move_to(self.extension * -1, self.staff.unit(0))
-        self.line_to(self.length + self.extension, self.staff.unit(0))
+        self.line_to(self.length, self.staff.unit(0))
 
     ######## PUBLIC PROPERTIES ########
 
     @property
     def length(self):
         """Unit: The length of the ledger line"""
-        return self.base_length + (self.extension * 2)
+        return self.base_length + (self.extension)

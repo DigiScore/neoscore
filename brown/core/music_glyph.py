@@ -63,19 +63,19 @@ class MusicGlyph(Glyph, StaffObject):
 
     @property
     def _bounding_rect(self):
-        """Rect: The bounding rect override for this glyph."""
+        """Rect: The bounding rect for this glyph."""
         # TODO: This is still a little off...
-        x = self.glyph_info['glyphBBox']['bBoxSW'][0]
-        y = self.glyph_info['glyphBBox']['bBoxNE'][1]
-        w = self.glyph_info['glyphBBox']['bBoxNE'][0] - x
-        h = (self.glyph_info['glyphBBox']['bBoxSW'][1] - y) * (-1)
-        offset = self._origin_offset
-        return Rect(x - offset.x, y - offset.y, w, h)
+        x = self.staff.unit(self.glyph_info['glyphBBox']['bBoxSW'][0])
+        y = self.staff.unit(self.glyph_info['glyphBBox']['bBoxNE'][1])
+        w = self.staff.unit(self.glyph_info['glyphBBox']['bBoxNE'][0] - x)
+        h = self.staff.unit((self.glyph_info['glyphBBox']['bBoxSW'][1] - y) * -1)
+        return Rect(x, y, w, h)
 
     @property
     def _origin_offset(self):
         """Point: The origin offset override for this glyph."""
-        return Point(self.staff.unit(0), GraphicUnit(self.font.ascent))
+        return Point(self.staff.unit(0),
+                     self.staff.unit(GraphicUnit(self.font.ascent)))
 
 
     ######## PRIVATE METHODS ########

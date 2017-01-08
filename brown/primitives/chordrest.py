@@ -1,4 +1,3 @@
-from brown.utils.units import GraphicUnit, Mm
 from brown.primitives.notehead import Notehead
 from brown.primitives.accidental import Accidental
 from brown.primitives.staff_object import StaffObject
@@ -119,13 +118,12 @@ class ChordRest(ObjectGroup, StaffObject):
     def notehead_column_width(self):
         """Unit: The total width of all Noteheads in the chord"""
         if not self.noteheads:
-            return 0
-        elif len(self.noteheads) == 1:
-            return self.widest_notehead.visual_width
+            return self.staff.unit(0)
         else:
-            return (self.rightmost_notehead.x -
-                    self.leftmost_notehead.x +
-                    self.widest_notehead.visual_width)
+            left = self.leftmost_notehead.x
+            extent = max((n.x + n.visual_width
+                          for n in self.noteheads))
+            return extent - left
 
     @property
     def noteheads_outside_staff(self):
@@ -152,8 +150,6 @@ class ChordRest(ObjectGroup, StaffObject):
         """Unit: The total width of any noteheads outside the staff"""
         if not self.noteheads:
             return self.staff.unit(0)
-        elif len(list(self.noteheads)) == 1:
-            return self.widest_notehead.visual_width
         else:
             left = self.leftmost_notehead_outside_staff.x
             extent = max((n.x + n.visual_width
@@ -263,7 +259,7 @@ class ChordRest(ObjectGroup, StaffObject):
         for note in sorted(self.noteheads,
                            key=lambda n: n.staff_position,
                            reverse=(self.stem_direction == -1)):
-            if abs(prev_staff_pos - note.staff_position) < 2:
+            if abs(prev_staff_pos - note.staff_position) < 1:
                 # This note collides with previous, use switch sides
                 prev_side = -1 * prev_side
             else:

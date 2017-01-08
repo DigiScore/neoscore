@@ -20,8 +20,8 @@ class Path(GraphicObject):
             brush (Brush): The brush to draw outlines with.
             parent (GraphicObject): The parent object or None
         """
-        super().__init__(pos, 0, pen, brush, parent)
-        self._current_path_position = Point(0, 0)
+        super().__init__(pos, GraphicUnit(0), pen, brush, parent)
+        self._current_path_position = Point(GraphicUnit(0), GraphicUnit(0))
         self.elements = []
         self._interface = []
 
@@ -72,7 +72,7 @@ class Path(GraphicObject):
         if self.elements:
             return Path.map_between_items(self, self.elements[-1])
         else:
-            return Point.with_unit((0, 0), unit=GraphicUnit)
+            return Point(GraphicUnit(0), GraphicUnit(0))
 
     @property
     def current_path_x(self):
@@ -125,7 +125,8 @@ class Path(GraphicObject):
         if point.parent is None:
             point.parent = self
         if len(self.elements) == 0:
-            self.elements.append(PathElement((0, 0), PathElementType.move_to,
+            self.elements.append(PathElement((GraphicUnit(0), GraphicUnit(0)),
+                                             PathElementType.move_to,
                                              self, self))
         self.elements.append(PathElement(point, PathElementType.line_to,
                                          self, point.parent))
@@ -159,7 +160,7 @@ class Path(GraphicObject):
     def close_subpath(self):
         """Close the current sub-path and start a new one at (0, 0).
 
-        This is equivalent to `move_to((0, 0))`
+        This is equivalent to `move_to((GraphicUnit(0), GraphicUnit(0)))`
 
         Returns: None
 
@@ -168,7 +169,7 @@ class Path(GraphicObject):
             If you need to anchor the new move_to point, use an explicit
             move_to((0, 0), parent) instead.
         """
-        self.move_to((0, 0))
+        self.move_to((GraphicUnit(0), GraphicUnit(0)))
 
     def cubic_to(self, control_1, control_2, end):
         """Draw a cubic bezier curve from the current position to a new point.
@@ -194,7 +195,8 @@ class Path(GraphicObject):
             for a more thorough explanation.
         """
         if len(self.elements) == 0:
-            self.elements.append(PathElement((0, 0), PathElementType.move_to,
+            self.elements.append(PathElement((GraphicUnit(0), GraphicUnit(0)),
+                                             PathElementType.move_to,
                                              self, self))
         norm_control_1 = AnchoredPoint(control_1)
         norm_control_2 = AnchoredPoint(control_2)

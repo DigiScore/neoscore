@@ -57,7 +57,7 @@ class GraphicObject(ABC):
 
     @pos.setter
     def pos(self, value):
-        self._pos = Point.with_unit(value, unit=GraphicUnit)
+        self._pos = Point(value)
 
     @property
     def x(self):
