@@ -1,9 +1,8 @@
-from nose.tools import assert_raises
 import unittest
 
 from brown.core import brown
 from brown.primitives.staff import Staff
-from brown.primitives.staff_object import StaffObject, NoAncestorStaffError
+from brown.primitives.staff_object import StaffObject
 from brown.core.music_glyph import MusicGlyph
 from brown.core.flowable_frame import FlowableFrame
 from brown.core.paper import Paper

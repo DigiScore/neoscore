@@ -1,4 +1,3 @@
-from nose.tools import assert_raises
 import unittest
 import os
 
@@ -6,9 +5,7 @@ from PyQt5 import QtGui
 
 from brown.config import config
 from brown.core import brown
-from brown.interface.app_interface import AppInterface
-from brown.interface.font_interface import (FontInterface,
-                                            UnknownFontFamilyError)
+from brown.interface.font_interface import FontInterface
 
 
 class TestFontInterface(unittest.TestCase):

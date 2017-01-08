@@ -1,6 +1,4 @@
 from brown.core.music_glyph import MusicGlyph
-from brown.primitives.staff_object import StaffObject
-from brown.core import brown
 
 
 class Clef(MusicGlyph):

@@ -1,10 +1,8 @@
-from nose.tools import assert_raises
 import unittest
 
 from brown.core import brown
 from brown.utils.path_element_type import PathElementType
 from brown.utils.color import Color
-from brown.interface.path_element_interface import PathElementInterface
 from brown.interface.path_interface import PathInterface
 from brown.interface.pen_interface import PenInterface
 from brown.interface.brush_interface import BrushInterface

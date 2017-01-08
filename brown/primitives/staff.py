@@ -1,5 +1,3 @@
-import bisect
-
 from brown.utils.units import GraphicUnit, Unit
 from brown.utils.point import Point
 from brown.config import config

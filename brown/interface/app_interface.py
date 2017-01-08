@@ -1,8 +1,6 @@
 from PyQt5 import QtWidgets
 from PyQt5 import QtGui
 
-import json
-
 
 class FontRegistrationError(Exception):
     """Exception raised when a font is loaded from disk unsuccessfully."""

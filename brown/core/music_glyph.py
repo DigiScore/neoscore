@@ -1,11 +1,9 @@
-from brown.config import config
-from brown.core import brown
 from brown.core.glyph import Glyph
 from brown.core.music_font import MusicFont
 from brown.primitives.staff_object import StaffObject
 from brown.utils.rect import Rect
 from brown.utils.point import Point
-from brown.utils.units import GraphicUnit, convert_all_to_unit
+from brown.utils.units import GraphicUnit
 
 
 class MusicGlyph(Glyph, StaffObject):

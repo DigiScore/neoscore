@@ -1,6 +1,3 @@
-from nose.tools import assert_raises
-
-from brown.utils.point import Point
 from brown.utils.rect import Rect
 from brown.utils.units import GraphicUnit
 

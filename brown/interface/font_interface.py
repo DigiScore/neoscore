@@ -1,7 +1,6 @@
 from PyQt5 import QtGui
 
 from brown.core import brown
-from brown.utils.point import Point
 from brown.utils.rect import Rect
 from brown.utils.units import GraphicUnit
 

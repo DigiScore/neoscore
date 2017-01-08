@@ -1,10 +1,8 @@
-from nose.tools import assert_raises
 import unittest
 
 from brown.core import brown
 from brown.utils.point import Point
 from brown.interface.path_interface import PathInterface
-from mock_graphic_object_interface import MockGraphicObjectInterface
 from brown.interface.path_element_interface import PathElementInterface
 from brown.utils.path_element_type import PathElementType
 

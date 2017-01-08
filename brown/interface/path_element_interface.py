@@ -1,9 +1,3 @@
-from warnings import warn
-
-from PyQt5 import QtWidgets
-from PyQt5 import QtGui
-
-from brown.core import brown
 from brown.utils.path_element_type import PathElementType
 from brown.utils.point import Point
 from brown.utils.units import GraphicUnit

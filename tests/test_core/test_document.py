@@ -1,7 +1,6 @@
 import unittest
 from nose.tools import assert_raises
 
-from brown.core import brown
 from brown.utils.point import Point
 from brown.utils.units import Mm
 from brown.core.document import Document

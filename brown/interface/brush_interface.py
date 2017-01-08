@@ -1,7 +1,5 @@
 from PyQt5 import QtGui
 
-from brown.utils import color
-
 
 class BrushInterface:
     """Interface for a generic drawing brush controlling fill patterns.
@@ -25,7 +23,7 @@ class BrushInterface:
     @property
     def color(self):
         """Color: The color for the brush"""
-        return self._color
+        return self._colorterm
 
     @color.setter
     def color(self, color):

@@ -1,6 +1,3 @@
-from brown.utils import math_helpers
-
-
 class ColorBoundsError(Exception):
     """Exception raised when a color channel is set out of bounds"""
 

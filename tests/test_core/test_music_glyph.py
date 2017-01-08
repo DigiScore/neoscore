@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from nose.tools import assert_raises, nottest
+from nose.tools import assert_raises
 
 from brown.core import brown
 from brown.core.music_glyph import MusicGlyph

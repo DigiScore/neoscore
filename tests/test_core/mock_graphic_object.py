@@ -1,5 +1,4 @@
 from brown.utils.units import Mm
-from brown.interface.invisible_object_interface import InvisibleObjectInterface
 from brown.interface.path_interface import PathInterface
 from brown.core.graphic_object import GraphicObject
 

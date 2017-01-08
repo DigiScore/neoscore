@@ -1,4 +1,3 @@
-from brown.config import config
 from brown.models.virtual_accidental import (VirtualAccidental,
                                              InvalidAccidentalError)
 from brown.core.music_glyph import MusicGlyph

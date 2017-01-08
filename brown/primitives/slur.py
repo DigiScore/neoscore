@@ -1,5 +1,4 @@
 from brown.core.path import Path
-from brown.core.path_element import PathElement
 from brown.primitives.staff_object import StaffObject
 from brown.primitives.spanner import Spanner
 from brown.utils.anchored_point import AnchoredPoint

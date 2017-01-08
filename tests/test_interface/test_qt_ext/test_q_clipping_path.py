@@ -6,7 +6,6 @@ from brown.core import brown
 from brown.interface.qt_ext.q_clipping_path import QClippingPath
 
 
-
 class TestQClippingPath(unittest.TestCase):
 
     def setUp(self):

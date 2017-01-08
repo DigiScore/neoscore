@@ -5,10 +5,7 @@ from brown.interface.app_interface import AppInterface, FontRegistrationError
 from brown.core.brush import Brush
 from brown.core.pen import Pen
 from brown.core.font import Font
-from brown.core.music_font import MusicFont
-from brown.core.paper import Paper
 from brown.core.document import Document
-from brown.utils.units import Mm, GraphicUnit
 
 
 # Fetch and initialize app interface

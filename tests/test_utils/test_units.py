@@ -1,8 +1,6 @@
 from nose.tools import assert_raises
 import unittest
 
-from brown.core import brown
-from brown.core.flowable_frame import FlowableFrame
 from brown.utils.units import Unit, Cm, Mm, Inch, GraphicUnit
 
 

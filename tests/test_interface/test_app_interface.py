@@ -12,24 +12,14 @@ from brown.interface.brush_interface import BrushInterface
 from brown.config import config
 
 
+@nottest
 class TestAppInterface(unittest.TestCase):
 
-    # def setUp(self):
-    #     self.interface = AppInterface()
-
-    def teardown(self):
-        self.show()
-
-    def test_init(self):
-        self.interface = AppInterface()
-        assert(self.interface.app is None)
-        assert(self.interface.scene is None)
-        assert(self.interface.current_pen is None)
-        assert(self.interface.current_brush is None)
-
-    def test_create_document(self):
+    def setUp(self):
         self.interface = AppInterface()
         self.interface.create_document()
+
+    def test_create_document(self):
         # QApplication init
         assert(isinstance(self.interface.app, QtWidgets.QApplication))
         # QGraphicsScene setup
@@ -54,29 +44,21 @@ class TestAppInterface(unittest.TestCase):
         pass
 
     def test_current_pen(self):
-        self.interface = AppInterface()
-        self.interface.create_document()
         test_pen = PenInterface(Color('#ffffff'))
         self.interface.current_pen = test_pen
         assert(self.interface.current_pen == test_pen)
 
     def test_current_brush(self):
-        self.interface = AppInterface()
-        self.interface.create_document()
         test_brush = BrushInterface(Color('#ffffff'))
         self.interface.current_brush = test_brush
         assert(self.interface.current_brush == test_brush)
 
     def test_register_font(self):
-        self.interface = AppInterface()
-        self.interface.create_document()
         test_font_file_path = os.path.join(config.RESOURCES_DIR, 'fonts', 'Bravura.otf')
         font_id = self.interface.register_font(test_font_file_path)
         assert(QtGui.QFontDatabase.applicationFontFamilies(font_id) == ['Bravura'])
 
     def test_register_font_with_(self):
-        self.interface = AppInterface()
-        self.interface.create_document()
         test_font_file_path = "path that doesn't exist"
         with assert_raises(FontRegistrationError):
             self.interface.register_font(test_font_file_path)

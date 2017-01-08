@@ -1,5 +1,6 @@
 from brown.utils.units import Unit
 
+
 class Point:
     """A simple 2-d point class.
 
