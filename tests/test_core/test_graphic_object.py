@@ -1,4 +1,3 @@
-import os
 import unittest
 
 from brown.core import brown
@@ -27,19 +26,12 @@ class TestGraphicObject(unittest.TestCase):
         mock_parent = MockGraphicObject((10, 11), parent=None)
         grob = MockGraphicObject(
             (5, 6), GraphicUnit(7), mock_pen, mock_brush, mock_parent)
-        assert(isinstance(grob.pos.x, GraphicUnit))
         assert(grob.pos.x == grob.x)
         assert(grob.x == GraphicUnit(5))
-        assert(isinstance(grob.pos.y, GraphicUnit))
         assert(grob.pos.y == grob.y)
         assert(grob.y == GraphicUnit(6))
         assert(grob.breakable_width == GraphicUnit(7))
         assert(grob.parent == mock_parent)
-
-    def test_pos_setter_enforces_graphic_units(self):
-        grob = MockGraphicObject((5, 6))
-        assert(isinstance(grob.pos.x, GraphicUnit))
-        assert(isinstance(grob.pos.y, GraphicUnit))
 
     def test_pos_setter_changes_x(self):
         grob = MockGraphicObject((5, 6))
