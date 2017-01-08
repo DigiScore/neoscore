@@ -1,24 +1,32 @@
+from brown.core.pen import Pen
 from brown.core.path import Path
 from brown.primitives.staff_object import StaffObject
 
 
 class LedgerLine(Path, StaffObject):
 
-    def __init__(self, pos, parent, length=None):
+    def __init__(self, pos, parent, base_length):
         """
         Args:
-            pos (Point(StaffUnit)):
+            pos (Point(StaffUnit)): The position of the left edge of
+                the notehead column.
             parent (StaffObject or Staff):
-            length (StaffUnit): Length of the ledger line
+            base_length (StaffUnit): Length of the ledger line
         """
         Path.__init__(self, pos, parent=parent)
         StaffObject.__init__(self, parent=parent)
-        self._length = length if length is not None else self.staff.unit(0.75)
-        self.line_to(self.length, self.staff.unit(0))
+        thickness = self.staff.unit(
+            self.staff.default_music_font.engraving_defaults['legerLineThickness'])
+        self.extension = self.staff.unit(
+            self.staff.default_music_font.engraving_defaults['legerLineExtension'])
+        self.pen = Pen(thickness=thickness)
+        self.base_length = base_length
+        self.move_to(self.extension * -1, self.staff.unit(0))
+        self.line_to(self.length + self.extension, self.staff.unit(0))
 
     ######## PUBLIC PROPERTIES ########
 
     @property
     def length(self):
-        """int: The length in staff units of the ledger line"""
-        return self._length
+        """Unit: The length of the ledger line"""
+        return self.base_length + (self.extension * 2)

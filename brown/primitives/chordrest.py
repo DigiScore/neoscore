@@ -151,13 +151,14 @@ class ChordRest(ObjectGroup, StaffObject):
     def notehead_column_outside_staff_width(self):
         """Unit: The total width of any noteheads outside the staff"""
         if not self.noteheads:
-            return 0
+            return self.staff.unit(0)
         elif len(list(self.noteheads)) == 1:
             return self.widest_notehead.visual_width
         else:
-            return (self.rightmost_notehead_outside_staff.x -
-                    self.leftmost_notehead_outside_staff.x +
-                    self.widest_notehead.visual_width)
+            left = self.leftmost_notehead_outside_staff.x
+            extent = max((n.x + n.visual_width
+                          for n in self.noteheads_outside_staff))
+            return extent - left
 
     @property
     def stem_direction(self):
@@ -212,8 +213,8 @@ class ChordRest(ObjectGroup, StaffObject):
         Warning: This overwrites the contents of `self.ledgers`
         """
         # Calculate x position and length of ledger lines
-        pos_x = self.leftmost_notehead.x - (self.staff.unit(0.15))
-        length = self.notehead_column_outside_staff_width + (self.staff.unit(0.3))
+        pos_x = self.leftmost_notehead.x
+        length = self.notehead_column_outside_staff_width
         # Flush any existing ledgers:
         self._objects = set(item for item in self.objects
                             if not isinstance(item, LedgerLine))
@@ -241,8 +242,7 @@ class ChordRest(ObjectGroup, StaffObject):
         """
         start = Point(self.staff.unit(0),
                       self.furthest_notehead.staff_position)
-        self._stem = Stem(start, self.stem_height, self,
-                          music_font=self.staff.default_music_font)
+        self._stem = Stem(start, self.stem_height, self)
         self.register_object(self._stem)
 
     def _position_noteheads_horizontally(self):
