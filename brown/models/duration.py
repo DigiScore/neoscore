@@ -38,6 +38,8 @@ class Duration:
 
     Durations should be treated as immutable, and will not work correctly
     if their properties are changed after initialization.
+
+    # TODO: How to handle things like duplet over dotted quarter?
     """
 
     def __init__(self, numerator, denominator):
@@ -49,10 +51,14 @@ class Duration:
         self._numerator = numerator
         self._denominator = denominator
         self._simplify()
+        self._collapsed_fraction = self._as_collapsed_fraction()
 
         # Calculate base division and dot count
         if isinstance(self.numerator, type(self)):
             self._dot_count = self.numerator.dot_count
+            # FIXME: This is wrong !!!
+            # Duration(Duration(1, 3), 4) base division should be 8
+            # for triplet eighth!
             self._base_division = self.denominator
         else:
             dot_count = 0
@@ -100,6 +106,11 @@ class Duration:
         """int: The basic division of the duration."""
         return self._base_division
 
+    @property
+    def collapsed_fraction(self):
+        """Fraction: The collapsed int / int Fraction of this Duration."""
+        return self._collapsed_fraction
+
     ######## SPECIAL METHODS ########
 
     def __repr__(self):
@@ -118,6 +129,13 @@ class Duration:
         return (self.numerator == other.numerator and
                 self.denominator == other.denominator)
 
+    def __gt__(self, other):
+        """Durations are compared by their reduced fraction representations."""
+        return self.collapsed_fraction > other.collapsed_fraction
+
+    def __ge__(self, other):
+        return self > other or self.collapsed_fraction == other.collapsed_fraction
+
     ######## PRIVATE METHODS ########
 
     def _simplify(self):
@@ -131,3 +149,15 @@ class Duration:
             reduced = Fraction(self.numerator, self.denominator)
             self._numerator = reduced.numerator
             self._denominator = reduced.denominator
+
+    def _as_collapsed_fraction(self):
+        """Collapse this Duration into a single Fraction and return it.
+
+        This recursively collapses any nested Durations and simplifies
+        the returned Fraction.
+
+        Returns: Fraction
+        """
+        if isinstance(self.numerator, type(self)):
+            return Fraction(self.numerator.collapsed_fraction, self.denominator)
+        return Fraction(self.numerator, self.denominator)

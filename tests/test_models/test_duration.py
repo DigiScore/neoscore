@@ -43,6 +43,34 @@ class TestDuration(unittest.TestCase):
     def test__ne__with_nested(self):
         assert(Duration(Duration(1, 2), 4) != Duration(Duration(2, 4), 8))
 
+    def test__gt__with_non_nested(self):
+        assert(Duration(1, 4) > Duration(1, 8))
+
+    def test__lt__with_non_nested(self):
+        assert(Duration(1, 4) < Duration(1, 2))
+
+    def tests__gte__with_non_nested(self):
+        assert(Duration(1, 4) >= Duration(1, 8))
+        assert(Duration(1, 4) >= Duration(1, 4))
+
+    def tests__lte__with_non_nested(self):
+        assert(Duration(1, 4) <= Duration(1, 2))
+        assert(Duration(1, 4) <= Duration(1, 4))
+
+    def test__gt__with_nested(self):
+        assert(Duration(Duration(1, 1), 4) > Duration(Duration(1, 2), 4))
+
+    def test__lt__with__nested(self):
+        assert(Duration(Duration(1, 2), 4) < Duration(Duration(1, 1), 4))
+
+    def tests__gte__with_nested(self):
+        assert(Duration(1, 4) >= Duration(Duration(1, 3), 8))
+        assert(Duration(1, 4) >= Duration(Duration(1, 1), 4))
+
+    def tests__lte__with_nested(self):
+        assert(Duration(1, 4) <= Duration(Duration(1, 1), 1))
+        assert(Duration(1, 4) <= Duration(Duration(1, 2), 2))
+
     def test__repr__(self):
         assert(Duration(Duration(1, 2), 4).__repr__() ==
                'Duration(Duration(1, 2), 4)')
@@ -57,3 +85,8 @@ class TestDuration(unittest.TestCase):
         assert(Duration(8, 16).dot_count == 0)
         assert(Duration(3, 8).dot_count == 1)
         assert(Duration(7, 16).dot_count == 2)
+
+    def test_collapsed_fraction(self):
+        assert(Duration(1, 4))._as_collapsed_fraction() == Fraction(1, 4)
+        assert(Duration(2, 4))._as_collapsed_fraction() == Fraction(1, 2)
+        assert(Duration(Duration(1, 2), 4)._as_collapsed_fraction() == Fraction(1, 8))
