@@ -19,8 +19,7 @@ class MusicGlyph(Glyph, StaffObject):
     def __init__(self, pos, canonical_name, font=None, parent=None):
         if font is None:
             staff = StaffObject._find_staff(parent)
-            font = MusicFont(config.DEFAULT_MUSIC_FONT_NAME,
-                             staff.unit)
+            font = staff.default_music_font
         elif not isinstance(font, MusicFont):
             raise TypeError('MusicGlyph.font must be of type MusicFont')
         # type check font is MusicFont before sending to init?
@@ -65,10 +64,10 @@ class MusicGlyph(Glyph, StaffObject):
     def _bounding_rect(self):
         """Rect: The bounding rect for this glyph."""
         # TODO: This is still a little off...
-        x = self.staff.unit(self.glyph_info['glyphBBox']['bBoxSW'][0])
-        y = self.staff.unit(self.glyph_info['glyphBBox']['bBoxNE'][1])
-        w = self.staff.unit(self.glyph_info['glyphBBox']['bBoxNE'][0] - x)
-        h = self.staff.unit((self.glyph_info['glyphBBox']['bBoxSW'][1] - y) * -1)
+        x = self.glyph_info['glyphBBox']['bBoxSW'][0]
+        y = self.glyph_info['glyphBBox']['bBoxNE'][1]
+        w = self.glyph_info['glyphBBox']['bBoxNE'][0] - x
+        h = (self.glyph_info['glyphBBox']['bBoxSW'][1] - y) * -1
         return Rect(x, y, w, h)
 
     @property
@@ -89,4 +88,3 @@ class MusicGlyph(Glyph, StaffObject):
             dict: The aggregated SMuFL metadata for this glyph
         """
         self._glyph_info = self.font.glyph_info(self.canonical_name)
-        convert_all_to_unit(self._glyph_info, self.staff.unit)

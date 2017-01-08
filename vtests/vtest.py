@@ -36,15 +36,6 @@ chord_1.render()
 
 chord_2 = ChordRest(Mm(40), staff, ["b'", "as'", "fn''", "gf"])
 chord_2.render()
-for notehead in list(chord_1.noteheads):
-    print('DRAWING BBOX FOR NOTEHEAD {}'.format(notehead.pitch))
-    bbox = notehead._bounding_rect
-    bbox_path = Path((Mm(0), Mm(0)), parent=notehead)
-    bbox_path.pen = Pen('#ff0000')
-    bbox_path.move_to(staff.unit(bbox.x), staff.unit(bbox.y))
-    bbox_path.line_to(staff.unit(bbox.width), staff.unit(0))
-    bbox_path.line_to(staff.unit(bbox.width), staff.unit(bbox.height))
-    bbox_path.render()
 
 path = Path((Mm(0), Mm(0)), parent=glyph)
 path.line_to(Mm(3), Mm(-10))

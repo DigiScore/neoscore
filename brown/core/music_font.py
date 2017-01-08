@@ -2,7 +2,7 @@ from brown.interface.font_interface import FontInterface
 from brown.core import brown
 from brown.core.font import Font
 from brown.utils import smufl
-from brown.utils.units import GraphicUnit
+from brown.utils.units import GraphicUnit, convert_all_to_unit
 
 
 class MusicFontMetadataNotFoundError(Exception):
@@ -19,6 +19,8 @@ class MusicFont(Font):
     def __init__(self, family_name, staff_unit):
         try:
             self.metadata = brown.registered_music_fonts[family_name]
+            # Convert all metadata values to staff units
+            convert_all_to_unit(self.metadata, staff_unit)
         except KeyError:
             raise MusicFontMetadataNotFoundError
         self._engraving_defaults = self.metadata['engravingDefaults']
