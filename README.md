@@ -1,12 +1,20 @@
 # Brown
 
-## A (very early) WIP Graphic Music Notation API
+## A WIP Graphic Music Notation API
 
-Brown is a (WIP) Python API that provides an easy-to-use interface for working with high-level vector graphics in Python, with an emphasis on provide powerful primitives and abstractions for creating music scores which use unconventional notation. It emphasizes easy extensibility, transparent architecture, and striking a balance between convenience and deep customizability.
+Brown is a (WIP) Python API that provides an easy-to-use interface for working with high-level vector graphics in Python, with an emphasis on providing powerful primitives and abstractions for creating music scores which use unconventional notation. It emphasizes easy extensibility, transparent architecture, and striking a balance between convenience and deep customizability.
 
-It uses Python and provides a convenient interface to its Qt backend through a simple yet expressive layer of abstractions, with the hope that its users will never have to make a direct Qt call or worry about the underlying interface logic.
+It uses Python and provides a convenient interface to its Qt backend through a simple yet expressive layer of abstractions, with the hope that its users will never have to make a direct Qt call or worry about the underlying render logic.
 
-At the time of writing, most of the fundamental groundwork is in place, and rapid development is underway on the core music-notation logic and primitives. Users may define staves and place logical musical information in structures which automatically calculate their traditional engraving representations as paths and musical glyphs. As of this writing, the current priority is implementing a robust flowable coordinate system to allow automatic flowing of systems across lines and pages.
+At the time of writing, most of the fundamental groundwork is in place, and rapid development is underway on the core music-notation logic and primitives. Users may define staves and place logical musical information in structures which automatically calculate their traditional engraving representations as paths and musical glyphs.
+
+Upcoming developments on the roadmap include:
+
+* Implementing a higher level logical system which allows users to specify musical passages by their semantic content rather than their simple graphical representation. Currently for a user to populate a staff with notes they must pass explicit descriptions of locations for chords and spanners - soon they will be able to specify contents by durations and pitches, grouped into object-oriented abstractions like Measures.
+* Implementing layout algorithms for conventionally notated passages
+* Increasing consistency across the API (as it stands, many similar functions or classes take the same arguments in different orders)
+* Implementing PDF / svg export of scores
+* Implementing a more robust score preview mode, possible with interactive visual inspection of elements.
 
 This project is in an extremely early stage, and should be
 considered nothing but a publicly visible development journal
@@ -27,18 +35,18 @@ $ pip install -r requirements.txt
 $ pip install -r tests/test_requirements.txt
 ```
 
-If everything goes right, you should be able to run the test suite (>200 tests and counting!) with:
+If everything goes right, you should be able to run the test suite (>330 tests and counting!) with:
 
 ```sh
 $ pytest
 ```
 
-Everything should go green, except for some currently expected errors in `test_app_interface`.
+
 
 And you can run the visual test to see some of the API actually in action with:
 
 ```sh
-$ python vtest.py
+$ python vtests/vtest.py
 ```
 
 Stay tuned for more!
