@@ -26,15 +26,16 @@ at this point.
 
 All of the dependencies for `brown` can be installed with pip except for the graphics engine - Qt5, which needs to be set up separately. Visit [this page](https://www.qt.io/download-open-source/) for instructions to install Qt5.
 
-For the rest, you just need a working [Python 3.5 installation](https://www.python.org/downloads/).
+For the rest, you just need a working [Python >= 3.5 installation](https://www.python.org/downloads/).
 
-From there, you can clone this repository and get the rest of the dependencies from `pip`:
+From there, you can clone this repository and get the rest of the dependencies from `pip`, and install the local `brown` package:
 
 ```sh
 $ git clone git@github.com:ajyoon/brown.git
 $ cd brown
 $ pip install -r requirements.txt
 $ pip install -r tests/test_requirements.txt
+$ pip install -e ./
 ```
 
 If everything goes right, you should be able to run the test suite (>330 tests and counting!) with:
