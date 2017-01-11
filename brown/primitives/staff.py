@@ -1,5 +1,6 @@
 from brown.utils.units import GraphicUnit, Unit
 from brown.utils.point import Point
+from brown.models.container import Container
 from brown.config import config
 from brown.primitives.clef import Clef
 from brown.core.path import Path
@@ -34,7 +35,7 @@ class Staff(Path):
         if default_music_font is None:
             self.default_music_font = MusicFont(config.DEFAULT_MUSIC_FONT_NAME,
                                                 self.unit)
-        self._contents = []
+        self._contents = Container()
         # Construct the staff path
         for i in range(self.line_count):
             y_offset = self.unit(i)
@@ -63,10 +64,7 @@ class Staff(Path):
 
     @property
     def contents(self):
-        """list[StaffObject]: A list of staff objects belonging to the staff
-
-        This property is read-only. TODO: Low priority: implement setter?
-        """
+        """Container[StaffObject]: The objects in the staff"""
         return self._contents
 
     @property
