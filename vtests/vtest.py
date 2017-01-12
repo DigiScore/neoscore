@@ -14,6 +14,7 @@ from brown.core.path import Path
 from brown.primitives.slur import Slur
 from brown.core.pen import Pen
 from brown.utils.color import Color
+from brown.primitives.time_signature import TimeSignature
 
 
 brown.setup()
@@ -25,7 +26,7 @@ flow.render()
 staff = Staff((Mm(0), Mm(0)), Mm(2000), flow, Mm(1))
 staff.render()
 
-glyph = MusicGlyph((staff.unit(10), staff.unit(0.5)), 'noteheadBlack', parent=staff)
+glyph = MusicGlyph((staff.unit(10), staff.unit(0.5)), 'noteheadCircleX', parent=staff)
 glyph.render()
 
 treble_clef = Clef(staff, Mm(0), 'treble')
@@ -44,5 +45,8 @@ path.render()
 
 slur = Slur(chord_1, chord_2)
 slur.render()
+
+time_signature = TimeSignature(staff.unit(5), 3, 4, staff)
+time_signature.render()
 
 brown.show()
