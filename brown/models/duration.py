@@ -37,14 +37,33 @@ class Duration:
     # TODO: How to handle things like duplet over dotted quarter?
     """
 
-    def __init__(self, numerator, denominator):
+    def __init__(self, *args):
         """
-        Args:
-            numerator (int or Duration):
-            denominator (int):
+        Supported init signatures are:
+            Args:
+                numerator (int or Duration):
+                denominator (int):
+            Args:
+                tuple (int, int): The above numerator, denominator args
+                    wrapped in a 2-tuple
+            Args:
+                duration (Duration): An existing Duration
         """
-        self._numerator = numerator
-        self._denominator = denominator
+        if len(args) == 2:
+            self._numerator = args[0]
+            self._denominator = args[1]
+        elif len(args) == 1:
+            if isinstance(args[0], tuple):
+                self._numerator = args[0][0]
+                self._denominator = args[0][1]
+            elif isinstance(args[0], type(self)):
+                self._numerator = args[0].numerator
+                self._denominator = args[0].denominator
+            else:
+                raise TypeError('Invalid Duration init signature')
+        else:
+            raise TypeError('Invalid Duration init signature')
+
         self._simplify()
         self._collapsed_fraction = self._as_collapsed_fraction()
 

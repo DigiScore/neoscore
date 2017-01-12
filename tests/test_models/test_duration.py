@@ -8,6 +8,22 @@ from brown.models.duration import Duration
 
 class TestDuration(unittest.TestCase):
 
+    def test_init_from_numerator_denominator(self):
+        dur = Duration(1, 4)
+        assert(dur.numerator == 1)
+        assert(dur.denominator == 4)
+
+    def test_init_from_args_tuple(self):
+        dur = Duration((1, 4))
+        assert(dur.numerator == 1)
+        assert(dur.denominator == 4)
+
+    def test_init_from_existing_duration(self):
+        original_dur = Duration(1, 4)
+        dur = Duration(original_dur)
+        assert(dur.numerator == 1)
+        assert(dur.denominator == 4)
+
     def test_non_nested_is_reduced(self):
         dur = Duration(2, 4)
         assert(dur.numerator == 1)
