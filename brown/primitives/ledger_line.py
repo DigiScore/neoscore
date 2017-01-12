@@ -16,9 +16,9 @@ class LedgerLine(Path, StaffObject):
         Path.__init__(self, pos, parent=parent)
         StaffObject.__init__(self, parent=parent)
         thickness = (
-            self.staff.default_music_font.engraving_defaults['legerLineThickness'])
+            self.staff.music_font.engraving_defaults['legerLineThickness'])
         self.extension = (
-            self.staff.default_music_font.engraving_defaults['legerLineExtension'])
+            self.staff.music_font.engraving_defaults['legerLineExtension'])
         self.pen = Pen(thickness=thickness)
         self.base_length = base_length
         self.move_to(self.extension * -1, self.staff.unit(0))

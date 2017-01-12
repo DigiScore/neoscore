@@ -17,7 +17,7 @@ class MusicGlyph(Glyph, StaffObject):
     def __init__(self, pos, canonical_name, font=None, parent=None):
         if font is None:
             staff = StaffObject._find_staff(parent)
-            font = staff.default_music_font
+            font = staff.music_font
         elif not isinstance(font, MusicFont):
             raise TypeError('MusicGlyph.font must be of type MusicFont')
         # type check font is MusicFont before sending to init?

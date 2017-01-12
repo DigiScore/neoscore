@@ -31,7 +31,7 @@ class Slur(Path, StaffObject, Spanner):
         self.pos = Point(self.staff.unit(0), self.staff.unit(0))
         self.direction = direction
         # Load relevant engraving defaults from music font
-        engraving_defaults = self.staff.default_music_font.engraving_defaults
+        engraving_defaults = self.staff.music_font.engraving_defaults
         self.midpoint_thickness = self.staff.unit(
             engraving_defaults['slurMidpointThickness'])
         self.endpoint_thickness = self.staff.unit(

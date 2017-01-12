@@ -15,6 +15,7 @@ from brown.primitives.slur import Slur
 from brown.core.pen import Pen
 from brown.utils.color import Color
 from brown.primitives.time_signature import TimeSignature
+from brown.primitives.bar_line import BarLine
 
 
 brown.setup()
@@ -48,5 +49,8 @@ slur.render()
 
 time_signature = TimeSignature(staff.unit(5), 3, 4, staff)
 time_signature.render()
+
+bar_line = BarLine(staff.unit(25), staff)
+bar_line.render()
 
 brown.show()

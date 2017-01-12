@@ -16,7 +16,7 @@ class Staff(Path):
     """A staff capable of holding `StaffObject`s"""
 
     def __init__(self, pos, width, frame,
-                 staff_unit=None, line_count=5, default_music_font=None):
+                 staff_unit=None, line_count=5, music_font=None):
         """
         Args:
             pos (Point): The position of the top-left corner of the staff
@@ -24,7 +24,7 @@ class Staff(Path):
             staff_unit (Unit): The distance between two lines in the staff.
                 If not set, this will default to config.DEFAULT_STAFF_UNIT
             line_count (int): The number of lines in the staff.
-            default_music_font (MusicFont): The font to be used in all
+            music_font (MusicFont): The font to be used in all
                 MusicGlyphs unless otherwise specified.
         """
         super().__init__(pos, parent=frame)
@@ -32,8 +32,8 @@ class Staff(Path):
         self._width = width
         self.unit = self._make_unit_class(staff_unit if staff_unit
                                           else config.DEFAULT_STAFF_UNIT)
-        if default_music_font is None:
-            self.default_music_font = MusicFont(config.DEFAULT_MUSIC_FONT_NAME,
+        if music_font is None:
+            self.music_font = MusicFont(config.DEFAULT_MUSIC_FONT_NAME,
                                                 self.unit)
         self._contents = Container()
         # Construct the staff path
