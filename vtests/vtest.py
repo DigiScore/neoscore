@@ -38,7 +38,7 @@ treble_clef.render()
 chord_1 = ChordRest(Mm(20), staff, ["a", "b", "c'", "as'", "fn''", "gf"], (1, 2))
 chord_1.render()
 
-chord_2 = ChordRest(Mm(40), staff, ["b'", "as'", "fn''", "gf"], (1, 4))
+chord_2 = ChordRest(Mm(40), staff, ["b'", "as'", "fn''", "gf"], (1, 32))
 chord_2.render()
 
 path = Path((Mm(0), Mm(0)), parent=glyph)

@@ -4,6 +4,8 @@ from brown.primitives.staff_object import StaffObject
 from brown.primitives.ledger_line import LedgerLine
 from brown.primitives.stem import Stem
 from brown.primitives.rest import Rest
+from brown.primitives.flag import Flag
+from brown.models.duration import Duration
 from brown.core.object_group import ObjectGroup
 from brown.utils.point import Point
 
@@ -21,7 +23,7 @@ class ChordRest(ObjectGroup, StaffObject):
         '''
         ObjectGroup.__init__(self, Point(pos_x, staff.unit(0)), staff, None)
         StaffObject.__init__(self, staff)
-        self.duration = duration
+        self.duration = Duration(duration)
         if pitches:
             for pitch in pitches:
                 self.register_object(Notehead(staff.unit(0), pitch, self.duration, self))
@@ -30,6 +32,7 @@ class ChordRest(ObjectGroup, StaffObject):
             self.rest = Rest(staff.unit(0), duration, self)
             self.register_object(self.rest)
         self._stem = None
+        self._flag = None
 
     ######## PUBLIC PROPERTIES ########
 
@@ -62,8 +65,13 @@ class ChordRest(ObjectGroup, StaffObject):
 
     @property
     def stem(self):
-        """Stem: The Stem for the ChordRest."""
+        """Stem or None: The Stem for the ChordRest."""
         return self._stem
+
+    @property
+    def flag(self):
+        """Flag or None: The flag attached to the stem."""
+        return self._flag
 
     @property
     def duration(self):
@@ -191,10 +199,13 @@ class ChordRest(ObjectGroup, StaffObject):
     @property
     def stem_height(self):
         """Unit: The height of the stem"""
-        min_abs_height = self.staff.unit(5)
+        flag_offset = Flag.vertical_offset_needed(self.duration,
+                                                  self.staff.unit)
+        min_abs_height = self.staff.unit(5) + flag_offset
         fitted_abs_height = (abs(self.lowest_notehead.y -
                                  self.highest_notehead.y) +
-                             self.staff.unit(2))
+                             self.staff.unit(2) +
+                             flag_offset)
         abs_height = max(min_abs_height, fitted_abs_height)
         return abs_height * self.stem_direction
 
@@ -218,6 +229,7 @@ class ChordRest(ObjectGroup, StaffObject):
         self._create_accidentals()
         self._create_ledgers()
         self._create_stem()
+        self._create_flag()
         super().render()
 
     def _render_with_rest(self):
@@ -258,14 +270,25 @@ class ChordRest(ObjectGroup, StaffObject):
             self.register_object(accidental)
 
     def _create_stem(self):
-        """Creates a Stem and stores it in `self.stem`.
+        """Create a Stem and stores it in `self.stem`.
 
         Returns: None
         """
         start = Point(self.staff.unit(0),
                       self.furthest_notehead.staff_position)
         self._stem = Stem(start, self.stem_height, self)
-        self.register_object(self._stem)
+        self.register_object(self.stem)
+
+    def _create_flag(self):
+        """Create a Flag attached to self.stem and store it in self.flag
+
+        Returns: None
+        """
+        if Flag.needs_flag(self.duration):
+            self._flag = Flag(self.duration,
+                              self.stem.direction,
+                              self.stem.end_point)
+            self.register_object(self.flag)
 
     def _position_noteheads_horizontally(self):
         """Reposition noteheads so that they are laid out correctly
