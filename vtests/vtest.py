@@ -16,6 +16,8 @@ from brown.core.pen import Pen
 from brown.utils.color import Color
 from brown.primitives.time_signature import TimeSignature
 from brown.primitives.bar_line import BarLine
+from brown.primitives.rest import Rest
+
 
 
 brown.setup()
@@ -52,5 +54,8 @@ time_signature.render()
 
 bar_line = BarLine(staff.unit(25), staff)
 bar_line.render()
+
+rest = Rest(staff.unit(30), (1, 4), staff)
+rest.render()
 
 brown.show()
