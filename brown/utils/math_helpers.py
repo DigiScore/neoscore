@@ -69,3 +69,17 @@ def min_and_max(iterable):
         if value > maximum:
             maximum = value
     return minimum, maximum
+
+
+def sign(value):
+    """Return the sign of a value as 1 or -1.
+
+    Args:
+        value (int): The value to check
+
+    Returns: int: -1 if `value` is negative, and 1 if `value` is positive
+    """
+    if value < 0:
+        return -1
+    else:
+        return 1
