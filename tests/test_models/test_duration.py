@@ -3,7 +3,7 @@ import unittest
 
 from nose.tools import assert_raises
 
-from brown.models.duration import Duration, InvalidDurationError
+from brown.models.duration import Duration
 
 
 class TestDuration(unittest.TestCase):
@@ -20,9 +20,9 @@ class TestDuration(unittest.TestCase):
         assert(dur.numerator.denominator == 2)
         assert(dur.denominator == 4)
 
-    def test_invalid_duration_caught(self):
-        with assert_raises(InvalidDurationError):
-            Duration(5, 8)
+    def test_requires_tie(self):
+        assert(Duration(5, 8).requires_tie is True)
+        assert(Duration(4, 8).requires_tie is False)
 
     def test_properties_are_immutable(self):
         dur = Duration(2, 4)

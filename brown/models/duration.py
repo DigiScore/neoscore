@@ -1,11 +1,6 @@
 from fractions import Fraction
 
 
-class InvalidDurationError(Exception):
-    """Exception raised when a Duration requires a tie to be possible."""
-    pass
-
-
 class Duration:
     """A duration in a meter whose value is measured in rational numbers.
 
@@ -60,6 +55,7 @@ class Duration:
             # Duration(Duration(1, 3), 4) base division should be 8
             # for triplet eighth!
             self._base_division = self.denominator
+            self._requires_tie = False
         else:
             dot_count = 0
             partial_numerator = self.numerator
@@ -69,16 +65,18 @@ class Duration:
                 partial_denominator = partial_denominator / 2
                 dot_count += 1
             if partial_numerator != 1:
-                # This is an invalid fraction
-                raise InvalidDurationError(
-                    '{}({}, {}) cannot be expressed without ties.'.format(
-                        type(self).__name__,
-                        numerator,
-                        denominator))
+                self._requires_tie = True
+            else:
+                self._requires_tie = False
             self._base_division = int(partial_denominator)
             self._dot_count = dot_count
 
     ######## PUBLIC PROPERTIES ########
+
+    @property
+    def requires_tie(self):
+        """bool: If this Duration requires a tie to be written."""
+        return self._requires_tie
 
     @property
     def numerator(self):
