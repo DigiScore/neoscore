@@ -1,4 +1,5 @@
 from brown.models.pitch import Pitch
+from brown.models.duration import Duration
 from brown.utils.point import Point
 from brown.utils.units import Mm
 from brown.core.music_glyph import MusicGlyph
@@ -6,17 +7,39 @@ from brown.core.music_glyph import MusicGlyph
 
 class Notehead(MusicGlyph):
 
-    def __init__(self, position_x, pitch, parent):
+    """A simple Notehead glyph whose appearance is determined by a Duration
+
+    Currently, values larger than whole notes are not supported.
+    """
+
+    _glyphnames = {
+        1024: 'noteheadBlack',
+        512: 'noteheadBlack',
+        256: 'noteheadBlack',
+        128: 'noteheadBlack',
+        64: 'noteheadBlack',
+        32: 'noteheadBlack',
+        16: 'noteheadBlack',
+        8: 'noteheadBlack',
+        4: 'noteheadBlack',
+        2: 'noteheadHalf',
+        1: 'noteheadWhole',
+    }
+
+    def __init__(self, position_x, pitch, duration, parent):
         """
         Args:
             staff (Staff)
             position_x (Unit):
+            duration (Duration):
             pitch (Pitch):
         """
         self.pitch = pitch
+        self.duration = Duration(duration)
         # HACK: init pos to temporary position, then set for real
         super().__init__((position_x, Mm(0)),
-                         'noteheadBlack', parent=parent)
+                         self._glyphnames[self.duration.base_division],
+                         parent=parent)
         self.pos = Point(position_x, self.staff_position)
 
     ######## PUBLIC PROPERTIES ########
@@ -41,6 +64,15 @@ class Notehead(MusicGlyph):
             self._pitch = value
         else:
             self._pitch = Pitch(value)
+
+    @property
+    def duration(self):
+        """Duration: The time duration of this Notehead"""
+        return self._duration
+
+    @duration.setter
+    def duration(self, value):
+        self._duration = value
 
     @property
     def staff_position(self):

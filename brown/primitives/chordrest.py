@@ -21,14 +21,14 @@ class ChordRest(ObjectGroup, StaffObject):
         '''
         ObjectGroup.__init__(self, Point(pos_x, staff.unit(0)), staff, None)
         StaffObject.__init__(self, staff)
+        self.duration = duration
         if pitches:
             for pitch in pitches:
-                self.register_object(Notehead(staff.unit(0), pitch, self))
+                self.register_object(Notehead(staff.unit(0), pitch, self.duration, self))
             self.rest = None
         else:
             self.rest = Rest(staff.unit(0), duration, self)
             self.register_object(self.rest)
-        self.duration = duration
         self._stem = None
 
     ######## PUBLIC PROPERTIES ########

@@ -36,7 +36,7 @@ class Rest(MusicGlyph):
             staff (Staff):
             duration (Duration or tuple(Duration args)):
         """
-        self._duration = Duration(duration)
+        self.duration = Duration(duration)
         super().__init__(Point(pos_x, Unit(0)),
                          self._glyphnames[self.duration.base_division],
                          parent=parent)
@@ -49,3 +49,7 @@ class Rest(MusicGlyph):
     def duration(self):
         """Duration: The time duration of this Rest"""
         return self._duration
+
+    @duration.setter
+    def duration(self, value):
+        self._duration = value
