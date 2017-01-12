@@ -3,26 +3,32 @@ from brown.primitives.accidental import Accidental
 from brown.primitives.staff_object import StaffObject
 from brown.primitives.ledger_line import LedgerLine
 from brown.primitives.stem import Stem
+from brown.primitives.rest import Rest
 from brown.core.object_group import ObjectGroup
 from brown.utils.point import Point
 
 
 class ChordRest(ObjectGroup, StaffObject):
     # (use temporary None in duration until those are implemented)
-    def __init__(self, pos_x, staff, noteheads=None, duration=None):
+    def __init__(self, pos_x, staff, pitches, duration):
         '''
         Args:
             pos_x (Unit): The horizontal position of the ChordRest
             staff (Staff): The staff the object is attached to
-            noteheads (list[Notehead]): A list of pitch strings
+            noteheads (list[str] or None): A list of pitch strings
                 representing noteheads. An empty list indicates a rest.
             duration (Duration): The duration of the ChordRest
         '''
         ObjectGroup.__init__(self, Point(pos_x, staff.unit(0)), staff, None)
         StaffObject.__init__(self, staff)
-        for pitch in noteheads:
-            self.register_object(Notehead(staff.unit(0), pitch, self))
-        self._duration = duration
+        if pitches:
+            for pitch in pitches:
+                self.register_object(Notehead(staff.unit(0), pitch, self))
+            self.rest = None
+        else:
+            self.rest = Rest(staff.unit(0), duration, self)
+            self.register_object(self.rest)
+        self.duration = duration
         self._stem = None
 
     ######## PUBLIC PROPERTIES ########
@@ -31,6 +37,15 @@ class ChordRest(ObjectGroup, StaffObject):
     def noteheads(self):
         """iter(Notehead): The noteheads contained in this ChordRest."""
         return (item for item in self.objects if isinstance(item, Notehead))
+
+    @property
+    def rest(self):
+        """Rest or None: A Rest glyph, if no noteheads exist."""
+        return self._rest
+
+    @rest.setter
+    def rest(self, value):
+        self._rest = value
 
     @property
     def accidentals(self):
@@ -187,6 +202,15 @@ class ChordRest(ObjectGroup, StaffObject):
     ######## PUBLIC METHODS ########
 
     def render(self):
+        if list(self.noteheads):
+            self._render_with_notes()
+        else:
+            self._render_with_rest()
+
+    ######## PRIVATE METHODS ########
+
+    def _render_with_notes(self):
+        """Render with notes and auxillary objects"""
         # Position noteheads and accidentals
         self._position_noteheads_horizontally()
         self._position_accidentals_horizontally()
@@ -196,7 +220,9 @@ class ChordRest(ObjectGroup, StaffObject):
         self._create_stem()
         super().render()
 
-    ######## PRIVATE METHODS ########
+    def _render_with_rest(self):
+        """Render as a single rest with no auxillary objects"""
+        super().render()
 
     def _create_ledgers(self):
         """Create all required ledger lines and store them in `self.ledgers`
