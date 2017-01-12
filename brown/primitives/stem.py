@@ -1,6 +1,7 @@
 from brown.core.pen import Pen
 from brown.core.path import Path
 from brown.primitives.staff_object import StaffObject
+from brown.utils.math_helpers import sign
 
 
 class Stem(Path, StaffObject):
@@ -32,3 +33,18 @@ class Stem(Path, StaffObject):
         Positive values extend downward, and vice versa.
         """
         return self._height
+
+    @property
+    def direction(self):
+        """int: The direction the stem points, where -1 is up and 1 is down"""
+        return sign(self.height)
+
+    @property
+    def start_point(self):
+        """PathElement: The inner element attached to a Notehead."""
+        return self.elements[0]
+
+    @property
+    def end_point(self):
+        """PathElement: The outer element reaching above or below the Chordrest."""
+        return self.elements[1]
