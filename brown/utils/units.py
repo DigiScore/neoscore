@@ -13,7 +13,7 @@ class Unit:
 
         >>> from brown.utils.units import Inch, Mm
         >>> print(Inch(1) + Mm(1))
-        1.0393701 inches
+        Inch(1.0393701)
 
     If a `Unit` (or subclass) is to the left of an `int` or `float`,
     the value on the right will be converted to the left object's type
@@ -21,21 +21,19 @@ class Unit:
     object of the left-side object's type.
 
         >>> print(Inch(1) + 1)
-        2 inches
+        Inch(2)
 
     If an `int` or `float` are on the left hand side of any operator
     except `*`, `/`, or `//`, a TypeError will be raised.
 
         >>> print(2 * Inch(1))
-        2 inches
+        Inch(2)
         >>> print(1 + Inch(1))
         Traceback (most recent call last):
          ...
         TypeError: unsupported operand type(s) for +: 'int' and 'Inch'
     """
 
-    # For use in __str__(). Subclasses should override this.
-    _unit_name_plural = 'base units'
     # Ratio of this class's units to Units.
     # Subclasses should override this.
     _base_units_per_self_unit = 1
@@ -83,9 +81,6 @@ class Unit:
     ######## SPECIAL METHODS ########
 
     # Representations ---------------------------------------------------------
-
-    def __str__(self):
-        return '{} {}'.format(self.value, self._unit_name_plural)
 
     def __repr__(self):
         return '{}({})'.format(type(self).__name__, self.value)
@@ -169,7 +164,6 @@ class Unit:
 
 class GraphicUnit(Unit):
     # TODO: When stable, copy and tailor docstring from Unit
-    _unit_name_plural = 'graphic units'
     _base_units_per_self_unit = 1
 
     # (all other functionality implemented in Unit)
@@ -178,7 +172,6 @@ class GraphicUnit(Unit):
 
 class Inch(Unit):
     # TODO: When stable, copy and tailor docstring from Unit
-    _unit_name_plural = 'inches'
     _base_units_per_self_unit = 300
 
     # (all other functionality implemented in Unit)
@@ -187,7 +180,6 @@ class Inch(Unit):
 
 class Mm(Unit):
     # TODO: When stable, copy and tailor docstring from Unit
-    _unit_name_plural = 'mm'
     _base_units_per_self_unit = Inch._base_units_per_self_unit * 0.0393701
 
     # (all other functionality implemented in Unit)
@@ -195,7 +187,6 @@ class Mm(Unit):
 
 
 class Cm(Unit):
-    _unit_name_plural = 'cm'
     _base_units_per_self_unit = Mm._base_units_per_self_unit * 10
 
     # (all other functionality implemented in Unit)

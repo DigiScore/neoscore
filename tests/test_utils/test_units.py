@@ -35,9 +35,6 @@ class TestUnit(unittest.TestCase):
         with assert_raises(TypeError):
             Unit(True)
 
-    def test__str__(self):
-        assert(str(Unit(1)) == '1 base units')
-
     def test__repr__(self):
         assert(repr(Unit(1)) == 'Unit(1)')
 
@@ -184,18 +181,12 @@ class TestCm(unittest.TestCase):
         self.assertAlmostEqual(Unit(Cm(1)), Unit(Mm._base_units_per_self_unit * 10))
         self.assertAlmostEqual(Unit(Cm(2)), Unit(Mm._base_units_per_self_unit * 20))
 
-    def test__str__(self):
-        assert(str(Cm(1)) == '1 cm')
-
 
 class TestMm(unittest.TestCase):
 
     def test_mm_unit_conversion(self):
         self.assertAlmostEqual(Unit(Mm(1)), Unit(11.811029999999999))
         self.assertAlmostEqual(Unit(Mm(2)), Unit(23.622059999999998))
-
-    def test__str__(self):
-        assert(str(Mm(1)) == '1 mm')
 
 
 class TestInch(unittest.TestCase):
@@ -204,15 +195,9 @@ class TestInch(unittest.TestCase):
         self.assertAlmostEqual(Unit(Inch(1)), Unit(300))
         self.assertAlmostEqual(Unit(Inch(2)), Unit(600))
 
-    def test__str__(self):
-        assert(str(Inch(1)) == '1 inches')
-
 
 class TestGraphicUnit(unittest.TestCase):
 
     def test_graphic_unit_unit_conversion(self):
         self.assertAlmostEqual(Unit(GraphicUnit(1)), Unit(1))
         self.assertAlmostEqual(Unit(GraphicUnit(2)), Unit(2))
-
-    def test__str__(self):
-        assert(str(GraphicUnit(1)) == '1 graphic units')

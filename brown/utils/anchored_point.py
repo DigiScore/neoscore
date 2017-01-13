@@ -163,9 +163,9 @@ class AnchoredPoint(Point):
             >>> some_grob = Glyph((10, 11), 'A')
             >>> p = AnchoredPoint.with_unit(2, 3, unit=Inch)
             >>> print(p.x)
-            2 inches
+            Inch(2)
             >>> print(p.y)
-            3 inches
+            Inch(3)
 
         Warning: Due to the flexibility of constructor options in Points,
             `unit` must be passed as a keyword argument.
