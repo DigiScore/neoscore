@@ -1,3 +1,6 @@
+from brown.utils.point import Point
+
+
 class NoAncestorStaffError(Exception):
     """Exception raised when a StaffObject does not have an ancestor Staff"""
     pass
@@ -49,3 +52,18 @@ class StaffObject:
                 return current
             else:
                 current = current.parent
+
+    ######## PUBLIC METHODS ########
+
+    def map_to_staff_unflowed(self):
+        """Map to the position in the unflowed staff.
+
+        Unflowed meaning the position along the total staff length
+        without line- or page-breaks.
+        """
+        delta = Point(type(self.x)(0), type(self.y)(0))
+        current = self
+        while current != self.staff:
+            delta += current.pos
+            current = current.parent
+        return delta

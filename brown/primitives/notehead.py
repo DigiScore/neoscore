@@ -81,5 +81,5 @@ class Notehead(MusicGlyph):
         StaffUnit(0) means the top staff line, higher values
         mean lower pitches, and vice versa.
         """
-        return (self.staff.middle_c_at(self.map_between_items(self.staff, self).x) +
+        return (self.staff.middle_c_at(self.map_to_staff_unflowed().x) +
                 self.staff.unit(self.pitch.staff_position_relative_to_middle_c))

@@ -1,6 +1,7 @@
 import unittest
 
 from brown.core import brown
+from brown.core.flowable_frame import FlowableFrame
 from brown.primitives.notehead import Notehead
 from brown.primitives.staff import Staff
 from brown.primitives.clef import Clef
@@ -10,7 +11,8 @@ from brown.utils.units import Mm
 class TestNotehead(unittest.TestCase):
     def setUp(self):
         brown.setup()
-        self.staff = Staff((Mm(0), Mm(0)), Mm(100), frame=None)
+        self.frame = FlowableFrame((Mm(0), Mm(0)), Mm(10000), Mm(30), Mm(5))
+        self.staff = Staff((Mm(0), Mm(0)), Mm(10000), frame=self.frame)
         self.mock_clef = Clef(self.staff, Mm(0), 'treble')
 
     def test_staff_position_middle_c_treble(self):
@@ -58,3 +60,7 @@ class TestNotehead(unittest.TestCase):
                          self.staff.unit(2.5))
         self.assertEqual(Notehead(Mm(10), "b'", (1, 4), self.staff).staff_position,
                          self.staff.unit(2))
+
+    def test_staff_position_on_later_flowable_line(self):
+        self.assertEqual(Notehead(Mm(1000), "c", (1, 4), self.staff).staff_position,
+                         self.staff.unit(8.5))

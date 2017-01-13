@@ -225,8 +225,6 @@ class Path(GraphicObject):
 
         Returns: None
         """
-        print('rendering slice at {} from local_x {} '
-              'with length {}'.format(pos, start_x, length))
         self._interface = self._interface_class(
             pos=pos,
             pen=self.pen._interface if self.pen else None,
@@ -260,17 +258,13 @@ class Path(GraphicObject):
         self._interface.render()
 
     def _render_complete(self, pos):
-        print('_render_complete()')
         self._render_slice(pos, start_x=None, length=None)
 
     def _render_before_break(self, local_start_x, start, stop):
-        print('_render_before_break()')
         self._render_slice(start, local_start_x, stop.x - start.x)
 
     def _render_after_break(self, local_start_x, start, stop):
-        print('_render_after_break()')
         self._render_slice(start, local_start_x, stop.x - start.x)
 
     def _render_spanning_continuation(self, local_start_x, start, stop):
-        print('_render_spanning_continuation()')
         self._render_slice(start, local_start_x, stop.x - start.x)

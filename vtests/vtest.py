@@ -42,7 +42,7 @@ chord_2 = ChordRest(Mm(40), staff, ["b'", "as'", "fn''", "gf"], (1, 1024))
 chord_2.render()
 
 for i, div in enumerate([4, 8, 16, 32, 64, 128, 256, 512, 1024]):
-    ChordRest(Mm(50 + (i * 5)), staff, ["b'", "as'", "fn''", "gf"], (1, div)).render()
+    ChordRest(Mm(52 + (i * 20)), staff, ["b'", "as'", "fn''", "gf"], (1, div)).render()
 
 path = Path((Mm(0), Mm(0)), parent=glyph)
 path.line_to(Mm(3), Mm(-10))
