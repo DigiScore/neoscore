@@ -113,6 +113,6 @@ class Flag(MusicGlyph):
         Returns: StaffUnit
         """
         if cls.needs_flag(duration):
-            return staff_unit(log2(duration.base_division // 4) / 2)
+            return staff_unit(1)
         else:
             return staff_unit(0)

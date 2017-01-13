@@ -43,7 +43,7 @@ class TestNotehead(unittest.TestCase):
 
         self.assertEqual(Flag.vertical_offset_needed(Duration(1, 8),
                                                      self.staff.unit),
-                         self.staff.unit(0.5))
+                         self.staff.unit(1))
 
         self.assertEqual(Flag.vertical_offset_needed(Duration(1, 16),
                                                      self.staff.unit),
