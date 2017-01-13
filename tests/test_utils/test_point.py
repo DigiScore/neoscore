@@ -112,6 +112,10 @@ class TestPoint(unittest.TestCase):
         test_instance.point.x = 0
         assert(test_instance.point_setter_hook_called is True)
 
+    def test__hash__(self):
+        assert({Point(1, 2), Point(1, 2), Point(3, 4)} ==
+               {Point(1, 2), Point(3, 4)})
+
     def test__eq__(self):
         p1 = Point(5, 6)
         p2 = Point(5, 6)

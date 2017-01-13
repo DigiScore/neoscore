@@ -42,11 +42,6 @@ class Point:
 
         self._iter_index = 0
 
-    ######## SPECIAL METHODS ########
-
-    def __repr__(self):
-        return '{}({}, {})'.format(type(self).__name__, self.x, self.y)
-
     ######## PRIVATE CLASS METHODS ########
 
     @classmethod
@@ -64,9 +59,9 @@ class Point:
             >>> from brown.utils.units import Inch
             >>> p = Point.with_unit(2, 3, unit=Inch)
             >>> print(p.x)
-            2 inches
+            Inch(2)
             >>> print(p.y)
-            3 inches
+            Inch(3)
 
         Warning: Due to the flexibility of constructor options in Points,
             `unit` must be passed as a keyword argument.
@@ -102,7 +97,6 @@ class Point:
     def y(self, value):
         self._y = value
         self.setters_hook()
-
 
     ######## PUBLIC METHODS ########
 
@@ -141,6 +135,12 @@ class Point:
         pass
 
     ######## SPECIAL METHODS ########
+
+    def __repr__(self):
+        return '{}({}, {})'.format(type(self).__name__, self.x, self.y)
+
+    def __hash__(self):
+        return hash(self.__repr__())
 
     def __eq__(self, other):
         """Two Points are equal if their attributes are all equal.
