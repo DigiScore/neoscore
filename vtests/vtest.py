@@ -17,6 +17,7 @@ from brown.utils.color import Color
 from brown.primitives.time_signature import TimeSignature
 from brown.primitives.bar_line import BarLine
 from brown.primitives.rest import Rest
+from brown.primitives.beam import Beam
 
 
 
@@ -38,19 +39,26 @@ treble_clef.render()
 chord_1 = ChordRest(Mm(20), staff, ["a", "b", "c'", "as'", "fn''", "gf"], (1, 2))
 chord_1.render()
 
-chord_2 = ChordRest(Mm(40), staff, ["b'", "as'", "fn''", "gf"], (1, 1024))
+chord_2 = ChordRest(Mm(40), staff, ["b'", "as'", "fn''", "gf"], (1, 4))
 chord_2.render()
 
+beam = Beam(AnchoredPoint(staff.unit(0), staff.unit(0), chord_1.stem.end_point),
+            AnchoredPoint(staff.unit(0), staff.unit(0), chord_2.stem.end_point))
+beam.render()
+
+chord_3 = ChordRest(Mm(50), staff, ["b'", "as'", "e'''", "gf"], (1, 4))
+chord_3.render()
+
+slur = Slur(chord_2, chord_3)
+slur.render()
+
 for i, div in enumerate([4, 8, 16, 32, 64, 128, 256, 512, 1024]):
-    ChordRest(Mm(52 + (i * 20)), staff, ["b'", "as'", "fn''", "gf"], (1, div)).render()
+    ChordRest(Mm(92 + (i * 20)), staff, ["b'", "as'", "fn''", "gf"], (1, div)).render()
 
 path = Path((Mm(0), Mm(0)), parent=glyph)
 path.line_to(Mm(3), Mm(-10))
 path.line_to(AnchoredPoint(Mm(1), Mm(0), chord_1))
 path.render()
-
-slur = Slur(chord_1, chord_2)
-slur.render()
 
 time_signature = TimeSignature(staff.unit(5), 3, 4, staff)
 time_signature.render()
