@@ -5,6 +5,7 @@ from brown.primitives.ledger_line import LedgerLine
 from brown.primitives.stem import Stem
 from brown.primitives.rest import Rest
 from brown.primitives.flag import Flag
+from brown.primitives.rhythm_dot import RhythmDot
 from brown.models.duration import Duration
 from brown.core.object_group import ObjectGroup
 from brown.utils.point import Point
@@ -95,6 +96,24 @@ class ChordRest(ObjectGroup, StaffObject):
         return (self.staff._ledgers_needed_from_position(lowest) |
                 self.staff._ledgers_needed_from_position(highest))
 
+    @property
+    def rhythm_dot_positions(self):
+        """iter(Point): The positions of all rhythm dots needed."""
+        if self.rest:
+            dot_start_x = self.rest.x + self.rest._bounding_rect.width
+            dottables = [self.rest]
+        else:
+            dot_start_x = self.leftmost_notehead.x + self.notehead_column_width
+            dottables = list(self.noteheads)
+        for i in range(self.duration.dot_count):
+            for dottable in dottables:
+                if dottable.y.value % 1 == 0:
+                    # Dottable is on a line, add dot offset to space below
+                    y_offset = self.staff.unit(-0.5)
+                else:
+                    y_offset = self.staff.unit(0)
+                yield(Point(dot_start_x + (self.staff.unit(0.5) * i),
+                            dottable.y + y_offset))
     @property
     def furthest_notehead(self):
         """Notehead or None: The Notehead furthest from the staff center"""
@@ -226,6 +245,7 @@ class ChordRest(ObjectGroup, StaffObject):
         self._position_noteheads_horizontally()
         self._position_accidentals_horizontally()
         # Generate non-notehead group members
+        self._create_dots()
         self._create_accidentals()
         self._create_ledgers()
         self._create_stem()
@@ -234,6 +254,7 @@ class ChordRest(ObjectGroup, StaffObject):
 
     def _render_with_rest(self):
         """Render as a single rest with no auxillary objects"""
+        self._create_dots()
         super().render()
 
     def _create_ledgers(self):
@@ -268,6 +289,13 @@ class ChordRest(ObjectGroup, StaffObject):
                                           notehead))
         for accidental in accidentals:
             self.register_object(accidental)
+
+    def _create_dots(self):
+        """Create all the RhythmDots needed by this ChordRest."""
+        dots = [RhythmDot(dot_pos, self)
+                for dot_pos in self.rhythm_dot_positions]
+        for dot in dots:
+            self.register_object(dot)
 
     def _create_stem(self):
         """Create a Stem and stores it in `self.stem`.

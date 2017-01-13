@@ -18,7 +18,7 @@ from brown.primitives.time_signature import TimeSignature
 from brown.primitives.bar_line import BarLine
 from brown.primitives.rest import Rest
 from brown.primitives.beam import Beam
-
+from brown.primitives.rhythm_dot import RhythmDot
 
 
 brown.setup()
@@ -46,7 +46,7 @@ beam = Beam(AnchoredPoint(staff.unit(0), staff.unit(0), chord_1.stem.end_point),
             AnchoredPoint(staff.unit(0), staff.unit(0), chord_2.stem.end_point))
 beam.render()
 
-chord_3 = ChordRest(Mm(50), staff, ["b'", "as'", "e'''", "gf"], (1, 4))
+chord_3 = ChordRest(Mm(50), staff, ["b'", "as'", "e'''", "gf"], (7, 16))
 chord_3.render()
 
 slur = Slur(chord_2, chord_3)
@@ -69,7 +69,10 @@ bar_line.render()
 rest = Rest(staff.unit(30), (1, 4), staff)
 rest.render()
 
-real_rest = ChordRest(staff.unit(35), staff, None, (1, 4))
+real_rest = ChordRest(staff.unit(35), staff, None, (3, 8))
 real_rest.render()
+
+dot = RhythmDot(Point(staff.unit(37), staff.unit(2)), staff)
+dot.render()
 
 brown.show()

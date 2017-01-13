@@ -29,6 +29,27 @@ class TestChordRest(unittest.TestCase):
         assert(chord.ledger_line_positions ==
                {self.staff.unit(5), self.staff.unit(-1), self.staff.unit(-2)})
 
+    def test_rhythm_dot_positions_with_rest(self):
+        chord = ChordRest(Mm(1), self.staff, None, (7, 16))
+        dots = set(chord.rhythm_dot_positions)
+        assert(dots == {
+            Point(self.staff.unit(1.076), self.staff.unit(1.5)),
+            Point(self.staff.unit(1.576), self.staff.unit(1.5)),
+        })
+
+    def test_rhythm_dot_positions_with_noteheads(self):
+        pitches = ["e,", "d", "e'''"]
+        chord = ChordRest(Mm(1), self.staff, pitches, (7, 16))
+        dots = set(chord.rhythm_dot_positions)
+        assert(dots == {
+            Point(self.staff.unit(1.18), self.staff.unit(-3.5)),
+            Point(self.staff.unit(1.68), self.staff.unit(-3.5)),
+            Point(self.staff.unit(1.18), self.staff.unit(7.5)),
+            Point(self.staff.unit(1.68), self.staff.unit(7.5)),
+            Point(self.staff.unit(1.18), self.staff.unit(10.5)),
+            Point(self.staff.unit(1.68), self.staff.unit(10.5)),
+        })
+
     def test_furthest_notehead_with_one_note(self):
         pitches = ["b'"]
         chord = ChordRest(Mm(1), self.staff, pitches, (1, 4))
