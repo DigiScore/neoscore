@@ -31,6 +31,11 @@ class TestDuration(unittest.TestCase):
         assert(dur.numerator.denominator == 2)
         assert(dur.denominator == 4)
 
+    def test_from_float(self):
+        assert(Duration.from_float(0.4) == Duration(2, 5))
+        assert(Duration.from_float(0.4, limit_denominator=1) == Duration(0, 1))
+        assert(Duration.from_float(0.4, 8) == Duration(3, 8))
+
     @nottest
     def test_requires_tie(self):
         assert(Duration(5, 8).requires_tie is True)

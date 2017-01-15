@@ -89,6 +89,39 @@ class Duration:
             self._base_division = int(partial_denominator)
             self._dot_count = dot_count
 
+    ######## CONSTRUCTORS ########
+
+    @classmethod
+    def from_float(cls, value, round_to=None, limit_denominator=1024):
+        """Initialize from a float with an optional denominator to round toward.
+
+        Args:
+            value (float):
+            round_to (int): A denominator to round toward.
+            limit_denominator (int): The maximum denominator value.
+                If `round_to` is specified, this does nothing.
+
+        Returns: Duration
+
+        Examples:
+            >>> Duration.from_float(0.4)
+            Duration(2, 5)
+            >>> Duration.from_float(0.4, 2)
+            Duration(1, 2)
+            >>> Duration.from_float(0.4, 4)
+            Duration(2, 4)
+        """
+        if round_to is None:
+            fraction = Fraction(value).limit_denominator(limit_denominator)
+            return Duration(fraction.numerator, fraction.denominator)
+
+        fraction = Fraction(value).limit_denominator(limit_denominator)
+        multiplier = round_to / fraction.denominator
+        return Duration(
+            int(round(multiplier * fraction.numerator)),
+            round_to
+        )
+
     ######## PUBLIC PROPERTIES ########
 
     @property
