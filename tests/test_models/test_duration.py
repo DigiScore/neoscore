@@ -1,7 +1,7 @@
 from fractions import Fraction
 import unittest
 
-from nose.tools import assert_raises
+from nose.tools import assert_raises, nottest
 
 from brown.models.duration import Duration
 
@@ -24,11 +24,6 @@ class TestDuration(unittest.TestCase):
         assert(dur.numerator == 1)
         assert(dur.denominator == 4)
 
-    def test_non_nested_is_reduced(self):
-        dur = Duration(2, 4)
-        assert(dur.numerator == 1)
-        assert(dur.denominator == 2)
-
     def test_nested_is_not_reduced(self):
         dur = Duration(Duration(1, 2), 4)
         assert(isinstance(dur.numerator, Duration))
@@ -36,6 +31,7 @@ class TestDuration(unittest.TestCase):
         assert(dur.numerator.denominator == 2)
         assert(dur.denominator == 4)
 
+    @nottest
     def test_requires_tie(self):
         assert(Duration(5, 8).requires_tie is True)
         assert(Duration(4, 8).requires_tie is False)
@@ -51,13 +47,13 @@ class TestDuration(unittest.TestCase):
         self.assertAlmostEqual(float(Duration(1, 2)), 0.5)
 
     def test__eq__with_non_nested(self):
-        assert(Duration(2, 4) == Duration(8, 16))
+        assert(Duration(2, 4) == Duration(2, 4))
 
     def test__ne__with_non_nested(self):
         assert(Duration(2, 4) != Duration(7, 16))
 
     def test__eq__with_nested(self):
-        assert(Duration(Duration(1, 2), 4) == Duration(Duration(2, 4), 4))
+        assert(Duration(Duration(1, 2), 4) == Duration(Duration(1, 2), 4))
 
     def test__ne__with_nested(self):
         assert(Duration(Duration(1, 2), 4) != Duration(Duration(2, 4), 8))

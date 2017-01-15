@@ -64,7 +64,6 @@ class Duration:
         else:
             raise TypeError('Invalid Duration init signature')
 
-        self._simplify()
         self._collapsed_fraction = self._as_collapsed_fraction()
 
         # Calculate base division and dot count
@@ -77,8 +76,8 @@ class Duration:
             self._requires_tie = False
         else:
             dot_count = 0
-            partial_numerator = self.numerator
-            partial_denominator = self.denominator
+            partial_numerator = self.collapsed_fraction.numerator
+            partial_denominator = self.collapsed_fraction.denominator
             while partial_numerator > 1:
                 partial_numerator = (partial_numerator - 1) / 2
                 partial_denominator = partial_denominator / 2
@@ -180,18 +179,6 @@ class Duration:
         return type(self)(added_fraction.numerator, added_fraction.denominator)
 
     ######## PRIVATE METHODS ########
-
-    def _simplify(self):
-        """Simplify this Duration if it is non-nested
-
-        Returns: None
-        """
-        if isinstance(self.numerator, type(self)):
-            return
-        else:
-            reduced = Fraction(self.numerator, self.denominator)
-            self._numerator = reduced.numerator
-            self._denominator = reduced.denominator
 
     def _as_collapsed_fraction(self):
         """Collapse this Duration into a single Fraction and return it.
