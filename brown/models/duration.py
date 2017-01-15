@@ -139,6 +139,10 @@ class Duration:
     def __hash__(self):
         return hash(self.__repr__())
 
+    def __float__(self):
+        """Reduce the fractional representation to a float and return it."""
+        return float(self.collapsed_fraction)
+
     def __eq__(self, other):
         """Two durations are equivalent if their numerators and denominators are."""
         if not isinstance(other, type(self)):
@@ -152,6 +156,28 @@ class Duration:
 
     def __ge__(self, other):
         return self > other or self.collapsed_fraction == other.collapsed_fraction
+
+    def __add__(self, other):
+        """Durations are added by adding their reduced fractions.
+
+        Adding nested durations results in collapsing them into
+        non-nested Durations
+        """
+        if not isinstance(other, type(self)):
+            raise TypeError
+        added_fraction = self.collapsed_fraction + other.collapsed_fraction
+        return type(self)(added_fraction.numerator, added_fraction.denominator)
+
+    def __sub__(self, other):
+        """Durations are subtracted by subtracting their reduced fractions.
+
+        Subtracting nested durations results in collapsing them into
+        non-nested Durations
+        """
+        if not isinstance(other, type(self)):
+            raise TypeError
+        added_fraction = self.collapsed_fraction - other.collapsed_fraction
+        return type(self)(added_fraction.numerator, added_fraction.denominator)
 
     ######## PRIVATE METHODS ########
 

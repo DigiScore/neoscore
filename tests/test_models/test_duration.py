@@ -47,6 +47,9 @@ class TestDuration(unittest.TestCase):
         with assert_raises(AttributeError):
             dur.denominator = 0
 
+    def test__float__(self):
+        self.assertAlmostEqual(float(Duration(1, 2)), 0.5)
+
     def test__eq__with_non_nested(self):
         assert(Duration(2, 4) == Duration(8, 16))
 
@@ -95,6 +98,18 @@ class TestDuration(unittest.TestCase):
         assert({Duration(Duration(1, 2), 4), Duration(Duration(1, 2), 4),
                 Duration(Duration(1, 2), 8)} ==
                {Duration(Duration(1, 2), 4), Duration(Duration(1, 2), 8)})
+
+    def test__add__with_non_nested(self):
+        assert(Duration(1, 4) + Duration(1, 4) == Duration(1, 2))
+
+    def test__add__with_nested(self):
+        assert(Duration(Duration(1, 2), 4) + Duration(1, 4) == Duration(3, 8))
+
+    def test__sub__with_non_nested(self):
+        assert(Duration(3, 4) - Duration(1, 4) == Duration(1, 2))
+
+    def test__sub__with_nested(self):
+        assert(Duration(Duration(1, 2), 4) - Duration(1, 16) == Duration(1, 16))
 
     def test_dot_count(self):
         assert(Duration(1, 4).dot_count == 0)
