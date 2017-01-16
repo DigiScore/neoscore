@@ -46,9 +46,6 @@ class Unit:
                 into `self.value`. Any value which is a unit subclass of
                 `Unit` will be converted to that value in this unit.
         """
-        if not type(self)._is_acceptable_type(value):
-            raise TypeError(
-                'Unsupported value type "{}"'.format(type(value).__name__))
         if isinstance(value, (int, float)):
             self.value = value
         elif type(value) == type(self):
@@ -56,27 +53,23 @@ class Unit:
             self.value = value.value
         elif isinstance(value, Unit):
             # Convertible type, so convert value
-            self.value = ((value._base_units_per_self_unit * value.value) /
-                          self._base_units_per_self_unit)
+            self.value = (value._to_base_unit_float()
+                          / self._base_units_per_self_unit)
             if isinstance(self.value, float) and self.value.is_integer():
                 self.value = int(self.value)
         else:
-            raise AssertionError('Leaky type in Unit. This is a bug!')
+            raise TypeError(
+                'Cannot create {} from {}'.format(type(self).__name__,
+                                                  type(value).__name__))
 
-    ######## PRIVATE CLASS METHODS ########
+    ######## PRIVATE METHODS ########
 
-    @classmethod
-    def _is_acceptable_type(cls, value):
-        """Tell if an object can be converted to this unit.
+    def _to_base_unit_float(self):
+        """Return this value as a float in base unit values.
 
-        Args:
-            value (Any): The value to test
-
-        Returns: bool
+        Returns: float
         """
-        return (isinstance(value, (int, float, Unit))
-                # (bool is a subclass of int but should not be allowed)
-                and not isinstance(value, bool))
+        return self.value * self._base_units_per_self_unit
 
     ######## SPECIAL METHODS ########
 
@@ -91,55 +84,52 @@ class Unit:
     # Comparisons -------------------------------------------------------------
 
     def __lt__(self, other):
-        return self.value < self.__class__(other).value
+        return self.value < type(self)(other).value
 
     def __le__(self, other):
-        return self.value <= self.__class__(other).value
+        return self.value <= type(self)(other).value
 
     def __eq__(self, other):
-        return self.value == self.__class__(other).value
-
-    def __ne__(self, other):
-        return self.value != self.__class__(other).value
+        return self.value == type(self)(other).value
 
     def __gt__(self, other):
-        return self.value > self.__class__(other).value
+        return self.value > type(self)(other).value
 
     def __ge__(self, other):
-        return self.value >= self.__class__(other).value
+        return self.value >= type(self)(other).value
 
     # Operators ---------------------------------------------------------------
 
     def __add__(self, other):
-        return self.__class__(self.value + self.__class__(other).value)
+        return type(self)(self.value + type(self)(other).value)
 
     def __sub__(self, other):
-        return self.__class__(self.value - self.__class__(other).value)
+        return type(self)(self.value - type(self)(other).value)
 
     def __mul__(self, other):
-        return self.__class__(self.value * self.__class__(other).value)
+        return type(self)(self.value * type(self)(other).value)
 
     def __truediv__(self, other):
-        return self.__class__(self.value / self.__class__(other).value)
+        return type(self)(self.value / type(self)(other).value)
 
     def __floordiv__(self, other):
-        return self.__class__(self.value // self.__class__(other).value)
+        return type(self)(self.value // type(self)(other).value)
 
     def __pow__(self, other, modulo=None):
         if modulo is None:
-            return self.__class__(self.value ** self.__class__(other).value)
+            return type(self)(self.value ** type(self)(other).value)
         else:
-            return self.__class__(
-                pow(self.value, self.__class__(other).value, modulo))
+            return type(self)(
+                pow(self.value, type(self)(other).value, modulo))
 
     def __neg__(self):
-        return self.__class__(-self.value)
+        return type(self)(-self.value)
 
     def __pos__(self):
-        return self.__class__(+self.value)
+        return type(self)(+self.value)
 
     def __abs__(self):
-        return self.__class__(abs(self.value))
+        return type(self)(abs(self.value))
 
     def __int__(self):
         return int(self.value)
@@ -148,18 +138,18 @@ class Unit:
         return float(self.value)
 
     def __round__(self, ndigits=None):
-        return self.__class__(round(self.value, ndigits))
+        return type(self)(round(self.value, ndigits))
 
     # Reverse Operators -------------------------------------------------------
 
     def __rmul__(self, other):
-        return self.__class__(other * self.value)
+        return type(self)(other * self.value)
 
     def __rtruediv__(self, other):
-        return self.__class__(other / self.value)
+        return type(self)(other / self.value)
 
     def __rfloordiv__(self, other):
-        return self.__class__(other // self.value)
+        return type(self)(other // self.value)
 
 
 class GraphicUnit(Unit):
@@ -232,7 +222,7 @@ def convert_all_to_unit(iterable, unit):
     """
     if isinstance(iterable, dict):
         for key, value in iterable.items():
-            if unit._is_acceptable_type(value):
+            if isinstance(value, (int, float, Unit)):
                 iterable[key] = unit(value)
             elif isinstance(value, (list, dict)):
                 convert_all_to_unit(iterable[key], unit)
@@ -241,7 +231,7 @@ def convert_all_to_unit(iterable, unit):
             # (else: continue --- nothing to do here)
     elif isinstance(iterable, list):
         for i in range(len(iterable)):
-            if unit._is_acceptable_type(iterable[i]):
+            if isinstance(iterable[i], (int, float, Unit)):
                 iterable[i] = unit(iterable[i])
             elif isinstance(iterable[i], (list, dict)):
                 convert_all_to_unit(iterable[i], unit)

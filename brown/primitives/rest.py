@@ -1,12 +1,11 @@
 from brown.core.music_glyph import MusicGlyph
-from brown.models.duration import Duration
 from brown.utils.point import Point
 from brown.utils.units import Unit
 
 
 class Rest(MusicGlyph):
 
-    """A simple Rest glyph whose appearance is determined by a Duration
+    """A simple Rest glyph whose appearance is determined by a duration
 
     Currently, the following rest types are not supported:
         * restHalfLegerLine
@@ -34,9 +33,9 @@ class Rest(MusicGlyph):
         Args:
             pos_x (StaffUnit):
             staff (Staff):
-            duration (Duration or tuple(Duration args)):
+            duration (Beat):
         """
-        self.duration = Duration(duration)
+        self.duration = duration
         super().__init__(Point(pos_x, Unit(0)),
                          self._glyphnames[self.duration.base_division],
                          parent=parent)
@@ -47,7 +46,7 @@ class Rest(MusicGlyph):
 
     @property
     def duration(self):
-        """Duration: The time duration of this Rest"""
+        """Beat: The time duration of this Rest"""
         return self._duration
 
     @duration.setter

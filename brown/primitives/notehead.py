@@ -1,5 +1,4 @@
 from brown.models.pitch import Pitch
-from brown.models.duration import Duration
 from brown.utils.point import Point
 from brown.utils.units import Mm
 from brown.core.music_glyph import MusicGlyph
@@ -31,11 +30,11 @@ class Notehead(MusicGlyph):
         Args:
             staff (Staff)
             position_x (Unit):
-            duration (Duration):
+            duration (Beat or Beat tuple):
             pitch (Pitch):
         """
         self.pitch = pitch
-        self.duration = Duration(duration)
+        self.duration = duration
         # HACK: init pos to temporary position, then set for real
         super().__init__((position_x, Mm(0)),
                          self._glyphnames[self.duration.base_division],
@@ -67,7 +66,7 @@ class Notehead(MusicGlyph):
 
     @property
     def duration(self):
-        """Duration: The time duration of this Notehead"""
+        """Beat: The time duration of this Notehead"""
         return self._duration
 
     @duration.setter

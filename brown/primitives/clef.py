@@ -23,7 +23,8 @@ class Clef(MusicGlyph):
         Args:
             staff (Staff):
             position_x (float):
-            pitch (Pitch):
+            clef_type (str): One of: 'treble', 'bass', '8vb bass',
+                'tenor', or 'alto'
         """
         self._baseline_staff_positions = {
             'treble': staff.unit(2),

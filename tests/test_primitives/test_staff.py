@@ -38,12 +38,12 @@ class TestStaff(unittest.TestCase):
 
     def test_active_clef_at_with_explicit_clefs(self):
         staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
-        treble_clef = Clef(staff, 0,  'treble')
-        bass_clef = Clef(staff, 10, 'bass')
+        staff.add_clef((0, 4), 'treble')
+        staff.add_clef((2, 4), 'bass')
         # Test between two clefs should have treble in effect
-        assert(staff.active_clef_at(5) == treble_clef)
+        assert(staff.active_clef_at(staff.beat(1, 4)).clef_type == 'treble')
         # Test after bass clef goes into effect
-        assert(staff.active_clef_at(15) == bass_clef)
+        assert(staff.active_clef_at(staff.beat(3, 4)).clef_type == 'bass')
 
     def test_active_clef_at_with_implicit_default_clef(self):
         staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
@@ -51,12 +51,12 @@ class TestStaff(unittest.TestCase):
 
     def test_middle_c_at_with_explicit_clefs(self):
         staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
-        treble_clef = Clef(staff, 0,  'treble')
-        bass_clef = Clef(staff, 10, 'bass')
+        staff.add_clef((0, 4), 'treble')
+        staff.add_clef((2, 4), 'bass')
         # Test between two clefs should be in treble mode
-        assert(staff.middle_c_at(5) == staff.unit(5))
+        assert(staff.middle_c_at(staff.beat(1, 4)) == staff.unit(5))
         # Test after bass clef goes into effect
-        assert(staff.middle_c_at(15) == staff.unit(-1))
+        assert(staff.middle_c_at(staff.beat(3, 4)) == staff.unit(-1))
 
     def test_middle_c_at_with_implicit_default_clef(self):
         staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
@@ -65,12 +65,12 @@ class TestStaff(unittest.TestCase):
 
     def test_natural_midi_number_of_top_line_at_with_explicit_clefs(self):
         staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
-        treble_clef = Clef(staff, 0,  'treble')
-        bass_clef = Clef(staff, 10, 'bass')
+        staff.add_clef((0, 4), 'treble')
+        staff.add_clef((2, 4), 'bass')
         # Test between two clefs should be in treble mode
-        assert(staff._natural_midi_number_of_top_line_at(5) == 77)
+        assert(staff._natural_midi_number_of_top_line_at(staff.beat(1, 4)) == 77)
         # Test after bass clef goes into effect
-        assert(staff._natural_midi_number_of_top_line_at(15) == 57)
+        assert(staff._natural_midi_number_of_top_line_at(staff.beat(3, 4)) == 57)
 
     def test_natural_midi_number_of_top_line_at_with_implicit_default_clef(self):
         staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)

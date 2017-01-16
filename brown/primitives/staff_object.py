@@ -1,4 +1,5 @@
 from brown.utils.point import Point
+from brown.utils.units import Unit
 
 
 class NoAncestorStaffError(Exception):
@@ -21,10 +22,13 @@ class StaffObject:
     """
 
     def __init__(self, parent):
+        """
+        Args:
+            parent (Staff or StaffObject):
+        """
         self._staff = self._find_staff(parent)
         if not self._staff:
             raise NoAncestorStaffError
-        self.staff._register_staff_object(self)  # Register object with staff
 
     ######## PUBLIC PROPERTIES ########
 

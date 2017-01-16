@@ -1,7 +1,4 @@
-from math import log2
-
 from brown.core.music_glyph import MusicGlyph
-from brown.models.duration import Duration
 from brown.utils.point import Point
 from brown.utils.units import Unit
 
@@ -16,7 +13,7 @@ class NoFlagNeededError(Exception):
 
 class Flag(MusicGlyph):
 
-    """A simple Flag glyph with a Duration and direction
+    """A simple Flag glyph with a duration and direction
 
     This is meant to be attached to a Stem end_point.
     As a result, Flags are positioned at (0, 0) relative to their parent.
@@ -46,12 +43,12 @@ class Flag(MusicGlyph):
     def __init__(self, duration, direction, parent):
         """
         Args:
-            duration (Duration or tuple(Duration args)):
+            duration (Beat):
             direction (int): The direction of the flag, where
                 -1 indicates pointing upward, and 1 vice versa.
             parent (StaffObject or Staff)
         """
-        self.duration = Duration(duration)
+        self.duration = duration
         self.direction = direction
         if self.direction == 1:
             glyph_name = self._down_glyphnames[self.duration.base_division]
@@ -65,7 +62,7 @@ class Flag(MusicGlyph):
 
     @property
     def duration(self):
-        """Duration: The time duration of this Rest"""
+        """Beat: The time duration of this object"""
         return self._duration
 
     @duration.setter
@@ -93,10 +90,10 @@ class Flag(MusicGlyph):
 
     @classmethod
     def needs_flag(cls, duration):
-        """Determine if a Duration needs a flag.
+        """Determine if a Beat needs a flag.
 
         Args:
-            duration (Duration): The Duration to check
+            duration (Beat): The Duration to check
 
         Returns: bool
         """
@@ -107,7 +104,7 @@ class Flag(MusicGlyph):
         """Find the space needed in a stem using a flag of a given duration
 
         Args:
-            duration (Duration): The duration for the hypothetical flag
+            duration (Beat): The duration for the hypothetical flag
             staff_unit (type): The staff unit to give the result in
 
         Returns: StaffUnit

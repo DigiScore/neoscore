@@ -31,10 +31,6 @@ class TestUnit(unittest.TestCase):
         with assert_raises(TypeError):
             Unit('nonsense type')
 
-    def test_init_from_bool_fails(self):
-        with assert_raises(TypeError):
-            Unit(True)
-
     def test__repr__(self):
         assert(repr(Unit(1)) == 'Unit(1)')
 

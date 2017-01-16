@@ -2,7 +2,6 @@ from brown.core.object_group import ObjectGroup
 from brown.core.music_glyph import MusicGlyph
 from brown.primitives.staff_object import StaffObject
 from brown.utils.point import Point
-from brown.models.duration import Duration
 
 
 class TimeSignature(ObjectGroup, StaffObject):
@@ -19,47 +18,43 @@ class TimeSignature(ObjectGroup, StaffObject):
         9: "timeSig9",
     }
 
-    def __init__(self, position_x, numerator, denominator, staff):
+    def __init__(self, position_x, duration, staff):
         """
         Args:
             position_x (StaffUnit): The x position relative to the
                 parent staff
-            numerator (int): The upper value of the time signature
-            denominator (int): The lower value of the time signature
+            duration (Duration): The length of a measure in this
+                time signature. The numerator and denominators
+                of this duration are used literally as the numbers
+                in the rendered representation of the signature.
+                While a 6/8 measure will take the same amount of time
+                as a 3/4 measure, the representations (and note groupings)
+                are different.
             staff (Staff): The parent staff
         """
         ObjectGroup.__init__(self, Point(position_x, staff.unit(0)),
                              parent=staff,
                              objects=None)
         StaffObject.__init__(self, staff)
-        self._numerator = numerator
-        self._denominator = denominator
+        self._duration = duration
         # Add one glyph for each digit
         # TODO: This does not currently support multi-digit values
         #       so time signatures like 12/8 are not supported.
         #       this may be a good case for making a MusicTextObject
         #       as that would automatically be able to handle multi-line
         #       positioning, text centering, etc.
-        self._numerator_glyph = MusicGlyph((staff.unit(0), staff.unit(1)),
-                                           self._glyphnames[self.numerator],
-                                           parent=self)
+        self._numerator_glyph = MusicGlyph(
+            (staff.unit(0), staff.unit(1)),
+            self._glyphnames[self.duration.numerator],
+            parent=self)
         self.register_object(self.numerator_glyph)
-        self._denominator_glyph = MusicGlyph((staff.unit(0), staff.unit(3)),
-                                             self._glyphnames[self.denominator],
-                                             parent=self)
+        self._denominator_glyph = MusicGlyph(
+            (staff.unit(0), staff.unit(3)),
+            self._glyphnames[self.duration.denominator],
+            parent=self)
         self.register_object(self.denominator_glyph)
 
     ######## PUBLIC PROPERTIES ########
-
-    @property
-    def numerator(self):
-        """int: The numerical upper value of the time signature"""
-        return self._numerator
-
-    @property
-    def denominator(self):
-        """int: The numerical lower value of the time signature"""
-        return self._denominator
 
     @property
     def numerator_glyph(self):
@@ -74,4 +69,4 @@ class TimeSignature(ObjectGroup, StaffObject):
     @property
     def duration(self):
         """Duration: The length of one bar in this time signature"""
-        return Duration(self.numerator, self.denominator)
+        return self._duration

@@ -6,7 +6,6 @@ from brown.primitives.stem import Stem
 from brown.primitives.rest import Rest
 from brown.primitives.flag import Flag
 from brown.primitives.rhythm_dot import RhythmDot
-from brown.models.duration import Duration
 from brown.core.object_group import ObjectGroup
 from brown.utils.point import Point
 
@@ -16,15 +15,15 @@ class ChordRest(ObjectGroup, StaffObject):
     def __init__(self, pos_x, staff, pitches, duration):
         '''
         Args:
-            pos_x (Unit): The horizontal position of the ChordRest
+            pos_x (Unit): The horizontal position
             staff (Staff): The staff the object is attached to
             noteheads (list[str] or None): A list of pitch strings
                 representing noteheads. An empty list indicates a rest.
-            duration (Duration): The duration of the ChordRest
+            duration (Beat): The duration of the ChordRest
         '''
-        ObjectGroup.__init__(self, Point(pos_x, staff.unit(0)), staff, None)
         StaffObject.__init__(self, staff)
-        self.duration = Duration(duration)
+        ObjectGroup.__init__(self, Point(pos_x, staff.unit(0)), staff, None)
+        self.duration = duration
         if pitches:
             for pitch in pitches:
                 self.register_object(Notehead(staff.unit(0), pitch, self.duration, self))

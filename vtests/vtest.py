@@ -30,49 +30,10 @@ flow.render()
 staff = Staff((Mm(0), Mm(0)), Mm(2000), flow, Mm(1))
 staff.render()
 
-glyph = MusicGlyph((staff.unit(10), staff.unit(0.5)), 'noteheadCircleX', parent=staff)
-glyph.render()
 
-treble_clef = Clef(staff, Mm(0), 'treble')
-treble_clef.render()
+staff.add_clef((0, 4), 'treble')
+staff.add_time_signature(0, (4, 4))
+staff.add_chordrest((1, 4), ["a'", "bs,"], (2, 4))
 
-chord_1 = ChordRest(Mm(20), staff, ["a", "b", "c'", "as'", "fn''", "gf"], (1, 2))
-chord_1.render()
-
-chord_2 = ChordRest(Mm(40), staff, ["b'", "as'", "fn''", "gf"], (1, 4))
-chord_2.render()
-
-beam = Beam(AnchoredPoint(staff.unit(0), staff.unit(0), chord_1.stem.end_point),
-            AnchoredPoint(staff.unit(0), staff.unit(0), chord_2.stem.end_point))
-beam.render()
-
-chord_3 = ChordRest(Mm(50), staff, ["b'", "as'", "e'''", "gf"], (7, 16))
-chord_3.render()
-
-slur = Slur(chord_2, chord_3)
-slur.render()
-
-for i, div in enumerate([4, 8, 16, 32, 64, 128, 256, 512, 1024]):
-    ChordRest(Mm(92 + (i * 20)), staff, ["b'", "as'", "fn''", "gf"], (1, div)).render()
-
-path = Path((Mm(0), Mm(0)), parent=glyph)
-path.line_to(Mm(3), Mm(-10))
-path.line_to(AnchoredPoint(Mm(1), Mm(0), chord_1))
-path.render()
-
-time_signature = TimeSignature(staff.unit(5), 3, 4, staff)
-time_signature.render()
-
-bar_line = BarLine(staff.unit(25), staff)
-bar_line.render()
-
-rest = Rest(staff.unit(30), (1, 4), staff)
-rest.render()
-
-real_rest = ChordRest(staff.unit(35), staff, None, (3, 8))
-real_rest.render()
-
-dot = RhythmDot(Point(staff.unit(37), staff.unit(2)), staff)
-dot.render()
 
 brown.show()

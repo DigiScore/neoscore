@@ -1,8 +1,13 @@
+from warnings import warn
+
 from brown.utils.units import GraphicUnit, Unit
 from brown.utils.point import Point
 from brown.models.container import Container
+from brown.models.beat import Beat
 from brown.config import config
 from brown.primitives.clef import Clef
+from brown.primitives.time_signature import TimeSignature
+from brown.primitives.chordrest import ChordRest
 from brown.core.path import Path
 from brown.core.music_font import MusicFont
 
@@ -15,8 +20,11 @@ class NoClefError(Exception):
 class Staff(Path):
     """A staff capable of holding `StaffObject`s"""
 
+    _whole_note_size = 8  # StaffUnits
+
     def __init__(self, pos, width, frame,
-                 staff_unit=None, line_count=5, music_font=None):
+                 staff_unit=None, line_count=5, music_font=None,
+                 default_time_signature_duration=None):
         """
         Args:
             pos (Point): The position of the top-left corner of the staff
@@ -26,21 +34,31 @@ class Staff(Path):
             line_count (int): The number of lines in the staff.
             music_font (MusicFont): The font to be used in all
                 MusicGlyphs unless otherwise specified.
+            default_time_signature_duration (tuple or None): The duration tuple
+                of the initial time signature. If none, (4, 4) will be used.
         """
         super().__init__(pos, parent=frame)
         self._line_count = line_count
         self._width = width
         self.unit = self._make_unit_class(staff_unit if staff_unit
                                           else config.DEFAULT_STAFF_UNIT)
+        self.beat = Beat._make_concrete_beat(self.unit(40))
         if music_font is None:
             self.music_font = MusicFont(config.DEFAULT_MUSIC_FONT_NAME,
-                                                self.unit)
-        self._contents = Container()
+                                        self.unit)
         # Construct the staff path
         for i in range(self.line_count):
             y_offset = self.unit(i)
             self.move_to(Point(GraphicUnit(0), y_offset) + self.pos)
             self.line_to(Point(width, y_offset) + self.pos)
+
+        # Create first measure with given time signature duration
+        self._contents = Container()
+        if default_time_signature_duration:
+            self.default_time_signature_duration = self.beat(
+                default_time_signature_duration)
+        else:
+            self.default_time_signature_duration = self.beat(4, 4)
 
     ######## PUBLIC PROPERTIES ########
 
@@ -64,7 +82,7 @@ class Staff(Path):
 
     @property
     def contents(self):
-        """Container[StaffObject]: The objects in the staff"""
+        """Container[GraphicObject]: The collection of objects in the staff"""
         return self._contents
 
     @property
@@ -84,19 +102,73 @@ class Staff(Path):
 
     ######## PUBLIC METHODS ########
 
-    def active_clef_at(self, position_x):
-        """Find and return the active clef at a given point.
+    # Object adder methods ----------------------------------------------------
+
+    def add_clef(self, time, clef_type):
+        """Add a clef.
+
+        Args:
+            time (Beat tuple):
+            clef_type (str): One of: 'treble', 'bass', '8vb bass',
+                'tenor', or 'alto'
+
+        Returns: None
+        """
+        pos_x = self.beat(*time)
+        self.contents.append(Clef(self, pos_x, clef_type))
+        # HACK: Render immediately. Later on, this is probably a good
+        #       case for removing user-facing render() calls, and
+        #       instead having a master brown.render() method.
+        self.contents[-1].render()
+
+    def add_time_signature(self, measure_number, duration):
+        """Add a time signature.
+
+        Args:
+            measure_number (int): The bar number
+            duration (Beat tuple): The length of a measure in this
+                time signature. The numerator and denominators
+                of this duration are used literally as the numbers
+                in the rendered representation of the signature.
+                While a 6/8 measure will take the same amount of time
+                as a 3/4 measure, the representations (and note groupings)
+                are different.
+
+        Returns: None
+        """
+        pos_x = self.beat(measure_number, 1)
+        duration = self.beat(*duration)
+        self.contents.append(TimeSignature(pos_x, duration, self))
+        self.contents[-1].render()
+
+    def add_chordrest(self, time, pitches, duration):
+        """
+        Args:
+            time (Beat tuple):
+            pitches (list[str]):
+            duration (Beat tuple):
+        """
+        # See notes in self.add_clef about the hacks used here
+        pos_x = self.beat(*time)
+        duration = self.beat(*duration)
+        self.contents.append(ChordRest(pos_x, self, pitches, duration))
+        self.contents[-1].render()
+
+    # Other methods -----------------------------------------------------------
+
+    def active_clef_at(self, pos_x):
+        """Find and return the active clef at a given x position.
+
+        pos_x (Unit):
 
         Returns: Clef
         """
-        # TODO: Find a more efficient way to quickly look up contents by type
-        clef = None
-        for item in self.contents:
-            if item.x >= position_x:
-                break
-            if isinstance(item, Clef):
-                clef = item
-        return clef
+        # TODO: Implement a more efficient way to quickly look up contents by type
+        if self.contents:
+            return max([item for item in self.contents if item.x < pos_x],
+                       key=lambda item: item.x)
+        else:
+            return None
 
     def middle_c_at(self, position_x):
         """Find the vertical staff position of middle-c at a given point.
@@ -201,16 +273,3 @@ class Staff(Path):
                        for pos in range(start, self.line_count - 1, -1))
         else:
             return set()
-
-    def _register_staff_object(self, staff_object):
-        """Add a StaffObject to `self.contents`.
-
-        Args:
-            staff_object (StaffObject): The object to add to `self.contents`
-
-        Warning:
-            This does not set `staff_object.staff` to self"""
-        self._contents.append(staff_object)
-        # Maintain contents in sorted order
-        # TODO: Implement a more efficient structure/algorithm for this
-        self._contents.sort(key=lambda val: val.x)
