@@ -36,7 +36,7 @@ class Unit:
 
     # Ratio of this class's units to Units.
     # Subclasses should override this.
-    _base_units_per_self_unit = 1
+    _conversion_rate = 1
 
     def __init__(self, value):
         """
@@ -54,7 +54,7 @@ class Unit:
         elif isinstance(value, Unit):
             # Convertible type, so convert value
             self.value = (value._to_base_unit_float()
-                          / self._base_units_per_self_unit)
+                          / self._conversion_rate)
             if isinstance(self.value, float) and self.value.is_integer():
                 self.value = int(self.value)
         else:
@@ -69,7 +69,7 @@ class Unit:
 
         Returns: float
         """
-        return self.value * self._base_units_per_self_unit
+        return self.value * self._conversion_rate
 
     ######## SPECIAL METHODS ########
 
@@ -154,7 +154,7 @@ class Unit:
 
 class GraphicUnit(Unit):
     # TODO: When stable, copy and tailor docstring from Unit
-    _base_units_per_self_unit = 1
+    _conversion_rate = 1
 
     # (all other functionality implemented in Unit)
     pass
@@ -162,7 +162,7 @@ class GraphicUnit(Unit):
 
 class Inch(Unit):
     # TODO: When stable, copy and tailor docstring from Unit
-    _base_units_per_self_unit = 300
+    _conversion_rate = 300
 
     # (all other functionality implemented in Unit)
     pass
@@ -170,14 +170,14 @@ class Inch(Unit):
 
 class Mm(Unit):
     # TODO: When stable, copy and tailor docstring from Unit
-    _base_units_per_self_unit = Inch._base_units_per_self_unit * 0.0393701
+    _conversion_rate = Inch._conversion_rate * 0.0393701
 
     # (all other functionality implemented in Unit)
     pass
 
 
 class Cm(Unit):
-    _base_units_per_self_unit = Mm._base_units_per_self_unit * 10
+    _conversion_rate = Mm._conversion_rate * 10
 
     # (all other functionality implemented in Unit)
     pass

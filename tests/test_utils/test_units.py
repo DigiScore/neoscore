@@ -5,7 +5,7 @@ from brown.utils.units import Unit, Cm, Mm, Inch, GraphicUnit
 
 
 class MockUnit(Unit):
-    _base_units_per_self_unit = 2
+    _conversion_rate = 2
     pass
 
 
@@ -174,8 +174,8 @@ class TestUnit(unittest.TestCase):
 class TestCm(unittest.TestCase):
 
     def test_cm_unit_conversion(self):
-        self.assertAlmostEqual(Unit(Cm(1)), Unit(Mm._base_units_per_self_unit * 10))
-        self.assertAlmostEqual(Unit(Cm(2)), Unit(Mm._base_units_per_self_unit * 20))
+        self.assertAlmostEqual(Unit(Cm(1)), Unit(Mm._conversion_rate * 10))
+        self.assertAlmostEqual(Unit(Cm(2)), Unit(Mm._conversion_rate * 20))
 
 
 class TestMm(unittest.TestCase):

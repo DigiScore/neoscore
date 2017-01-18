@@ -214,7 +214,7 @@ class Staff(Path):
             type: A new StaffUnit class specifically for use in this staff.
         """
         class StaffUnit(Unit):
-            _base_units_per_self_unit = float(Unit(staff_unit_size))
+            _conversion_rate = float(Unit(staff_unit_size))
             # (all other functionality implemented in Unit)
         return StaffUnit
 

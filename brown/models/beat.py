@@ -44,7 +44,7 @@ class Beat(Unit):
     # Users should generally not create Beats directly - they should
     # work with beats through staves, whose layout systems will create
     # local Beat classes which implement this conversion rate
-    _base_units_per_self_unit = None
+    _conversion_rate = None
 
     def __init__(self, *args):
         """
@@ -60,9 +60,8 @@ class Beat(Unit):
         **kwargs:
 
         """
-        if self._base_units_per_self_unit is None:
-            warn('Initializing an abstract Beat '
-                 '(where _base_units_per_self_unit is None).\n'
+        if self._conversion_rate is None:
+            warn('Initializing an abstract Beat. '
                  'You probably don\'t want to be doing this.')
         if len(args) == 2:
             self._numerator, self._denominator = args
@@ -72,7 +71,7 @@ class Beat(Unit):
                 self._denominator = args[0].denominator
             elif isinstance(args[0], Unit):
                 float_value = (args[0]._to_base_unit_float()
-                               / self._base_units_per_self_unit)
+                               / self._conversion_rate)
                 fraction = self._float_to_rounded_fraction_tuple(float_value)
                 self._numerator, self._denominator = fraction
             else:
@@ -122,11 +121,11 @@ class Beat(Unit):
 
         Examples:
             >>> Beat.from_float(0.4)
-            Beat(2, 5)
+            Beat(2, 5)[Abstract]
             >>> Beat.from_float(0.4, 2)
-            Beat(1, 2)
+            Beat(1, 2)[Abstract]
             >>> Beat.from_float(0.4, 4)
-            Beat(2, 4)
+            Beat(2, 4)[Abstract]
         """
         fraction_tuple = cls._float_to_rounded_fraction_tuple(
             value,
@@ -142,6 +141,8 @@ class Beat(Unit):
         beat to another in graphical conversion rates may vary, this literally
         copies the fractional value from one beat into a new one
         (whose graphical conversion rate may be different).
+
+        Returns: Beat
 
         Example:
             >>> LargeSizeBeat = Beat._make_concrete_beat(100)
@@ -208,10 +209,17 @@ class Beat(Unit):
     ######## SPECIAL METHODS ########
 
     def __repr__(self):
-        """Represent the Beat as its init signature"""
-        return "{}({}, {})".format(type(self).__name__,
-                                   self.numerator,
-                                   self.denominator)
+        if self._conversion_rate is not None:
+            return "{}({}, {})[conversion_rate={}]".format(
+                type(self).__name__,
+                self.numerator,
+                self.denominator,
+                self._conversion_rate)
+        else:
+            return "{}({}, {})[Abstract]".format(
+                type(self).__name__,
+                self.numerator,
+                self.denominator)
 
     def __hash__(self):
         return hash(self.__repr__())
@@ -246,7 +254,7 @@ class Beat(Unit):
         Returns: type
         """
         class ConcreteBeat(cls):
-            _base_units_per_self_unit = Unit(whole_note_size).value
+            _conversion_rate = Unit(whole_note_size).value
         return ConcreteBeat
 
     @staticmethod
@@ -286,7 +294,7 @@ class Beat(Unit):
 
         Returns: float
         """
-        return self.value * self._base_units_per_self_unit
+        return self.value * self._conversion_rate
 
     def _as_collapsed_fraction(self):
         """Collapse this Beat into a single Fraction and return it.
