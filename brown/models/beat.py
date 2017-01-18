@@ -134,6 +134,35 @@ class Beat(Unit):
             limit_denominator)
         return cls(*fraction_tuple)
 
+    @classmethod
+    def _from_rhythmic_beat(cls, beat):
+        """Initialize a Beat from an existing one taking its fractional value.
+
+        This is distinct from Beat(some_beat) because while the ratio of one
+        beat to another in graphical conversion rates may vary, this literally
+        copies the fractional value from one beat into a new one
+        (whose graphical conversion rate may be different).
+
+        Example:
+            >>> LargeSizeBeat = Beat._make_concrete_beat(100)
+            >>> SmallSizeBeat = Beat._make_concrete_beat(10)
+            >>> large_beat = LargeSizeBeat(1, 4)
+            >>> Unit(large_beat)
+            Unit(25)
+            >>> small_beat = SmallSizeBeat._from_rhythmic_beat(large_beat)
+            >>> small_beat.numerator
+            1
+            >>> small_beat.denominator
+            4
+            >>> Unit(small_beat)
+            Unit(2.5)
+        """
+        numerator = beat.numerator
+        # Recursively convert any nested numerator
+        if isinstance(numerator, Beat):
+            numerator = cls._from_rhythmic_beat(numerator)
+        return cls(numerator, beat.denominator)
+
     ######## PUBLIC PROPERTIES ########
 
     @property

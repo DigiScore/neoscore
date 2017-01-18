@@ -35,6 +35,24 @@ class TestBeat(unittest.TestCase):
         assert(MockBeat.from_float(0.4, limit_denominator=1) == MockBeat(0, 1))
         assert(MockBeat.from_float(0.4, 8) == MockBeat(3, 8))
 
+    def test_from_rhythmic_beat(self):
+        LargeSizeBeat = Beat._make_concrete_beat(100)
+        SmallSizeBeat = Beat._make_concrete_beat(10)
+        large_beat = LargeSizeBeat(1, 4)
+        small_beat = SmallSizeBeat._from_rhythmic_beat(large_beat)
+        assert(small_beat.numerator == 1)
+        assert(small_beat.denominator == 4)
+        assert(Unit(small_beat) == Unit(2.5))
+
+    def test_from_rhythmic_beat_nested(self):
+        LargeSizeBeat = Beat._make_concrete_beat(100)
+        SmallSizeBeat = Beat._make_concrete_beat(10)
+        large_beat = LargeSizeBeat(LargeSizeBeat(1, 1), 4)
+        small_beat = SmallSizeBeat._from_rhythmic_beat(large_beat)
+        assert(small_beat.numerator == SmallSizeBeat(1, 1))
+        assert(small_beat.denominator == 4)
+        assert(Unit(small_beat) == Unit(2.5))
+
     @nottest
     def test_requires_tie(self):
         assert(MockBeat(5, 8).requires_tie is True)
