@@ -245,17 +245,20 @@ class Beat(Unit):
     ######## PRIVATE METHODS ########
 
     @classmethod
-    def _make_concrete_beat(cls, whole_note_size):
+    def _make_concrete_beat(cls, whole_note_size, name='ConcreteBeat'):
         """Make a concrete Beat class and return it.
 
         Args:
             whole_note_size (Unit): The length of a Beat(1, 1)
+            name (str): The name for the concrete Beat class.
 
         Returns: type
         """
-        class ConcreteBeat(cls):
+        class FactoryBeat(cls):
             _conversion_rate = Unit(whole_note_size).value
-        return ConcreteBeat
+
+        FactoryBeat.__name__ = name
+        return FactoryBeat
 
     @staticmethod
     def _float_to_rounded_fraction_tuple(value,

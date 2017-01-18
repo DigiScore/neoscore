@@ -12,6 +12,11 @@ MockBeat = Beat._make_concrete_beat(100)
 
 class TestBeat(unittest.TestCase):
 
+    def test_make_concrete_beat(self):
+        beat_class = Beat._make_concrete_beat(100, 'TestBeatClass')
+        assert(beat_class.__name__ == 'TestBeatClass')
+        assert(beat_class._conversion_rate == 100)
+
     def test_init_from_numerator_denominator(self):
         dur = MockBeat(1, 4)
         assert(dur.numerator == 1)
