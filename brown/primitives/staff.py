@@ -42,7 +42,7 @@ class Staff(Path):
         self._width = width
         self.unit = self._make_unit_class(staff_unit if staff_unit
                                           else config.DEFAULT_STAFF_UNIT)
-        self.beat = Beat._make_concrete_beat(self.unit(40))
+        self.beat = Beat.make_concrete_beat(self.unit(40))
         if music_font is None:
             self.music_font = MusicFont(config.DEFAULT_MUSIC_FONT_NAME,
                                         self.unit)

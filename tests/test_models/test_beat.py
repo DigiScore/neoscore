@@ -3,19 +3,23 @@ import unittest
 
 from nose.tools import assert_raises, nottest
 
-from brown.models.beat import Beat
+from brown.models.beat import Beat, AbstractBeatConversionError
 from brown.utils.units import Unit
 
 
-MockBeat = Beat._make_concrete_beat(100)
+MockBeat = Beat.make_concrete_beat(100, Unit(3), 'MockBeat')
 
 
 class TestBeat(unittest.TestCase):
 
-    def test_make_concrete_beat(self):
-        beat_class = Beat._make_concrete_beat(100, 'TestBeatClass')
-        assert(beat_class.__name__ == 'TestBeatClass')
+    def test_abstract_beat_safe_to_init(self):
+        Beat(1, 4)
+
+    def testmake_concrete_beat(self):
+        beat_class = Beat.make_concrete_beat(100, Unit(5), 'TestBeatClass')
         assert(beat_class._conversion_rate == 100)
+        assert(beat_class._constant_offset == Unit(5))
+        assert(beat_class.__name__ == 'TestBeatClass')
 
     def test_init_from_numerator_denominator(self):
         dur = MockBeat(1, 4)
@@ -41,8 +45,8 @@ class TestBeat(unittest.TestCase):
         assert(MockBeat.from_float(0.4, 8) == MockBeat(3, 8))
 
     def test_from_rhythmic_beat(self):
-        LargeSizeBeat = Beat._make_concrete_beat(100)
-        SmallSizeBeat = Beat._make_concrete_beat(10)
+        LargeSizeBeat = Beat.make_concrete_beat(100)
+        SmallSizeBeat = Beat.make_concrete_beat(10)
         large_beat = LargeSizeBeat(1, 4)
         small_beat = SmallSizeBeat._from_rhythmic_beat(large_beat)
         assert(small_beat.numerator == 1)
@@ -50,8 +54,8 @@ class TestBeat(unittest.TestCase):
         assert(Unit(small_beat) == Unit(2.5))
 
     def test_from_rhythmic_beat_nested(self):
-        LargeSizeBeat = Beat._make_concrete_beat(100)
-        SmallSizeBeat = Beat._make_concrete_beat(10)
+        LargeSizeBeat = Beat.make_concrete_beat(100)
+        SmallSizeBeat = Beat.make_concrete_beat(10)
         large_beat = LargeSizeBeat(LargeSizeBeat(1, 1), 4)
         small_beat = SmallSizeBeat._from_rhythmic_beat(large_beat)
         assert(small_beat.numerator == SmallSizeBeat(1, 1))
@@ -147,12 +151,16 @@ class TestBeat(unittest.TestCase):
 
 class TestBeatInteractionWithUnit(unittest.TestCase):
 
-    # NOTE: for testing purposes, MockBeat(1, 1) == Unit(100),
+    # NOTE: for testing purposes, MockBeat(1, 1) == Unit(103),
     #       but in practice the conversion rate will vary from
     #       one concrete Beat class to another
 
     def test_conversion_to_unit(self):
-        assert(Unit(MockBeat(1, 1)) == Unit(100))
+        assert(Unit(MockBeat(1, 1)) == Unit(103))
 
     def test_init_from_unit(self):
-        assert(MockBeat(Unit(100)) == MockBeat(1, 1))
+        assert(MockBeat(Unit(103)) == MockBeat(1, 1))
+
+    def test_cannot_convert_abstract_beat_to_unit(self):
+        with assert_raises(AbstractBeatConversionError):
+            Unit(Beat(1, 1))

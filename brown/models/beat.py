@@ -4,6 +4,20 @@ from warnings import warn
 from brown.utils.units import Unit
 
 
+class AbstractBeatConversionError(Exception):
+    """Exception raised when an abstract Beat is converted to a concrete unit.
+
+    Beats can only be converted to other (graphical) units when they have a
+    defined _conversion_rate.
+    """
+    def __init__(self):
+        self.message = ('Cannot convert an abstract Beat to a concrete Unit. '
+                        'To work with Beats in a graphical context, '
+                        'a concrete Beat type should be created with '
+                        'Beat.make_concrete_beat()')
+        super().__init__(self.message)
+
+
 class Beat(Unit):
     """A beat in a meter whose value is measured in rational numbers.
 
@@ -45,6 +59,7 @@ class Beat(Unit):
     # work with beats through staves, whose layout systems will create
     # local Beat classes which implement this conversion rate
     _conversion_rate = None
+    _constant_offset = 0
 
     def __init__(self, *args):
         """
@@ -70,7 +85,8 @@ class Beat(Unit):
                 self._numerator = args[0].numerator
                 self._denominator = args[0].denominator
             elif isinstance(args[0], Unit):
-                float_value = (args[0]._to_base_unit_float()
+                float_value = ((args[0]._to_base_unit_float()
+                                - self._constant_offset)
                                / self._conversion_rate)
                 fraction = self._float_to_rounded_fraction_tuple(float_value)
                 self._numerator, self._denominator = fraction
@@ -145,8 +161,8 @@ class Beat(Unit):
         Returns: Beat
 
         Example:
-            >>> LargeSizeBeat = Beat._make_concrete_beat(100)
-            >>> SmallSizeBeat = Beat._make_concrete_beat(10)
+            >>> LargeSizeBeat = Beat.make_concrete_beat(100)
+            >>> SmallSizeBeat = Beat.make_concrete_beat(10)
             >>> large_beat = LargeSizeBeat(1, 4)
             >>> Unit(large_beat)
             Unit(25)
@@ -244,22 +260,6 @@ class Beat(Unit):
 
     ######## PRIVATE METHODS ########
 
-    @classmethod
-    def _make_concrete_beat(cls, whole_note_size, name='ConcreteBeat'):
-        """Make a concrete Beat class and return it.
-
-        Args:
-            whole_note_size (Unit): The length of a Beat(1, 1)
-            name (str): The name for the concrete Beat class.
-
-        Returns: type
-        """
-        class FactoryBeat(cls):
-            _conversion_rate = Unit(whole_note_size).value
-
-        FactoryBeat.__name__ = name
-        return FactoryBeat
-
     @staticmethod
     def _float_to_rounded_fraction_tuple(value,
                                          round_to=None,
@@ -297,7 +297,13 @@ class Beat(Unit):
 
         Returns: float
         """
-        return self.value * self._conversion_rate
+        if self._conversion_rate is None:
+            raise AbstractBeatConversionError
+        if self._constant_offset:
+            return ((self.value * self._conversion_rate)
+                    + Unit(self._constant_offset).value)
+        else:
+            return self.value * self._conversion_rate
 
     def _as_collapsed_fraction(self):
         """Collapse this Beat into a single Fraction and return it.
@@ -310,3 +316,26 @@ class Beat(Unit):
         if isinstance(self.numerator, type(self)):
             return Fraction(self.numerator.collapsed_fraction, self.denominator)
         return Fraction(self.numerator, self.denominator)
+
+    ######## PUBLIC METHODS ########
+
+    @classmethod
+    def make_concrete_beat(cls, whole_note_size,
+                            constant_offset=None,
+                            name='ConcreteBeat'):
+        """Make a concrete Beat class and return it.
+
+        Args:
+            whole_note_size (Unit): The length of a Beat(1, 1)
+            constant_offset (Unit): A constant offset for all conversions.
+            name (str): The name for the concrete Beat class.
+
+        Returns: type
+        """
+        class FactoryBeat(cls):
+            _conversion_rate = Unit(whole_note_size).value
+            _constant_offset = (Unit(constant_offset).value if constant_offset
+                                else 0)
+
+        FactoryBeat.__name__ = name
+        return FactoryBeat
