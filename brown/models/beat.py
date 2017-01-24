@@ -320,15 +320,17 @@ class Beat(Unit):
     ######## PUBLIC METHODS ########
 
     @classmethod
-    def make_concrete_beat(cls, whole_note_size,
-                            constant_offset=None,
-                            name='ConcreteBeat'):
+    def make_concrete_beat(cls,
+                           whole_note_size,
+                           constant_offset=None,
+                           name=None):
         """Make a concrete Beat class and return it.
 
         Args:
             whole_note_size (Unit): The length of a Beat(1, 1)
             constant_offset (Unit): A constant offset for all conversions.
             name (str): The name for the concrete Beat class.
+                If not specified, 'ConcreteBeat' is used.
 
         Returns: type
         """
@@ -337,5 +339,5 @@ class Beat(Unit):
             _constant_offset = (Unit(constant_offset).value if constant_offset
                                 else 0)
 
-        FactoryBeat.__name__ = name
+        FactoryBeat.__name__ = name if name else 'ConcreteBeat'
         return FactoryBeat
