@@ -4,6 +4,12 @@ class MultiStaffObject:
 
     This is a Mixin class, meant to be combined with GraphicObject classes.
     This Mixin class is incompatible with StaffObject.
+
+    MultiStaffObjects will typically have their visually highest staff
+    as their parent.
+
+    In most MultiStaffObject classes, object-wide property will be derived
+    from the visually highest staff.
     """
 
     def __init__(self, staves):

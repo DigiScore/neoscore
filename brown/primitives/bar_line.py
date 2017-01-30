@@ -1,28 +1,37 @@
-from brown.primitives.staff_object import StaffObject
+from brown.primitives.multi_staff_object import MultiStaffObject
+from brown.utils.units import Unit
 from brown.core.path import Path
-from brown.utils.point import Point
+from brown.utils.anchored_point import AnchoredPoint
 from brown.core.pen import Pen
 
 
-class BarLine(Path, StaffObject):
+class BarLine(Path, MultiStaffObject):
 
     """A single bar line.
 
     This is drawn as a single vertical line at a given x coordinate
-    spanning the full height of a Staff.
+    spanning the full height of a series of staves.
+
+    The thickness of the line is determined by the engraving defaults
+    on the top staff.
     """
 
-    def __init__(self, position_x, staff):
+    def __init__(self, position_x, staves):
         """
         Args
             position_x (StaffUnit):
-            staff (Staff):
+            staves (iter[Staff]):
         """
-
-        Path.__init__(self, Point(position_x, staff.unit(0)), parent=staff)
-        StaffObject.__init__(self, staff)
-        thickness = (
-            self.staff.music_font.engraving_defaults['thinBarlineThickness'])
+        MultiStaffObject.__init__(self, set(staves))
+        Path.__init__(self,
+                      (position_x, Unit(0)),
+                      parent=self.highest_staff)
+        engraving_defaults = self.highest_staff.music_font.engraving_defaults
+        thickness = engraving_defaults['thinBarlineThickness']
         self.pen = Pen(thickness=thickness)
         # Draw path
-        self.line_to(Point(self.staff.unit(0), self.staff.height))
+        # NOTE: This assumes that all staves begin at the same x position.
+        #       The line will be skewed otherwise.
+        self.line_to(position_x,
+                     self.lowest_staff.height,
+                     self.lowest_staff)

@@ -24,16 +24,25 @@ from brown.primitives.rhythm_dot import RhythmDot
 brown.setup()
 
 # Test hacky use of flowable coordinate space
-flow = FlowableFrame((Mm(0), Mm(0)), Mm(35000), Mm(20), Mm(10))
+flow = FlowableFrame((Mm(0), Mm(0)), Mm(35000), Mm(30), Mm(10))
 flow.render()
 
 staff = Staff((Mm(0), Mm(0)), Mm(2000), flow, Mm(1))
 staff.render()
 
+lower_staff = Staff((Mm(0), Mm(9)), Mm(2000), flow, Mm(1))
+lower_staff.render()
+
+lowest_staff = Staff((Mm(0), Mm(18)), Mm(2000), flow, Mm(1))
+lowest_staff.render()
+
+barline = BarLine(Mm(30), [staff, lower_staff, lowest_staff])
+barline.render()
 
 staff.add_clef((0, 4), 'treble')
+lower_staff.add_clef((0, 4), 'treble')
 staff.add_time_signature(0, (4, 4))
-staff.add_chordrest((1, 4), ["a'", "bs,"], (2, 4))
+staff.add_chordrest((1, 4), ["a'", "bs"], (2, 4))
 
 
 brown.show()
