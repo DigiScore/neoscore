@@ -176,13 +176,6 @@ class Mm(Unit):
     pass
 
 
-class Cm(Unit):
-    _conversion_rate = Mm._conversion_rate * 10
-
-    # (all other functionality implemented in Unit)
-    pass
-
-
 def _call_on_immutable(iterable, unit):
     """Recursively convert all numbers in an immutable iterable.
 

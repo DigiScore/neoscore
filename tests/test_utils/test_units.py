@@ -1,7 +1,7 @@
 from nose.tools import assert_raises
 import unittest
 
-from brown.utils.units import Unit, Cm, Mm, Inch, GraphicUnit
+from brown.utils.units import Unit, Mm, Inch, GraphicUnit
 
 
 class MockUnit(Unit):
@@ -169,13 +169,6 @@ class TestUnit(unittest.TestCase):
         assert(isinstance(1 // Unit(2), Unit))
         assert(isinstance(Unit(1) // MockUnit(2), Unit))
         assert((1 // Unit(2)).value == 0)
-
-
-class TestCm(unittest.TestCase):
-
-    def test_cm_unit_conversion(self):
-        self.assertAlmostEqual(Unit(Cm(1)), Unit(Mm._conversion_rate * 10))
-        self.assertAlmostEqual(Unit(Cm(2)), Unit(Mm._conversion_rate * 20))
 
 
 class TestMm(unittest.TestCase):
