@@ -14,7 +14,6 @@ class TextObject(GraphicObject):
                 relative to the document.
             text (str): The text to be displayed
             font (Font): The font for the object.
-                TODO: What happens when this is None?
             parent (GraphicObject): The parent (core-level) object or None
         """
 
@@ -62,8 +61,5 @@ class TextObject(GraphicObject):
             pos,
             self.text,
             self.font._interface,
-            # Should parent be passed? pos being dispatched by renderer
-            # is in scene space...
-            # parent=self.parent._interface if self.parent else None
         )
         self._interface.render()

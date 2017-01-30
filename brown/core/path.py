@@ -229,8 +229,6 @@ class Path(GraphicObject):
             pos=pos,
             pen=self.pen._interface if self.pen else None,
             brush=self.brush._interface if self.brush else None,
-            # Don't pass parent as part of experimental shift away from interface parentage
-            # self.parent._interface if self.parent else None,
             clip_start_x=start_x,
             clip_width=length)
         # Maintain a buffer of control points to be sent to the PathInterface

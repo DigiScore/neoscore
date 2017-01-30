@@ -17,9 +17,5 @@ class InvisibleObject(GraphicObject):
         super().__init__(pos, Unit(0), None, None, parent)
 
     def _render_complete(self, pos):
-        self._interface = self._interface_class(
-            pos,
-            # Don't pass parent as part of experimental shift away from interface parentage
-            # parent=self.parent
-        )
+        self._interface = self._interface_class(pos)
         self._interface.render()
