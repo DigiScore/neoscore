@@ -30,11 +30,11 @@ class QEnhancedTextItem(QtWidgets.QGraphicsSimpleTextItem):
 
     def boundingRect(self):
         rect = super().boundingRect()
-        rect.translate(self._origin_offset * -1)
         scaled_rect = QtCore.QRectF(rect.x() * self._scale_factor,
                                     rect.y() * self._scale_factor,
                                     rect.width() * self._scale_factor,
                                     rect.height() * self._scale_factor)
+        scaled_rect.translate(self._origin_offset * -1)
         return scaled_rect
 
     def paint(self, painter, option, widget):
