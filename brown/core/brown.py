@@ -21,22 +21,15 @@ _display_background_color = '#dddddd'
 # Background color of pages themselves.
 _display_paper_color = '#ffffff'
 
-current_pen = Pen()
-current_brush = Brush()
-
 
 def setup(initial_paper=None):
     global _app_interface
-    global current_pen
-    global current_brush
     global text_font
     global paper
     global document
     global registered_text_fonts
     _app_interface = _app_interface_class()
     _app_interface.create_document()
-    _app_interface.pen = current_pen._interface
-    _app_interface.brush = current_brush._interface
     _, music_font_json = register_music_font(
         config.DEFAULT_MUSIC_FONT_PATH,
         config.DEFAULT_MUSIC_FONT_METADATA_PATH)

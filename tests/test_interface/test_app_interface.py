@@ -5,10 +5,7 @@ from nose.tools import assert_raises, nottest
 from PyQt5 import QtWidgets
 from PyQt5 import QtGui
 
-from brown.utils.color import Color
 from brown.interface.app_interface import AppInterface, FontRegistrationError
-from brown.interface.pen_interface import PenInterface
-from brown.interface.brush_interface import BrushInterface
 from brown.config import config
 
 
@@ -42,16 +39,6 @@ class TestAppInterface(unittest.TestCase):
     def test_destroy(self):
         # TODO: How to test this?
         pass
-
-    def test_current_pen(self):
-        test_pen = PenInterface(Color('#ffffff'))
-        self.interface.current_pen = test_pen
-        assert(self.interface.current_pen == test_pen)
-
-    def test_current_brush(self):
-        test_brush = BrushInterface(Color('#ffffff'))
-        self.interface.current_brush = test_brush
-        assert(self.interface.current_brush == test_brush)
 
     def test_register_font(self):
         test_font_file_path = os.path.join(config.RESOURCES_DIR, 'fonts', 'Bravura.otf')

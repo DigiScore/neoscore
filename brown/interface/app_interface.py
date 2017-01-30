@@ -18,35 +18,7 @@ class AppInterface:
     def __init__(self):
         self.app = None
         self.scene = None
-        self.current_pen = None
-        self.current_brush = None
         self.registered_music_fonts = {}
-
-    ######## PUBLIC PROPERTIES ########
-
-    @property
-    def current_pen(self):
-        """PenInterface: The current pen for certain default drawing
-
-        # TODO: Which objects are affected by this? Is this even needed?
-        """
-        return self._current_pen
-
-    @current_pen.setter
-    def current_pen(self, value):
-        self._current_pen = value
-
-    @property
-    def current_brush(self):
-        """BrushInterface: The current brush for certain default drawing
-
-        # TODO: Which objects are affected by this? Is this even needed?
-        """
-        return self._current_brush
-
-    @current_brush.setter
-    def current_brush(self, value):
-        self._current_brush = value
 
     ######## PUBLIC METHODS ########
 
@@ -73,8 +45,6 @@ class AppInterface:
         self.app.exit()
         self.app = None
         self.scene = None
-        self.current_pen = None
-        self.current_brush = None
 
     def register_font(self, font_file_path):
         """Register a list of fonts to the graphics engine.
@@ -94,4 +64,3 @@ class AppInterface:
             raise FontRegistrationError(
                 'Font loaded from {} failed'.format(font_file_path))
         return font_id
-        #family = QtGui.QFontDatabase.applicationFontFamilies(font_id).at(0)
