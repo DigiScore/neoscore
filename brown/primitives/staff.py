@@ -49,8 +49,8 @@ class Staff(Path):
         # Construct the staff path
         for i in range(self.line_count):
             y_offset = self.unit(i)
-            self.move_to(Point(GraphicUnit(0), y_offset) + self.pos)
-            self.line_to(Point(width, y_offset) + self.pos)
+            self.move_to(GraphicUnit(0), y_offset)
+            self.line_to(width, y_offset)
 
         # Create first measure with given time signature duration
         self._contents = Container()

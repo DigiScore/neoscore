@@ -6,7 +6,7 @@ from brown.utils.units import Mm
 from brown.core.paper import Paper
 from brown.core.flowable_frame import FlowableFrame
 from brown.primitives.staff import Staff, NoClefError
-from brown.primitives.clef import Clef
+from brown.utils.point import Point
 
 
 class TestStaff(unittest.TestCase):
@@ -131,3 +131,23 @@ class TestStaff(unittest.TestCase):
                {staff.unit(6), staff.unit(5)})
         assert(staff._ledgers_needed_from_position(staff.unit(-2.5)) ==
                {staff.unit(-2), staff.unit(-1)})
+
+    def test_elements_when_not_located_at_origin(self):
+        """Regression test
+
+        Ensure lines are drawn at the correct locations when staff is not
+        positioned at (0, 0)
+        """
+        staff = Staff((Mm(2), Mm(3)), Mm(10),
+                      self.frame, staff_unit=Mm(1), line_count=5)
+        staff.render()
+        # Top line
+        assert(staff.elements[0].pos == Point(Mm(0), Mm(0)))
+        assert(staff.elements[0].parent == staff)
+        assert(staff.elements[1].pos == Point(Mm(10), Mm(0)))
+        assert(staff.elements[1].parent == staff)
+        # Second line
+        assert(staff.elements[2].pos == Point(Mm(0), Mm(1)))
+        assert(staff.elements[2].parent == staff)
+        assert(staff.elements[3].pos == Point(Mm(10), Mm(1)))
+        assert(staff.elements[3].parent == staff)
