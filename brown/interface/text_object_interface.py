@@ -1,22 +1,26 @@
-from PyQt5 import QtWidgets
-
 from brown.core import brown
 from brown.interface.graphic_object_interface import GraphicObjectInterface
+from brown.interface.qt_ext.q_offsetable_text_item import QOffsetableTextItem
+from brown.interface.qt_to_util import point_to_qt_point_f
 
 
 class TextObjectInterface(GraphicObjectInterface):
 
-    _interface_class = QtWidgets.QGraphicsSimpleTextItem
+    _interface_class = QOffsetableTextItem
 
-    def __init__(self, pos, text, font):
+    def __init__(self, pos, text, font, origin_offset=None):
         """
         Args:
             pos (Point[GraphicUnit] or tuple): The position of the path root
                 relative to the document.
             text (str): The text for the object
             font (FontInterface): The font object for the text
+            origin_offset (Point): A hard offset to be applied during drawing.
         """
-        self._qt_object = self._interface_class('')
+        offset = (point_to_qt_point_f(origin_offset) if origin_offset
+                  else None)
+        self._qt_object = self._interface_class('',
+                                                origin_offset=offset)
         self.text = text
         self.font = font
         self.pos = pos

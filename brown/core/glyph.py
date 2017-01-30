@@ -1,5 +1,4 @@
 from brown.core.text_object import TextObject
-from brown.interface.glyph_interface import GlyphInterface
 
 
 class InvalidGlyphLengthError(Exception):
@@ -15,8 +14,6 @@ class Glyph(TextObject):
           instead of `text`
     TODO: Maybe rename glyph to GlyphObject for consistency?
     """
-
-    _interface_class = GlyphInterface
 
     ######## PUBLIC PROPERTIES ########
 

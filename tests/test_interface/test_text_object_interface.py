@@ -2,7 +2,6 @@ import unittest
 
 from brown.core import brown
 from brown.interface.text_object_interface import TextObjectInterface
-from mock_graphic_object_interface import MockGraphicObjectInterface
 from brown.interface.font_interface import FontInterface
 
 
