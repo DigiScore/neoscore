@@ -14,12 +14,8 @@ class GraphicObject(ABC):
     calculated at render-time. If the object's ancestor is a FlowableFrame,
     it will be rendered as a flowable object, capable of being wrapped around
     lines.
-
-    TODO: Flesh out the expected way subclasses should be made.
-          Right now it's pretty patchy -- _interface isn't even documented
-          at all...
     """
-    def __init__(self, pos, breakable_width=Unit(0),
+    def __init__(self, pos, breakable_width=None,
                  pen=None, brush=None, parent=None):
         """
         Args:
@@ -33,20 +29,11 @@ class GraphicObject(ABC):
             parent (GraphicObject): The parent object or None
         """
         self.pos = pos
-        self._breakable_width = breakable_width
+        self._breakable_width = (breakable_width if breakable_width
+                                 else Unit(0))
         self.pen = pen
         self.brush = brush
         self.parent = parent
-
-    ######## PUBLIC PROPERTIES ########
-
-    # @property
-    # def _interface(self):
-    #     """GraphicObjectInterface: The interface for the object.
-
-    #     This property is read-only.
-    #     """
-    #     return self.__interface
 
     ######## PUBLIC PROPERTIES ########
 
@@ -84,11 +71,6 @@ class GraphicObject(ABC):
         This is used to determine how and where rendering cuts should be made.
         """
         return self._breakable_width
-
-    @breakable_width.setter
-    def breakable_width(self, value):
-        # TODO: Maybe implement me?
-        raise NotImplementedError
 
     @property
     def pen(self):
