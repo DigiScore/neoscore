@@ -11,7 +11,7 @@ class TestInvisibleObjectInterface(unittest.TestCase):
     def setUp(self):
         brown.setup()
 
-    def test_init_without_parent(self):
+    def test_init(self):
         test_object = InvisibleObjectInterface((5, 6))
         assert(test_object.x == 5)
         assert(test_object._qt_object.x() == 5)
@@ -22,9 +22,3 @@ class TestInvisibleObjectInterface(unittest.TestCase):
         # because Qt stores flags by bitwise OR-ing them)
         assert(int(test_object._qt_object.flags() &
                    QtWidgets.QGraphicsItem.ItemHasNoContents))
-
-    def test_init_with_parent(self):
-        test_parent = InvisibleObjectInterface((5, 6))
-        test_child = InvisibleObjectInterface((5, 6), parent=test_parent)
-        assert(test_child.parent == test_child._parent)
-        assert(test_child._qt_object.parentItem() == test_child._parent._qt_object)

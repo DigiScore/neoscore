@@ -65,15 +65,3 @@ class TestGraphicObjectInterface(unittest.TestCase):
         brush = BrushInterface(Color('#eeeeee'))
         grob.brush = brush
         assert(grob._qt_object.brush() == grob.brush._qt_object)
-
-    def test_parent_after_init(self):
-        parent = MockGraphicObjectInterface((5, 6))
-        child = MockGraphicObjectInterface((100, 100), parent=parent)
-        assert(child.parent == child._parent)
-        assert(child._qt_object.parentItem() == child._parent._qt_object)
-
-    def test_parent_setter_changes_qt_object(self):
-        parent = MockGraphicObjectInterface((5, 6))
-        child = MockGraphicObjectInterface((100, 100))
-        child.parent = parent
-        assert(child._qt_object.parentItem() == child._parent._qt_object)

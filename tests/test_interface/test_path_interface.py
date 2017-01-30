@@ -6,7 +6,6 @@ from brown.utils.color import Color
 from brown.interface.path_interface import PathInterface
 from brown.interface.pen_interface import PenInterface
 from brown.interface.brush_interface import BrushInterface
-from mock_graphic_object_interface import MockGraphicObjectInterface
 
 
 class TestPathInterface(unittest.TestCase):
@@ -15,16 +14,13 @@ class TestPathInterface(unittest.TestCase):
         brown.setup()
 
     def test_init(self):
-        mock_parent = MockGraphicObjectInterface((0, 0), parent=None)
         test_pen = PenInterface(Color('#eeeeee'))
         test_brush = BrushInterface(Color('#dddddd'))
-        test_path = PathInterface((5, 6), test_pen, test_brush, mock_parent)
+        test_path = PathInterface((5, 6), test_pen, test_brush)
         assert(test_path.x == 5)
         assert(test_path._qt_object.x() == 5)
         assert(test_path.y == 6)
         assert(test_path._qt_object.y() == 6)
-        assert(test_path.parent == mock_parent)
-        assert(test_path._qt_object.parentItem() == test_path.parent._qt_object)
         assert(test_path.brush == test_brush)
         assert(test_path._qt_object.brush() == test_brush._qt_object)
         assert(test_path.pen == test_pen)

@@ -8,7 +8,7 @@ class GlyphInterface(TextObjectInterface):
     _interface_class = QGlyph
 
     def __init__(self, pos, text, font,
-                 bounding_rect=None, origin_offset=None, parent=None):
+                 bounding_rect=None, origin_offset=None):
         """
         Args:
             pos (Point[GraphicUnit] or tuple): The position of the path root
@@ -17,7 +17,6 @@ class GlyphInterface(TextObjectInterface):
             font (FontInterface): The font object for the text
             bounding_rect (Rect):
             origin_offset (Point):
-            parent: The parent interface object
         """
         q_bounding_rect = (rect_to_qt_rect_f(bounding_rect) if bounding_rect
                            else None)
@@ -28,4 +27,3 @@ class GlyphInterface(TextObjectInterface):
         self.text = text
         self.font = font
         self.pos = pos
-        self.parent = parent

@@ -8,20 +8,18 @@ class TextObjectInterface(GraphicObjectInterface):
 
     _interface_class = QtWidgets.QGraphicsSimpleTextItem
 
-    def __init__(self, pos, text, font, parent=None):
+    def __init__(self, pos, text, font):
         """
         Args:
             pos (Point[GraphicUnit] or tuple): The position of the path root
                 relative to the document.
             text (str): The text for the object
             font (FontInterface): The font object for the text
-            parent: The parent interface object
         """
         self._qt_object = self._interface_class('')
         self.text = text
         self.font = font
         self.pos = pos
-        self.parent = parent
 
     ######## PUBLIC PROPERTIES ########
 

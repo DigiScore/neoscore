@@ -13,14 +13,13 @@ class GraphicObjectInterface(ABC):
 
     This is a top-level abstract interface class.
     """
-    def __init__(self, pos, pen=None, brush=None, parent=None):
+    def __init__(self, pos, pen=None, brush=None):
         """
         Must define and set:
 
             self._qt_object = # Some subclass of QGraphicsItem
             self.x = x
             self.y = y
-            self.parent = parent
 
         Args:
             pos (Point[GraphicUnit] or tuple): The position of the path root
@@ -104,19 +103,6 @@ class GraphicObjectInterface(ABC):
             value = BrushInterface(Color(*config.DEFAULT_BRUSH_COLOR))
         self._brush = value
         self._qt_object.setBrush(self._brush._qt_object)
-
-    @property
-    def parent(self):
-        """The interface of the parent object."""
-        return self._parent
-
-    @parent.setter
-    def parent(self, value):
-        self._parent = value
-        if value is not None:
-            self._qt_object.setParentItem(value._qt_object)
-        else:
-            self._qt_object.setParentItem(None)
 
     ######## PUBLIC METHODS ########
 

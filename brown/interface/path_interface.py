@@ -51,7 +51,7 @@ Notes on Qt path quirks:
 
 class PathInterface(GraphicObjectInterface):
     """Interface for a generic graphic path object."""
-    def __init__(self, pos, pen=None, brush=None, parent=None,
+    def __init__(self, pos, pen=None, brush=None,
                  clip_start_x=None, clip_width=None):
         """
         Args:
@@ -59,7 +59,6 @@ class PathInterface(GraphicObjectInterface):
                 relative to the document.
             pen (PenInterface): The pen to draw outlines with.
             brush (BrushInterface): The brush to draw outlines with.
-            parent (GraphicObjectInterface): The parent object
         """
         self._qt_path = QtGui.QPainterPath()
         self._qt_object = QClippingPath(self._qt_path,
@@ -67,7 +66,6 @@ class PathInterface(GraphicObjectInterface):
         self.pos = pos
         self.pen = pen
         self.brush = brush
-        self.parent = parent
         self.clip_start_x = clip_start_x
         self.clip_width = clip_width
 
