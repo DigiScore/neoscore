@@ -38,11 +38,21 @@ class FontInterface:
 
     @property
     def ascent(self):
-        return self._qt_font_metrics_object.ascent()
+        """GraphicUnit: The ascent of the font.
+
+        The ascent is the vertical distance between the font baseline and
+        the highest any font characters reach.
+        """
+        return GraphicUnit(self._qt_font_metrics_object.ascent())
 
     @property
     def descent(self):
-        return self._qt_font_metrics_object.descent()
+        """GraphicUnit: The descent of the font.
+
+        The ascent is the vertical distance between the font baseline and
+        the lowest any font characters reach.
+        """
+        return GraphicUnit(self._qt_font_metrics_object.descent())
 
     @property
     def em_size(self):

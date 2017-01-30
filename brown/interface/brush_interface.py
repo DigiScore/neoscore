@@ -10,8 +10,7 @@ class BrushInterface:
     def __init__(self, color):
         """
         Args:
-            color (str or tuple): Either a hexadecimal color string or a
-                3-tuple of RGB int's
+            color (Color): The color of the brush.
         """
         # TEMP: Initialize color to bright red to signal this not being
         # overrided

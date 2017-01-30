@@ -19,10 +19,20 @@ class Font:
 
     @property
     def ascent(self):
+        """GraphicUnit: The ascent of the font.
+
+        The ascent is the vertical distance between the font baseline and
+        the highest any font characters reach.
+        """
         return self._interface.ascent
 
     @property
     def descent(self):
+        """GraphicUnit: The descent of the font.
+
+        The ascent is the vertical distance between the font baseline and
+        the lowest any font characters reach.
+        """
         return self._interface.descent
 
     @property

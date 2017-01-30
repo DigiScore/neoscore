@@ -72,7 +72,7 @@ class MusicGlyph(Glyph, StaffObject):
     def _origin_offset(self):
         """Point: The origin offset override for this glyph."""
         return Point(self.staff.unit(0),
-                     self.staff.unit(GraphicUnit(self.font.ascent)))
+                     self.staff.unit(self.font.ascent))
 
 
     ######## PRIVATE METHODS ########

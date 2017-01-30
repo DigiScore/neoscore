@@ -35,8 +35,8 @@ class Glyph(TextObject):
 
     @property
     def baseline_y(self):
-        """float: The y coordinate of the glyph's baseline"""
-        return self.font.ascent + self.y
+        """GraphicUnit: The y coordinate of the glyph's baseline"""
+        return self.y + self.font.ascent
 
     ######## PRIVATE PROPERTIES ########
 
