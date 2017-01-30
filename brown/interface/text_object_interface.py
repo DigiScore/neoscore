@@ -2,28 +2,36 @@ from brown.core import brown
 from brown.interface.graphic_object_interface import GraphicObjectInterface
 from brown.interface.qt_ext.q_enhanced_text_item import QEnhancedTextItem
 from brown.interface.qt_to_util import point_to_qt_point_f
+from brown.utils.point import Point
 
 
 class TextObjectInterface(GraphicObjectInterface):
 
     _interface_class = QEnhancedTextItem
 
-    def __init__(self, pos, text, font, origin_offset=None):
+    def __init__(self, pos, text, font, origin_offset=None, scale_factor=1):
         """
         Args:
             pos (Point[GraphicUnit] or tuple): The position of the path root
                 relative to the document.
             text (str): The text for the object
             font (FontInterface): The font object for the text
-            origin_offset (Point): A hard offset to be applied during drawing.
+            scale_factor(float): A hard scaling factor.
         """
-        offset = (point_to_qt_point_f(origin_offset) if origin_offset
-                  else None)
-        self._qt_object = self._interface_class('',
-                                                origin_offset=offset)
-        self.text = text
+        if origin_offset:
+            self._origin_offset = point_to_qt_point_f(origin_offset)
+        else:
+            self._origin_offset = None
+        self._scale_factor = scale_factor
+        self._text = text
+        self._qt_object = self._interface_class(
+            self.text,
+            origin_offset=self.origin_offset,
+            scale_factor=self.scale_factor)
+        # Let setters trigger Qt setters for attributes not in constructor
         self.font = font
-        self.pos = pos
+        self.pos = Point(pos)
+
 
     ######## PUBLIC PROPERTIES ########
 
@@ -46,6 +54,26 @@ class TextObjectInterface(GraphicObjectInterface):
     def font(self, value):
         self._font = value
         self._qt_object.setFont(value._qt_object)
+
+    @property
+    def origin_offset(self):
+        """Unit: A hard offset to be applied to the rendered text"""
+        return self._origin_offset
+
+    @origin_offset.setter
+    def origin_offset(self, value):
+        self._origin_offset = value
+        self._qt_object._origin_offset = self._origin_offset
+
+    @property
+    def scale_factor(self):
+        """float: A hard scale factor to be applied to the rendered text"""
+        return self._scale_factor
+
+    @scale_factor.setter
+    def scale_factor(self, value):
+        self._scale_factor = value
+        self._qt_object._scale_factor = self._scale_factor
 
     ######## PUBLIC METHODS ########
 

@@ -44,5 +44,9 @@ lower_staff.add_clef((0, 4), 'treble')
 staff.add_time_signature(0, (4, 4))
 staff.add_chordrest((1, 4), ["a'", "bs"], (2, 4))
 
+for i in range(0, 11):
+    factor = 1 + (i / 10)
+    MusicGlyph((Mm(10 + i), lowest_staff.unit(4)),
+               'brace', parent=lowest_staff, scale_factor=factor).render()
 
 brown.show()

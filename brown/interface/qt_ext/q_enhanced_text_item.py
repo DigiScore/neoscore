@@ -20,7 +20,7 @@ class QEnhancedTextItem(QtWidgets.QGraphicsSimpleTextItem):
         """
         Args:
             origin_offset(QPointF): The offset of the glyph's origin from (0, 0)
-            scale_factor(float): A hard scaling factor to be applied at render time.
+            scale_factor(float): A hard scaling factor.
 
         All other args are passed directly to QGraphicsSimpleTextItem
         """
@@ -38,6 +38,7 @@ class QEnhancedTextItem(QtWidgets.QGraphicsSimpleTextItem):
         return scaled_rect
 
     def paint(self, painter, option, widget):
-        painter.translate(self._origin_offset * -1)
+        # Scale before transforming to preserve the origin offset
         painter.scale(self._scale_factor, self._scale_factor)
+        painter.translate(self._origin_offset * -1)
         super().paint(painter, option, widget)

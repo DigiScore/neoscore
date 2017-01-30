@@ -59,5 +59,6 @@ class Glyph(TextObject):
             self.text,
             self.font._interface,
             origin_offset=self._origin_offset,
+            scale_factor=self.scale_factor
         )
         self._interface.render()

@@ -7,7 +7,7 @@ class TextObject(GraphicObject):
 
     _interface_class = TextObjectInterface
 
-    def __init__(self, pos, text, font=None, parent=None):
+    def __init__(self, pos, text, font=None, parent=None, scale_factor=1):
         """
         Args:
             pos (Point[GraphicUnit] or tuple): The position of the path root
@@ -15,6 +15,7 @@ class TextObject(GraphicObject):
             text (str): The text to be displayed
             font (Font): The font for the object.
             parent (GraphicObject): The parent (core-level) object or None
+            scale_factor(float): A hard scaling factor.
         """
 
         self._interface = None
@@ -23,6 +24,7 @@ class TextObject(GraphicObject):
         else:
             self.font = brown.text_font
         self.text = text
+        self.scale_factor = scale_factor
         super().__init__(pos, parent=parent)
 
     @property
@@ -49,6 +51,15 @@ class TextObject(GraphicObject):
         if self._interface:
             self._interface.font = value._interface
 
+    @property
+    def scale_factor(self):
+        """float: A hard scale factor to be applied to the rendered text"""
+        return self._scale_factor
+
+    @scale_factor.setter
+    def scale_factor(self, value):
+        self._scale_factor = value
+
     def _render_complete(self, pos):
         """Render the entire object.
 
@@ -61,5 +72,6 @@ class TextObject(GraphicObject):
             pos,
             self.text,
             self.font._interface,
+            scale_factor=self.scale_factor
         )
         self._interface.render()

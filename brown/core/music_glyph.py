@@ -14,7 +14,8 @@ class MusicGlyph(Glyph, StaffObject):
     character or as its corresponding canonical SMuFL name.
     """
 
-    def __init__(self, pos, canonical_name, font=None, parent=None):
+    def __init__(self, pos, canonical_name, font=None,
+                 parent=None, scale_factor=1):
         if font is None:
             staff = StaffObject._find_staff(parent)
             font = staff.music_font
@@ -23,7 +24,7 @@ class MusicGlyph(Glyph, StaffObject):
         # type check font is MusicFont before sending to init?
         self._canonical_name = canonical_name
         codepoint = font.glyph_info(self.canonical_name)['codepoint']
-        Glyph.__init__(self, pos, codepoint, font, parent)
+        Glyph.__init__(self, pos, codepoint, font, parent, scale_factor=scale_factor)
         StaffObject.__init__(self, parent)
         self._generate_glyph_info()
 
@@ -73,7 +74,6 @@ class MusicGlyph(Glyph, StaffObject):
         """Point: The origin offset override for this glyph."""
         return Point(self.staff.unit(0),
                      self.staff.unit(self.font.ascent))
-
 
     ######## PRIVATE METHODS ########
 
