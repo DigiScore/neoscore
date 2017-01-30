@@ -3,6 +3,7 @@ from brown.utils.units import Unit
 from brown.core.path import Path
 from brown.utils.anchored_point import AnchoredPoint
 from brown.core.pen import Pen
+from brown.core.graphic_object import GraphicObject
 
 
 class BarLine(Path, MultiStaffObject):
@@ -19,7 +20,8 @@ class BarLine(Path, MultiStaffObject):
     def __init__(self, position_x, staves):
         """
         Args
-            position_x (StaffUnit):
+            position_x (StaffUnit): The barline position relative to
+                the top staff.
             staves (iter[Staff]):
         """
         MultiStaffObject.__init__(self, set(staves))
@@ -30,8 +32,9 @@ class BarLine(Path, MultiStaffObject):
         thickness = engraving_defaults['thinBarlineThickness']
         self.pen = Pen(thickness=thickness)
         # Draw path
-        # NOTE: This assumes that all staves begin at the same x position.
-        #       The line will be skewed otherwise.
-        self.line_to(position_x,
+        offset = GraphicObject.map_between_items(self.lowest_staff,
+                                                 self.highest_staff)
+        bottom_x = position_x + offset.x
+        self.line_to(bottom_x,
                      self.lowest_staff.height,
                      self.lowest_staff)

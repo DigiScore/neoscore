@@ -33,7 +33,7 @@ staff.render()
 lower_staff = Staff((Mm(0), Mm(9)), Mm(2000), flow, Mm(1))
 lower_staff.render()
 
-lowest_staff = Staff((Mm(0), Mm(18)), Mm(2000), flow, Mm(1))
+lowest_staff = Staff((Mm(10), Mm(18)), Mm(2000), flow, Mm(1))
 lowest_staff.render()
 
 barline = BarLine(Mm(30), [staff, lower_staff, lowest_staff])
