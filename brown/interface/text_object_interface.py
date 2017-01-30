@@ -1,12 +1,12 @@
 from brown.core import brown
 from brown.interface.graphic_object_interface import GraphicObjectInterface
-from brown.interface.qt_ext.q_offsetable_text_item import QOffsetableTextItem
+from brown.interface.qt_ext.q_enhanced_text_item import QEnhancedTextItem
 from brown.interface.qt_to_util import point_to_qt_point_f
 
 
 class TextObjectInterface(GraphicObjectInterface):
 
-    _interface_class = QOffsetableTextItem
+    _interface_class = QEnhancedTextItem
 
     def __init__(self, pos, text, font, origin_offset=None):
         """
