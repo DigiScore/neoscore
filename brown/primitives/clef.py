@@ -27,7 +27,7 @@ class Clef(MusicGlyph):
                 'tenor', or 'alto'
         """
         self._baseline_staff_positions = {
-            'treble': staff.unit(2),
+            'treble': staff.unit(3),
             'bass': staff.unit(1),
             '8vb bass': staff.unit(1),
             'tenor': staff.unit(1),
