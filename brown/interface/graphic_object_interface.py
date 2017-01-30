@@ -33,7 +33,7 @@ class GraphicObjectInterface(ABC):
 
     @property
     def pos(self):
-        """Point[GraphicUnit]: The position of the object."""
+        """Point(GraphicUnit): The absolute position of the object."""
         return self._pos
 
     @pos.setter
@@ -44,7 +44,7 @@ class GraphicObjectInterface(ABC):
 
     @property
     def x(self):
-        """GraphicUnit: The x position relative to the document"""
+        """GraphicUnit: The absolute x position of the object"""
         return self.pos.x
 
     @x.setter
@@ -54,7 +54,7 @@ class GraphicObjectInterface(ABC):
 
     @property
     def y(self):
-        """GraphicUnit: The y position relative to the document"""
+        """GraphicUnit: The absolute y position of the object"""
         return self.pos.y
 
     @y.setter
@@ -64,9 +64,7 @@ class GraphicObjectInterface(ABC):
 
     @property
     def pen(self):
-        """
-        PenInterface: The pen to draw outlines with
-        """
+        """PenInterface: The pen to draw outlines with."""
         return self._pen
 
     @pen.setter
@@ -85,9 +83,7 @@ class GraphicObjectInterface(ABC):
 
     @property
     def brush(self):
-        """
-        BrushInterface: The brush to draw outlines with
-        """
+        """BrushInterface: The brush to fill shapes with"""
         return self._brush
 
     @brush.setter
