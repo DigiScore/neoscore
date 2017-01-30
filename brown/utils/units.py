@@ -176,23 +176,22 @@ class Mm(Unit):
     pass
 
 
-def _call_on_immutable(iterable, unit):
+def _convert_all_to_unit_in_immutable(iterable, unit):
     """Recursively convert all numbers in an immutable iterable.
 
     This is a helper function for convert_all_to_unit
 
     Args:
-        iterable [tuple]: The iterable to recursive convert
+        iter: The immutable iterable to recursively convert
         unit (type): The unit to convert numerical elements to
 
     Returns:
         An iterable the same type of the input.
         (set --> set, tuple --> tuple, etc.)
     """
-    original_type = type(iterable)
     mutable_iterable = list(iterable)
     convert_all_to_unit(mutable_iterable, unit)
-    return original_type(mutable_iterable)
+    return type(iterable)(mutable_iterable)
 
 
 def convert_all_to_unit(iterable, unit):
@@ -220,7 +219,8 @@ def convert_all_to_unit(iterable, unit):
             elif isinstance(value, (list, dict)):
                 convert_all_to_unit(iterable[key], unit)
             elif isinstance(value, (tuple, set)):
-                iterable[key] = _call_on_immutable(iterable[key], unit)
+                iterable[key] = _convert_all_to_unit_in_immutable(
+                    iterable[key], unit)
             # (else: continue --- nothing to do here)
     elif isinstance(iterable, list):
         for i in range(len(iterable)):
@@ -229,7 +229,8 @@ def convert_all_to_unit(iterable, unit):
             elif isinstance(iterable[i], (list, dict)):
                 convert_all_to_unit(iterable[i], unit)
             elif isinstance(iterable[i], (tuple, set)):
-                iterable[i] = _call_on_immutable(iterable[i], unit)
+                iterable[i] = _convert_all_to_unit_in_immutable(
+                    iterable[i], unit)
             # (else: continue --- nothing to do here)
     else:
         raise TypeError
