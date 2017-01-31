@@ -1,21 +1,34 @@
-from brown.core.glyph import Glyph
+from brown.core.text_object import TextObject
 from brown.core.music_font import MusicFont
 from brown.primitives.staff_object import StaffObject
 from brown.utils.rect import Rect
 from brown.utils.point import Point
-from brown.utils.units import GraphicUnit
 
 
-class MusicGlyph(Glyph, StaffObject):
+class MusicGlyph(TextObject, StaffObject):
     """
     A glyph with a MusicFont and convenient access to relevant SMuFL metadata.
 
-    Unlike a Glyph, the text of a MusicGlyph may be passed either as a unicode
-    character or as its corresponding canonical SMuFL name.
+    The text content of a MusicGlyph should be a single character.
+    Rather than being specified by their unicode codepoints or literals,
+    characters should be specified by their canonical SMuFL names.
     """
 
     def __init__(self, pos, canonical_name, font=None,
                  parent=None, scale_factor=1):
+        """
+        Args:
+            pos (Point): The position of the glyph
+            canonical_name (str): The canonical SMuFL name of the glyph
+            font (MusicFont): The music font to be used. If not specified,
+                the font is taken from the ancestor staff.
+            parent (GraphicObject): The parent of the glyph. This should
+                either be a `Staff` or an object which has a `Staff` as
+                an ancestor.
+                    TODO: parent field should be mandatory!
+            scale_factor (float): A hard scaling factor to be applied
+                in addition to the size of the music font.
+        """
         if font is None:
             staff = StaffObject._find_staff(parent)
             font = staff.music_font
@@ -24,7 +37,8 @@ class MusicGlyph(Glyph, StaffObject):
         # type check font is MusicFont before sending to init?
         self._canonical_name = canonical_name
         codepoint = font.glyph_info(self.canonical_name)['codepoint']
-        Glyph.__init__(self, pos, codepoint, font, parent, scale_factor=scale_factor)
+        TextObject.__init__(self, pos, codepoint, font, parent,
+                            scale_factor=scale_factor)
         StaffObject.__init__(self, parent)
         self._generate_glyph_info()
 

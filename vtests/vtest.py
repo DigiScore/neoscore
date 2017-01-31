@@ -8,7 +8,6 @@ from brown.primitives.staff import Staff
 from brown.primitives.clef import Clef
 from brown.primitives.chordrest import ChordRest
 from brown.utils.point import Point
-from brown.core.glyph import Glyph
 from brown.core.music_glyph import MusicGlyph
 from brown.core.path import Path
 from brown.primitives.slur import Slur
@@ -45,7 +44,7 @@ lower_staff.add_clef((0, 4), 'treble')
 staff.add_time_signature(0, (4, 4))
 staff.add_chordrest((1, 4), ["a'", "bs"], (2, 4))
 
-brace = Brace(Mm(50), {staff, lower_staff, lowest_staff})
+brace = Brace(Mm(50), {staff, lower_staff})
 brace.render()
 
 for i in range(0, 11):

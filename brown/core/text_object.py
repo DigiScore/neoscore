@@ -54,6 +54,11 @@ class TextObject(GraphicObject):
             self._interface.font = value._interface
 
     @property
+    def baseline_y(self):
+        """Unit: The y coordinate of the first text line's baseline."""
+        return self.y + self.font.ascent
+
+    @property
     def scale_factor(self):
         """float: A hard scale factor to be applied to the rendered text"""
         return self._scale_factor
@@ -65,9 +70,20 @@ class TextObject(GraphicObject):
     ######## PRIVATE PROPERTIES ########
 
     @property
+    def _bounding_rect(self):
+        """The bounding rect override for this text."""
+        return None
+
+    @property
     def _origin_offset(self):
         """The origin offset override for this object."""
         return None
+
+    ######## PUBLIC METHODS ########
+
+    def position_y_baseline(self, y):
+        """Position the object such that its first line baseline is at `y`"""
+        self.y = y - self.font.ascent
 
     ######## PRIVATE METHODS ########
 

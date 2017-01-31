@@ -5,7 +5,7 @@ from nose.tools import assert_raises
 from brown.core import brown
 from brown.config import config
 from brown.core.font import Font
-from brown.core.glyph import Glyph
+from brown.core.text_object import TextObject
 from brown.utils.anchored_point import AnchoredPoint
 from brown.utils.point import Point
 from brown.utils.units import Unit
@@ -20,7 +20,7 @@ class TestAnchoredPoint(unittest.TestCase):
         self.font_id = brown._app_interface.register_font(
             self.test_font_file_path)
         self.font = Font('Bravura', 12, 1, False)
-        self.test_parent = Glyph((5, 6), 'a', self.font)
+        self.test_parent = TextObject((5, 6), 'a', self.font)
 
     def test_init_with_pair(self):
         test_point = AnchoredPoint(5, 6)
@@ -106,7 +106,7 @@ class TestAnchoredPoint(unittest.TestCase):
 
         test_instance = AnchoredPointHolder(self.test_parent)
         assert(test_instance.point.parent == self.test_parent)
-        test_instance.point.parent = Glyph((5, 6), 'a', self.font)
+        test_instance.point.parent = TextObject((5, 6), 'a', self.font)
         assert(test_instance.point_setter_hook_called is True)
 
     def test_setters_hook_parent_setter_hook_with_same_value_set(self):

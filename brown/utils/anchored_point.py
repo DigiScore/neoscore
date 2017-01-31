@@ -13,8 +13,8 @@ class AnchoredPoint(Point):
     iteration, and indexing; however the `parent` attribute can
     only be accessed by name:
 
-        >>> from brown.core.glyph import Glyph
-        >>> some_grob = Glyph((10, 11), 'A')
+        >>> from brown.core.text_object import TextObject
+        >>> some_grob = TextObject((10, 11), 'A')
         >>> p = AnchoredPoint(5, 6, some_grob)
         >>> p.x == p[0] == 5
         True
@@ -159,8 +159,8 @@ class AnchoredPoint(Point):
 
         Example:
             >>> from brown.utils.units import Inch
-            >>> from brown.core.glyph import Glyph
-            >>> some_grob = Glyph((10, 11), 'A')
+            >>> from brown.core.text_object import TextObject
+            >>> some_grob = TextObject((10, 11), 'A')
             >>> p = AnchoredPoint.with_unit(2, 3, unit=Inch)
             >>> print(p.x)
             Inch(2)
