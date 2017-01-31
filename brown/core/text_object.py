@@ -27,6 +27,8 @@ class TextObject(GraphicObject):
         self.scale_factor = scale_factor
         super().__init__(pos, parent=parent)
 
+    ######## PUBLIC PROPERTIES ########
+
     @property
     def text(self):
         return self._text
@@ -60,6 +62,15 @@ class TextObject(GraphicObject):
     def scale_factor(self, value):
         self._scale_factor = value
 
+    ######## PRIVATE PROPERTIES ########
+
+    @property
+    def _origin_offset(self):
+        """The origin offset override for this object."""
+        return None
+
+    ######## PRIVATE METHODS ########
+
     def _render_complete(self, pos):
         """Render the entire object.
 
@@ -72,6 +83,7 @@ class TextObject(GraphicObject):
             pos,
             self.text,
             self.font._interface,
+            origin_offset=self._origin_offset,
             scale_factor=self.scale_factor
         )
         self._interface.render()

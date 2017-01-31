@@ -35,30 +35,8 @@ class Glyph(TextObject):
         """The bounding rect override for this glyph."""
         return None
 
-    @property
-    def _origin_offset(self):
-        """The origin offset override for this glyph."""
-        return None
-
     ######## PUBLIC METHODS ########
 
     def position_y_baseline(self, y):
         """Position the glyph such that its baseline is on `y`"""
         self.y = y - self.font.ascent
-
-    def _render_complete(self, pos):
-        """Render the entire object.
-
-        Args:
-            pos (Point): The rendering position in document space for drawing.
-
-        Returns: None
-        """
-        self._interface = self._interface_class(
-            pos,
-            self.text,
-            self.font._interface,
-            origin_offset=self._origin_offset,
-            scale_factor=self.scale_factor
-        )
-        self._interface.render()
