@@ -3,7 +3,9 @@ class MultiStaffObject:
     """An object which spans several staves.
 
     This is a Mixin class, meant to be combined with GraphicObject classes.
-    This Mixin class is incompatible with StaffObject.
+
+    If an class is both a MultiStaffObject and a StaffObject, the parent staff
+    should be the top staff listed in `self.staves`.
 
     MultiStaffObjects will typically have their visually highest staff
     as their parent.

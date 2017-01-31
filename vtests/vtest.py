@@ -19,6 +19,7 @@ from brown.primitives.bar_line import BarLine
 from brown.primitives.rest import Rest
 from brown.primitives.beam import Beam
 from brown.primitives.rhythm_dot import RhythmDot
+from brown.primitives.brace import Brace
 
 
 brown.setup()
@@ -43,6 +44,9 @@ staff.add_clef((0, 4), 'treble')
 lower_staff.add_clef((0, 4), 'treble')
 staff.add_time_signature(0, (4, 4))
 staff.add_chordrest((1, 4), ["a'", "bs"], (2, 4))
+
+brace = Brace(Mm(50), {staff, lower_staff, lowest_staff})
+brace.render()
 
 for i in range(0, 11):
     factor = 1 + (i / 10)
