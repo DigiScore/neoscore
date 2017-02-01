@@ -34,8 +34,24 @@ class GraphicObject(ABC):
         self.pen = pen
         self.brush = brush
         self.parent = parent
+        self._interfaces = set()
 
     ######## PUBLIC PROPERTIES ########
+
+    @property
+    def interfaces(self):
+        """set{GraphicObjectInterface}: The interfaces for this object
+
+        Interface objects are created upon calling `GraphicObject.render()`
+
+        Typically each GraphicObject will have one interface for each
+        flowable line it appears in. Objects which fit completely
+        in one visual line will typically have exactly one interface.
+
+        If this is an empty set, the object has not been rendered yet
+        with the `render()` method.
+        """
+        return self._interfaces
 
     @property
     def pos(self):
@@ -225,12 +241,15 @@ class GraphicObject(ABC):
         which happens to completely fit within a span of the FlowableFrame.
         This function should render the entire object at `self.pos`
 
+        This method should create a GraphicInterface and store it in
+        `self.interfaces`.
+
         Args:
             pos (Point): The rendering position in document space for drawing.
 
         Returns: None
 
-        Note: FlowableObject subclasses should implement this
+        Note: All GraphicObject subclasses should implement this
               for correct rendering.
         """
         raise NotImplementedError
@@ -242,6 +261,9 @@ class GraphicObject(ABC):
         crosses a line or page break. This function should render the
         beginning portion of the object up to the break.
 
+        This method should create a GraphicInterface and store it in
+        `self.interfaces`.
+
         Args:
             local_start_x (Unit): The local starting position of this
                 drawing segment.
@@ -250,8 +272,8 @@ class GraphicObject(ABC):
 
         Returns: None
 
-        Note: FlowableObject subclasses should implement this
-              for correct rendering.
+        Note: Any GraphicObject subclasses whose breakable_width can
+              be nonzero must implement this method.
         """
         raise NotImplementedError
 
@@ -262,6 +284,9 @@ class GraphicObject(ABC):
         crosses a line or page break. This function should render the
         ending portion of an object after a break.
 
+        This method should create a GraphicInterface and store it in
+        `self.interfaces`.
+
         Args:
             local_start_x (Unit): The local starting position of this
                 drawing segment.
@@ -270,8 +295,8 @@ class GraphicObject(ABC):
 
         Returns: None
 
-        Note: FlowableObject subclasses should implement this
-              for correct rendering.
+        Note: Any GraphicObject subclasses whose breakable_width can
+              be nonzero must implement this method.
         """
         raise NotImplementedError
 
@@ -279,10 +304,12 @@ class GraphicObject(ABC):
         """
         Render the continuation of an object after a break and before another.
 
-        For use in flowable containers when rendering an object
-        that
-        crosses two breaks. This function should render the
-        portion of the object surrounded by breaks on either side.
+        For use in flowable containers when rendering an object that crosses
+        two breaks. This function should render the portion of the object
+        surrounded by breaks on either side.
+
+        This method should create a GraphicInterface and store it in
+        `self.interfaces`.
 
         Args:
             local_start_x (Unit): The local starting position of this
@@ -292,7 +319,7 @@ class GraphicObject(ABC):
 
         Returns: None
 
-        Note: FlowableObject subclasses should implement this
-              for correct rendering.
+        Note: Any GraphicObject subclasses whose breakable_width can
+              be nonzero must implement this method.
         """
         raise NotImplementedError

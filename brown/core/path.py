@@ -23,7 +23,6 @@ class Path(GraphicObject):
         super().__init__(pos, GraphicUnit(0), pen, brush, parent)
         self._current_path_position = Point(GraphicUnit(0), GraphicUnit(0))
         self.elements = []
-        self._interface = []
 
     ######## CLASSMETHODS ########
 
@@ -225,7 +224,7 @@ class Path(GraphicObject):
 
         Returns: None
         """
-        self._interface = self._interface_class(
+        slice_interface = self._interface_class(
             pos=pos,
             pen=self.pen._interface if self.pen else None,
             brush=self.brush._interface if self.brush else None,
@@ -239,12 +238,12 @@ class Path(GraphicObject):
             else:
                 relative_pos = element.pos
             if element.element_type == PathElementType.move_to:
-                self._interface.move_to(relative_pos)
+                slice_interface.move_to(relative_pos)
             elif element.element_type == PathElementType.line_to:
-                self._interface.line_to(relative_pos)
+                slice_interface.line_to(relative_pos)
             elif element.element_type == PathElementType.curve_to:
                 if len(control_point_buffer) == 2:
-                    self._interface.cubic_to(*control_point_buffer, relative_pos)
+                    slice_interface.cubic_to(*control_point_buffer, relative_pos)
                 else:
                     # Quad to, or higher order curve not supported yet
                     raise NotImplementedError
@@ -253,7 +252,8 @@ class Path(GraphicObject):
                 control_point_buffer.append(relative_pos)
             else:
                 raise AssertionError('Unknown element_type in Path')
-        self._interface.render()
+        slice_interface.render()
+        self.interfaces.add(slice_interface)
 
     def _render_complete(self, pos):
         self._render_slice(pos, start_x=None, length=None)

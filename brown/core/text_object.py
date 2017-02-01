@@ -17,8 +17,6 @@ class TextObject(GraphicObject):
             parent (GraphicObject): The parent (core-level) object or None
             scale_factor(float): A hard scaling factor.
         """
-
-        self._interface = None
         if font:
             self.font = font
         else:
@@ -31,16 +29,12 @@ class TextObject(GraphicObject):
 
     @property
     def text(self):
+        """str: The text to be drawn"""
         return self._text
 
     @text.setter
     def text(self, value):
-        if not isinstance(value, str):
-            raise TypeError
-        else:
-            self._text = value
-            if self._interface:
-                self._interface.text = value
+        self._text = value
 
     @property
     def font(self):
@@ -50,8 +44,6 @@ class TextObject(GraphicObject):
     @font.setter
     def font(self, value):
         self._font = value
-        if self._interface:
-            self._interface.font = value._interface
 
     @property
     def baseline_y(self):
@@ -95,11 +87,12 @@ class TextObject(GraphicObject):
 
         Returns: None
         """
-        self._interface = self._interface_class(
+        interface = self._interface_class(
             pos,
             self.text,
             self.font._interface,
             origin_offset=self._origin_offset,
             scale_factor=self.scale_factor
         )
-        self._interface.render()
+        interface.render()
+        self.interfaces.add(interface)
