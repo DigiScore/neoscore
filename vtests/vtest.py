@@ -44,7 +44,7 @@ lower_staff.add_clef((0, 4), 'treble')
 staff.add_time_signature(0, (4, 4))
 staff.add_chordrest((1, 4), ["a'", "bs"], (2, 4))
 
-brace = Brace(Mm(50), {staff, lower_staff})
+brace = Brace(Mm(0), Mm(500), {staff, lower_staff})
 brace.render()
 
 for i in range(0, 11):
