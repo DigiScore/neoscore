@@ -11,7 +11,7 @@ class MusicFontMetadataNotFoundError(Exception):
 
 
 class MusicFontGlyphNotFoundError(Exception):
-    """Exception raised when a glyph cannot be found in the a MusicFont"""
+    """Exception raised when a glyph cannot be found in a MusicFont"""
     pass
 
 
