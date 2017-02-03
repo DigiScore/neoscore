@@ -30,15 +30,17 @@ class QEnhancedTextItem(QtWidgets.QGraphicsSimpleTextItem):
 
     def boundingRect(self):
         rect = super().boundingRect()
+        rect.translate(self._origin_offset * -1)
         scaled_rect = QtCore.QRectF(rect.x() * self._scale_factor,
                                     rect.y() * self._scale_factor,
                                     rect.width() * self._scale_factor,
                                     rect.height() * self._scale_factor)
-        scaled_rect.translate(self._origin_offset * -1)
         return scaled_rect
 
     def paint(self, painter, option, widget):
-        # Scale before transforming to preserve the origin offset
+        # For some reason, this seems to need to be scaled *before*
+        # translating, while the boundingRect needs to be translated
+        # before scaling...
         painter.scale(self._scale_factor, self._scale_factor)
         painter.translate(self._origin_offset * -1)
         super().paint(painter, option, widget)
