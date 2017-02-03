@@ -29677,11 +29677,11 @@
         "4stringTabClef": {
             "alternates": [
                 {
-                    "codepoint": "U+F40C", 
+                    "codepoint": "\uF40C", 
                     "name": "4stringTabClefTall"
                 }, 
                 {
-                    "codepoint": "U+F40D", 
+                    "codepoint": "\uF40D", 
                     "name": "4stringTabClefSerif"
                 }
             ]
@@ -29689,11 +29689,11 @@
         "6stringTabClef": {
             "alternates": [
                 {
-                    "codepoint": "U+F40A", 
+                    "codepoint": "\uF40A", 
                     "name": "6stringTabClefTall"
                 }, 
                 {
-                    "codepoint": "U+F40B", 
+                    "codepoint": "\uF40B", 
                     "name": "6stringTabClefSerif"
                 }
             ]
@@ -29701,7 +29701,7 @@
         "accdnPush": {
             "alternates": [
                 {
-                    "codepoint": "U+F45B", 
+                    "codepoint": "\uF45B", 
                     "name": "accdnPushAlt"
                 }
             ]
@@ -29709,7 +29709,7 @@
         "accidentalDoubleFlat": {
             "alternates": [
                 {
-                    "codepoint": "U+F4A1", 
+                    "codepoint": "\uF4A1", 
                     "name": "accidentalDoubleFlatJoinedStems"
                 }
             ]
@@ -29717,7 +29717,7 @@
         "accidentalFlat": {
             "alternates": [
                 {
-                    "codepoint": "U+F427", 
+                    "codepoint": "\uF427", 
                     "name": "accidentalFlatSmall"
                 }
             ]
@@ -29725,7 +29725,7 @@
         "accidentalNatural": {
             "alternates": [
                 {
-                    "codepoint": "U+F428", 
+                    "codepoint": "\uF428", 
                     "name": "accidentalNaturalSmall"
                 }
             ]
@@ -29733,7 +29733,7 @@
         "accidentalSharp": {
             "alternates": [
                 {
-                    "codepoint": "U+F429", 
+                    "codepoint": "\uF429", 
                     "name": "accidentalSharpSmall"
                 }
             ]
@@ -29741,7 +29741,7 @@
         "accidentalTripleFlat": {
             "alternates": [
                 {
-                    "codepoint": "U+F4A2", 
+                    "codepoint": "\uF4A2", 
                     "name": "accidentalTripleFlatJoinedStems"
                 }
             ]
@@ -29749,7 +29749,7 @@
         "analyticsHauptrhythmus": {
             "alternates": [
                 {
-                    "codepoint": "U+F4B9", 
+                    "codepoint": "\uF4B9", 
                     "name": "analyticsHauptrhythmusR"
                 }
             ]
@@ -29757,11 +29757,11 @@
         "articAccentAbove": {
             "alternates": [
                 {
-                    "codepoint": "U+F42A", 
+                    "codepoint": "\uF42A", 
                     "name": "articAccentAboveLarge"
                 }, 
                 {
-                    "codepoint": "U+F475", 
+                    "codepoint": "\uF475", 
                     "name": "articAccentAboveSmall"
                 }
             ]
@@ -29769,11 +29769,11 @@
         "articAccentBelow": {
             "alternates": [
                 {
-                    "codepoint": "U+F42B", 
+                    "codepoint": "\uF42B", 
                     "name": "articAccentBelowLarge"
                 }, 
                 {
-                    "codepoint": "U+F476", 
+                    "codepoint": "\uF476", 
                     "name": "articAccentBelowSmall"
                 }
             ]
@@ -29781,7 +29781,7 @@
         "articAccentStaccatoAbove": {
             "alternates": [
                 {
-                    "codepoint": "U+F485", 
+                    "codepoint": "\uF485", 
                     "name": "articAccentStaccatoAboveSmall"
                 }
             ]
@@ -29789,7 +29789,7 @@
         "articAccentStaccatoBelow": {
             "alternates": [
                 {
-                    "codepoint": "U+F486", 
+                    "codepoint": "\uF486", 
                     "name": "articAccentStaccatoBelowSmall"
                 }
             ]
@@ -29797,7 +29797,7 @@
         "articMarcatoAbove": {
             "alternates": [
                 {
-                    "codepoint": "U+F481", 
+                    "codepoint": "\uF481", 
                     "name": "articMarcatoAboveSmall"
                 }
             ]
@@ -29805,7 +29805,7 @@
         "articMarcatoBelow": {
             "alternates": [
                 {
-                    "codepoint": "U+F482", 
+                    "codepoint": "\uF482", 
                     "name": "articMarcatoBelowSmall"
                 }
             ]
@@ -29813,7 +29813,7 @@
         "articMarcatoStaccatoAbove": {
             "alternates": [
                 {
-                    "codepoint": "U+F483", 
+                    "codepoint": "\uF483", 
                     "name": "articMarcatoStaccatoAboveSmall"
                 }
             ]
@@ -29821,7 +29821,7 @@
         "articMarcatoStaccatoBelow": {
             "alternates": [
                 {
-                    "codepoint": "U+F484", 
+                    "codepoint": "\uF484", 
                     "name": "articMarcatoStaccatoBelowSmall"
                 }
             ]
@@ -29829,7 +29829,7 @@
         "articStaccatissimoAbove": {
             "alternates": [
                 {
-                    "codepoint": "U+F47B", 
+                    "codepoint": "\uF47B", 
                     "name": "articStaccatissimoAboveSmall"
                 }
             ]
@@ -29837,7 +29837,7 @@
         "articStaccatissimoBelow": {
             "alternates": [
                 {
-                    "codepoint": "U+F47C", 
+                    "codepoint": "\uF47C", 
                     "name": "articStaccatissimoBelowSmall"
                 }
             ]
@@ -29845,7 +29845,7 @@
         "articStaccatissimoStrokeAbove": {
             "alternates": [
                 {
-                    "codepoint": "U+F47F", 
+                    "codepoint": "\uF47F", 
                     "name": "articStaccatissimoStrokeAboveSmall"
                 }
             ]
@@ -29853,7 +29853,7 @@
         "articStaccatissimoStrokeBelow": {
             "alternates": [
                 {
-                    "codepoint": "U+F480", 
+                    "codepoint": "\uF480", 
                     "name": "articStaccatissimoStrokeBelowSmall"
                 }
             ]
@@ -29861,7 +29861,7 @@
         "articStaccatissimoWedgeAbove": {
             "alternates": [
                 {
-                    "codepoint": "U+F47D", 
+                    "codepoint": "\uF47D", 
                     "name": "articStaccatissimoWedgeAboveSmall"
                 }
             ]
@@ -29869,7 +29869,7 @@
         "articStaccatissimoWedgeBelow": {
             "alternates": [
                 {
-                    "codepoint": "U+F47E", 
+                    "codepoint": "\uF47E", 
                     "name": "articStaccatissimoWedgeBelowSmall"
                 }
             ]
@@ -29877,7 +29877,7 @@
         "articStaccatoAbove": {
             "alternates": [
                 {
-                    "codepoint": "U+F477", 
+                    "codepoint": "\uF477", 
                     "name": "articStaccatoAboveSmall"
                 }
             ]
@@ -29885,7 +29885,7 @@
         "articStaccatoBelow": {
             "alternates": [
                 {
-                    "codepoint": "U+F478", 
+                    "codepoint": "\uF478", 
                     "name": "articStaccatoBelowSmall"
                 }
             ]
@@ -29893,7 +29893,7 @@
         "articTenutoAbove": {
             "alternates": [
                 {
-                    "codepoint": "U+F479", 
+                    "codepoint": "\uF479", 
                     "name": "articTenutoAboveSmall"
                 }
             ]
@@ -29901,7 +29901,7 @@
         "articTenutoAccentAbove": {
             "alternates": [
                 {
-                    "codepoint": "U+F489", 
+                    "codepoint": "\uF489", 
                     "name": "articTenutoAccentAboveSmall"
                 }
             ]
@@ -29909,7 +29909,7 @@
         "articTenutoAccentBelow": {
             "alternates": [
                 {
-                    "codepoint": "U+F48A", 
+                    "codepoint": "\uF48A", 
                     "name": "articTenutoAccentBelowSmall"
                 }
             ]
@@ -29917,7 +29917,7 @@
         "articTenutoBelow": {
             "alternates": [
                 {
-                    "codepoint": "U+F47A", 
+                    "codepoint": "\uF47A", 
                     "name": "articTenutoBelowSmall"
                 }
             ]
@@ -29925,7 +29925,7 @@
         "articTenutoStaccatoAbove": {
             "alternates": [
                 {
-                    "codepoint": "U+F487", 
+                    "codepoint": "\uF487", 
                     "name": "articTenutoStaccatoAboveSmall"
                 }
             ]
@@ -29933,7 +29933,7 @@
         "articTenutoStaccatoBelow": {
             "alternates": [
                 {
-                    "codepoint": "U+F488", 
+                    "codepoint": "\uF488", 
                     "name": "articTenutoStaccatoBelowSmall"
                 }
             ]
@@ -29941,19 +29941,19 @@
         "brace": {
             "alternates": [
                 {
-                    "codepoint": "U+F400", 
+                    "codepoint": "\uF400", 
                     "name": "braceSmall"
                 }, 
                 {
-                    "codepoint": "U+F401", 
+                    "codepoint": "\uF401", 
                     "name": "braceLarge"
                 }, 
                 {
-                    "codepoint": "U+F402", 
+                    "codepoint": "\uF402", 
                     "name": "braceLarger"
                 }, 
                 {
-                    "codepoint": "U+F403", 
+                    "codepoint": "\uF403", 
                     "name": "braceFlat"
                 }
             ]
@@ -29961,15 +29961,15 @@
         "cClef": {
             "alternates": [
                 {
-                    "codepoint": "U+F408", 
+                    "codepoint": "\uF408", 
                     "name": "cClefFrench"
                 }, 
                 {
-                    "codepoint": "U+F473", 
+                    "codepoint": "\uF473", 
                     "name": "cClefSmall"
                 }, 
                 {
-                    "codepoint": "U+F4BF", 
+                    "codepoint": "\uF4BF", 
                     "name": "cClefFrench20C"
                 }
             ]
@@ -29977,7 +29977,7 @@
         "cClefChange": {
             "alternates": [
                 {
-                    "codepoint": "U+F4C0", 
+                    "codepoint": "\uF4C0", 
                     "name": "cClefFrench20CChange"
                 }
             ]
@@ -29985,7 +29985,7 @@
         "caesura": {
             "alternates": [
                 {
-                    "codepoint": "U+F42C", 
+                    "codepoint": "\uF42C", 
                     "name": "caesuraSingleStroke"
                 }
             ]
@@ -29993,7 +29993,7 @@
         "chantCclef": {
             "alternates": [
                 {
-                    "codepoint": "U+F49E", 
+                    "codepoint": "\uF49E", 
                     "name": "chantCclefHufnagel"
                 }
             ]
@@ -30001,7 +30001,7 @@
         "chantFclef": {
             "alternates": [
                 {
-                    "codepoint": "U+F49D", 
+                    "codepoint": "\uF49D", 
                     "name": "chantFclefHufnagel"
                 }
             ]
@@ -30009,7 +30009,7 @@
         "coda": {
             "alternates": [
                 {
-                    "codepoint": "U+F405", 
+                    "codepoint": "\uF405", 
                     "name": "codaJapanese"
                 }
             ]
@@ -30017,7 +30017,7 @@
         "doubleTongueAbove": {
             "alternates": [
                 {
-                    "codepoint": "U+F42D", 
+                    "codepoint": "\uF42D", 
                     "name": "doubleTongueAboveNoSlur"
                 }
             ]
@@ -30025,7 +30025,7 @@
         "doubleTongueBelow": {
             "alternates": [
                 {
-                    "codepoint": "U+F42E", 
+                    "codepoint": "\uF42E", 
                     "name": "doubleTongueBelowNoSlur"
                 }
             ]
@@ -30033,7 +30033,7 @@
         "dynamicForte": {
             "alternates": [
                 {
-                    "codepoint": "U+F46D", 
+                    "codepoint": "\uF46D", 
                     "name": "dynamicForteSmall"
                 }
             ]
@@ -30041,7 +30041,7 @@
         "dynamicMezzo": {
             "alternates": [
                 {
-                    "codepoint": "U+F46C", 
+                    "codepoint": "\uF46C", 
                     "name": "dynamicMezzoSmall"
                 }
             ]
@@ -30049,7 +30049,7 @@
         "dynamicNiente": {
             "alternates": [
                 {
-                    "codepoint": "U+F471", 
+                    "codepoint": "\uF471", 
                     "name": "dynamicNienteSmall"
                 }
             ]
@@ -30057,7 +30057,7 @@
         "dynamicPiano": {
             "alternates": [
                 {
-                    "codepoint": "U+F46B", 
+                    "codepoint": "\uF46B", 
                     "name": "dynamicPianoSmall"
                 }
             ]
@@ -30065,7 +30065,7 @@
         "dynamicRinforzando": {
             "alternates": [
                 {
-                    "codepoint": "U+F46E", 
+                    "codepoint": "\uF46E", 
                     "name": "dynamicRinforzandoSmall"
                 }
             ]
@@ -30073,7 +30073,7 @@
         "dynamicSforzando": {
             "alternates": [
                 {
-                    "codepoint": "U+F46F", 
+                    "codepoint": "\uF46F", 
                     "name": "dynamicSforzandoSmall"
                 }
             ]
@@ -30081,7 +30081,7 @@
         "dynamicZ": {
             "alternates": [
                 {
-                    "codepoint": "U+F470", 
+                    "codepoint": "\uF470", 
                     "name": "dynamicZSmall"
                 }
             ]
@@ -30089,15 +30089,15 @@
         "fClef": {
             "alternates": [
                 {
-                    "codepoint": "U+F406", 
+                    "codepoint": "\uF406", 
                     "name": "fClefFrench"
                 }, 
                 {
-                    "codepoint": "U+F407", 
+                    "codepoint": "\uF407", 
                     "name": "fClef19thCentury"
                 }, 
                 {
-                    "codepoint": "U+F474", 
+                    "codepoint": "\uF474", 
                     "name": "fClefSmall"
                 }
             ]
@@ -30105,11 +30105,11 @@
         "flag1024thDown": {
             "alternates": [
                 {
-                    "codepoint": "U+F426", 
+                    "codepoint": "\uF426", 
                     "name": "flag1024thDownStraight"
                 }, 
                 {
-                    "codepoint": "U+F49A", 
+                    "codepoint": "\uF49A", 
                     "name": "flag1024thDownSmall"
                 }
             ]
@@ -30117,15 +30117,15 @@
         "flag1024thUp": {
             "alternates": [
                 {
-                    "codepoint": "U+F424", 
+                    "codepoint": "\uF424", 
                     "name": "flag1024thUpStraight"
                 }, 
                 {
-                    "codepoint": "U+F425", 
+                    "codepoint": "\uF425", 
                     "name": "flag1024thUpShort"
                 }, 
                 {
-                    "codepoint": "U+F499", 
+                    "codepoint": "\uF499", 
                     "name": "flag1024thUpSmall"
                 }
             ]
@@ -30133,11 +30133,11 @@
         "flag128thDown": {
             "alternates": [
                 {
-                    "codepoint": "U+F41D", 
+                    "codepoint": "\uF41D", 
                     "name": "flag128thDownStraight"
                 }, 
                 {
-                    "codepoint": "U+F494", 
+                    "codepoint": "\uF494", 
                     "name": "flag128thDownSmall"
                 }
             ]
@@ -30145,15 +30145,15 @@
         "flag128thUp": {
             "alternates": [
                 {
-                    "codepoint": "U+F41B", 
+                    "codepoint": "\uF41B", 
                     "name": "flag128thUpStraight"
                 }, 
                 {
-                    "codepoint": "U+F41C", 
+                    "codepoint": "\uF41C", 
                     "name": "flag128thUpShort"
                 }, 
                 {
-                    "codepoint": "U+F493", 
+                    "codepoint": "\uF493", 
                     "name": "flag128thUpSmall"
                 }
             ]
@@ -30161,11 +30161,11 @@
         "flag16thDown": {
             "alternates": [
                 {
-                    "codepoint": "U+F414", 
+                    "codepoint": "\uF414", 
                     "name": "flag16thDownStraight"
                 }, 
                 {
-                    "codepoint": "U+F48E", 
+                    "codepoint": "\uF48E", 
                     "name": "flag16thDownSmall"
                 }
             ]
@@ -30173,15 +30173,15 @@
         "flag16thUp": {
             "alternates": [
                 {
-                    "codepoint": "U+F412", 
+                    "codepoint": "\uF412", 
                     "name": "flag16thUpStraight"
                 }, 
                 {
-                    "codepoint": "U+F413", 
+                    "codepoint": "\uF413", 
                     "name": "flag16thUpShort"
                 }, 
                 {
-                    "codepoint": "U+F48D", 
+                    "codepoint": "\uF48D", 
                     "name": "flag16thUpSmall"
                 }
             ]
@@ -30189,11 +30189,11 @@
         "flag256thDown": {
             "alternates": [
                 {
-                    "codepoint": "U+F420", 
+                    "codepoint": "\uF420", 
                     "name": "flag256thDownStraight"
                 }, 
                 {
-                    "codepoint": "U+F496", 
+                    "codepoint": "\uF496", 
                     "name": "flag256thDownSmall"
                 }
             ]
@@ -30201,15 +30201,15 @@
         "flag256thUp": {
             "alternates": [
                 {
-                    "codepoint": "U+F41E", 
+                    "codepoint": "\uF41E", 
                     "name": "flag256thUpStraight"
                 }, 
                 {
-                    "codepoint": "U+F41F", 
+                    "codepoint": "\uF41F", 
                     "name": "flag256thUpShort"
                 }, 
                 {
-                    "codepoint": "U+F495", 
+                    "codepoint": "\uF495", 
                     "name": "flag256thUpSmall"
                 }
             ]
@@ -30217,11 +30217,11 @@
         "flag32ndDown": {
             "alternates": [
                 {
-                    "codepoint": "U+F417", 
+                    "codepoint": "\uF417", 
                     "name": "flag32ndDownStraight"
                 }, 
                 {
-                    "codepoint": "U+F490", 
+                    "codepoint": "\uF490", 
                     "name": "flag32ndDownSmall"
                 }
             ]
@@ -30229,15 +30229,15 @@
         "flag32ndUp": {
             "alternates": [
                 {
-                    "codepoint": "U+F415", 
+                    "codepoint": "\uF415", 
                     "name": "flag32ndUpStraight"
                 }, 
                 {
-                    "codepoint": "U+F416", 
+                    "codepoint": "\uF416", 
                     "name": "flag32ndUpShort"
                 }, 
                 {
-                    "codepoint": "U+F48F", 
+                    "codepoint": "\uF48F", 
                     "name": "flag32ndUpSmall"
                 }
             ]
@@ -30245,11 +30245,11 @@
         "flag512thDown": {
             "alternates": [
                 {
-                    "codepoint": "U+F423", 
+                    "codepoint": "\uF423", 
                     "name": "flag512thDownStraight"
                 }, 
                 {
-                    "codepoint": "U+F498", 
+                    "codepoint": "\uF498", 
                     "name": "flag512thDownSmall"
                 }
             ]
@@ -30257,15 +30257,15 @@
         "flag512thUp": {
             "alternates": [
                 {
-                    "codepoint": "U+F421", 
+                    "codepoint": "\uF421", 
                     "name": "flag512thUpStraight"
                 }, 
                 {
-                    "codepoint": "U+F422", 
+                    "codepoint": "\uF422", 
                     "name": "flag512thUpShort"
                 }, 
                 {
-                    "codepoint": "U+F497", 
+                    "codepoint": "\uF497", 
                     "name": "flag512thUpSmall"
                 }
             ]
@@ -30273,11 +30273,11 @@
         "flag64thDown": {
             "alternates": [
                 {
-                    "codepoint": "U+F41A", 
+                    "codepoint": "\uF41A", 
                     "name": "flag64thDownStraight"
                 }, 
                 {
-                    "codepoint": "U+F492", 
+                    "codepoint": "\uF492", 
                     "name": "flag64thDownSmall"
                 }
             ]
@@ -30285,15 +30285,15 @@
         "flag64thUp": {
             "alternates": [
                 {
-                    "codepoint": "U+F418", 
+                    "codepoint": "\uF418", 
                     "name": "flag64thUpStraight"
                 }, 
                 {
-                    "codepoint": "U+F419", 
+                    "codepoint": "\uF419", 
                     "name": "flag64thUpShort"
                 }, 
                 {
-                    "codepoint": "U+F491", 
+                    "codepoint": "\uF491", 
                     "name": "flag64thUpSmall"
                 }
             ]
@@ -30301,11 +30301,11 @@
         "flag8thDown": {
             "alternates": [
                 {
-                    "codepoint": "U+F411", 
+                    "codepoint": "\uF411", 
                     "name": "flag8thDownStraight"
                 }, 
                 {
-                    "codepoint": "U+F48C", 
+                    "codepoint": "\uF48C", 
                     "name": "flag8thDownSmall"
                 }
             ]
@@ -30313,15 +30313,15 @@
         "flag8thUp": {
             "alternates": [
                 {
-                    "codepoint": "U+F40F", 
+                    "codepoint": "\uF40F", 
                     "name": "flag8thUpStraight"
                 }, 
                 {
-                    "codepoint": "U+F410", 
+                    "codepoint": "\uF410", 
                     "name": "flag8thUpShort"
                 }, 
                 {
-                    "codepoint": "U+F48B", 
+                    "codepoint": "\uF48B", 
                     "name": "flag8thUpSmall"
                 }
             ]
@@ -30329,7 +30329,7 @@
         "gClef": {
             "alternates": [
                 {
-                    "codepoint": "U+F472", 
+                    "codepoint": "\uF472", 
                     "name": "gClefSmall"
                 }
             ]
@@ -30337,7 +30337,7 @@
         "guitarBarreHalf": {
             "alternates": [
                 {
-                    "codepoint": "U+F4C1", 
+                    "codepoint": "\uF4C1", 
                     "name": "guitarBarreHalfHorizontalFractionSlash"
                 }
             ]
@@ -30345,7 +30345,7 @@
         "guitarGolpe": {
             "alternates": [
                 {
-                    "codepoint": "U+F4B8", 
+                    "codepoint": "\uF4B8", 
                     "name": "guitarGolpeFlamenco"
                 }
             ]
@@ -30353,7 +30353,7 @@
         "harpMetalRod": {
             "alternates": [
                 {
-                    "codepoint": "U+F436", 
+                    "codepoint": "\uF436", 
                     "name": "harpMetalRodAlt"
                 }
             ]
@@ -30361,7 +30361,7 @@
         "harpTuningKey": {
             "alternates": [
                 {
-                    "codepoint": "U+F437", 
+                    "codepoint": "\uF437", 
                     "name": "harpTuningKeyAlt"
                 }
             ]
@@ -30369,7 +30369,7 @@
         "keyboardPedalPed": {
             "alternates": [
                 {
-                    "codepoint": "U+F434", 
+                    "codepoint": "\uF434", 
                     "name": "keyboardPedalPedNoDot"
                 }
             ]
@@ -30377,7 +30377,7 @@
         "keyboardPedalSost": {
             "alternates": [
                 {
-                    "codepoint": "U+F435", 
+                    "codepoint": "\uF435", 
                     "name": "keyboardPedalSostNoDot"
                 }
             ]
@@ -30385,7 +30385,7 @@
         "luteFingeringRHThird": {
             "alternates": [
                 {
-                    "codepoint": "U+F44D", 
+                    "codepoint": "\uF44D", 
                     "name": "luteFingeringRHThirdAlt"
                 }
             ]
@@ -30393,15 +30393,15 @@
         "luteFrench10thCourse": {
             "alternates": [
                 {
-                    "codepoint": "U+F457", 
+                    "codepoint": "\uF457", 
                     "name": "luteFrench10thCourseStrikethru"
                 }, 
                 {
-                    "codepoint": "U+F458", 
+                    "codepoint": "\uF458", 
                     "name": "luteFrench10thCourseUnderline"
                 }, 
                 {
-                    "codepoint": "U+F459", 
+                    "codepoint": "\uF459", 
                     "name": "luteFrench10thCourseRight"
                 }
             ]
@@ -30409,15 +30409,15 @@
         "luteFrench7thCourse": {
             "alternates": [
                 {
-                    "codepoint": "U+F44E", 
+                    "codepoint": "\uF44E", 
                     "name": "luteFrench7thCourseStrikethru"
                 }, 
                 {
-                    "codepoint": "U+F44F", 
+                    "codepoint": "\uF44F", 
                     "name": "luteFrench7thCourseUnderline"
                 }, 
                 {
-                    "codepoint": "U+F450", 
+                    "codepoint": "\uF450", 
                     "name": "luteFrench7thCourseRight"
                 }
             ]
@@ -30425,15 +30425,15 @@
         "luteFrench8thCourse": {
             "alternates": [
                 {
-                    "codepoint": "U+F451", 
+                    "codepoint": "\uF451", 
                     "name": "luteFrench8thCourseStrikethru"
                 }, 
                 {
-                    "codepoint": "U+F452", 
+                    "codepoint": "\uF452", 
                     "name": "luteFrench8thCourseUnderline"
                 }, 
                 {
-                    "codepoint": "U+F453", 
+                    "codepoint": "\uF453", 
                     "name": "luteFrench8thCourseRight"
                 }
             ]
@@ -30441,15 +30441,15 @@
         "luteFrench9thCourse": {
             "alternates": [
                 {
-                    "codepoint": "U+F454", 
+                    "codepoint": "\uF454", 
                     "name": "luteFrench9thCourseStrikethru"
                 }, 
                 {
-                    "codepoint": "U+F455", 
+                    "codepoint": "\uF455", 
                     "name": "luteFrench9thCourseUnderline"
                 }, 
                 {
-                    "codepoint": "U+F456", 
+                    "codepoint": "\uF456", 
                     "name": "luteFrench9thCourseRight"
                 }
             ]
@@ -30457,7 +30457,7 @@
         "luteFrenchFretC": {
             "alternates": [
                 {
-                    "codepoint": "U+F45A", 
+                    "codepoint": "\uF45A", 
                     "name": "luteFrenchFretCAlt"
                 }
             ]
@@ -30465,11 +30465,11 @@
         "medRenFlatSoftB": {
             "alternates": [
                 {
-                    "codepoint": "U+F49F", 
+                    "codepoint": "\uF49F", 
                     "name": "medRenFlatSoftBOld"
                 }, 
                 {
-                    "codepoint": "U+F4A0", 
+                    "codepoint": "\uF4A0", 
                     "name": "medRenFlatSoftBHufnagel"
                 }
             ]
@@ -30477,11 +30477,11 @@
         "mensuralCclef": {
             "alternates": [
                 {
-                    "codepoint": "U+F49B", 
+                    "codepoint": "\uF49B", 
                     "name": "mensuralCclefVoid"
                 }, 
                 {
-                    "codepoint": "U+F49C", 
+                    "codepoint": "\uF49C", 
                     "name": "mensuralCclefBlack"
                 }
             ]
@@ -30489,7 +30489,7 @@
         "mensuralProportion4": {
             "alternates": [
                 {
-                    "codepoint": "U+F43D", 
+                    "codepoint": "\uF43D", 
                     "name": "mensuralProportion4Old"
                 }
             ]
@@ -30497,7 +30497,7 @@
         "noteDoubleWhole": {
             "alternates": [
                 {
-                    "codepoint": "U+F40E", 
+                    "codepoint": "\uF40E", 
                     "name": "noteDoubleWholeAlt"
                 }
             ]
@@ -30505,11 +30505,11 @@
         "noteheadBlack": {
             "alternates": [
                 {
-                    "codepoint": "U+F46A", 
+                    "codepoint": "\uF46A", 
                     "name": "noteheadBlackSmall"
                 }, 
                 {
-                    "codepoint": "U+F4BE", 
+                    "codepoint": "\uF4BE", 
                     "name": "noteheadBlackOversized"
                 }
             ]
@@ -30517,15 +30517,15 @@
         "noteheadDoubleWhole": {
             "alternates": [
                 {
-                    "codepoint": "U+F43F", 
+                    "codepoint": "\uF43F", 
                     "name": "noteheadDoubleWholeAlt"
                 }, 
                 {
-                    "codepoint": "U+F467", 
+                    "codepoint": "\uF467", 
                     "name": "noteheadDoubleWholeSmall"
                 }, 
                 {
-                    "codepoint": "U+F4BA", 
+                    "codepoint": "\uF4BA", 
                     "name": "noteheadDoubleWholeOversized"
                 }
             ]
@@ -30533,7 +30533,7 @@
         "noteheadDoubleWholeSquare": {
             "alternates": [
                 {
-                    "codepoint": "U+F4BB", 
+                    "codepoint": "\uF4BB", 
                     "name": "noteheadDoubleWholeSquareOversized"
                 }
             ]
@@ -30541,11 +30541,11 @@
         "noteheadHalf": {
             "alternates": [
                 {
-                    "codepoint": "U+F469", 
+                    "codepoint": "\uF469", 
                     "name": "noteheadHalfSmall"
                 }, 
                 {
-                    "codepoint": "U+F4BD", 
+                    "codepoint": "\uF4BD", 
                     "name": "noteheadHalfOversized"
                 }
             ]
@@ -30553,11 +30553,11 @@
         "noteheadWhole": {
             "alternates": [
                 {
-                    "codepoint": "U+F468", 
+                    "codepoint": "\uF468", 
                     "name": "noteheadWholeSmall"
                 }, 
                 {
-                    "codepoint": "U+F4BC", 
+                    "codepoint": "\uF4BC", 
                     "name": "noteheadWholeOversized"
                 }
             ]
@@ -30565,7 +30565,7 @@
         "pictBassDrum": {
             "alternates": [
                 {
-                    "codepoint": "U+F4AF", 
+                    "codepoint": "\uF4AF", 
                     "name": "pictBassDrumPeinkofer"
                 }
             ]
@@ -30573,7 +30573,7 @@
         "pictBongos": {
             "alternates": [
                 {
-                    "codepoint": "U+F4B0", 
+                    "codepoint": "\uF4B0", 
                     "name": "pictBongosPeinkofer"
                 }
             ]
@@ -30581,7 +30581,7 @@
         "pictCastanets": {
             "alternates": [
                 {
-                    "codepoint": "U+F439", 
+                    "codepoint": "\uF439", 
                     "name": "pictCastanetsSmithBrindle"
                 }
             ]
@@ -30589,7 +30589,7 @@
         "pictConga": {
             "alternates": [
                 {
-                    "codepoint": "U+F4B1", 
+                    "codepoint": "\uF4B1", 
                     "name": "pictCongaPeinkofer"
                 }
             ]
@@ -30597,7 +30597,7 @@
         "pictCowBell": {
             "alternates": [
                 {
-                    "codepoint": "U+F43B", 
+                    "codepoint": "\uF43B", 
                     "name": "pictCowBellBerio"
                 }
             ]
@@ -30605,7 +30605,7 @@
         "pictFlexatone": {
             "alternates": [
                 {
-                    "codepoint": "U+F4B6", 
+                    "codepoint": "\uF4B6", 
                     "name": "pictFlexatonePeinkofer"
                 }
             ]
@@ -30613,7 +30613,7 @@
         "pictGlsp": {
             "alternates": [
                 {
-                    "codepoint": "U+F4AA", 
+                    "codepoint": "\uF4AA", 
                     "name": "pictGlspPeinkofer"
                 }
             ]
@@ -30621,11 +30621,11 @@
         "pictGuiro": {
             "alternates": [
                 {
-                    "codepoint": "U+F4B4", 
+                    "codepoint": "\uF4B4", 
                     "name": "pictGuiroSevsay"
                 }, 
                 {
-                    "codepoint": "U+F4B5", 
+                    "codepoint": "\uF4B5", 
                     "name": "pictGuiroPeinkofer"
                 }
             ]
@@ -30633,7 +30633,7 @@
         "pictLithophone": {
             "alternates": [
                 {
-                    "codepoint": "U+F4A7", 
+                    "codepoint": "\uF4A7", 
                     "name": "pictLithophonePeinkofer"
                 }
             ]
@@ -30641,7 +30641,7 @@
         "pictLotusFlute": {
             "alternates": [
                 {
-                    "codepoint": "U+F4AC", 
+                    "codepoint": "\uF4AC", 
                     "name": "pictLotusFlutePeinkofer"
                 }
             ]
@@ -30649,7 +30649,7 @@
         "pictMar": {
             "alternates": [
                 {
-                    "codepoint": "U+F4AB", 
+                    "codepoint": "\uF4AB", 
                     "name": "pictMarPeinkofer"
                 }
             ]
@@ -30657,7 +30657,7 @@
         "pictMaraca": {
             "alternates": [
                 {
-                    "codepoint": "U+F43C", 
+                    "codepoint": "\uF43C", 
                     "name": "pictMaracaSmithBrindle"
                 }
             ]
@@ -30665,7 +30665,7 @@
         "pictMusicalSaw": {
             "alternates": [
                 {
-                    "codepoint": "U+F4B7", 
+                    "codepoint": "\uF4B7", 
                     "name": "pictMusicalSawPeinkofer"
                 }
             ]
@@ -30673,7 +30673,7 @@
         "pictSleighBell": {
             "alternates": [
                 {
-                    "codepoint": "U+F43A", 
+                    "codepoint": "\uF43A", 
                     "name": "pictSleighBellSmithBrindle"
                 }
             ]
@@ -30681,7 +30681,7 @@
         "pictTambourine": {
             "alternates": [
                 {
-                    "codepoint": "U+F438", 
+                    "codepoint": "\uF438", 
                     "name": "pictTambourineStockhausen"
                 }
             ]
@@ -30689,7 +30689,7 @@
         "pictTimbales": {
             "alternates": [
                 {
-                    "codepoint": "U+F4B3", 
+                    "codepoint": "\uF4B3", 
                     "name": "pictTimbalesPeinkofer"
                 }
             ]
@@ -30697,7 +30697,7 @@
         "pictTimpani": {
             "alternates": [
                 {
-                    "codepoint": "U+F4AE", 
+                    "codepoint": "\uF4AE", 
                     "name": "pictTimpaniPeinkofer"
                 }
             ]
@@ -30705,7 +30705,7 @@
         "pictTomTom": {
             "alternates": [
                 {
-                    "codepoint": "U+F4B2", 
+                    "codepoint": "\uF4B2", 
                     "name": "pictTomTomPeinkofer"
                 }
             ]
@@ -30713,7 +30713,7 @@
         "pictTomTomChinese": {
             "alternates": [
                 {
-                    "codepoint": "U+F4AD", 
+                    "codepoint": "\uF4AD", 
                     "name": "pictTomTomChinesePeinkofer"
                 }
             ]
@@ -30721,7 +30721,7 @@
         "pictTubaphone": {
             "alternates": [
                 {
-                    "codepoint": "U+F4A8", 
+                    "codepoint": "\uF4A8", 
                     "name": "pictTubaphonePeinkofer"
                 }
             ]
@@ -30729,7 +30729,7 @@
         "pictVib": {
             "alternates": [
                 {
-                    "codepoint": "U+F4A5", 
+                    "codepoint": "\uF4A5", 
                     "name": "pictVibPeinkofer"
                 }
             ]
@@ -30737,7 +30737,7 @@
         "pictVibMotorOff": {
             "alternates": [
                 {
-                    "codepoint": "U+F4A6", 
+                    "codepoint": "\uF4A6", 
                     "name": "pictVibMotorOffPeinkofer"
                 }
             ]
@@ -30745,7 +30745,7 @@
         "pictXyl": {
             "alternates": [
                 {
-                    "codepoint": "U+F4A9", 
+                    "codepoint": "\uF4A9", 
                     "name": "pictXylPeinkofer"
                 }
             ]
@@ -30753,7 +30753,7 @@
         "pictXylBass": {
             "alternates": [
                 {
-                    "codepoint": "U+F4A3", 
+                    "codepoint": "\uF4A3", 
                     "name": "pictXylBassPeinkofer"
                 }
             ]
@@ -30761,7 +30761,7 @@
         "pictXylTenor": {
             "alternates": [
                 {
-                    "codepoint": "U+F4A4", 
+                    "codepoint": "\uF4A4", 
                     "name": "pictXylTenorPeinkofer"
                 }
             ]
@@ -30769,7 +30769,7 @@
         "pluckedSnapPizzicatoAbove": {
             "alternates": [
                 {
-                    "codepoint": "U+F433", 
+                    "codepoint": "\uF433", 
                     "name": "pluckedSnapPizzicatoAboveGerman"
                 }
             ]
@@ -30777,7 +30777,7 @@
         "pluckedSnapPizzicatoBelow": {
             "alternates": [
                 {
-                    "codepoint": "U+F432", 
+                    "codepoint": "\uF432", 
                     "name": "pluckedSnapPizzicatoBelowGerman"
                 }
             ]
@@ -30785,7 +30785,7 @@
         "quindicesima": {
             "alternates": [
                 {
-                    "codepoint": "U+F4C3", 
+                    "codepoint": "\uF4C3", 
                     "name": "sedicesima"
                 }
             ]
@@ -30793,7 +30793,7 @@
         "quindicesimaAlta": {
             "alternates": [
                 {
-                    "codepoint": "U+F4C4", 
+                    "codepoint": "\uF4C4", 
                     "name": "sedicesimaAlta"
                 }
             ]
@@ -30801,7 +30801,7 @@
         "quindicesimaBassa": {
             "alternates": [
                 {
-                    "codepoint": "U+F4C5", 
+                    "codepoint": "\uF4C5", 
                     "name": "sedicesimaBassa"
                 }
             ]
@@ -30809,7 +30809,7 @@
         "quindicesimaBassaMb": {
             "alternates": [
                 {
-                    "codepoint": "U+F4C9", 
+                    "codepoint": "\uF4C9", 
                     "name": "sedicesimaBassaMb"
                 }
             ]
@@ -30817,7 +30817,7 @@
         "repeatRightLeft": {
             "alternates": [
                 {
-                    "codepoint": "U+F45C", 
+                    "codepoint": "\uF45C", 
                     "name": "repeatRightLeftThick"
                 }
             ]
@@ -30825,7 +30825,7 @@
         "segno": {
             "alternates": [
                 {
-                    "codepoint": "U+F404", 
+                    "codepoint": "\uF404", 
                     "name": "segnoJapanese"
                 }
             ]
@@ -30833,11 +30833,11 @@
         "stringsChangeBowDirection": {
             "alternates": [
                 {
-                    "codepoint": "U+F431", 
+                    "codepoint": "\uF431", 
                     "name": "stringsChangeBowDirectionLiga"
                 }, 
                 {
-                    "codepoint": "U+F43E", 
+                    "codepoint": "\uF43E", 
                     "name": "stringsChangeBowDirectionImposed"
                 }
             ]
@@ -30845,11 +30845,11 @@
         "timeSig0": {
             "alternates": [
                 {
-                    "codepoint": "U+F440", 
+                    "codepoint": "\uF440", 
                     "name": "timeSig0Large"
                 }, 
                 {
-                    "codepoint": "U+F45D", 
+                    "codepoint": "\uF45D", 
                     "name": "timeSig0Small"
                 }
             ]
@@ -30857,11 +30857,11 @@
         "timeSig1": {
             "alternates": [
                 {
-                    "codepoint": "U+F441", 
+                    "codepoint": "\uF441", 
                     "name": "timeSig1Large"
                 }, 
                 {
-                    "codepoint": "U+F45E", 
+                    "codepoint": "\uF45E", 
                     "name": "timeSig1Small"
                 }
             ]
@@ -30869,11 +30869,11 @@
         "timeSig2": {
             "alternates": [
                 {
-                    "codepoint": "U+F442", 
+                    "codepoint": "\uF442", 
                     "name": "timeSig2Large"
                 }, 
                 {
-                    "codepoint": "U+F45F", 
+                    "codepoint": "\uF45F", 
                     "name": "timeSig2Small"
                 }
             ]
@@ -30881,11 +30881,11 @@
         "timeSig3": {
             "alternates": [
                 {
-                    "codepoint": "U+F443", 
+                    "codepoint": "\uF443", 
                     "name": "timeSig3Large"
                 }, 
                 {
-                    "codepoint": "U+F460", 
+                    "codepoint": "\uF460", 
                     "name": "timeSig3Small"
                 }
             ]
@@ -30893,11 +30893,11 @@
         "timeSig4": {
             "alternates": [
                 {
-                    "codepoint": "U+F444", 
+                    "codepoint": "\uF444", 
                     "name": "timeSig4Large"
                 }, 
                 {
-                    "codepoint": "U+F461", 
+                    "codepoint": "\uF461", 
                     "name": "timeSig4Small"
                 }
             ]
@@ -30905,11 +30905,11 @@
         "timeSig5": {
             "alternates": [
                 {
-                    "codepoint": "U+F445", 
+                    "codepoint": "\uF445", 
                     "name": "timeSig5Large"
                 }, 
                 {
-                    "codepoint": "U+F462", 
+                    "codepoint": "\uF462", 
                     "name": "timeSig5Small"
                 }
             ]
@@ -30917,11 +30917,11 @@
         "timeSig6": {
             "alternates": [
                 {
-                    "codepoint": "U+F446", 
+                    "codepoint": "\uF446", 
                     "name": "timeSig6Large"
                 }, 
                 {
-                    "codepoint": "U+F463", 
+                    "codepoint": "\uF463", 
                     "name": "timeSig6Small"
                 }
             ]
@@ -30929,11 +30929,11 @@
         "timeSig7": {
             "alternates": [
                 {
-                    "codepoint": "U+F447", 
+                    "codepoint": "\uF447", 
                     "name": "timeSig7Large"
                 }, 
                 {
-                    "codepoint": "U+F464", 
+                    "codepoint": "\uF464", 
                     "name": "timeSig7Small"
                 }
             ]
@@ -30941,11 +30941,11 @@
         "timeSig8": {
             "alternates": [
                 {
-                    "codepoint": "U+F448", 
+                    "codepoint": "\uF448", 
                     "name": "timeSig8Large"
                 }, 
                 {
-                    "codepoint": "U+F465", 
+                    "codepoint": "\uF465", 
                     "name": "timeSig8Small"
                 }
             ]
@@ -30953,11 +30953,11 @@
         "timeSig9": {
             "alternates": [
                 {
-                    "codepoint": "U+F449", 
+                    "codepoint": "\uF449", 
                     "name": "timeSig9Large"
                 }, 
                 {
-                    "codepoint": "U+F466", 
+                    "codepoint": "\uF466", 
                     "name": "timeSig9Small"
                 }
             ]
@@ -30965,7 +30965,7 @@
         "timeSigCommon": {
             "alternates": [
                 {
-                    "codepoint": "U+F44A", 
+                    "codepoint": "\uF44A", 
                     "name": "timeSigCommonLarge"
                 }
             ]
@@ -30973,7 +30973,7 @@
         "timeSigCutCommon": {
             "alternates": [
                 {
-                    "codepoint": "U+F44B", 
+                    "codepoint": "\uF44B", 
                     "name": "timeSigCutCommonLarge"
                 }
             ]
@@ -30981,7 +30981,7 @@
         "timeSigPlus": {
             "alternates": [
                 {
-                    "codepoint": "U+F44C", 
+                    "codepoint": "\uF44C", 
                     "name": "timeSigPlusLarge"
                 }
             ]
@@ -30989,7 +30989,7 @@
         "tripleTongueAbove": {
             "alternates": [
                 {
-                    "codepoint": "U+F42F", 
+                    "codepoint": "\uF42F", 
                     "name": "tripleTongueAboveNoSlur"
                 }
             ]
@@ -30997,7 +30997,7 @@
         "tripleTongueBelow": {
             "alternates": [
                 {
-                    "codepoint": "U+F430", 
+                    "codepoint": "\uF430", 
                     "name": "tripleTongueBelowNoSlur"
                 }
             ]
@@ -31005,7 +31005,7 @@
         "unpitchedPercussionClef1": {
             "alternates": [
                 {
-                    "codepoint": "U+F409", 
+                    "codepoint": "\uF409", 
                     "name": "unpitchedPercussionClef1Alt"
                 }
             ]
@@ -31013,7 +31013,7 @@
         "ventiduesima": {
             "alternates": [
                 {
-                    "codepoint": "U+F4C6", 
+                    "codepoint": "\uF4C6", 
                     "name": "ventiquattresima"
                 }
             ]
@@ -31021,7 +31021,7 @@
         "ventiduesimaAlta": {
             "alternates": [
                 {
-                    "codepoint": "U+F4C7", 
+                    "codepoint": "\uF4C7", 
                     "name": "ventiquattresimaAlta"
                 }
             ]
@@ -31029,7 +31029,7 @@
         "ventiduesimaBassa": {
             "alternates": [
                 {
-                    "codepoint": "U+F4C8", 
+                    "codepoint": "\uF4C8", 
                     "name": "ventiquattresimaBassa"
                 }
             ]
@@ -31037,7 +31037,7 @@
         "ventiduesimaBassaMb": {
             "alternates": [
                 {
-                    "codepoint": "U+F4CA", 
+                    "codepoint": "\uF4CA", 
                     "name": "ventiquattresimaBassaMb"
                 }
             ]
@@ -31045,7 +31045,7 @@
         "wiggleArpeggiatoDownSwash": {
             "alternates": [
                 {
-                    "codepoint": "U+F4CC", 
+                    "codepoint": "\uF4CC", 
                     "name": "wiggleArpeggiatoDownSwashCouperin"
                 }
             ]
@@ -31053,7 +31053,7 @@
         "wiggleArpeggiatoUpSwash": {
             "alternates": [
                 {
-                    "codepoint": "U+F4CB", 
+                    "codepoint": "\uF4CB", 
                     "name": "wiggleArpeggiatoUpSwashCouperin"
                 }
             ]
@@ -36029,7 +36029,7 @@
     }, 
     "ligatures": {
         "accidentalDoubleFlatParens": {
-            "codepoint": "U+F574", 
+            "codepoint": "\uF574", 
             "componentGlyphs": [
                 "accidentalParensLeft", 
                 "accidentalDoubleFlat", 
@@ -36037,7 +36037,7 @@
             ]
         }, 
         "accidentalDoubleSharpParens": {
-            "codepoint": "U+F573", 
+            "codepoint": "\uF573", 
             "componentGlyphs": [
                 "accidentalParensLeft", 
                 "accidentalDoubleSharp", 
@@ -36045,21 +36045,21 @@
             ]
         }, 
         "accidentalFlatJohnstonDown": {
-            "codepoint": "U+F57A", 
+            "codepoint": "\uF57A", 
             "componentGlyphs": [
                 "accidentalFlat", 
                 "accidentalJohnstonDown"
             ]
         }, 
         "accidentalFlatJohnstonEl": {
-            "codepoint": "U+F578", 
+            "codepoint": "\uF578", 
             "componentGlyphs": [
                 "accidentalFlat", 
                 "accidentalJohnstonEl"
             ]
         }, 
         "accidentalFlatJohnstonElDown": {
-            "codepoint": "U+F586", 
+            "codepoint": "\uF586", 
             "componentGlyphs": [
                 "accidentalFlat", 
                 "accidentalJohnstonEl", 
@@ -36067,14 +36067,14 @@
             ]
         }, 
         "accidentalFlatJohnstonUp": {
-            "codepoint": "U+F579", 
+            "codepoint": "\uF579", 
             "componentGlyphs": [
                 "accidentalFlat", 
                 "accidentalJohnstonUp"
             ]
         }, 
         "accidentalFlatJohnstonUpEl": {
-            "codepoint": "U+F585", 
+            "codepoint": "\uF585", 
             "componentGlyphs": [
                 "accidentalFlat", 
                 "accidentalJohnstonUp", 
@@ -36082,7 +36082,7 @@
             ]
         }, 
         "accidentalFlatParens": {
-            "codepoint": "U+F570", 
+            "codepoint": "\uF570", 
             "componentGlyphs": [
                 "accidentalParensLeft", 
                 "accidentalFlat", 
@@ -36090,28 +36090,28 @@
             ]
         }, 
         "accidentalJohnstonDownEl": {
-            "codepoint": "U+F580", 
+            "codepoint": "\uF580", 
             "componentGlyphs": [
                 "accidentalJohnstonDown", 
                 "accidentalJohnstonEl"
             ]
         }, 
         "accidentalJohnstonSevenDown": {
-            "codepoint": "U+F57E", 
+            "codepoint": "\uF57E", 
             "componentGlyphs": [
                 "accidentalJohnstonSeven", 
                 "accidentalJohnstonDown"
             ]
         }, 
         "accidentalJohnstonSevenFlat": {
-            "codepoint": "U+F57C", 
+            "codepoint": "\uF57C", 
             "componentGlyphs": [
                 "accidentalJohnstonSeven", 
                 "accidentalFlat"
             ]
         }, 
         "accidentalJohnstonSevenFlatDown": {
-            "codepoint": "U+F588", 
+            "codepoint": "\uF588", 
             "componentGlyphs": [
                 "accidentalJohnstonSeven", 
                 "accidentalFlat", 
@@ -36119,7 +36119,7 @@
             ]
         }, 
         "accidentalJohnstonSevenFlatUp": {
-            "codepoint": "U+F587", 
+            "codepoint": "\uF587", 
             "componentGlyphs": [
                 "accidentalJohnstonSeven", 
                 "accidentalFlat", 
@@ -36127,14 +36127,14 @@
             ]
         }, 
         "accidentalJohnstonSevenSharp": {
-            "codepoint": "U+F57B", 
+            "codepoint": "\uF57B", 
             "componentGlyphs": [
                 "accidentalJohnstonSeven", 
                 "accidentalSharp"
             ]
         }, 
         "accidentalJohnstonSevenSharpDown": {
-            "codepoint": "U+F584", 
+            "codepoint": "\uF584", 
             "componentGlyphs": [
                 "accidentalJohnstonSeven", 
                 "accidentalSharp", 
@@ -36142,7 +36142,7 @@
             ]
         }, 
         "accidentalJohnstonSevenSharpUp": {
-            "codepoint": "U+F583", 
+            "codepoint": "\uF583", 
             "componentGlyphs": [
                 "accidentalJohnstonSeven", 
                 "accidentalSharp", 
@@ -36150,21 +36150,21 @@
             ]
         }, 
         "accidentalJohnstonSevenUp": {
-            "codepoint": "U+F57D", 
+            "codepoint": "\uF57D", 
             "componentGlyphs": [
                 "accidentalJohnstonSeven", 
                 "accidentalJohnstonUp"
             ]
         }, 
         "accidentalJohnstonUpEl": {
-            "codepoint": "U+F57F", 
+            "codepoint": "\uF57F", 
             "componentGlyphs": [
                 "accidentalJohnstonUp", 
                 "accidentalJohnstonEl"
             ]
         }, 
         "accidentalNaturalParens": {
-            "codepoint": "U+F571", 
+            "codepoint": "\uF571", 
             "componentGlyphs": [
                 "accidentalParensLeft", 
                 "accidentalNatural", 
@@ -36172,14 +36172,14 @@
             ]
         }, 
         "accidentalSharpJohnstonDown": {
-            "codepoint": "U+F577", 
+            "codepoint": "\uF577", 
             "componentGlyphs": [
                 "accidentalSharp", 
                 "accidentalJohnstonDown"
             ]
         }, 
         "accidentalSharpJohnstonDownEl": {
-            "codepoint": "U+F582", 
+            "codepoint": "\uF582", 
             "componentGlyphs": [
                 "accidentalSharp", 
                 "accidentalJohnstonDown", 
@@ -36187,21 +36187,21 @@
             ]
         }, 
         "accidentalSharpJohnstonEl": {
-            "codepoint": "U+F575", 
+            "codepoint": "\uF575", 
             "componentGlyphs": [
                 "accidentalSharp", 
                 "accidentalJohnstonEl"
             ]
         }, 
         "accidentalSharpJohnstonUp": {
-            "codepoint": "U+F576", 
+            "codepoint": "\uF576", 
             "componentGlyphs": [
                 "accidentalSharp", 
                 "accidentalJohnstonUp"
             ]
         }, 
         "accidentalSharpJohnstonUpEl": {
-            "codepoint": "U+F581", 
+            "codepoint": "\uF581", 
             "componentGlyphs": [
                 "accidentalSharp", 
                 "accidentalJohnstonUp", 
@@ -36209,7 +36209,7 @@
             ]
         }, 
         "accidentalSharpParens": {
-            "codepoint": "U+F572", 
+            "codepoint": "\uF572", 
             "componentGlyphs": [
                 "accidentalParensLeft", 
                 "accidentalSharp", 
@@ -36217,21 +36217,21 @@
             ]
         }, 
         "fClef5Below": {
-            "codepoint": "U+F4CD", 
+            "codepoint": "\uF4CD", 
             "componentGlyphs": [
                 "fClef", 
                 "tuplet5"
             ]
         }, 
         "gClef0Below": {
-            "codepoint": "U+F4CE", 
+            "codepoint": "\uF4CE", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "tuplet0"
             ]
         }, 
         "gClef10Below": {
-            "codepoint": "U+F4CF", 
+            "codepoint": "\uF4CF", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "tuplet1", 
@@ -36239,7 +36239,7 @@
             ]
         }, 
         "gClef11Below": {
-            "codepoint": "U+F4D0", 
+            "codepoint": "\uF4D0", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "tuplet1", 
@@ -36247,7 +36247,7 @@
             ]
         }, 
         "gClef12Below": {
-            "codepoint": "U+F4D1", 
+            "codepoint": "\uF4D1", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "tuplet1", 
@@ -36255,7 +36255,7 @@
             ]
         }, 
         "gClef13Below": {
-            "codepoint": "U+F4D2", 
+            "codepoint": "\uF4D2", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "tuplet1", 
@@ -36263,7 +36263,7 @@
             ]
         }, 
         "gClef14Below": {
-            "codepoint": "U+F4D3", 
+            "codepoint": "\uF4D3", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "tuplet1", 
@@ -36271,7 +36271,7 @@
             ]
         }, 
         "gClef15Below": {
-            "codepoint": "U+F4D4", 
+            "codepoint": "\uF4D4", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "tuplet1", 
@@ -36279,7 +36279,7 @@
             ]
         }, 
         "gClef16Below": {
-            "codepoint": "U+F4D5", 
+            "codepoint": "\uF4D5", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "tuplet1", 
@@ -36287,7 +36287,7 @@
             ]
         }, 
         "gClef17Below": {
-            "codepoint": "U+F4D6", 
+            "codepoint": "\uF4D6", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "tuplet1", 
@@ -36295,119 +36295,119 @@
             ]
         }, 
         "gClef2Above": {
-            "codepoint": "U+F4D7", 
+            "codepoint": "\uF4D7", 
             "componentGlyphs": [
                 "gClefLigatedNumberAbove", 
                 "tuplet2"
             ]
         }, 
         "gClef2Below": {
-            "codepoint": "U+F4D8", 
+            "codepoint": "\uF4D8", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "tuplet2"
             ]
         }, 
         "gClef3Above": {
-            "codepoint": "U+F4D9", 
+            "codepoint": "\uF4D9", 
             "componentGlyphs": [
                 "gClefLigatedNumberAbove", 
                 "tuplet3"
             ]
         }, 
         "gClef3Below": {
-            "codepoint": "U+F4DA", 
+            "codepoint": "\uF4DA", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "tuplet3"
             ]
         }, 
         "gClef4Above": {
-            "codepoint": "U+F4DB", 
+            "codepoint": "\uF4DB", 
             "componentGlyphs": [
                 "gClefLigatedNumberAbove", 
                 "tuplet4"
             ]
         }, 
         "gClef4Below": {
-            "codepoint": "U+F4DC", 
+            "codepoint": "\uF4DC", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "tuplet4"
             ]
         }, 
         "gClef5Above": {
-            "codepoint": "U+F4DD", 
+            "codepoint": "\uF4DD", 
             "componentGlyphs": [
                 "gClefLigatedNumberAbove", 
                 "tuplet5"
             ]
         }, 
         "gClef5Below": {
-            "codepoint": "U+F4DE", 
+            "codepoint": "\uF4DE", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "tuplet5"
             ]
         }, 
         "gClef6Above": {
-            "codepoint": "U+F4DF", 
+            "codepoint": "\uF4DF", 
             "componentGlyphs": [
                 "gClefLigatedNumberAbove", 
                 "tuplet6"
             ]
         }, 
         "gClef6Below": {
-            "codepoint": "U+F4E0", 
+            "codepoint": "\uF4E0", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "tuplet6"
             ]
         }, 
         "gClef7Above": {
-            "codepoint": "U+F4E1", 
+            "codepoint": "\uF4E1", 
             "componentGlyphs": [
                 "gClefLigatedNumberAbove", 
                 "tuplet7"
             ]
         }, 
         "gClef7Below": {
-            "codepoint": "U+F4E2", 
+            "codepoint": "\uF4E2", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "tuplet7"
             ]
         }, 
         "gClef8Above": {
-            "codepoint": "U+F4E3", 
+            "codepoint": "\uF4E3", 
             "componentGlyphs": [
                 "gClefLigatedNumberAbove", 
                 "tuplet8"
             ]
         }, 
         "gClef8Below": {
-            "codepoint": "U+F4E4", 
+            "codepoint": "\uF4E4", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "tuplet8"
             ]
         }, 
         "gClef9Above": {
-            "codepoint": "U+F4E5", 
+            "codepoint": "\uF4E5", 
             "componentGlyphs": [
                 "gClefLigatedNumberAbove", 
                 "tuplet9"
             ]
         }, 
         "gClef9Below": {
-            "codepoint": "U+F4E6", 
+            "codepoint": "\uF4E6", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "tuplet9"
             ]
         }, 
         "gClefFlat10Below": {
-            "codepoint": "U+F4E7", 
+            "codepoint": "\uF4E7", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "tuplet1", 
@@ -36416,7 +36416,7 @@
             ]
         }, 
         "gClefFlat11Below": {
-            "codepoint": "U+F4E8", 
+            "codepoint": "\uF4E8", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "tuplet1", 
@@ -36425,7 +36425,7 @@
             ]
         }, 
         "gClefFlat13Below": {
-            "codepoint": "U+F4E9", 
+            "codepoint": "\uF4E9", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "tuplet1", 
@@ -36434,7 +36434,7 @@
             ]
         }, 
         "gClefFlat14Below": {
-            "codepoint": "U+F4EA", 
+            "codepoint": "\uF4EA", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "tuplet1", 
@@ -36443,7 +36443,7 @@
             ]
         }, 
         "gClefFlat15Below": {
-            "codepoint": "U+F4EB", 
+            "codepoint": "\uF4EB", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "tuplet1", 
@@ -36452,7 +36452,7 @@
             ]
         }, 
         "gClefFlat16Below": {
-            "codepoint": "U+F4EC", 
+            "codepoint": "\uF4EC", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "tuplet1", 
@@ -36461,7 +36461,7 @@
             ]
         }, 
         "gClefFlat1Below": {
-            "codepoint": "U+F4ED", 
+            "codepoint": "\uF4ED", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "accidentalFlat", 
@@ -36469,7 +36469,7 @@
             ]
         }, 
         "gClefFlat2Above": {
-            "codepoint": "U+F4EE", 
+            "codepoint": "\uF4EE", 
             "componentGlyphs": [
                 "gClefLigatedNumberAbove", 
                 "tuplet2", 
@@ -36477,7 +36477,7 @@
             ]
         }, 
         "gClefFlat2Below": {
-            "codepoint": "U+F4EF", 
+            "codepoint": "\uF4EF", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "accidentalFlat", 
@@ -36485,7 +36485,7 @@
             ]
         }, 
         "gClefFlat3Above": {
-            "codepoint": "U+F4F0", 
+            "codepoint": "\uF4F0", 
             "componentGlyphs": [
                 "gClefLigatedNumberAbove", 
                 "tuplet3", 
@@ -36493,7 +36493,7 @@
             ]
         }, 
         "gClefFlat3Below": {
-            "codepoint": "U+F4F1", 
+            "codepoint": "\uF4F1", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "accidentalFlat", 
@@ -36501,7 +36501,7 @@
             ]
         }, 
         "gClefFlat4Below": {
-            "codepoint": "U+F4F2", 
+            "codepoint": "\uF4F2", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "accidentalFlat", 
@@ -36509,7 +36509,7 @@
             ]
         }, 
         "gClefFlat5Above": {
-            "codepoint": "U+F4F3", 
+            "codepoint": "\uF4F3", 
             "componentGlyphs": [
                 "gClefLigatedNumberAbove", 
                 "tuplet5", 
@@ -36517,7 +36517,7 @@
             ]
         }, 
         "gClefFlat6Above": {
-            "codepoint": "U+F4F4", 
+            "codepoint": "\uF4F4", 
             "componentGlyphs": [
                 "gClefLigatedNumberAbove", 
                 "tuplet6", 
@@ -36525,7 +36525,7 @@
             ]
         }, 
         "gClefFlat6Below": {
-            "codepoint": "U+F4F5", 
+            "codepoint": "\uF4F5", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "accidentalFlat", 
@@ -36533,7 +36533,7 @@
             ]
         }, 
         "gClefFlat7Above": {
-            "codepoint": "U+F4F6", 
+            "codepoint": "\uF4F6", 
             "componentGlyphs": [
                 "gClefLigatedNumberAbove", 
                 "tuplet7", 
@@ -36541,7 +36541,7 @@
             ]
         }, 
         "gClefFlat7Below": {
-            "codepoint": "U+F4F7", 
+            "codepoint": "\uF4F7", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "accidentalFlat", 
@@ -36549,7 +36549,7 @@
             ]
         }, 
         "gClefFlat8Above": {
-            "codepoint": "U+F4F8", 
+            "codepoint": "\uF4F8", 
             "componentGlyphs": [
                 "gClefLigatedNumberAbove", 
                 "tuplet8", 
@@ -36557,7 +36557,7 @@
             ]
         }, 
         "gClefFlat9Above": {
-            "codepoint": "U+F4F9", 
+            "codepoint": "\uF4F9", 
             "componentGlyphs": [
                 "gClefLigatedNumberAbove", 
                 "tuplet9", 
@@ -36565,7 +36565,7 @@
             ]
         }, 
         "gClefFlat9Below": {
-            "codepoint": "U+F4FA", 
+            "codepoint": "\uF4FA", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "accidentalFlat", 
@@ -36573,7 +36573,7 @@
             ]
         }, 
         "gClefNat2Below": {
-            "codepoint": "U+F4FB", 
+            "codepoint": "\uF4FB", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "accidentalNatural", 
@@ -36581,7 +36581,7 @@
             ]
         }, 
         "gClefNatural10Below": {
-            "codepoint": "U+F4FC", 
+            "codepoint": "\uF4FC", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "tuplet1", 
@@ -36590,7 +36590,7 @@
             ]
         }, 
         "gClefNatural13Below": {
-            "codepoint": "U+F4FD", 
+            "codepoint": "\uF4FD", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "tuplet1", 
@@ -36599,7 +36599,7 @@
             ]
         }, 
         "gClefNatural17Below": {
-            "codepoint": "U+F4FE", 
+            "codepoint": "\uF4FE", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "tuplet1", 
@@ -36608,7 +36608,7 @@
             ]
         }, 
         "gClefNatural2Above": {
-            "codepoint": "U+F4FF", 
+            "codepoint": "\uF4FF", 
             "componentGlyphs": [
                 "gClefLigatedNumberAbove", 
                 "tuplet2", 
@@ -36616,7 +36616,7 @@
             ]
         }, 
         "gClefNatural3Above": {
-            "codepoint": "U+F500", 
+            "codepoint": "\uF500", 
             "componentGlyphs": [
                 "gClefLigatedNumberAbove", 
                 "tuplet3", 
@@ -36624,7 +36624,7 @@
             ]
         }, 
         "gClefNatural3Below": {
-            "codepoint": "U+F501", 
+            "codepoint": "\uF501", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "accidentalNatural", 
@@ -36632,7 +36632,7 @@
             ]
         }, 
         "gClefNatural6Above": {
-            "codepoint": "U+F502", 
+            "codepoint": "\uF502", 
             "componentGlyphs": [
                 "gClefLigatedNumberAbove", 
                 "tuplet6", 
@@ -36640,7 +36640,7 @@
             ]
         }, 
         "gClefNatural6Below": {
-            "codepoint": "U+F503", 
+            "codepoint": "\uF503", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "accidentalNatural", 
@@ -36648,7 +36648,7 @@
             ]
         }, 
         "gClefNatural7Above": {
-            "codepoint": "U+F504", 
+            "codepoint": "\uF504", 
             "componentGlyphs": [
                 "gClefLigatedNumberAbove", 
                 "tuplet7", 
@@ -36656,7 +36656,7 @@
             ]
         }, 
         "gClefNatural9Above": {
-            "codepoint": "U+F505", 
+            "codepoint": "\uF505", 
             "componentGlyphs": [
                 "gClefLigatedNumberAbove", 
                 "tuplet9", 
@@ -36664,7 +36664,7 @@
             ]
         }, 
         "gClefNatural9Below": {
-            "codepoint": "U+F506", 
+            "codepoint": "\uF506", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "accidentalNatural", 
@@ -36672,7 +36672,7 @@
             ]
         }, 
         "gClefSharp12Below": {
-            "codepoint": "U+F507", 
+            "codepoint": "\uF507", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "tuplet1", 
@@ -36681,7 +36681,7 @@
             ]
         }, 
         "gClefSharp1Above": {
-            "codepoint": "U+F508", 
+            "codepoint": "\uF508", 
             "componentGlyphs": [
                 "gClefLigatedNumberAbove", 
                 "tuplet1", 
@@ -36689,7 +36689,7 @@
             ]
         }, 
         "gClefSharp4Above": {
-            "codepoint": "U+F509", 
+            "codepoint": "\uF509", 
             "componentGlyphs": [
                 "gClefLigatedNumberAbove", 
                 "tuplet4", 
@@ -36697,7 +36697,7 @@
             ]
         }, 
         "gClefSharp5Below": {
-            "codepoint": "U+F50A", 
+            "codepoint": "\uF50A", 
             "componentGlyphs": [
                 "gClefLigatedNumberBelow", 
                 "accidentalSharp", 
@@ -36705,469 +36705,469 @@
             ]
         }, 
         "mensuralFusaBlackStemDown": {
-            "codepoint": "U+F50B", 
+            "codepoint": "\uF50B", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisBlack", 
                 "mensuralCombStemDownFlagFusa"
             ]
         }, 
         "mensuralFusaBlackStemUp": {
-            "codepoint": "U+F50C", 
+            "codepoint": "\uF50C", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisBlack", 
                 "mensuralCombStemUpFlagFusa"
             ]
         }, 
         "mensuralFusaBlackVoidStemDown": {
-            "codepoint": "U+F50D", 
+            "codepoint": "\uF50D", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisBlackVoid", 
                 "mensuralCombStemDownFlagFusa"
             ]
         }, 
         "mensuralFusaBlackVoidStemUp": {
-            "codepoint": "U+F50E", 
+            "codepoint": "\uF50E", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisBlackVoid", 
                 "mensuralCombStemUpFlagFusa"
             ]
         }, 
         "mensuralFusaVoidStemDown": {
-            "codepoint": "U+F50F", 
+            "codepoint": "\uF50F", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisVoid", 
                 "mensuralCombStemDownFlagFusa"
             ]
         }, 
         "mensuralFusaVoidStemUp": {
-            "codepoint": "U+F510", 
+            "codepoint": "\uF510", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisVoid", 
                 "mensuralCombStemUpFlagFusa"
             ]
         }, 
         "mensuralLongaBlackStemDownLeft": {
-            "codepoint": "U+F511", 
+            "codepoint": "\uF511", 
             "componentGlyphs": [
                 "mensuralCombStemDown", 
                 "mensuralNoteheadLongaBlack"
             ]
         }, 
         "mensuralLongaBlackStemDownRight": {
-            "codepoint": "U+F512", 
+            "codepoint": "\uF512", 
             "componentGlyphs": [
                 "mensuralNoteheadLongaBlack", 
                 "mensuralCombStemDown"
             ]
         }, 
         "mensuralLongaBlackStemUpLeft": {
-            "codepoint": "U+F513", 
+            "codepoint": "\uF513", 
             "componentGlyphs": [
                 "mensuralCombStemUp", 
                 "mensuralNoteheadLongaBlack"
             ]
         }, 
         "mensuralLongaBlackStemUpRight": {
-            "codepoint": "U+F514", 
+            "codepoint": "\uF514", 
             "componentGlyphs": [
                 "mensuralNoteheadLongaBlack", 
                 "mensuralCombStemUp"
             ]
         }, 
         "mensuralLongaBlackVoidStemDownLeft": {
-            "codepoint": "U+F515", 
+            "codepoint": "\uF515", 
             "componentGlyphs": [
                 "mensuralCombStemDown", 
                 "mensuralNoteheadLongaBlackVoid"
             ]
         }, 
         "mensuralLongaBlackVoidStemDownRight": {
-            "codepoint": "U+F516", 
+            "codepoint": "\uF516", 
             "componentGlyphs": [
                 "mensuralNoteheadLongaBlackVoid", 
                 "mensuralCombStemDown"
             ]
         }, 
         "mensuralLongaBlackVoidStemUpLeft": {
-            "codepoint": "U+F517", 
+            "codepoint": "\uF517", 
             "componentGlyphs": [
                 "mensuralCombStemUp", 
                 "mensuralNoteheadLongaBlackVoid"
             ]
         }, 
         "mensuralLongaBlackVoidStemUpRight": {
-            "codepoint": "U+F518", 
+            "codepoint": "\uF518", 
             "componentGlyphs": [
                 "mensuralNoteheadLongaBlackVoid", 
                 "mensuralCombStemUp"
             ]
         }, 
         "mensuralLongaVoidStemDownLeft": {
-            "codepoint": "U+F519", 
+            "codepoint": "\uF519", 
             "componentGlyphs": [
                 "mensuralCombStemDown", 
                 "mensuralNoteheadLongaVoid"
             ]
         }, 
         "mensuralLongaVoidStemDownRight": {
-            "codepoint": "U+F51A", 
+            "codepoint": "\uF51A", 
             "componentGlyphs": [
                 "mensuralNoteheadLongaVoid", 
                 "mensuralCombStemDown"
             ]
         }, 
         "mensuralLongaVoidStemUpLeft": {
-            "codepoint": "U+F51B", 
+            "codepoint": "\uF51B", 
             "componentGlyphs": [
                 "mensuralCombStemUp", 
                 "mensuralNoteheadLongaVoid"
             ]
         }, 
         "mensuralLongaVoidStemUpRight": {
-            "codepoint": "U+F51C", 
+            "codepoint": "\uF51C", 
             "componentGlyphs": [
                 "mensuralNoteheadLongaVoid", 
                 "mensuralCombStemUp"
             ]
         }, 
         "mensuralMaximaBlackStemDownLeft": {
-            "codepoint": "U+F51D", 
+            "codepoint": "\uF51D", 
             "componentGlyphs": [
                 "mensuralCombStemDown", 
                 "mensuralNoteheadMaximaBlack"
             ]
         }, 
         "mensuralMaximaBlackStemDownRight": {
-            "codepoint": "U+F51E", 
+            "codepoint": "\uF51E", 
             "componentGlyphs": [
                 "mensuralNoteheadMaximaBlack", 
                 "mensuralCombStemDown"
             ]
         }, 
         "mensuralMaximaBlackStemUpLeft": {
-            "codepoint": "U+F51F", 
+            "codepoint": "\uF51F", 
             "componentGlyphs": [
                 "mensuralCombStemUp", 
                 "mensuralNoteheadMaximaBlack"
             ]
         }, 
         "mensuralMaximaBlackStemUpRight": {
-            "codepoint": "U+F520", 
+            "codepoint": "\uF520", 
             "componentGlyphs": [
                 "mensuralNoteheadMaximaBlack", 
                 "mensuralCombStemUp"
             ]
         }, 
         "mensuralMaximaBlackVoidStemDownLeft": {
-            "codepoint": "U+F521", 
+            "codepoint": "\uF521", 
             "componentGlyphs": [
                 "mensuralCombStemDown", 
                 "mensuralNoteheadMaximaBlackVoid"
             ]
         }, 
         "mensuralMaximaBlackVoidStemDownRight": {
-            "codepoint": "U+F522", 
+            "codepoint": "\uF522", 
             "componentGlyphs": [
                 "mensuralNoteheadMaximaBlackVoid", 
                 "mensuralCombStemDown"
             ]
         }, 
         "mensuralMaximaBlackVoidStemUpLeft": {
-            "codepoint": "U+F523", 
+            "codepoint": "\uF523", 
             "componentGlyphs": [
                 "mensuralCombStemUp", 
                 "mensuralNoteheadMaximaBlackVoid"
             ]
         }, 
         "mensuralMaximaBlackVoidStemUpRight": {
-            "codepoint": "U+F524", 
+            "codepoint": "\uF524", 
             "componentGlyphs": [
                 "mensuralNoteheadMaximaBlackVoid", 
                 "mensuralCombStemUp"
             ]
         }, 
         "mensuralMaximaVoidStemDownLeft": {
-            "codepoint": "U+F525", 
+            "codepoint": "\uF525", 
             "componentGlyphs": [
                 "mensuralCombStemDown", 
                 "mensuralNoteheadMaximaVoid"
             ]
         }, 
         "mensuralMaximaVoidStemDownRight": {
-            "codepoint": "U+F526", 
+            "codepoint": "\uF526", 
             "componentGlyphs": [
                 "mensuralNoteheadMaximaVoid", 
                 "mensuralCombStemDown"
             ]
         }, 
         "mensuralMaximaVoidStemUpLeft": {
-            "codepoint": "U+F527", 
+            "codepoint": "\uF527", 
             "componentGlyphs": [
                 "mensuralCombStemUp", 
                 "mensuralNoteheadMaximaVoid"
             ]
         }, 
         "mensuralMaximaVoidStemUpRight": {
-            "codepoint": "U+F528", 
+            "codepoint": "\uF528", 
             "componentGlyphs": [
                 "mensuralNoteheadMaximaVoid", 
                 "mensuralCombStemUp"
             ]
         }, 
         "mensuralMinimaBlackStemDown": {
-            "codepoint": "U+F529", 
+            "codepoint": "\uF529", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisBlack", 
                 "mensuralCombStemDown"
             ]
         }, 
         "mensuralMinimaBlackStemDownExtendedFlag": {
-            "codepoint": "U+F52A", 
+            "codepoint": "\uF52A", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisBlack", 
                 "mensuralCombStemDownFlagExtended"
             ]
         }, 
         "mensuralMinimaBlackStemDownFlagLeft": {
-            "codepoint": "U+F52B", 
+            "codepoint": "\uF52B", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisBlack", 
                 "mensuralCombStemDownFlagLeft"
             ]
         }, 
         "mensuralMinimaBlackStemDownFlagRight": {
-            "codepoint": "U+F52C", 
+            "codepoint": "\uF52C", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisBlack", 
                 "mensuralCombStemDownFlagRight"
             ]
         }, 
         "mensuralMinimaBlackStemDownFlaredFlag": {
-            "codepoint": "U+F52D", 
+            "codepoint": "\uF52D", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisBlack", 
                 "mensuralCombStemDownFlagFlared"
             ]
         }, 
         "mensuralMinimaBlackStemUp": {
-            "codepoint": "U+F52E", 
+            "codepoint": "\uF52E", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisBlack", 
                 "mensuralCombStemUp"
             ]
         }, 
         "mensuralMinimaBlackStemUpExtendedFlag": {
-            "codepoint": "U+F52F", 
+            "codepoint": "\uF52F", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisBlack", 
                 "mensuralCombStemUpFlagExtended"
             ]
         }, 
         "mensuralMinimaBlackStemUpFlagLeft": {
-            "codepoint": "U+F530", 
+            "codepoint": "\uF530", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisBlack", 
                 "mensuralCombStemUpFlagLeft"
             ]
         }, 
         "mensuralMinimaBlackStemUpFlagRight": {
-            "codepoint": "U+F531", 
+            "codepoint": "\uF531", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisBlack", 
                 "mensuralCombStemUpFlagRight"
             ]
         }, 
         "mensuralMinimaBlackStemUpFlaredFlag": {
-            "codepoint": "U+F532", 
+            "codepoint": "\uF532", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisBlack", 
                 "mensuralCombStemUpFlagFlared"
             ]
         }, 
         "mensuralMinimaBlackVoidStemDown": {
-            "codepoint": "U+F533", 
+            "codepoint": "\uF533", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisBlackVoid", 
                 "mensuralCombStemDown"
             ]
         }, 
         "mensuralMinimaBlackVoidStemDownExtendedFlag": {
-            "codepoint": "U+F534", 
+            "codepoint": "\uF534", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisBlackVoid", 
                 "mensuralCombStemDownFlagExtended"
             ]
         }, 
         "mensuralMinimaBlackVoidStemDownFlagLeft": {
-            "codepoint": "U+F535", 
+            "codepoint": "\uF535", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisBlackVoid", 
                 "mensuralCombStemDownFlagLeft"
             ]
         }, 
         "mensuralMinimaBlackVoidStemDownFlagRight": {
-            "codepoint": "U+F536", 
+            "codepoint": "\uF536", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisBlackVoid", 
                 "mensuralCombStemDownFlagRight"
             ]
         }, 
         "mensuralMinimaBlackVoidStemDownFlaredFlag": {
-            "codepoint": "U+F537", 
+            "codepoint": "\uF537", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisBlackVoid", 
                 "mensuralCombStemDownFlagFlared"
             ]
         }, 
         "mensuralMinimaBlackVoidStemUp": {
-            "codepoint": "U+F538", 
+            "codepoint": "\uF538", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisBlackVoid", 
                 "mensuralCombStemUp"
             ]
         }, 
         "mensuralMinimaBlackVoidStemUpExtendedFlag": {
-            "codepoint": "U+F539", 
+            "codepoint": "\uF539", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisBlackVoid", 
                 "mensuralCombStemUpFlagExtended"
             ]
         }, 
         "mensuralMinimaBlackVoidStemUpFlagLeft": {
-            "codepoint": "U+F53A", 
+            "codepoint": "\uF53A", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisBlackVoid", 
                 "mensuralCombStemUpFlagLeft"
             ]
         }, 
         "mensuralMinimaBlackVoidStemUpFlagRight": {
-            "codepoint": "U+F53B", 
+            "codepoint": "\uF53B", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisBlackVoid", 
                 "mensuralCombStemUpFlagRight"
             ]
         }, 
         "mensuralMinimaBlackVoidStemUpFlaredFlag": {
-            "codepoint": "U+F53C", 
+            "codepoint": "\uF53C", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisBlackVoid", 
                 "mensuralCombStemUpFlagFlared"
             ]
         }, 
         "mensuralMinimaVoidStemDown": {
-            "codepoint": "U+F53D", 
+            "codepoint": "\uF53D", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisVoid", 
                 "mensuralCombStemDown"
             ]
         }, 
         "mensuralMinimaVoidStemDownExtendedFlag": {
-            "codepoint": "U+F53E", 
+            "codepoint": "\uF53E", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisVoid", 
                 "mensuralCombStemDownFlagExtended"
             ]
         }, 
         "mensuralMinimaVoidStemDownFlagLeft": {
-            "codepoint": "U+F53F", 
+            "codepoint": "\uF53F", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisVoid", 
                 "mensuralCombStemDownFlagLeft"
             ]
         }, 
         "mensuralMinimaVoidStemDownFlagRight": {
-            "codepoint": "U+F540", 
+            "codepoint": "\uF540", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisVoid", 
                 "mensuralCombStemDownFlagRight"
             ]
         }, 
         "mensuralMinimaVoidStemDownFlaredFlag": {
-            "codepoint": "U+F541", 
+            "codepoint": "\uF541", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisVoid", 
                 "mensuralCombStemDownFlagFlared"
             ]
         }, 
         "mensuralMinimaVoidStemUp": {
-            "codepoint": "U+F543", 
+            "codepoint": "\uF543", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisVoid", 
                 "mensuralCombStemUp"
             ]
         }, 
         "mensuralMinimaVoidStemUpExtendedFlag": {
-            "codepoint": "U+F542", 
+            "codepoint": "\uF542", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisVoid", 
                 "mensuralCombStemUpFlagExtended"
             ]
         }, 
         "mensuralMinimaVoidStemUpFlagLeft": {
-            "codepoint": "U+F544", 
+            "codepoint": "\uF544", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisVoid", 
                 "mensuralCombStemUpFlagLeft"
             ]
         }, 
         "mensuralMinimaVoidStemUpFlagRight": {
-            "codepoint": "U+F545", 
+            "codepoint": "\uF545", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisVoid", 
                 "mensuralCombStemUpFlagRight"
             ]
         }, 
         "mensuralMinimaVoidStemUpFlaredFlag": {
-            "codepoint": "U+F546", 
+            "codepoint": "\uF546", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisVoid", 
                 "mensuralCombStemUpFlagFlared"
             ]
         }, 
         "mensuralSemiminimaBlackStemDown": {
-            "codepoint": "U+F547", 
+            "codepoint": "\uF547", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisBlack", 
                 "mensuralCombStemDownFlagSemiminima"
             ]
         }, 
         "mensuralSemiminimaBlackStemUp": {
-            "codepoint": "U+F548", 
+            "codepoint": "\uF548", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisBlack", 
                 "mensuralCombStemUpFlagSemiminima"
             ]
         }, 
         "mensuralSemiminimaBlackVoidStemDown": {
-            "codepoint": "U+F549", 
+            "codepoint": "\uF549", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisBlackVoid", 
                 "mensuralCombStemDownFlagSemiminima"
             ]
         }, 
         "mensuralSemiminimaBlackVoidStemUp": {
-            "codepoint": "U+F54A", 
+            "codepoint": "\uF54A", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisBlackVoid", 
                 "mensuralCombStemUpFlagSemiminima"
             ]
         }, 
         "mensuralSemiminimaVoidStemDown": {
-            "codepoint": "U+F54B", 
+            "codepoint": "\uF54B", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisVoid", 
                 "mensuralCombStemDownFlagSemiminima"
             ]
         }, 
         "mensuralSemiminimaVoidStemUp": {
-            "codepoint": "U+F54C", 
+            "codepoint": "\uF54C", 
             "componentGlyphs": [
                 "mensuralNoteheadSemibrevisVoid", 
                 "mensuralCombStemUpFlagSemiminima"
             ]
         }, 
         "noteheadBlackParens": {
-            "codepoint": "U+F56C", 
+            "codepoint": "\uF56C", 
             "componentGlyphs": [
                 "noteheadParenthesisLeft", 
                 "noteheadBlack", 
@@ -37175,7 +37175,7 @@
             ]
         }, 
         "noteheadDoubleWholeParens": {
-            "codepoint": "U+F56F", 
+            "codepoint": "\uF56F", 
             "componentGlyphs": [
                 "noteheadParenthesisLeft", 
                 "noteheadDoubleWhole", 
@@ -37183,7 +37183,7 @@
             ]
         }, 
         "noteheadHalfParens": {
-            "codepoint": "U+F56D", 
+            "codepoint": "\uF56D", 
             "componentGlyphs": [
                 "noteheadParenthesisLeft", 
                 "noteheadHalf", 
@@ -37191,7 +37191,7 @@
             ]
         }, 
         "noteheadWholeParens": {
-            "codepoint": "U+F56E", 
+            "codepoint": "\uF56E", 
             "componentGlyphs": [
                 "noteheadParenthesisLeft", 
                 "noteheadWhole", 
@@ -37199,35 +37199,35 @@
             ]
         }, 
         "ornamentTrillFlatAbove": {
-            "codepoint": "U+F54D", 
+            "codepoint": "\uF54D", 
             "componentGlyphs": [
                 "accidentalFlat", 
                 "ornamentTrill"
             ]
         }, 
         "ornamentTrillNaturalAbove": {
-            "codepoint": "U+F54E", 
+            "codepoint": "\uF54E", 
             "componentGlyphs": [
                 "accidentalNatural", 
                 "ornamentTrill"
             ]
         }, 
         "ornamentTrillSharpAbove": {
-            "codepoint": "U+F54F", 
+            "codepoint": "\uF54F", 
             "componentGlyphs": [
                 "accidentalSharp", 
                 "ornamentTrill"
             ]
         }, 
         "ornamentTurnFlatAbove": {
-            "codepoint": "U+F550", 
+            "codepoint": "\uF550", 
             "componentGlyphs": [
                 "accidentalFlat", 
                 "ornamentTurn"
             ]
         }, 
         "ornamentTurnFlatAboveSharpBelow": {
-            "codepoint": "U+F551", 
+            "codepoint": "\uF551", 
             "componentGlyphs": [
                 "accidentalFlat", 
                 "ornamentTurn", 
@@ -37235,35 +37235,35 @@
             ]
         }, 
         "ornamentTurnFlatBelow": {
-            "codepoint": "U+F552", 
+            "codepoint": "\uF552", 
             "componentGlyphs": [
                 "ornamentTurn", 
                 "accidentalFlat"
             ]
         }, 
         "ornamentTurnNaturalAbove": {
-            "codepoint": "U+F553", 
+            "codepoint": "\uF553", 
             "componentGlyphs": [
                 "accidentalNatural", 
                 "ornamentTurn"
             ]
         }, 
         "ornamentTurnNaturalBelow": {
-            "codepoint": "U+F554", 
+            "codepoint": "\uF554", 
             "componentGlyphs": [
                 "ornamentTurn", 
                 "accidentalNatural"
             ]
         }, 
         "ornamentTurnSharpAbove": {
-            "codepoint": "U+F555", 
+            "codepoint": "\uF555", 
             "componentGlyphs": [
                 "accidentalSharp", 
                 "ornamentTurn"
             ]
         }, 
         "ornamentTurnSharpAboveFlatBelow": {
-            "codepoint": "U+F556", 
+            "codepoint": "\uF556", 
             "componentGlyphs": [
                 "accidentalSharp", 
                 "ornamentTurn", 
@@ -37271,28 +37271,28 @@
             ]
         }, 
         "ornamentTurnSharpBelow": {
-            "codepoint": "U+F557", 
+            "codepoint": "\uF557", 
             "componentGlyphs": [
                 "ornamentTurn", 
                 "accidentalSharp"
             ]
         }, 
         "timeSig0Denominator": {
-            "codepoint": "U+F558", 
+            "codepoint": "\uF558", 
             "componentGlyphs": [
                 "timeSigCombDenominator", 
                 "timeSig0"
             ]
         }, 
         "timeSig0Numerator": {
-            "codepoint": "U+F559", 
+            "codepoint": "\uF559", 
             "componentGlyphs": [
                 "timeSigCombNumerator", 
                 "timeSig0"
             ]
         }, 
         "timeSig12over8": {
-            "codepoint": "U+F595", 
+            "codepoint": "\uF595", 
             "componentGlyphs": [
                 "timeSigCombNumerator", 
                 "timeSig1", 
@@ -37303,35 +37303,35 @@
             ]
         }, 
         "timeSig1Denominator": {
-            "codepoint": "U+F55A", 
+            "codepoint": "\uF55A", 
             "componentGlyphs": [
                 "timeSigCombDenominator", 
                 "timeSig1"
             ]
         }, 
         "timeSig1Numerator": {
-            "codepoint": "U+F55B", 
+            "codepoint": "\uF55B", 
             "componentGlyphs": [
                 "timeSigCombNumerator", 
                 "timeSig1"
             ]
         }, 
         "timeSig2Denominator": {
-            "codepoint": "U+F55C", 
+            "codepoint": "\uF55C", 
             "componentGlyphs": [
                 "timeSigCombDenominator", 
                 "timeSig2"
             ]
         }, 
         "timeSig2Numerator": {
-            "codepoint": "U+F55D", 
+            "codepoint": "\uF55D", 
             "componentGlyphs": [
                 "timeSigCombNumerator", 
                 "timeSig2"
             ]
         }, 
         "timeSig2over2": {
-            "codepoint": "U+F58A", 
+            "codepoint": "\uF58A", 
             "componentGlyphs": [
                 "timeSigCombNumerator", 
                 "timeSig2", 
@@ -37340,7 +37340,7 @@
             ]
         }, 
         "timeSig2over4": {
-            "codepoint": "U+F589", 
+            "codepoint": "\uF589", 
             "componentGlyphs": [
                 "timeSigCombNumerator", 
                 "timeSig2", 
@@ -37349,21 +37349,21 @@
             ]
         }, 
         "timeSig3Denominator": {
-            "codepoint": "U+F55E", 
+            "codepoint": "\uF55E", 
             "componentGlyphs": [
                 "timeSigCombDenominator", 
                 "timeSig3"
             ]
         }, 
         "timeSig3Numerator": {
-            "codepoint": "U+F55F", 
+            "codepoint": "\uF55F", 
             "componentGlyphs": [
                 "timeSigCombNumerator", 
                 "timeSig3"
             ]
         }, 
         "timeSig3over2": {
-            "codepoint": "U+F58B", 
+            "codepoint": "\uF58B", 
             "componentGlyphs": [
                 "timeSigCombNumerator", 
                 "timeSig3", 
@@ -37372,7 +37372,7 @@
             ]
         }, 
         "timeSig3over4": {
-            "codepoint": "U+F58C", 
+            "codepoint": "\uF58C", 
             "componentGlyphs": [
                 "timeSigCombNumerator", 
                 "timeSig3", 
@@ -37381,7 +37381,7 @@
             ]
         }, 
         "timeSig3over8": {
-            "codepoint": "U+F58D", 
+            "codepoint": "\uF58D", 
             "componentGlyphs": [
                 "timeSigCombNumerator", 
                 "timeSig3", 
@@ -37390,21 +37390,21 @@
             ]
         }, 
         "timeSig4Denominator": {
-            "codepoint": "U+F560", 
+            "codepoint": "\uF560", 
             "componentGlyphs": [
                 "timeSigCombDenominator", 
                 "timeSig4"
             ]
         }, 
         "timeSig4Numerator": {
-            "codepoint": "U+F561", 
+            "codepoint": "\uF561", 
             "componentGlyphs": [
                 "timeSigCombNumerator", 
                 "timeSig4"
             ]
         }, 
         "timeSig4over4": {
-            "codepoint": "U+F58E", 
+            "codepoint": "\uF58E", 
             "componentGlyphs": [
                 "timeSigCombNumerator", 
                 "timeSig4", 
@@ -37413,21 +37413,21 @@
             ]
         }, 
         "timeSig5Denominator": {
-            "codepoint": "U+F562", 
+            "codepoint": "\uF562", 
             "componentGlyphs": [
                 "timeSigCombDenominator", 
                 "timeSig5"
             ]
         }, 
         "timeSig5Numerator": {
-            "codepoint": "U+F563", 
+            "codepoint": "\uF563", 
             "componentGlyphs": [
                 "timeSigCombNumerator", 
                 "timeSig5"
             ]
         }, 
         "timeSig5over4": {
-            "codepoint": "U+F58F", 
+            "codepoint": "\uF58F", 
             "componentGlyphs": [
                 "timeSigCombNumerator", 
                 "timeSig5", 
@@ -37436,7 +37436,7 @@
             ]
         }, 
         "timeSig5over8": {
-            "codepoint": "U+F590", 
+            "codepoint": "\uF590", 
             "componentGlyphs": [
                 "timeSigCombNumerator", 
                 "timeSig5", 
@@ -37445,21 +37445,21 @@
             ]
         }, 
         "timeSig6Denominator": {
-            "codepoint": "U+F564", 
+            "codepoint": "\uF564", 
             "componentGlyphs": [
                 "timeSigCombDenominator", 
                 "timeSig6"
             ]
         }, 
         "timeSig6Numerator": {
-            "codepoint": "U+F565", 
+            "codepoint": "\uF565", 
             "componentGlyphs": [
                 "timeSigCombNumerator", 
                 "timeSig6"
             ]
         }, 
         "timeSig6over4": {
-            "codepoint": "U+F591", 
+            "codepoint": "\uF591", 
             "componentGlyphs": [
                 "timeSigCombNumerator", 
                 "timeSig6", 
@@ -37468,7 +37468,7 @@
             ]
         }, 
         "timeSig6over8": {
-            "codepoint": "U+F592", 
+            "codepoint": "\uF592", 
             "componentGlyphs": [
                 "timeSigCombNumerator", 
                 "timeSig6", 
@@ -37477,21 +37477,21 @@
             ]
         }, 
         "timeSig7Denominator": {
-            "codepoint": "U+F566", 
+            "codepoint": "\uF566", 
             "componentGlyphs": [
                 "timeSigCombDenominator", 
                 "timeSig7"
             ]
         }, 
         "timeSig7Numerator": {
-            "codepoint": "U+F567", 
+            "codepoint": "\uF567", 
             "componentGlyphs": [
                 "timeSigCombNumerator", 
                 "timeSig7"
             ]
         }, 
         "timeSig7over8": {
-            "codepoint": "U+F593", 
+            "codepoint": "\uF593", 
             "componentGlyphs": [
                 "timeSigCombNumerator", 
                 "timeSig7", 
@@ -37500,35 +37500,35 @@
             ]
         }, 
         "timeSig8Denominator": {
-            "codepoint": "U+F568", 
+            "codepoint": "\uF568", 
             "componentGlyphs": [
                 "timeSigCombDenominator", 
                 "timeSig8"
             ]
         }, 
         "timeSig8Numerator": {
-            "codepoint": "U+F569", 
+            "codepoint": "\uF569", 
             "componentGlyphs": [
                 "timeSigCombNumerator", 
                 "timeSig8"
             ]
         }, 
         "timeSig9Denominator": {
-            "codepoint": "U+F56A", 
+            "codepoint": "\uF56A", 
             "componentGlyphs": [
                 "timeSigCombDenominator", 
                 "timeSig9"
             ]
         }, 
         "timeSig9Numerator": {
-            "codepoint": "U+F56B", 
+            "codepoint": "\uF56B", 
             "componentGlyphs": [
                 "timeSigCombNumerator", 
                 "timeSig9"
             ]
         }, 
         "timeSig9over8": {
-            "codepoint": "U+F594", 
+            "codepoint": "\uF594", 
             "componentGlyphs": [
                 "timeSigCombNumerator", 
                 "timeSig9", 
@@ -37542,29 +37542,29 @@
             "classes": [
                 "clefs"
             ], 
-            "codepoint": "U+F40D"
+            "codepoint": "\uF40D"
         }, 
         "4stringTabClefTall": {
             "classes": [
                 "clefs"
             ], 
-            "codepoint": "U+F40C"
+            "codepoint": "\uF40C"
         }, 
         "6stringTabClefSerif": {
             "classes": [
                 "clefs"
             ], 
-            "codepoint": "U+F40B"
+            "codepoint": "\uF40B"
         }, 
         "6stringTabClefTall": {
             "classes": [
                 "clefs"
             ], 
-            "codepoint": "U+F40A"
+            "codepoint": "\uF40A"
         }, 
         "accdnPushAlt": {
             "classes": [], 
-            "codepoint": "U+F45B"
+            "codepoint": "\uF45B"
         }, 
         "accidentalDoubleFlatJoinedStems": {
             "classes": [
@@ -37573,31 +37573,31 @@
                 "accidentalsStandard", 
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F4A1"
+            "codepoint": "\uF4A1"
         }, 
         "accidentalDoubleFlatParens": {
-            "codepoint": "U+F574"
+            "codepoint": "\uF574"
         }, 
         "accidentalDoubleSharpParens": {
-            "codepoint": "U+F573"
+            "codepoint": "\uF573"
         }, 
         "accidentalFlatJohnstonDown": {
-            "codepoint": "U+F57A"
+            "codepoint": "\uF57A"
         }, 
         "accidentalFlatJohnstonEl": {
-            "codepoint": "U+F578"
+            "codepoint": "\uF578"
         }, 
         "accidentalFlatJohnstonElDown": {
-            "codepoint": "U+F586"
+            "codepoint": "\uF586"
         }, 
         "accidentalFlatJohnstonUp": {
-            "codepoint": "U+F579"
+            "codepoint": "\uF579"
         }, 
         "accidentalFlatJohnstonUpEl": {
-            "codepoint": "U+F585"
+            "codepoint": "\uF585"
         }, 
         "accidentalFlatParens": {
-            "codepoint": "U+F570"
+            "codepoint": "\uF570"
         }, 
         "accidentalFlatSmall": {
             "classes": [
@@ -37606,40 +37606,40 @@
                 "accidentalsStandard", 
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F427"
+            "codepoint": "\uF427"
         }, 
         "accidentalJohnstonDownEl": {
-            "codepoint": "U+F580"
+            "codepoint": "\uF580"
         }, 
         "accidentalJohnstonSevenDown": {
-            "codepoint": "U+F57E"
+            "codepoint": "\uF57E"
         }, 
         "accidentalJohnstonSevenFlat": {
-            "codepoint": "U+F57C"
+            "codepoint": "\uF57C"
         }, 
         "accidentalJohnstonSevenFlatDown": {
-            "codepoint": "U+F588"
+            "codepoint": "\uF588"
         }, 
         "accidentalJohnstonSevenFlatUp": {
-            "codepoint": "U+F587"
+            "codepoint": "\uF587"
         }, 
         "accidentalJohnstonSevenSharp": {
-            "codepoint": "U+F57B"
+            "codepoint": "\uF57B"
         }, 
         "accidentalJohnstonSevenSharpDown": {
-            "codepoint": "U+F584"
+            "codepoint": "\uF584"
         }, 
         "accidentalJohnstonSevenSharpUp": {
-            "codepoint": "U+F583"
+            "codepoint": "\uF583"
         }, 
         "accidentalJohnstonSevenUp": {
-            "codepoint": "U+F57D"
+            "codepoint": "\uF57D"
         }, 
         "accidentalJohnstonUpEl": {
-            "codepoint": "U+F57F"
+            "codepoint": "\uF57F"
         }, 
         "accidentalNaturalParens": {
-            "codepoint": "U+F571"
+            "codepoint": "\uF571"
         }, 
         "accidentalNaturalSmall": {
             "classes": [
@@ -37649,25 +37649,25 @@
                 "accidentalsStandard", 
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F428"
+            "codepoint": "\uF428"
         }, 
         "accidentalSharpJohnstonDown": {
-            "codepoint": "U+F577"
+            "codepoint": "\uF577"
         }, 
         "accidentalSharpJohnstonDownEl": {
-            "codepoint": "U+F582"
+            "codepoint": "\uF582"
         }, 
         "accidentalSharpJohnstonEl": {
-            "codepoint": "U+F575"
+            "codepoint": "\uF575"
         }, 
         "accidentalSharpJohnstonUp": {
-            "codepoint": "U+F576"
+            "codepoint": "\uF576"
         }, 
         "accidentalSharpJohnstonUpEl": {
-            "codepoint": "U+F581"
+            "codepoint": "\uF581"
         }, 
         "accidentalSharpParens": {
-            "codepoint": "U+F572"
+            "codepoint": "\uF572"
         }, 
         "accidentalSharpSmall": {
             "classes": [
@@ -37676,7 +37676,7 @@
                 "accidentalsStandard", 
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F429"
+            "codepoint": "\uF429"
         }, 
         "accidentalTripleFlatJoinedStems": {
             "classes": [
@@ -37684,11 +37684,11 @@
                 "accidentalsStandard", 
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F4A2"
+            "codepoint": "\uF4A2"
         }, 
         "analyticsHauptrhythmusR": {
             "classes": [], 
-            "codepoint": "U+F4B9"
+            "codepoint": "\uF4B9"
         }, 
         "articAccentAboveLarge": {
             "classes": [
@@ -37696,7 +37696,7 @@
                 "articulationsAbove", 
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F42A"
+            "codepoint": "\uF42A"
         }, 
         "articAccentAboveSmall": {
             "classes": [
@@ -37704,7 +37704,7 @@
                 "articulationsAbove", 
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F475"
+            "codepoint": "\uF475"
         }, 
         "articAccentBelowLarge": {
             "classes": [
@@ -37712,7 +37712,7 @@
                 "articulationsBelow", 
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F42B"
+            "codepoint": "\uF42B"
         }, 
         "articAccentBelowSmall": {
             "classes": [
@@ -37720,7 +37720,7 @@
                 "articulationsBelow", 
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F476"
+            "codepoint": "\uF476"
         }, 
         "articAccentStaccatoAboveSmall": {
             "classes": [
@@ -37728,7 +37728,7 @@
                 "articulationsAbove", 
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F485"
+            "codepoint": "\uF485"
         }, 
         "articAccentStaccatoBelowSmall": {
             "classes": [
@@ -37736,7 +37736,7 @@
                 "articulationsBelow", 
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F486"
+            "codepoint": "\uF486"
         }, 
         "articMarcatoAboveSmall": {
             "classes": [
@@ -37744,7 +37744,7 @@
                 "articulationsAbove", 
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F481"
+            "codepoint": "\uF481"
         }, 
         "articMarcatoBelowSmall": {
             "classes": [
@@ -37752,7 +37752,7 @@
                 "articulationsBelow", 
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F482"
+            "codepoint": "\uF482"
         }, 
         "articMarcatoStaccatoAboveSmall": {
             "classes": [
@@ -37760,7 +37760,7 @@
                 "articulationsAbove", 
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F483"
+            "codepoint": "\uF483"
         }, 
         "articMarcatoStaccatoBelowSmall": {
             "classes": [
@@ -37768,7 +37768,7 @@
                 "articulationsBelow", 
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F484"
+            "codepoint": "\uF484"
         }, 
         "articStaccatissimoAboveSmall": {
             "classes": [
@@ -37776,7 +37776,7 @@
                 "articulationsAbove", 
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F47B"
+            "codepoint": "\uF47B"
         }, 
         "articStaccatissimoBelowSmall": {
             "classes": [
@@ -37784,7 +37784,7 @@
                 "articulationsBelow", 
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F47C"
+            "codepoint": "\uF47C"
         }, 
         "articStaccatissimoStrokeAboveSmall": {
             "classes": [
@@ -37792,7 +37792,7 @@
                 "articulationsAbove", 
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F47F"
+            "codepoint": "\uF47F"
         }, 
         "articStaccatissimoStrokeBelowSmall": {
             "classes": [
@@ -37800,7 +37800,7 @@
                 "articulationsBelow", 
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F480"
+            "codepoint": "\uF480"
         }, 
         "articStaccatissimoWedgeAboveSmall": {
             "classes": [
@@ -37808,7 +37808,7 @@
                 "articulationsAbove", 
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F47D"
+            "codepoint": "\uF47D"
         }, 
         "articStaccatissimoWedgeBelowSmall": {
             "classes": [
@@ -37816,7 +37816,7 @@
                 "articulationsBelow", 
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F47E"
+            "codepoint": "\uF47E"
         }, 
         "articStaccatoAboveSmall": {
             "classes": [
@@ -37824,7 +37824,7 @@
                 "articulationsAbove", 
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F477"
+            "codepoint": "\uF477"
         }, 
         "articStaccatoBelowSmall": {
             "classes": [
@@ -37832,7 +37832,7 @@
                 "articulationsBelow", 
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F478"
+            "codepoint": "\uF478"
         }, 
         "articTenutoAboveSmall": {
             "classes": [
@@ -37840,7 +37840,7 @@
                 "articulationsAbove", 
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F479"
+            "codepoint": "\uF479"
         }, 
         "articTenutoAccentAboveSmall": {
             "classes": [
@@ -37848,7 +37848,7 @@
                 "articulationsAbove", 
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F489"
+            "codepoint": "\uF489"
         }, 
         "articTenutoAccentBelowSmall": {
             "classes": [
@@ -37856,7 +37856,7 @@
                 "articulationsBelow", 
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F48A"
+            "codepoint": "\uF48A"
         }, 
         "articTenutoBelowSmall": {
             "classes": [
@@ -37864,7 +37864,7 @@
                 "articulationsBelow", 
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F47A"
+            "codepoint": "\uF47A"
         }, 
         "articTenutoStaccatoAboveSmall": {
             "classes": [
@@ -37872,7 +37872,7 @@
                 "articulationsAbove", 
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F487"
+            "codepoint": "\uF487"
         }, 
         "articTenutoStaccatoBelowSmall": {
             "classes": [
@@ -37880,888 +37880,888 @@
                 "articulationsBelow", 
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F488"
+            "codepoint": "\uF488"
         }, 
         "braceFlat": {
             "classes": [], 
-            "codepoint": "U+F403"
+            "codepoint": "\uF403"
         }, 
         "braceLarge": {
             "classes": [], 
-            "codepoint": "U+F401"
+            "codepoint": "\uF401"
         }, 
         "braceLarger": {
             "classes": [], 
-            "codepoint": "U+F402"
+            "codepoint": "\uF402"
         }, 
         "braceSmall": {
             "classes": [], 
-            "codepoint": "U+F400"
+            "codepoint": "\uF400"
         }, 
         "cClefFrench": {
             "classes": [
                 "clefs", 
                 "clefsC"
             ], 
-            "codepoint": "U+F408"
+            "codepoint": "\uF408"
         }, 
         "cClefFrench20C": {
             "classes": [
                 "clefs", 
                 "clefsC"
             ], 
-            "codepoint": "U+F4BF"
+            "codepoint": "\uF4BF"
         }, 
         "cClefFrench20CChange": {
             "classes": [
                 "clefs"
             ], 
-            "codepoint": "U+F4C0"
+            "codepoint": "\uF4C0"
         }, 
         "cClefSmall": {
             "classes": [
                 "clefs", 
                 "clefsC"
             ], 
-            "codepoint": "U+F473"
+            "codepoint": "\uF473"
         }, 
         "caesuraSingleStroke": {
             "classes": [
                 "combiningStaffPositions", 
                 "pauses"
             ], 
-            "codepoint": "U+F42C"
+            "codepoint": "\uF42C"
         }, 
         "chantCclefHufnagel": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F49E"
+            "codepoint": "\uF49E"
         }, 
         "chantFclefHufnagel": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F49D"
+            "codepoint": "\uF49D"
         }, 
         "codaJapanese": {
             "classes": [], 
-            "codepoint": "U+F405"
+            "codepoint": "\uF405"
         }, 
         "doubleTongueAboveNoSlur": {
             "classes": [], 
-            "codepoint": "U+F42D"
+            "codepoint": "\uF42D"
         }, 
         "doubleTongueBelowNoSlur": {
             "classes": [], 
-            "codepoint": "U+F42E"
+            "codepoint": "\uF42E"
         }, 
         "dynamicForteSmall": {
             "classes": [
                 "dynamics"
             ], 
-            "codepoint": "U+F46D"
+            "codepoint": "\uF46D"
         }, 
         "dynamicMezzoSmall": {
             "classes": [
                 "dynamics"
             ], 
-            "codepoint": "U+F46C"
+            "codepoint": "\uF46C"
         }, 
         "dynamicNienteSmall": {
             "classes": [
                 "dynamics"
             ], 
-            "codepoint": "U+F471"
+            "codepoint": "\uF471"
         }, 
         "dynamicPianoSmall": {
             "classes": [
                 "dynamics"
             ], 
-            "codepoint": "U+F46B"
+            "codepoint": "\uF46B"
         }, 
         "dynamicRinforzandoSmall": {
             "classes": [
                 "dynamics"
             ], 
-            "codepoint": "U+F46E"
+            "codepoint": "\uF46E"
         }, 
         "dynamicSforzandoSmall": {
             "classes": [
                 "dynamics"
             ], 
-            "codepoint": "U+F46F"
+            "codepoint": "\uF46F"
         }, 
         "dynamicZSmall": {
             "classes": [
                 "dynamics"
             ], 
-            "codepoint": "U+F470"
+            "codepoint": "\uF470"
         }, 
         "fClef19thCentury": {
             "classes": [
                 "clefs", 
                 "clefsF"
             ], 
-            "codepoint": "U+F407"
+            "codepoint": "\uF407"
         }, 
         "fClef5Below": {
-            "codepoint": "U+F4CD"
+            "codepoint": "\uF4CD"
         }, 
         "fClefFrench": {
             "classes": [
                 "clefs", 
                 "clefsF"
             ], 
-            "codepoint": "U+F406"
+            "codepoint": "\uF406"
         }, 
         "fClefSmall": {
             "classes": [
                 "clefs", 
                 "clefsF"
             ], 
-            "codepoint": "U+F474"
+            "codepoint": "\uF474"
         }, 
         "flag1024thDownSmall": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F49A"
+            "codepoint": "\uF49A"
         }, 
         "flag1024thDownStraight": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F426"
+            "codepoint": "\uF426"
         }, 
         "flag1024thUpShort": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F425"
+            "codepoint": "\uF425"
         }, 
         "flag1024thUpSmall": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F499"
+            "codepoint": "\uF499"
         }, 
         "flag1024thUpStraight": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F424"
+            "codepoint": "\uF424"
         }, 
         "flag128thDownSmall": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F494"
+            "codepoint": "\uF494"
         }, 
         "flag128thDownStraight": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F41D"
+            "codepoint": "\uF41D"
         }, 
         "flag128thUpShort": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F41C"
+            "codepoint": "\uF41C"
         }, 
         "flag128thUpSmall": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F493"
+            "codepoint": "\uF493"
         }, 
         "flag128thUpStraight": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F41B"
+            "codepoint": "\uF41B"
         }, 
         "flag16thDownSmall": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F48E"
+            "codepoint": "\uF48E"
         }, 
         "flag16thDownStraight": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F414"
+            "codepoint": "\uF414"
         }, 
         "flag16thUpShort": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F413"
+            "codepoint": "\uF413"
         }, 
         "flag16thUpSmall": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F48D"
+            "codepoint": "\uF48D"
         }, 
         "flag16thUpStraight": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F412"
+            "codepoint": "\uF412"
         }, 
         "flag256thDownSmall": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F496"
+            "codepoint": "\uF496"
         }, 
         "flag256thDownStraight": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F420"
+            "codepoint": "\uF420"
         }, 
         "flag256thUpShort": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F41F"
+            "codepoint": "\uF41F"
         }, 
         "flag256thUpSmall": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F495"
+            "codepoint": "\uF495"
         }, 
         "flag256thUpStraight": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F41E"
+            "codepoint": "\uF41E"
         }, 
         "flag32ndDownSmall": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F490"
+            "codepoint": "\uF490"
         }, 
         "flag32ndDownStraight": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F417"
+            "codepoint": "\uF417"
         }, 
         "flag32ndUpShort": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F416"
+            "codepoint": "\uF416"
         }, 
         "flag32ndUpSmall": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F48F"
+            "codepoint": "\uF48F"
         }, 
         "flag32ndUpStraight": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F415"
+            "codepoint": "\uF415"
         }, 
         "flag512thDownSmall": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F498"
+            "codepoint": "\uF498"
         }, 
         "flag512thDownStraight": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F423"
+            "codepoint": "\uF423"
         }, 
         "flag512thUpShort": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F422"
+            "codepoint": "\uF422"
         }, 
         "flag512thUpSmall": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F497"
+            "codepoint": "\uF497"
         }, 
         "flag512thUpStraight": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F421"
+            "codepoint": "\uF421"
         }, 
         "flag64thDownSmall": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F492"
+            "codepoint": "\uF492"
         }, 
         "flag64thDownStraight": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F41A"
+            "codepoint": "\uF41A"
         }, 
         "flag64thUpShort": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F419"
+            "codepoint": "\uF419"
         }, 
         "flag64thUpSmall": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F491"
+            "codepoint": "\uF491"
         }, 
         "flag64thUpStraight": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F418"
+            "codepoint": "\uF418"
         }, 
         "flag8thDownSmall": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F48C"
+            "codepoint": "\uF48C"
         }, 
         "flag8thDownStraight": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F411"
+            "codepoint": "\uF411"
         }, 
         "flag8thUpShort": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F410"
+            "codepoint": "\uF410"
         }, 
         "flag8thUpSmall": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F48B"
+            "codepoint": "\uF48B"
         }, 
         "flag8thUpStraight": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F40F"
+            "codepoint": "\uF40F"
         }, 
         "gClef0Below": {
-            "codepoint": "U+F4CE"
+            "codepoint": "\uF4CE"
         }, 
         "gClef10Below": {
-            "codepoint": "U+F4CF"
+            "codepoint": "\uF4CF"
         }, 
         "gClef11Below": {
-            "codepoint": "U+F4D0"
+            "codepoint": "\uF4D0"
         }, 
         "gClef12Below": {
-            "codepoint": "U+F4D1"
+            "codepoint": "\uF4D1"
         }, 
         "gClef13Below": {
-            "codepoint": "U+F4D2"
+            "codepoint": "\uF4D2"
         }, 
         "gClef14Below": {
-            "codepoint": "U+F4D3"
+            "codepoint": "\uF4D3"
         }, 
         "gClef15Below": {
-            "codepoint": "U+F4D4"
+            "codepoint": "\uF4D4"
         }, 
         "gClef16Below": {
-            "codepoint": "U+F4D5"
+            "codepoint": "\uF4D5"
         }, 
         "gClef17Below": {
-            "codepoint": "U+F4D6"
+            "codepoint": "\uF4D6"
         }, 
         "gClef2Above": {
-            "codepoint": "U+F4D7"
+            "codepoint": "\uF4D7"
         }, 
         "gClef2Below": {
-            "codepoint": "U+F4D8"
+            "codepoint": "\uF4D8"
         }, 
         "gClef3Above": {
-            "codepoint": "U+F4D9"
+            "codepoint": "\uF4D9"
         }, 
         "gClef3Below": {
-            "codepoint": "U+F4DA"
+            "codepoint": "\uF4DA"
         }, 
         "gClef4Above": {
-            "codepoint": "U+F4DB"
+            "codepoint": "\uF4DB"
         }, 
         "gClef4Below": {
-            "codepoint": "U+F4DC"
+            "codepoint": "\uF4DC"
         }, 
         "gClef5Above": {
-            "codepoint": "U+F4DD"
+            "codepoint": "\uF4DD"
         }, 
         "gClef5Below": {
-            "codepoint": "U+F4DE"
+            "codepoint": "\uF4DE"
         }, 
         "gClef6Above": {
-            "codepoint": "U+F4DF"
+            "codepoint": "\uF4DF"
         }, 
         "gClef6Below": {
-            "codepoint": "U+F4E0"
+            "codepoint": "\uF4E0"
         }, 
         "gClef7Above": {
-            "codepoint": "U+F4E1"
+            "codepoint": "\uF4E1"
         }, 
         "gClef7Below": {
-            "codepoint": "U+F4E2"
+            "codepoint": "\uF4E2"
         }, 
         "gClef8Above": {
-            "codepoint": "U+F4E3"
+            "codepoint": "\uF4E3"
         }, 
         "gClef8Below": {
-            "codepoint": "U+F4E4"
+            "codepoint": "\uF4E4"
         }, 
         "gClef9Above": {
-            "codepoint": "U+F4E5"
+            "codepoint": "\uF4E5"
         }, 
         "gClef9Below": {
-            "codepoint": "U+F4E6"
+            "codepoint": "\uF4E6"
         }, 
         "gClefFlat10Below": {
-            "codepoint": "U+F4E7"
+            "codepoint": "\uF4E7"
         }, 
         "gClefFlat11Below": {
-            "codepoint": "U+F4E8"
+            "codepoint": "\uF4E8"
         }, 
         "gClefFlat13Below": {
-            "codepoint": "U+F4E9"
+            "codepoint": "\uF4E9"
         }, 
         "gClefFlat14Below": {
-            "codepoint": "U+F4EA"
+            "codepoint": "\uF4EA"
         }, 
         "gClefFlat15Below": {
-            "codepoint": "U+F4EB"
+            "codepoint": "\uF4EB"
         }, 
         "gClefFlat16Below": {
-            "codepoint": "U+F4EC"
+            "codepoint": "\uF4EC"
         }, 
         "gClefFlat1Below": {
-            "codepoint": "U+F4ED"
+            "codepoint": "\uF4ED"
         }, 
         "gClefFlat2Above": {
-            "codepoint": "U+F4EE"
+            "codepoint": "\uF4EE"
         }, 
         "gClefFlat2Below": {
-            "codepoint": "U+F4EF"
+            "codepoint": "\uF4EF"
         }, 
         "gClefFlat3Above": {
-            "codepoint": "U+F4F0"
+            "codepoint": "\uF4F0"
         }, 
         "gClefFlat3Below": {
-            "codepoint": "U+F4F1"
+            "codepoint": "\uF4F1"
         }, 
         "gClefFlat4Below": {
-            "codepoint": "U+F4F2"
+            "codepoint": "\uF4F2"
         }, 
         "gClefFlat5Above": {
-            "codepoint": "U+F4F3"
+            "codepoint": "\uF4F3"
         }, 
         "gClefFlat6Above": {
-            "codepoint": "U+F4F4"
+            "codepoint": "\uF4F4"
         }, 
         "gClefFlat6Below": {
-            "codepoint": "U+F4F5"
+            "codepoint": "\uF4F5"
         }, 
         "gClefFlat7Above": {
-            "codepoint": "U+F4F6"
+            "codepoint": "\uF4F6"
         }, 
         "gClefFlat7Below": {
-            "codepoint": "U+F4F7"
+            "codepoint": "\uF4F7"
         }, 
         "gClefFlat8Above": {
-            "codepoint": "U+F4F8"
+            "codepoint": "\uF4F8"
         }, 
         "gClefFlat9Above": {
-            "codepoint": "U+F4F9"
+            "codepoint": "\uF4F9"
         }, 
         "gClefFlat9Below": {
-            "codepoint": "U+F4FA"
+            "codepoint": "\uF4FA"
         }, 
         "gClefNat2Below": {
-            "codepoint": "U+F4FB"
+            "codepoint": "\uF4FB"
         }, 
         "gClefNatural10Below": {
-            "codepoint": "U+F4FC"
+            "codepoint": "\uF4FC"
         }, 
         "gClefNatural13Below": {
-            "codepoint": "U+F4FD"
+            "codepoint": "\uF4FD"
         }, 
         "gClefNatural17Below": {
-            "codepoint": "U+F4FE"
+            "codepoint": "\uF4FE"
         }, 
         "gClefNatural2Above": {
-            "codepoint": "U+F4FF"
+            "codepoint": "\uF4FF"
         }, 
         "gClefNatural3Above": {
-            "codepoint": "U+F500"
+            "codepoint": "\uF500"
         }, 
         "gClefNatural3Below": {
-            "codepoint": "U+F501"
+            "codepoint": "\uF501"
         }, 
         "gClefNatural6Above": {
-            "codepoint": "U+F502"
+            "codepoint": "\uF502"
         }, 
         "gClefNatural6Below": {
-            "codepoint": "U+F503"
+            "codepoint": "\uF503"
         }, 
         "gClefNatural7Above": {
-            "codepoint": "U+F504"
+            "codepoint": "\uF504"
         }, 
         "gClefNatural9Above": {
-            "codepoint": "U+F505"
+            "codepoint": "\uF505"
         }, 
         "gClefNatural9Below": {
-            "codepoint": "U+F506"
+            "codepoint": "\uF506"
         }, 
         "gClefSharp12Below": {
-            "codepoint": "U+F507"
+            "codepoint": "\uF507"
         }, 
         "gClefSharp1Above": {
-            "codepoint": "U+F508"
+            "codepoint": "\uF508"
         }, 
         "gClefSharp4Above": {
-            "codepoint": "U+F509"
+            "codepoint": "\uF509"
         }, 
         "gClefSharp5Below": {
-            "codepoint": "U+F50A"
+            "codepoint": "\uF50A"
         }, 
         "gClefSmall": {
             "classes": [
                 "clefs", 
                 "clefsG"
             ], 
-            "codepoint": "U+F472"
+            "codepoint": "\uF472"
         }, 
         "guitarBarreHalfHorizontalFractionSlash": {
             "classes": [], 
-            "codepoint": "U+F4C1"
+            "codepoint": "\uF4C1"
         }, 
         "guitarGolpeFlamenco": {
             "classes": [], 
-            "codepoint": "U+F4B8"
+            "codepoint": "\uF4B8"
         }, 
         "harpMetalRodAlt": {
             "classes": [], 
-            "codepoint": "U+F436"
+            "codepoint": "\uF436"
         }, 
         "harpTuningKeyAlt": {
             "classes": [], 
-            "codepoint": "U+F437"
+            "codepoint": "\uF437"
         }, 
         "keyboardPedalPedNoDot": {
             "classes": [], 
-            "codepoint": "U+F434"
+            "codepoint": "\uF434"
         }, 
         "keyboardPedalSostNoDot": {
             "classes": [], 
-            "codepoint": "U+F435"
+            "codepoint": "\uF435"
         }, 
         "luteFingeringRHThirdAlt": {
             "classes": [], 
-            "codepoint": "U+F44D"
+            "codepoint": "\uF44D"
         }, 
         "luteFrench10thCourseRight": {
             "classes": [], 
-            "codepoint": "U+F459"
+            "codepoint": "\uF459"
         }, 
         "luteFrench10thCourseStrikethru": {
             "classes": [], 
-            "codepoint": "U+F457"
+            "codepoint": "\uF457"
         }, 
         "luteFrench10thCourseUnderline": {
             "classes": [], 
-            "codepoint": "U+F458"
+            "codepoint": "\uF458"
         }, 
         "luteFrench7thCourseRight": {
             "classes": [], 
-            "codepoint": "U+F450"
+            "codepoint": "\uF450"
         }, 
         "luteFrench7thCourseStrikethru": {
             "classes": [], 
-            "codepoint": "U+F44E"
+            "codepoint": "\uF44E"
         }, 
         "luteFrench7thCourseUnderline": {
             "classes": [], 
-            "codepoint": "U+F44F"
+            "codepoint": "\uF44F"
         }, 
         "luteFrench8thCourseRight": {
             "classes": [], 
-            "codepoint": "U+F453"
+            "codepoint": "\uF453"
         }, 
         "luteFrench8thCourseStrikethru": {
             "classes": [], 
-            "codepoint": "U+F451"
+            "codepoint": "\uF451"
         }, 
         "luteFrench8thCourseUnderline": {
             "classes": [], 
-            "codepoint": "U+F452"
+            "codepoint": "\uF452"
         }, 
         "luteFrench9thCourseRight": {
             "classes": [], 
-            "codepoint": "U+F456"
+            "codepoint": "\uF456"
         }, 
         "luteFrench9thCourseStrikethru": {
             "classes": [], 
-            "codepoint": "U+F454"
+            "codepoint": "\uF454"
         }, 
         "luteFrench9thCourseUnderline": {
             "classes": [], 
-            "codepoint": "U+F455"
+            "codepoint": "\uF455"
         }, 
         "luteFrenchFretCAlt": {
             "classes": [], 
-            "codepoint": "U+F45A"
+            "codepoint": "\uF45A"
         }, 
         "medRenFlatSoftBHufnagel": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F4A0"
+            "codepoint": "\uF4A0"
         }, 
         "medRenFlatSoftBOld": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F49F"
+            "codepoint": "\uF49F"
         }, 
         "mensuralCclefBlack": {
             "classes": [], 
-            "codepoint": "U+F49C"
+            "codepoint": "\uF49C"
         }, 
         "mensuralCclefVoid": {
             "classes": [], 
-            "codepoint": "U+F49B"
+            "codepoint": "\uF49B"
         }, 
         "mensuralFusaBlackStemDown": {
-            "codepoint": "U+F50B"
+            "codepoint": "\uF50B"
         }, 
         "mensuralFusaBlackStemUp": {
-            "codepoint": "U+F50C"
+            "codepoint": "\uF50C"
         }, 
         "mensuralFusaBlackVoidStemDown": {
-            "codepoint": "U+F50D"
+            "codepoint": "\uF50D"
         }, 
         "mensuralFusaBlackVoidStemUp": {
-            "codepoint": "U+F50E"
+            "codepoint": "\uF50E"
         }, 
         "mensuralFusaVoidStemDown": {
-            "codepoint": "U+F50F"
+            "codepoint": "\uF50F"
         }, 
         "mensuralFusaVoidStemUp": {
-            "codepoint": "U+F510"
+            "codepoint": "\uF510"
         }, 
         "mensuralLongaBlackStemDownLeft": {
-            "codepoint": "U+F511"
+            "codepoint": "\uF511"
         }, 
         "mensuralLongaBlackStemDownRight": {
-            "codepoint": "U+F512"
+            "codepoint": "\uF512"
         }, 
         "mensuralLongaBlackStemUpLeft": {
-            "codepoint": "U+F513"
+            "codepoint": "\uF513"
         }, 
         "mensuralLongaBlackStemUpRight": {
-            "codepoint": "U+F514"
+            "codepoint": "\uF514"
         }, 
         "mensuralLongaBlackVoidStemDownLeft": {
-            "codepoint": "U+F515"
+            "codepoint": "\uF515"
         }, 
         "mensuralLongaBlackVoidStemDownRight": {
-            "codepoint": "U+F516"
+            "codepoint": "\uF516"
         }, 
         "mensuralLongaBlackVoidStemUpLeft": {
-            "codepoint": "U+F517"
+            "codepoint": "\uF517"
         }, 
         "mensuralLongaBlackVoidStemUpRight": {
-            "codepoint": "U+F518"
+            "codepoint": "\uF518"
         }, 
         "mensuralLongaVoidStemDownLeft": {
-            "codepoint": "U+F519"
+            "codepoint": "\uF519"
         }, 
         "mensuralLongaVoidStemDownRight": {
-            "codepoint": "U+F51A"
+            "codepoint": "\uF51A"
         }, 
         "mensuralLongaVoidStemUpLeft": {
-            "codepoint": "U+F51B"
+            "codepoint": "\uF51B"
         }, 
         "mensuralLongaVoidStemUpRight": {
-            "codepoint": "U+F51C"
+            "codepoint": "\uF51C"
         }, 
         "mensuralMaximaBlackStemDownLeft": {
-            "codepoint": "U+F51D"
+            "codepoint": "\uF51D"
         }, 
         "mensuralMaximaBlackStemDownRight": {
-            "codepoint": "U+F51E"
+            "codepoint": "\uF51E"
         }, 
         "mensuralMaximaBlackStemUpLeft": {
-            "codepoint": "U+F51F"
+            "codepoint": "\uF51F"
         }, 
         "mensuralMaximaBlackStemUpRight": {
-            "codepoint": "U+F520"
+            "codepoint": "\uF520"
         }, 
         "mensuralMaximaBlackVoidStemDownLeft": {
-            "codepoint": "U+F521"
+            "codepoint": "\uF521"
         }, 
         "mensuralMaximaBlackVoidStemDownRight": {
-            "codepoint": "U+F522"
+            "codepoint": "\uF522"
         }, 
         "mensuralMaximaBlackVoidStemUpLeft": {
-            "codepoint": "U+F523"
+            "codepoint": "\uF523"
         }, 
         "mensuralMaximaBlackVoidStemUpRight": {
-            "codepoint": "U+F524"
+            "codepoint": "\uF524"
         }, 
         "mensuralMaximaVoidStemDownLeft": {
-            "codepoint": "U+F525"
+            "codepoint": "\uF525"
         }, 
         "mensuralMaximaVoidStemDownRight": {
-            "codepoint": "U+F526"
+            "codepoint": "\uF526"
         }, 
         "mensuralMaximaVoidStemUpLeft": {
-            "codepoint": "U+F527"
+            "codepoint": "\uF527"
         }, 
         "mensuralMaximaVoidStemUpRight": {
-            "codepoint": "U+F528"
+            "codepoint": "\uF528"
         }, 
         "mensuralMinimaBlackStemDown": {
-            "codepoint": "U+F529"
+            "codepoint": "\uF529"
         }, 
         "mensuralMinimaBlackStemDownExtendedFlag": {
-            "codepoint": "U+F52A"
+            "codepoint": "\uF52A"
         }, 
         "mensuralMinimaBlackStemDownFlagLeft": {
-            "codepoint": "U+F52B"
+            "codepoint": "\uF52B"
         }, 
         "mensuralMinimaBlackStemDownFlagRight": {
-            "codepoint": "U+F52C"
+            "codepoint": "\uF52C"
         }, 
         "mensuralMinimaBlackStemDownFlaredFlag": {
-            "codepoint": "U+F52D"
+            "codepoint": "\uF52D"
         }, 
         "mensuralMinimaBlackStemUp": {
-            "codepoint": "U+F52E"
+            "codepoint": "\uF52E"
         }, 
         "mensuralMinimaBlackStemUpExtendedFlag": {
-            "codepoint": "U+F52F"
+            "codepoint": "\uF52F"
         }, 
         "mensuralMinimaBlackStemUpFlagLeft": {
-            "codepoint": "U+F530"
+            "codepoint": "\uF530"
         }, 
         "mensuralMinimaBlackStemUpFlagRight": {
-            "codepoint": "U+F531"
+            "codepoint": "\uF531"
         }, 
         "mensuralMinimaBlackStemUpFlaredFlag": {
-            "codepoint": "U+F532"
+            "codepoint": "\uF532"
         }, 
         "mensuralMinimaBlackVoidStemDown": {
-            "codepoint": "U+F533"
+            "codepoint": "\uF533"
         }, 
         "mensuralMinimaBlackVoidStemDownExtendedFlag": {
-            "codepoint": "U+F534"
+            "codepoint": "\uF534"
         }, 
         "mensuralMinimaBlackVoidStemDownFlagLeft": {
-            "codepoint": "U+F535"
+            "codepoint": "\uF535"
         }, 
         "mensuralMinimaBlackVoidStemDownFlagRight": {
-            "codepoint": "U+F536"
+            "codepoint": "\uF536"
         }, 
         "mensuralMinimaBlackVoidStemDownFlaredFlag": {
-            "codepoint": "U+F537"
+            "codepoint": "\uF537"
         }, 
         "mensuralMinimaBlackVoidStemUp": {
-            "codepoint": "U+F538"
+            "codepoint": "\uF538"
         }, 
         "mensuralMinimaBlackVoidStemUpExtendedFlag": {
-            "codepoint": "U+F539"
+            "codepoint": "\uF539"
         }, 
         "mensuralMinimaBlackVoidStemUpFlagLeft": {
-            "codepoint": "U+F53A"
+            "codepoint": "\uF53A"
         }, 
         "mensuralMinimaBlackVoidStemUpFlagRight": {
-            "codepoint": "U+F53B"
+            "codepoint": "\uF53B"
         }, 
         "mensuralMinimaBlackVoidStemUpFlaredFlag": {
-            "codepoint": "U+F53C"
+            "codepoint": "\uF53C"
         }, 
         "mensuralMinimaVoidStemDown": {
-            "codepoint": "U+F53D"
+            "codepoint": "\uF53D"
         }, 
         "mensuralMinimaVoidStemDownExtendedFlag": {
-            "codepoint": "U+F53E"
+            "codepoint": "\uF53E"
         }, 
         "mensuralMinimaVoidStemDownFlagLeft": {
-            "codepoint": "U+F53F"
+            "codepoint": "\uF53F"
         }, 
         "mensuralMinimaVoidStemDownFlagRight": {
-            "codepoint": "U+F540"
+            "codepoint": "\uF540"
         }, 
         "mensuralMinimaVoidStemDownFlaredFlag": {
-            "codepoint": "U+F541"
+            "codepoint": "\uF541"
         }, 
         "mensuralMinimaVoidStemUp": {
-            "codepoint": "U+F543"
+            "codepoint": "\uF543"
         }, 
         "mensuralMinimaVoidStemUpExtendedFlag": {
-            "codepoint": "U+F542"
+            "codepoint": "\uF542"
         }, 
         "mensuralMinimaVoidStemUpFlagLeft": {
-            "codepoint": "U+F544"
+            "codepoint": "\uF544"
         }, 
         "mensuralMinimaVoidStemUpFlagRight": {
-            "codepoint": "U+F545"
+            "codepoint": "\uF545"
         }, 
         "mensuralMinimaVoidStemUpFlaredFlag": {
-            "codepoint": "U+F546"
+            "codepoint": "\uF546"
         }, 
         "mensuralProportion4Old": {
             "classes": [
                 "combiningStaffPositions"
             ], 
-            "codepoint": "U+F43D"
+            "codepoint": "\uF43D"
         }, 
         "mensuralSemiminimaBlackStemDown": {
-            "codepoint": "U+F547"
+            "codepoint": "\uF547"
         }, 
         "mensuralSemiminimaBlackStemUp": {
-            "codepoint": "U+F548"
+            "codepoint": "\uF548"
         }, 
         "mensuralSemiminimaBlackVoidStemDown": {
-            "codepoint": "U+F549"
+            "codepoint": "\uF549"
         }, 
         "mensuralSemiminimaBlackVoidStemUp": {
-            "codepoint": "U+F54A"
+            "codepoint": "\uF54A"
         }, 
         "mensuralSemiminimaVoidStemDown": {
-            "codepoint": "U+F54B"
+            "codepoint": "\uF54B"
         }, 
         "mensuralSemiminimaVoidStemUp": {
-            "codepoint": "U+F54C"
+            "codepoint": "\uF54C"
         }, 
         "noteDoubleWholeAlt": {
             "classes": [
                 "combiningStaffPositions", 
                 "forTextBasedApplications"
             ], 
-            "codepoint": "U+F40E"
+            "codepoint": "\uF40E"
         }, 
         "noteheadBlackOversized": {
             "classes": [
@@ -38769,10 +38769,10 @@
                 "noteheads", 
                 "noteheadSetDefault"
             ], 
-            "codepoint": "U+F4BE"
+            "codepoint": "\uF4BE"
         }, 
         "noteheadBlackParens": {
-            "codepoint": "U+F56C"
+            "codepoint": "\uF56C"
         }, 
         "noteheadBlackSmall": {
             "classes": [
@@ -38780,7 +38780,7 @@
                 "noteheads", 
                 "noteheadSetDefault"
             ], 
-            "codepoint": "U+F46A"
+            "codepoint": "\uF46A"
         }, 
         "noteheadDoubleWholeAlt": {
             "classes": [
@@ -38788,7 +38788,7 @@
                 "noteheads", 
                 "noteheadSetDefault"
             ], 
-            "codepoint": "U+F43F"
+            "codepoint": "\uF43F"
         }, 
         "noteheadDoubleWholeOversized": {
             "classes": [
@@ -38796,10 +38796,10 @@
                 "noteheads", 
                 "noteheadSetDefault"
             ], 
-            "codepoint": "U+F4BA"
+            "codepoint": "\uF4BA"
         }, 
         "noteheadDoubleWholeParens": {
-            "codepoint": "U+F56F"
+            "codepoint": "\uF56F"
         }, 
         "noteheadDoubleWholeSmall": {
             "classes": [
@@ -38807,7 +38807,7 @@
                 "noteheads", 
                 "noteheadSetDefault"
             ], 
-            "codepoint": "U+F467"
+            "codepoint": "\uF467"
         }, 
         "noteheadDoubleWholeSquareOversized": {
             "classes": [
@@ -38815,7 +38815,7 @@
                 "noteheads", 
                 "noteheadSetDefault"
             ], 
-            "codepoint": "U+F4BB"
+            "codepoint": "\uF4BB"
         }, 
         "noteheadHalfOversized": {
             "classes": [
@@ -38823,10 +38823,10 @@
                 "noteheads", 
                 "noteheadSetDefault"
             ], 
-            "codepoint": "U+F4BD"
+            "codepoint": "\uF4BD"
         }, 
         "noteheadHalfParens": {
-            "codepoint": "U+F56D"
+            "codepoint": "\uF56D"
         }, 
         "noteheadHalfSmall": {
             "classes": [
@@ -38834,7 +38834,7 @@
                 "noteheads", 
                 "noteheadSetDefault"
             ], 
-            "codepoint": "U+F469"
+            "codepoint": "\uF469"
         }, 
         "noteheadWholeOversized": {
             "classes": [
@@ -38842,10 +38842,10 @@
                 "noteheads", 
                 "noteheadSetDefault"
             ], 
-            "codepoint": "U+F4BC"
+            "codepoint": "\uF4BC"
         }, 
         "noteheadWholeParens": {
-            "codepoint": "U+F56E"
+            "codepoint": "\uF56E"
         }, 
         "noteheadWholeSmall": {
             "classes": [
@@ -38853,423 +38853,423 @@
                 "noteheads", 
                 "noteheadSetDefault"
             ], 
-            "codepoint": "U+F468"
+            "codepoint": "\uF468"
         }, 
         "ornamentTrillFlatAbove": {
-            "codepoint": "U+F54D"
+            "codepoint": "\uF54D"
         }, 
         "ornamentTrillNaturalAbove": {
-            "codepoint": "U+F54E"
+            "codepoint": "\uF54E"
         }, 
         "ornamentTrillSharpAbove": {
-            "codepoint": "U+F54F"
+            "codepoint": "\uF54F"
         }, 
         "ornamentTurnFlatAbove": {
-            "codepoint": "U+F550"
+            "codepoint": "\uF550"
         }, 
         "ornamentTurnFlatAboveSharpBelow": {
-            "codepoint": "U+F551"
+            "codepoint": "\uF551"
         }, 
         "ornamentTurnFlatBelow": {
-            "codepoint": "U+F552"
+            "codepoint": "\uF552"
         }, 
         "ornamentTurnNaturalAbove": {
-            "codepoint": "U+F553"
+            "codepoint": "\uF553"
         }, 
         "ornamentTurnNaturalBelow": {
-            "codepoint": "U+F554"
+            "codepoint": "\uF554"
         }, 
         "ornamentTurnSharpAbove": {
-            "codepoint": "U+F555"
+            "codepoint": "\uF555"
         }, 
         "ornamentTurnSharpAboveFlatBelow": {
-            "codepoint": "U+F556"
+            "codepoint": "\uF556"
         }, 
         "ornamentTurnSharpBelow": {
-            "codepoint": "U+F557"
+            "codepoint": "\uF557"
         }, 
         "pictBassDrumPeinkofer": {
             "classes": [], 
-            "codepoint": "U+F4AF"
+            "codepoint": "\uF4AF"
         }, 
         "pictBongosPeinkofer": {
             "classes": [], 
-            "codepoint": "U+F4B0"
+            "codepoint": "\uF4B0"
         }, 
         "pictCastanetsSmithBrindle": {
             "classes": [], 
-            "codepoint": "U+F439"
+            "codepoint": "\uF439"
         }, 
         "pictCongaPeinkofer": {
             "classes": [], 
-            "codepoint": "U+F4B1"
+            "codepoint": "\uF4B1"
         }, 
         "pictCowBellBerio": {
             "classes": [], 
-            "codepoint": "U+F43B"
+            "codepoint": "\uF43B"
         }, 
         "pictFlexatonePeinkofer": {
             "classes": [], 
-            "codepoint": "U+F4B6"
+            "codepoint": "\uF4B6"
         }, 
         "pictGlspPeinkofer": {
             "classes": [], 
-            "codepoint": "U+F4AA"
+            "codepoint": "\uF4AA"
         }, 
         "pictGuiroPeinkofer": {
             "classes": [], 
-            "codepoint": "U+F4B5"
+            "codepoint": "\uF4B5"
         }, 
         "pictGuiroSevsay": {
             "classes": [], 
-            "codepoint": "U+F4B4"
+            "codepoint": "\uF4B4"
         }, 
         "pictLithophonePeinkofer": {
             "classes": [], 
-            "codepoint": "U+F4A7"
+            "codepoint": "\uF4A7"
         }, 
         "pictLotusFlutePeinkofer": {
             "classes": [], 
-            "codepoint": "U+F4AC"
+            "codepoint": "\uF4AC"
         }, 
         "pictMarPeinkofer": {
             "classes": [], 
-            "codepoint": "U+F4AB"
+            "codepoint": "\uF4AB"
         }, 
         "pictMaracaSmithBrindle": {
             "classes": [], 
-            "codepoint": "U+F43C"
+            "codepoint": "\uF43C"
         }, 
         "pictMusicalSawPeinkofer": {
             "classes": [], 
-            "codepoint": "U+F4B7"
+            "codepoint": "\uF4B7"
         }, 
         "pictSleighBellSmithBrindle": {
             "classes": [], 
-            "codepoint": "U+F43A"
+            "codepoint": "\uF43A"
         }, 
         "pictTambourineStockhausen": {
             "classes": [], 
-            "codepoint": "U+F438"
+            "codepoint": "\uF438"
         }, 
         "pictTimbalesPeinkofer": {
             "classes": [], 
-            "codepoint": "U+F4B3"
+            "codepoint": "\uF4B3"
         }, 
         "pictTimpaniPeinkofer": {
             "classes": [], 
-            "codepoint": "U+F4AE"
+            "codepoint": "\uF4AE"
         }, 
         "pictTomTomChinesePeinkofer": {
             "classes": [], 
-            "codepoint": "U+F4AD"
+            "codepoint": "\uF4AD"
         }, 
         "pictTomTomPeinkofer": {
             "classes": [], 
-            "codepoint": "U+F4B2"
+            "codepoint": "\uF4B2"
         }, 
         "pictTubaphonePeinkofer": {
             "classes": [], 
-            "codepoint": "U+F4A8"
+            "codepoint": "\uF4A8"
         }, 
         "pictVibMotorOffPeinkofer": {
             "classes": [], 
-            "codepoint": "U+F4A6"
+            "codepoint": "\uF4A6"
         }, 
         "pictVibPeinkofer": {
             "classes": [], 
-            "codepoint": "U+F4A5"
+            "codepoint": "\uF4A5"
         }, 
         "pictXylBassPeinkofer": {
             "classes": [], 
-            "codepoint": "U+F4A3"
+            "codepoint": "\uF4A3"
         }, 
         "pictXylPeinkofer": {
             "classes": [], 
-            "codepoint": "U+F4A9"
+            "codepoint": "\uF4A9"
         }, 
         "pictXylTenorPeinkofer": {
             "classes": [], 
-            "codepoint": "U+F4A4"
+            "codepoint": "\uF4A4"
         }, 
         "pluckedSnapPizzicatoAboveGerman": {
             "classes": [], 
-            "codepoint": "U+F433"
+            "codepoint": "\uF433"
         }, 
         "pluckedSnapPizzicatoBelowGerman": {
             "classes": [], 
-            "codepoint": "U+F432"
+            "codepoint": "\uF432"
         }, 
         "repeatRightLeftThick": {
             "classes": [
                 "forTextBasedApplications"
             ], 
-            "codepoint": "U+F45C"
+            "codepoint": "\uF45C"
         }, 
         "sedicesima": {
             "classes": [
                 "octaves"
             ], 
-            "codepoint": "U+F4C3"
+            "codepoint": "\uF4C3"
         }, 
         "sedicesimaAlta": {
             "classes": [
                 "octaves"
             ], 
-            "codepoint": "U+F4C4"
+            "codepoint": "\uF4C4"
         }, 
         "sedicesimaBassa": {
             "classes": [
                 "octaves"
             ], 
-            "codepoint": "U+F4C5"
+            "codepoint": "\uF4C5"
         }, 
         "sedicesimaBassaMb": {
             "classes": [
                 "octaves"
             ], 
-            "codepoint": "U+F4C9"
+            "codepoint": "\uF4C9"
         }, 
         "segnoJapanese": {
             "classes": [], 
-            "codepoint": "U+F404"
+            "codepoint": "\uF404"
         }, 
         "stringsChangeBowDirectionImposed": {
             "classes": [], 
-            "codepoint": "U+F43E"
+            "codepoint": "\uF43E"
         }, 
         "stringsChangeBowDirectionLiga": {
             "classes": [], 
-            "codepoint": "U+F431"
+            "codepoint": "\uF431"
         }, 
         "timeSig0Denominator": {
-            "codepoint": "U+F558"
+            "codepoint": "\uF558"
         }, 
         "timeSig0Large": {
             "classes": [], 
-            "codepoint": "U+F440"
+            "codepoint": "\uF440"
         }, 
         "timeSig0Numerator": {
-            "codepoint": "U+F559"
+            "codepoint": "\uF559"
         }, 
         "timeSig0Small": {
             "classes": [], 
-            "codepoint": "U+F45D"
+            "codepoint": "\uF45D"
         }, 
         "timeSig12over8": {
-            "codepoint": "U+F595"
+            "codepoint": "\uF595"
         }, 
         "timeSig1Denominator": {
-            "codepoint": "U+F55A"
+            "codepoint": "\uF55A"
         }, 
         "timeSig1Large": {
             "classes": [], 
-            "codepoint": "U+F441"
+            "codepoint": "\uF441"
         }, 
         "timeSig1Numerator": {
-            "codepoint": "U+F55B"
+            "codepoint": "\uF55B"
         }, 
         "timeSig1Small": {
             "classes": [], 
-            "codepoint": "U+F45E"
+            "codepoint": "\uF45E"
         }, 
         "timeSig2Denominator": {
-            "codepoint": "U+F55C"
+            "codepoint": "\uF55C"
         }, 
         "timeSig2Large": {
             "classes": [], 
-            "codepoint": "U+F442"
+            "codepoint": "\uF442"
         }, 
         "timeSig2Numerator": {
-            "codepoint": "U+F55D"
+            "codepoint": "\uF55D"
         }, 
         "timeSig2Small": {
             "classes": [], 
-            "codepoint": "U+F45F"
+            "codepoint": "\uF45F"
         }, 
         "timeSig2over2": {
-            "codepoint": "U+F58A"
+            "codepoint": "\uF58A"
         }, 
         "timeSig2over4": {
-            "codepoint": "U+F589"
+            "codepoint": "\uF589"
         }, 
         "timeSig3Denominator": {
-            "codepoint": "U+F55E"
+            "codepoint": "\uF55E"
         }, 
         "timeSig3Large": {
             "classes": [], 
-            "codepoint": "U+F443"
+            "codepoint": "\uF443"
         }, 
         "timeSig3Numerator": {
-            "codepoint": "U+F55F"
+            "codepoint": "\uF55F"
         }, 
         "timeSig3Small": {
             "classes": [], 
-            "codepoint": "U+F460"
+            "codepoint": "\uF460"
         }, 
         "timeSig3over2": {
-            "codepoint": "U+F58B"
+            "codepoint": "\uF58B"
         }, 
         "timeSig3over4": {
-            "codepoint": "U+F58C"
+            "codepoint": "\uF58C"
         }, 
         "timeSig3over8": {
-            "codepoint": "U+F58D"
+            "codepoint": "\uF58D"
         }, 
         "timeSig4Denominator": {
-            "codepoint": "U+F560"
+            "codepoint": "\uF560"
         }, 
         "timeSig4Large": {
             "classes": [], 
-            "codepoint": "U+F444"
+            "codepoint": "\uF444"
         }, 
         "timeSig4Numerator": {
-            "codepoint": "U+F561"
+            "codepoint": "\uF561"
         }, 
         "timeSig4Small": {
             "classes": [], 
-            "codepoint": "U+F461"
+            "codepoint": "\uF461"
         }, 
         "timeSig4over4": {
-            "codepoint": "U+F58E"
+            "codepoint": "\uF58E"
         }, 
         "timeSig5Denominator": {
-            "codepoint": "U+F562"
+            "codepoint": "\uF562"
         }, 
         "timeSig5Large": {
             "classes": [], 
-            "codepoint": "U+F445"
+            "codepoint": "\uF445"
         }, 
         "timeSig5Numerator": {
-            "codepoint": "U+F563"
+            "codepoint": "\uF563"
         }, 
         "timeSig5Small": {
             "classes": [], 
-            "codepoint": "U+F462"
+            "codepoint": "\uF462"
         }, 
         "timeSig5over4": {
-            "codepoint": "U+F58F"
+            "codepoint": "\uF58F"
         }, 
         "timeSig5over8": {
-            "codepoint": "U+F590"
+            "codepoint": "\uF590"
         }, 
         "timeSig6Denominator": {
-            "codepoint": "U+F564"
+            "codepoint": "\uF564"
         }, 
         "timeSig6Large": {
             "classes": [], 
-            "codepoint": "U+F446"
+            "codepoint": "\uF446"
         }, 
         "timeSig6Numerator": {
-            "codepoint": "U+F565"
+            "codepoint": "\uF565"
         }, 
         "timeSig6Small": {
             "classes": [], 
-            "codepoint": "U+F463"
+            "codepoint": "\uF463"
         }, 
         "timeSig6over4": {
-            "codepoint": "U+F591"
+            "codepoint": "\uF591"
         }, 
         "timeSig6over8": {
-            "codepoint": "U+F592"
+            "codepoint": "\uF592"
         }, 
         "timeSig7Denominator": {
-            "codepoint": "U+F566"
+            "codepoint": "\uF566"
         }, 
         "timeSig7Large": {
             "classes": [], 
-            "codepoint": "U+F447"
+            "codepoint": "\uF447"
         }, 
         "timeSig7Numerator": {
-            "codepoint": "U+F567"
+            "codepoint": "\uF567"
         }, 
         "timeSig7Small": {
             "classes": [], 
-            "codepoint": "U+F464"
+            "codepoint": "\uF464"
         }, 
         "timeSig7over8": {
-            "codepoint": "U+F593"
+            "codepoint": "\uF593"
         }, 
         "timeSig8Denominator": {
-            "codepoint": "U+F568"
+            "codepoint": "\uF568"
         }, 
         "timeSig8Large": {
             "classes": [], 
-            "codepoint": "U+F448"
+            "codepoint": "\uF448"
         }, 
         "timeSig8Numerator": {
-            "codepoint": "U+F569"
+            "codepoint": "\uF569"
         }, 
         "timeSig8Small": {
             "classes": [], 
-            "codepoint": "U+F465"
+            "codepoint": "\uF465"
         }, 
         "timeSig9Denominator": {
-            "codepoint": "U+F56A"
+            "codepoint": "\uF56A"
         }, 
         "timeSig9Large": {
             "classes": [], 
-            "codepoint": "U+F449"
+            "codepoint": "\uF449"
         }, 
         "timeSig9Numerator": {
-            "codepoint": "U+F56B"
+            "codepoint": "\uF56B"
         }, 
         "timeSig9Small": {
             "classes": [], 
-            "codepoint": "U+F466"
+            "codepoint": "\uF466"
         }, 
         "timeSig9over8": {
-            "codepoint": "U+F594"
+            "codepoint": "\uF594"
         }, 
         "timeSigCommonLarge": {
             "classes": [], 
-            "codepoint": "U+F44A"
+            "codepoint": "\uF44A"
         }, 
         "timeSigCutCommonLarge": {
             "classes": [], 
-            "codepoint": "U+F44B"
+            "codepoint": "\uF44B"
         }, 
         "timeSigPlusLarge": {
             "classes": [], 
-            "codepoint": "U+F44C"
+            "codepoint": "\uF44C"
         }, 
         "tripleTongueAboveNoSlur": {
             "classes": [], 
-            "codepoint": "U+F42F"
+            "codepoint": "\uF42F"
         }, 
         "tripleTongueBelowNoSlur": {
             "classes": [], 
-            "codepoint": "U+F430"
+            "codepoint": "\uF430"
         }, 
         "unpitchedPercussionClef1Alt": {
             "classes": [
                 "clefs"
             ], 
-            "codepoint": "U+F409"
+            "codepoint": "\uF409"
         }, 
         "ventiquattresima": {
             "classes": [
                 "octaves"
             ], 
-            "codepoint": "U+F4C6"
+            "codepoint": "\uF4C6"
         }, 
         "ventiquattresimaAlta": {
             "classes": [
                 "octaves"
             ], 
-            "codepoint": "U+F4C7"
+            "codepoint": "\uF4C7"
         }, 
         "ventiquattresimaBassa": {
             "classes": [
                 "octaves"
             ], 
-            "codepoint": "U+F4C8"
+            "codepoint": "\uF4C8"
         }, 
         "ventiquattresimaBassaMb": {
             "classes": [
                 "octaves"
             ], 
-            "codepoint": "U+F4CA"
+            "codepoint": "\uF4CA"
         }, 
         "wiggleArpeggiatoDownSwashCouperin": {
             "classes": [
@@ -39277,7 +39277,7 @@
                 "wigglesArpeggiato", 
                 "wigglesArpeggiatoDown"
             ], 
-            "codepoint": "U+F4CC"
+            "codepoint": "\uF4CC"
         }, 
         "wiggleArpeggiatoUpSwashCouperin": {
             "classes": [
@@ -39285,7 +39285,7 @@
                 "wigglesArpeggiato", 
                 "wigglesArpeggiatoUp"
             ], 
-            "codepoint": "U+F4CB"
+            "codepoint": "\uF4CB"
         }
     }, 
     "sets": {
@@ -39294,247 +39294,247 @@
             "glyphs": [
                 {
                     "alternateFor": "accidentalFlat", 
-                    "codepoint": "U+F427", 
+                    "codepoint": "\uF427", 
                     "name": "accidentalFlatSmall"
                 }, 
                 {
                     "alternateFor": "accidentalNatural", 
-                    "codepoint": "U+F428", 
+                    "codepoint": "\uF428", 
                     "name": "accidentalNaturalSmall"
                 }, 
                 {
                     "alternateFor": "accidentalSharp", 
-                    "codepoint": "U+F429", 
+                    "codepoint": "\uF429", 
                     "name": "accidentalSharpSmall"
                 }, 
                 {
                     "alternateFor": "timeSig0", 
-                    "codepoint": "U+F45D", 
+                    "codepoint": "\uF45D", 
                     "name": "timeSig0Small"
                 }, 
                 {
                     "alternateFor": "timeSig1", 
-                    "codepoint": "U+F45E", 
+                    "codepoint": "\uF45E", 
                     "name": "timeSig1Small"
                 }, 
                 {
                     "alternateFor": "timeSig2", 
-                    "codepoint": "U+F45F", 
+                    "codepoint": "\uF45F", 
                     "name": "timeSig2Small"
                 }, 
                 {
                     "alternateFor": "timeSig3", 
-                    "codepoint": "U+F460", 
+                    "codepoint": "\uF460", 
                     "name": "timeSig3Small"
                 }, 
                 {
                     "alternateFor": "timeSig4", 
-                    "codepoint": "U+F461", 
+                    "codepoint": "\uF461", 
                     "name": "timeSig4Small"
                 }, 
                 {
                     "alternateFor": "timeSig5", 
-                    "codepoint": "U+F462", 
+                    "codepoint": "\uF462", 
                     "name": "timeSig5Small"
                 }, 
                 {
                     "alternateFor": "timeSig6", 
-                    "codepoint": "U+F463", 
+                    "codepoint": "\uF463", 
                     "name": "timeSig6Small"
                 }, 
                 {
                     "alternateFor": "timeSig7", 
-                    "codepoint": "U+F464", 
+                    "codepoint": "\uF464", 
                     "name": "timeSig7Small"
                 }, 
                 {
                     "alternateFor": "timeSig8", 
-                    "codepoint": "U+F465", 
+                    "codepoint": "\uF465", 
                     "name": "timeSig8Small"
                 }, 
                 {
                     "alternateFor": "timeSig9", 
-                    "codepoint": "U+F466", 
+                    "codepoint": "\uF466", 
                     "name": "timeSig9Small"
                 }, 
                 {
                     "alternateFor": "noteheadDoubleWhole", 
-                    "codepoint": "U+F467", 
+                    "codepoint": "\uF467", 
                     "name": "noteheadDoubleWholeSmall"
                 }, 
                 {
                     "alternateFor": "noteheadWhole", 
-                    "codepoint": "U+F468", 
+                    "codepoint": "\uF468", 
                     "name": "noteheadWholeSmall"
                 }, 
                 {
                     "alternateFor": "noteheadHalf", 
-                    "codepoint": "U+F469", 
+                    "codepoint": "\uF469", 
                     "name": "noteheadHalfSmall"
                 }, 
                 {
                     "alternateFor": "noteheadBlack", 
-                    "codepoint": "U+F46A", 
+                    "codepoint": "\uF46A", 
                     "name": "noteheadBlackSmall"
                 }, 
                 {
                     "alternateFor": "dynamicPiano", 
-                    "codepoint": "U+F46B", 
+                    "codepoint": "\uF46B", 
                     "name": "dynamicPianoSmall"
                 }, 
                 {
                     "alternateFor": "dynamicMezzo", 
-                    "codepoint": "U+F46C", 
+                    "codepoint": "\uF46C", 
                     "name": "dynamicMezzoSmall"
                 }, 
                 {
                     "alternateFor": "dynamicForte", 
-                    "codepoint": "U+F46D", 
+                    "codepoint": "\uF46D", 
                     "name": "dynamicForteSmall"
                 }, 
                 {
                     "alternateFor": "dynamicRinforzando", 
-                    "codepoint": "U+F46E", 
+                    "codepoint": "\uF46E", 
                     "name": "dynamicRinforzandoSmall"
                 }, 
                 {
                     "alternateFor": "dynamicSforzando", 
-                    "codepoint": "U+F46F", 
+                    "codepoint": "\uF46F", 
                     "name": "dynamicSforzandoSmall"
                 }, 
                 {
                     "alternateFor": "dynamicZ", 
-                    "codepoint": "U+F470", 
+                    "codepoint": "\uF470", 
                     "name": "dynamicZSmall"
                 }, 
                 {
                     "alternateFor": "dynamicNiente", 
-                    "codepoint": "U+F471", 
+                    "codepoint": "\uF471", 
                     "name": "dynamicNienteSmall"
                 }, 
                 {
                     "alternateFor": "gClef", 
-                    "codepoint": "U+F472", 
+                    "codepoint": "\uF472", 
                     "name": "gClefSmall"
                 }, 
                 {
                     "alternateFor": "cClef", 
-                    "codepoint": "U+F473", 
+                    "codepoint": "\uF473", 
                     "name": "cClefSmall"
                 }, 
                 {
                     "alternateFor": "fClef", 
-                    "codepoint": "U+F474", 
+                    "codepoint": "\uF474", 
                     "name": "fClefSmall"
                 }, 
                 {
                     "alternateFor": "articAccentAbove", 
-                    "codepoint": "U+F475", 
+                    "codepoint": "\uF475", 
                     "name": "articAccentAboveSmall"
                 }, 
                 {
                     "alternateFor": "articAccentBelow", 
-                    "codepoint": "U+F476", 
+                    "codepoint": "\uF476", 
                     "name": "articAccentBelowSmall"
                 }, 
                 {
                     "alternateFor": "articStaccatoAbove", 
-                    "codepoint": "U+F477", 
+                    "codepoint": "\uF477", 
                     "name": "articStaccatoAboveSmall"
                 }, 
                 {
                     "alternateFor": "articStaccatoBelow", 
-                    "codepoint": "U+F478", 
+                    "codepoint": "\uF478", 
                     "name": "articStaccatoBelowSmall"
                 }, 
                 {
                     "alternateFor": "articTenutoAbove", 
-                    "codepoint": "U+F479", 
+                    "codepoint": "\uF479", 
                     "name": "articTenutoAboveSmall"
                 }, 
                 {
                     "alternateFor": "articTenutoBelow", 
-                    "codepoint": "U+F47A", 
+                    "codepoint": "\uF47A", 
                     "name": "articTenutoBelowSmall"
                 }, 
                 {
                     "alternateFor": "articStaccatissimoAbove", 
-                    "codepoint": "U+F47B", 
+                    "codepoint": "\uF47B", 
                     "name": "articStaccatissimoAboveSmall"
                 }, 
                 {
                     "alternateFor": "articStaccatissimoBelow", 
-                    "codepoint": "U+F47C", 
+                    "codepoint": "\uF47C", 
                     "name": "articStaccatissimoBelowSmall"
                 }, 
                 {
                     "alternateFor": "articStaccatissimoWedgeAbove", 
-                    "codepoint": "U+F47D", 
+                    "codepoint": "\uF47D", 
                     "name": "articStaccatissimoWedgeAboveSmall"
                 }, 
                 {
                     "alternateFor": "articStaccatissimoWedgeBelow", 
-                    "codepoint": "U+F47E", 
+                    "codepoint": "\uF47E", 
                     "name": "articStaccatissimoWedgeBelowSmall"
                 }, 
                 {
                     "alternateFor": "articStaccatissimoStrokeAbove", 
-                    "codepoint": "U+F47F", 
+                    "codepoint": "\uF47F", 
                     "name": "articStaccatissimoStrokeAboveSmall"
                 }, 
                 {
                     "alternateFor": "articStaccatissimoStrokeBelow", 
-                    "codepoint": "U+F480", 
+                    "codepoint": "\uF480", 
                     "name": "articStaccatissimoStrokeBelowSmall"
                 }, 
                 {
                     "alternateFor": "articMarcatoAbove", 
-                    "codepoint": "U+F481", 
+                    "codepoint": "\uF481", 
                     "name": "articMarcatoAboveSmall"
                 }, 
                 {
                     "alternateFor": "articMarcatoBelow", 
-                    "codepoint": "U+F482", 
+                    "codepoint": "\uF482", 
                     "name": "articMarcatoBelowSmall"
                 }, 
                 {
                     "alternateFor": "articMarcatoStaccatoAbove", 
-                    "codepoint": "U+F483", 
+                    "codepoint": "\uF483", 
                     "name": "articMarcatoStaccatoAboveSmall"
                 }, 
                 {
                     "alternateFor": "articMarcatoStaccatoBelow", 
-                    "codepoint": "U+F484", 
+                    "codepoint": "\uF484", 
                     "name": "articMarcatoStaccatoBelowSmall"
                 }, 
                 {
                     "alternateFor": "articAccentStaccatoAbove", 
-                    "codepoint": "U+F485", 
+                    "codepoint": "\uF485", 
                     "name": "articAccentStaccatoAboveSmall"
                 }, 
                 {
                     "alternateFor": "articAccentStaccatoBelow", 
-                    "codepoint": "U+F486", 
+                    "codepoint": "\uF486", 
                     "name": "articAccentStaccatoBelowSmall"
                 }, 
                 {
                     "alternateFor": "articTenutoStaccatoAbove", 
-                    "codepoint": "U+F487", 
+                    "codepoint": "\uF487", 
                     "name": "articTenutoStaccatoAboveSmall"
                 }, 
                 {
                     "alternateFor": "articTenutoStaccatoBelow", 
-                    "codepoint": "U+F488", 
+                    "codepoint": "\uF488", 
                     "name": "articTenutoStaccatoBelowSmall"
                 }, 
                 {
                     "alternateFor": "articTenutoAccentAbove", 
-                    "codepoint": "U+F489", 
+                    "codepoint": "\uF489", 
                     "name": "articTenutoAccentAboveSmall"
                 }, 
                 {
                     "alternateFor": "articTenutoAccentBelow", 
-                    "codepoint": "U+F48A", 
+                    "codepoint": "\uF48A", 
                     "name": "articTenutoAccentBelowSmall"
                 }
             ], 
@@ -39545,42 +39545,42 @@
             "glyphs": [
                 {
                     "alternateFor": "flag8thUp", 
-                    "codepoint": "U+F410", 
+                    "codepoint": "\uF410", 
                     "name": "flag8thUpShort"
                 }, 
                 {
                     "alternateFor": "flag16thUp", 
-                    "codepoint": "U+F413", 
+                    "codepoint": "\uF413", 
                     "name": "flag16thUpShort"
                 }, 
                 {
                     "alternateFor": "flag32ndUp", 
-                    "codepoint": "U+F416", 
+                    "codepoint": "\uF416", 
                     "name": "flag32ndUpShort"
                 }, 
                 {
                     "alternateFor": "flag64thUp", 
-                    "codepoint": "U+F419", 
+                    "codepoint": "\uF419", 
                     "name": "flag64thUpShort"
                 }, 
                 {
                     "alternateFor": "flag128thUp", 
-                    "codepoint": "U+F41C", 
+                    "codepoint": "\uF41C", 
                     "name": "flag128thUpShort"
                 }, 
                 {
                     "alternateFor": "flag256thUp", 
-                    "codepoint": "U+F41F", 
+                    "codepoint": "\uF41F", 
                     "name": "flag256thUpShort"
                 }, 
                 {
                     "alternateFor": "flag512thUp", 
-                    "codepoint": "U+F422", 
+                    "codepoint": "\uF422", 
                     "name": "flag512thUpShort"
                 }, 
                 {
                     "alternateFor": "flag1024thUp", 
-                    "codepoint": "U+F425", 
+                    "codepoint": "\uF425", 
                     "name": "flag1024thUpShort"
                 }
             ], 
@@ -39591,82 +39591,82 @@
             "glyphs": [
                 {
                     "alternateFor": "flag8thUp", 
-                    "codepoint": "U+F40F", 
+                    "codepoint": "\uF40F", 
                     "name": "flag8thUpStraight"
                 }, 
                 {
                     "alternateFor": "flag8thDown", 
-                    "codepoint": "U+F411", 
+                    "codepoint": "\uF411", 
                     "name": "flag8thDownStraight"
                 }, 
                 {
                     "alternateFor": "flag16thUp", 
-                    "codepoint": "U+F412", 
+                    "codepoint": "\uF412", 
                     "name": "flag16thUpStraight"
                 }, 
                 {
                     "alternateFor": "flag16thDown", 
-                    "codepoint": "U+F414", 
+                    "codepoint": "\uF414", 
                     "name": "flag16thDownStraight"
                 }, 
                 {
                     "alternateFor": "flag32ndUp", 
-                    "codepoint": "U+F415", 
+                    "codepoint": "\uF415", 
                     "name": "flag32ndUpStraight"
                 }, 
                 {
                     "alternateFor": "flag32ndDown", 
-                    "codepoint": "U+F417", 
+                    "codepoint": "\uF417", 
                     "name": "flag32ndDownStraight"
                 }, 
                 {
                     "alternateFor": "flag64thUp", 
-                    "codepoint": "U+F418", 
+                    "codepoint": "\uF418", 
                     "name": "flag64thUpStraight"
                 }, 
                 {
                     "alternateFor": "flag64thDown", 
-                    "codepoint": "U+F41A", 
+                    "codepoint": "\uF41A", 
                     "name": "flag64thDownStraight"
                 }, 
                 {
                     "alternateFor": "flag128thUp", 
-                    "codepoint": "U+F41B", 
+                    "codepoint": "\uF41B", 
                     "name": "flag128thUpStraight"
                 }, 
                 {
                     "alternateFor": "flag128thDown", 
-                    "codepoint": "U+F41D", 
+                    "codepoint": "\uF41D", 
                     "name": "flag128thDownStraight"
                 }, 
                 {
                     "alternateFor": "flag256thUp", 
-                    "codepoint": "U+F41E", 
+                    "codepoint": "\uF41E", 
                     "name": "flag256thUpStraight"
                 }, 
                 {
                     "alternateFor": "flag256thDown", 
-                    "codepoint": "U+F420", 
+                    "codepoint": "\uF420", 
                     "name": "flag256thDownStraight"
                 }, 
                 {
                     "alternateFor": "flag512thUp", 
-                    "codepoint": "U+F421", 
+                    "codepoint": "\uF421", 
                     "name": "flag512thUpStraight"
                 }, 
                 {
                     "alternateFor": "flag512thDown", 
-                    "codepoint": "U+F423", 
+                    "codepoint": "\uF423", 
                     "name": "flag512thDownStraight"
                 }, 
                 {
                     "alternateFor": "flag1024thUp", 
-                    "codepoint": "U+F424", 
+                    "codepoint": "\uF424", 
                     "name": "flag1024thUpStraight"
                 }, 
                 {
                     "alternateFor": "flag1024thDown", 
-                    "codepoint": "U+F426", 
+                    "codepoint": "\uF426", 
                     "name": "flag1024thDownStraight"
                 }
             ], 
@@ -39677,67 +39677,67 @@
             "glyphs": [
                 {
                     "alternateFor": "timeSig0", 
-                    "codepoint": "U+F440", 
+                    "codepoint": "\uF440", 
                     "name": "timeSig0Large"
                 }, 
                 {
                     "alternateFor": "timeSig1", 
-                    "codepoint": "U+F441", 
+                    "codepoint": "\uF441", 
                     "name": "timeSig1Large"
                 }, 
                 {
                     "alternateFor": "timeSig2", 
-                    "codepoint": "U+F442", 
+                    "codepoint": "\uF442", 
                     "name": "timeSig2Large"
                 }, 
                 {
                     "alternateFor": "timeSig3", 
-                    "codepoint": "U+F443", 
+                    "codepoint": "\uF443", 
                     "name": "timeSig3Large"
                 }, 
                 {
                     "alternateFor": "timeSig4", 
-                    "codepoint": "U+F444", 
+                    "codepoint": "\uF444", 
                     "name": "timeSig4Large"
                 }, 
                 {
                     "alternateFor": "timeSig5", 
-                    "codepoint": "U+F445", 
+                    "codepoint": "\uF445", 
                     "name": "timeSig5Large"
                 }, 
                 {
                     "alternateFor": "timeSig6", 
-                    "codepoint": "U+F446", 
+                    "codepoint": "\uF446", 
                     "name": "timeSig6Large"
                 }, 
                 {
                     "alternateFor": "timeSig7", 
-                    "codepoint": "U+F447", 
+                    "codepoint": "\uF447", 
                     "name": "timeSig7Large"
                 }, 
                 {
                     "alternateFor": "timeSig8", 
-                    "codepoint": "U+F448", 
+                    "codepoint": "\uF448", 
                     "name": "timeSig8Large"
                 }, 
                 {
                     "alternateFor": "timeSig9", 
-                    "codepoint": "U+F449", 
+                    "codepoint": "\uF449", 
                     "name": "timeSig9Large"
                 }, 
                 {
                     "alternateFor": "timeSigCommon", 
-                    "codepoint": "U+F44A", 
+                    "codepoint": "\uF44A", 
                     "name": "timeSigCommonLarge"
                 }, 
                 {
                     "alternateFor": "timeSigCutCommon", 
-                    "codepoint": "U+F44B", 
+                    "codepoint": "\uF44B", 
                     "name": "timeSigCutCommonLarge"
                 }, 
                 {
                     "alternateFor": "timeSigPlus", 
-                    "codepoint": "U+F44C", 
+                    "codepoint": "\uF44C", 
                     "name": "timeSigPlusLarge"
                 }
             ], 
@@ -39748,27 +39748,27 @@
             "glyphs": [
                 {
                     "alternateFor": "noteheadDoubleWhole", 
-                    "codepoint": "U+F4BA", 
+                    "codepoint": "\uF4BA", 
                     "name": "noteheadDoubleWholeOversized"
                 }, 
                 {
                     "alternateFor": "noteheadDoubleWholeSquare", 
-                    "codepoint": "U+F4BB", 
+                    "codepoint": "\uF4BB", 
                     "name": "noteheadDoubleWholeSquareOversized"
                 }, 
                 {
                     "alternateFor": "noteheadWhole", 
-                    "codepoint": "U+F4BC", 
+                    "codepoint": "\uF4BC", 
                     "name": "noteheadWholeOversized"
                 }, 
                 {
                     "alternateFor": "noteheadHalf", 
-                    "codepoint": "U+F4BD", 
+                    "codepoint": "\uF4BD", 
                     "name": "noteheadHalfOversized"
                 }, 
                 {
                     "alternateFor": "noteheadBlack", 
-                    "codepoint": "U+F4BE", 
+                    "codepoint": "\uF4BE", 
                     "name": "noteheadBlackOversized"
                 }
             ], 
