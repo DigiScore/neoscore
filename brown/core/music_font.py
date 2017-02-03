@@ -10,6 +10,11 @@ class MusicFontMetadataNotFoundError(Exception):
     pass
 
 
+class MusicFontGlyphNotFoundError(Exception):
+    """Exception raised when a glyph cannot be found in the a MusicFont"""
+    pass
+
+
 class MusicFont(Font):
 
     """A SMuFL compliant music font"""
@@ -43,53 +48,75 @@ class MusicFont(Font):
 
     ######## PUBLIC METHODS ########
 
-    def glyph_info(self, glyph_name):
+    def glyph_info(self, glyph_name, alternate_number=None):
         """Collect and return all known metadata about a glyph.
 
         Args:
             glyph_name (str): The canonical name of the glyph
+            alternate_number (int or None): A glyph alternate number
 
         Returns:
-            None: If the glyph name is not available in the font
+            None: If the glyph is not available in the font
             dict: A collection of all known metadata about the glyph
+
+        Raises:
+            MusicFontGlyphNotFoundError: If the requested glyph
+                could not be found in the font.
         """
         info = {}
+        if alternate_number:
+            try:
+                alternate = self.metadata['glyphsWithAlternates'][
+                                          glyph_name][
+                                          'alternates'][
+                                          alternate_number - 1]
+                info['codepoint'] = alternate['codepoint']
+                real_name = alternate['name']
+            except KeyError:
+                # Alternate not found in the font
+                raise MusicFontGlyphNotFoundError
+        else:
+            try:
+                info['codepoint'] = smufl.glyph_names[glyph_name]['codepoint']
+            except KeyError:
+                raise MusicFontGlyphNotFoundError
+            real_name = glyph_name
 
-        # Aggregate data from font-specific metadata
         try:
-            info["glyphBBox"] = self.metadata['glyphBBoxes'][glyph_name]
+            info['description'] = smufl.glyph_names[real_name]['description']
+        except KeyError:
+            pass
+        try:
+            info['classes'] = smufl.get_glyph_classes(real_name)
+        except KeyError:
+            pass
+        try:
+            info["glyphBBox"] = self.metadata['glyphBBoxes'][real_name]
         except KeyError:
             pass
         try:
             info['alternates'] = self.metadata[
-                'glyphsWithAlternates'][glyph_name]['alternates']
+                'glyphsWithAlternates'][real_name]['alternates']
         except KeyError:
             pass
         try:
-            info['anchors'] = self.metadata['glyphsWithAnchors'][glyph_name]
+            info['anchors'] = self.metadata['glyphsWithAnchors'][real_name]
         except KeyError:
             pass
         try:
-            info['componentGlyphs'] = self.metadata['ligatures'][glyph_name]['componentGlyphs']
+            info['componentGlyphs'] = self.metadata['ligatures'][real_name]['componentGlyphs']
         except KeyError:
             pass
         for set_key in self.metadata['sets'].keys():
             for glyph in self.metadata['sets'][set_key]['glyphs']:
-                if glyph['alternateFor'] == glyph_name:
+                if glyph['alternateFor'] == real_name:
                     info['setAlternatives'] = {}
                     info['setAlternatives'][set_key] = {}
                     info['setAlternatives'][set_key]['description'] = self.metadata['sets'][set_key]['description']
                     info['setAlternatives'][set_key]['name'] = glyph['name']
                     info['setAlternatives'][set_key]['codepoint'] = glyph['codepoint']
-        info['is_optional'] = glyph_name in self.metadata['optionalGlyphs']
-        # At this point if info is still empty, there is no metadata for the
-        # glyph in the font, so we can assume this glyph doesn't exist.
         if not info:
-            return None
-
-        # Aggregate data from smufl spec
-
-        info['codepoint'] = smufl.glyph_names[glyph_name]['codepoint']
-        info['description'] = smufl.glyph_names[glyph_name]['description']
-        info['classes'] = smufl.get_glyph_classes(glyph_name)
+            raise MusicFontGlyphNotFoundError
+        info['is_optional'] = real_name in self.metadata['optionalGlyphs']
+        info['canonicalName'] = real_name
         return info
