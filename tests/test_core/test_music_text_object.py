@@ -30,7 +30,10 @@ class TestMusicTextObject(unittest.TestCase):
 
     def test_init(self):
         mock_parent = MockGraphicObject((10, 11), parent=self.staff)
-        test_object = MusicTextObject((5, 6), 'accidentalFlat', self.font, mock_parent)
+        test_object = MusicTextObject((5, 6),
+                                      ['accidentalFlat'],
+                                      mock_parent,
+                                      self.font)
         assert(test_object.x == 5)
         assert(test_object.y == 6)
         assert(test_object.text == '\ue260')
@@ -42,6 +45,16 @@ class TestMusicTextObject(unittest.TestCase):
         # not be needed
         with assert_raises(TypeError):
             normal_font = Font('Bravura', 12, 2, False)
-            MusicTextObject((5, 6), 'accidentalFlat', normal_font)
+            MusicTextObject((5, 6), ['accidentalFlat'], font=normal_font)
 
-    # TODO: More tests for MusicTextObject
+    def test_init_with_one_tuple(self):
+        test_object = MusicTextObject((5, 6),
+                                      [('brace', 1)],
+                                      self.staff)
+        assert(test_object.text == '\uF400')
+
+    def test_init_with_multiple_chars(self):
+        test_object = MusicTextObject((5, 6),
+                                      ['accidentalFlat', ('brace', 1)],
+                                      self.staff)
+        assert(test_object.text == '\ue260\uF400')

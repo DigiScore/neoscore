@@ -35,7 +35,7 @@ class Accidental(MusicTextObject):
         except InvalidAccidentalError as error:
             raise error
         canonical_name = self._canonical_names[self.virtual_accidental.value]
-        super().__init__(pos, canonical_name, parent=parent)
+        super().__init__(pos, [canonical_name], parent)
 
     ######## PUBLIC PROPERTIES ########
 

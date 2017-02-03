@@ -37,8 +37,8 @@ class Notehead(MusicTextObject):
         self.duration = duration
         # HACK: init pos to temporary position, then set for real
         super().__init__((position_x, Mm(0)),
-                         self._glyphnames[self.duration.base_division],
-                         parent=parent)
+                         [self._glyphnames[self.duration.base_division]],
+                         parent)
         self.pos = Point(position_x, self.staff_position)
 
     ######## PUBLIC PROPERTIES ########

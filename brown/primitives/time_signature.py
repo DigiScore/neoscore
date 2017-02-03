@@ -45,13 +45,13 @@ class TimeSignature(ObjectGroup, StaffObject):
         #       positioning, text centering, etc.
         self._numerator_glyph = MusicTextObject(
             (staff.unit(0), staff.unit(1)),
-            self._glyphnames[self.duration.numerator],
-            parent=self)
+            [self._glyphnames[self.duration.numerator]],
+            self)
         self.register_object(self.numerator_glyph)
         self._denominator_glyph = MusicTextObject(
             (staff.unit(0), staff.unit(3)),
-            self._glyphnames[self.duration.denominator],
-            parent=self)
+            [self._glyphnames[self.duration.denominator]],
+            self)
         self.register_object(self.denominator_glyph)
 
     ######## PUBLIC PROPERTIES ########

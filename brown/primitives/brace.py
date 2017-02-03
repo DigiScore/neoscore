@@ -20,10 +20,10 @@ class Brace(RecurringObject, MultiStaffObject, MusicTextObject):
                   + self.lowest_staff.height)
         scale = height / self.highest_staff.unit(4)
         MusicTextObject.__init__(self,
-                            (pos_x, height),
-                            'brace',
-                            parent=self.highest_staff,
-                            scale_factor=scale)
+                                 (pos_x, height),
+                                 ['brace'],
+                                 self.highest_staff,
+                                 scale_factor=scale)
         self._breakable_width = length
         # Recur at line start
         RecurringObject.__init__(self, 0)

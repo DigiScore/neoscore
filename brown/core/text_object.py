@@ -21,7 +21,7 @@ class TextObject(GraphicObject):
             self.font = font
         else:
             self.font = brown.text_font
-        self.text = text
+        self._text = text
         self.scale_factor = scale_factor
         super().__init__(pos, parent=parent)
 
@@ -31,10 +31,6 @@ class TextObject(GraphicObject):
     def text(self):
         """str: The text to be drawn"""
         return self._text
-
-    @text.setter
-    def text(self, value):
-        self._text = value
 
     @property
     def font(self):

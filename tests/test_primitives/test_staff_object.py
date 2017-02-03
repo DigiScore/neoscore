@@ -12,7 +12,7 @@ from brown.utils.point import Point
 
 class MockStaffObject(MusicTextObject, StaffObject):
     def __init__(self, pos, parent):
-        MusicTextObject.__init__(self, pos, 'accidentalFlat', parent=parent)
+        MusicTextObject.__init__(self, pos, ['accidentalFlat'], parent)
         StaffObject.__init__(self, parent)
 
 

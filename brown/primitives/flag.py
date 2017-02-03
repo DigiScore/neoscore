@@ -55,8 +55,8 @@ class Flag(MusicTextObject):
         else:
             glyph_name = self._up_glyphnames[self.duration.base_division]
         super().__init__(Point(Unit(0), Unit(0)),
-                         glyph_name,
-                         parent=parent)
+                         [glyph_name],
+                         parent)
 
     ######## PUBLIC PROPERTIES ########
 

@@ -37,8 +37,8 @@ class Rest(MusicTextObject):
         """
         self.duration = duration
         super().__init__(Point(pos_x, Unit(0)),
-                         self._glyphnames[self.duration.base_division],
-                         parent=parent)
+                         [self._glyphnames[self.duration.base_division]],
+                         parent)
         # Currently use a fixed vertical position for rests
         self.pos.y = self.staff.unit(2)
 
