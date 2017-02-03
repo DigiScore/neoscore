@@ -5,11 +5,11 @@ from brown.utils.rect import Rect
 from brown.utils.point import Point
 
 
-class MusicGlyph(TextObject, StaffObject):
+class MusicTextObject(TextObject, StaffObject):
     """
     A glyph with a MusicFont and convenient access to relevant SMuFL metadata.
 
-    The text content of a MusicGlyph should be a single character.
+    The text content of a MusicTextObject should be a single character.
     Rather than being specified by their unicode codepoints or literals,
     characters should be specified by their canonical SMuFL names.
     """
@@ -33,7 +33,7 @@ class MusicGlyph(TextObject, StaffObject):
             staff = StaffObject._find_staff(parent)
             font = staff.music_font
         elif not isinstance(font, MusicFont):
-            raise TypeError('MusicGlyph.font must be of type MusicFont')
+            raise TypeError('MusicTextObject.font must be of type MusicFont')
         # type check font is MusicFont before sending to init?
         self._canonical_name = canonical_name
         codepoint = font.glyph_info(self.canonical_name)['codepoint']
@@ -68,7 +68,7 @@ class MusicGlyph(TextObject, StaffObject):
         # TODO: Code below is redundant with super,
         #       find a way to use inheritance here
         if not isinstance(value, MusicFont):
-            raise TypeError('MusicGlyph.font must be a MusicFont')
+            raise TypeError('MusicTextObject.font must be a MusicFont')
         self._font = value
 
     ######## PRIVATE PROPERTIES ########

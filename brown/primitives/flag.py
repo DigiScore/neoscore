@@ -1,4 +1,4 @@
-from brown.core.music_glyph import MusicGlyph
+from brown.core.music_text_object import MusicTextObject
 from brown.utils.point import Point
 from brown.utils.units import Unit
 
@@ -11,7 +11,7 @@ class NoFlagNeededError(Exception):
         super().__init__(self.message)
 
 
-class Flag(MusicGlyph):
+class Flag(MusicTextObject):
 
     """A simple Flag glyph with a duration and direction
 

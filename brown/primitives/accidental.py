@@ -1,6 +1,6 @@
 from brown.models.virtual_accidental import (VirtualAccidental,
                                              InvalidAccidentalError)
-from brown.core.music_glyph import MusicGlyph
+from brown.core.music_text_object import MusicTextObject
 
 
 class NoneVirtualAccidentalInRealAccidentalError(Exception):
@@ -8,7 +8,7 @@ class NoneVirtualAccidentalInRealAccidentalError(Exception):
     pass
 
 
-class Accidental(MusicGlyph):
+class Accidental(MusicTextObject):
 
     _canonical_names = {
         -1: 'accidentalFlat',

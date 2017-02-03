@@ -1,10 +1,10 @@
 from brown.core.graphic_object import GraphicObject
-from brown.core.music_glyph import MusicGlyph
+from brown.core.music_text_object import MusicTextObject
 from brown.core.recurring_object import RecurringObject
 from brown.primitives.multi_staff_object import MultiStaffObject
 
 
-class Brace(RecurringObject, MultiStaffObject, MusicGlyph):
+class Brace(RecurringObject, MultiStaffObject, MusicTextObject):
 
     def __init__(self, pos_x, length, staves):
         """
@@ -19,7 +19,7 @@ class Brace(RecurringObject, MultiStaffObject, MusicGlyph):
                                                   self.lowest_staff).y
                   + self.lowest_staff.height)
         scale = height / self.highest_staff.unit(4)
-        MusicGlyph.__init__(self,
+        MusicTextObject.__init__(self,
                             (pos_x, height),
                             'brace',
                             parent=self.highest_staff,

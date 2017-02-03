@@ -8,7 +8,7 @@ from brown.primitives.staff import Staff
 from brown.primitives.clef import Clef
 from brown.primitives.chordrest import ChordRest
 from brown.utils.point import Point
-from brown.core.music_glyph import MusicGlyph
+from brown.core.music_text_object import MusicTextObject
 from brown.core.path import Path
 from brown.primitives.slur import Slur
 from brown.core.pen import Pen
@@ -49,7 +49,7 @@ brace.render()
 
 for i in range(0, 11):
     factor = 1 + (i / 10)
-    MusicGlyph((Mm(10 + i), lowest_staff.unit(4)),
+    MusicTextObject((Mm(10 + i), lowest_staff.unit(4)),
                'brace', parent=lowest_staff, scale_factor=factor).render()
 
 brown.show()

@@ -15,9 +15,9 @@ class StaffObject:
 
     Usage within a GraphicObject will look something like:
 
-        class SomeStaffGlyphObject(MusicGlyph, StaffObject):
+        class SomeStaffGlyphObject(MusicTextObject, StaffObject):
             def __init__(self, pos, parent):
-                MusicGlyph.__init__(self, 'someGlyphName', parent)
+                MusicTextObject.__init__(self, 'someGlyphName', parent)
                 StaffObject.__init__(self, parent)
     """
 

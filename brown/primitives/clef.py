@@ -1,7 +1,7 @@
-from brown.core.music_glyph import MusicGlyph
+from brown.core.music_text_object import MusicTextObject
 
 
-class Clef(MusicGlyph):
+class Clef(MusicTextObject):
 
     _canonical_names = {
         'treble': 'gClef',
@@ -41,7 +41,7 @@ class Clef(MusicGlyph):
             'alto': staff.unit(2),
         }
         self._clef_type = clef_type
-        MusicGlyph.__init__(self, (position_x, self.staff_position),
+        MusicTextObject.__init__(self, (position_x, self.staff_position),
                             self._canonical_names[clef_type],
                             None,
                             staff)

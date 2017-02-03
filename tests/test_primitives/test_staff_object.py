@@ -3,16 +3,16 @@ import unittest
 from brown.core import brown
 from brown.primitives.staff import Staff
 from brown.primitives.staff_object import StaffObject
-from brown.core.music_glyph import MusicGlyph
+from brown.core.music_text_object import MusicTextObject
 from brown.core.flowable_frame import FlowableFrame
 from brown.core.paper import Paper
 from brown.utils.units import Mm
 from brown.utils.point import Point
 
 
-class MockStaffObject(MusicGlyph, StaffObject):
+class MockStaffObject(MusicTextObject, StaffObject):
     def __init__(self, pos, parent):
-        MusicGlyph.__init__(self, pos, 'accidentalFlat', parent=parent)
+        MusicTextObject.__init__(self, pos, 'accidentalFlat', parent=parent)
         StaffObject.__init__(self, parent)
 
 

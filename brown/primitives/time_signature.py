@@ -1,5 +1,5 @@
 from brown.core.object_group import ObjectGroup
-from brown.core.music_glyph import MusicGlyph
+from brown.core.music_text_object import MusicTextObject
 from brown.primitives.staff_object import StaffObject
 from brown.utils.point import Point
 
@@ -43,12 +43,12 @@ class TimeSignature(ObjectGroup, StaffObject):
         #       this may be a good case for making a MusicTextObject
         #       as that would automatically be able to handle multi-line
         #       positioning, text centering, etc.
-        self._numerator_glyph = MusicGlyph(
+        self._numerator_glyph = MusicTextObject(
             (staff.unit(0), staff.unit(1)),
             self._glyphnames[self.duration.numerator],
             parent=self)
         self.register_object(self.numerator_glyph)
-        self._denominator_glyph = MusicGlyph(
+        self._denominator_glyph = MusicTextObject(
             (staff.unit(0), staff.unit(3)),
             self._glyphnames[self.duration.denominator],
             parent=self)
@@ -58,12 +58,12 @@ class TimeSignature(ObjectGroup, StaffObject):
 
     @property
     def numerator_glyph(self):
-        """MusicGlyph: The upper glyph for the time signature"""
+        """MusicTextObject: The upper glyph for the time signature"""
         return self._numerator_glyph
 
     @property
     def denominator_glyph(self):
-        """MusicGlyph: The lower glyph for the time signature"""
+        """MusicTextObject: The lower glyph for the time signature"""
         return self._denominator_glyph
 
     @property

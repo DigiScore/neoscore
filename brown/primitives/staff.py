@@ -33,7 +33,7 @@ class Staff(Path):
                 If not set, this will default to config.DEFAULT_STAFF_UNIT
             line_count (int): The number of lines in the staff.
             music_font (MusicFont): The font to be used in all
-                MusicGlyphs unless otherwise specified.
+                MusicTextObjects unless otherwise specified.
             default_time_signature_duration (tuple or None): The duration tuple
                 of the initial time signature. If none, (4, 4) will be used.
         """
