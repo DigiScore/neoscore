@@ -17,9 +17,9 @@ class MusicTextObject(TextObject, StaffObject):
         """
         Args:
             pos (Point): The position of the glyph
-            text (list[str or tuple]): The text to be used, represented
-                as a list of str (glyph names) or tuples
-                (glyph name, alternate number).
+            text (str or tuple or list[str or tuple]): The text to be used,
+                represented as a str (glyph name) or tuple
+                (glyph name, alternate number) or a list of them.
             parent (GraphicObject): The parent of the glyph. This should
                 either be a `Staff` or an object which has a `Staff` as
                 an ancestor.
@@ -30,14 +30,21 @@ class MusicTextObject(TextObject, StaffObject):
         """
         if font is None:
             font = StaffObject._find_staff(parent).music_font
-        self.music_chars = []
-        for music_char in text:
-            if isinstance(music_char, str):
-                self.music_chars.append(MusicChar(font, music_char))
-            elif isinstance(music_char, tuple):
-                self.music_chars.append(MusicChar(font, *music_char))
-            else:
-                raise TypeError
+        if isinstance(text, str):
+            self.music_chars = [MusicChar(font, text)]
+        elif isinstance(text, tuple):
+            self.music_chars = [MusicChar(font, *text)]
+        elif isinstance(text, list):
+            self.music_chars = []
+            for music_char in text:
+                if isinstance(music_char, str):
+                    self.music_chars.append(MusicChar(font, music_char))
+                elif isinstance(music_char, tuple):
+                    self.music_chars.append(MusicChar(font, *music_char))
+                else:
+                    raise TypeError
+        else:
+            raise TypeError
         text = ''.join(char.codepoint for char in self.music_chars)
         TextObject.__init__(self, pos, text, font, parent,
                             scale_factor=scale_factor)

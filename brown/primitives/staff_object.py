@@ -17,7 +17,7 @@ class StaffObject:
 
         class SomeStaffGlyphObject(MusicTextObject, StaffObject):
             def __init__(self, pos, parent):
-                MusicTextObject.__init__(self, ['someGlyphName'], parent)
+                MusicTextObject.__init__(self, 'someGlyphName', parent)
                 StaffObject.__init__(self, parent)
     """
 

@@ -50,7 +50,7 @@ brace.render()
 for i in range(0, 11):
     factor = 1 + (i / 10)
     MusicTextObject((Mm(10 + i), lowest_staff.unit(4)),
-                    ['brace'],
+                    ['brace', ('gClef', 1)],
                     lowest_staff,
                     scale_factor=factor).render()
 

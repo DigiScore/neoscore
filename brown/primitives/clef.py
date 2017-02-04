@@ -42,7 +42,7 @@ class Clef(MusicTextObject):
         }
         self._clef_type = clef_type
         MusicTextObject.__init__(self, (position_x, self.staff_position),
-                                 [self._canonical_names[clef_type]],
+                                 self._canonical_names[clef_type],
                                  staff)
 
     ######## PUBLIC PROPERTIES ########
