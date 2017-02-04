@@ -47,6 +47,10 @@ staff.add_chordrest((1, 4), ["a'", "bs"], (2, 4))
 brace = Brace(Mm(0), Mm(500), {staff, lower_staff})
 brace.render()
 
+MusicTextObject((Mm(25), lower_staff.unit(4)),
+                ('brace', 4),
+                lower_staff).render()
+
 for i in range(0, 11):
     factor = 1 + (i / 10)
     MusicTextObject((Mm(10 + i), lowest_staff.unit(4)),
