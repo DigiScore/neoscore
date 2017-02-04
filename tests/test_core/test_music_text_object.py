@@ -5,6 +5,7 @@ from nose.tools import assert_raises
 
 from brown.core import brown
 from brown.core.music_text_object import MusicTextObject
+from brown.core.music_char import MusicChar
 from brown.config import config
 from brown.core.font import Font
 from brown.core.music_font import MusicFont
@@ -40,16 +41,15 @@ class TestMusicTextObject(unittest.TestCase):
         assert(test_object.font == self.font)
         assert(test_object.parent == mock_parent)
 
-    def test_non_music_font_raises_error(self):
-        # Depending on implementation decision in MusicTextObject, this may or may
-        # not be needed
-        with assert_raises(TypeError):
-            normal_font = Font('Bravura', 12, 2, False)
-            MusicTextObject((5, 6), 'accidentalFlat', font=normal_font)
-
     def test_init_with_one_tuple(self):
         test_object = MusicTextObject((5, 6),
                                       ('brace', 1),
+                                      self.staff)
+        assert(test_object.text == '\uF400')
+
+    def test_init_with_one_music_char(self):
+        test_object = MusicTextObject((5, 6),
+                                      MusicChar(self.staff.music_font, 'brace', 1),
                                       self.staff)
         assert(test_object.text == '\uF400')
 

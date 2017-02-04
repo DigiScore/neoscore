@@ -17,9 +17,9 @@ class MusicTextObject(TextObject, StaffObject):
         """
         Args:
             pos (Point): The position of the glyph
-            text (str or tuple or list[str or tuple]): The text to be used,
-                represented as a str (glyph name) or tuple
-                (glyph name, alternate number) or a list of them.
+            text (str, tuple, MusicChar, or list of these):
+                The text to be used, represented as a str (glyph name), tuple
+                (glyph name, alternate number), MusicChar, or a list of them.
             parent (GraphicObject): The parent of the glyph. This should
                 either be a `Staff` or an object which has a `Staff` as
                 an ancestor.
@@ -34,6 +34,8 @@ class MusicTextObject(TextObject, StaffObject):
             self.music_chars = [MusicChar(font, text)]
         elif isinstance(text, tuple):
             self.music_chars = [MusicChar(font, *text)]
+        elif isinstance(text, MusicChar):
+            self.music_chars = [text]
         elif isinstance(text, list):
             self.music_chars = []
             for music_char in text:
@@ -41,6 +43,8 @@ class MusicTextObject(TextObject, StaffObject):
                     self.music_chars.append(MusicChar(font, music_char))
                 elif isinstance(music_char, tuple):
                     self.music_chars.append(MusicChar(font, *music_char))
+                elif isinstance(music_char, MusicChar):
+                    self.music_chars.append(music_char)
                 else:
                     raise TypeError
         else:
