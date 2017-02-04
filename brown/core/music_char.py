@@ -1,6 +1,3 @@
-from brown.core.music_font import MusicFont
-
-
 class MusicChar:
     """A SMuFL music character.
 

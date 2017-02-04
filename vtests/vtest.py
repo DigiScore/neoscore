@@ -19,6 +19,7 @@ from brown.primitives.rest import Rest
 from brown.primitives.beam import Beam
 from brown.primitives.rhythm_dot import RhythmDot
 from brown.primitives.brace import Brace
+from brown.primitives.dynamic import Dynamic
 
 
 brown.setup()
@@ -43,6 +44,12 @@ staff.add_clef((0, 4), 'treble')
 lower_staff.add_clef((0, 4), 'treble')
 staff.add_time_signature(0, (4, 4))
 staff.add_chordrest((1, 4), ["a'", "bs"], (2, 4))
+
+p = Dynamic((Mm(20), staff.unit(6)), 'p', staff)
+p.render()
+
+sfz = Dynamic.sfz((Mm(25), staff.unit(6)), staff)
+sfz.render()
 
 brace = Brace(Mm(0), Mm(500), {staff, lower_staff})
 brace.render()
