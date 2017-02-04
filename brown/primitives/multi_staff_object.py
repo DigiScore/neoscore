@@ -1,3 +1,6 @@
+from brown.core.graphic_object import GraphicObject
+
+
 class MultiStaffObject:
 
     """An object which spans several staves.
@@ -12,6 +15,8 @@ class MultiStaffObject:
 
     In most MultiStaffObject classes, object-wide property will be derived
     from the visually highest staff.
+
+    TODO: Cache potentially expensive property calculations
     """
 
     def __init__(self, staves):
@@ -39,3 +44,15 @@ class MultiStaffObject:
     def lowest_staff(self):
         """Staff: The visually lowest staff in self.staves"""
         return self.visually_sorted_staves[-1]
+
+    @property
+    def vertical_span(self):
+        """StaffUnit: The vertical distance covered by the staves
+
+        The distance from the top of `self.highest_staff` to the bottom
+        of `self.lowest_staff`, in `self.highest_staff.unit` StaffUnits.
+        """
+        return self.highest_staff.unit(GraphicObject.map_between_items(
+                                           self.highest_staff,
+                                           self.lowest_staff).y
+                                       + self.lowest_staff.height)

@@ -16,17 +16,14 @@ class Brace(RecurringObject, MultiStaffObject, MusicTextObject):
         """
         MultiStaffObject.__init__(self, staves)
         # Calculate the height of the brace in highest_staff staff units
-        height = (GraphicObject.map_between_items(self.highest_staff,
-                                                  self.lowest_staff).y
-                  + self.lowest_staff.height)
-        scale = height / self.highest_staff.unit(4)
-        if height > self.highest_staff.unit(50):
+        scale = self.vertical_span / self.highest_staff.unit(4)
+        if self.vertical_span > self.highest_staff.unit(50):
             text = ('brace', 4)
-        elif height > self.highest_staff.unit(30):
+        elif self.vertical_span > self.highest_staff.unit(30):
             text = ('brace', 3)
-        elif height > self.highest_staff.unit(15):
+        elif self.vertical_span > self.highest_staff.unit(15):
             text = ('brace', 2)
-        elif height > self.highest_staff.unit(4):
+        elif self.vertical_span > self.highest_staff.unit(4):
             text = 'brace'
         else:
             text = ('brace', 1)
@@ -34,14 +31,14 @@ class Brace(RecurringObject, MultiStaffObject, MusicTextObject):
         try:
             # Attempt to use size-specific optional glyph
             MusicTextObject.__init__(self,
-                                     (pos_x, height),
+                                     (pos_x, self.vertical_span),
                                      text,
                                      self.highest_staff,
                                      scale_factor=scale)
         except MusicFontGlyphNotFoundError:
             # Default to non-optional glyph
             MusicTextObject.__init__(self,
-                                     (pos_x, height),
+                                     (pos_x, self.vertical_span),
                                      'brace',
                                      self.highest_staff,
                                      scale_factor=scale)

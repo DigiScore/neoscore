@@ -37,3 +37,11 @@ class TestMultiStaffObject(unittest.TestCase):
                                          self.staff_2,
                                          self.staff_3})
         assert(multi_object.lowest_staff == self.staff_3)
+
+    def test_vertical_span(self):
+        multi_object = MultiStaffObject({self.staff_1,
+                                         self.staff_2,
+                                         self.staff_3})
+        self.assertAlmostEqual(
+            multi_object.vertical_span.value,
+            (self.staff_3.unit(4) + Mm(50)).value)
