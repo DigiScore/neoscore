@@ -6,6 +6,13 @@ class Font:
     _interface_class = FontInterface
 
     def __init__(self, family_name, size, weight=1, italic=False):
+        """
+        Args:
+            family_name (str): The font family name
+            size (int): The height, in points, of the font
+            weight (float): The font weight, where 1 is normal
+            italic (bool): Whether or not the font is italicized
+        """
         self.family_name = family_name
         self.size = size
         self.weight = weight
@@ -14,6 +21,38 @@ class Font:
                                                       self.size,
                                                       self.weight,
                                                       self.italic)
+
+    ######## CONSTRUCTORS ########
+
+    @classmethod
+    def deriving(cls,
+                 existing_font,
+                 family_name=None,
+                 size=None,
+                 weight=None,
+                 italic=None):
+        """Derive a Font from an existing one.
+
+        All properties not passed in args/kwargs will be copied
+        from the existing Font.
+
+        Args:
+            existing_font (Font): An existing font.
+            family_name (str): The font family name
+            size (int): The height, in points, of the font
+            weight (float): The font weight, where 1 is normal
+            italic (bool): Whether or not the font is italicized
+        """
+        return cls(
+            family_name if family_name is not None
+                else existing_font.family_name,
+            size if size is not None
+                else existing_font.size,
+            weight if weight is not None
+                else existing_font.weight,
+            italic if italic is not None
+                else existing_font.italic
+        )
 
     ######## PUBLIC PROPERTIES ########
 
