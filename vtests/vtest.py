@@ -12,6 +12,7 @@ from brown.core.music_text_object import MusicTextObject
 from brown.core.path import Path
 from brown.primitives.slur import Slur
 from brown.core.pen import Pen
+from brown.core.text_object import TextObject
 from brown.utils.color import Color
 from brown.primitives.time_signature import TimeSignature
 from brown.primitives.bar_line import BarLine
@@ -44,6 +45,9 @@ staff.add_clef((0, 4), 'treble')
 lower_staff.add_clef((0, 4), 'treble')
 staff.add_time_signature(0, (4, 4))
 staff.add_chordrest((1, 4), ["a'", "bs"], (2, 4))
+
+regular_text = TextObject((Mm(20), staff.unit(-1)), 'piu mosso', parent=staff)
+regular_text.render()
 
 p = Dynamic((Mm(20), staff.unit(6)), 'p', staff)
 p.render()

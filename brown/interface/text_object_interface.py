@@ -19,14 +19,14 @@ class TextObjectInterface(GraphicObjectInterface):
             scale_factor(float): A hard scaling factor.
         """
         if origin_offset:
-            self._origin_offset = point_to_qt_point_f(origin_offset)
+            self._origin_offset = origin_offset
         else:
-            self._origin_offset = None
+            self._origin_offset = Point(0, 0)
         self._scale_factor = scale_factor
         self._text = text
         self._qt_object = self._interface_class(
             self.text,
-            origin_offset=self.origin_offset,
+            origin_offset=point_to_qt_point_f(self.origin_offset),
             scale_factor=self.scale_factor)
         # Let setters trigger Qt setters for attributes not in constructor
         self.font = font
@@ -57,7 +57,7 @@ class TextObjectInterface(GraphicObjectInterface):
 
     @property
     def origin_offset(self):
-        """Unit: A hard offset to be applied to the rendered text"""
+        """Point: A hard offset to be applied to the rendered text"""
         return self._origin_offset
 
     @origin_offset.setter

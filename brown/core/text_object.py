@@ -1,6 +1,8 @@
 from brown.interface.text_object_interface import TextObjectInterface
 from brown.core import brown
 from brown.core.graphic_object import GraphicObject
+from brown.utils.point import Point
+from brown.utils.units import GraphicUnit
 
 
 class TextObject(GraphicObject):
@@ -64,8 +66,9 @@ class TextObject(GraphicObject):
 
     @property
     def _origin_offset(self):
-        """The origin offset override for this object."""
-        return None
+        """Point: The origin offset override for this glyph."""
+        return Point(GraphicUnit(0),
+                     GraphicUnit(self.font.ascent))
 
     ######## PUBLIC METHODS ########
 
