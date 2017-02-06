@@ -26,6 +26,7 @@ DEFAULT_PAPER_TYPE = 'A4'
 
 # Text Font
 DEFAULT_TEXT_FONT_NAME = 'Cormorant Garamond'
+DEFAULT_TEXT_FONT_SIZE = 12  # GraphicUnits
 
 # Music Glyph Font
 DEFAULT_MUSIC_FONT_PATH = os.path.join(

@@ -31,7 +31,7 @@ class MusicFont(Font):
         self._engraving_defaults = self.metadata['engravingDefaults']
         # TODO: Investigate why staff_unit(3) is the
         #       magic scaling factor here, and how to not rely on it
-        self._em_size = float(GraphicUnit(staff_unit(3)))
+        self._em_size = staff_unit(3)
         super().__init__(family_name, self._em_size, 1, False)
 
     ######## PUBLIC PROPERTIES ########

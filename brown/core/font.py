@@ -9,7 +9,7 @@ class Font:
         """
         Args:
             family_name (str): The font family name
-            size (int): The height, in points, of the font
+            size (Unit): The size (height) of the font
             weight (float): The font weight, where 1 is normal
             italic (bool): Whether or not the font is italicized
         """
@@ -17,10 +17,10 @@ class Font:
         self.size = size
         self.weight = weight
         self.italic = italic
-        self._interface = type(self)._interface_class(self.family_name,
-                                                      self.size,
-                                                      self.weight,
-                                                      self.italic)
+        self._interface = Font._interface_class(self.family_name,
+                                                self.size,
+                                                self.weight,
+                                                self.italic)
 
     ######## CONSTRUCTORS ########
 
@@ -78,6 +78,3 @@ class Font:
     def em_size(self):
         """GraphicUnit: The em size for the font."""
         return self._interface.em_size
-
-    # TODO: May need to handle size changes. In this case, be sure
-    #       to update cached em_size in MusicFont subclass.

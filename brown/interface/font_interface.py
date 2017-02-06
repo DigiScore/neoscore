@@ -17,7 +17,7 @@ class FontInterface:
         """
         Args:
             family_name (str): The name of the font family
-            size (float): The size of the font, in pixels
+            size (Unit): The size of the font
             weight (int): The font weight
             italic (bool): Italicized or not
         """
@@ -26,7 +26,7 @@ class FontInterface:
         self.weight = weight
         self.italic = italic
         self._qt_object = QtGui.QFont(self.family_name,
-                                      self.size,
+                                      GraphicUnit(self.size).value,
                                       self.weight,
                                       self.italic)
         self._qt_font_info_object = QtGui.QFontInfo(self._qt_object)
@@ -58,9 +58,8 @@ class FontInterface:
     def em_size(self):
         """GraphicUnit: The em size for the font.
 
-        REMINDER: Keep an eye on this. It's actually being calculated
-        from the x-height of the font. Depending on the Qt specifics,
-        this may or may not work as expected.
+        NOTE: This is actually being calculated from the x-height of the font.
+        Depending on the Qt specifics, this may or may not work as expected.
         """
         return GraphicUnit(self._qt_font_metrics_object.xHeight())
 

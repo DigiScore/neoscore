@@ -33,7 +33,10 @@ def setup(initial_paper=None):
     _, music_font_json = register_music_font(
         config.DEFAULT_MUSIC_FONT_PATH,
         config.DEFAULT_MUSIC_FONT_METADATA_PATH)
-    text_font = Font(config.DEFAULT_TEXT_FONT_NAME, 12, 1, False)
+    text_font = Font(config.DEFAULT_TEXT_FONT_NAME,
+                     config.DEFAULT_TEXT_FONT_SIZE,
+                     1,
+                     False)
     document = Document(initial_paper)
 
 

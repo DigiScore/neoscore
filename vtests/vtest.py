@@ -4,6 +4,7 @@ from brown.core import brown
 from brown.utils.anchored_point import AnchoredPoint
 from brown.utils.units import Mm, GraphicUnit
 from brown.core.flowable_frame import FlowableFrame
+from brown.core.font import Font
 from brown.primitives.staff import Staff
 from brown.primitives.clef import Clef
 from brown.primitives.chordrest import ChordRest
@@ -46,7 +47,12 @@ lower_staff.add_clef((0, 4), 'treble')
 staff.add_time_signature(0, (4, 4))
 staff.add_chordrest((1, 4), ["a'", "bs"], (2, 4))
 
-regular_text = TextObject((Mm(20), staff.unit(-1)), 'piu mosso', parent=staff)
+font = Font('Cormorant Garamond', Mm(2), italic=True)
+
+regular_text = TextObject((Mm(20), staff.unit(-1)),
+                          'piu mosso',
+                          font=font,
+                          parent=staff)
 regular_text.render()
 
 p = Dynamic((Mm(20), staff.unit(6)), 'p', staff)

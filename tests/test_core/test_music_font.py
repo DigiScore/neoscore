@@ -5,7 +5,7 @@ from brown.config import config
 from brown.core import brown
 from brown.core.music_font import MusicFont
 from brown.primitives.staff import Staff
-from brown.utils.units import GraphicUnit, Mm
+from brown.utils.units import Mm
 
 
 class TestMusicFont(unittest.TestCase):
@@ -24,7 +24,7 @@ class TestMusicFont(unittest.TestCase):
     def test_init(self):
         test_font = MusicFont('Bravura', self.staff.unit)
         assert(test_font.family_name == 'Bravura')
-        assert(test_font.size == float(GraphicUnit(self.staff.unit(3))))
+        assert(test_font.size == self.staff.unit(3))
         assert(test_font.em_size == test_font.size)
         assert(test_font.weight == 1)      # Set automatically by initializer
         assert(test_font.italic is False)  # Set automatically by initializer
