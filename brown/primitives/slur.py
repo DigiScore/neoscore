@@ -14,20 +14,19 @@ class Slur(Path, StaffObject, Spanner):
     By default, the parent will be the starting object.
     """
 
-    def __init__(self, start_object, stop_object, direction=-1):
+    def __init__(self, start, stop, direction=-1):
         """
         Args:
-            start_object (StaffObject):
-            stop_object (StaffObject):
+            start (AnchoredPoint or tuple init args):
+            stop (AnchoredPoint or tuple init args):
             direction (int): The direction of the slur, where
                 -1 indicates curving upward, and 1 vice versa.
         """
-        # TODO: Support path element offsets
+        Spanner.__init__(self, start, stop)
         Path.__init__(self, (Unit(0), Unit(0)),
-                      parent=start_object,
+                      parent=self.start.parent,
                       brush=Brush((0, 0, 0, 255)))
-        StaffObject.__init__(self, start_object)
-        Spanner.__init__(self, start_object, stop_object)
+        StaffObject.__init__(self, self.parent)
         self.pos = Point(self.staff.unit(0), self.staff.unit(0))
         self.direction = direction
         # Load relevant engraving defaults from music font
@@ -52,30 +51,30 @@ class Slur(Path, StaffObject, Spanner):
         # Draw upper curve part
         self.move_to(AnchoredPoint(self.staff.unit(0),
                                    end_height,
-                                   self.start))
+                                   self.start.parent))
         control_1 = AnchoredPoint(self.staff.unit(1),
                                   mid_upper_height,
-                                  self.start)
+                                  self.start.parent)
         control_2 = AnchoredPoint(self.staff.unit(-1),
                                   mid_upper_height,
-                                  self.stop)
+                                  self.stop.parent)
         end = AnchoredPoint(self.staff.unit(0),
                             end_height,
-                            self.stop)
+                            self.stop.parent)
         self.cubic_to(control_1, control_2, end)
         # Draw right-side end
         self.line_to(AnchoredPoint(self.staff.unit(0),
                                    self.staff.unit(0),
-                                   self.stop))
+                                   self.stop.parent))
         # Draw lower curve part
         control_1 = AnchoredPoint(self.staff.unit(-1),
                                   mid_height,
-                                  self.stop)
+                                  self.stop.parent)
         control_2 = AnchoredPoint(self.staff.unit(1),
                                   mid_height,
-                                  self.start)
+                                  self.start.parent)
         end = AnchoredPoint(self.staff.unit(0),
                             self.staff.unit(0),
-                            self.start)
+                            self.start.parent)
         self.cubic_to(control_1, control_2, end)
         self.close_subpath()

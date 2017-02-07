@@ -1,3 +1,6 @@
+from brown.utils.anchored_point import AnchoredPoint
+
+
 class Spanner:
     """A Mixin class for GraphicObjects with starting and ending anchors.
 
@@ -9,8 +12,8 @@ class Spanner:
     def __init__(self, start, stop):
         """
         Args:
-            start (GraphicObject):
-            stop (GraphicObject):
+            start (AnchoredPoint or tuple init args):
+            stop (AnchoredPoint or tuple init args):
         """
-        self.start = start
-        self.stop = stop
+        self.start = AnchoredPoint(start)
+        self.stop = AnchoredPoint(stop)

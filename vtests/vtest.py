@@ -47,7 +47,7 @@ lower_staff.add_clef((0, 4), 'treble')
 staff.add_time_signature(0, (4, 4))
 staff.add_chordrest((1, 4), ["a'", "bs"], (2, 4))
 
-font = Font('Cormorant Garamond', Mm(2), italic=True)
+font = Font('Cormorant Garamond', Mm(2), weight=100, italic=True)
 
 regular_text = TextObject((Mm(20), staff.unit(-1)),
                           'piu mosso',
@@ -61,7 +61,11 @@ p.render()
 sfz = Dynamic.sfz((Mm(25), staff.unit(6)), staff)
 sfz.render()
 
-brace = Brace(Mm(0), Mm(500), {staff, lower_staff})
+slur = Slur((Mm(0), Mm(0), regular_text),
+            (Mm(0), Mm(0), sfz))
+slur.render()
+
+brace = Brace(Mm(0), Mm(500), {staff, lower_staff, lowest_staff})
 brace.render()
 
 MusicTextObject((Mm(25), lower_staff.unit(4)),
