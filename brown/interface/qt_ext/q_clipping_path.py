@@ -1,6 +1,6 @@
 from PyQt5 import QtCore, QtWidgets
 
-from brown.utils.units import Unit
+from brown.utils.units import GraphicUnit
 
 
 class QClippingPath(QtWidgets.QGraphicsPathItem):
@@ -11,19 +11,18 @@ class QClippingPath(QtWidgets.QGraphicsPathItem):
     horizontal slice of the path.
     """
 
-    def __init__(self, qt_path, start_x, width):
+    def __init__(self, qt_path, clip_start_x, clip_width):
         """
         Args:
             qt_path (QPainterPath): The path for the item. This value should
                 be the same as in `QGraphicsPathItem.__init__()`
-            start_x (Unit or None): The local starting position for the
-                path clipping region.
-                Use `None` to render from the start
-            width (Unit or None): The width of the path clipping region.
+            clip_start_x (Unit or None): The local starting position for the
+                path clipping region. Use `None` to render from the start.
+            clip_width (Unit or None): The width of the path clipping region.
                 Use `None` to render to the end
         """
-        self.clip_start_x = start_x
-        self.clip_width = width
+        self.clip_start_x = clip_start_x
+        self.clip_width = clip_width
         super().__init__(qt_path)
 
     def paint(self, painter, *args, **kwargs):
@@ -32,39 +31,43 @@ class QClippingPath(QtWidgets.QGraphicsPathItem):
         This is an overload of `QGraphicsPathItem.paint()`"""
         if self.clip_start_x is not None:
             painter.translate(QtCore.QPointF(
-                -1 * float(Unit(self.clip_start_x)), 0))
-        clip_area = self._create_clipping_area(
-            self.path(), self.clip_start_x, self.clip_width)
+                -1 * float(GraphicUnit(self.clip_start_x)), 0))
+        clip_area = self.create_clipping_area(
+            self.path().boundingRect(),
+            self.clip_start_x,
+            self.clip_width,
+            self.pen().width())
         painter.setClipRect(clip_area)
         super().paint(painter, *args, **kwargs)
 
-    ######## PRIVATE METHODS ########
-
-    def _create_clipping_area(self, painter_path, start_x, clip_width):
-        """Create a QPainterPath indicating the area of the path to draw
+    @staticmethod
+    def create_clipping_area(bounding_rect,
+                             clip_start_x,
+                             clip_width,
+                             extra_padding):
+        """Create a QRectF giving the painting area for the object.
 
         Args:
-            painter_path (QPainterPath): The reference path.
-                This is used to determine the path bounding box.
-            start_x (Unit or None): The local starting position for the
-                path clipping region.
-                Use `None` to render from the start
-            width (Unit or None): The width of the path clipping region.
+            bounding_rect (QRectF): The full shape's bounding rectangle
+            clip_start_x (Unit or None): The local starting position for the
+                clipping region. Use `None` to render from the start.
+            width (Unit or None): The width of the clipping region.
                 Use `None` to render to the end
+            extra_padding (float): Extra area padding to be added to all
+                sides of the clipping area. This might be useful, for instance,
+                for making sure thick pen strokes render completely.
 
         Returns: QRectF
         """
-        bounding_rect = painter_path.boundingRect()
-        if start_x is None:
-            start_x = bounding_rect.x()
+        if clip_start_x is None:
+            clip_start_x = bounding_rect.x()
         else:
-            start_x = float(Unit(start_x))
+            clip_start_x = float(GraphicUnit(clip_start_x))
         if clip_width is None:
-            clip_width = bounding_rect.width() - start_x
+            clip_width = bounding_rect.width() - clip_start_x
         else:
-            clip_width = float(Unit(clip_width))
-        pen_padding = self.pen().width()
-        return QtCore.QRectF(start_x - pen_padding,
-                             bounding_rect.y() - pen_padding,
-                             clip_width + pen_padding,
-                             bounding_rect.height() + pen_padding)
+            clip_width = float(GraphicUnit(clip_width))
+        return QtCore.QRectF(clip_start_x - extra_padding,
+                             bounding_rect.y() - extra_padding,
+                             clip_width + (extra_padding * 2),
+                             bounding_rect.height() + (extra_padding * 2))

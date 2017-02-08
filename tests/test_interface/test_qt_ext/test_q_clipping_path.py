@@ -19,7 +19,8 @@ class TestQClippingPath(unittest.TestCase):
         path_item = QClippingPath(painter_path, 0, 500)
         path_item.setPen(self.pen_with_zero_width)
         expected_rect = painter_path.boundingRect()
-        result_rect = path_item._create_clipping_area(painter_path, None, None)
+        result_rect = path_item.create_clipping_area(
+            painter_path.boundingRect(), None, None, 0)
         assert(result_rect.x() == expected_rect.x())
         assert(result_rect.y() == expected_rect.y())
         assert(result_rect.width() == expected_rect.width())
@@ -30,7 +31,8 @@ class TestQClippingPath(unittest.TestCase):
         painter_path.lineTo(100, 200)
         path_item = QClippingPath(painter_path, 0, 500)
         path_item.setPen(self.pen_with_zero_width)
-        result_rect = path_item._create_clipping_area(painter_path, 50, None)
+        result_rect = path_item.create_clipping_area(
+            painter_path.boundingRect(), 50, None, 0)
         assert(result_rect.x() == 50)
         assert(result_rect.y() == painter_path.boundingRect().y())
         assert(result_rect.width() == 50)
@@ -41,7 +43,8 @@ class TestQClippingPath(unittest.TestCase):
         painter_path.lineTo(100, 200)
         path_item = QClippingPath(painter_path, 0, 500)
         path_item.setPen(self.pen_with_zero_width)
-        result_rect = path_item._create_clipping_area(painter_path, None, 50)
+        result_rect = path_item.create_clipping_area(
+            painter_path.boundingRect(), None, 50, 0)
         assert(result_rect.x() == 0)
         assert(result_rect.y() == painter_path.boundingRect().y())
         assert(result_rect.width() == 50)
@@ -52,7 +55,8 @@ class TestQClippingPath(unittest.TestCase):
         painter_path.lineTo(100, 200)
         path_item = QClippingPath(painter_path, 0, 500)
         path_item.setPen(self.pen_with_zero_width)
-        result_rect = path_item._create_clipping_area(painter_path, 25, 30)
+        result_rect = path_item.create_clipping_area(
+            painter_path.boundingRect(), 25, 30, 0)
         assert(result_rect.x() == 25)
         assert(result_rect.y() == painter_path.boundingRect().y())
         assert(result_rect.width() == 30)
