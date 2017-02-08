@@ -22,6 +22,7 @@ from brown.primitives.beam import Beam
 from brown.primitives.rhythm_dot import RhythmDot
 from brown.primitives.brace import Brace
 from brown.primitives.dynamic import Dynamic
+from brown.primitives.hairpin import Hairpin
 
 
 brown.setup()
@@ -60,6 +61,9 @@ p.render()
 
 sfz = Dynamic.sfz((Mm(25), staff.unit(6)), staff)
 sfz.render()
+
+hairpin = Hairpin((Mm(0), Mm(3), p), (Mm(0), Mm(3), sfz), 1)
+hairpin.render()
 
 slur = Slur((Mm(0), Mm(0), regular_text),
             (Mm(0), Mm(0), sfz))
