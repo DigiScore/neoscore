@@ -5,6 +5,7 @@ from brown.interface.pen_interface import PenInterface
 from brown.interface.brush_interface import BrushInterface
 from brown.utils.units import GraphicUnit
 from brown.utils.color import Color
+from brown.utils.stroke_pattern import StrokePattern
 
 from mock_graphic_object_interface import MockGraphicObjectInterface
 
@@ -41,7 +42,7 @@ class TestGraphicObjectInterface(unittest.TestCase):
         assert(grob.y == grob._qt_object.y())
 
     def test_pen_after_init(self):
-        pen = PenInterface(Color('#eeeeee'))
+        pen = PenInterface(Color('#eeeeee'), 0, StrokePattern(1))
         grob = MockGraphicObjectInterface((5, 6), pen=pen)
         assert(grob.pen == grob._pen)
         assert(grob.pen == pen)
@@ -49,7 +50,7 @@ class TestGraphicObjectInterface(unittest.TestCase):
 
     def test_pen_setter_changes_qt_object(self):
         grob = MockGraphicObjectInterface((5, 6), pen=None)
-        pen = PenInterface(Color('#eeeeee'))
+        pen = PenInterface(Color('#eeeeee'), 0, StrokePattern(1))
         grob.pen = pen
         assert(grob._qt_object.pen() == grob.pen._qt_object)
 
