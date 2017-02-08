@@ -1,7 +1,8 @@
 from brown.interface.pen_interface import PenInterface
 from brown.utils.color import Color
-from brown.config import config
 from brown.utils.units import GraphicUnit
+from brown.utils.stroke_pattern import StrokePattern
+from brown.config import config
 
 
 class Pen:
@@ -12,11 +13,13 @@ class Pen:
 
     _interface_class = PenInterface
 
-    def __init__(self, color='#000000', thickness=None):
+    def __init__(self, color='#000000', thickness=None, pattern=None):
         """
         Args:
             color (Color or args for Color): The stroke color
             thickness (Unit): The stroke thickness
+            pattern (StrokePattern or int enum value): The stroke pattern.
+                Defaults to a solid line.
         """
         if isinstance(color, Color):
             self.color = color
@@ -25,7 +28,10 @@ class Pen:
         else:
             self.color = Color(color)
         self.thickness = thickness
-        self._create_interface()
+        self.pattern = pattern
+        self._interface = self._interface_class(self.color,
+                                                self.thickness,
+                                                self.pattern)
 
     ######## PUBLIC PROPERTIES ########
 
@@ -49,15 +55,18 @@ class Pen:
 
     @thickness.setter
     def thickness(self, value):
-        if value is None:
-            value = GraphicUnit(config.DEFAULT_PEN_THICKNESS)
-        self._thickness = value
+        self._thickness = (value if value is not None
+                           else GraphicUnit(config.DEFAULT_PEN_THICKNESS))
 
-    ######## PRIVATE METHODS ########
+    @property
+    def pattern(self):
+        """StrokePattern: The stroke pattern.
 
-    def _create_interface(self):
-        """Construct an interface and store it in self._interface.
-
-        This should be called by self.__init__().
+        If set to None, the value defaults to `StrokePattern.SOLID`.
         """
-        self._interface = self._interface_class(self.color, self.thickness)
+        return self._pattern
+
+    @pattern.setter
+    def pattern(self, value):
+        self._pattern = (StrokePattern(value) if value is not None
+                         else StrokePattern.SOLID)

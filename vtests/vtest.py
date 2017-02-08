@@ -83,4 +83,9 @@ for i in range(0, 11):
                     lowest_staff,
                     scale_factor=factor).render()
 
+pen = Pen(pattern=3)
+explicit_path = Path((Mm(3), Mm(-4)), pen, parent=p)
+explicit_path.line_to(Mm(30), Mm(4))
+explicit_path.render()
+
 brown.show()
