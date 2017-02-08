@@ -6,6 +6,7 @@ from brown.interface.brush_interface import BrushInterface
 from brown.utils.units import GraphicUnit
 from brown.utils.point import Point
 from brown.utils.color import Color
+from brown.utils.stroke_pattern import StrokePattern
 
 
 class GraphicObjectInterface(ABC):
@@ -69,6 +70,8 @@ class GraphicObjectInterface(ABC):
 
     @pen.setter
     def pen(self, value):
+        # TODO: interface objects should really take a Pen as a mandatory arg,
+        #       higher level classes should handle default values.
         if value:
             if isinstance(value, str):
                 value = PenInterface(value)
@@ -77,7 +80,9 @@ class GraphicObjectInterface(ABC):
             else:
                 raise TypeError
         else:
-            value = PenInterface(Color(*config.DEFAULT_PEN_COLOR))
+            value = PenInterface(Color(*config.DEFAULT_PEN_COLOR),
+                                 GraphicUnit(config.DEFAULT_PEN_THICKNESS),
+                                 StrokePattern(1))
         self._pen = value
         self._qt_object.setPen(self._pen._qt_object)
 

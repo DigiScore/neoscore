@@ -19,7 +19,7 @@ DEFAULT_PEN_COLOR = (0, 0, 0)
 DEFAULT_BRUSH_COLOR = (0, 0, 0, 0)
 
 # Default pen thickness
-DEFAULT_PEN_THICKNESS = 2  # GraphicUnits
+DEFAULT_PEN_THICKNESS = 0  # GraphicUnits
 
 # Paper type
 DEFAULT_PAPER_TYPE = 'A4'

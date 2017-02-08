@@ -10,7 +10,7 @@ class PenInterface:
     Currently only solid colors are supported.
     """
 
-    def __init__(self, color, thickness=None, pattern=None):
+    def __init__(self, color, thickness, pattern):
         """
         Args:
             color (Color): The color for the pen
@@ -50,22 +50,16 @@ class PenInterface:
 
     @thickness.setter
     def thickness(self, value):
-        if value is None:
-            value = 0
         self._thickness = value
         self._qt_object.setWidthF(
             float(GraphicUnit(self._thickness)))
 
     @property
     def pattern(self):
-        """StrokePattern: The stroke pattern.
-
-        If set to None, the value defaults to `StrokePattern.SOLID`.
-        """
+        """StrokePattern: The stroke pattern."""
         return self._pattern
 
     @pattern.setter
     def pattern(self, value):
-        self._pattern = (StrokePattern(value) if value is not None
-                         else StrokePattern.SOLID)
+        self._pattern = StrokePattern(value)
         self._qt_object.setStyle(self.pattern.value)
