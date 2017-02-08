@@ -36,6 +36,23 @@ class Hairpin(Path, StaffObject, Spanner):
             'hairpinThickness']
         self._draw_path()
 
+    ######## PUBLIC PROPERTIES ########
+
+    @property
+    def direction(self):
+        """int: The direction of the hairpin.
+
+        `-1` means diminuendo (>) and `1` means crescendo (<).
+        """
+        return self._direction
+
+    @direction.setter
+    def direction(self, value):
+        if value != 1 and value != -1:
+            raise ValueError('Hairpin.direction must be -1 or 1')
+        else:
+            self._direction = value
+
     ######## PRIVATE METHODS ########
 
     def _find_hairpin_points(self):
