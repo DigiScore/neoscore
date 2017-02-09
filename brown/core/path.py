@@ -49,7 +49,7 @@ class Path(GraphicObject):
 
     @property
     def breakable_width(self):
-        """Unit: The breakable_width of the object.
+        """Unit: The breakable width of the object.
 
         This is used to determine how and where rendering cuts should be made.
         """
@@ -213,23 +213,28 @@ class Path(GraphicObject):
                                          PathElementType.curve_to,
                                          self, norm_end.parent))
 
-    def _render_slice(self, pos, start_x=None, length=None):
+    def _render_slice(self, pos, clip_start_x=None, clip_width=None):
         """Render a horizontal slice of a path.
 
         Args:
             pos (Point): The doc-space position of the slice beginning
                 (at the top-left corner of the slice)
-            start_x (Unit): The starting x position in the path of the slice
-            length (Unit): The horizontal length of the slice to be rendered
+            clip_start_x (Unit): The starting x position in the path of the slice
+            clip_width (Unit): The horizontal length of the slice to
+                be rendered
 
         Returns: None
+
+        TODO: There is a lot of repeated work going on with re-creating the
+              interface and re-drawing the interface path here. This should
+              be able to just be copied from one slice interface to the next.
         """
         slice_interface = self._interface_class(
             pos=pos,
             pen=self.pen._interface if self.pen else None,
             brush=self.brush._interface if self.brush else None,
-            clip_start_x=start_x,
-            clip_width=length)
+            clip_start_x=clip_start_x,
+            clip_width=clip_width)
         # Maintain a buffer of control points to be sent to the PathInterface
         control_point_buffer = []
         for element in self.elements:
@@ -256,7 +261,7 @@ class Path(GraphicObject):
         self.interfaces.add(slice_interface)
 
     def _render_complete(self, pos):
-        self._render_slice(pos, start_x=None, length=None)
+        self._render_slice(pos, None, None)
 
     def _render_before_break(self, local_start_x, start, stop):
         self._render_slice(start, local_start_x, stop.x - start.x)

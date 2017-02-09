@@ -59,6 +59,10 @@ class PathInterface(GraphicObjectInterface):
                 relative to the document.
             pen (PenInterface): The pen to draw outlines with.
             brush (BrushInterface): The brush to draw outlines with.
+            clip_start_x (Unit or None): The local starting position for the
+                path clipping region. Use `None` to render from the start.
+            clip_width (Unit or None): The width of the path clipping region.
+                Use `None` to render to the end
         """
         self._qt_path = QtGui.QPainterPath()
         self._qt_object = QClippingPath(self._qt_path,

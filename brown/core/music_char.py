@@ -1,3 +1,6 @@
+from brown.utils.rect import Rect
+
+
 class MusicChar:
     """A SMuFL music character.
 
@@ -45,3 +48,12 @@ class MusicChar:
     def glyph_info(self):
         """dict: The aggregated SMuFL metadata for this glyph"""
         return self._glyph_info
+
+    @property
+    def bounding_rect(self):
+        """Rect: The glyph bounding box."""
+        x = self.glyph_info['glyphBBox']['bBoxSW'][0]
+        y = self.glyph_info['glyphBBox']['bBoxNE'][1]
+        w = self.glyph_info['glyphBBox']['bBoxNE'][0] - x
+        h = (self.glyph_info['glyphBBox']['bBoxSW'][1] - y) * -1
+        return Rect(x, y, w, h)

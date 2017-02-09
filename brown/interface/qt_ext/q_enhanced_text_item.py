@@ -58,7 +58,8 @@ class QEnhancedTextItem(QtWidgets.QGraphicsSimpleTextItem):
         painter.scale(self.scale_factor, self.scale_factor)
         if self.clip_start_x is not None:
             clip_offset = QtCore.QPointF(
-                -1 * float(GraphicUnit(self.clip_start_x)), 0)
+                -1 * float(GraphicUnit(self.clip_start_x)),
+                0)
         else:
             clip_offset = QtCore.QPointF(0, 0)
         painter.translate((self.origin_offset * -1) + clip_offset)
@@ -70,7 +71,7 @@ class QEnhancedTextItem(QtWidgets.QGraphicsSimpleTextItem):
              if self.clip_start_x is not None else None),
             (self.clip_width / self.scale_factor
              if self.clip_width is not None else None),
-            self.pen().width())
+            self.pen().width() / self.scale_factor)
         painter.setClipRect(clip_area)
 
         super().paint(painter, option, widget)

@@ -2,6 +2,7 @@ from brown.interface.text_object_interface import TextObjectInterface
 from brown.core import brown
 from brown.core.graphic_object import GraphicObject
 from brown.utils.point import Point
+from brown.utils.rect import Rect
 from brown.utils.units import GraphicUnit
 
 
@@ -76,22 +77,44 @@ class TextObject(GraphicObject):
         """Position the object such that its first line baseline is at `y`"""
         self.y = y - self.font.ascent
 
+
     ######## PRIVATE METHODS ########
 
-    def _render_complete(self, pos):
-        """Render the entire object.
+    def _render_slice(self, pos, clip_start_x=None, clip_width=None):
+        """Render a horizontal slice of a path.
 
         Args:
-            pos (Point): The rendering position in document space for drawing.
+            pos (Point): The doc-space position of the slice beginning
+                (at the top-left corner of the slice)
+            clip_start_x (Unit): The starting local x position in of the slice
+            clip_width (Unit): The horizontal length of the slice to
+                be rendered
 
         Returns: None
         """
-        interface = self._interface_class(
+        slice_interface = self._interface_class(
             pos,
             self.text,
             self.font._interface,
             origin_offset=self._origin_offset,
-            scale_factor=self.scale_factor
-        )
-        interface.render()
-        self.interfaces.add(interface)
+            scale_factor=self.scale_factor,
+            clip_start_x=clip_start_x,
+            clip_width=clip_width)
+        slice_interface.render()
+        self.interfaces.add(slice_interface)
+
+    def _render_complete(self, pos):
+        print(f'TextObject._render_complete({pos})')
+        self._render_slice(pos, None, None)
+
+    def _render_before_break(self, local_start_x, start, stop):
+        print(f'TextObject._render_before_break({local_start_x, start, stop})')
+        self._render_slice(start, local_start_x, stop.x - start.x)
+
+    def _render_after_break(self, local_start_x, start, stop):
+        print(f'TextObject._render_after_break({local_start_x, start, stop})')
+        self._render_slice(start, local_start_x, stop.x - start.x)
+
+    def _render_spanning_continuation(self, local_start_x, start, stop):
+        print(f'TextObject._render_spanning_continuation({local_start_x, start, stop})')
+        self._render_slice(start, local_start_x, stop.x - start.x)

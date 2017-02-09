@@ -76,11 +76,11 @@ import random
 random_wiggles = [random.choice(['wiggleRandom1',
                                  'wiggleRandom2',
                                  'wiggleRandom3',
-                                 'wiggleRandom4']) for i in range(50)]
+                                 'wiggleRandom4']) for i in range(100)]
 
-MusicTextObject((Mm(25), lower_staff.unit(4)),
+MusicTextObject((Mm(25), staff.unit(2)),
                 random_wiggles,
-                lower_staff).render()
+                staff).render()
 
 for i in range(0, 50, 2):
     factor = 1 + (i / 10)
@@ -89,9 +89,16 @@ for i in range(0, 50, 2):
                     lowest_staff,
                     scale_factor=factor).render()
 
+print('rendering flowing_text')
+flowing_text = MusicTextObject((Mm(155), lower_staff.unit(3)),
+                               ['gClef'] * 130,
+                               lower_staff,
+                               scale_factor=1)
+flowing_text.render()
+
 pen = Pen(thickness=Mm(0.2), pattern=5)
-explicit_path = Path((Mm(3), Mm(-4)), pen, parent=p)
-explicit_path.line_to(Mm(300), Mm(20))
+explicit_path = Path((Mm(0), Mm(0)), pen, parent=p)
+explicit_path.line_to(Mm(500), Mm(20))
 explicit_path.render()
 
 brown.show()

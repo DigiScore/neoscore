@@ -149,11 +149,20 @@ class GraphicObject(ABC):
         """Find an object's position relative to the document origin.
 
         Return: Point
+
+        TODO: This doesn't actually work for objects *not* in a Flowable
+              (such as a flowable itself). The FlowableFrame._map_to_doc
+              method compensates for page offsets in the document space,
+              while this does not!
+
+              The logic around the difference between logical document
+              space and real, visual document space (including page
+              margins) clearly needs to be worked out further!
         """
         if not isinstance(item, GraphicObject):
             raise TypeError(
                 'Cannot map {} from origin'.format(type(item).__name__))
-        pos = Point.with_unit((0, 0), unit=Unit)
+        pos = Point(Unit(0), Unit(0))
         current = item
         while current is not None:
             pos += current.pos
@@ -203,32 +212,45 @@ class GraphicObject(ABC):
         remaining_x = self.breakable_width
         remaining_x += self.frame._dist_to_line_end(self.x)
         if remaining_x < 0:
-            # self._render_complete(self.frame._map_to_doc(self.pos))
-            global_pos = GraphicObject.map_from_origin(self)
             self._render_complete(GraphicObject.map_from_origin(self))
             return
-        first_line_i = self.frame._last_break_index_at(self.x)
+
+        # Calculate position within flowable
+        # (HACK while map_between_items with source=FlowableFrame is broken)
+        pos_in_flowable = Point(Unit(0), Unit(0))
+        current = self
+        while type(current).__name__ != 'FlowableFrame':
+            pos_in_flowable += current.pos
+            current = current.parent
+
         # Render before break
+        first_line_i = self.frame._last_break_index_at(pos_in_flowable.x)
         current_line = self.frame.layout_controllers[first_line_i]
-        render_start_pos = self.frame._map_to_doc(self.pos)
-        render_end_pos = render_start_pos + Point(-1 * self.frame._dist_to_line_end(self.x), 0)
+        render_start_pos = GraphicObject.map_from_origin(self)
+        first_line_length = self.frame._dist_to_line_end(pos_in_flowable.x) * -1
+        render_end_pos = (render_start_pos + Point(first_line_length, 0))
         self._render_before_break(Unit(0), render_start_pos, render_end_pos)
+
         # Iterate through remaining breakable_width
-        for current_line_i in range(first_line_i + 1, len(self.frame.layout_controllers)):
+        for current_line_i in range(first_line_i + 1,
+                                    len(self.frame.layout_controllers)):
             current_line = self.frame.layout_controllers[current_line_i]
             if remaining_x > current_line.length:
-                remaining_x -= current_line.length
                 # Render spanning continuation
                 render_start_pos = self.frame._map_to_doc(
-                    Point(current_line.x, self.y))
+                    Point(current_line.x, pos_in_flowable.y))
                 render_end_pos = render_start_pos + Point(current_line.length, 0)
-                self._render_spanning_continuation(self.breakable_width - remaining_x,
-                                                   render_start_pos,
-                                                   render_end_pos)
+                self._render_spanning_continuation(
+                    self.breakable_width - remaining_x,
+                    render_start_pos,
+                    render_end_pos)
+                remaining_x -= current_line.length
             else:
                 break
+
         # Render end
-        render_start_pos = self.frame._map_to_doc(Point(current_line.x, self.y))
+        render_start_pos = self.frame._map_to_doc(
+            Point(current_line.x, pos_in_flowable.y))
         render_end_pos = render_start_pos + Point(remaining_x, 0)
         self._render_after_break(self.breakable_width - remaining_x,
                                  render_start_pos,

@@ -2,6 +2,7 @@ from brown.core.text_object import TextObject
 from brown.primitives.staff_object import StaffObject
 from brown.utils.point import Point
 from brown.utils.rect import Rect
+from brown.utils.units import Unit
 from brown.core.music_char import MusicChar
 
 
@@ -54,6 +55,16 @@ class MusicTextObject(TextObject, StaffObject):
                             scale_factor=scale_factor)
         StaffObject.__init__(self, parent)
 
+    ######## PUBLIC PROPERTIES ########
+
+    @property
+    def breakable_width(self):
+        """Unit: The breakable width of the object.
+
+        This is used to determine how and where rendering cuts should be made.
+        """
+        return self._bounding_rect.width
+
     ######## PRIVATE PROPERTIES ########
 
     @property
@@ -69,7 +80,10 @@ class MusicTextObject(TextObject, StaffObject):
             char_y = char.glyph_info['glyphBBox']['bBoxNE'][1]
             w += char.glyph_info['glyphBBox']['bBoxNE'][0] - char_x
             h += (char.glyph_info['glyphBBox']['bBoxSW'][1] - char_y) * -1
-        return Rect(x, y, w, h)
+        return Rect((x + self._origin_offset.x) * self.scale_factor,
+                    (y + self._origin_offset.y) * self.scale_factor,
+                    w * self.scale_factor,
+                    h * self.scale_factor)
 
     @property
     def _origin_offset(self):

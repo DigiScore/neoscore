@@ -67,7 +67,8 @@ class QClippingPath(QtWidgets.QGraphicsPathItem):
             clip_width = bounding_rect.width() - clip_start_x
         else:
             clip_width = float(GraphicUnit(clip_width))
-        return QtCore.QRectF(clip_start_x - extra_padding,
-                             bounding_rect.y() - extra_padding,
-                             clip_width + (extra_padding * 2),
-                             bounding_rect.height() + (extra_padding * 2))
+        padding = float(GraphicUnit(extra_padding))
+        return QtCore.QRectF(clip_start_x - padding,
+                             bounding_rect.y() - padding,
+                             clip_width + (padding * 2),
+                             bounding_rect.height() + (padding * 2))
