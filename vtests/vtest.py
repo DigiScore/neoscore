@@ -82,7 +82,7 @@ MusicTextObject((Mm(25), lower_staff.unit(4)),
                 random_wiggles,
                 lower_staff).render()
 
-for i in range(0, 11):
+for i in range(0, 50, 2):
     factor = 1 + (i / 10)
     MusicTextObject((Mm(10 + i), lowest_staff.unit(4)),
                     ['brace', ('gClef', 1)],
