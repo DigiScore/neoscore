@@ -33,6 +33,7 @@ class GraphicObject(ABC):
                                  else Unit(0))
         self.pen = pen
         self.brush = brush
+        self._children = set()
         self.parent = parent
         self._interfaces = set()
 
@@ -113,7 +114,20 @@ class GraphicObject(ABC):
 
     @parent.setter
     def parent(self, value):
+        if hasattr(self, '_parent') and self._parent is not None:
+            self._parent._unregister_child(self)
         self._parent = value
+        if self._parent is not None:
+            self._parent._register_child(self)
+
+    @property
+    def children(self):
+        """set{GraphicObject}: All objects who have self as their parent."""
+        return self._children
+
+    @children.setter
+    def children(self, value):
+        self._children = value
 
     @property
     def frame(self):
@@ -201,6 +215,26 @@ class GraphicObject(ABC):
             self._render_complete(self.pos)
 
     ######## PRIVATE METHODS ########
+
+    def _register_child(self, child):
+        """Add an object to `self.children`.
+
+        Args:
+            child (GraphicObject): The object to add
+
+        Returns: None
+        """
+        self.children.add(child)
+
+    def _unregister_child(self, child):
+        """Remove an object from `self.children`.
+
+        Args:
+            child (GraphicObject): The object to remove
+
+        Returns: None
+        """
+        self.children.remove(child)
 
     def _render_flowable(self):
         """Render the object to the scene, dispatching partial rendering calls

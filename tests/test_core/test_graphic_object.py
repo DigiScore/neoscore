@@ -72,3 +72,21 @@ class TestGraphicObject(unittest.TestCase):
         expected_pos = (brown.document._page_origin_in_doc_space(1) +
                         Point(Mm(1), Mm(2)))
         self.assertEqual(test_object.document_pos, expected_pos)
+
+    def test_register_child(self):
+        parent = MockGraphicObject((0, 0))
+        child = MockGraphicObject((0, 0))
+        parent._register_child(child)
+        assert(child in parent.children)
+
+    def test_unregister_child(self):
+        parent = MockGraphicObject((0, 0))
+        child = MockGraphicObject((0, 0))
+        parent.children = {child}
+        parent._unregister_child(child)
+        assert(child not in parent.children)
+
+    def test_setting_parent_registers_self_with_parent(self):
+        parent = MockGraphicObject((0, 0))
+        child = MockGraphicObject((0, 0), parent=parent)
+        assert(child in parent.children)
