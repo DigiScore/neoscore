@@ -29,19 +29,14 @@ brown.setup()
 
 # Test hacky use of flowable coordinate space
 flow = FlowableFrame((Mm(0), Mm(0)), Mm(35000), Mm(30), Mm(10))
-flow.render()
 
 staff = Staff((Mm(0), Mm(0)), Mm(2000), flow, Mm(1))
-staff.render()
 
 lower_staff = Staff((Mm(0), Mm(9)), Mm(2000), flow, Mm(1))
-lower_staff.render()
 
 lowest_staff = Staff((Mm(10), Mm(18)), Mm(2000), flow, Mm(1))
-lowest_staff.render()
 
 barline = BarLine(Mm(30), [staff, lower_staff, lowest_staff])
-barline.render()
 
 staff.add_clef((0, 4), 'treble')
 lower_staff.add_clef((0, 4), 'treble')
@@ -54,23 +49,17 @@ regular_text = TextObject((Mm(20), staff.unit(-1)),
                           'piu mosso',
                           font=font,
                           parent=staff)
-regular_text.render()
 
 p = Dynamic((Mm(20), staff.unit(6)), 'p', staff)
-p.render()
 
 sfz = Dynamic.sfz((Mm(25), staff.unit(6)), staff)
-sfz.render()
 
 hairpin = Hairpin((Mm(0), Mm(3), p), (Mm(0), Mm(3), sfz), 1)
-hairpin.render()
 
 slur = Slur((Mm(0), Mm(0), regular_text),
             (Mm(0), Mm(0), sfz))
-slur.render()
 
 brace = Brace(Mm(0), Mm(500), {staff, lower_staff, lowest_staff})
-brace.render()
 
 import random
 random_wiggles = [random.choice(['wiggleRandom1',
@@ -80,25 +69,23 @@ random_wiggles = [random.choice(['wiggleRandom1',
 
 MusicTextObject((Mm(25), staff.unit(2)),
                 random_wiggles,
-                staff).render()
+                staff)
 
 for i in range(0, 50, 2):
     factor = 1 + (i / 10)
     MusicTextObject((Mm(10 + i), lowest_staff.unit(4)),
                     ['brace', ('gClef', 1)],
                     lowest_staff,
-                    scale_factor=factor).render()
+                    scale_factor=factor)
 
 print('rendering flowing_text')
 flowing_text = MusicTextObject((Mm(155), lower_staff.unit(3)),
                                ['gClef'] * 130,
                                lower_staff,
                                scale_factor=1)
-flowing_text.render()
 
 pen = Pen(thickness=Mm(0.2), pattern=5)
 explicit_path = Path((Mm(0), Mm(0)), pen, parent=p)
 explicit_path.line_to(Mm(500), Mm(20))
-explicit_path.render()
 
 brown.show()

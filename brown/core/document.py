@@ -1,10 +1,13 @@
 from brown.config import config
 from brown.utils.point import Point
 from brown.core.paper import Paper
-from brown.utils.units import Mm
+from brown.utils.units import Mm, GraphicUnit
+from brown.core.graphic_object import GraphicObject
 
 
-class Document:
+class Document(GraphicObject):
+
+    """A pseudo-object representing the document origin."""
 
     def __init__(self, paper=None):
         if paper is None:
@@ -16,6 +19,7 @@ class Document:
                         config.DEFAULT_PAPER_TYPE))
         else:
             self.paper = paper
+        GraphicObject.__init__(self, (GraphicUnit(0), GraphicUnit(0)))
 
     ######## PUBLIC PROPERTIES ########
 
@@ -27,6 +31,21 @@ class Document:
     @paper.setter
     def paper(self, value):
         self._paper = value
+
+    @property
+    def parent(self):
+        """None: By definition, a document has no parent.
+
+        This property exists only as an override of the GraphicObject
+        to prevent attempts to register the document with itself.
+        """
+        return None
+
+    @parent.setter
+    def parent(self, value):
+        # Override parent setter to do nothing since,
+        # by definition, a document has no parent
+        pass
 
     ######## PRIVATE PROPERTIES ########
 
@@ -72,3 +91,13 @@ class Document:
             Point: A document-space position
         """
         return pos + self._page_origin_in_doc_space(page_number)
+
+    ######## PUBLIC METHODS ########
+
+    def render(self):
+        """Render all items in the document.
+
+        Returns: None
+        """
+        for child in self.children:
+            child.render()

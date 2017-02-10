@@ -13,6 +13,9 @@ class AnchoredPoint(Point):
     iteration, and indexing; however the `parent` attribute can
     only be accessed by name:
 
+        >>> from brown.core import brown
+        >>> from brown.core.text_object import TextObject
+        >>> brown.setup()
         >>> from brown.core.text_object import TextObject
         >>> some_grob = TextObject((10, 11), 'A')
         >>> p = AnchoredPoint(5, 6, some_grob)
@@ -158,8 +161,10 @@ class AnchoredPoint(Point):
             unit (type): A Unit class.
 
         Example:
-            >>> from brown.utils.units import Inch
+            >>> from brown.core import brown
             >>> from brown.core.text_object import TextObject
+            >>> from brown.utils.units import Inch
+            >>> brown.setup()
             >>> some_grob = TextObject((10, 11), 'A')
             >>> p = AnchoredPoint.with_unit(2, 3, unit=Inch)
             >>> print(p.x)

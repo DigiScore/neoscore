@@ -21,4 +21,4 @@ class TestInvisibleObject(unittest.TestCase):
     def test_default_init_values(self):
         # API default values canary
         test_object = InvisibleObject((5, 6))
-        assert(test_object.parent is None)
+        assert(test_object.parent == brown.document)

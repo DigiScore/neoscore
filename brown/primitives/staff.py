@@ -116,10 +116,6 @@ class Staff(Path):
         """
         pos_x = self.beat(*time)
         self.contents.append(Clef(self, pos_x, clef_type))
-        # HACK: Render immediately. Later on, this is probably a good
-        #       case for removing user-facing render() calls, and
-        #       instead having a master brown.render() method.
-        self.contents[-1].render()
 
     def add_time_signature(self, measure_number, duration):
         """Add a time signature.
@@ -139,7 +135,6 @@ class Staff(Path):
         pos_x = self.beat(measure_number, 1)
         duration = self.beat(*duration)
         self.contents.append(TimeSignature(pos_x, duration, self))
-        self.contents[-1].render()
 
     def add_chordrest(self, time, pitches, duration):
         """
@@ -152,7 +147,6 @@ class Staff(Path):
         pos_x = self.beat(*time)
         duration = self.beat(*duration)
         self.contents.append(ChordRest(pos_x, self, pitches, duration))
-        self.contents[-1].render()
 
     # Other methods -----------------------------------------------------------
 

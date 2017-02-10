@@ -2,8 +2,6 @@ import json
 
 from brown.config import config
 from brown.interface.app_interface import AppInterface, FontRegistrationError
-from brown.core.brush import Brush
-from brown.core.pen import Pen
 from brown.core.font import Font
 from brown.core.document import Document
 
@@ -79,9 +77,10 @@ def register_music_font(font_file_path, metadata_path):
     return font_id, metadata
 
 
-
-
 def show():
+    global document
+    global _app_interface
+    document.render()
     _app_interface.show()
 
 

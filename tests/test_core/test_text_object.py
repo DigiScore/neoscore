@@ -31,6 +31,5 @@ class TestTextObject(unittest.TestCase):
     def test_default_init_values(self):
         # API default values canary
         test_object = TextObject((5, 6), 'testing')
-        # When no font is passed, the global brown default text_font is used
         assert(test_object.font == brown.text_font)
-        assert(test_object.parent is None)
+        assert(test_object.parent == brown.document)

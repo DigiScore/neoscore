@@ -1,5 +1,6 @@
 from abc import ABC
 
+from brown.core import brown
 from brown.utils.units import Unit
 from brown.utils.point import Point
 
@@ -116,9 +117,10 @@ class GraphicObject(ABC):
     def parent(self, value):
         if hasattr(self, '_parent') and self._parent is not None:
             self._parent._unregister_child(self)
+        if value is None:
+            value = brown.document
         self._parent = value
-        if self._parent is not None:
-            self._parent._register_child(self)
+        self._parent._register_child(self)
 
     @property
     def children(self):
@@ -173,12 +175,9 @@ class GraphicObject(ABC):
               space and real, visual document space (including page
               margins) clearly needs to be worked out further!
         """
-        if not isinstance(item, GraphicObject):
-            raise TypeError(
-                'Cannot map {} from origin'.format(type(item).__name__))
         pos = Point(Unit(0), Unit(0))
         current = item
-        while current is not None:
+        while type(current).__name__ != 'Document':
             pos += current.pos
             current = current.parent
             if type(current).__name__ == 'FlowableFrame':
@@ -205,7 +204,7 @@ class GraphicObject(ABC):
     ######## PUBLIC METHODS ########
 
     def render(self):
-        """Render the object to the scene.
+        """Render the object and all its children.
 
         Returns: None
         """
@@ -213,6 +212,8 @@ class GraphicObject(ABC):
             self._render_flowable()
         else:
             self._render_complete(self.pos)
+        for child in self.children:
+            child.render()
 
     ######## PRIVATE METHODS ########
 
