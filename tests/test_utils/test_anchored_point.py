@@ -27,17 +27,13 @@ class TestAnchoredPoint(unittest.TestCase):
         assert(test_point.y == 6)
         assert(test_point.parent == self.test_parent)
 
-    def test_with_unit(self):
-        test_point = AnchoredPoint.with_unit(5, 6, self.test_parent, unit=Unit)
+    def test_to_unit(self):
+        test_point = AnchoredPoint(5, 6, self.test_parent).to_unit(Unit)
         assert(isinstance(test_point.x, Unit))
         assert(isinstance(test_point.y, Unit))
         assert(test_point.x == Unit(5))
         assert(test_point.y == Unit(6))
         assert(test_point.parent == self.test_parent)
-
-    def test_with_unit_fails_if_unit_not_set(self):
-        with assert_raises(TypeError):
-            AnchoredPoint.with_unit(5, 6, self.test_parent)
 
     def test_indexing_with_invalid_raises_IndexError(self):
         test_point = AnchoredPoint(5, 6, self.test_parent)

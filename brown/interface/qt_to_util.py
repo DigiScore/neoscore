@@ -42,8 +42,7 @@ def qt_point_to_point(qt_point, unit=None):
     Returns: Point
     """
     if unit:
-        return Point.with_unit(qt_point.x(), qt_point.y(),
-                               unit=unit)
+        return Point(qt_point.x(), qt_point.y()).to_unit(unit)
     else:
         return Point(qt_point.x(), qt_point.y())
 
@@ -82,9 +81,8 @@ def qt_rect_to_rect(qt_rect, unit=None):
     Returns: Rect
     """
     if unit:
-        return Rect.with_unit(qt_rect.x(), qt_rect.y(),
-                              qt_rect.width(), qt_rect.height(),
-                              unit)
+        return Rect(qt_rect.x(), qt_rect.y(),
+                    qt_rect.width(), qt_rect.height()).to_unit(unit)
     else:
         return Rect(qt_rect.x(), qt_rect.y(),
                     qt_rect.width(), qt_rect.height())

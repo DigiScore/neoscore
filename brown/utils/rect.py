@@ -18,29 +18,28 @@ class Rect:
         self._width = width
         self._height = height
 
-    ######## CLASS METHODS ########
-
-    @classmethod
-    def with_unit(cls, x, y, width, height, unit):
-        """Initialize a Rect and convert its values to a unit.
-
-        Args:
-            x (int, float, or Unit): The starting x position
-            y (int, float, or Unit): The starting y position
-            width (int, float, or Unit): The width of the rectangle
-            height (int, float, or Unit): The height of the rectangle
-            unit (type): A Unit class
-
-        Returns: Rect
-        """
-        return cls(unit(x), unit(y),
-                   unit(width), unit(height))
-
     ######## SPECIAL METHODS ########
 
     def __repr__(self):
         return '{}({}, {}, {}, {})'.format(
             type(self).__name__, self.x, self.y, self.width, self.height)
+
+    ######## PUBLIC METHODS ########
+
+    def to_unit(self, unit):
+        """Translate properties to be of a certain unit type.
+
+        Args:
+            unit (type): A Unit class.
+
+        Returns:
+            Rect: the modified self rect.
+        """
+        self._x = unit(self.x)
+        self._y = unit(self.y)
+        self._width = unit(self.width)
+        self._height = unit(self.height)
+        return self
 
     ######## PUBLIC PROPERTIES ########
 

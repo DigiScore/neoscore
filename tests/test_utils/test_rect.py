@@ -10,8 +10,8 @@ def test_rect_init():
     assert(rect.height == 100)
 
 
-def test_rect_with_unit():
-    rect = Rect.with_unit(1, 2, 99, 100, GraphicUnit)
+def test_rect_to_unit():
+    rect = Rect(1, 2, 99, 100).to_unit(GraphicUnit)
     assert(isinstance(rect.x, GraphicUnit))
     assert(rect.x == GraphicUnit(1))
     assert(isinstance(rect.y, GraphicUnit))

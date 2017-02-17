@@ -15,16 +15,10 @@ class TestPoint(unittest.TestCase):
         assert(test_point.x == 5)
         assert(test_point.y == 6)
 
-    def test_with_unit(self):
-        test_point = Point.with_unit(5, 6, Unit)
-        assert(isinstance(test_point.x, Unit))
-        assert(isinstance(test_point.y, Unit))
-        assert(test_point.x == Unit(5))
-        assert(test_point.y == Unit(6))
-
     def test_to_unit_from_int(self):
         test_point = Point(5, 6)
-        test_point.to_unit(Unit)
+        returned_value = test_point.to_unit(Unit)
+        assert(test_point == returned_value)
         assert(isinstance(test_point.x, Unit))
         assert(isinstance(test_point.y, Unit))
         assert(test_point.x == Unit(5))

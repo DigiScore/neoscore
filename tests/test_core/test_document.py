@@ -85,7 +85,7 @@ class TestDocument(unittest.TestCase):
                            top_margin, Mm(10), Mm(20), left_margin, 0)
         test_doc = Document(test_paper)
         doc_pos = test_doc._page_pos_to_doc(
-            Point.with_unit(10, 11, unit=Mm), 3)
+            Point(10, 11).to_unit(Mm), 3)
         expected_x = (left_margin +
                       ((width + test_doc._page_display_gap) * 2)) + Mm(10)
         expected_y = top_margin + Mm(11)

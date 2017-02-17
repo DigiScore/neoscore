@@ -103,30 +103,6 @@ class AnchoredPoint(Point):
         return '{}({}, {}, parent={})'.format(type(self).__name__,
                                               self.x, self.y, self.parent)
 
-    ######## PRIVATE CLASS METHODS ########
-
-    @classmethod
-    def with_unit(cls, x, y, parent, unit):
-        """Create an AnchoredPoint and ensure its coordinates are in a type of unit.
-
-        Args:
-            x (float or Unit):
-            y (float or Unit):
-            parent (GraphicObject): The object this point is anchored to.
-            unit (type): A Unit class.
-
-        Returns: AnchoredPoint
-
-        TODO: Replace this method with the pattern:
-
-                  Point(x, y).to_unit()
-
-              and make to_unit() return the point (instead of None)
-        """
-        point = cls(x, y, parent)
-        point.to_unit(unit)
-        return point
-
     ######## PUBLIC PROPERTIES ########
 
     @property

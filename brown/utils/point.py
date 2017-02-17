@@ -31,35 +31,6 @@ class Point:
     ######## PRIVATE CLASS METHODS ########
 
     @classmethod
-    def with_unit(cls, x, y, unit):
-        """Create a Point and ensure its coordinates are in a type of unit.
-
-        Args:
-            x (float or Unit): The x axis position
-            y (float or Unit): The y axis position
-            unit (type): A Unit class.
-
-        Returns: Point
-
-        Example:
-            >>> from brown.utils.units import Inch
-            >>> p = Point.with_unit(2, 3, unit=Inch)
-            >>> print(p.x)
-            Inch(2)
-            >>> print(p.y)
-            Inch(3)
-
-        TODO: Replace this method with the pattern:
-
-                  Point(x, y).to_unit()
-
-              and make to_unit() return the point (instead of None)
-        """
-        point = cls(x, y)
-        point.to_unit(unit)
-        return point
-
-    @classmethod
     def from_existing(cls, point):
         """Create a point from an existing one, cloning its properties.
 
@@ -98,10 +69,12 @@ class Point:
         Args:
             unit (type): A Unit class.
 
-        Returns: None
+        Returns:
+            Point: the modified self point.
         """
         self.x = unit(self.x)
         self.y = unit(self.y)
+        return self
 
     def setters_hook(self):
         """Optional method to be called when an attribute changes.
