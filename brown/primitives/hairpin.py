@@ -77,7 +77,6 @@ class Hairpin(Path, StaffObject, Spanner):
             joint = self.start
             end_center = self.stop
         dist = self.width / 2
-
         # Find relative distance from joint to end_center
         parent_distance = GraphicObject.map_between_items(
             joint.parent, end_center.parent)
@@ -89,7 +88,7 @@ class Hairpin(Path, StaffObject, Spanner):
                 (AnchoredPoint(end_center.x,
                                end_center.y + dist,
                                end_center.parent)),
-                (AnchoredPoint(joint)),
+                joint,
                 (AnchoredPoint(end_center.x,
                                end_center.y - dist,
                                end_center.parent))
@@ -99,7 +98,7 @@ class Hairpin(Path, StaffObject, Spanner):
                 (AnchoredPoint(end_center.x + dist,
                                end_center.y,
                                end_center.parent)),
-                (AnchoredPoint(joint)),
+                joint,
                 (AnchoredPoint(end_center.x - dist,
                                end_center.y,
                                end_center.parent))
@@ -125,7 +124,7 @@ class Hairpin(Path, StaffObject, Spanner):
         last_y = (opening_slope * last_x) - opening_y_intercept
         return(
                 (AnchoredPoint(first_x, first_y, end_center.parent)),
-                (AnchoredPoint(joint)),
+                joint,
                 (AnchoredPoint(last_x, last_y, end_center.parent))
         )
 
@@ -135,6 +134,6 @@ class Hairpin(Path, StaffObject, Spanner):
         Returns: None
         """
         first, mid, last = self._find_hairpin_points()
-        self.move_to(first)
-        self.line_to(mid)
-        self.line_to(last)
+        self.move_to(*first)
+        self.line_to(*mid)
+        self.line_to(*last)

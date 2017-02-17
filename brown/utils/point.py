@@ -39,6 +39,8 @@ class Point:
             y (float or Unit): The y axis position
             unit (type): A Unit class.
 
+        Returns: Point
+
         Example:
             >>> from brown.utils.units import Inch
             >>> p = Point.with_unit(2, 3, unit=Inch)

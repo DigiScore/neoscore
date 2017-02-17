@@ -44,7 +44,7 @@ class TestPath(unittest.TestCase):
 
     def test_line_to(self):
         path = Path((5, 6))
-        path.line_to((10, 12))
+        path.line_to(10, 12)
         assert(len(path.elements) == 2)
         assert(path.elements[-1].pos.x == 10)
         assert(path.current_path_position.x == 10)
@@ -91,7 +91,7 @@ class TestPath(unittest.TestCase):
 
     def test_move_to_with_no_parent(self):
         path = Path((5, 6))
-        path.move_to((10, 11))
+        path.move_to(10, 11)
         assert(len(path.elements) == 1)
         assert(path.elements[0].element_type == PathElementType.move_to)
         assert(path.elements[0].pos == Point(10, 11))
@@ -101,7 +101,7 @@ class TestPath(unittest.TestCase):
     def test_move_to_with_parent(self):
         path = Path((0, 0))
         parent = MockGraphicObject((100, 50))
-        path.move_to((10, 11), parent)
+        path.move_to(10, 11, parent)
         assert(len(path.elements) == 1)
         assert(path.elements[0].element_type == PathElementType.move_to)
         assert(path.elements[0].pos == Point(10, 11))
@@ -111,8 +111,8 @@ class TestPath(unittest.TestCase):
 
     def test_close_subpath(self):
         path = Path((5, 6))
-        path.line_to((10, 10))
-        path.line_to((10, 100))
+        path.line_to(10, 10)
+        path.line_to(10, 100)
         path.close_subpath()
         assert(len(path.elements) == 4)
         assert(path.elements[3].element_type == PathElementType.move_to)

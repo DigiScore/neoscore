@@ -38,55 +38,16 @@ class AnchoredPoint(Point):
         True
 
     """
-    def __init__(self, *args):
+    def __init__(self, x, y, parent=None):
         """
-        *args: One of:
-            * An `x, y` pair outside of a tuple (parent will be None)
-            * An `(x, y)` pair (parent will be None)
-            * An `x, y, parent` triple outside of a tuple
-            * An `(x, y, parent)` 3-tuple
-            * An `(x, y)` pair and a `parent`
-            * An `Point` and a `parent`
-            * An existing `AnchoredPoint`
-            * An existing `Point` (parent will be None)
-
-        All of the following are valid init signatures:
-            * `AnchoredPoint(5, 6)`
-            * `AnchoredPoint((5, 6))`
-            * `AnchoredPoint(5, 6, some_grob)`
-            * `AnchoredPoint((5, 6, some_grob))`
-            * `AnchoredPoint((5, 6), some_grob)`
-            * `AnchoredPoint(some_existing_point, some_grob)`
-            * `AnchoredPoint(some_existing_anchored_point)`
-            * `AnchoredPoint(some_existing_point)`
+        Args:
+            x (float or Unit):
+            y (float or Unit):
+            parent (GraphicObject or None): The object this point
+                is anchored to. If None, this object acts like a Point
         """
-        if len(args) == 1:
-            if isinstance(args[0], tuple):
-                self._x = args[0][0]
-                self._y = args[0][1]
-                self._parent = args[0][2] if len(args[0]) == 3 else None
-            elif isinstance(args[0], Point):
-                self._x = args[0].x
-                self._y = args[0].y
-                self._parent = (args[0].parent
-                                if isinstance(args[0], type(self)) else None)
-            else:
-                raise ValueError('Invalid args for {}.__init__()'.format(
-                    type(self).__name__))
-        elif len(args) == 2:
-            if isinstance(args[0], (tuple, Point)):
-                self._x, self._y = args[0]
-                self._parent = args[1]
-            else:
-                self._x, self._y = args
-                self._parent = None
-        elif len(args) == 3:
-            self._x, self._y, self._parent = args
-        else:
-            raise ValueError('Invalid args for {}.__init__()'.format(
-                    type(self).__name__))
-
-        self._iter_index = 0
+        super().__init__(x, y)
+        self._parent = parent
 
     ######## SPECIAL METHODS ########
 
@@ -136,7 +97,7 @@ class AnchoredPoint(Point):
         if not isinstance(other, (Unit, int, float)):
             raise TypeError('Cannot multiply "{}" and "{}"'.format(
                 type(self).__name__, type(other).__name__))
-        return type(self)(self.x * other, self.y * other)
+        return type(self)(self.x * other, self.y * other, self.parent)
 
     def __repr__(self):
         return '{}({}, {}, parent={})'.format(type(self).__name__,
@@ -145,43 +106,24 @@ class AnchoredPoint(Point):
     ######## PRIVATE CLASS METHODS ########
 
     @classmethod
-    def with_unit(cls, *args, unit=None):
+    def with_unit(cls, x, y, parent, unit):
         """Create an AnchoredPoint and ensure its coordinates are in a type of unit.
 
-        *args: One of:
-            - An `x, y` pair outside of a tuple (parent will be None)
-            - An `(x, y)` pair (parent will be None)
-            - An `x, y, parent` triple outside of a tuple
-            - An `(x, y, parent)` 3-tuple
-            - An `(x, y)` pair and a `parent`
-            - An existing AnchoredPoint
-            - An existing Point (parent will be None)
-
-        kwargs:
+        Args:
+            x (float or Unit):
+            y (float or Unit):
+            parent (GraphicObject): The object this point is anchored to.
             unit (type): A Unit class.
 
-        Example:
-            >>> from brown.core import brown
-            >>> from brown.core.text_object import TextObject
-            >>> from brown.utils.units import Inch
-            >>> brown.setup()
-            >>> some_grob = TextObject((10, 11), 'A')
-            >>> p = AnchoredPoint.with_unit(2, 3, unit=Inch)
-            >>> print(p.x)
-            Inch(2)
-            >>> print(p.y)
-            Inch(3)
+        Returns: AnchoredPoint
 
-        Warning: Due to the flexibility of constructor options in Points,
-            `unit` must be passed as a keyword argument.
+        TODO: Replace this method with the pattern:
 
-        TODO: Fix unnecessary explicit kwarg,
-              rework constructor signature if needed.
+                  Point(x, y).to_unit()
+
+              and make to_unit() return the point (instead of None)
         """
-        if unit is None:
-            raise TypeError('unit must be set to a Unit or subclass.'
-                            ' (Did you forget to pass it as a kwarg?)')
-        point = cls(*args)
+        point = cls(x, y, parent)
         point.to_unit(unit)
         return point
 

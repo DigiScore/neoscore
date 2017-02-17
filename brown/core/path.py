@@ -42,7 +42,9 @@ class Path(GraphicObject):
         Returns: Path
         """
         line = cls(start, pen, brush, parent)
-        line.line_to(stop)
+        if isinstance(stop, tuple):
+            stop = AnchoredPoint(*stop)
+        line.line_to(stop.x, stop.y)
         return line
 
     ######## PUBLIC PROPERTIES ########
@@ -97,7 +99,7 @@ class Path(GraphicObject):
 
     ######## Public Methods ########
 
-    def line_to(self, *args):
+    def line_to(self, x, y, parent=None):
         """Draw a path from the current position to a new point.
 
         Connect a path from the current position to a new position specified
@@ -107,52 +109,36 @@ class Path(GraphicObject):
         a separate GraphicObject. In this case, the coordinates passed will be
         considered relative to the parent.
 
-        *args:
-            Any valid set of args to initialize an AnchoredPoint:
-            - An `x, y` pair outside of a tuple (parent will be None)
-            - An `(x, y)` pair (parent will be None)
-            - An `x, y, parent` triple outside of a tuple
-            - An `(x, y, parent)` 3-tuple
-            - An `(x, y)` pair and a `parent`
-            - An `Point` and a `parent`
-            - An existing `AnchoredPoint`
-            - An existing `Point` (parent will be None)
+        Args:
+            x (Unit):
+            y (Unit):
+            parent (GraphicObject): An optional point parent
 
         Returns: None
         """
-        point = AnchoredPoint(*args)
-        if point.parent is None:
-            point.parent = self
         if len(self.elements) == 0:
             self.elements.append(PathElement((GraphicUnit(0), GraphicUnit(0)),
                                              PathElementType.move_to,
                                              self, self))
+        point = AnchoredPoint(x, y, parent if parent is not None else self)
         self.elements.append(PathElement(point, PathElementType.line_to,
                                          self, point.parent))
 
-    def move_to(self, *args):
+    def move_to(self, x, y, parent=None):
         """Close the current sub-path and start a new one.
 
         A point parent may be passed as well, anchored the target point to
         a separate GraphicObject. In this case, the coordinates passed will be
         considered relative to the parent.
 
-        *args:
-            Any valid set of args to initialize an AnchoredPoint:
-            - An `x, y` pair outside of a tuple (parent will be None)
-            - An `(x, y)` pair (parent will be None)
-            - An `x, y, parent` triple outside of a tuple
-            - An `(x, y, parent)` 3-tuple
-            - An `(x, y)` pair and a `parent`
-            - An `Point` and a `parent`
-            - An existing `AnchoredPoint`
-            - An existing `Point` (parent will be None)
+        Args:
+            x (Unit):
+            y (Unit):
+            parent (GraphicObject): An optional point parent
 
         Returns: None
         """
-        point = AnchoredPoint(*args)
-        if point.parent is None:
-            point.parent = self
+        point = AnchoredPoint(x, y, parent if parent is not None else self)
         self.elements.append(PathElement(point, PathElementType.move_to,
                                          self, point.parent))
 
@@ -168,7 +154,7 @@ class Path(GraphicObject):
             If you need to anchor the new move_to point, use an explicit
             move_to((0, 0), parent) instead.
         """
-        self.move_to((GraphicUnit(0), GraphicUnit(0)))
+        self.move_to(GraphicUnit(0), GraphicUnit(0))
 
     def cubic_to(self, control_1, control_2, end):
         """Draw a cubic bezier curve from the current position to a new point.
@@ -176,42 +162,43 @@ class Path(GraphicObject):
         Moves `self.current_path_position` to the new end point.
 
         Args:
-            control_1 (Point, AnchoredPoint, or tuple): The position of the
+            control_1 (AnchoredPoint or tuple init args): The position of the
                 1st control point with an optional parent. If a parent is
                 provided, the coordinate will be relative to that.
-            control_2 (Point, AnchoredPoint, or tuple): The position of the
+            control_2 (AnchoredPoint or tuple init args): The position of the
                 2nd control point with an optional parent. If a parent is
                 provided, the coordinate will be relative to that.
-            end (Point, AnchoredPoint, or tuple): The position of the
+            end (AnchoredPoint or tuple init args): The position of the
                 1st control point with an optional parent. If a parent is
                 provided, the coordinate will be relative to that.
 
-        Returns: None
+        If any points have parents of None, the parent will
+        default to the path.
 
-        Notes:
-            The points may be passed in any valid set of initialization
-            arguments for AnchoredPoint objects. See the docs on AnchoredPoint
-            for a more thorough explanation.
+        Returns: None
         """
         if len(self.elements) == 0:
             self.elements.append(PathElement((GraphicUnit(0), GraphicUnit(0)),
                                              PathElementType.move_to,
                                              self, self))
-        norm_control_1 = AnchoredPoint(control_1)
-        norm_control_2 = AnchoredPoint(control_2)
-        norm_end = AnchoredPoint(end)
-        for point in [norm_control_1, norm_control_2, norm_end]:
+        if isinstance(control_1, tuple):
+            control_1 = AnchoredPoint(*control_1)
+        if isinstance(control_2, tuple):
+            control_2 = AnchoredPoint(*control_2)
+        if isinstance(end, tuple):
+            end = AnchoredPoint(*end)
+        for point in [control_1, control_2, end]:
             if not point.parent:
                 point.parent = self
-        self.elements.append(PathElement(norm_control_1,
+        self.elements.append(PathElement(control_1,
                                          PathElementType.control_point,
-                                         self, norm_control_1.parent))
-        self.elements.append(PathElement(norm_control_2,
+                                         self, control_1.parent))
+        self.elements.append(PathElement(control_2,
                                          PathElementType.control_point,
-                                         self, norm_control_2.parent))
-        self.elements.append(PathElement(norm_end,
+                                         self, control_2.parent))
+        self.elements.append(PathElement(end,
                                          PathElementType.curve_to,
-                                         self, norm_end.parent))
+                                         self, end.parent))
 
     def _render_slice(self, pos, clip_start_x=None, clip_width=None):
         """Render a horizontal slice of a path.

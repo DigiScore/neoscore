@@ -15,5 +15,13 @@ class Spanner:
             start (AnchoredPoint or tuple init args):
             stop (AnchoredPoint or tuple init args):
         """
-        self.start = AnchoredPoint(start)
-        self.stop = AnchoredPoint(stop)
+        if isinstance(start, tuple):
+            start = AnchoredPoint(*start)
+        if start.parent is None:
+            start.parent = self
+        if isinstance(stop, tuple):
+            stop = AnchoredPoint(*stop)
+        if stop.parent is None:
+            stop.parent = self
+        self.start = start
+        self.stop = stop

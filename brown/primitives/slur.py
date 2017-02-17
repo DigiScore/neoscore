@@ -50,9 +50,9 @@ class Slur(Path, StaffObject, Spanner):
                             self.direction)
         end_height = (self.endpoint_thickness) * self.direction
         # Draw upper curve part
-        self.move_to(AnchoredPoint(self.staff.unit(0),
-                                   end_height,
-                                   self.start.parent))
+        self.move_to(self.staff.unit(0),
+                     end_height,
+                     self.start.parent)
         control_1 = AnchoredPoint(self.staff.unit(1),
                                   mid_upper_height,
                                   self.start.parent)
@@ -64,9 +64,9 @@ class Slur(Path, StaffObject, Spanner):
                             self.stop.parent)
         self.cubic_to(control_1, control_2, end)
         # Draw right-side end
-        self.line_to(AnchoredPoint(self.staff.unit(0),
-                                   self.staff.unit(0),
-                                   self.stop.parent))
+        self.line_to(self.staff.unit(0),
+                     self.staff.unit(0),
+                     self.stop.parent)
         # Draw lower curve part
         control_1 = AnchoredPoint(self.staff.unit(-1),
                                   mid_height,
