@@ -14,8 +14,10 @@ def linear_interp(line_start, line_end, x):
 
     Returns: Unit
     """
-    line_start = Point(line_start)
-    line_end = Point(line_end)
+    if not isinstance(line_start, Point):
+        line_start = Point(*line_start)
+    if not isinstance(line_end, Point):
+        line_end = Point(*line_end)
     slope = (line_end.y - line_start.y) / (line_end.x - line_start.x)
     y_intercept = line_start.y - (slope * line_start.x)
     return (slope * x) + y_intercept

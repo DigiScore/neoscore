@@ -115,7 +115,7 @@ class TestFlowableFrame(unittest.TestCase):
     def test_map_to_doc_in_first_line(self):
         frame_pos = Point(Mm(10), Mm(11))
         test_frame = FlowableFrame(frame_pos, Mm(2500), Mm(100), Mm(20))
-        test_pos = Point((Mm(100), Mm(40)))
+        test_pos = Point(Mm(100), Mm(40))
         page_origin = brown.document._page_origin_in_doc_space(1)
         expected_x = page_origin.x + frame_pos.x + test_pos.x
         expected_y = brown.document.paper.margin_top + frame_pos.y + test_pos.y

@@ -91,7 +91,7 @@ class FlowableFrame(InvisibleObject):
         x_progress = Mm(0)
         # Current position on the page relative to the top left corner
         # of the live page area
-        pos_on_page = Point(self.pos)
+        pos_on_page = Point(self.pos.x, self.pos.y)
         page_number = 1
         # Attach initial starting NewLine
         self.layout_controllers.append(

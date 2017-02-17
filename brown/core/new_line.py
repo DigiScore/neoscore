@@ -21,8 +21,8 @@ class NewLine(LayoutController):
               Something should change so all use the same order.
         """
         super().__init__(flowable_frame, x)
-        self._page_pos = Point(page_pos)
         self._page_number = page_number
+        self.page_pos = page_pos
         self.offset_y = offset_y
 
     ######## PUBLIC PROPERTIES ########
@@ -45,6 +45,14 @@ class NewLine(LayoutController):
     def page_pos(self):
         """Point: The page position of the top left corner of this line."""
         return self._page_pos
+
+    @page_pos.setter
+    def page_pos(self, value):
+        if not isinstance(value, Point):
+            value = Point(*value)
+        else:
+            value = Point.from_existing(value)
+        self._page_pos = value
 
     @property
     def doc_start_pos(self):

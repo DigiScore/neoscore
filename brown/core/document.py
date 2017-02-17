@@ -19,7 +19,7 @@ class Document(GraphicObject):
                         config.DEFAULT_PAPER_TYPE))
         else:
             self.paper = paper
-        GraphicObject.__init__(self, (GraphicUnit(0), GraphicUnit(0)))
+        GraphicObject.__init__(self, Point(GraphicUnit(0), GraphicUnit(0)))
 
     ######## PUBLIC PROPERTIES ########
 

@@ -1,10 +1,7 @@
 from PyQt5 import QtWidgets, QtCore
 
-from brown.interface.graphic_object_interface import GraphicObjectInterface
 from brown.core import brown
-from brown.utils.units import GraphicUnit
-from brown.utils.point import Point
-from brown.interface.qt_to_util import point_to_qt_point_f
+from brown.interface.graphic_object_interface import GraphicObjectInterface
 
 
 class InvisibleObjectInterface(GraphicObjectInterface):
@@ -29,7 +26,7 @@ class InvisibleObjectInterface(GraphicObjectInterface):
         self._qt_object = QtWidgets.QGraphicsRectItem(q_rect)
         self._qt_object.setFlag(QtWidgets.QGraphicsItem.ItemHasNoContents)
         # Let pos setter set _qt_object position
-        self.pos = Point.with_unit(pos, unit=GraphicUnit)
+        self.pos = pos
 
     def render(self):
         brown._app_interface.scene.addItem(self._qt_object)

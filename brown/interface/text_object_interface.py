@@ -45,7 +45,7 @@ class TextObjectInterface(GraphicObjectInterface):
             clip_width=self.clip_width)
         # Let setters trigger Qt setters for attributes not in constructor
         self.font = font
-        self.pos = Point(pos)
+        self.pos = pos
 
 
     ######## PUBLIC PROPERTIES ########

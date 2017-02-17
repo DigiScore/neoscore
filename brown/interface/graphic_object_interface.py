@@ -39,7 +39,12 @@ class GraphicObjectInterface(ABC):
 
     @pos.setter
     def pos(self, value):
-        self._pos = Point.with_unit(value, unit=GraphicUnit)
+        if not isinstance(value, Point):
+            value = Point(*value)
+        else:
+            value = Point.from_existing(value)
+        value.to_unit(GraphicUnit)
+        self._pos = value
         self._qt_object.setX(self.pos.x.value)
         self._qt_object.setY(self.pos.y.value)
 

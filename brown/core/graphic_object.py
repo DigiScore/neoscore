@@ -62,7 +62,11 @@ class GraphicObject(ABC):
 
     @pos.setter
     def pos(self, value):
-        self._pos = Point(value)
+        if not isinstance(value, Point):
+            value = Point(*value)
+        else:
+            value = Point.from_existing(value)
+        self._pos = value
 
     @property
     def x(self):

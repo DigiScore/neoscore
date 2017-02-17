@@ -18,41 +18,25 @@ class Point:
         6
 
     """
-    def __init__(self, *args):
+    def __init__(self, x, y):
         """
-        *args: One of:
-            - An `x, y` pair outside of a tuple
-            - An `(x, y)` 2-tuple
-            - An existing Point
+        Args:
+            x (float or Unit): The x axis position
+            y (float or Unit): The y axis position
         """
-        if len(args) == 2:
-            self._x, self._y = args
-        elif len(args) == 1:
-            if isinstance(args[0], tuple):
-                self._x, self._y = args[0]
-            elif isinstance(args[0], Point):
-                self._x = args[0].x
-                self._y = args[0].y
-            else:
-                raise ValueError('Invalid args for {}.__init__()'.format(
-                    type(self).__name__))
-        else:
-            raise ValueError('Invalid args for {}.__init__()'.format(
-                type(self).__name__))
-
+        self._x = x
+        self._y = y
         self._iter_index = 0
 
     ######## PRIVATE CLASS METHODS ########
 
     @classmethod
-    def with_unit(cls, *args, unit=None):
+    def with_unit(cls, x, y, unit):
         """Create a Point and ensure its coordinates are in a type of unit.
 
-        *args: One of:
-            - An `x, y` pair outside of a tuple
-            - An `(x, y)` 2-tuple
-            - An existing Point
-        kwargs:
+        Args:
+            x (float or Unit): The x axis position
+            y (float or Unit): The y axis position
             unit (type): A Unit class.
 
         Example:
@@ -63,18 +47,24 @@ class Point:
             >>> print(p.y)
             Inch(3)
 
-        Warning: Due to the flexibility of constructor options in Points,
-            `unit` must be passed as a keyword argument.
+        TODO: Replace this method with the pattern:
 
-        TODO: Fix unnecessary explicit kwarg,
-              rework constructor signature if needed.
+                  Point(x, y).to_unit()
+
+              and make to_unit() return the point (instead of None)
         """
-        if unit is None:
-            raise TypeError('unit must be set to a Unit or subclass.'
-                            ' (Did you forget to pass it as a kwarg?)')
-        point = cls(*args)
+        point = cls(x, y)
         point.to_unit(unit)
         return point
+
+    @classmethod
+    def from_existing(cls, point):
+        """Create a point from an existing one, cloning its properties.
+
+        Args:
+            point (Point): The point to clone
+        """
+        return cls(point.x, point.y)
 
     ######## PUBLIC PROPERTIES ########
 

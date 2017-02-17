@@ -1,6 +1,7 @@
 import unittest
 
 from brown.core import brown
+from brown.utils.point import Point
 from brown.utils.path_element_type import PathElementType
 from brown.utils.color import Color
 from brown.utils.stroke_pattern import StrokePattern
@@ -17,7 +18,7 @@ class TestPathInterface(unittest.TestCase):
     def test_init(self):
         test_pen = PenInterface(Color('#eeeeee'), 0, StrokePattern(1))
         test_brush = BrushInterface(Color('#dddddd'))
-        test_path = PathInterface((5, 6), test_pen, test_brush)
+        test_path = PathInterface(Point(5, 6), test_pen, test_brush)
         assert(test_path.x == 5)
         assert(test_path._qt_object.x() == 5)
         assert(test_path.y == 6)
@@ -30,20 +31,20 @@ class TestPathInterface(unittest.TestCase):
         assert(test_path.current_path_position.y == 0)
 
     def test_current_path_x(self):
-        test_path = PathInterface((5, 6))
+        test_path = PathInterface(Point(5, 6))
         assert(test_path.current_path_x == test_path.current_path_position.x)
 
     def test_current_path_y(self):
-        test_path = PathInterface((5, 6))
+        test_path = PathInterface(Point(5, 6))
         assert(test_path.current_path_y == test_path.current_path_position.y)
 
     def test_initial_element_count_is_0(self):
-        test_path = PathInterface((5, 6))
+        test_path = PathInterface(Point(5, 6))
         assert(test_path._qt_path.elementCount() == 0)
 
     def test_line_to(self):
-        test_path = PathInterface((5, 6))
-        test_path.line_to((10, 12))
+        test_path = PathInterface(Point(5, 6))
+        test_path.line_to(Point(10, 12))
         assert(test_path.current_path_position.x == 10)
         assert(test_path.current_path_position.y == 12)
         assert(test_path._qt_path == test_path._qt_object.path())
@@ -54,10 +55,10 @@ class TestPathInterface(unittest.TestCase):
         #       are as expected
 
     def test_cubic_to(self):
-        test_path = PathInterface((5, 6))
-        test_path.cubic_to((10, 11),
-                             (0, 1),
-                             (5, 6))
+        test_path = PathInterface(Point(5, 6))
+        test_path.cubic_to(Point(10, 11),
+                           Point(0, 1),
+                           Point(5, 6))
         assert(test_path.current_path_position.x == 5)
         assert(test_path.current_path_position.y == 6)
         assert(test_path._qt_path.currentPosition().x() == 5)
@@ -66,8 +67,8 @@ class TestPathInterface(unittest.TestCase):
         #       are as expected
 
     def test_move_to(self):
-        test_path = PathInterface((5, 6))
-        test_path.move_to((10, 11))
+        test_path = PathInterface(Point(5, 6))
+        test_path.move_to(Point(10, 11))
         move_to_el = test_path.element_at(0)
         assert(test_path._qt_path.elementCount() == 1)
         assert(float(move_to_el.pos.x) == 10)
@@ -76,7 +77,7 @@ class TestPathInterface(unittest.TestCase):
         assert(move_to_el.element_type == PathElementType.move_to)
 
     def test_close_subpath(self):
-        test_path = PathInterface((5, 6))
+        test_path = PathInterface(Point(5, 6))
         test_path.close_subpath()
         assert(test_path.current_path_position.x == 0)
         assert(test_path.current_path_position.y == 0)
@@ -86,8 +87,8 @@ class TestPathInterface(unittest.TestCase):
         #       are as expected
 
     def test_element_at(self):
-        test_path = PathInterface((5, 6))
-        test_path.line_to((10, 11))
+        test_path = PathInterface(Point(5, 6))
+        test_path.line_to(Point(10, 11))
         line_to_el = test_path.element_at(1)
         assert(float(line_to_el.pos.x) == 10)
         assert(float(line_to_el.pos.y) == 11)
