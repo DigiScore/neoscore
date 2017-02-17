@@ -28,14 +28,16 @@ class Point:
         self._y = y
         self._iter_index = 0
 
-    ######## PRIVATE CLASS METHODS ########
+    ######## PUBLIC CLASS METHODS ########
 
     @classmethod
     def from_existing(cls, point):
-        """Create a point from an existing one, cloning its properties.
+        """Clone a Point
 
         Args:
             point (Point): The point to clone
+
+        Returns: Point
         """
         return cls(point.x, point.y)
 

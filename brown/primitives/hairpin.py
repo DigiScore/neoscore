@@ -134,6 +134,6 @@ class Hairpin(Path, StaffObject, Spanner):
         Returns: None
         """
         first, mid, last = self._find_hairpin_points()
-        self.move_to(*first)
-        self.line_to(*mid)
-        self.line_to(*last)
+        self.move_to(first.x, first.y, first.parent)
+        self.line_to(mid.x, mid.y, mid.parent)
+        self.line_to(last.x, last.y, last.parent)

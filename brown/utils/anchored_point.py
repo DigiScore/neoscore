@@ -49,6 +49,19 @@ class AnchoredPoint(Point):
         super().__init__(x, y)
         self._parent = parent
 
+    ######## PUBLIC CLASS METHODS ########
+
+    @classmethod
+    def from_existing(cls, anchored_point):
+        """Clone an AnchoredPoint.
+
+        Args:
+            anchored_point (AnchoredPoint): The anchored point to clone
+
+        Returns: AnchoredPoint
+        """
+        return cls(anchored_point.x, anchored_point.y, anchored_point.parent)
+
     ######## SPECIAL METHODS ########
 
     def __eq__(self, other):

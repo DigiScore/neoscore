@@ -21,11 +21,20 @@ class TestAnchoredPoint(unittest.TestCase):
         self.font = Font('Bravura', 12, 1, False)
         self.test_parent = TextObject((5, 6), 'a', self.font)
 
-    def test_init_triple(self):
+    def test_init(self):
         test_point = AnchoredPoint(5, 6, self.test_parent)
         assert(test_point.x == 5)
         assert(test_point.y == 6)
         assert(test_point.parent == self.test_parent)
+
+    def test_from_existing(self):
+        original = AnchoredPoint(5, 6, 'mock parent')
+        clone = AnchoredPoint.from_existing(original)
+        # id() check may fail on non-CPython interpreters
+        assert(id(original) != id(clone))
+        assert(original.x == clone.x)
+        assert(original.y == clone.y)
+        assert(original.parent == clone.parent)
 
     def test_to_unit(self):
         test_point = AnchoredPoint(5, 6, self.test_parent).to_unit(Unit)

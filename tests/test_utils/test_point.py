@@ -15,6 +15,14 @@ class TestPoint(unittest.TestCase):
         assert(test_point.x == 5)
         assert(test_point.y == 6)
 
+    def test_from_existing(self):
+        original = Point(5, 6)
+        clone = Point.from_existing(original)
+        # id() check may fail on non-CPython interpreters
+        assert(id(original) != id(clone))
+        assert(original.x == clone.x)
+        assert(original.y == clone.y)
+
     def test_to_unit_from_int(self):
         test_point = Point(5, 6)
         returned_value = test_point.to_unit(Unit)
