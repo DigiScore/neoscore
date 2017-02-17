@@ -1,9 +1,10 @@
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore
 
 from brown.interface.graphic_object_interface import GraphicObjectInterface
 from brown.core import brown
-from brown.utils.units import Unit
+from brown.utils.units import GraphicUnit
 from brown.utils.point import Point
+from brown.interface.qt_to_util import point_to_qt_point_f
 
 
 class InvisibleObjectInterface(GraphicObjectInterface):
@@ -24,11 +25,11 @@ class InvisibleObjectInterface(GraphicObjectInterface):
             pos (Point[GraphicUnit] or tuple): The position of the object
                 relative to the document.
         """
-        pos_point = Point.with_unit(pos, unit=Unit)
-        self._qt_object = QtWidgets.QGraphicsRectItem(
-            pos_point.x.value, pos_point.y.value, 1, 1)
+        q_rect = QtCore.QRectF(0, 0, 1, 1)
+        self._qt_object = QtWidgets.QGraphicsRectItem(q_rect)
         self._qt_object.setFlag(QtWidgets.QGraphicsItem.ItemHasNoContents)
-        self.pos = pos_point
+        # Let pos setter set _qt_object position
+        self.pos = Point.with_unit(pos, unit=GraphicUnit)
 
     def render(self):
         brown._app_interface.scene.addItem(self._qt_object)
