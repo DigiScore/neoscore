@@ -34,6 +34,8 @@ class Unit:
         TypeError: unsupported operand type(s) for +: 'int' and 'Inch'
     """
 
+    __slots__ = ('value')
+
     # Ratio of this class's units to Units.
     # Subclasses should override this.
     _conversion_rate = 1

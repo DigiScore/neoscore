@@ -37,38 +37,6 @@ class TestPoint(unittest.TestCase):
         self.assertAlmostEqual(test_point.x, Mm(Unit(1)))
         self.assertAlmostEqual(test_point.y, Mm(Unit(2)))
 
-    def test_setters_hook_setter_hook(self):
-
-        class PointHolder:
-            def __init__(self):
-                self.point_setter_hook_called = False
-                self.point = Point(0, 0)
-                self.point.setters_hook = self.handle_hook
-
-            def handle_hook(self):
-                self.point_setter_hook_called = True
-
-        test_instance = PointHolder()
-        assert(test_instance.point.x == 0)
-        test_instance.point.x = 1
-        assert(test_instance.point_setter_hook_called is True)
-
-    def test_setters_hook_setter_hook_with_same_value_set(self):
-
-        class PointHolder:
-            def __init__(self):
-                self.point_setter_hook_called = False
-                self.point = Point(0, 0)
-                self.point.setters_hook = self.handle_hook
-
-            def handle_hook(self):
-                self.point_setter_hook_called = True
-
-        test_instance = PointHolder()
-        assert(test_instance.point.x == 0)
-        test_instance.point.x = 0
-        assert(test_instance.point_setter_hook_called is True)
-
     def test__hash__(self):
         assert({Point(1, 2), Point(1, 2), Point(3, 4)} ==
                {Point(1, 2), Point(3, 4)})

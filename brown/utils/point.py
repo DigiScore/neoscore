@@ -4,6 +4,8 @@ from brown.utils.units import Unit
 class Point:
     """A 2D point."""
 
+    __slots__ = ('_x', '_y')
+
     def __init__(self, x, y):
         """
         Args:
@@ -36,7 +38,6 @@ class Point:
     @x.setter
     def x(self, value):
         self._x = value
-        self.setters_hook()
 
     @property
     def y(self):
@@ -46,7 +47,6 @@ class Point:
     @y.setter
     def y(self, value):
         self._y = value
-        self.setters_hook()
 
     ######## PUBLIC METHODS ########
 
@@ -62,29 +62,6 @@ class Point:
         self.x = unit(self.x)
         self.y = unit(self.y)
         return self
-
-    def setters_hook(self):
-        """Optional method to be called when an attribute changes.
-
-        To set a change hook, instantiate a Point and set its `setters_hook`
-        method to some arbitrary function. Any time an attribute is changed,
-        this function will be called.
-
-        Example:
-            >>> class PointHolder:
-            ...     def __init__(self):
-            ...         self.point_setter_hook_called = False
-            ...         self.point = Point(0, 0)
-            ...         self.point.setters_hook = self.handle_hook
-            ...
-            ...     def handle_hook(self):
-            ...         self.point_setter_hook_called = True
-            >>> test_instance = PointHolder()
-            >>> test_instance.point.x = 1  # Change x, triggering hook
-            >>> test_instance.point_setter_hook_called
-            True
-        """
-        pass
 
     ######## SPECIAL METHODS ########
 
