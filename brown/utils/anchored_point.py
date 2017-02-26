@@ -8,35 +8,6 @@ class AnchoredPoint(Point):
     This is identical to a Point except that it has an additional
     `parent` attribute. Its coordinates are then considered to be
     relative to the parent.
-
-    Like a `Point`, the x and y values may be accessed by name,
-    iteration, and indexing; however the `parent` attribute can
-    only be accessed by name:
-
-        >>> from brown.core import brown
-        >>> from brown.core.text_object import TextObject
-        >>> brown.setup()
-        >>> from brown.core.text_object import TextObject
-        >>> some_grob = TextObject((10, 11), 'A')
-        >>> p = AnchoredPoint(5, 6, some_grob)
-        >>> p.x == p[0] == 5
-        True
-        >>> p.y == p[1] == 6
-        True
-        >>> x, y = p
-        >>> x
-        5
-        >>> y
-        6
-
-        # The `parent` attribute must be referenced by index
-        >>> p[2]
-        Traceback (most recent call last):
-        ...
-        IndexError: Only valid indices for AnchoredPoint are 0 and 1 (Got 2)
-        >>> p.parent == some_grob
-        True
-
     """
     def __init__(self, x, y, parent=None):
         """

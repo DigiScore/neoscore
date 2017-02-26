@@ -114,7 +114,7 @@ class GraphicObject(ABC):
 
     @property
     def parent(self):
-        """GraphicObject: The parent object"""
+        """GraphicObject or Document: The parent object"""
         return self._parent
 
     @parent.setter

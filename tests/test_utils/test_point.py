@@ -1,11 +1,8 @@
 import unittest
 from nose.tools import assert_raises
 
-from brown.utils.point import Point
-from brown.utils.anchored_point import AnchoredPoint
-
-
 from brown.utils.units import Unit, Mm
+from brown.utils.point import Point
 
 
 class TestPoint(unittest.TestCase):
@@ -39,27 +36,6 @@ class TestPoint(unittest.TestCase):
         assert(isinstance(test_point.y, Mm))
         self.assertAlmostEqual(test_point.x, Mm(Unit(1)))
         self.assertAlmostEqual(test_point.y, Mm(Unit(2)))
-
-    def test_iteration(self):
-        test_point = Point(5, 6)
-        result = []
-        for dimension in test_point:
-            result.append(dimension)
-        assert(result == [5, 6])
-
-    def test_indexing(self):
-        test_point = Point(5, 6)
-        assert(test_point[0] == 5)
-        assert(test_point[1] == 6)
-
-    def test_indexing_with_invalid_raises_IndexError(self):
-        test_point = Point(5, 6)
-        with assert_raises(IndexError):
-            test_point[3]
-        with assert_raises(IndexError):
-            test_point[-1]
-        with assert_raises(TypeError):
-            test_point['nonsense index']
 
     def test_setters_hook_setter_hook(self):
 

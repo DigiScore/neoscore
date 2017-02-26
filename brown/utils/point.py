@@ -2,22 +2,8 @@ from brown.utils.units import Unit
 
 
 class Point:
-    """A simple 2-d point class.
+    """A 2D point."""
 
-    Its x and y values may be accessed by name, iteration, and indexing:
-
-        >>> p = Point(5, 6)
-        >>> p.x == p[0] == 5
-        True
-        >>> p.y == p[1] == 6
-        True
-        >>> x, y = p
-        >>> x
-        5
-        >>> y
-        6
-
-    """
     def __init__(self, x, y):
         """
         Args:
@@ -26,7 +12,6 @@ class Point:
         """
         self._x = x
         self._y = y
-        self._iter_index = 0
 
     ######## PUBLIC CLASS METHODS ########
 
@@ -154,40 +139,3 @@ class Point:
 
     def __round__(self, ndigits=None):
         return type(self)(round(self.x, ndigits), round(self.y, ndigits))
-
-    def __iter__(self):
-        return self
-
-    def __getitem__(self, key):
-        """Index into a Point, where 0 is x and 1 is y.
-
-        Args:
-            key (int): The indexing key
-
-        Raises:
-            TypeError: For all non-int `key` values
-            IndexError: For all int `key` values other than `0` and `1`
-
-        QUESTION: Should negative indexing be supported? Might be confusing.
-        """
-        if not isinstance(key, int):
-            raise TypeError('Point keys must be of type `int`.')
-        if key == 0:
-            return self.x
-        elif key == 1:
-            return self.y
-        else:
-            raise IndexError('Only valid indices for {} '
-                             'are 0 and 1 (Got {})'.format(
-                                 type(self).__name__, key))
-
-    def __next__(self):
-        """Support iteration over a Point for indices 0 and 1."""
-        if self._iter_index > 1:
-            self._iter_index = 0
-            raise StopIteration
-        self._iter_index += 1
-        if self._iter_index == 1:
-            return self.x
-        else:
-            return self.y

@@ -189,7 +189,7 @@ class TestFlowableFrame(unittest.TestCase):
             y_val = test_frame._map_to_doc(
                 Point(((live_width * i) + Mm(10)), Mm(0))).y
             line_on_page = i % 3
-            expected = (page_origin[1] +
+            expected = (page_origin.x +
                         line_and_padding_height * line_on_page)
             self.assertAlmostEqual(y_val, expected)
 

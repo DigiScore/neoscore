@@ -227,8 +227,7 @@ class PathInterface(GraphicObjectInterface):
 
         Args:
             index (int): The element index to modify
-            pos (Point[GraphicUnit] or tuple): The new position
-                for the element.
+            pos (Point[Unit]): The new position for the element.
 
         Returns: None
         """
@@ -236,9 +235,9 @@ class PathInterface(GraphicObjectInterface):
             raise IndexError(
                 'Element index {} out of bounds (max is {})'.format(
                     index, self._qt_path.elementCount()))
-        pos_x = float(pos[0])
-        pos_y = float(pos[1])
-        self._qt_path.setElementPositionAt(index, pos_x, pos_y)
+        self._qt_path.setElementPositionAt(index,
+                                           float(GraphicUnit(pos.x)),
+                                           float(GraphicUnit(pos.y)))
         self._update_qt_object_path()
 
     def render(self):

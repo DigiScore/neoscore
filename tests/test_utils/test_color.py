@@ -1,6 +1,5 @@
+import pytest
 import unittest
-
-from nose.tools import assert_raises
 
 from brown.utils.color import Color, ColorBoundsError
 
@@ -43,27 +42,27 @@ class TestColor(unittest.TestCase):
         assert(color.alpha == 250)
 
     def test_bad_red_color_value(self):
-        with assert_raises(ColorBoundsError):
+        with pytest.raises(ColorBoundsError):
             Color(256, 0, 0, 0)
-        with assert_raises(ColorBoundsError):
+        with pytest.raises(ColorBoundsError):
             Color(-1, 0, 0, 0)
 
     def test_bad_green_color_value(self):
-        with assert_raises(ColorBoundsError):
+        with pytest.raises(ColorBoundsError):
             Color(0, 256, 0, 0)
-        with assert_raises(ColorBoundsError):
+        with pytest.raises(ColorBoundsError):
             Color(0, -1, 0, 0)
 
     def test_bad_blue_color_value(self):
-        with assert_raises(ColorBoundsError):
+        with pytest.raises(ColorBoundsError):
             Color(0, 0, 256, 0)
-        with assert_raises(ColorBoundsError):
+        with pytest.raises(ColorBoundsError):
             Color(0, 0, -1, 0)
 
     def test_bad_alpha_color_value(self):
-        with assert_raises(ColorBoundsError):
+        with pytest.raises(ColorBoundsError):
             Color(0, 0, 0, 256)
-        with assert_raises(ColorBoundsError):
+        with pytest.raises(ColorBoundsError):
             Color(0, 0, 0, -1)
 
     def test__repr__(self):

@@ -1,13 +1,12 @@
 from brown.config import config
 from brown.utils.point import Point
 from brown.core.paper import Paper
-from brown.utils.units import Mm, GraphicUnit
-from brown.core.graphic_object import GraphicObject
+from brown.utils.units import Mm
 
 
-class Document(GraphicObject):
+class Document:
 
-    """A pseudo-object representing the document origin."""
+    "The document root object."""
 
     def __init__(self, paper=None):
         if paper is None:
@@ -19,7 +18,7 @@ class Document(GraphicObject):
                         config.DEFAULT_PAPER_TYPE))
         else:
             self.paper = paper
-        GraphicObject.__init__(self, Point(GraphicUnit(0), GraphicUnit(0)))
+        self._children = set()
 
     ######## PUBLIC PROPERTIES ########
 
@@ -33,19 +32,13 @@ class Document(GraphicObject):
         self._paper = value
 
     @property
-    def parent(self):
-        """None: By definition, a document has no parent.
+    def children(self):
+        """set{GraphicObject}: All objects who have self as their parent."""
+        return self._children
 
-        This property exists only as an override of the GraphicObject
-        to prevent attempts to register the document with itself.
-        """
-        return None
-
-    @parent.setter
-    def parent(self, value):
-        # Override parent setter to do nothing since,
-        # by definition, a document has no parent
-        pass
+    @children.setter
+    def children(self, value):
+        self._children = value
 
     ######## PRIVATE PROPERTIES ########
 
@@ -55,6 +48,26 @@ class Document(GraphicObject):
         return Mm(15)
 
     ######## PRIVATE METHODS ########
+
+    def _register_child(self, child):
+        """Add an object to `self.children`.
+
+        Args:
+            child (GraphicObject): The object to add
+
+        Returns: None
+        """
+        self.children.add(child)
+
+    def _unregister_child(self, child):
+        """Remove an object from `self.children`.
+
+        Args:
+            child (GraphicObject): The object to remove
+
+        Returns: None
+        """
+        self.children.remove(child)
 
     def _page_origin_in_doc_space(self, page_number):
         """Find the position of the origin of the live page area.

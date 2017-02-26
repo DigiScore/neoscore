@@ -41,31 +41,31 @@ class TestGraphicObject(unittest.TestCase):
 
     def test_map_from_origin(self):
         item = MockGraphicObject((5, 6))
-        relative_x, relative_y = MockGraphicObject.map_from_origin(item)
-        assert(relative_x.value == 5)
-        assert(relative_y.value == 6)
+        relative_pos = MockGraphicObject.map_from_origin(item)
+        assert(relative_pos.x.value == 5)
+        assert(relative_pos.y.value == 6)
 
     def test_map_from_origin_thorugh_parent(self):
         parent = MockGraphicObject((100, 101))
         item = MockGraphicObject((5, 6), parent=parent)
-        relative_x, relative_y = MockGraphicObject.map_from_origin(item)
-        assert(relative_x.value == 105)
-        assert(relative_y.value == 107)
+        relative_pos = MockGraphicObject.map_from_origin(item)
+        assert(relative_pos.x.value == 105)
+        assert(relative_pos.y.value == 107)
 
     def test_map_between_items(self):
         source = MockGraphicObject((5, 6))
         destination = MockGraphicObject((100, 100))
-        relative_x, relative_y = MockGraphicObject.map_between_items(source, destination)
-        assert(relative_x.value == 95)
-        assert(relative_y.value == 94)
+        relative_pos = MockGraphicObject.map_between_items(source, destination)
+        assert(relative_pos.x.value == 95)
+        assert(relative_pos.y.value == 94)
 
     def test_map_between_items_thorugh_parent(self):
         parent = MockGraphicObject((100, 102))
         source = MockGraphicObject((5, 6))
         destination = MockGraphicObject((1, 1), parent=parent)
-        relative_x, relative_y = MockGraphicObject.map_between_items(source, destination)
-        assert(relative_x.value == 96)
-        assert(relative_y.value == 97)
+        relative_pos = MockGraphicObject.map_between_items(source, destination)
+        assert(relative_pos.x.value == 96)
+        assert(relative_pos.y.value == 97)
 
     def test_document_pos(self):
         test_object = MockGraphicObject((Mm(1), Mm(2)), Mm(50), parent=self.frame)

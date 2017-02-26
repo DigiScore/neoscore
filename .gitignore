@@ -2,6 +2,9 @@
 *~
 .\#*
 
+# Pycharm
+.idea/
+
 # Python
 __pycache__
 *.pyc

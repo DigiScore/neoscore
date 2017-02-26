@@ -36,8 +36,8 @@ class TestDocument(unittest.TestCase):
         found = test_doc._page_origin_in_doc_space(1)
         expected_x = left_margin
         expected_y = top_margin
-        self.assertAlmostEqual(found[0], expected_x)
-        self.assertAlmostEqual(found[1], expected_y)
+        self.assertAlmostEqual(found.x, expected_x)
+        self.assertAlmostEqual(found.y, expected_y)
 
     def test_page_origin_in_doc_space_at_second_page(self):
         width = Mm(200)
@@ -51,8 +51,8 @@ class TestDocument(unittest.TestCase):
         expected_x = (left_margin +
                       page_width + test_doc._page_display_gap)
         expected_y = top_margin
-        self.assertAlmostEqual(found[0], expected_x)
-        self.assertAlmostEqual(found[1], expected_y)
+        self.assertAlmostEqual(found.x, expected_x)
+        self.assertAlmostEqual(found.y, expected_y)
 
     def test_page_origin_in_doc_space_at_third_page(self):
         width = Mm(200)
@@ -66,8 +66,8 @@ class TestDocument(unittest.TestCase):
         expected_x = (left_margin +
                       ((page_width + test_doc._page_display_gap) * 2))
         expected_y = top_margin
-        self.assertAlmostEqual(found[0], expected_x)
-        self.assertAlmostEqual(found[1], expected_y)
+        self.assertAlmostEqual(found.x, expected_x)
+        self.assertAlmostEqual(found.y, expected_y)
 
     def test_page_origin_in_doc_space_with_invalid_page_numbers(self):
         test_paper = Paper(*[Mm(val) for val in [200, 250, 20, 10, 20, 10, 0]])

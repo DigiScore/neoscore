@@ -44,15 +44,6 @@ class TestAnchoredPoint(unittest.TestCase):
         assert(test_point.y == Unit(6))
         assert(test_point.parent == self.test_parent)
 
-    def test_indexing_with_invalid_raises_IndexError(self):
-        test_point = AnchoredPoint(5, 6, self.test_parent)
-        with assert_raises(IndexError):
-            test_point[3]
-        with assert_raises(IndexError):
-            test_point[-1]
-        with assert_raises(TypeError):
-            test_point['nonsense index']
-
     def test_setters_hook_parent_setter_hook(self):
 
         class AnchoredPointHolder:
