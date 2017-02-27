@@ -1,5 +1,6 @@
 import unittest
-from nose.tools import assert_raises
+
+import pytest
 
 from brown.utils.point import Point
 from brown.utils.units import Mm
@@ -72,9 +73,9 @@ class TestDocument(unittest.TestCase):
     def test_page_origin_in_doc_space_with_invalid_page_numbers(self):
         test_paper = Paper(*[Mm(val) for val in [200, 250, 20, 10, 20, 10, 0]])
         test_doc = Document(test_paper)
-        with assert_raises(ValueError):
+        with pytest.raises(ValueError):
             test_doc._page_origin_in_doc_space(0)
-        with assert_raises(ValueError):
+        with pytest.raises(ValueError):
             test_doc._page_origin_in_doc_space(-1)
 
     def test_page_pos_to_doc_on_third_page(self):

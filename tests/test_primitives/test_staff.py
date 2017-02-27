@@ -1,5 +1,6 @@
 import unittest
-from nose.tools import assert_raises
+
+import pytest
 
 from brown.core import brown
 from brown.utils.units import Mm
@@ -60,7 +61,7 @@ class TestStaff(unittest.TestCase):
 
     def test_middle_c_at_with_implicit_default_clef(self):
         staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
-        with assert_raises(NoClefError):
+        with pytest.raises(NoClefError):
             staff.middle_c_at(Mm(5))
 
     def test_natural_midi_number_of_top_line_at_with_explicit_clefs(self):

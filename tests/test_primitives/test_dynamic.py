@@ -1,6 +1,6 @@
 import unittest
 
-from nose.tools import assert_raises
+import pytest
 
 from brown.core import brown
 from brown.primitives.dynamic import Dynamic, DynamicStringError
@@ -25,7 +25,7 @@ class TestNotehead(unittest.TestCase):
                           'dynamicNiente'])
 
     def test_parsing_invalid_string_raises_exception(self):
-        with assert_raises(DynamicStringError):
+        with pytest.raises(DynamicStringError):
             Dynamic._parse_dynamic_string('h')
 
     def test_ppp(self):

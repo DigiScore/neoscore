@@ -1,6 +1,6 @@
 import unittest
 
-from nose.tools import assert_raises
+import pytest
 
 from brown.models.pitch import Pitch, InvalidPitchDescriptionError
 
@@ -15,7 +15,7 @@ class TestPitch(unittest.TestCase):
         assert(test_pitch.octave == 1)
 
     def test_pitch_init_no_letter_fails(self):
-        with assert_raises(InvalidPitchDescriptionError):
+        with pytest.raises(InvalidPitchDescriptionError):
             Pitch('s,')
 
     def test_no_octave_marks(self):

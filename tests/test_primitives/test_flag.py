@@ -1,6 +1,6 @@
 import unittest
 
-from nose.tools import assert_raises
+import pytest
 
 from brown.core import brown
 from brown.primitives.flag import Flag, NoFlagNeededError
@@ -22,11 +22,11 @@ class TestNotehead(unittest.TestCase):
             Flag(self.staff.beat(1, i), -1, self.staff)
 
     def test_invalid_direction_raises_value_error(self):
-        with assert_raises(ValueError):
+        with pytest.raises(ValueError):
             Flag(self.staff.beat(1, 8), 0, self.staff)
-        with assert_raises(ValueError):
+        with pytest.raises(ValueError):
             Flag(self.staff.beat(1, 8), 2, self.staff)
-        with assert_raises(ValueError):
+        with pytest.raises(ValueError):
             Flag(self.staff.beat(1, 8), -2, self.staff)
 
     def test_needs_flag(self):
@@ -54,9 +54,9 @@ class TestNotehead(unittest.TestCase):
         Flag(self.staff.beat(1, 8), 1, self.staff)
 
         # Test invalid durations
-        with assert_raises(NoFlagNeededError):
+        with pytest.raises(NoFlagNeededError):
             Flag(self.staff.beat(1, 4), 1, self.staff)
-        with assert_raises(NoFlagNeededError):
+        with pytest.raises(NoFlagNeededError):
             Flag(self.staff.beat(1, 2), 1, self.staff)
-        with assert_raises(NoFlagNeededError):
+        with pytest.raises(NoFlagNeededError):
             Flag(self.staff.beat(1, 1), 1, self.staff)

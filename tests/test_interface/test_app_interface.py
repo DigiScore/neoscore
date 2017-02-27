@@ -1,15 +1,15 @@
 import os
 import unittest
-from nose.tools import assert_raises, nottest
 
 from PyQt5 import QtWidgets
 from PyQt5 import QtGui
+import pytest
 
 from brown.interface.app_interface import AppInterface, FontRegistrationError
 from brown.config import config
 
 
-@nottest
+@pytest.mark.skip
 class TestAppInterface(unittest.TestCase):
 
     def setUp(self):
@@ -30,12 +30,12 @@ class TestAppInterface(unittest.TestCase):
         # because Qt stores flags by bitwise OR-ing them)
         assert(int(self.interface.view.renderHints() & QtGui.QPainter.Antialiasing))
 
-    @nottest
+    @pytest.mark.skip
     def test_show(self):
         # TODO: How to test this?
         pass
 
-    @nottest
+    @pytest.mark.skip
     def test_destroy(self):
         # TODO: How to test this?
         pass
@@ -47,5 +47,5 @@ class TestAppInterface(unittest.TestCase):
 
     def test_register_font_with_(self):
         test_font_file_path = "path that doesn't exist"
-        with assert_raises(FontRegistrationError):
+        with pytest.raises(FontRegistrationError):
             self.interface.register_font(test_font_file_path)

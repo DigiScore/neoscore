@@ -1,13 +1,10 @@
 import os
 import unittest
 
-from nose.tools import assert_raises
-
 from brown.core import brown
 from brown.core.music_text_object import MusicTextObject
 from brown.core.music_char import MusicChar
 from brown.config import config
-from brown.core.font import Font
 from brown.core.music_font import MusicFont
 from brown.utils.units import Mm
 from brown.primitives.staff import Staff

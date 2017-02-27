@@ -6,8 +6,6 @@ python:
   - "3.6"
 
 install:
- - sudo apt-get update
- - sudo apt-get -y install python3-pyqt5
  - pip3 install -r requirements.txt
  - pip3 install -r tests/test_requirements.txt
  - pip3 install -e ./
@@ -19,4 +17,4 @@ before_script:
   - sleep 3 # give xvfb some time to start
 
 script:
- - nosetests -v --processes=1 --process-restartworker
+ - pytest

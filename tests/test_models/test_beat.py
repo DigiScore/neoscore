@@ -1,7 +1,7 @@
 from fractions import Fraction
 import unittest
 
-from nose.tools import assert_raises, nottest
+import pytest
 
 from brown.models.beat import Beat, AbstractBeatConversionError
 from brown.utils.units import Unit
@@ -62,16 +62,16 @@ class TestBeat(unittest.TestCase):
         assert(small_beat.denominator == 4)
         assert(Unit(small_beat) == Unit(2.5))
 
-    @nottest
+    @pytest.mark.skip
     def test_requires_tie(self):
         assert(MockBeat(5, 8).requires_tie is True)
         assert(MockBeat(4, 8).requires_tie is False)
 
     def test_properties_are_immutable(self):
         dur = MockBeat(2, 4)
-        with assert_raises(AttributeError):
+        with pytest.raises(AttributeError):
             dur.numerator = 0
-        with assert_raises(AttributeError):
+        with pytest.raises(AttributeError):
             dur.denominator = 0
 
     def test__float__(self):
@@ -162,5 +162,5 @@ class TestBeatInteractionWithUnit(unittest.TestCase):
         assert(MockBeat(Unit(103)) == MockBeat(1, 1))
 
     def test_cannot_convert_abstract_beat_to_unit(self):
-        with assert_raises(AbstractBeatConversionError):
+        with pytest.raises(AbstractBeatConversionError):
             Unit(Beat(1, 1))

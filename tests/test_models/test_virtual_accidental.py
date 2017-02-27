@@ -1,6 +1,6 @@
 import unittest
 
-from nose.tools import assert_raises
+import pytest
 
 from brown.models.virtual_accidental import VirtualAccidental
 from brown.models.virtual_accidental import InvalidAccidentalError
@@ -17,15 +17,15 @@ class TestVirtualAccidental(unittest.TestCase):
         assert(VirtualAccidental(None).value is None)
 
     def test_garbage_string_value(self):
-        with assert_raises(InvalidAccidentalError):
+        with pytest.raises(InvalidAccidentalError):
             VirtualAccidental('jfasdklf')
 
     def test_garbage_int_value(self):
-        with assert_raises(InvalidAccidentalError):
+        with pytest.raises(InvalidAccidentalError):
             VirtualAccidental(238904)
 
     def test_garbage_type_value(self):
-        with assert_raises(InvalidAccidentalError):
+        with pytest.raises(InvalidAccidentalError):
             VirtualAccidental(['nonsense', 'input'])
 
     def test_value_as_str(self):

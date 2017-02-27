@@ -1,6 +1,7 @@
 import os
 import unittest
-from nose.tools import assert_raises
+
+import pytest
 
 from brown.core import brown
 from brown.config import config
@@ -71,9 +72,9 @@ class TestAnchoredPoint(unittest.TestCase):
         p4 = AnchoredPoint(7, 8, 2, self.test_parent)
         assert(p1 + p2 == AnchoredPoint(4, 6, 3, None))
         assert(p3 + p4 == AnchoredPoint(12, 14, 3, self.test_parent))
-        with assert_raises(TypeError):
+        with pytest.raises(TypeError):
             p2 + p3
-        with assert_raises(TypeError):
+        with pytest.raises(TypeError):
             p2 + 5
 
     def test__sub__(self):
@@ -83,9 +84,9 @@ class TestAnchoredPoint(unittest.TestCase):
         p4 = AnchoredPoint(7, 8, 2, self.test_parent)
         assert(p1 - p2 == AnchoredPoint(-2, -2, -1, None))
         assert(p3 - p4 == AnchoredPoint(-2, -2, -1, self.test_parent))
-        with assert_raises(TypeError):
+        with pytest.raises(TypeError):
             p2 - p3
-        with assert_raises(TypeError):
+        with pytest.raises(TypeError):
             p2 - 5
 
     def test__mult__(self):

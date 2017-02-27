@@ -1,5 +1,6 @@
-from nose.tools import assert_raises
 import unittest
+
+import pytest
 
 from brown.utils.units import Unit, Mm, Inch, GraphicUnit
 
@@ -28,7 +29,7 @@ class TestUnit(unittest.TestCase):
         assert(Unit(MockUnit(1)).value == 2)
 
     def test_init_from_incompatible_type_fails(self):
-        with assert_raises(TypeError):
+        with pytest.raises(TypeError):
             Unit('nonsense type')
 
     def test__repr__(self):

@@ -1,4 +1,4 @@
-from nose.tools import assert_raises
+import pytest
 
 from brown.utils.units import convert_all_to_unit
 from brown.utils.units import GraphicUnit
@@ -73,5 +73,5 @@ def test_convert_all_to_unit_handles_strings_correctly():
 
 
 def test_convert_all_to_unit_raises_error_on_bad_input():
-    with assert_raises(TypeError):
+    with pytest.raises(TypeError):
         convert_all_to_unit('invalid argument type', GraphicUnit)
