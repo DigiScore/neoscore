@@ -53,7 +53,8 @@ class TestPath(unittest.TestCase):
     def test_line_to_with_parent(self):
         path = Path((5, 6))
         parent = MockGraphicObject((100, 50))
-        path.line_to(Point(1, 3), parent)
+        path.line_to(1, 3, 0, parent)
+        assert(path.elements[-1].parent == parent)
 
     def test_cubic_to_with_no_parents(self):
         path = Path((5, 6))
@@ -73,7 +74,7 @@ class TestPath(unittest.TestCase):
     def test_cubic_to_with_parents(self):
         path = Path((0, 0))
         parent = MockGraphicObject((100, 50))
-        path.cubic_to((10, 11, parent), (0, 1, parent), (5, 6, parent))
+        path.cubic_to((10, 11, 0, parent), (0, 1, 0, parent), (5, 6, 0, parent))
         assert(len(path.elements) == 4)
         assert(path.elements[0].element_type == PathElementType.move_to)
         assert(path.elements[0].pos == Point(0, 0))
@@ -101,13 +102,14 @@ class TestPath(unittest.TestCase):
     def test_move_to_with_parent(self):
         path = Path((0, 0))
         parent = MockGraphicObject((100, 50))
-        path.move_to(10, 11, parent)
+        path.move_to(10, 11, 1, parent)
         assert(len(path.elements) == 1)
         assert(path.elements[0].element_type == PathElementType.move_to)
-        assert(path.elements[0].pos == Point(10, 11))
+        assert(path.elements[0].pos == Point(10, 11, 1))
         assert(path.elements[0].parent == parent)
         assert(path.current_path_position.x == 110)
         assert(path.current_path_position.y == 61)
+        assert(path.current_path_position.page == 1)
 
     def test_close_subpath(self):
         path = Path((5, 6))

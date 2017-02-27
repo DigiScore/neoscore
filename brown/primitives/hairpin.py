@@ -87,21 +87,21 @@ class Hairpin(Path, StaffObject, Spanner):
             return(
                 (AnchoredPoint(end_center.x,
                                end_center.y + dist,
-                               end_center.parent)),
+                               parent=end_center.parent)),
                 joint,
                 (AnchoredPoint(end_center.x,
                                end_center.y - dist,
-                               end_center.parent))
+                               parent=end_center.parent))
             )
         elif relative_stop.x == Unit(0):
             return(
                 (AnchoredPoint(end_center.x + dist,
                                end_center.y,
-                               end_center.parent)),
+                               parent=end_center.parent)),
                 joint,
                 (AnchoredPoint(end_center.x - dist,
                                end_center.y,
-                               end_center.parent))
+                               parent=end_center.parent))
             )
         # else ...
 
@@ -123,9 +123,9 @@ class Hairpin(Path, StaffObject, Spanner):
         first_y = (opening_slope * first_x) - opening_y_intercept
         last_y = (opening_slope * last_x) - opening_y_intercept
         return(
-                (AnchoredPoint(first_x, first_y, end_center.parent)),
+                (AnchoredPoint(first_x, first_y, parent=end_center.parent)),
                 joint,
-                (AnchoredPoint(last_x, last_y, end_center.parent))
+                (AnchoredPoint(last_x, last_y, parent=end_center.parent))
         )
 
     def _draw_path(self):
@@ -134,6 +134,6 @@ class Hairpin(Path, StaffObject, Spanner):
         Returns: None
         """
         first, mid, last = self._find_hairpin_points()
-        self.move_to(first.x, first.y, first.parent)
-        self.line_to(mid.x, mid.y, mid.parent)
-        self.line_to(last.x, last.y, last.parent)
+        self.move_to(first.x, first.y, first.page, first.parent)
+        self.line_to(mid.x, mid.y, mid.page, mid.parent)
+        self.line_to(last.x, last.y, last.page, last.parent)

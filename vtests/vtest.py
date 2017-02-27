@@ -54,10 +54,10 @@ p = Dynamic((Mm(20), staff.unit(6)), 'p', staff)
 
 sfz = Dynamic.sfz((Mm(25), staff.unit(6)), staff)
 
-hairpin = Hairpin((Mm(0), Mm(3), p), (Mm(0), Mm(3), sfz), 1)
+hairpin = Hairpin((Mm(0), Mm(3), 0, p), (Mm(0), Mm(3), 0, sfz), 1)
 
-slur = Slur((Mm(0), Mm(0), regular_text),
-            (Mm(0), Mm(0), sfz))
+slur = Slur((Mm(0), Mm(0), 0, regular_text),
+            (Mm(0), Mm(0), 0, sfz))
 
 brace = Brace(Mm(0), Mm(500), {staff, lower_staff, lowest_staff})
 

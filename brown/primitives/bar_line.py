@@ -1,7 +1,6 @@
 from brown.primitives.multi_staff_object import MultiStaffObject
 from brown.utils.units import Unit
 from brown.core.path import Path
-from brown.utils.anchored_point import AnchoredPoint
 from brown.core.pen import Pen
 from brown.core.graphic_object import GraphicObject
 
@@ -37,4 +36,4 @@ class BarLine(Path, MultiStaffObject):
         bottom_x = position_x + offset.x
         self.line_to(bottom_x,
                      self.lowest_staff.height,
-                     self.lowest_staff)
+                     parent=self.lowest_staff)

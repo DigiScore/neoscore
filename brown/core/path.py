@@ -26,11 +26,17 @@ class Path(GraphicObject):
 
     ######## CLASSMETHODS ########
 
+    """
+    TODO: Change signatures around path drawing methods so the user doesn't
+    have to worry so much about the page number. The page number of Point()
+    and AnchoredPoint will almost never be used in this context!
+    """
+
     @classmethod
     def straight_line(cls, start, stop, pen=None, brush=None, parent=None):
         """Path: Constructor for a straight line
 
-        # TODO: Should parentable points be supported here?
+        # TODO: Use AnchoredPoint instead of regular points
 
         Args:
             start (Point): Starting position relative to the parent
@@ -99,7 +105,7 @@ class Path(GraphicObject):
 
     ######## Public Methods ########
 
-    def line_to(self, x, y, parent=None):
+    def line_to(self, x, y, page=0, parent=None):
         """Draw a path from the current position to a new point.
 
         Connect a path from the current position to a new position specified
@@ -110,9 +116,12 @@ class Path(GraphicObject):
         considered relative to the parent.
 
         Args:
-            x (Unit):
-            y (Unit):
-            parent (GraphicObject): An optional point parent
+            x (Unit): The end x position
+            y (Unit): The end y position
+            page (int): The end relative page number.
+                For most cases, this should be 0.
+            parent (GraphicObject): An optional parent, whose position
+                the target coordinate will be relative to.
 
         Returns: None
         """
@@ -120,11 +129,11 @@ class Path(GraphicObject):
             self.elements.append(PathElement((GraphicUnit(0), GraphicUnit(0)),
                                              PathElementType.move_to,
                                              self, self))
-        point = AnchoredPoint(x, y, parent if parent is not None else self)
+        point = AnchoredPoint(x, y, page, parent if parent else self)
         self.elements.append(PathElement(point, PathElementType.line_to,
                                          self, point.parent))
 
-    def move_to(self, x, y, parent=None):
+    def move_to(self, x, y, page=0, parent=None):
         """Close the current sub-path and start a new one.
 
         A point parent may be passed as well, anchored the target point to
@@ -132,13 +141,16 @@ class Path(GraphicObject):
         considered relative to the parent.
 
         Args:
-            x (Unit):
-            y (Unit):
-            parent (GraphicObject): An optional point parent
+            x (Unit): The end x position
+            y (Unit): The end y position
+            page (int): The end relative page number.
+                For most cases, this should be 0.
+            parent (GraphicObject): An optional parent, whose position
+                the target coordinate will be relative to.
 
         Returns: None
         """
-        point = AnchoredPoint(x, y, parent if parent is not None else self)
+        point = AnchoredPoint(x, y, page, parent if parent else self)
         self.elements.append(PathElement(point, PathElementType.move_to,
                                          self, point.parent))
 
@@ -152,9 +164,9 @@ class Path(GraphicObject):
         Note:
             This convenience method does not support point parentage.
             If you need to anchor the new move_to point, use an explicit
-            move_to((0, 0), parent) instead.
+            move_to((0, 0), 0, parent) instead.
         """
-        self.move_to(GraphicUnit(0), GraphicUnit(0))
+        self.move_to(GraphicUnit(0), GraphicUnit(0), 0)
 
     def cubic_to(self, control_1, control_2, end):
         """Draw a cubic bezier curve from the current position to a new point.
@@ -178,6 +190,7 @@ class Path(GraphicObject):
         Returns: None
         """
         if len(self.elements) == 0:
+            # TODO: This can probably be replaced with self.move_to()
             self.elements.append(PathElement((GraphicUnit(0), GraphicUnit(0)),
                                              PathElementType.move_to,
                                              self, self))
