@@ -52,7 +52,7 @@ class Slur(Path, StaffObject, Spanner):
         # Draw upper curve part
         self.move_to(self.staff.unit(0),
                      end_height,
-                     parent=self.start.parent)
+                     self.start.parent)
         control_1 = AnchoredPoint(self.staff.unit(1),
                                   mid_upper_height,
                                   parent=self.start.parent)
@@ -64,11 +64,12 @@ class Slur(Path, StaffObject, Spanner):
                             parent=self.stop.parent)
         self.cubic_to(control_1.x, control_1.y,
                       control_2.x, control_2.y,
-                      end.x, end.y)
+                      end.x, end.y,
+                      control_1.parent, control_2.parent, end.parent)
         # Draw right-side end
         self.line_to(self.staff.unit(0),
                      self.staff.unit(0),
-                     parent=self.stop.parent)
+                     self.stop.parent)
         # Draw lower curve part
         control_1 = AnchoredPoint(self.staff.unit(-1),
                                   mid_height,
@@ -81,5 +82,6 @@ class Slur(Path, StaffObject, Spanner):
                             parent=self.start.parent)
         self.cubic_to(control_1.x, control_1.y,
                       control_2.x, control_2.y,
-                      end.x, end.y)
+                      end.x, end.y,
+                      control_1.parent, control_2.parent, end.parent)
         self.close_subpath()
