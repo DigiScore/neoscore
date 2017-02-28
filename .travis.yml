@@ -1,9 +1,9 @@
 os:
   - linux
-  - osx
-sudo: required
+  # - osx  # As of 2/28/17 Travis does not support Python in osx
 
 language: python
+
 python:
   - "3.6"
 
