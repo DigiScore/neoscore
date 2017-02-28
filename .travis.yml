@@ -1,6 +1,8 @@
+os:
+  - linux
+  - osx
+
 language: python
-sudo: required
-dist: xenial
 
 python:
   - "3.6"
