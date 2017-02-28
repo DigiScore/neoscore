@@ -62,7 +62,9 @@ class Slur(Path, StaffObject, Spanner):
         end = AnchoredPoint(self.staff.unit(0),
                             end_height,
                             parent=self.stop.parent)
-        self.cubic_to(control_1, control_2, end)
+        self.cubic_to(control_1.x, control_1.y,
+                      control_2.x, control_2.y,
+                      end.x, end.y)
         # Draw right-side end
         self.line_to(self.staff.unit(0),
                      self.staff.unit(0),
@@ -77,5 +79,7 @@ class Slur(Path, StaffObject, Spanner):
         end = AnchoredPoint(self.staff.unit(0),
                             self.staff.unit(0),
                             parent=self.start.parent)
-        self.cubic_to(control_1, control_2, end)
+        self.cubic_to(control_1.x, control_1.y,
+                      control_2.x, control_2.y,
+                      end.x, end.y)
         self.close_subpath()

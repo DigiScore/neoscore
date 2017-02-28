@@ -11,7 +11,7 @@ class PathElement(InvisibleObject):
     def __init__(self, pos, element_type, path, parent=None):
         """
         Args:
-            pos (Point[Unit]): The position of the element relative to its parent
+            pos (Point): The position of the element relative to its parent
             element_type (PathElementType or int): The type of the element
             path (Path): The path this element belongs in
             parent (GraphicObject): The parent object. If None, the parent

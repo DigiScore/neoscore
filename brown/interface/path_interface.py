@@ -118,6 +118,8 @@ class PathInterface(GraphicObjectInterface):
 
     ######## Public Methods ########
 
+    # TODO: Update signatures to reflect new Path API
+
     def line_to(self, pos):
         """Draw a path from the current position to a new point.
 
