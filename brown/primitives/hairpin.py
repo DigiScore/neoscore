@@ -12,24 +12,29 @@ from brown.primitives.spanner import Spanner
 class Hairpin(Path, StaffObject, Spanner):
 
     """A crescendo/diminuendo hairpin spanner."""
-
     def __init__(self, start, stop, direction, width=None):
         """
         Args:
             start (AnchoredPoint or tuple init args): The starting point.
                 This must have a parent which is a StaffObject or Staff.
             stop (AnchoredPoint or tuple init args): The stopping point.
+                If this point's parent is `None`, the parent will default
+                to the starting point.
             direction (int): The direction of the hairpin,
                 where `-1` means diminuendo (>)
                 and `1` means crescendo (<).
             width (Unit): The width of the wide hairpin part.
                 Defaults to `self.staff.unit(1)`
         """
-        Spanner.__init__(self, start, stop)
+        start = (start if isinstance(start, AnchoredPoint)
+                 else AnchoredPoint(*start))
+        stop = (stop if isinstance(stop, AnchoredPoint)
+                else AnchoredPoint(*stop))
         Path.__init__(self,
-                      (self.start.x, self.start.y),
-                      parent=self.start.parent)
-        StaffObject.__init__(self, self.start.parent)
+                      (start.x, start.y),
+                      parent=start.parent)
+        StaffObject.__init__(self, start.parent)
+        Spanner.__init__(self, Point(stop.x, stop.y), stop.parent)
         self.direction = direction
         self.width = width if width is not None else self.staff.unit(1)
         self.thickness = self.staff.music_font.engraving_defaults[
@@ -71,11 +76,15 @@ class Hairpin(Path, StaffObject, Spanner):
               line would be.
         """
         if self.direction == -1:
-            joint = self.stop
-            end_center = self.start
+            joint = AnchoredPoint(
+                self.end_pos.x, self.end_pos.y, parent=self.end_parent)
+            end_center = AnchoredPoint(
+                self.x, self.y, parent=self.parent)
         else:
-            joint = self.start
-            end_center = self.stop
+            joint = AnchoredPoint(
+                self.x, self.y, parent=self.parent)
+            end_center = AnchoredPoint(
+                self.end_pos.x, self.end_pos.y, parent=self.end_parent)
         dist = self.width / 2
         # Find relative distance from joint to end_center
         parent_distance = GraphicObject.map_between_items(

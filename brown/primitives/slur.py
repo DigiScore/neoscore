@@ -22,11 +22,15 @@ class Slur(Path, StaffObject, Spanner):
             direction (int): The direction of the slur, where
                 -1 indicates curving upward, and 1 vice versa.
         """
-        Spanner.__init__(self, start, stop)
-        Path.__init__(self, (Unit(0), Unit(0)),
-                      parent=self.start.parent,
+        start = (start if isinstance(start, AnchoredPoint)
+                 else AnchoredPoint(*start))
+        stop = (stop if isinstance(stop, AnchoredPoint)
+                else AnchoredPoint(*stop))
+        Path.__init__(self, (start.x, start.y),
+                      parent=start.parent,
                       brush=Brush((0, 0, 0, 255)))
         StaffObject.__init__(self, self.parent)
+        Spanner.__init__(self, Point(stop.x, stop.y), stop.parent)
         # Is this pos override necessary? Probably not???
         self.pos = Point(self.staff.unit(0), self.staff.unit(0))
         self.direction = direction
@@ -52,34 +56,34 @@ class Slur(Path, StaffObject, Spanner):
         # Draw upper curve part
         self.move_to(self.staff.unit(0),
                      end_height,
-                     self.start.parent)
+                     self)
         control_1 = AnchoredPoint(self.staff.unit(1),
                                   mid_upper_height,
-                                  parent=self.start.parent)
-        control_2 = AnchoredPoint(self.staff.unit(-1),
-                                  mid_upper_height,
-                                  parent=self.stop.parent)
-        end = AnchoredPoint(self.staff.unit(0),
-                            end_height,
-                            parent=self.stop.parent)
+                                  parent=self)
+        control_2 = AnchoredPoint(self.end_pos.x - self.staff.unit(1),
+                                  self.end_pos.y + mid_upper_height,
+                                  parent=self.end_parent)
+        end = AnchoredPoint(self.end_pos.x,
+                            self.end_pos.y + end_height,
+                            parent=self.end_parent)
         self.cubic_to(control_1.x, control_1.y,
                       control_2.x, control_2.y,
                       end.x, end.y,
                       control_1.parent, control_2.parent, end.parent)
         # Draw right-side end
-        self.line_to(self.staff.unit(0),
-                     self.staff.unit(0),
-                     self.stop.parent)
+        self.line_to(self.end_pos.x,
+                     self.end_pos.y,
+                     self.end_parent)
         # Draw lower curve part
-        control_1 = AnchoredPoint(self.staff.unit(-1),
-                                  mid_height,
-                                  parent=self.stop.parent)
-        control_2 = AnchoredPoint(self.staff.unit(1),
-                                  mid_height,
-                                  parent=self.start.parent)
-        end = AnchoredPoint(self.staff.unit(0),
-                            self.staff.unit(0),
-                            parent=self.start.parent)
+        control_1 = AnchoredPoint(self.end_pos.x - self.staff.unit(1),
+                                  self.end_pos.y + mid_height,
+                                  parent=self.end_parent)
+        control_2 = AnchoredPoint(self.x + self.staff.unit(1),
+                                  self.y + mid_height,
+                                  parent=self)
+        end = AnchoredPoint(self.x,
+                            self.y,
+                            parent=self)
         self.cubic_to(control_1.x, control_1.y,
                       control_2.x, control_2.y,
                       end.x, end.y,

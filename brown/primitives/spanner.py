@@ -1,4 +1,7 @@
-from brown.utils.anchored_point import AnchoredPoint
+import math
+
+from brown.core.graphic_object import GraphicObject
+from brown.utils.point import Point
 
 
 class Spanner:
@@ -9,19 +12,35 @@ class Spanner:
     to determine how rendering logic should use this information.
     """
 
-    def __init__(self, start, stop):
+    def __init__(self, end_pos, end_parent=None):
         """
         Args:
-            start (AnchoredPoint or tuple init args):
-            stop (AnchoredPoint or tuple init args):
+            end_pos (Point or tuple init args): The position of the endpoint
+            end_parent (GraphicObject or None): The parent of the endpoint.
+                `end_pos` will be relative to this object.
+                If None, this defaults to the spanner.
         """
-        if isinstance(start, tuple):
-            start = AnchoredPoint(*start)
-        if start.parent is None:
-            start.parent = self
-        if isinstance(stop, tuple):
-            stop = AnchoredPoint(*stop)
-        if stop.parent is None:
-            stop.parent = self
-        self.start = start
-        self.stop = stop
+        self.end_pos = (end_pos if isinstance(end_pos, Point)
+                        else Point(*end_pos))
+        self.end_parent = end_parent if end_parent else self
+
+    ######## PUBLIC PROPERTIES ########
+
+    @property
+    def length(self):
+        """Unit: The length of the spanner.
+
+        The exact unit type will be the type of `self.start.x`
+        """
+        if self.end_parent == self:
+            relative_stop = Point.from_existing(self.end_pos)
+        else:
+            relative_stop = (
+                GraphicObject.map_between_items(
+                    self,
+                    self.end_parent)
+                + self.end_pos)
+        relative_stop.to_unit(type(self.pos.x))
+        distance = math.sqrt((relative_stop.x.value ** 2)
+                             + (relative_stop.y.value ** 2))
+        return type(self.pos.x)(distance)
