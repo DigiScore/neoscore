@@ -70,12 +70,47 @@ class MusicTextObject(TextObject, StaffObject):
     @property
     def _bounding_rect(self):
         """Rect: The bounding rect for this text when rendered."""
-        return self.font.text_bounding_rect(self.music_chars,
-                                            self._origin_offset,
-                                            self.scale_factor)
+        return self._char_list_bounding_rect(self.music_chars)
 
     @property
     def _origin_offset(self):
         """Point: The origin offset override for this glyph."""
         return Point(self.staff.unit(0),
                      self.staff.unit(self.font.ascent))
+
+    ######## PRIVATE METHODS ########
+
+    def _char_list_bounding_rect(self, music_chars):
+        """Find the bounding rect of a given list of music chars.
+
+        Takes a list of MusicChars and determined the bounding rect
+        they would have if they were in this MusicTextObject.
+
+        The fonts of every music character should the the same as self.font.
+
+        Args:
+            music_chars (list[MusicChar]): The string to represent
+
+        Returns:
+            Rect: The bounding rect of the specified text if drawn.
+
+        Raises:
+            ValueError: if `music_chars` is empty.
+        """
+        # TODO: This is still a little off...
+        if not music_chars:
+            raise ValueError('Cannot find the bounding rect of an '
+                             'empty character sequence.')
+        x = music_chars[0].glyph_info['glyphBBox']['bBoxSW'][0]
+        y = music_chars[0].glyph_info['glyphBBox']['bBoxNE'][1]
+        w = self.staff.unit(0)
+        h = self.staff.unit(0)
+        for char in music_chars:
+            char_x = char.glyph_info['glyphBBox']['bBoxSW'][0]
+            char_y = char.glyph_info['glyphBBox']['bBoxNE'][1]
+            w += char.glyph_info['glyphBBox']['bBoxNE'][0] - char_x
+            h += (char.glyph_info['glyphBBox']['bBoxSW'][1] - char_y) * -1
+        return Rect((x + self._origin_offset.x) * self.scale_factor,
+                    (y + self._origin_offset.y) * self.scale_factor,
+                    w * self.scale_factor,
+                    h * self.scale_factor)
