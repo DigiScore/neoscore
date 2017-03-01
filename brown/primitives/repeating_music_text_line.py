@@ -58,4 +58,8 @@ class RepeatingMusicTextLine(MusicTextObject, Spanner):
         This value rounds down, such that the real length of the drawn
         text will always be <= self.length.
         """
-        return int((self.length / self._bounding_rect.width).value)
+        base_width = self.font.text_bounding_rect(
+            self.repeating_music_chars,
+            self._origin_offset,
+            self.scale_factor).width
+        return int((self.length / base_width).value)

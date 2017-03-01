@@ -69,21 +69,10 @@ class MusicTextObject(TextObject, StaffObject):
 
     @property
     def _bounding_rect(self):
-        """Rect: The bounding rect for this glyph."""
-        # TODO: This is still a little off...
-        x = self.music_chars[0].glyph_info['glyphBBox']['bBoxSW'][0]
-        y = self.music_chars[0].glyph_info['glyphBBox']['bBoxNE'][1]
-        w = self.staff.unit(0)
-        h = self.staff.unit(0)
-        for char in self.music_chars:
-            char_x = char.glyph_info['glyphBBox']['bBoxSW'][0]
-            char_y = char.glyph_info['glyphBBox']['bBoxNE'][1]
-            w += char.glyph_info['glyphBBox']['bBoxNE'][0] - char_x
-            h += (char.glyph_info['glyphBBox']['bBoxSW'][1] - char_y) * -1
-        return Rect((x + self._origin_offset.x) * self.scale_factor,
-                    (y + self._origin_offset.y) * self.scale_factor,
-                    w * self.scale_factor,
-                    h * self.scale_factor)
+        """Rect: The bounding rect for this text when rendered."""
+        return self.font.text_bounding_rect(self.music_chars,
+                                            self._origin_offset,
+                                            self.scale_factor)
 
     @property
     def _origin_offset(self):
