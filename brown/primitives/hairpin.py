@@ -31,10 +31,10 @@ class Hairpin(Path, StaffObject, Spanner):
         stop = (stop if isinstance(stop, AnchoredPoint)
                 else AnchoredPoint(*stop))
         Path.__init__(self,
-                      (start.x, start.y),
+                      (start.x, start.y, start.page),
                       parent=start.parent)
         StaffObject.__init__(self, start.parent)
-        Spanner.__init__(self, Point(stop.x, stop.y), stop.parent)
+        Spanner.__init__(self, Point(stop.x, stop.y, stop.page), stop.parent)
         self.direction = direction
         self.width = width if width is not None else self.staff.unit(1)
         self.thickness = self.staff.music_font.engraving_defaults[

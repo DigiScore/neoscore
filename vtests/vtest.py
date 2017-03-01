@@ -23,6 +23,7 @@ from brown.primitives.rhythm_dot import RhythmDot
 from brown.primitives.brace import Brace
 from brown.primitives.dynamic import Dynamic
 from brown.primitives.hairpin import Hairpin
+from brown.primitives.repeating_music_text_line import RepeatingMusicTextLine
 
 
 brown.setup()
@@ -87,6 +88,10 @@ flowing_text = MusicTextObject((Mm(155), lower_staff.unit(3)),
 pen = Pen(thickness=Mm(0.2), pattern=5)
 explicit_path = Path((Mm(0), Mm(0)), pen, parent=p)
 explicit_path.line_to(Mm(500), Mm(20))
+
+fake_trill = RepeatingMusicTextLine((Mm(30), staff.unit(-6), 0, staff),
+                                    (Mm(500), staff.unit(-6), 0, staff),
+                                    'wiggleTrill')
 
 text_on_first_page = TextObject((Mm(0), Mm(0), 0),
                                  'first page!')
