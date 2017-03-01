@@ -6,30 +6,25 @@ from brown.utils.point import Point
 class NewLine(LayoutController):
     """A line break controller."""
 
-    def __init__(self, flowable_frame, x, page_number, page_pos, offset_y=0):
+    def __init__(self, flowable_frame, x, pos, offset_y=0):
         """
         Args:
             flowable_frame (FlowableFrame): The parent frame.
-            x (float): The x position in pixels in the frame's local space.
-            page_number (int): The page number
-            page_pos (Point): The page position of the top left corner of this line.
-            offset_y (float): The space between the bottom of the
-                current line and the top of the next, in pixels.
-
-        TODO: Priority low - page_number and page_pos in signature are
-              in swapped order compare to Document._page_pos_to_doc signature.
-              Something should change so all use the same order.
+            x (Unit): The x position in the frame's local space where this
+                line begins.
+            pos (Point): The position of the top left corner of this line.
+            offset_y (Unit): The space between the bottom of the
+                current line and the top of the next.
         """
         super().__init__(flowable_frame, x)
-        self._page_number = page_number
-        self.page_pos = page_pos
+        self.pos = pos
         self.offset_y = offset_y
 
     ######## PUBLIC PROPERTIES ########
 
     @property
     def offset_y(self):
-        """float: The space in pixels before the next line."""
+        """Unit: The space in pixels before the next line."""
         return self._offset_y
 
     @offset_y.setter
@@ -37,30 +32,17 @@ class NewLine(LayoutController):
         self._offset_y = value
 
     @property
-    def page_number(self):
-        """int: The page number"""
-        return self._page_number
+    def pos(self):
+        """Point: The position of the top left corner of this line."""
+        return self._pos
 
-    @property
-    def page_pos(self):
-        """Point: The page position of the top left corner of this line."""
-        return self._page_pos
-
-    @page_pos.setter
-    def page_pos(self, value):
+    @pos.setter
+    def pos(self, value):
         if not isinstance(value, Point):
             value = Point(*value)
         else:
             value = Point.from_existing(value)
-        self._page_pos = value
-
-    @property
-    def doc_start_pos(self):
-        """Point: The position of the new line's top left corner in doc space
-
-        This property is read-only
-        """
-        return brown.document._page_pos_to_doc(self.page_pos, self.page_number)
+        self._pos = value
 
     @property
     def doc_end_pos(self):
@@ -68,7 +50,7 @@ class NewLine(LayoutController):
 
         This property is read-only
         """
-        return self.doc_start_pos + Point(self.length, self.height)
+        return self.pos + Point(self.length, self.height)
 
     @property
     def length(self):
@@ -77,7 +59,7 @@ class NewLine(LayoutController):
         This property is read-only.
         """
         # TODO: When breaks are made more flexible this needs to be updated.
-        return brown.document.paper.live_width - self.page_pos.x
+        return brown.document.paper.live_width - self.pos.x
 
     @property
     def height(self):

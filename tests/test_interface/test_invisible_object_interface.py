@@ -13,10 +13,6 @@ class TestInvisibleObjectInterface(unittest.TestCase):
 
     def test_init(self):
         test_object = InvisibleObjectInterface((5, 6))
-        assert(test_object.x == 5)
-        assert(test_object._qt_object.x() == 5)
-        assert(test_object.y == 6)
-        assert(test_object._qt_object.y() == 6)
         # Check that emptiness flag was passed correctly
         # (Use a bitwise AND mask to check for the set flag
         # because Qt stores flags by bitwise OR-ing them)

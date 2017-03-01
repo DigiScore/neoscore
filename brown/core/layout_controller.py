@@ -29,6 +29,7 @@ class LayoutController(ABC):
     @property
     def x(self):
         """float: The x position in the parent FlowableFrame's local space."""
+        # TODO: Rename to local_x
         return self._x
 
     @x.setter

@@ -46,7 +46,7 @@ class TestFlowableFrame(unittest.TestCase):
         assert(len(test_frame.layout_controllers) == 1)
         assert(test_frame.layout_controllers[0].flowable_frame == test_frame)
         assert(test_frame.layout_controllers[0].x == Mm(0))
-        assert(test_frame.layout_controllers[0].page_pos == Point(Mm(9), Mm(11)))
+        assert(test_frame.layout_controllers[0].pos == Point(Mm(9), Mm(11)))
 
     def test_generate_layout_controllers_with_two_lines(self):
         live_width = brown.document.paper.live_width
@@ -117,27 +117,21 @@ class TestFlowableFrame(unittest.TestCase):
         frame_pos = Point(Mm(10), Mm(11))
         test_frame = FlowableFrame(frame_pos, Mm(2500), Mm(100), Mm(20))
         test_pos = Point(Mm(100), Mm(40))
-        page_origin = brown.document._page_origin_in_doc_space(1)
-        expected_x = page_origin.x + frame_pos.x + test_pos.x
-        expected_y = brown.document.paper.margin_top + frame_pos.y + test_pos.y
-        assert(test_frame._map_to_doc(test_pos) ==
-               Point(expected_x, expected_y))
+        assert(test_frame._map_to_doc(test_pos) == frame_pos + test_pos)
 
     def test_map_to_doc_second_line(self):
         frame_pos = Point(Mm(10), Mm(11))
         test_frame = FlowableFrame(frame_pos, Mm(2500), Mm(20), Mm(5))
         test_pos = Point(Mm(300), Mm(5))
         first_line_width = brown.document.paper.live_width - frame_pos.x
-        expected_x = (test_pos.x - first_line_width +
-                      brown.document.paper.margin_left)
-        page_origin = brown.document._page_origin_in_doc_space(1)
-        second_line_y = (frame_pos.y + test_frame.height +
-                         test_frame.y_padding + page_origin.y)
+        expected_x = test_pos.x - first_line_width
+        second_line_y = (frame_pos.y + test_frame.height
+                         + test_frame.y_padding)
         expected_y = second_line_y + test_pos.y
-        expected = Point(expected_x, expected_y)
+        expected_page = 0
+        expected = Point(expected_x, expected_y, expected_page)
         actual = test_frame._map_to_doc(test_pos)
-        self.assertAlmostEqual(actual.x, expected.x)
-        self.assertAlmostEqual(actual.y, expected.y)
+        self.assertEqual(expected, actual)
 
     def test_map_to_doc_in_third_line(self):
         frame_pos = Point(Mm(17), Mm(11))
@@ -145,54 +139,53 @@ class TestFlowableFrame(unittest.TestCase):
         test_pos = Point(Mm(350), Mm(5))
         first_line_width = brown.document.paper.live_width - frame_pos.x
         second_line_width = brown.document.paper.live_width
-        page_origin = brown.document._page_origin_in_doc_space(1)
-        expected_x = (test_pos.x - first_line_width - second_line_width +
-                      page_origin.x)
-        expected_y = (page_origin.y + frame_pos.y + test_pos.y +
+        expected_x = (test_pos.x - first_line_width - second_line_width)
+        expected_y = (frame_pos.y + test_pos.y +
                       ((test_frame.height + test_frame.y_padding) * 2))
-        expected = Point(expected_x, expected_y)
+        expected_page = 0
+        expected = Point(expected_x, expected_y, expected_page)
         actual = test_frame._map_to_doc(test_pos)
-        self.assertAlmostEqual(actual.x, expected.x)
-        self.assertAlmostEqual(actual.y, expected.y)
+        self.assertEqual(expected, actual)
 
     def test_map_to_doc_on_second_page_first_line(self):
         frame_pos = Point(Mm(17), Mm(11))
         test_frame = FlowableFrame(frame_pos, Mm(2500), Mm(15), Mm(5))
         test_pos = Point(Mm(2100), Mm(0))
         live_width = brown.document.paper.live_width
-        page_origin = brown.document._page_origin_in_doc_space(2)
         num_full_lines = 13
         expected_x_on_last_line = (test_pos.x - (live_width * num_full_lines) + frame_pos.x)
-        expected_x = page_origin.x + expected_x_on_last_line
-        expected_y = page_origin.y + test_pos.y
-        assert(test_frame._map_to_doc(test_pos) ==
-               Point(expected_x, expected_y))
+        expected_x = expected_x_on_last_line
+        expected_y = test_pos.y
+        expected_page = 1
+        expected = Point(expected_x, expected_y, expected_page)
+        actual = test_frame._map_to_doc(test_pos)
+        self.assertEqual(expected, actual)
 
     def test_map_to_doc_on_second_page_second_line(self):
         frame_pos = Point(Mm(17), Mm(11))
         test_frame = FlowableFrame(frame_pos, Mm(2500), Mm(15), Mm(5))
         test_pos = Point(Mm(2300), Mm(5))
         live_width = brown.document.paper.live_width
-        page_origin = brown.document._page_origin_in_doc_space(2)
         num_full_lines = 14
-        expected_x_on_last_line = (test_pos.x - (live_width * num_full_lines) + frame_pos.x)
-        expected_x = page_origin.x + expected_x_on_last_line
-        expected_y = (page_origin.y + test_pos.y + test_frame.height + test_frame.y_padding)
-        assert(test_frame._map_to_doc(test_pos) ==
-               Point(expected_x, expected_y))
+        expected_x_on_last_line = (test_pos.x - (live_width * num_full_lines)
+                                   + frame_pos.x)
+        expected_x = expected_x_on_last_line
+        expected_y = (test_pos.y + test_frame.height + test_frame.y_padding)
+        expected_page = 1
+        expected = Point(expected_x, expected_y, expected_page)
+        actual = test_frame._map_to_doc(test_pos)
+        self.assertEqual(expected, actual)
 
     def test_map_to_doc_y_same_across_pages(self):
         test_frame = FlowableFrame((Mm(10), Mm(0)), Mm(10000), Mm(90), Mm(5))
-        page_origin = brown.document._page_origin_in_doc_space(1)
         live_width = brown.document.paper.live_width
         line_and_padding_height = test_frame.height + test_frame.y_padding
         for i in range(12):
-            y_val = test_frame._map_to_doc(
-                Point(((live_width * i) + Mm(10)), Mm(0))).y
             line_on_page = i % 3
-            expected = (page_origin.x +
-                        line_and_padding_height * line_on_page)
-            self.assertAlmostEqual(y_val, expected)
+            expected = line_and_padding_height * line_on_page
+            actual = test_frame._map_to_doc(
+                Point(((live_width * i) + Mm(10)), Mm(0))).y
+            self.assertAlmostEqual(expected, actual)
 
     def test_map_to_doc_raises_out_of_bounds_correctly(self):
         test_frame = FlowableFrame((Mm(17), Mm(11)), Mm(500), Mm(15), Mm(5))

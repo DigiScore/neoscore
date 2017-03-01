@@ -13,10 +13,6 @@ class TestTextObjectInterface(unittest.TestCase):
     def test_init(self):
         test_font = FontInterface('Bravura', 12)
         test_object = TextObjectInterface((5, 6), 'testing', test_font)
-        assert(test_object.x == 5)
-        assert(test_object._qt_object.x() == 5)
-        assert(test_object.y == 6)
-        assert(test_object._qt_object.y() == 6)
         assert(test_object.text == 'testing')
         assert(test_object._qt_object.text() == test_object.text)
         assert(test_object.font == test_font)

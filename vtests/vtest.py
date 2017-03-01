@@ -88,4 +88,17 @@ pen = Pen(thickness=Mm(0.2), pattern=5)
 explicit_path = Path((Mm(0), Mm(0)), pen, parent=p)
 explicit_path.line_to(Mm(500), Mm(20))
 
+text_on_first_page = TextObject((Mm(0), Mm(0), 0),
+                                 'first page!')
+
+text_on_second_page = TextObject((Mm(0), Mm(0), 1),
+                                 'second page!')
+
+text_on_third_page = TextObject((Mm(0), Mm(0), 1),
+                                'third page!',
+                                parent=text_on_second_page)
+
+explicit_path_on_third_page = Path((Mm(0), Mm(0), 1), parent=text_on_second_page)
+explicit_path_on_third_page.line_to(Mm(100), Mm(60))
+
 brown.show()

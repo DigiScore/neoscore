@@ -70,40 +70,40 @@ class Document:
         self.children.remove(child)
 
     def _page_origin_in_doc_space(self, page_number):
-        """Find the position of the origin of the live page area.
+        """Find the origin point of a given page number.
 
         The origin is the top left corner of the live area, equivalent to
-        the real page corner plus margins and gutter.
+        the real page corner + margins and gutter.
+
+        Document page numbers are counted where 0 is the first page.
 
         Args:
-            page_number (int): The number of the page to locate
+            page_number (int): The number of the page to locate.
 
         Returns:
             Point: The position of the origin of the given page.
+                The page number of this Point will be 0, as this
+                is considered relative to the document's origin.
         """
-        if page_number < 1:
-            raise ValueError('page_number must be 1 or greater.')
         # Left edge of paper (not including margin/gutter)
         x_page_left = ((self.paper.width + self._page_display_gap) *
-                       (page_number - 1))
+                       (page_number))
         x_page_origin = x_page_left + self.paper.margin_left
         y_page_origin = self.paper.margin_top
         return Point(x_page_origin, y_page_origin)
 
-    def _page_pos_to_doc(self, pos, page_number):
-        """Take a position on a page number and find its doc-space position
+    def _map_to_canvas(self, pos):
+        """Find the global document position of a given point.
 
-        The origin is the top left corner of the live area, equivalent to
-        the real page corner plus margins and gutter.
+        The resulting Point will have the page number of 0.
 
         Args:
-            pos (Point): The position relative to the origin of the
-                live page area
+            pos (Point):
 
-        Returns:
-            Point: A document-space position
+        Returns: Point:
         """
-        return pos + self._page_origin_in_doc_space(page_number)
+        page_origin = self._page_origin_in_doc_space(pos.page)
+        return Point(page_origin.x + pos.x, page_origin.y + pos.y, 0)
 
     ######## PUBLIC METHODS ########
 

@@ -91,53 +91,43 @@ class FlowableFrame(InvisibleObject):
         x_progress = Mm(0)
         # Current position on the page relative to the top left corner
         # of the live page area
-        pos_on_page = Point(self.pos.x, self.pos.y)
-        page_number = 1
+        pos = Point(self.pos.x, self.pos.y, 0)
         # Attach initial starting NewLine
         self.layout_controllers.append(
-            AutoNewPage(self, x_progress, page_number, pos_on_page))
+            AutoNewPage(self, x_progress, pos))
         while True:
-            delta_x = live_page_width - pos_on_page.x
+            delta_x = live_page_width - pos.x
             x_progress += delta_x
-            pos_on_page.y = pos_on_page.y + self.height + self.y_padding
+            pos.y = pos.y + self.height + self.y_padding
             if x_progress >= self.width:
                 break
-            if pos_on_page.y > live_page_height:
-                pos_on_page.x = Mm(0)
-                pos_on_page.y = Mm(0)
-                page_number += 1
+            if pos.y > live_page_height:
+                pos = Point(Mm(0), Mm(0), pos.page + 1)
                 self.layout_controllers.append(
-                    AutoNewPage(self, x_progress, page_number, pos_on_page))
+                    AutoNewPage(self, x_progress, pos))
             else:
-                pos_on_page.x = Mm(0)
+                pos.x = Mm(0)
                 self.layout_controllers.append(
-                    AutoNewLine(self, x_progress, page_number, pos_on_page, self.y_padding))
+                    AutoNewLine(self, x_progress, pos, self.y_padding))
 
     def _map_to_doc(self, local_point):
         """Convert a position inside the frame to its position in the document.
 
-        Coordinates relative to the top left corner of the first page.
-
         Args:
-            local_point (tuple or Point): An x-y coordinate in flowable space
+            local_point (Point): A position in flowable space.
+                The page number for this point should be 0.
 
         Returns:
-            Point: An x-y coordinate in document space
+            Point: A coordinate in document space with a page number.
 
-        NOTE: This currently assumes that the frame's direct parent is None (the scene)
+        TODO: This currently assumes that the frame's direct parent is the document.
         """
         if local_point.x < 0 or local_point.x > self.width:
             raise OutOfBoundsError(
                 '{} lies outside of the FlowableFrame'.format(local_point))
-        last_break_before = self._last_break_at(local_point.x)
-        line_start_doc_pos = last_break_before.doc_start_pos
-        offset_from_line_start = Point(local_point.x - last_break_before.x,
-                                       local_point.y)
-        mapped_pos = line_start_doc_pos + offset_from_line_start
-        # Ensure x, y units are same as input point
-        # TODO: Maybe implement this functionality in Point
-        return Point(type(local_point.x)(mapped_pos.x),
-                     type(local_point.y)(mapped_pos.y))
+        current_line = self._last_break_at(local_point.x)
+        return (current_line.pos +
+                Point(local_point.x - current_line.x, local_point.y))
 
     def _x_pos_rel_to_line_start(self, x):
         """Find the distance of an x-pos to the left edge of its laid-out line.

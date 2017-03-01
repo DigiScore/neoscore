@@ -1,8 +1,13 @@
 import unittest
 
+from PyQt5.QtCore import QPointF
+
 from brown.core import brown
+from brown.interface.graphic_object_interface import GraphicObjectInterface
 from brown.interface.pen_interface import PenInterface
 from brown.interface.brush_interface import BrushInterface
+from brown.interface.qt_to_util import point_to_qt_point_f
+from brown.utils.point import Point
 from brown.utils.units import GraphicUnit
 from brown.utils.color import Color
 from brown.utils.stroke_pattern import StrokePattern
@@ -15,31 +20,64 @@ class TestGraphicObjectInterface(unittest.TestCase):
     def setUp(self):
         brown.setup()
 
-    def test_pos_after_init(self):
-        grob = MockGraphicObjectInterface((5, 6))
-        assert(grob.pos == grob._pos)
-        assert(grob.pos.x == GraphicUnit(5))
-        assert(grob.pos.y == GraphicUnit(6))
-        assert(grob._qt_object.x() == grob.pos.x.value)
-        assert(grob._qt_object.y() == grob.pos.y.value)
+    def test_map_to_qt_canvas_on_first_page(self):
+        expected = point_to_qt_point_f(
+            brown.document._map_to_canvas(
+                Point(GraphicUnit(10), GraphicUnit(11), 0)))
+        actual = GraphicObjectInterface._map_to_qt_canvas(
+            Point(GraphicUnit(10), GraphicUnit(11)))
+        self.assertAlmostEqual(expected.x(), actual.x())
+        self.assertAlmostEqual(expected.y(), actual.y())
+
+    def test_map_to_qt_canvas_on_second_page(self):
+        expected = point_to_qt_point_f(
+            brown.document._map_to_canvas(
+                Point(GraphicUnit(10), GraphicUnit(11), 1)))
+        actual = GraphicObjectInterface._map_to_qt_canvas(
+            Point(GraphicUnit(10), GraphicUnit(11), 1))
+        self.assertAlmostEqual(expected.x(), actual.x())
+        self.assertAlmostEqual(expected.y(), actual.y())
+
+    def test_interface_properties_after_init(self):
+        grob = MockGraphicObjectInterface((GraphicUnit(5), GraphicUnit(6)))
+        assert(grob.pos == Point(GraphicUnit(5), GraphicUnit(6)))
+
+    def test_qt_pos_after_init(self):
+        expected = point_to_qt_point_f(
+            brown.document._map_to_canvas(
+                Point(GraphicUnit(5), GraphicUnit(6), 0)))
+        grob = MockGraphicObjectInterface((GraphicUnit(5), GraphicUnit(6)))
+        self.assertAlmostEqual(expected.x(), grob._qt_object.x())
+        self.assertAlmostEqual(expected.y(), grob._qt_object.y())
 
     def test_pos_setter_changes_qt_object(self):
-        grob = MockGraphicObjectInterface((5, 6))
-        grob.pos = (10, 11)
+        grob = MockGraphicObjectInterface((GraphicUnit(0), GraphicUnit(0)))
+        grob.pos = (GraphicUnit(10), GraphicUnit(11))
+        expected = point_to_qt_point_f(
+            brown.document._map_to_canvas(
+                Point(GraphicUnit(10), GraphicUnit(11), 0)))
         assert(grob.x == grob.pos.x)
         assert(grob.y == grob.pos.y)
-        assert(grob.pos.x.value == grob._qt_object.x())
-        assert(grob.pos.y.value == grob._qt_object.y())
+        self.assertAlmostEqual(expected.x(), grob._qt_object.x())
+        self.assertAlmostEqual(expected.y(), grob._qt_object.y())
 
     def test_x_setter_changes_qt_object(self):
-        grob = MockGraphicObjectInterface((5, 6))
-        grob.x = 100
-        assert(grob.x == grob._qt_object.x())
+        grob = MockGraphicObjectInterface((GraphicUnit(5), GraphicUnit(6)))
+        grob.x = GraphicUnit(100)
+        expected = point_to_qt_point_f(
+            brown.document._map_to_canvas(
+                Point(GraphicUnit(100), GraphicUnit(6), 0)))
+        self.assertAlmostEqual(expected.x(), grob._qt_object.x())
+        self.assertAlmostEqual(expected.y(), grob._qt_object.y())
 
     def test_y_setter_changes_qt_object(self):
-        grob = MockGraphicObjectInterface((5, 6))
-        grob.y = 100
-        assert(grob.y == grob._qt_object.y())
+        grob = MockGraphicObjectInterface((GraphicUnit(5), GraphicUnit(6)))
+        grob.y = GraphicUnit(100)
+        expected = point_to_qt_point_f(
+            brown.document._map_to_canvas(
+                Point(GraphicUnit(5), GraphicUnit(100), 0)))
+        self.assertAlmostEqual(expected.x(), grob._qt_object.x())
+        self.assertAlmostEqual(expected.y(), grob._qt_object.y())
 
     def test_pen_after_init(self):
         pen = PenInterface(Color('#eeeeee'), 0, StrokePattern(1))

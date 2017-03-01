@@ -3,25 +3,27 @@ from brown.utils.units import Mm
 
 
 class NewPage(NewLine):
-    """A line break controller."""
+    """A new line that starts a new page."""
 
-    def __init__(self, flowable_frame, x, page_number, page_pos, offset_y=0):
+    def __init__(self, flowable_frame, x, pos, offset_y=None):
         """
         Args:
             flowable_frame (FlowableFrame): The parent frame.
-            x (float): The x position in pixels in the frame's local space.
-            offset_y (float): The space in pixels above the first
-                line on the next page.
+            x (Unit): The x position in the frame's local space where this
+                page begins.
+            pos (Point): The position of the top left corner of this line.
+            offset_y (Unit): The space between the bottom of the
+                current line and the top of the next.
         """
         if not offset_y:
             offset_y = Mm(0)
-        super().__init__(flowable_frame, x, page_number, page_pos, offset_y)
+        super().__init__(flowable_frame, x, pos, offset_y)
 
     ######## PUBLIC PROPERTIES ########
 
     @property
     def offset_y(self):
-        """float: The space in pixels above the first line on the next page."""
+        """Unit: The space above the first line on the next page."""
         return self._offset_y
 
     @offset_y.setter

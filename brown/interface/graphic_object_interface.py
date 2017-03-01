@@ -1,8 +1,10 @@
 from abc import ABC
 
+from brown.core import brown
 from brown.config import config
 from brown.interface.pen_interface import PenInterface
 from brown.interface.brush_interface import BrushInterface
+from brown.interface.qt_to_util import point_to_qt_point_f
 from brown.utils.units import GraphicUnit
 from brown.utils.point import Point
 from brown.utils.color import Color
@@ -45,8 +47,8 @@ class GraphicObjectInterface(ABC):
             value = Point.from_existing(value)
         value.to_unit(GraphicUnit)
         self._pos = value
-        self._qt_object.setX(self.pos.x.value)
-        self._qt_object.setY(self.pos.y.value)
+        self._qt_object.setPos(
+            GraphicObjectInterface._map_to_qt_canvas(self._pos))
 
     @property
     def x(self):
@@ -56,7 +58,8 @@ class GraphicObjectInterface(ABC):
     @x.setter
     def x(self, value):
         self.pos.x = GraphicUnit(value)
-        self._qt_object.setX(self.pos.x.value)
+        self._qt_object.setPos(
+            GraphicObjectInterface._map_to_qt_canvas(self.pos))
 
     @property
     def y(self):
@@ -66,7 +69,8 @@ class GraphicObjectInterface(ABC):
     @y.setter
     def y(self, value):
         self.pos.y = GraphicUnit(value)
-        self._qt_object.setY(self.pos.y.value)
+        self._qt_object.setPos(
+            GraphicObjectInterface._map_to_qt_canvas(self.pos))
 
     @property
     def pen(self):
@@ -109,6 +113,24 @@ class GraphicObjectInterface(ABC):
             value = BrushInterface(Color(*config.DEFAULT_BRUSH_COLOR))
         self._brush = value
         self._qt_object.setBrush(self._brush._qt_object)
+
+    ######## PRIVATE METHODS ########
+
+    @staticmethod
+    def _map_to_qt_canvas(pos):
+        """Map a position in the document to the canvas.
+
+        This takes a paged position and queries the global
+        document to determine where it should actually appear
+        on the canvas. All coordinates passed to Qt should
+        be mapped through this method!
+
+        Args:
+            pos (Point): A paged document position
+
+        Returns: QPointF
+        """
+        return point_to_qt_point_f(brown.document._map_to_canvas(pos))
 
     ######## PUBLIC METHODS ########
 

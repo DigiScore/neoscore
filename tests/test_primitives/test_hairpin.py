@@ -132,8 +132,10 @@ class TestHairpin(unittest.TestCase):
                         Unit(2))
         # Spanner line slope should be Unit(1)
         points = cresc._find_hairpin_points()
-        self.assertAlmostEqual(points[0].x.value, points[2].y.value)
-        self.assertAlmostEqual(points[0].y.value, points[2].x.value)
+        self.assertAlmostEqual(Unit(points[0].x).value,
+                               Unit(points[2].y).value)
+        self.assertAlmostEqual(Unit(points[0].y).value,
+                               Unit(points[2].x).value)
         assert(points[1] == AnchoredPoint(
             Unit(0), Unit(0), parent=self.left_parent))
 
@@ -143,9 +145,12 @@ class TestHairpin(unittest.TestCase):
                       Unit(2))
         # Spanner line slope should be Unit(1)
         points = dim._find_hairpin_points()
-        self.assertAlmostEqual(points[0].x.value, points[2].y.value)
-        self.assertAlmostEqual(points[0].y.value, points[2].x.value)
-        assert(points[1] == AnchoredPoint(Unit(4), Unit(4), parent=self.left_parent))
+        self.assertAlmostEqual(Unit(points[0].x).value,
+                               Unit(points[2].y).value)
+        self.assertAlmostEqual(Unit(points[0].y).value,
+                               Unit(points[2].x).value)
+        assert(points[1] == AnchoredPoint(Unit(4), Unit(4),
+                                          parent=self.left_parent))
 
     def test_hairpin_points_diagonal_different_parents(self):
         # For reference...
@@ -157,8 +162,10 @@ class TestHairpin(unittest.TestCase):
                         Unit(2))
         # Spanner line slope should be Unit(1)
         points = cresc._find_hairpin_points()
-        self.assertAlmostEqual(points[0].x.value, points[2].y.value)
-        self.assertAlmostEqual(points[0].y.value, points[2].x.value)
+        self.assertAlmostEqual(Unit(points[0].x).value,
+                               Unit(points[2].y).value)
+        self.assertAlmostEqual(Unit(points[0].y).value,
+                               Unit(points[2].x).value)
         assert(points[1] == AnchoredPoint(
             Unit(10), Unit(2), parent=self.left_parent))
 
@@ -168,7 +175,9 @@ class TestHairpin(unittest.TestCase):
                       Unit(2))
         # Spanner line slope should be Unit(1)
         points = dim._find_hairpin_points()
-        self.assertAlmostEqual(points[0].x.value, points[2].y.value)
-        self.assertAlmostEqual(points[0].y.value, points[2].x.value)
+        self.assertAlmostEqual(Unit(points[0].x).value,
+                               Unit(points[2].y).value)
+        self.assertAlmostEqual(Unit(points[0].y).value,
+                               Unit(points[2].x).value)
         assert(points[1] == AnchoredPoint(
             Unit(-6), Unit(2), parent=self.right_parent))

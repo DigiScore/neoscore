@@ -154,30 +154,15 @@ class GraphicObject(ABC):
         """bool: Whether or not this object is in a FlowableFrame"""
         return (self.frame is not None)
 
-    @property
-    def document_pos(self):
-        """Point: The position of the object in document space."""
-        if self.is_in_flowable:
-            return self.frame._map_to_doc(self.pos)
-        else:
-            raise NotImplementedError  # TODO
-
     ######## CLASS METHODS ########
 
     @classmethod
     def map_from_origin(cls, item):
         """Find an object's position relative to the document origin.
 
-        Return: Point
-
-        TODO: This doesn't actually work for objects *not* in a Flowable
-              (such as a flowable itself). The FlowableFrame._map_to_doc
-              method compensates for page offsets in the document space,
-              while this does not!
-
-              The logic around the difference between logical document
-              space and real, visual document space (including page
-              margins) clearly needs to be worked out further!
+        Return:
+            Point: the document position of the item,
+                including its real page number.
         """
         pos = Point(Unit(0), Unit(0))
         current = item
@@ -215,7 +200,7 @@ class GraphicObject(ABC):
         if self.is_in_flowable:
             self._render_flowable()
         else:
-            self._render_complete(self.pos)
+            self._render_complete(GraphicObject.map_from_origin(self))
         for child in self.children:
             child.render()
 
@@ -267,7 +252,7 @@ class GraphicObject(ABC):
         current_line = self.frame.layout_controllers[first_line_i]
         render_start_pos = GraphicObject.map_from_origin(self)
         first_line_length = self.frame._dist_to_line_end(pos_in_flowable.x) * -1
-        render_end_pos = (render_start_pos + Point(first_line_length, 0))
+        render_end_pos = (render_start_pos + Point(first_line_length, Unit(0)))
         self._render_before_break(Unit(0), render_start_pos, render_end_pos)
 
         # Iterate through remaining breakable_width

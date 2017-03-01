@@ -40,12 +40,13 @@ class TestGraphicObject(unittest.TestCase):
         assert(grob.pos.y == GraphicUnit(8))
 
     def test_map_from_origin(self):
-        item = MockGraphicObject((5, 6))
+        item = MockGraphicObject((5, 6, 2))
         relative_pos = MockGraphicObject.map_from_origin(item)
         assert(relative_pos.x.value == 5)
         assert(relative_pos.y.value == 6)
+        assert(relative_pos.page == 2)
 
-    def test_map_from_origin_thorugh_parent(self):
+    def test_map_from_origin_through_parent(self):
         parent = MockGraphicObject((100, 101))
         item = MockGraphicObject((5, 6), parent=parent)
         relative_pos = MockGraphicObject.map_from_origin(item)
@@ -53,25 +54,21 @@ class TestGraphicObject(unittest.TestCase):
         assert(relative_pos.y.value == 107)
 
     def test_map_between_items(self):
-        source = MockGraphicObject((5, 6))
-        destination = MockGraphicObject((100, 100))
+        source = MockGraphicObject((5, 6, 1))
+        destination = MockGraphicObject((100, 100, 4))
         relative_pos = MockGraphicObject.map_between_items(source, destination)
         assert(relative_pos.x.value == 95)
         assert(relative_pos.y.value == 94)
+        assert(relative_pos.page == 3)
 
-    def test_map_between_items_thorugh_parent(self):
-        parent = MockGraphicObject((100, 102))
-        source = MockGraphicObject((5, 6))
-        destination = MockGraphicObject((1, 1), parent=parent)
+    def test_map_between_items_through_parent(self):
+        parent = MockGraphicObject((100, 102, 7))
+        source = MockGraphicObject((5, 6, 1), parent=parent)
+        destination = MockGraphicObject((1, 1, 4))
         relative_pos = MockGraphicObject.map_between_items(source, destination)
-        assert(relative_pos.x.value == 96)
-        assert(relative_pos.y.value == 97)
-
-    def test_document_pos(self):
-        test_object = MockGraphicObject((Mm(1), Mm(2)), Mm(50), parent=self.frame)
-        expected_pos = (brown.document._page_origin_in_doc_space(1) +
-                        Point(Mm(1), Mm(2)))
-        self.assertEqual(test_object.document_pos, expected_pos)
+        assert(relative_pos.x.value == -104)
+        assert(relative_pos.y.value == -107)
+        assert(relative_pos.page == -4)
 
     def test_register_child(self):
         parent = MockGraphicObject((0, 0))
