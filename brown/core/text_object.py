@@ -104,17 +104,13 @@ class TextObject(GraphicObject):
         self.interfaces.add(slice_interface)
 
     def _render_complete(self, pos):
-        print(f'TextObject._render_complete({pos})')
         self._render_slice(pos, None, None)
 
     def _render_before_break(self, local_start_x, start, stop):
-        print(f'TextObject._render_before_break({local_start_x, start, stop})')
         self._render_slice(start, local_start_x, stop.x - start.x)
 
     def _render_after_break(self, local_start_x, start, stop):
-        print(f'TextObject._render_after_break({local_start_x, start, stop})')
         self._render_slice(start, local_start_x, stop.x - start.x)
 
     def _render_spanning_continuation(self, local_start_x, start, stop):
-        print(f'TextObject._render_spanning_continuation({local_start_x, start, stop})')
         self._render_slice(start, local_start_x, stop.x - start.x)

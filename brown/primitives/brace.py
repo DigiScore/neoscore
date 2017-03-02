@@ -1,11 +1,23 @@
-from brown.core.graphic_object import GraphicObject
 from brown.core.music_text_object import MusicTextObject
-from brown.core.recurring_object import RecurringObject
 from brown.primitives.multi_staff_object import MultiStaffObject
 from brown.core.music_font import MusicFontGlyphNotFoundError
+from brown.utils.units import GraphicUnit
 
 
-class Brace(RecurringObject, MultiStaffObject, MusicTextObject):
+class Brace(MultiStaffObject, MusicTextObject):
+
+    """A brace spanning staves, recurring at line beginnings.
+
+    The brace is drawn at the beginning of every line
+    and after its initial x position through its length.
+    A brace will be drawn on the first line it appears on
+    if and only if it is placed *exactly* at the line beginning.
+
+    Consequently, `Brace(Mm(0), Mm(1000), some_staves)` will appear
+    on the first line of the flowable, while
+    `Brace(Mm(1), Mm(1000), some_staves) will not begin drawing
+    until the second line.
+    """
 
     def __init__(self, pos_x, length, staves):
         """
@@ -27,7 +39,6 @@ class Brace(RecurringObject, MultiStaffObject, MusicTextObject):
             text = 'brace'
         else:
             text = ('brace', 1)
-        print(f'using brace {text}')
         try:
             # Attempt to use size-specific optional glyph
             MusicTextObject.__init__(self,
@@ -43,8 +54,25 @@ class Brace(RecurringObject, MultiStaffObject, MusicTextObject):
                                      self.highest_staff,
                                      scale_factor=scale)
         self._breakable_width = length
-        # Recur at line start
-        RecurringObject.__init__(self, 0)
 
-    def _render_occurence(self, pos):
-        self._render_complete(pos)
+    ######## PUBLIC PROPERTIES ########
+
+    @property
+    def breakable_width(self):
+        """Unit: The breakable width of the object.
+
+        This is used to determine how and where rendering cuts should be made.
+        """
+        return self._breakable_width
+
+    ######## PRIVATE METHODS ########
+
+    def _render_before_break(self, local_start_x, start, stop):
+        if start.x == GraphicUnit(0):
+            self._render_complete(start)
+
+    def _render_after_break(self, local_start_x, start, stop):
+        self._render_complete(start)
+
+    def _render_spanning_continuation(self, local_start_x, start, stop):
+        self._render_complete(start)

@@ -66,7 +66,7 @@ hairpin = Hairpin((Mm(0), Mm(3), 0, p), (Mm(0), Mm(3), 0, sfz), 1)
 slur = Slur((Mm(0), Mm(0), 0, regular_text),
             (Mm(0), Mm(0), 0, sfz))
 
-brace = Brace(Mm(0), Mm(500), {staff, lower_staff, lowest_staff})
+brace = Brace(Mm(0), Mm(5000), {staff, lower_staff, lowest_staff})
 
 import random
 random_wiggles = [random.choice(['wiggleRandom1',
@@ -85,7 +85,6 @@ for i in range(0, 50, 2):
                     lowest_staff,
                     scale_factor=factor)
 
-print('rendering flowing_text')
 flowing_text = MusicTextObject((Mm(155), lower_staff.unit(3)),
                                ['gClef'] * 130,
                                lower_staff,
