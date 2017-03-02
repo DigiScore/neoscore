@@ -13,8 +13,8 @@ class PaperInterface(QPageLayout):
         Args:
             paper (Paper):
         """
-        # Scaling ratio for Qt point 72dpi -> config.PRINT_PPI
-        ratio = 72 / config.PRINT_PPI
+        # Scaling ratio for Qt point 72dpi -> config.PRINT_DPI
+        ratio = 72 / config.PRINT_DPI
         QPageLayout.__init__(
             self,
             QPageSize(
