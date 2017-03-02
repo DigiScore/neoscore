@@ -2,32 +2,7 @@
 
 import os
 
-from brown.core import brown
-from brown.utils.anchored_point import AnchoredPoint
-from brown.utils.units import Mm, GraphicUnit
-from brown.core.flowable_frame import FlowableFrame
-from brown.core.font import Font
-from brown.core.brush import Brush
-from brown.primitives.staff import Staff
-from brown.primitives.clef import Clef
-from brown.primitives.chordrest import ChordRest
-from brown.utils.point import Point
-from brown.core.music_text_object import MusicTextObject
-from brown.core.path import Path
-from brown.primitives.slur import Slur
-from brown.core.pen import Pen
-from brown.core.text_object import TextObject
-from brown.utils.color import Color
-from brown.primitives.time_signature import TimeSignature
-from brown.primitives.bar_line import BarLine
-from brown.primitives.rest import Rest
-from brown.primitives.beam import Beam
-from brown.primitives.rhythm_dot import RhythmDot
-from brown.primitives.brace import Brace
-from brown.primitives.dynamic import Dynamic
-from brown.primitives.hairpin import Hairpin
-from brown.primitives.repeating_music_text_line import RepeatingMusicTextLine
-
+from brown.common import *
 
 brown.setup()
 
