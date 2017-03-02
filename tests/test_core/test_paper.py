@@ -1,6 +1,6 @@
 import unittest
 
-from brown.utils.units import Mm
+from brown.utils.units import Mm, Inch
 from brown.core.paper import Paper
 
 
@@ -17,19 +17,15 @@ class TestPaper(unittest.TestCase):
         assert(test_paper.gutter == 7)
 
     def test_from_template(self):
-        # 'A4': [Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]
-        test_paper = Paper.from_template('A4')
-        assert(test_paper.width == 210)
-        assert(test_paper.height == 297)
-        assert(test_paper.margin_top == 20)
-        assert(test_paper.margin_right == 20)
-        assert(test_paper.margin_bottom == 20)
-        assert(test_paper.margin_left == 20)
-        assert(test_paper.gutter == 10)
-
-    def test_from_template_is_case_insensitive(self):
-        assert(Paper.from_template('A4').__dict__ ==
-               Paper.from_template('a4').__dict__)
+        test_paper = Paper.from_template('Letter')
+        # 'Letter': [Inch(val) for val in [8.5, 11, 1, 1, 1, 1, 0.3]]
+        assert(test_paper.width == Inch(8.5))
+        assert(test_paper.height == Inch(11))
+        assert(test_paper.margin_top == Inch(1))
+        assert(test_paper.margin_right == Inch(1))
+        assert(test_paper.margin_bottom == Inch(1))
+        assert(test_paper.margin_left == Inch(1))
+        assert(test_paper.gutter == Inch(0.3))
 
     def test_live_width(self):
         test_paper = Paper(*[Mm(val) for val in

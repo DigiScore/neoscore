@@ -29,6 +29,7 @@ class QClippingPath(QtWidgets.QGraphicsPathItem):
         """Paint, clipping by `self._clip_area`.
 
         This is an overload of `QGraphicsPathItem.paint()`"""
+        painter.save()
         if self.clip_start_x is not None:
             painter.translate(QtCore.QPointF(
                 -1 * float(GraphicUnit(self.clip_start_x)), 0))
@@ -39,6 +40,7 @@ class QClippingPath(QtWidgets.QGraphicsPathItem):
             self.pen().width())
         painter.setClipRect(clip_area)
         super().paint(painter, *args, **kwargs)
+        painter.restore()
 
     @staticmethod
     def create_clipping_area(bounding_rect,

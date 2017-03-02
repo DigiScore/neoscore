@@ -1,4 +1,5 @@
 from brown.utils.paper_templates import paper_templates
+from brown.interface.paper_interface import PaperInterface
 
 
 class Paper:
@@ -32,12 +33,10 @@ class Paper:
         """Construct a Paper object from a set of pre-configured paper types.
 
         Args:
-            template (str): Name of the Paper template (case-insensitive)
-
-        Currently supported paper types are 'A4'.
+            template (str): Name of the Paper template (case-sensitive)
         """
         try:
-            return cls(*paper_templates[template.upper()])
+            return cls(*paper_templates[template])
         except KeyError:
             raise KeyError('Paper template {} not supported'.format(template))
 
@@ -119,3 +118,12 @@ class Paper:
     def live_height(self):
         """The printable height of the page"""
         return self.height - self.margin_bottom - self.margin_top
+
+    ######## PRIVATE METHODS ########
+
+    def _to_interface(self):
+        """Construct and return a PaperInterface based on this Paper.
+
+        Returns: PaperInterface
+        """
+        return PaperInterface(self)

@@ -232,20 +232,14 @@ class GraphicObject(ABC):
 
         Returns: None
         """
-        # TODO: Clean up!
-        remaining_x = self.breakable_width
-        remaining_x += self.frame._dist_to_line_end(self.x)
-        if remaining_x < 0:
+        # Calculate position within flowable
+        pos_in_flowable = GraphicObject.map_between_items(self.frame, self)
+
+        remaining_x = (self.breakable_width +
+                       self.frame._dist_to_line_end(pos_in_flowable.x))
+        if remaining_x < Unit(0):
             self._render_complete(GraphicObject.map_from_origin(self))
             return
-
-        # Calculate position within flowable
-        # (HACK while map_between_items with source=FlowableFrame is broken)
-        pos_in_flowable = Point(Unit(0), Unit(0))
-        current = self
-        while type(current).__name__ != 'FlowableFrame':
-            pos_in_flowable += current.pos
-            current = current.parent
 
         # Render before break
         first_line_i = self.frame._last_break_index_at(pos_in_flowable.x)
@@ -261,8 +255,9 @@ class GraphicObject(ABC):
             current_line = self.frame.layout_controllers[current_line_i]
             if remaining_x > current_line.length:
                 # Render spanning continuation
-                render_start_pos = self.frame._map_to_doc(
-                    Point(current_line.x, pos_in_flowable.y))
+                render_start_pos = Point(current_line.pos.x,
+                                         current_line.pos.y + pos_in_flowable.y,
+                                         current_line.pos.page)
                 render_end_pos = render_start_pos + Point(current_line.length, 0)
                 self._render_spanning_continuation(
                     self.breakable_width - remaining_x,

@@ -22,9 +22,6 @@ class FlowableFrame(InvisibleObject):
             height (GraphicUnit): height of the frame
             y_padding (GraphicUnit): The min gap between frame sections
         """
-        # NOTE: Position might be off, as different classes may or may not
-        #       be expecting `pos` to be relative to the live doc root,
-        #       not the true scene origin (0, 0) -- is there a difference?
         super().__init__(pos)
         self._width = width
         self._height = height

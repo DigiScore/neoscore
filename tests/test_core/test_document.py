@@ -1,13 +1,9 @@
 import unittest
 
-import pytest
-
 from brown.utils.point import Point
 from brown.utils.units import Mm
 from brown.core.document import Document
 from brown.core.paper import Paper
-from brown.config import config
-from brown.utils import paper_templates
 
 
 class TestDocument(unittest.TestCase):
@@ -17,41 +13,26 @@ class TestDocument(unittest.TestCase):
         test_doc = Document(test_paper)
         assert(test_doc.paper == test_paper)
 
-    def test_init_with_default_paper(self):
-        # Mock default values in config
-        config.DEFAULT_PAPER_TYPE = 'A4'
-        paper_templates.paper_templates = {
-            'A4': [Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]
-        }
-        test_doc = Document()
-        assert(test_doc.paper.width == Mm(210))
-        assert(test_doc.paper.height == Mm(297))
-        assert(test_doc.paper.margin_top == Mm(20))
-        assert(test_doc.paper.margin_right == Mm(20))
-        assert(test_doc.paper.margin_bottom == Mm(20))
-        assert(test_doc.paper.margin_left == Mm(20))
-        assert(test_doc.paper.gutter == Mm(10))
-
-    def test_page_origin_in_doc_space_at_first_page(self):
+    def test_page_origin_in_canvas_space_at_first_page(self):
         left_margin = Mm(13)
         top_margin = Mm(21)
         test_paper = Paper(Mm(200), Mm(250),
                            top_margin, Mm(10), Mm(20), left_margin, 0)
         test_doc = Document(test_paper)
-        found = test_doc._page_origin_in_doc_space(0)
+        found = test_doc._page_origin_in_canvas_space(0)
         expected_x = left_margin
         expected_y = top_margin
         self.assertAlmostEqual(found.x, expected_x)
         self.assertAlmostEqual(found.y, expected_y)
 
-    def test_page_origin_in_doc_space_at_second_page(self):
+    def test_page_origin_in_canvas_space_at_second_page(self):
         width = Mm(200)
         left_margin = Mm(13)
         top_margin = Mm(21)
         test_paper = Paper(width, Mm(250),
                            top_margin, Mm(10), Mm(20), left_margin, 0)
         test_doc = Document(test_paper)
-        found = test_doc._page_origin_in_doc_space(1)
+        found = test_doc._page_origin_in_canvas_space(1)
         page_width = width
         expected_x = (left_margin +
                       page_width + test_doc._page_display_gap)
@@ -59,14 +40,14 @@ class TestDocument(unittest.TestCase):
         self.assertAlmostEqual(found.x, expected_x)
         self.assertAlmostEqual(found.y, expected_y)
 
-    def test_page_origin_in_doc_space_at_third_page(self):
+    def test_page_origin_in_canvas_space_at_third_page(self):
         width = Mm(200)
         left_margin = Mm(13)
         top_margin = Mm(21)
         test_paper = Paper(width, Mm(250),
                            top_margin, Mm(10), Mm(20), left_margin, 0)
         test_doc = Document(test_paper)
-        found = test_doc._page_origin_in_doc_space(2)
+        found = test_doc._page_origin_in_canvas_space(2)
         page_width = width
         expected_x = (left_margin +
                       ((page_width + test_doc._page_display_gap) * 2))

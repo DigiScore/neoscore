@@ -1,5 +1,10 @@
-from PyQt5 import QtWidgets
-from PyQt5 import QtGui
+import os
+
+from PyQt5 import QtWidgets, QtGui, QtCore
+from PyQt5.QtPrintSupport import QPrinter
+
+from brown.interface.qt_to_util import rect_to_qt_rect_f, rect_to_qt_rect
+from brown.config import config
 
 
 class FontRegistrationError(Exception):
@@ -15,29 +20,49 @@ class AppInterface:
     working with the API.
     """
 
-    def __init__(self):
-        self.app = None
-        self.scene = None
-        self.registered_music_fonts = {}
-
-    ######## PUBLIC METHODS ########
-
-    def create_document(self):
-        """Initialize a document.
-
-        This is required before just about any operation
-        in the API can be performed.
+    def __init__(self, document):
         """
+        Args:
+            document (Document):
+        """
+        self.document = document
         self.app = QtWidgets.QApplication([])
         self.scene = QtWidgets.QGraphicsScene()
+        self.registered_music_fonts = {}
         self.view = QtWidgets.QGraphicsView(self.scene)
         self.view.setRenderHint(QtGui.QPainter.Antialiasing)
+
+    ######## PUBLIC METHODS ########
 
     def show(self):
         """Open a window showing a preview of the document."""
         print('Launching Qt Application instance')
         self.view.show()
         self.app.exit(self.app.exec_())
+
+    def render_pdf(self, pages, path):
+        """Render the document to a pdf file.
+
+        Args:
+            pages (iter[int]): The page numbers to render
+            path (str): An output file path.
+
+        WARNING: If the file at `path` already exists, it will be overwritten.
+        """
+        printer = QPrinter()
+        printer.setOutputFormat(QPrinter.PdfFormat)
+        printer.setOutputFileName(os.path.realpath(path))
+        printer.setResolution(config.PRINT_PPI)
+        printer.setPageLayout(self.document.paper._to_interface())
+        painter = QtGui.QPainter()
+        painter.begin(printer)
+        # Scaling ratio for Qt point 72dpi -> config.PRINT_PPI
+        for page_number in pages:
+            source_rect = rect_to_qt_rect_f(
+                self.document.page_bounding_rect(page_number))
+            self.scene.render(painter, source=source_rect)
+            printer.newPage()
+        painter.end()
 
     def destroy(self):
         """Destroy the window and all global interface-level data."""

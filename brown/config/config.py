@@ -1,5 +1,5 @@
 import os
-from brown.utils.units import Mm
+from brown.utils.units import Mm, Inch
 
 
 class InvalidConfigError(Exception):
@@ -22,7 +22,7 @@ DEFAULT_BRUSH_COLOR = (0, 0, 0, 0)
 DEFAULT_PEN_THICKNESS = 0  # GraphicUnits
 
 # Paper type
-DEFAULT_PAPER_TYPE = 'A4'
+DEFAULT_PAPER_TYPE = 'Letter'
 
 # Text Font
 DEFAULT_TEXT_FONT_NAME = 'Cormorant Garamond'
@@ -36,7 +36,7 @@ DEFAULT_MUSIC_FONT_METADATA_PATH = os.path.join(
 DEFAULT_MUSIC_FONT_NAME = 'Bravura'
 
 # Print PPI
-PRINT_PPI = 300
+PRINT_PPI = Inch._conversion_rate
 
 # Staff Height
 DEFAULT_STAFF_UNIT = Mm(1)

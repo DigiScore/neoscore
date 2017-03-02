@@ -47,7 +47,6 @@ class TextObjectInterface(GraphicObjectInterface):
         self.font = font
         self.pos = pos
 
-
     ######## PUBLIC PROPERTIES ########
 
     @property

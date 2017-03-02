@@ -55,6 +55,7 @@ class QEnhancedTextItem(QtWidgets.QGraphicsSimpleTextItem):
         # For some reason, this seems to need to be scaled *before*
         # translating, while the boundingRect needs to be translated
         # before scaling...
+        painter.save()
         painter.scale(self.scale_factor, self.scale_factor)
         if self.clip_start_x is not None:
             clip_offset = QtCore.QPointF(
@@ -73,5 +74,5 @@ class QEnhancedTextItem(QtWidgets.QGraphicsSimpleTextItem):
              if self.clip_width is not None else None),
             self.pen().width() / self.scale_factor)
         painter.setClipRect(clip_area)
-
         super().paint(painter, option, widget)
+        painter.restore()

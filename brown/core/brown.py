@@ -26,8 +26,8 @@ def setup(initial_paper=None):
     global paper
     global document
     global registered_text_fonts
-    _app_interface = _app_interface_class()
-    _app_interface.create_document()
+    document = Document(initial_paper)
+    _app_interface = _app_interface_class(document)
     _, music_font_json = register_music_font(
         config.DEFAULT_MUSIC_FONT_PATH,
         config.DEFAULT_MUSIC_FONT_METADATA_PATH)
@@ -35,7 +35,6 @@ def setup(initial_paper=None):
                      config.DEFAULT_TEXT_FONT_SIZE,
                      1,
                      False)
-    document = Document(initial_paper)
 
 
 def register_music_font(font_file_path, metadata_path):
@@ -82,6 +81,13 @@ def show():
     global _app_interface
     document.render()
     _app_interface.show()
+
+
+def render_pdf(path):
+    global document
+    global _app_interface
+    document.render()
+    _app_interface.render_pdf(document.occupied_pages, path)
 
 
 def set_draw_color(color):

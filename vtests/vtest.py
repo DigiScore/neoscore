@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 
+import os
+
 from brown.core import brown
 from brown.utils.anchored_point import AnchoredPoint
 from brown.utils.units import Mm, GraphicUnit
 from brown.core.flowable_frame import FlowableFrame
 from brown.core.font import Font
+from brown.core.brush import Brush
 from brown.primitives.staff import Staff
 from brown.primitives.clef import Clef
 from brown.primitives.chordrest import ChordRest
@@ -28,12 +31,15 @@ from brown.primitives.repeating_music_text_line import RepeatingMusicTextLine
 
 brown.setup()
 
-# Test hacky use of flowable coordinate space
 flow = FlowableFrame((Mm(0), Mm(0)), Mm(35000), Mm(30), Mm(10))
 
-staff = Staff((Mm(0), Mm(0)), Mm(2000), flow, Mm(1))
+counting_string = '    '.join(str(x) for x in range(600))
+counting_text = TextObject((Mm(0), Mm(0)), counting_string, parent=flow)
+counting_text._breakable_width = Mm(10000)
 
-lower_staff = Staff((Mm(0), Mm(9)), Mm(2000), flow, Mm(1))
+staff = Staff((Mm(0), Mm(0)), Mm(10000), flow, Mm(1))
+
+lower_staff = Staff((Mm(0), Mm(9)), Mm(7000), flow, Mm(1))
 
 lowest_staff = Staff((Mm(10), Mm(18)), Mm(2000), flow, Mm(1))
 
@@ -87,10 +93,10 @@ flowing_text = MusicTextObject((Mm(155), lower_staff.unit(3)),
 
 pen = Pen(thickness=Mm(0.2), pattern=5)
 explicit_path = Path((Mm(0), Mm(0)), pen, parent=p)
-explicit_path.line_to(Mm(500), Mm(20))
+explicit_path.line_to(Mm(5000), Mm(100))
 
 fake_trill = RepeatingMusicTextLine((Mm(30), staff.unit(-6), 0, staff),
-                                    (Mm(500), staff.unit(-6), 0, staff),
+                                    (Mm(5000), staff.unit(-6), 0, staff),
                                     'wiggleTrill')
 
 text_on_first_page = TextObject((Mm(0), Mm(0), 0),
@@ -106,4 +112,6 @@ text_on_third_page = TextObject((Mm(0), Mm(0), 1),
 explicit_path_on_third_page = Path((Mm(0), Mm(0), 1), parent=text_on_second_page)
 explicit_path_on_third_page.line_to(Mm(100), Mm(60))
 
-brown.show()
+output_path = os.path.join(os.path.dirname(__file__), 'output', 'TEST.pdf')
+brown.render_pdf(output_path)
+print('Score exported to {}'.format(output_path))
