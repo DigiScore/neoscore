@@ -1,6 +1,7 @@
 from abc import ABC
 
 from brown.core import brown
+from brown.core.document import Document
 from brown.utils.units import Unit
 from brown.utils.point import Point
 
@@ -157,25 +158,6 @@ class GraphicObject(ABC):
     ######## CLASS METHODS ########
 
     @classmethod
-    def map_from_origin(cls, item):
-        """Find an object's position relative to the document origin.
-
-        Return:
-            Point: the document position of the item,
-                including its real page number.
-        """
-        pos = Point(Unit(0), Unit(0))
-        current = item
-        while type(current).__name__ != 'Document':
-            pos += current.pos
-            current = current.parent
-            if type(current).__name__ == 'FlowableFrame':
-                # If it turns out we are inside a flowable frame,
-                # just short circuit and ask it where we are
-                return current._map_to_doc(pos)
-        return pos
-
-    @classmethod
     def map_between_items(cls, source, destination):
         """Find a GraphicObject's position relative to another GraphicObject
 
@@ -187,8 +169,8 @@ class GraphicObject(ABC):
         """
         # inefficient for now - find position relative to doc root of both
         # and find delta between the two.
-        return (cls.map_from_origin(destination) -
-                cls.map_from_origin(source))
+        return (Document.doc_pos_of(destination) -
+                Document.doc_pos_of(source))
 
     ######## PUBLIC METHODS ########
 
@@ -200,7 +182,7 @@ class GraphicObject(ABC):
         if self.is_in_flowable:
             self._render_flowable()
         else:
-            self._render_complete(GraphicObject.map_from_origin(self))
+            self._render_complete(Document.doc_pos_of(self))
         for child in self.children:
             child.render()
 
@@ -238,13 +220,13 @@ class GraphicObject(ABC):
         remaining_x = (self.breakable_width +
                        self.frame._dist_to_line_end(pos_in_flowable.x))
         if remaining_x < Unit(0):
-            self._render_complete(GraphicObject.map_from_origin(self))
+            self._render_complete(Document.doc_pos_of(self))
             return
 
         # Render before break
         first_line_i = self.frame._last_break_index_at(pos_in_flowable.x)
         current_line = self.frame.layout_controllers[first_line_i]
-        render_start_pos = GraphicObject.map_from_origin(self)
+        render_start_pos = Document.doc_pos_of(self)
         first_line_length = self.frame._dist_to_line_end(pos_in_flowable.x) * -1
         render_end_pos = (render_start_pos + Point(first_line_length, Unit(0)))
         self._render_before_break(Unit(0), render_start_pos, render_end_pos)

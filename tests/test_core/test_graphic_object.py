@@ -39,20 +39,6 @@ class TestGraphicObject(unittest.TestCase):
         assert(grob.pos.x == GraphicUnit(7))
         assert(grob.pos.y == GraphicUnit(8))
 
-    def test_map_from_origin(self):
-        item = MockGraphicObject((5, 6, 2))
-        relative_pos = MockGraphicObject.map_from_origin(item)
-        assert(relative_pos.x.value == 5)
-        assert(relative_pos.y.value == 6)
-        assert(relative_pos.page == 2)
-
-    def test_map_from_origin_through_parent(self):
-        parent = MockGraphicObject((100, 101))
-        item = MockGraphicObject((5, 6), parent=parent)
-        relative_pos = MockGraphicObject.map_from_origin(item)
-        assert(relative_pos.x.value == 105)
-        assert(relative_pos.y.value == 107)
-
     def test_map_between_items(self):
         source = MockGraphicObject((5, 6, 1))
         destination = MockGraphicObject((100, 100, 4))

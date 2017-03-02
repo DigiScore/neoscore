@@ -1,9 +1,8 @@
 from brown.config import config
 from brown.utils.point import Point
-from brown.utils.units import Mm
+from brown.utils.units import Mm, Unit
 from brown.utils.rect import Rect
 from brown.core.paper import Paper
-from brown.core.graphic_object import GraphicObject
 
 
 class Document:
@@ -75,7 +74,7 @@ class Document:
         min_page = float('inf')
         max_page = -float('inf')
         for current in graphic_objects:
-            current_page = GraphicObject.map_from_origin(current).page
+            current_page = Document.doc_pos_of(current).page
             if current.children:
                 child_min_max = Document._min_max_pages(current.children)
                 min_page = min(min_page,
@@ -144,6 +143,26 @@ class Document:
         return Point(page_origin.x + pos.x, page_origin.y + pos.y, 0)
 
     ######## PUBLIC METHODS ########
+
+    @classmethod
+    def doc_pos_of(cls, graphic_object):
+        """Find the paged document position of a GraphicObject.
+
+        Args:
+            graphic_object (GraphicObject): Any object in the document.
+
+        Returns: Point: The object's paged position relative to the document.
+        """
+        pos = Point(Unit(0), Unit(0))
+        current = graphic_object
+        while type(current) != cls:
+            pos += current.pos
+            current = current.parent
+            if type(current).__name__ == 'FlowableFrame':
+                # If it turns out we are inside a flowable frame,
+                # short circuit and ask the frame where we are
+                return current._map_to_doc(pos)
+        return pos
 
     def page_bounding_rect(self, page_number):
         """Find the bounding rect of a page in the document, in canvas space.

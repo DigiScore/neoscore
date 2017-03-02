@@ -1,9 +1,12 @@
 import unittest
 
-from brown.utils.point import Point
-from brown.utils.units import Mm
+from brown.core import brown
 from brown.core.document import Document
 from brown.core.paper import Paper
+from brown.utils.point import Point
+from brown.utils.units import Mm
+
+from mock_graphic_object import MockGraphicObject
 
 
 class TestDocument(unittest.TestCase):
@@ -67,3 +70,19 @@ class TestDocument(unittest.TestCase):
                       ((width + test_doc._page_display_gap) * 2)) + Mm(10)
         expected_y = top_margin + Mm(11)
         assert(doc_pos == Point(expected_x, expected_y))
+
+    def test_doc_pos_of(self):
+        brown.setup()
+        item = MockGraphicObject((5, 6, 2))
+        relative_pos = Document.doc_pos_of(item)
+        assert(relative_pos.x.value == 5)
+        assert(relative_pos.y.value == 6)
+        assert(relative_pos.page == 2)
+
+    def test_doc_pos_of_through_parent(self):
+        brown.setup()
+        parent = MockGraphicObject((100, 101))
+        item = MockGraphicObject((5, 6), parent=parent)
+        relative_pos = Document.doc_pos_of(item)
+        assert(relative_pos.x.value == 105)
+        assert(relative_pos.y.value == 107)
