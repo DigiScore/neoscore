@@ -7,10 +7,10 @@ class DynamicStringError(Exception):
 
     def __init__(self, string, character):
         self.message = (
-            f'Cannot parse dynamic string "{string}" - '
-            f'character "{character}" unknown. '
-            f'Valid chars are: {list(Dynamic._dynamic_letter_map.keys())}'
-        )
+            'Cannot parse dynamic string "{}" - '
+            'character "{}" unknown. '
+            'Valid chars are: {}'
+        ).format(string, character, list(Dynamic._dynamic_letter_map.keys()))
         super().__init__(self.message)
 
 
