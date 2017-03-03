@@ -1,6 +1,7 @@
 from PyQt5 import QtWidgets, QtCore
 
 from brown.utils.units import GraphicUnit
+from brown.interface.qt_to_util import unit_to_qt_float
 from brown.interface.qt_ext.q_clipping_path import QClippingPath
 
 
@@ -59,8 +60,7 @@ class QEnhancedTextItem(QtWidgets.QGraphicsSimpleTextItem):
         painter.scale(self.scale_factor, self.scale_factor)
         if self.clip_start_x is not None:
             clip_offset = QtCore.QPointF(
-                -1 * float(GraphicUnit(self.clip_start_x)),
-                0)
+                -1 * unit_to_qt_float(self.clip_start_x / self.scale_factor), 0)
         else:
             clip_offset = QtCore.QPointF(0, 0)
         painter.translate((self.origin_offset * -1) + clip_offset)

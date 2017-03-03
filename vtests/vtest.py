@@ -55,7 +55,7 @@ MusicTextObject((Mm(25), staff.unit(2)),
 
 for i in range(0, 50, 2):
     factor = 1 + (i / 10)
-    MusicTextObject((Mm(10 + i), lowest_staff.unit(4)),
+    MusicTextObject((Mm(120 + i), lowest_staff.unit(4)),
                     ['brace', ('gClef', 1)],
                     lowest_staff,
                     scale_factor=factor)
