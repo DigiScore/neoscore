@@ -32,9 +32,7 @@ class TimeSignature(ObjectGroup, StaffObject):
                 are different.
             staff (Staff): The parent staff
         """
-        ObjectGroup.__init__(self, Point(position_x, staff.unit(0)),
-                             parent=staff,
-                             objects=None)
+        ObjectGroup.__init__(self, Point(position_x, staff.unit(0)), staff)
         StaffObject.__init__(self, staff)
         self._duration = duration
         # Add one glyph for each digit
@@ -47,12 +45,10 @@ class TimeSignature(ObjectGroup, StaffObject):
             (staff.unit(0), staff.unit(1)),
             self._glyphnames[self.duration.numerator],
             self)
-        self.register_object(self.numerator_glyph)
         self._denominator_glyph = MusicTextObject(
             (staff.unit(0), staff.unit(3)),
             self._glyphnames[self.duration.denominator],
             self)
-        self.register_object(self.denominator_glyph)
 
     ######## PUBLIC PROPERTIES ########
 

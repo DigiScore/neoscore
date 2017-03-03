@@ -24,13 +24,15 @@ class ChordRest(ObjectGroup, StaffObject):
         StaffObject.__init__(self, staff)
         ObjectGroup.__init__(self, Point(pos_x, staff.unit(0)), staff, None)
         self.duration = duration
+        self._noteheads = set()
+        self._accidentals = set()
+        self._ledgers = set()
         if pitches:
             for pitch in pitches:
-                self.register_object(Notehead(staff.unit(0), pitch, self.duration, self))
+                self._noteheads.add(Notehead(staff.unit(0), pitch, self.duration, self))
             self.rest = None
         else:
             self.rest = Rest(staff.unit(0), duration, self)
-            self.register_object(self.rest)
         self._stem = None
         self._flag = None
 
@@ -38,8 +40,8 @@ class ChordRest(ObjectGroup, StaffObject):
 
     @property
     def noteheads(self):
-        """iter(Notehead): The noteheads contained in this ChordRest."""
-        return (item for item in self.objects if isinstance(item, Notehead))
+        """set{Notehead}: The noteheads contained in this ChordRest."""
+        return self._noteheads
 
     @property
     def rest(self):
@@ -52,16 +54,16 @@ class ChordRest(ObjectGroup, StaffObject):
 
     @property
     def accidentals(self):
-        """iter(Accidental): The accidentals contained in this ChordRest."""
-        return (item for item in self.objects if isinstance(item, Accidental))
+        """set{Accidental}: The accidentals contained in this ChordRest."""
+        return self._accidentals
 
     @property
     def ledgers(self):
-        """iter(LedgerLine): The ledger lines contained in this ChordRest.
+        """set{LedgerLine}: The ledger lines contained in this ChordRest.
 
-        An empty list means no ledgers.
+        An empty set means no ledgers.
         """
-        return (item for item in self.objects if isinstance(item, LedgerLine))
+        return self._ledgers
 
     @property
     def stem(self):
@@ -100,10 +102,10 @@ class ChordRest(ObjectGroup, StaffObject):
         """iter(Point): The positions of all rhythm dots needed."""
         if self.rest:
             dot_start_x = self.rest.x + self.rest._bounding_rect.width
-            dottables = [self.rest]
+            dottables = {self.rest}
         else:
             dot_start_x = self.leftmost_notehead.x + self.notehead_column_width
-            dottables = list(self.noteheads)
+            dottables = self.noteheads
         for i in range(self.duration.dot_count):
             for dottable in dottables:
                 if dottable.y.value % 1 == 0:
@@ -273,38 +275,31 @@ class ChordRest(ObjectGroup, StaffObject):
         self._objects = set(item for item in self.objects
                             if not isinstance(item, LedgerLine))
         for staff_pos in self.ledger_line_positions:
-            self.register_object(
-                LedgerLine(Point(pos_x, staff_pos), self, length))
+            self.ledgers.add(LedgerLine(Point(pos_x, staff_pos), self, length))
 
     def _create_accidentals(self):
         padding = self.staff.unit(-1.2)
-        accidentals = []
         for notehead in self.noteheads:
             if notehead.pitch.virtual_accidental.value is None:
                 # Don't draw imaginary accidentals
                 continue
-            accidentals.append(Accidental((padding, self.staff.unit(0)),
-                                          notehead.pitch.virtual_accidental,
-                                          notehead))
-        for accidental in accidentals:
-            self.register_object(accidental)
+            self.accidentals.add(Accidental((padding, self.staff.unit(0)),
+                                            notehead.pitch.virtual_accidental,
+                                            notehead))
 
     def _create_dots(self):
         """Create all the RhythmDots needed by this ChordRest."""
-        dots = [RhythmDot(dot_pos, self)
-                for dot_pos in self.rhythm_dot_positions]
-        for dot in dots:
-            self.register_object(dot)
+        for dot_pos in self.rhythm_dot_positions:
+            self.dots.add(RhythmDot(dot_pos, self))
 
     def _create_stem(self):
         """Create a Stem and stores it in `self.stem`.
 
         Returns: None
         """
-        start = Point(self.staff.unit(0),
-                      self.furthest_notehead.staff_position)
-        self._stem = Stem(start, self.stem_height, self)
-        self.register_object(self.stem)
+        self._stem = Stem(Point(self.staff.unit(0),
+                                self.furthest_notehead.staff_position),
+                          self.stem_height, self)
 
     def _create_flag(self):
         """Create a Flag attached to self.stem and store it in self.flag
@@ -315,7 +310,6 @@ class ChordRest(ObjectGroup, StaffObject):
             self._flag = Flag(self.duration,
                               self.stem.direction,
                               self.stem.end_point)
-            self.register_object(self.flag)
 
     def _position_noteheads_horizontally(self):
         """Reposition noteheads so that they are laid out correctly
