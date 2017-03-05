@@ -1,10 +1,9 @@
 """Various helper functions to convert Qt objects to util objects"""
 
-
 from PyQt5.QtCore import QPoint, QPointF, QRect, QRectF
 
-from brown.utils.rect import Rect
 from brown.utils.point import Point
+from brown.utils.rect import Rect
 from brown.utils.units import GraphicUnit
 
 

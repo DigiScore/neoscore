@@ -1,8 +1,7 @@
 from PyQt5 import QtWidgets, QtCore
 
-from brown.utils.units import GraphicUnit
-from brown.interface.qt_to_util import unit_to_qt_float
 from brown.interface.qt_ext.q_clipping_path import QClippingPath
+from brown.interface.qt_to_util import unit_to_qt_float
 
 
 class QEnhancedTextItem(QtWidgets.QGraphicsSimpleTextItem):

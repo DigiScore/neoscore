@@ -1,15 +1,13 @@
-from warnings import warn
-
-from brown.utils.units import GraphicUnit, Unit
-from brown.utils.point import Point
-from brown.models.container import Container
-from brown.models.beat import Beat
 from brown.config import config
+from brown.core.music_font import MusicFont
+from brown.core.path import Path
+from brown.models.beat import Beat
+from brown.models.container import Container
+from brown.primitives.chordrest import ChordRest
 from brown.primitives.clef import Clef
 from brown.primitives.time_signature import TimeSignature
-from brown.primitives.chordrest import ChordRest
-from brown.core.path import Path
-from brown.core.music_font import MusicFont
+from brown.utils.point import Point
+from brown.utils.units import GraphicUnit, Unit
 
 
 class NoClefError(Exception):

@@ -3,8 +3,8 @@ import os
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtPrintSupport import QPrinter
 
-from brown.interface.qt_to_util import rect_to_qt_rect_f, rect_to_qt_rect
 from brown.config import config
+from brown.interface.qt_to_util import rect_to_qt_rect_f
 
 
 class FontRegistrationError(Exception):

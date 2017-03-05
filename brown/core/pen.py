@@ -1,8 +1,8 @@
+from brown.config import config
 from brown.interface.pen_interface import PenInterface
 from brown.utils.color import Color
-from brown.utils.units import GraphicUnit
 from brown.utils.stroke_pattern import StrokePattern
-from brown.config import config
+from brown.utils.units import GraphicUnit
 
 
 class Pen:

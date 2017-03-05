@@ -1,8 +1,7 @@
-from brown.interface.text_interface import TextInterface
 from brown.core import brown
 from brown.core.graphic_object import GraphicObject
+from brown.interface.text_interface import TextInterface
 from brown.utils.point import Point
-from brown.utils.rect import Rect
 from brown.utils.units import GraphicUnit
 
 

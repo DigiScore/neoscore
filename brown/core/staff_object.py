@@ -1,5 +1,4 @@
 from brown.utils.point import Point
-from brown.utils.units import Unit
 
 
 class NoAncestorStaffError(Exception):

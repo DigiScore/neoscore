@@ -1,5 +1,5 @@
-from PyQt5.QtGui import QPageLayout, QPageSize
 from PyQt5.QtCore import QSize, QMarginsF
+from PyQt5.QtGui import QPageLayout, QPageSize
 
 from brown.config import config
 from brown.interface.qt_to_util import unit_to_qt_float

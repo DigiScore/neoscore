@@ -1,9 +1,7 @@
-from brown.interface.font_interface import FontInterface
 from brown.core import brown
 from brown.core.font import Font
+from brown.interface.font_interface import FontInterface
 from brown.utils import smufl
-from brown.utils.point import Point
-from brown.utils.rect import Rect
 from brown.utils.units import convert_all_to_unit
 
 

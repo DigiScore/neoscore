@@ -1,10 +1,9 @@
-from brown.interface.path_interface import PathInterface
 from brown.core.graphic_object import GraphicObject
-from brown.utils.point import Point
-from brown.utils.anchored_point import AnchoredPoint
-from brown.utils.units import GraphicUnit
 from brown.core.path_element import PathElement
+from brown.interface.path_interface import PathInterface
 from brown.utils.path_element_type import PathElementType
+from brown.utils.point import Point
+from brown.utils.units import GraphicUnit
 
 
 class Path(GraphicObject):

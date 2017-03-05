@@ -1,5 +1,5 @@
-from brown.utils.paper_templates import paper_templates
 from brown.interface.paper_interface import PaperInterface
+from brown.utils.paper_templates import paper_templates
 
 
 class Paper:

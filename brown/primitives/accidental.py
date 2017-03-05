@@ -1,6 +1,6 @@
+from brown.core.music_text import MusicText
 from brown.models.virtual_accidental import (VirtualAccidental,
                                              InvalidAccidentalError)
-from brown.core.music_text import MusicText
 
 
 class NoneVirtualAccidentalInRealAccidentalError(Exception):

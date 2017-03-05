@@ -1,11 +1,11 @@
 from PyQt5 import QtGui
 
 from brown.core import brown
-from brown.utils.point import Point
-from brown.utils.units import GraphicUnit
 from brown.interface.graphic_object_interface import GraphicObjectInterface
 from brown.interface.path_element_interface import PathElementInterface
 from brown.interface.qt_ext.q_clipping_path import QClippingPath
+from brown.utils.point import Point
+from brown.utils.units import GraphicUnit
 
 
 """

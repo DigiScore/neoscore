@@ -1,7 +1,7 @@
 from PyQt5 import QtGui
 
-from brown.utils.units import GraphicUnit
 from brown.utils.stroke_pattern import StrokePattern
+from brown.utils.units import GraphicUnit
 
 
 class PenInterface:

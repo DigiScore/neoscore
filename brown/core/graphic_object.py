@@ -2,8 +2,8 @@ from abc import ABC
 
 from brown.core import brown
 from brown.core.document import Document
-from brown.utils.units import Unit
 from brown.utils.point import Point
+from brown.utils.units import Unit
 
 
 class GraphicObject(ABC):
