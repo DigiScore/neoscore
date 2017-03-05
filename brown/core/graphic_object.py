@@ -137,6 +137,21 @@ class GraphicObject(ABC):
         self._children = value
 
     @property
+    def all_descendants(self):
+        """iter[GraphicObject]: All of the objects in the children subtree.
+
+        This recursively searches all of the object's children
+        (and their children, etc.) and provides an iterator over them.
+
+        The current implementation performs a simple recursive DFS over
+        the tree, and has the potential to be rather slow.
+        """
+        for child in self.children:
+            for subchild in child.children:
+                yield subchild
+            yield child
+
+    @property
     def frame(self):
         """FlowableFrame or None: The frame this object belongs in.
 

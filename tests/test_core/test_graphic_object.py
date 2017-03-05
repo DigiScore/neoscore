@@ -10,7 +10,7 @@ from brown.utils.units import Mm
 from brown.core.flowable_frame import FlowableFrame
 
 
-from mock_graphic_object import MockGraphicObject
+from tests.mocks.mock_graphic_object import MockGraphicObject
 
 
 class TestGraphicObject(unittest.TestCase):
@@ -73,3 +73,18 @@ class TestGraphicObject(unittest.TestCase):
         parent = MockGraphicObject((0, 0))
         child = MockGraphicObject((0, 0), parent=parent)
         assert(child in parent.children)
+
+    def test_all_descendants(self):
+        root = MockGraphicObject((0, 0))
+        child_1 = MockGraphicObject((0, 0), parent=root)
+        child_2 = MockGraphicObject((0, 0), parent=root)
+        subchild_1 = MockGraphicObject((0, 0), parent=child_2)
+        subchild_2 = MockGraphicObject((0, 0), parent=child_2)
+        descendants = list(root.all_descendants)
+        descendants_set = set(descendants)
+        # Assert no duplicates were yielded
+        assert(len(descendants) == len(descendants_set))
+        # Assert root itself was not in the descendants list
+        assert(root not in descendants_set)
+        # Assert descendants content
+        assert({child_1, child_2, subchild_1, subchild_2} == descendants_set)
