@@ -35,6 +35,7 @@ from brown.primitives.hairpin import Hairpin
 from brown.primitives.ledger_line import LedgerLine
 from brown.primitives.multi_staff_object import MultiStaffObject
 from brown.primitives.notehead import Notehead
+from brown.primitives.octave_line import OctaveLine
 from brown.primitives.repeating_music_text_line import RepeatingMusicTextLine
 from brown.primitives.rest import Rest
 from brown.primitives.slur import Slur

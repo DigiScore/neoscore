@@ -73,6 +73,9 @@ fake_trill = RepeatingMusicTextLine((Mm(30), staff.unit(-6), 0, staff),
                                     (Mm(5000), staff.unit(-6), 0, staff),
                                     'wiggleTrill')
 
+octave_line = OctaveLine((Mm(20), staff.unit(0)), staff,
+                         Mm(10000), explicit_path)
+
 text_on_first_page = TextObject((Mm(0), Mm(0), 0),
                                  'first page!')
 
@@ -86,6 +89,8 @@ text_on_third_page = TextObject((Mm(0), Mm(0), 1),
 explicit_path_on_third_page = Path((Mm(0), Mm(0), 1), parent=text_on_second_page)
 explicit_path_on_third_page.line_to(Mm(100), Mm(60))
 
-output_path = os.path.join(os.path.dirname(__file__), 'output', 'TEST.pdf')
+# brown.show()
+
+output_path = os.path.join(os.path.dirname(__file__), 'output', 'vtest_out.pdf')
 brown.render_pdf(output_path)
 print('Score exported to {}'.format(output_path))
