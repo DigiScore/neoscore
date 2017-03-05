@@ -1,13 +1,13 @@
 import unittest
 
+from mock_staff_object import MockStaffObject
+
 from brown.core import brown
-from brown.primitives.staff import Staff
 from brown.core.flowable_frame import FlowableFrame
 from brown.core.paper import Paper
-from brown.utils.units import Mm
+from brown.core.staff import Staff
 from brown.utils.point import Point
-
-from mock_staff_object import MockStaffObject
+from brown.utils.units import Mm
 
 
 class TestStaffObject(unittest.TestCase):

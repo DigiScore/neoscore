@@ -1,9 +1,9 @@
+from brown.core.brush import Brush
 from brown.core.path import Path
-from brown.primitives.staff_object import StaffObject
+from brown.core.pen import Pen
+from brown.core.staff_object import StaffObject
 from brown.utils.point import Point
 from brown.utils.units import Mm
-from brown.core.pen import Pen
-from brown.core.brush import Brush
 
 
 class Beam(Path, StaffObject):

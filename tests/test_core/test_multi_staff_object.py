@@ -2,9 +2,9 @@ import unittest
 
 from brown.core import brown
 from brown.core.flowable_frame import FlowableFrame
+from brown.core.multi_staff_object import MultiStaffObject
+from brown.core.staff import Staff
 from brown.utils.units import Mm
-from brown.primitives.staff import Staff
-from brown.primitives.multi_staff_object import MultiStaffObject
 
 
 class TestMultiStaffObject(unittest.TestCase):

@@ -1,15 +1,15 @@
 import os
 import unittest
 
-from brown.core import brown
-from brown.core.music_text_object import MusicTextObject
-from brown.core.music_char import MusicChar
-from brown.config import config
-from brown.core.music_font import MusicFont
-from brown.utils.units import Mm
-from brown.primitives.staff import Staff
-
 from mock_graphic_object import MockGraphicObject
+
+from brown.config import config
+from brown.core import brown
+from brown.core.music_char import MusicChar
+from brown.core.music_font import MusicFont
+from brown.core.music_text_object import MusicTextObject
+from brown.core.staff import Staff
+from brown.utils.units import Mm
 
 
 class TestMusicTextObject(unittest.TestCase):

@@ -1,11 +1,11 @@
 import unittest
 
 from brown.core import brown
-from brown.core.graphic_object import GraphicObject
 from brown.core.flowable_frame import FlowableFrame
-from brown.utils.units import Unit
+from brown.core.graphic_object import GraphicObject
+from brown.core.horizontal_spanner import HorizontalSpanner
 from brown.utils.point import Point
-from brown.primitives.horizontal_spanner import HorizontalSpanner
+from brown.utils.units import Unit
 
 
 class MockHorizontalSpanner(GraphicObject, HorizontalSpanner):

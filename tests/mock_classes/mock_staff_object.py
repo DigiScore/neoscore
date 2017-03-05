@@ -1,5 +1,5 @@
 from brown.core.music_text_object import MusicTextObject
-from brown.primitives.staff_object import StaffObject
+from brown.core.staff_object import StaffObject
 
 
 class MockStaffObject(MusicTextObject, StaffObject):

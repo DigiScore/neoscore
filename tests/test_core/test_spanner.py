@@ -1,10 +1,10 @@
 import unittest
 
 from brown.core import brown
-from brown.utils.units import Unit
-from brown.utils.point import Point
-from brown.primitives.spanner import Spanner
 from brown.core.graphic_object import GraphicObject
+from brown.core.spanner import Spanner
+from brown.utils.point import Point
+from brown.utils.units import Unit
 
 
 class MockSpanner(GraphicObject, Spanner):

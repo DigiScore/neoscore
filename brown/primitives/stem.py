@@ -1,6 +1,6 @@
-from brown.core.pen import Pen
 from brown.core.path import Path
-from brown.primitives.staff_object import StaffObject
+from brown.core.pen import Pen
+from brown.core.staff_object import StaffObject
 from brown.utils.math_helpers import sign
 
 

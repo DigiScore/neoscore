@@ -2,9 +2,8 @@ import unittest
 
 from brown.core import brown
 from brown.core.flowable_frame import FlowableFrame
+from brown.core.staff import Staff
 from brown.primitives.notehead import Notehead
-from brown.primitives.staff import Staff
-from brown.primitives.clef import Clef
 from brown.utils.units import Mm
 
 

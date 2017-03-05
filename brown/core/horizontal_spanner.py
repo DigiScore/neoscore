@@ -1,7 +1,7 @@
-from brown.primitives.spanner import Spanner
-from brown.utils.units import GraphicUnit
-from brown.utils.point import Point
 from brown.core.graphic_object import GraphicObject
+from brown.core.spanner import Spanner
+from brown.utils.point import Point
+from brown.utils.units import GraphicUnit
 
 
 class HorizontalSpanner(Spanner):

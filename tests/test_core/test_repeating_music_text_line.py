@@ -1,13 +1,12 @@
 import unittest
 
 from brown.core import brown
-from brown.utils.units import Mm
 from brown.core.flowable_frame import FlowableFrame
 from brown.core.music_text_object import MusicTextObject
-from brown.primitives.staff import Staff
-from brown.primitives.repeating_music_text_line import RepeatingMusicTextLine
-
-from mock_staff_object import MockStaffObject
+from brown.core.repeating_music_text_line import RepeatingMusicTextLine
+from brown.core.staff import Staff
+from brown.utils.units import Mm
+from tests.mock_classes.mock_staff_object import MockStaffObject
 
 
 class TestRepeatingMusicTextLine(unittest.TestCase):

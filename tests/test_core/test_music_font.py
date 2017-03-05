@@ -4,7 +4,7 @@ import unittest
 from brown.config import config
 from brown.core import brown
 from brown.core.music_font import MusicFont
-from brown.primitives.staff import Staff
+from brown.core.staff import Staff
 from brown.utils.units import Mm
 
 

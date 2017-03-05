@@ -1,9 +1,8 @@
+from brown.core.music_char import MusicChar
+from brown.core.staff_object import StaffObject
 from brown.core.text_object import TextObject
-from brown.primitives.staff_object import StaffObject
 from brown.utils.point import Point
 from brown.utils.rect import Rect
-from brown.utils.units import Unit
-from brown.core.music_char import MusicChar
 
 
 class MusicTextObject(TextObject, StaffObject):

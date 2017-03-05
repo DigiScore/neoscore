@@ -1,8 +1,8 @@
-from brown.primitives.multi_staff_object import MultiStaffObject
-from brown.utils.units import Unit
+from brown.core.graphic_object import GraphicObject
+from brown.core.multi_staff_object import MultiStaffObject
 from brown.core.path import Path
 from brown.core.pen import Pen
-from brown.core.graphic_object import GraphicObject
+from brown.utils.units import Unit
 
 
 class BarLine(Path, MultiStaffObject):

@@ -1,12 +1,11 @@
 import unittest
 
 from brown.core import brown
-from brown.primitives.staff import Staff
-from brown.primitives.chordrest import ChordRest
-from brown.primitives.clef import Clef
+from brown.core.staff import Staff
 from brown.models.pitch import Pitch
-from brown.utils.units import Mm
+from brown.primitives.chordrest import ChordRest
 from brown.utils.point import Point
+from brown.utils.units import Mm
 
 
 class TestChordRest(unittest.TestCase):

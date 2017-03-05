@@ -1,6 +1,6 @@
-from brown.core.music_text_object import MusicTextObject
-from brown.primitives.multi_staff_object import MultiStaffObject
+from brown.core.multi_staff_object import MultiStaffObject
 from brown.core.music_font import MusicFontGlyphNotFoundError
+from brown.core.music_text_object import MusicTextObject
 from brown.utils.units import GraphicUnit
 
 

@@ -1,6 +1,6 @@
-from brown.core.object_group import ObjectGroup
 from brown.core.music_text_object import MusicTextObject
-from brown.primitives.staff_object import StaffObject
+from brown.core.object_group import ObjectGroup
+from brown.core.staff_object import StaffObject
 from brown.utils.point import Point
 
 

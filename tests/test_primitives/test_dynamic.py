@@ -3,8 +3,8 @@ import unittest
 import pytest
 
 from brown.core import brown
+from brown.core.staff import Staff
 from brown.primitives.dynamic import Dynamic, DynamicStringError
-from brown.primitives.staff import Staff
 from brown.utils.units import Mm
 
 

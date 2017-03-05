@@ -3,11 +3,11 @@ import unittest
 import pytest
 
 from brown.core import brown
-from brown.utils.units import Mm
-from brown.core.paper import Paper
 from brown.core.flowable_frame import FlowableFrame
-from brown.primitives.staff import Staff, NoClefError
+from brown.core.paper import Paper
+from brown.core.staff import Staff, NoClefError
 from brown.utils.point import Point
+from brown.utils.units import Mm
 
 
 class TestStaff(unittest.TestCase):

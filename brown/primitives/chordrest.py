@@ -1,12 +1,12 @@
-from brown.primitives.notehead import Notehead
-from brown.primitives.accidental import Accidental
-from brown.primitives.staff_object import StaffObject
-from brown.primitives.ledger_line import LedgerLine
-from brown.primitives.stem import Stem
-from brown.primitives.rest import Rest
-from brown.primitives.flag import Flag
-from brown.primitives.rhythm_dot import RhythmDot
 from brown.core.object_group import ObjectGroup
+from brown.core.staff_object import StaffObject
+from brown.primitives.accidental import Accidental
+from brown.primitives.flag import Flag
+from brown.primitives.ledger_line import LedgerLine
+from brown.primitives.notehead import Notehead
+from brown.primitives.rest import Rest
+from brown.primitives.rhythm_dot import RhythmDot
+from brown.primitives.stem import Stem
 from brown.utils.point import Point
 
 

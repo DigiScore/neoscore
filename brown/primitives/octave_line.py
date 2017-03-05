@@ -1,13 +1,13 @@
-from brown.core.object_group import ObjectGroup
-from brown.core.music_text_object import MusicTextObject
+from brown.core.horizontal_spanner import HorizontalSpanner
 from brown.core.music_char import MusicChar
+from brown.core.music_text_object import MusicTextObject
+from brown.core.object_group import ObjectGroup
 from brown.core.path import Path
 from brown.core.pen import Pen
-from brown.primitives.staff_object import StaffObject
-from brown.primitives.horizontal_spanner import HorizontalSpanner
+from brown.core.staff_object import StaffObject
 from brown.utils.point import Point
-from brown.utils.units import GraphicUnit
 from brown.utils.stroke_pattern import StrokePattern
+from brown.utils.units import GraphicUnit
 
 
 class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):

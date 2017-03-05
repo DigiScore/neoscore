@@ -4,7 +4,7 @@ import pytest
 
 from brown.core import brown
 from brown.primitives.flag import Flag, NoFlagNeededError
-from brown.primitives.staff import Staff
+from brown.core.staff import Staff
 from brown.utils.units import Mm
 
 

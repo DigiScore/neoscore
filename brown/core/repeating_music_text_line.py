@@ -1,7 +1,7 @@
 from brown.core.music_text_object import MusicTextObject
-from brown.primitives.spanner import Spanner
-from brown.utils.point import Point
+from brown.core.spanner import Spanner
 from brown.utils.anchored_point import AnchoredPoint
+from brown.utils.point import Point
 
 
 class RepeatingMusicTextLine(MusicTextObject, Spanner):

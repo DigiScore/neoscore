@@ -2,10 +2,10 @@ import unittest
 
 from brown.core import brown
 from brown.core.flowable_frame import FlowableFrame
+from brown.core.staff import Staff
+from brown.primitives.bar_line import BarLine
 from brown.utils.point import Point
 from brown.utils.units import Mm
-from brown.primitives.staff import Staff
-from brown.primitives.bar_line import BarLine
 
 
 class TestBarLine(unittest.TestCase):

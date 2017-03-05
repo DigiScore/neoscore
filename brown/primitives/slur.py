@@ -1,10 +1,9 @@
+from brown.core.brush import Brush
 from brown.core.path import Path
-from brown.primitives.staff_object import StaffObject
-from brown.primitives.spanner import Spanner
+from brown.core.spanner import Spanner
+from brown.core.staff_object import StaffObject
 from brown.utils.anchored_point import AnchoredPoint
 from brown.utils.point import Point
-from brown.utils.units import Unit
-from brown.core.brush import Brush
 
 
 class Slur(Path, StaffObject, Spanner):
