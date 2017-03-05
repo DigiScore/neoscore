@@ -18,7 +18,7 @@ from brown.core.pen import Pen
 from brown.core.repeating_music_text_line import RepeatingMusicTextLine
 from brown.core.staff import Staff
 from brown.core.staff_object import StaffObject
-from brown.core.text_object import TextObject
+from brown.core.text import Text
 
 from brown.utils.anchored_point import AnchoredPoint
 from brown.utils.color import Color

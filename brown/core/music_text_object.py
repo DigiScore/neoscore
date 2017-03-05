@@ -1,11 +1,11 @@
 from brown.core.music_char import MusicChar
 from brown.core.staff_object import StaffObject
-from brown.core.text_object import TextObject
+from brown.core.text import Text
 from brown.utils.point import Point
 from brown.utils.rect import Rect
 
 
-class MusicTextObject(TextObject, StaffObject):
+class MusicTextObject(Text, StaffObject):
     """
     A glyph with a MusicFont and convenient access to relevant SMuFL metadata.
 
@@ -50,8 +50,8 @@ class MusicTextObject(TextObject, StaffObject):
         else:
             raise TypeError
         text = ''.join(char.codepoint for char in self.music_chars)
-        TextObject.__init__(self, pos, text, font, parent,
-                            scale_factor=scale_factor)
+        Text.__init__(self, pos, text, font, parent,
+                      scale_factor=scale_factor)
         StaffObject.__init__(self, parent)
 
     ######## PUBLIC PROPERTIES ########

@@ -6,7 +6,7 @@ from brown.utils.rect import Rect
 from brown.utils.units import GraphicUnit
 
 
-class TextObject(GraphicObject):
+class Text(GraphicObject):
 
     _interface_class = TextObjectInterface
 

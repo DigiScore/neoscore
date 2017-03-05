@@ -1,18 +1,18 @@
 import unittest
 
 from brown.core import brown
-from brown.interface.text_object_interface import TextObjectInterface
+from brown.interface.text_interface import TextInterface
 from brown.interface.font_interface import FontInterface
 
 
-class TestTextObjectInterface(unittest.TestCase):
+class TestTextInterface(unittest.TestCase):
 
     def setUp(self):
         brown.setup()
 
     def test_init(self):
         test_font = FontInterface('Bravura', 12)
-        test_object = TextObjectInterface((5, 6), 'testing', test_font)
+        test_object = TextInterface((5, 6), 'testing', test_font)
         assert(test_object.text == 'testing')
         assert(test_object._qt_object.text() == test_object.text)
         assert(test_object.font == test_font)
@@ -20,14 +20,14 @@ class TestTextObjectInterface(unittest.TestCase):
 
     def test_text_setter_changes_qt_object(self):
         test_font = FontInterface('Bravura', 12)
-        test_object = TextObjectInterface((5, 6), 'testing', test_font)
+        test_object = TextInterface((5, 6), 'testing', test_font)
         test_object.text = 'new value'
         assert(test_object.text == 'new value')
         assert(test_object._qt_object.text() == 'new value')
 
     def test_font_setter_changes_qt_object(self):
         test_font = FontInterface('Bravura', 12)
-        test_object = TextObjectInterface((5, 6), 'testing', test_font)
+        test_object = TextInterface((5, 6), 'testing', test_font)
         new_test_font = FontInterface('Bravura', 16)
         test_object.font = new_test_font
         assert(test_object.font == new_test_font)

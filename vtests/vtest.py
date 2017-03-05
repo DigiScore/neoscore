@@ -9,7 +9,7 @@ brown.setup()
 flow = FlowableFrame((Mm(0), Mm(0)), Mm(35000), Mm(30), Mm(10))
 
 counting_string = '    '.join(str(x) for x in range(600))
-counting_text = TextObject((Mm(0), Mm(0)), counting_string, parent=flow)
+counting_text = Text((Mm(0), Mm(0)), counting_string, parent=flow)
 counting_text._breakable_width = Mm(10000)
 
 staff = Staff((Mm(0), Mm(0)), Mm(10000), flow, Mm(1))
@@ -27,10 +27,10 @@ staff.add_chordrest((1, 4), ["a'", "bs"], (2, 4))
 
 font = Font('Cormorant Garamond', Mm(2), weight=100, italic=True)
 
-regular_text = TextObject((Mm(20), staff.unit(-1)),
+regular_text = Text((Mm(20), staff.unit(-1)),
                           'piu mosso',
-                          font=font,
-                          parent=staff)
+                    font=font,
+                    parent=staff)
 
 p = Dynamic((Mm(20), staff.unit(6)), 'p', staff)
 
@@ -76,15 +76,15 @@ fake_trill = RepeatingMusicTextLine((Mm(30), staff.unit(-6), 0, staff),
 octave_line = OctaveLine((Mm(20), staff.unit(0)), staff,
                          Mm(10000), explicit_path)
 
-text_on_first_page = TextObject((Mm(0), Mm(0), 0),
+text_on_first_page = Text((Mm(0), Mm(0), 0),
                                  'first page!')
 
-text_on_second_page = TextObject((Mm(0), Mm(0), 1),
+text_on_second_page = Text((Mm(0), Mm(0), 1),
                                  'second page!')
 
-text_on_third_page = TextObject((Mm(0), Mm(0), 1),
+text_on_third_page = Text((Mm(0), Mm(0), 1),
                                 'third page!',
-                                parent=text_on_second_page)
+                          parent=text_on_second_page)
 
 explicit_path_on_third_page = Path((Mm(0), Mm(0), 1), parent=text_on_second_page)
 explicit_path_on_third_page.line_to(Mm(100), Mm(60))

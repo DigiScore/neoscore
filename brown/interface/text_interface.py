@@ -5,7 +5,7 @@ from brown.interface.qt_to_util import point_to_qt_point_f
 from brown.utils.point import Point
 
 
-class TextObjectInterface(GraphicObjectInterface):
+class TextInterface(GraphicObjectInterface):
 
     _interface_class = QEnhancedTextItem
 
