@@ -48,7 +48,7 @@ class Interval:
         Some examples:
 
             * `Interval('aM3')` signifies an ascending major third
-            * `Interval('dA9')` signifies a descending augmented
+            * `Interval('dA9')` signifies a descending augmented ninth
         """
         match = Interval._shorthand_regex.match(specifier)
         if match is None:
