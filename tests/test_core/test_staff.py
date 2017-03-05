@@ -6,6 +6,7 @@ from brown.core import brown
 from brown.core.flowable_frame import FlowableFrame
 from brown.core.paper import Paper
 from brown.core.staff import Staff, NoClefError
+from brown.primitives.octave_line import OctaveLine
 from brown.utils.point import Point
 from brown.utils.units import Mm
 
@@ -50,6 +51,17 @@ class TestStaff(unittest.TestCase):
         staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
         assert(staff.active_clef_at(Mm(5)) is None)
 
+    def test_active_transposition_at_with_octave_line_with_staff_parent(self):
+        staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
+        octave_line = OctaveLine((Mm(20), Mm(0)), staff, Mm(80),
+                                 indication='8va')
+        assert(staff.active_transposition_at(Mm(0)) is None)
+        assert(staff.active_transposition_at(Mm(20))
+               == octave_line.transposition)
+        assert(staff.active_transposition_at(Mm(100))
+               == octave_line.transposition)
+        assert(staff.active_transposition_at(Mm(101)) is None)
+
     def test_middle_c_at_with_explicit_clefs(self):
         staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
         staff.add_clef((0, 4), 'treble')
@@ -63,6 +75,19 @@ class TestStaff(unittest.TestCase):
         staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
         with pytest.raises(NoClefError):
             staff.middle_c_at(Mm(5))
+
+    def test_middle_c_at_with_active_octave_line(self):
+        staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
+        staff.add_clef((0, 4), 'treble')
+        octave_line = OctaveLine((Mm(20), Mm(0)), staff, Mm(80),
+                                 indication='8va')
+        # Before octave_line goes into effect
+        assert(staff.middle_c_at(Mm(0)) == staff.unit(5))
+        # While octave_line is in effect
+        assert(staff.middle_c_at(Mm(20)) == staff.unit(8.5))
+        assert(staff.middle_c_at(Mm(100)) == staff.unit(8.5))
+        # After octave_line ends
+        assert(staff.middle_c_at(Mm(101)) == staff.unit(5))
 
     def test_natural_midi_number_of_top_line_at_with_explicit_clefs(self):
         staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)

@@ -23,7 +23,12 @@ barline = BarLine(Mm(30), [staff, lower_staff, lowest_staff])
 staff.add_clef((0, 4), 'treble')
 lower_staff.add_clef((0, 4), 'treble')
 staff.add_time_signature(0, (4, 4))
+octave_line = OctaveLine((Mm(20), staff.unit(0)), staff,
+                         Mm(1000),
+                         indication='8vb')
 staff.add_chordrest((1, 4), ["a'", "bs"], (2, 4))
+staff.add_chordrest((4, 4), ["c''", "bf"], (2, 4))
+staff.add_chordrest((8, 4), ["b'", "bs"], (2, 4))
 
 font = Font('Cormorant Garamond', Mm(2), weight=100, italic=True)
 
@@ -72,9 +77,6 @@ explicit_path.line_to(Mm(5000), Mm(100))
 fake_trill = RepeatingMusicTextLine((Mm(30), staff.unit(-6), 0, staff),
                                     (Mm(5000), staff.unit(-6), 0, staff),
                                     'wiggleTrill')
-
-octave_line = OctaveLine((Mm(20), staff.unit(0)), staff,
-                         Mm(10000), explicit_path)
 
 text_on_first_page = Text((Mm(0), Mm(0), 0),
                                  'first page!')

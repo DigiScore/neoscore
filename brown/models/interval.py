@@ -86,7 +86,29 @@ class Interval:
 
     @property
     def distance(self):
+        # TODO: Roll distance and direction together into a pos/neg int?
         return self._distance
+
+    @property
+    def staff_distance(self):
+        """float: The number of staff units covered by this interval.
+
+        If this value is converted to a StaffUnit, it will give the
+        vertical distance from the starting note to ending note on
+        the staff, where 1 is the distance between two staff lines.
+
+        Note that the interval quality has no effect on this property.
+
+        >>> Interval('aM3').staff_distance
+        1.0
+        >>> Interval('dm3').staff_distance
+        -1.0
+        >>> Interval('aP1').staff_distance
+        0.0
+        >>> Interval('dP8').staff_distance
+        -3.5
+        """
+        return (((self.distance - 1) * self.direction_as_int) / 2)
 
     @property
     def simple_distance(self):

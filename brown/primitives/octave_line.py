@@ -8,6 +8,7 @@ from brown.core.staff_object import StaffObject
 from brown.utils.point import Point
 from brown.utils.stroke_pattern import StrokePattern
 from brown.utils.units import GraphicUnit
+from brown.models.transposition import Transposition
 
 
 class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
@@ -15,7 +16,10 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
     """An octave indication with a dashed line.
 
     When placed in the context of a Staff, pitched content under the spanner
-    is automatically transposed accordingly
+    is automatically transposed accordingly. Care should be taken to ensure
+    OctaveLines do not overlap with one another. If this occurs,
+    the transposition reflected in the staff will be an undefined choice
+    among those active.
 
     Supported octave indications are:
         - '15ma' (two octaves higher)
@@ -34,11 +38,11 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
           offsets for paths.
     """
 
-    octaves = {
-        '15ma': 2,
-        '8va': 1,
-        '8vb': -1,
-        '15mb': -2
+    intervals = {
+        '15ma': 'aP15',
+        '8va': 'aP8',
+        '8vb': 'dP8',
+        '15mb': 'dP15'
     }
 
     glyphs = {
@@ -76,6 +80,7 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
         ObjectGroup.__init__(self, start, start_parent)
         HorizontalSpanner.__init__(self, end_x, end_parent)
         StaffObject.__init__(self, self.parent)
+        self.transposition = Transposition(OctaveLine.intervals[indication])
         self.line_text = OctaveLine._OctaveLineText(
             # No offset relative to ObjectGroup
             pos=(GraphicUnit(0), GraphicUnit(0)),

@@ -1,4 +1,5 @@
 from brown.core.music_text import MusicText
+from brown.utils.units import Unit
 
 
 class Clef(MusicText):
@@ -17,6 +18,20 @@ class Clef(MusicText):
         'tenor': 64,
         'alto': 67
     }
+    _baseline_staff_positions = {
+        'treble': 3,
+        'bass': 1,
+        '8vb bass': 1,
+        'tenor': 1,
+        'alto': 2,
+    }
+    _middle_c_staff_positions = {
+        'treble': 5,
+        'bass': -1,
+        '8vb bass': -6.5,
+        'tenor': 1,
+        'alto': 2,
+    }
 
     def __init__(self, staff, position_x, clef_type):
         """
@@ -26,24 +41,13 @@ class Clef(MusicText):
             clef_type (str): One of: 'treble', 'bass', '8vb bass',
                 'tenor', or 'alto'
         """
-        self._baseline_staff_positions = {
-            'treble': staff.unit(3),
-            'bass': staff.unit(1),
-            '8vb bass': staff.unit(1),
-            'tenor': staff.unit(1),
-            'alto': staff.unit(2),
-        }
-        self._middle_c_staff_positions = {
-            'treble': staff.unit(5),
-            'bass': staff.unit(-1),
-            '8vb bass': staff.unit(-6.5),
-            'tenor': staff.unit(1),
-            'alto': staff.unit(2),
-        }
         self._clef_type = clef_type
-        MusicText.__init__(self, (position_x, self.staff_position),
+        # staff_position relies on an existing MusicText object,
+        # so start with a temp y position, then set the real one
+        MusicText.__init__(self, (position_x, Unit(0)),
                            self._canonical_names[clef_type],
                            staff)
+        self.y = self.staff_position
 
     ######## PUBLIC PROPERTIES ########
 
@@ -63,7 +67,7 @@ class Clef(MusicText):
         Positive values extend *downward* below the top staff line
         while negative values extend *upward* above the top staff line.
         """
-        return self._baseline_staff_positions[self.clef_type]
+        return self.staff.unit(Clef._baseline_staff_positions[self.clef_type])
 
     @property
     def middle_c_staff_position(self):
@@ -76,7 +80,7 @@ class Clef(MusicText):
         This value is primarily useful in calculations of pitch staff positions
         which take a clef into account
         """
-        return self._middle_c_staff_positions[self.clef_type]
+        return self.staff.unit(Clef._middle_c_staff_positions[self.clef_type])
 
     @property
     def _natural_midi_number_at_top_staff_line(self):

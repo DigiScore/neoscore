@@ -6,7 +6,7 @@ from brown.models.container import Container
 from brown.primitives.chordrest import ChordRest
 from brown.primitives.clef import Clef
 from brown.primitives.time_signature import TimeSignature
-from brown.utils.point import Point
+from brown.primitives.octave_line import OctaveLine
 from brown.utils.units import GraphicUnit, Unit
 
 
@@ -151,16 +151,48 @@ class Staff(Path):
     def active_clef_at(self, pos_x):
         """Find and return the active clef at a given x position.
 
-        pos_x (Unit):
+        pos_x (Unit): An x-axis position on the staff
 
-        Returns: Clef
+        Returns:
+            Clef: The active clef at `pos_x`
+            None: If no clef is active at `pos_x`
         """
-        # TODO: Implement a more efficient way to quickly look up contents by type
+        # TODO: Implement a more efficient way to quickly look up
+        #       contents by type. This also will fail for clefs whose
+        #       direct parent is not the Staff
         if self.contents:
-            return max([item for item in self.contents if item.x < pos_x],
+            return max((item for item in self.contents
+                        if isinstance(item, Clef) and item.x <= pos_x),
                        key=lambda item: item.x)
         else:
             return None
+
+    def active_transposition_at(self, pos_x):
+        """Find and return the active transposition at a given x position.
+
+        The current implementation simply searches through the staff contents
+        for any OctaveLines which overlap with pos_x, and returns the
+        transposition of the first found, and None if none are.
+
+        Args:
+            pos_x (Unit): An x-axis position on the staff
+
+        Returns:
+            Transposition: The active transposition at `pos_x`
+            None: If no transposition was found.
+
+        NOTE: This uses a different pattern for searching descendants,
+              using the new GraphicObject.all_descendants property,
+              allowing OctaveLines whose direct parent is not the staff
+              to be discovered. This pattern should be extended to the
+              rest of Staff as well.
+        """
+        for item in self.all_descendants:
+            if isinstance(item, OctaveLine):
+                line_pos = self.frame.map_between_items_in_frame(self, item).x
+                if line_pos <= pos_x <= line_pos + item.length:
+                    return item.transposition
+        return None
 
     def middle_c_at(self, position_x):
         """Find the vertical staff position of middle-c at a given point.
@@ -173,10 +205,15 @@ class Staff(Path):
         Returns: StaffUnit: A vertical staff position
         """
         clef = self.active_clef_at(position_x)
+        transposition = self.active_transposition_at(position_x)
         if clef is None:
             raise NoClefError
         else:
-            return clef.middle_c_staff_position
+            if transposition:
+                return (clef.middle_c_staff_position
+                        + self.unit(transposition.interval.staff_distance))
+            else:
+                return clef.middle_c_staff_position
 
     def _natural_midi_number_of_top_line_at(self, position_x):
         """Find the natural midi pitch class of the top line at a given point.

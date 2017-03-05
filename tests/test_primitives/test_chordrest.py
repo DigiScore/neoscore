@@ -64,6 +64,9 @@ class TestChordRest(unittest.TestCase):
         assert(chord.furthest_notehead.pitch == Pitch("c,,,,"))
 
     def test_furthest_notehead_with_many_notes(self):
+        pitches = ["b''", "bs'"]
+        chord = ChordRest(Mm(1), self.staff, pitches, self.staff.beat(1, 4))
+        assert(chord.furthest_notehead.pitch == Pitch("b''"))
         pitches = ["b'", "b,,,"]
         chord = ChordRest(Mm(1), self.staff, pitches, self.staff.beat(1, 4))
         assert(chord.furthest_notehead.pitch == Pitch("b,,,"))

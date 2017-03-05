@@ -27,6 +27,17 @@ def test_interval_quality_in_english():
     assert(Interval('aA2').quality_in_english == 'Augmented')
 
 
+def test_interval_staff_distance():
+    assert(Interval('aP1').staff_distance == 0)
+    assert(Interval('dP1').staff_distance == 0)
+    assert(Interval('am2').staff_distance == 0.5)
+    assert(Interval('dm2').staff_distance == -0.5)
+    assert(Interval('aM3').staff_distance == 1)
+    assert(Interval('dM3').staff_distance == -1)
+    assert(Interval('aP8').staff_distance == 3.5)
+    assert(Interval('dP8').staff_distance == -3.5)
+
+
 def test_interval_simple_distance():
     # Within one octave - distance shouldn't change
     assert(Interval('aP1').simple_distance == 1)

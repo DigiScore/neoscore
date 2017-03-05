@@ -119,7 +119,7 @@ class ChordRest(ObjectGroup, StaffObject):
     def furthest_notehead(self):
         """Notehead or None: The Notehead furthest from the staff center"""
         return max(self.noteheads,
-                   key=lambda n: abs(n.staff_position),
+                   key=lambda n: abs(n.staff_position - self.staff.center_pos_y),
                    default=None)
 
     @property
