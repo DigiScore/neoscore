@@ -11,6 +11,11 @@ class Path(GraphicObject):
 
     """An vector path whose points can be anchored to other objects.
 
+    If a Path is in a FlowableFrame, any point anchors in the path
+    should be anchored to objects in the same FlowableFrame, or
+    undefined behavior may occur. Likewise, if a Path is not
+    in a FlowableFrame, all point anchors should not be in one either.
+
     Note: The path drawing methods to not support placing points
           on different pages than the path. If this is required,
           it would not be difficult to extend the behavior of the
@@ -68,8 +73,21 @@ class Path(GraphicObject):
 
         This is used to determine how and where rendering cuts should be made.
         """
-        # TODO: Currently may not work for anchored elements
-        return max((el.x for el in self.elements), default=GraphicUnit(0))
+        # Find the positions of every path element relative to the path
+        min_x = GraphicUnit(float("inf"))
+        max_x = GraphicUnit(-float("inf"))
+        in_flowable = self.is_in_flowable
+        for element in self.elements:
+            if in_flowable:
+                relative_x = (self.frame.pos_in_frame_of(element)
+                              - self.frame.pos_in_frame_of(self)).x
+            else:
+                relative_x = GraphicObject.map_between_items(self, element).x
+            if relative_x > max_x:
+                max_x = relative_x
+            if relative_x < min_x:
+                min_x = relative_x
+        return max_x - min_x
 
     @property
     def current_path_position(self):
@@ -84,7 +102,12 @@ class Path(GraphicObject):
         beginning a new one.
         """
         if self.elements:
-            return Path.map_between_items(self, self.elements[-1])
+            if self.is_in_flowable:
+                return self.frame.map_between_items_in_frame(
+                    self, self.elements[-1])
+            else:
+                return GraphicObject.map_between_items(
+                    self, self.elements[-1])
         else:
             return Point(GraphicUnit(0), GraphicUnit(0))
 
@@ -247,8 +270,15 @@ class Path(GraphicObject):
         # Maintain a buffer of control points to be sent to the PathInterface
         control_point_buffer = []
         for element in self.elements:
+            # Interface drawing methods expect coordinates
+            # relative to PathInterface root
             if element.parent != self:
-                relative_pos = self.map_between_items(self, element)
+                if self.is_in_flowable:
+                    relative_pos = self.frame.map_between_items_in_frame(
+                        self, element)
+                else:
+                    relative_pos = GraphicObject.map_between_items(
+                        self, element)
             else:
                 relative_pos = element.pos
             if element.element_type == PathElementType.move_to:
@@ -259,8 +289,8 @@ class Path(GraphicObject):
                 if len(control_point_buffer) == 2:
                     slice_interface.cubic_to(*control_point_buffer, relative_pos)
                 else:
-                    # Quad to, or higher order curve not supported yet
-                    raise NotImplementedError
+                    raise NotImplementedError(
+                        'Curves with >2 control points not implemented')
                 control_point_buffer = []
             elif element.element_type == PathElementType.control_point:
                 control_point_buffer.append(relative_pos)

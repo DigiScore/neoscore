@@ -1,7 +1,7 @@
 from brown.utils.point import Point
 from brown.core import brown
 from brown.core.invisible_object import InvisibleObject
-from brown.utils.units import Mm
+from brown.utils.units import Mm, Unit
 from brown.core.auto_new_line import AutoNewLine
 from brown.core.auto_new_page import AutoNewPage
 
@@ -178,3 +178,41 @@ class FlowableFrame(InvisibleObject):
         else:
             raise OutOfBoundsError(
                 'x={} lies outside of this FlowableFrame'.format(x))
+
+    def pos_in_frame_of(self, graphic_object):
+        """Find the position of an object in (unwrapped) flowable space.
+
+        Args:
+            graphic_object (GraphicObject): An object in the frame.
+
+        Returns: Point: A non-paged point relative to the flowable frame.
+
+        Raises: ValueError: If `graphic_object` is not in the frame.
+        """
+        pos = Point(Unit(0), Unit(0))
+        current = graphic_object
+        try:
+            while current != self:
+                pos += current.pos
+                current = current.parent
+            return pos
+        except AttributeError:
+            raise ValueError('object is not in this FlowableFrame')
+
+    def map_between_items_in_frame(self, source, destination):
+        """Find the relative position between two objects in this frame.
+
+        Args:
+            source (GraphicObject): The object to map from
+            destination (GraphicObject): The object to map to
+
+        Returns:
+            Point: The relative position of `destination`,
+                relative to `source` within the local frame space.
+                This will have a page number of 0.
+
+        Raises:
+            ValueError: If either `source` or `destination` are not
+                in the frame.
+        """
+        return self.pos_in_frame_of(destination) - self.pos_in_frame_of(source)

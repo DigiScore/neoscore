@@ -165,7 +165,9 @@ class GraphicObject(ABC):
             source (GraphicObject): The object to map from
             destination (GraphicObject): The object to map to
 
-        Returns: Point
+        Returns:
+            Point: The relative page position of `destination`,
+                relative to `source`
         """
         # inefficient for now - find position relative to doc root of both
         # and find delta between the two.
@@ -215,7 +217,7 @@ class GraphicObject(ABC):
         Returns: None
         """
         # Calculate position within flowable
-        pos_in_flowable = GraphicObject.map_between_items(self.frame, self)
+        pos_in_flowable = self.frame.pos_in_frame_of(self)
 
         remaining_x = (self.breakable_width +
                        self.frame._dist_to_line_end(pos_in_flowable.x))

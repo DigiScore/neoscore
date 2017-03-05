@@ -266,14 +266,10 @@ class ChordRest(ObjectGroup, StaffObject):
         Warning: This should be called after _position_noteheads_horizontally()
                  as it relies on the position of noteheads in the chord to
                  calculate the position and length of the ledger lines
-        Warning: This overwrites the contents of `self.ledgers`
         """
         # Calculate x position and length of ledger lines
         pos_x = self.leftmost_notehead.x
         length = self.notehead_column_outside_staff_width
-        # Flush any existing ledgers:
-        self._objects = set(item for item in self.objects
-                            if not isinstance(item, LedgerLine))
         for staff_pos in self.ledger_line_positions:
             self.ledgers.add(LedgerLine(Point(pos_x, staff_pos), self, length))
 
