@@ -7,12 +7,12 @@ from brown.config import config
 from brown.core import brown
 from brown.core.music_char import MusicChar
 from brown.core.music_font import MusicFont
-from brown.core.music_text_object import MusicTextObject
+from brown.core.music_text import MusicText
 from brown.core.staff import Staff
 from brown.utils.units import Mm
 
 
-class TestMusicTextObject(unittest.TestCase):
+class TestMusicText(unittest.TestCase):
 
     def setUp(self):
         brown.setup()
@@ -28,10 +28,10 @@ class TestMusicTextObject(unittest.TestCase):
 
     def test_init(self):
         mock_parent = MockGraphicObject((10, 11), parent=self.staff)
-        test_object = MusicTextObject((5, 6),
+        test_object = MusicText((5, 6),
                                       'accidentalFlat',
-                                      mock_parent,
-                                      self.font)
+                                mock_parent,
+                                self.font)
         assert(test_object.x == 5)
         assert(test_object.y == 6)
         assert(test_object.text == '\ue260')
@@ -39,19 +39,19 @@ class TestMusicTextObject(unittest.TestCase):
         assert(test_object.parent == mock_parent)
 
     def test_init_with_one_tuple(self):
-        test_object = MusicTextObject((5, 6),
-                                      ('brace', 1),
-                                      self.staff)
+        test_object = MusicText((5, 6),
+                                ('brace', 1),
+                                self.staff)
         assert(test_object.text == '\uF400')
 
     def test_init_with_one_music_char(self):
-        test_object = MusicTextObject((5, 6),
-                                      MusicChar(self.staff.music_font, 'brace', 1),
-                                      self.staff)
+        test_object = MusicText((5, 6),
+                                MusicChar(self.staff.music_font, 'brace', 1),
+                                self.staff)
         assert(test_object.text == '\uF400')
 
     def test_init_with_multiple_chars_in_list(self):
-        test_object = MusicTextObject((5, 6),
-                                      ['accidentalFlat', ('brace', 1)],
-                                      self.staff)
+        test_object = MusicText((5, 6),
+                                ['accidentalFlat', ('brace', 1)],
+                                self.staff)
         assert(test_object.text == '\ue260\uF400')

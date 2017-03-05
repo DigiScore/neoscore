@@ -5,11 +5,11 @@ from brown.utils.point import Point
 from brown.utils.rect import Rect
 
 
-class MusicTextObject(Text, StaffObject):
+class MusicText(Text, StaffObject):
     """
     A glyph with a MusicFont and convenient access to relevant SMuFL metadata.
 
-    The text content of a MusicTextObject should be a single character.
+    The text content of a MusicText should be a single character.
     Rather than being specified by their unicode codepoints or literals,
     characters should be specified by their canonical SMuFL names.
     """
@@ -83,7 +83,7 @@ class MusicTextObject(Text, StaffObject):
         """Find the bounding rect of a given list of music chars.
 
         Takes a list of MusicChars and determined the bounding rect
-        they would have if they were in this MusicTextObject.
+        they would have if they were in this MusicText.
 
         The fonts of every music character should the the same as self.font.
 

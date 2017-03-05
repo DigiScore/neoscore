@@ -1,7 +1,7 @@
-from brown.core.music_text_object import MusicTextObject
+from brown.core.music_text import MusicText
 
 
-class RhythmDot(MusicTextObject):
+class RhythmDot(MusicText):
     """A rhythmic dot"""
 
     _glyph_name = 'augmentationDot'

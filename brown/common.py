@@ -8,7 +8,7 @@ from brown.core.font import Font
 from brown.core.multi_staff_object import MultiStaffObject
 from brown.core.music_char import MusicChar
 from brown.core.music_font import MusicFont
-from brown.core.music_text_object import MusicTextObject
+from brown.core.music_text import MusicText
 from brown.core.new_line import NewLine
 from brown.core.new_page import NewPage
 from brown.core.object_group import ObjectGroup

@@ -1,10 +1,10 @@
-from brown.core.music_text_object import MusicTextObject
+from brown.core.music_text import MusicText
 from brown.core.spanner import Spanner
 from brown.utils.anchored_point import AnchoredPoint
 from brown.utils.point import Point
 
 
-class RepeatingMusicTextLine(MusicTextObject, Spanner):
+class RepeatingMusicTextLine(MusicText, Spanner):
 
     """A spanner of repeating music text over its length.
 
@@ -33,15 +33,15 @@ class RepeatingMusicTextLine(MusicTextObject, Spanner):
                  else AnchoredPoint(*start))
         stop = (stop if isinstance(stop, AnchoredPoint)
                 else AnchoredPoint(*stop))
-        # init the MusicTextObject to ask it how wide a single
+        # init the MusicText to ask it how wide a single
         # repetition of `text` is in order to calculate how many
         # repetitions are needed to cover the spanner.
-        MusicTextObject.__init__(self,
-                                 (start.x, start.y, start.page),
-                                 text,
-                                 start.parent,
-                                 font,
-                                 scale_factor)
+        MusicText.__init__(self,
+                           (start.x, start.y, start.page),
+                           text,
+                           start.parent,
+                           font,
+                           scale_factor)
         Spanner.__init__(self, Point(stop.x, stop.y, stop.page), stop.parent)
         self.repeating_music_chars = self.music_chars
         self.repeating_text = self.text

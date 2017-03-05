@@ -1,7 +1,7 @@
-from brown.core.music_text_object import MusicTextObject
+from brown.core.music_text import MusicText
 
 
-class Clef(MusicTextObject):
+class Clef(MusicText):
 
     _canonical_names = {
         'treble': 'gClef',
@@ -41,9 +41,9 @@ class Clef(MusicTextObject):
             'alto': staff.unit(2),
         }
         self._clef_type = clef_type
-        MusicTextObject.__init__(self, (position_x, self.staff_position),
-                                 self._canonical_names[clef_type],
-                                 staff)
+        MusicText.__init__(self, (position_x, self.staff_position),
+                           self._canonical_names[clef_type],
+                           staff)
 
     ######## PUBLIC PROPERTIES ########
 

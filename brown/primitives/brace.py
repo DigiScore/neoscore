@@ -1,10 +1,10 @@
 from brown.core.multi_staff_object import MultiStaffObject
 from brown.core.music_font import MusicFontGlyphNotFoundError
-from brown.core.music_text_object import MusicTextObject
+from brown.core.music_text import MusicText
 from brown.utils.units import GraphicUnit
 
 
-class Brace(MultiStaffObject, MusicTextObject):
+class Brace(MultiStaffObject, MusicText):
 
     """A brace spanning staves, recurring at line beginnings.
 
@@ -41,18 +41,18 @@ class Brace(MultiStaffObject, MusicTextObject):
             text = ('brace', 1)
         try:
             # Attempt to use size-specific optional glyph
-            MusicTextObject.__init__(self,
-                                     (pos_x, self.vertical_span),
-                                     text,
-                                     self.highest_staff,
-                                     scale_factor=scale)
+            MusicText.__init__(self,
+                               (pos_x, self.vertical_span),
+                               text,
+                               self.highest_staff,
+                               scale_factor=scale)
         except MusicFontGlyphNotFoundError:
             # Default to non-optional glyph
-            MusicTextObject.__init__(self,
-                                     (pos_x, self.vertical_span),
+            MusicText.__init__(self,
+                               (pos_x, self.vertical_span),
                                      'brace',
-                                     self.highest_staff,
-                                     scale_factor=scale)
+                               self.highest_staff,
+                               scale_factor=scale)
         self._breakable_width = length
 
     ######## PUBLIC PROPERTIES ########

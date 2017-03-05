@@ -49,21 +49,21 @@ random_wiggles = [random.choice(['wiggleRandom1',
                                  'wiggleRandom3',
                                  'wiggleRandom4']) for i in range(100)]
 
-MusicTextObject((Mm(25), staff.unit(2)),
-                random_wiggles,
-                staff)
+MusicText((Mm(25), staff.unit(2)),
+          random_wiggles,
+          staff)
 
 for i in range(0, 50, 2):
     factor = 1 + (i / 10)
-    MusicTextObject((Mm(120 + i), lowest_staff.unit(4)),
-                    ['brace', ('gClef', 1)],
-                    lowest_staff,
-                    scale_factor=factor)
+    MusicText((Mm(120 + i), lowest_staff.unit(4)),
+              ['brace', ('gClef', 1)],
+              lowest_staff,
+              scale_factor=factor)
 
-flowing_text = MusicTextObject((Mm(155), lower_staff.unit(3)),
-                               ['gClef'] * 130,
-                               lower_staff,
-                               scale_factor=1)
+flowing_text = MusicText((Mm(155), lower_staff.unit(3)),
+                         ['gClef'] * 130,
+                         lower_staff,
+                         scale_factor=1)
 
 pen = Pen(thickness=Mm(0.2), pattern=5)
 explicit_path = Path((Mm(0), Mm(0)), pen, parent=p)

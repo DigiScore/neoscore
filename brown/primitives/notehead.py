@@ -1,10 +1,10 @@
 from brown.models.pitch import Pitch
 from brown.utils.point import Point
 from brown.utils.units import Mm
-from brown.core.music_text_object import MusicTextObject
+from brown.core.music_text import MusicText
 
 
-class Notehead(MusicTextObject):
+class Notehead(MusicText):
 
     """A simple Notehead glyph whose appearance is determined by a Duration
 

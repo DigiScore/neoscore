@@ -2,7 +2,7 @@ import unittest
 
 from brown.core import brown
 from brown.core.flowable_frame import FlowableFrame
-from brown.core.music_text_object import MusicTextObject
+from brown.core.music_text import MusicText
 from brown.core.repeating_music_text_line import RepeatingMusicTextLine
 from brown.core.staff import Staff
 from brown.utils.units import Mm
@@ -18,7 +18,7 @@ class TestRepeatingMusicTextLine(unittest.TestCase):
         self.left_parent = MockStaffObject((Mm(0), Mm(0)), self.staff)
         self.right_parent = MockStaffObject((Mm(10), Mm(2)), self.staff)
         self.char = 'gClef'
-        self.single_repetition_width = MusicTextObject(
+        self.single_repetition_width = MusicText(
             (Mm(0), Mm(0)),
             self.char,
             self.left_parent,

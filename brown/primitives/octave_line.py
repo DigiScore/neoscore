@@ -1,6 +1,6 @@
 from brown.core.horizontal_spanner import HorizontalSpanner
 from brown.core.music_char import MusicChar
-from brown.core.music_text_object import MusicTextObject
+from brown.core.music_text import MusicText
 from brown.core.object_group import ObjectGroup
 from brown.core.path import Path
 from brown.core.pen import Pen
@@ -105,7 +105,7 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
                                 + self.staff.unit(0.75 * hook_direction)),
                                self.end_parent)
 
-    class _OctaveLineText(MusicTextObject):
+    class _OctaveLineText(MusicText):
         """An octave text mark recurring at line beginnings with added parenthesis.
 
         This is a private class meant to be used exclusively in the context
@@ -121,10 +121,10 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
                 indication (str): A valid octave indication.
                     Should be a valid entry in OctaveLine.glyphs.
             """
-            MusicTextObject.__init__(self,
-                                     pos,
-                                     OctaveLine.glyphs[indication],
-                                     parent)
+            MusicText.__init__(self,
+                               pos,
+                               OctaveLine.glyphs[indication],
+                               parent)
             open_paren_char = MusicChar(self.font, OctaveLine.glyphs['('])
             close_paren_char = MusicChar(self.font, OctaveLine.glyphs[')'])
             self.parenthesized_text = (open_paren_char.codepoint
