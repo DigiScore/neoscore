@@ -6,7 +6,7 @@ from brown.core.music_text import MusicText
 from brown.core.repeating_music_text_line import RepeatingMusicTextLine
 from brown.core.staff import Staff
 from brown.utils.units import Mm
-from tests.mock_classes.mock_staff_object import MockStaffObject
+from tests.mocks.mock_staff_object import MockStaffObject
 
 
 class TestRepeatingMusicTextLine(unittest.TestCase):

@@ -12,7 +12,7 @@ from brown.utils.units import GraphicUnit
 from brown.utils.color import Color
 from brown.utils.stroke_pattern import StrokePattern
 
-from mock_graphic_object_interface import MockGraphicObjectInterface
+from tests.mocks.mock_graphic_object_interface import MockGraphicObjectInterface
 
 
 class TestGraphicObjectInterface(unittest.TestCase):
