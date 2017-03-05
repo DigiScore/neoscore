@@ -1,17 +1,16 @@
-from brown.core.graphic_object import GraphicObject
 from brown.core.object_group import ObjectGroup
 from brown.core.music_text_object import MusicTextObject
 from brown.core.music_char import MusicChar
 from brown.core.path import Path
 from brown.core.pen import Pen
 from brown.primitives.staff_object import StaffObject
-from brown.primitives.spanner import Spanner
+from brown.primitives.horizontal_spanner import HorizontalSpanner
 from brown.utils.point import Point
-from brown.utils.units import Unit, GraphicUnit
+from brown.utils.units import GraphicUnit
 from brown.utils.stroke_pattern import StrokePattern
 
 
-class OctaveLine(ObjectGroup, Spanner, StaffObject):
+class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
 
     """An octave indication with a dashed line.
 
@@ -53,16 +52,16 @@ class OctaveLine(ObjectGroup, Spanner, StaffObject):
 
     def __init__(self,
                  start, start_parent,
-                 stop_x, stop_parent=None,
+                 end_x, end_parent=None,
                  indication='8va'):
         """
         Args:
             start (Point or tuple init args):
             start_parent (GraphicObject): An object either in a Staff or
                 a staff itself. This object will become the line's parent.
-            stop (Unit): The spanner end x position. The y position will be
+            end_x (Unit): The spanner end x position. The y position will be
                 automatically calculated to be horizontal.
-            stop_parent (GraphicObject): An object either in a Staff or
+            end_parent (GraphicObject): An object either in a Staff or
                 a staff itself. The root staff of this *must* be the same
                 as the root staff of `start_parent`. If omitted, the
                 stop point is relative to the start point.
@@ -75,15 +74,7 @@ class OctaveLine(ObjectGroup, Spanner, StaffObject):
                 The default value is '8va'.
         """
         ObjectGroup.__init__(self, start, start_parent)
-        # NOTE: The logic/pattern used here to ensure a horizontal spanner
-        #       will likely prove useful in other cases, warranting perhaps
-        #       a general horizontal spanner pattern solution.
-        #       Maybe a constructor like Spanner.horizontal(end_x, end_parent)
-        if stop_parent:
-            stop_y = self.frame.map_between_items_in_frame(stop_parent, self).y
-        else:
-            stop_y = GraphicUnit(0)
-        Spanner.__init__(self, Point(stop_x, stop_y), stop_parent)
+        HorizontalSpanner.__init__(self, end_x, end_parent)
         StaffObject.__init__(self, self.parent)
         self.line_text = OctaveLine._OctaveLineText(
             # No offset relative to ObjectGroup
