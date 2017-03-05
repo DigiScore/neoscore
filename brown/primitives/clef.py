@@ -11,13 +11,6 @@ class Clef(MusicText):
         'tenor': 'cClef',
         'alto': 'cClef',
     }
-    _natural_midi_numbers_at_top_staff_line = {
-        'treble': 77,
-        'bass': 57,
-        '8vb bass': 45,
-        'tenor': 64,
-        'alto': 67
-    }
     _baseline_staff_positions = {
         'treble': 3,
         'bass': 1,
@@ -81,8 +74,3 @@ class Clef(MusicText):
         which take a clef into account
         """
         return self.staff.unit(Clef._middle_c_staff_positions[self.clef_type])
-
-    @property
-    def _natural_midi_number_at_top_staff_line(self):
-        """int: The natural midi number of the top staff line for this clef."""
-        return self._natural_midi_numbers_at_top_staff_line[self.clef_type]

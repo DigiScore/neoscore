@@ -215,21 +215,6 @@ class Staff(Path):
             else:
                 return clef.middle_c_staff_position
 
-    def _natural_midi_number_of_top_line_at(self, position_x):
-        """Find the natural midi pitch class of the top line at a given point.
-
-        Looks for clefs and other transposing modifiers to determine
-        the this value. If no clef is present, treble is assumed.
-
-        Returns an `int` midi pitch number.
-        """
-        clef = self.active_clef_at(position_x)
-        if clef is None:
-            # Assume treble
-            return Clef._natural_midi_numbers_at_top_staff_line['treble']
-        else:
-            return clef._natural_midi_number_at_top_staff_line
-
     ######## PRIVATE METHODS ########
 
     @staticmethod
