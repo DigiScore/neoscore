@@ -1,13 +1,16 @@
 from brown.config import config
 from brown.utils.point import Point
-from brown.utils.units import Mm, Unit
+from brown.utils.units import Mm, GraphicUnit
 from brown.utils.rect import Rect
 from brown.core.paper import Paper
 
 
 class Document:
 
-    "The document root object."""
+    """The document root object.
+
+    NOTE: Paper gutters are not yet implemented
+    """
 
     def __init__(self, paper=None):
         if paper is None:
@@ -129,6 +132,27 @@ class Document:
         y_page_origin = self.paper.margin_top
         return Point(x_page_origin, y_page_origin)
 
+    def _paper_origin_in_canvas_space(self, page_number):
+        """Find the paper origin point of a given page number.
+
+        This gives the position of the top left corner of the actual
+        sheet of paper - regardless of margins and gutter.
+
+        Args:
+            page_number (int): The number of the page to locate,
+                where 0 is the first page.
+
+        Returns:
+            Point: The position of the paper origin of the given page.
+                The page number of this Point will be 0, as this
+                is considered relative to the document's origin.
+        """
+        return Point(
+            ((self.paper.width + self._page_display_gap)
+             * page_number),
+            GraphicUnit(0)
+        )
+
     def _map_to_canvas(self, pos):
         """Find the global document position of a given point.
 
@@ -153,7 +177,7 @@ class Document:
 
         Returns: Point: The object's paged position relative to the document.
         """
-        pos = Point(Unit(0), Unit(0))
+        pos = Point(GraphicUnit(0), GraphicUnit(0))
         current = graphic_object
         while type(current) != cls:
             pos += current.pos
@@ -165,7 +189,7 @@ class Document:
         return pos
 
     def page_bounding_rect(self, page_number):
-        """Find the bounding rect of a page in the document, in canvas space.
+        """Find the bounding rect of a page in the document.
 
         The resulting rect will cover the *live page area* - that is,
         the area within the margins of the page
@@ -184,6 +208,28 @@ class Document:
             page_origin.y,
             self.paper.live_width,
             self.paper.live_height
+        )
+
+    def paper_bounding_rect(self, page_number):
+        """Find the paper bounding rect of a page in the document.
+
+        The resulting rect will cover the entire paper sheet -
+        regardless of margins and gutter.
+
+        All points in the resulting rect will have page=0,
+        as this is considered in canvas space.
+
+        Args:
+            page_number (int):
+
+        Returns: Rect
+        """
+        paper_origin = self._paper_origin_in_canvas_space(page_number)
+        return Rect(
+            paper_origin.x,
+            paper_origin.y,
+            self.paper.width,
+            self.paper.height
         )
 
     def render(self):

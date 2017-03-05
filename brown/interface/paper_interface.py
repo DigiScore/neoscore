@@ -10,6 +10,10 @@ class PaperInterface(QPageLayout):
     def __init__(self, paper):
         """Initialize a QPageLayout from a Paper object
 
+        Margins are in the given `paper` are ignored so that,
+        when used for printing, this interface allows printing
+        over the page margins.
+
         Args:
             paper (Paper):
         """
@@ -24,10 +28,6 @@ class PaperInterface(QPageLayout):
                 ),
             ),
             QPageLayout.Portrait,
-            QMarginsF(
-                unit_to_qt_float(paper.margin_left) * ratio,
-                unit_to_qt_float(paper.margin_top) * ratio,
-                unit_to_qt_float(paper.margin_right) * ratio,
-                unit_to_qt_float(paper.margin_bottom) * ratio,
-            )
+            # Ignore margins - see class docstring
+            QMarginsF(0, 0, 0, 0)
         )

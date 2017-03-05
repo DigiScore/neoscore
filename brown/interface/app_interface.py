@@ -57,10 +57,18 @@ class AppInterface:
         painter = QtGui.QPainter()
         painter.begin(printer)
         # Scaling ratio for Qt point 72dpi -> config.PRINT_DPI
+        ratio = (config.PRINT_DPI / 72)
+        target_rect_unscaled = printer.paperRect(QPrinter.Point)
+        target_rect_scaled = QtCore.QRectF(
+            target_rect_unscaled.x() * ratio,
+            target_rect_unscaled.y() * ratio,
+            target_rect_unscaled.width() * ratio,
+            target_rect_unscaled.height() * ratio,
+        )
         for page_number in pages:
             source_rect = rect_to_qt_rect_f(
-                self.document.page_bounding_rect(page_number))
-            self.scene.render(painter, source=source_rect)
+                self.document.paper_bounding_rect(page_number))
+            self.scene.render(painter, target=target_rect_scaled, source=source_rect)
             printer.newPage()
         painter.end()
 
