@@ -88,3 +88,45 @@ class TestGraphicObject(unittest.TestCase):
         assert(root not in descendants_set)
         # Assert descendants content
         assert({child_1, child_2, subchild_1, subchild_2} == descendants_set)
+
+    def test_all_descendants_with_class_or_subclass(self):
+        # Use two new mock classes for type filter testing
+        class MockDifferentClass1(MockGraphicObject):
+            pass
+        class MockDifferentClass2(MockDifferentClass1):
+            pass
+        root = MockGraphicObject((0, 0))
+        child_1 = MockGraphicObject((0, 0), parent=root)
+        child_2 = MockDifferentClass1((0, 0), parent=root)
+        subchild_1 = MockDifferentClass2((0, 0), parent=child_2)
+        subchild_2 = MockDifferentClass2((0, 0), parent=child_2)
+        descendants = list(root.all_descendants_with_class_or_subclass(
+            MockDifferentClass1))
+        descendants_set = set(descendants)
+        # Assert no duplicates were yielded
+        assert(len(descendants) == len(descendants_set))
+        # Assert root itself was not in the descendants list
+        assert(root not in descendants_set)
+        # Assert descendants content
+        assert({child_2, subchild_1, subchild_2} == descendants_set)
+
+    def test_all_descendants_with_exact_class(self):
+        # Use two new mock classes for type filter testing
+        class MockDifferentClass1(MockGraphicObject):
+            pass
+        class MockDifferentClass2(MockDifferentClass1):
+            pass
+        root = MockGraphicObject((0, 0))
+        child_1 = MockGraphicObject((0, 0), parent=root)
+        child_2 = MockDifferentClass1((0, 0), parent=root)
+        subchild_1 = MockDifferentClass2((0, 0), parent=child_2)
+        subchild_2 = MockDifferentClass2((0, 0), parent=child_2)
+        descendants = list(root.all_descendants_with_exact_class(
+            MockDifferentClass1))
+        descendants_set = set(descendants)
+        # Assert no duplicates were yielded
+        assert(len(descendants) == len(descendants_set))
+        # Assert root itself was not in the descendants list
+        assert(root not in descendants_set)
+        # Assert descendants content
+        assert({child_2} == descendants_set)

@@ -203,6 +203,30 @@ class GraphicObject(ABC):
         for child in self.children:
             child.render()
 
+    def all_descendants_with_class_or_subclass(self, graphic_object_class):
+        """Yield all child descendants with a given class or its subclasses.
+
+        Args: graphic_object_class (type): The type to search for.
+            This should be a subclass of GraphicObject.
+
+        Yields: GraphicObject
+        """
+        for descendant in self.all_descendants:
+            if isinstance(descendant, graphic_object_class):
+                yield descendant
+
+    def all_descendants_with_exact_class(self, graphic_object_class):
+        """Yield all child descendants with a given class.
+
+        Args: graphic_object_class (type): The type to search for.
+            This should be a subclass of GraphicObject.
+
+        Yields: GraphicObject
+        """
+        for descendant in self.all_descendants:
+            if type(descendant) == graphic_object_class:
+                yield descendant
+
     ######## PRIVATE METHODS ########
 
     def _register_child(self, child):
