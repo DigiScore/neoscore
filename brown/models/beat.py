@@ -247,15 +247,19 @@ class Beat(Unit):
     def __eq__(self, other):
         """Two beats are equivalent if their numerators and denominators are."""
         if not isinstance(other, type(self)):
-            return False
+            return super().__eq__(other)
         return (self.numerator == other.numerator and
                 self.denominator == other.denominator)
 
     def __gt__(self, other):
         """Beats are compared by their reduced fraction representations."""
+        if not isinstance(other, type(self)):
+            return super().__gt__(other)
         return self.collapsed_fraction > other.collapsed_fraction
 
     def __ge__(self, other):
+        if not isinstance(other, type(self)):
+            return super().__ge__(other)
         return self > other or self.collapsed_fraction == other.collapsed_fraction
 
     ######## PRIVATE METHODS ########
