@@ -157,15 +157,12 @@ class Staff(Path):
             Clef: The active clef at `pos_x`
             None: If no clef is active at `pos_x`
         """
-        # TODO: Implement a more efficient way to quickly look up
-        #       contents by type. This also will fail for clefs whose
-        #       direct parent is not the Staff
-        if self.contents:
-            return max((item for item in self.contents
-                        if isinstance(item, Clef) and item.x <= pos_x),
-                       key=lambda item: item.x)
-        else:
-            return None
+        return max(
+            (clef for clef in self.all_descendants_with_class_or_subclass(Clef)
+             if clef.pos_in_staff.x <= pos_x),
+            key=lambda clef: clef.pos_in_staff.x,
+            default=None
+        )
 
     def active_transposition_at(self, pos_x):
         """Find and return the active transposition at a given x position.
@@ -187,11 +184,10 @@ class Staff(Path):
               to be discovered. This pattern should be extended to the
               rest of Staff as well.
         """
-        for item in self.all_descendants:
-            if isinstance(item, OctaveLine):
-                line_pos = self.frame.map_between_items_in_frame(self, item).x
-                if line_pos <= pos_x <= line_pos + item.length:
-                    return item.transposition
+        for item in self.all_descendants_with_class_or_subclass(OctaveLine):
+            line_pos = self.frame.map_between_items_in_frame(self, item).x
+            if line_pos <= pos_x <= line_pos + item.length:
+                return item.transposition
         return None
 
     def middle_c_at(self, position_x):
