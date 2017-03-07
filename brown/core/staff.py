@@ -51,7 +51,6 @@ class Staff(Path):
             self.line_to(width, y_offset)
 
         # Create first measure with given time signature duration
-        self._contents = Container()
         if default_time_signature_duration:
             self.default_time_signature_duration = self.beat(
                 default_time_signature_duration)
@@ -77,11 +76,6 @@ class Staff(Path):
         This property is read-only. TODO: Low priority: implement setter?
         """
         return self._line_count
-
-    @property
-    def contents(self):
-        """Container[GraphicObject]: The collection of objects in the staff"""
-        return self._contents
 
     @property
     def top_line_y(self):
@@ -112,8 +106,9 @@ class Staff(Path):
 
         Returns: None
         """
-        pos_x = self.beat(*time)
-        self.contents.append(Clef(self, pos_x, clef_type))
+        # Clef initializer registers the
+        # new anonymous object in self.children
+        Clef(self, self.beat(*time), clef_type)
 
     def add_time_signature(self, measure_number, duration):
         """Add a time signature.
@@ -130,9 +125,11 @@ class Staff(Path):
 
         Returns: None
         """
-        pos_x = self.beat(measure_number, 1)
-        duration = self.beat(*duration)
-        self.contents.append(TimeSignature(pos_x, duration, self))
+        # TimeSignature initializer registers the
+        # new anonymous object in self.children
+        TimeSignature(self.beat(measure_number, 1),
+                      self.beat(*duration),
+                      self)
 
     def add_chordrest(self, time, pitches, duration):
         """
@@ -141,10 +138,9 @@ class Staff(Path):
             pitches (list[str]):
             duration (Beat tuple):
         """
-        # See notes in self.add_clef about the hacks used here
-        pos_x = self.beat(*time)
-        duration = self.beat(*duration)
-        self.contents.append(ChordRest(pos_x, self, pitches, duration))
+        # ChordRest initializer registers the
+        # new anonymous object in self.children
+        ChordRest(self.beat(*time), self, pitches, self.beat(*duration))
 
     # Other methods -----------------------------------------------------------
 
@@ -167,9 +163,10 @@ class Staff(Path):
     def active_transposition_at(self, pos_x):
         """Find and return the active transposition at a given x position.
 
-        The current implementation simply searches through the staff contents
-        for any OctaveLines which overlap with pos_x, and returns the
-        transposition of the first found, and None if none are.
+        The current implementation simply searches through the staff
+        descendants for any OctaveLines which overlap with pos_x,
+        and returns the transposition of the first found,
+        and None if none are.
 
         Args:
             pos_x (Unit): An x-axis position on the staff
@@ -177,12 +174,6 @@ class Staff(Path):
         Returns:
             Transposition: The active transposition at `pos_x`
             None: If no transposition was found.
-
-        NOTE: This uses a different pattern for searching descendants,
-              using the new GraphicObject.all_descendants property,
-              allowing OctaveLines whose direct parent is not the staff
-              to be discovered. This pattern should be extended to the
-              rest of Staff as well.
         """
         for item in self.all_descendants_with_class_or_subclass(OctaveLine):
             line_pos = self.frame.map_between_items_in_frame(self, item).x
