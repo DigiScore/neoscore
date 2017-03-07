@@ -1,4 +1,5 @@
 from brown.utils.point import Point
+from brown.core.graphic_object import GraphicObject
 
 
 class NoAncestorStaffError(Exception):
@@ -36,6 +37,18 @@ class StaffObject:
         """Staff: The staff associated with this object"""
         return self._staff
 
+    @property
+    def pos_in_staff(self):
+        """Point: The position of this object relative to the staff.
+
+        This position is in non-flowed space.
+
+        # TODO: Definitely cache me when property caching is implemented
+        """
+        if self.frame:
+            return self.frame.map_between_items_in_frame(self.staff, self)
+        return GraphicObject.map_between_items(self.staff, self)
+
     ######## PRIVATE METHODS ########
 
     @staticmethod
@@ -55,18 +68,3 @@ class StaffObject:
                 return current
             else:
                 current = current.parent
-
-    ######## PUBLIC METHODS ########
-
-    def map_to_staff_unflowed(self):
-        """Map to the position in the unflowed staff.
-
-        Unflowed meaning the position along the total staff length
-        without line- or page-breaks.
-        """
-        delta = Point(type(self.x)(0), type(self.y)(0))
-        current = self
-        while current != self.staff:
-            delta += current.pos
-            current = current.parent
-        return delta

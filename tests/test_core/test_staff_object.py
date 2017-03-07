@@ -1,13 +1,13 @@
 import unittest
 
-from mock_staff_object import MockStaffObject
-
 from brown.core import brown
 from brown.core.flowable_frame import FlowableFrame
 from brown.core.paper import Paper
 from brown.core.staff import Staff
 from brown.utils.point import Point
 from brown.utils.units import Mm
+
+from tests.mocks.mock_staff_object import MockStaffObject
 
 
 class TestStaffObject(unittest.TestCase):
@@ -32,11 +32,13 @@ class TestStaffObject(unittest.TestCase):
         # TODO: Implement this test once this functionality is locked down
         pass
 
-    def test_map_to_staff_unflowed(self):
+    def test_pos_in_staff(self):
         test_object = MockStaffObject((Mm(5000), Mm(0)), self.staff)
-        assert(test_object.map_to_staff_unflowed() == test_object.pos)
+        assert(test_object.pos_in_staff == test_object.pos)
 
-    def test_find_staff_with_indirect_ancestor_staff(self):
+    def test_pos_in_staff_with_indirect_ancestor_staff(self):
         parent_object = MockStaffObject((Mm(1), Mm(2)), self.staff)
         test_object = MockStaffObject((Mm(10), Mm(1)), parent_object)
-        assert(test_object.map_to_staff_unflowed() == Point(Mm(11), Mm(3)))
+        pos_in_staff = test_object.pos_in_staff.to_unit(Mm)
+        self.assertAlmostEqual(pos_in_staff.x.value, 11)
+        self.assertAlmostEqual(pos_in_staff.y.value, 3)
