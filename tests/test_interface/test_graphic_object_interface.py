@@ -3,6 +3,7 @@ import unittest
 from PyQt5.QtCore import QPointF
 
 from brown.core import brown
+from brown.core.fill_pattern import FillPattern
 from brown.interface.graphic_object_interface import GraphicObjectInterface
 from brown.interface.pen_interface import PenInterface
 from brown.interface.brush_interface import BrushInterface
@@ -93,7 +94,7 @@ class TestGraphicObjectInterface(unittest.TestCase):
         assert(grob._qt_object.pen() == grob.pen._qt_object)
 
     def test_brush_after_init(self):
-        brush = BrushInterface(Color('#eeeeee'))
+        brush = BrushInterface(Color('#eeeeee'), FillPattern.SOLID_COLOR)
         grob = MockGraphicObjectInterface((5, 6), brush=brush)
         assert(grob.brush == grob._brush)
         assert(grob.brush == brush)
@@ -101,6 +102,6 @@ class TestGraphicObjectInterface(unittest.TestCase):
 
     def test_brush_setter_changes_qt_object(self):
         grob = MockGraphicObjectInterface((5, 6), brush=None)
-        brush = BrushInterface(Color('#eeeeee'))
+        brush = BrushInterface(Color('#eeeeee'), FillPattern.SOLID_COLOR)
         grob.brush = brush
         assert(grob._qt_object.brush() == grob.brush._qt_object)

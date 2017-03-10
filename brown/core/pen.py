@@ -13,12 +13,15 @@ class Pen:
 
     _interface_class = PenInterface
 
-    def __init__(self, color='#000000', thickness=None, pattern=None):
+    def __init__(self,
+                 color='#000000',
+                 thickness=None,
+                 pattern=StrokePattern.SOLID):
         """
         Args:
             color (Color or args for Color): The stroke color
             thickness (Unit): The stroke thickness
-            pattern (StrokePattern or int enum value): The stroke pattern.
+            pattern (StrokePattern): The stroke pattern.
                 Defaults to a solid line.
         """
         if isinstance(color, Color):
@@ -60,13 +63,9 @@ class Pen:
 
     @property
     def pattern(self):
-        """StrokePattern: The stroke pattern.
-
-        If set to None, the value defaults to `StrokePattern.SOLID`.
-        """
+        """StrokePattern: The stroke pattern."""
         return self._pattern
 
     @pattern.setter
     def pattern(self, value):
-        self._pattern = (StrokePattern(value) if value is not None
-                         else StrokePattern.SOLID)
+        self._pattern = value

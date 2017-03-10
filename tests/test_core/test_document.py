@@ -6,7 +6,7 @@ from brown.core.paper import Paper
 from brown.utils.point import Point
 from brown.utils.units import Mm
 
-from mock_graphic_object import MockGraphicObject
+from tests.mocks.mock_graphic_object import MockGraphicObject
 
 
 class TestDocument(unittest.TestCase):

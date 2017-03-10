@@ -6,7 +6,7 @@ from brown.core.text import Text
 from brown.config import config
 from brown.core.font import Font
 
-from mock_graphic_object import MockGraphicObject
+from tests.mocks.mock_graphic_object import MockGraphicObject
 
 
 class TestText(unittest.TestCase):

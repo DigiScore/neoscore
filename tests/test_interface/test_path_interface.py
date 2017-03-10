@@ -4,6 +4,7 @@ from brown.core import brown
 from brown.utils.point import Point
 from brown.utils.path_element_type import PathElementType
 from brown.utils.color import Color
+from brown.core.fill_pattern import FillPattern
 from brown.core.stroke_pattern import StrokePattern
 from brown.interface.path_interface import PathInterface
 from brown.interface.pen_interface import PenInterface
@@ -17,7 +18,7 @@ class TestPathInterface(unittest.TestCase):
 
     def test_init(self):
         test_pen = PenInterface(Color('#eeeeee'), 0, StrokePattern(1))
-        test_brush = BrushInterface(Color('#dddddd'))
+        test_brush = BrushInterface(Color('#dddddd'), FillPattern.SOLID_COLOR)
         test_path = PathInterface(Point(5, 6), test_pen, test_brush)
         assert(test_path.brush == test_brush)
         assert(test_path._qt_object.brush() == test_brush._qt_object)

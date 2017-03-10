@@ -2,6 +2,7 @@ from abc import ABC
 
 from brown.config import config
 from brown.core import brown
+from brown.core.fill_pattern import FillPattern
 from brown.interface.brush_interface import BrushInterface
 from brown.interface.pen_interface import PenInterface
 from brown.interface.qt_to_util import point_to_qt_point_f
@@ -97,7 +98,13 @@ class GraphicObjectInterface(ABC):
 
     @property
     def brush(self):
-        """BrushInterface: The brush to fill shapes with"""
+        """BrushInterface: The brush to fill shapes with.
+
+        As a convenience, this may be set with a hex color string
+        for a solid color brush of that color. For brushes using
+        alpha channels and non-solid-color fill patterns, a fully
+        initialized BrushInterface must be passed to this.
+        """
         return self._brush
 
     @brush.setter
@@ -110,7 +117,8 @@ class GraphicObjectInterface(ABC):
             else:
                 raise TypeError
         else:
-            value = BrushInterface(Color(*config.DEFAULT_BRUSH_COLOR))
+            value = BrushInterface(Color(*config.DEFAULT_BRUSH_COLOR),
+                                   FillPattern.SOLID_COLOR)
         self._brush = value
         self._qt_object.setBrush(self._brush._qt_object)
 

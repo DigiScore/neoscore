@@ -8,7 +8,7 @@ from brown.utils.path_element_type import PathElementType
 from brown.utils.point import Point
 from brown.core.pen import Pen
 from brown.core.brush import Brush
-from mock_graphic_object import MockGraphicObject
+from tests.mocks.mock_graphic_object import MockGraphicObject
 
 
 class TestPath(unittest.TestCase):

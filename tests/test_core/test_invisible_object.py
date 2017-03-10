@@ -3,7 +3,7 @@ import unittest
 from brown.core import brown
 from brown.core.invisible_object import InvisibleObject
 
-from mock_graphic_object import MockGraphicObject
+from tests.mocks.mock_graphic_object import MockGraphicObject
 
 
 class TestInvisibleObject(unittest.TestCase):
