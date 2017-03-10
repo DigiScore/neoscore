@@ -6,7 +6,7 @@ from brown.core.path import Path
 from brown.core.pen import Pen
 from brown.core.staff_object import StaffObject
 from brown.utils.point import Point
-from brown.utils.stroke_pattern import StrokePattern
+from brown.core.stroke_pattern import StrokePattern
 from brown.utils.units import GraphicUnit
 from brown.models.transposition import Transposition
 

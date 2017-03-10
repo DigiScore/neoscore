@@ -1,6 +1,6 @@
 from PyQt5 import QtGui
 
-from brown.utils.stroke_pattern import StrokePattern
+from brown.core.stroke_pattern import StrokePattern
 from brown.utils.units import GraphicUnit
 
 

@@ -4,7 +4,7 @@ from brown.core import brown
 from brown.utils.point import Point
 from brown.utils.path_element_type import PathElementType
 from brown.utils.color import Color
-from brown.utils.stroke_pattern import StrokePattern
+from brown.core.stroke_pattern import StrokePattern
 from brown.interface.path_interface import PathInterface
 from brown.interface.pen_interface import PenInterface
 from brown.interface.brush_interface import BrushInterface

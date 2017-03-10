@@ -10,7 +10,7 @@ from brown.interface.qt_to_util import point_to_qt_point_f
 from brown.utils.point import Point
 from brown.utils.units import GraphicUnit
 from brown.utils.color import Color
-from brown.utils.stroke_pattern import StrokePattern
+from brown.core.stroke_pattern import StrokePattern
 
 from tests.mocks.mock_graphic_object_interface import MockGraphicObjectInterface
 

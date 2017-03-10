@@ -24,7 +24,7 @@ from brown.utils.anchored_point import AnchoredPoint
 from brown.utils.color import Color
 from brown.utils.point import Point
 from brown.utils.rect import Rect
-from brown.utils.stroke_pattern import StrokePattern
+from brown.core.stroke_pattern import StrokePattern
 from brown.utils.units import GraphicUnit, Mm, Inch
 
 from brown.primitives.accidental import Accidental
