@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+"""A development sandbox used for manually checking visual outputs."""
+
 import os
 
 from brown.common import *
@@ -20,20 +22,23 @@ lowest_staff = Staff((Mm(10), Mm(18)), Mm(2000), flow, Mm(1))
 
 barline = BarLine(Mm(30), [staff, lower_staff, lowest_staff])
 
-staff.add_clef((0, 4), 'treble')
-lower_staff.add_clef((0, 4), 'treble')
-staff.add_time_signature(0, (4, 4))
-octave_line = OctaveLine((Mm(20), staff.unit(0)), staff,
+upper_staff_clef = Clef(staff, Mm(0), 'treble')
+lower_staff_clef = Clef(staff, Mm(0), 'treble')
+upper_staff_time_signature = TimeSignature(Mm(0), Beat(4, 4), staff)
+
+octave_line = OctaveLine((Mm(20), staff.unit(-2)), staff,
                          Mm(1000),
                          indication='8vb')
-staff.add_chordrest((1, 4), ["a'", "bs"], (2, 4))
-staff.add_chordrest((4, 4), ["c''", "bf"], (2, 4))
-staff.add_chordrest((8, 4), ["b'", "bs"], (2, 4))
+
+
+ChordRest(Mm(10), staff, ["a'", "bs"], Beat(2, 4))
+ChordRest(Mm(40), staff, ["a'", "bs"], Beat(2, 4))
+ChordRest(Mm(60), staff, ["b'", "bs"], Beat(2, 4))
 
 font = Font('Cormorant Garamond', Mm(2), weight=100, italic=True)
 
 regular_text = Text((Mm(20), staff.unit(-1)),
-                          'piu mosso',
+                    'piu mosso',
                     font=font,
                     parent=staff)
 

@@ -6,7 +6,7 @@ from brown.core.flowable_frame import FlowableFrame
 from brown.core.staff import Staff
 from brown.primitives.slur import Slur
 
-from mock_staff_object import MockStaffObject
+from tests.mocks.mock_staff_object import MockStaffObject
 
 
 class TestSlur(unittest.TestCase):

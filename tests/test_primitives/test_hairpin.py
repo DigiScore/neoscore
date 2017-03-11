@@ -1,13 +1,13 @@
 import unittest
 
-from mock_staff_object import MockStaffObject
-
 from brown.core import brown
 from brown.core.flowable_frame import FlowableFrame
 from brown.core.staff import Staff
 from brown.primitives.hairpin import Hairpin
 from brown.utils.anchored_point import AnchoredPoint
 from brown.utils.units import Unit, Mm
+
+from tests.mocks.mock_staff_object import MockStaffObject
 
 
 class TestHairpin(unittest.TestCase):

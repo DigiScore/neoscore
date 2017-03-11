@@ -18,13 +18,15 @@ from brown.core.pen import Pen
 from brown.core.repeating_music_text_line import RepeatingMusicTextLine
 from brown.core.staff import Staff
 from brown.core.staff_object import StaffObject
+from brown.core.stroke_pattern import StrokePattern
 from brown.core.text import Text
+
+from brown.models.beat import Beat
 
 from brown.utils.anchored_point import AnchoredPoint
 from brown.utils.color import Color
 from brown.utils.point import Point
 from brown.utils.rect import Rect
-from brown.core.stroke_pattern import StrokePattern
 from brown.utils.units import GraphicUnit, Mm, Inch
 
 from brown.primitives.accidental import Accidental

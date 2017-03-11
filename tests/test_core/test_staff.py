@@ -6,6 +6,7 @@ from brown.core import brown
 from brown.core.flowable_frame import FlowableFrame
 from brown.core.paper import Paper
 from brown.core.staff import Staff, NoClefError
+from brown.primitives.clef import Clef
 from brown.primitives.octave_line import OctaveLine
 from brown.utils.point import Point
 from brown.utils.units import Mm
@@ -40,12 +41,12 @@ class TestStaff(unittest.TestCase):
 
     def test_active_clef_at_with_explicit_clefs(self):
         staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
-        staff.add_clef((0, 4), 'treble')
-        staff.add_clef((2, 4), 'bass')
+        Clef(staff, Mm(0), 'treble')
+        Clef(staff, Mm(10), 'bass')
         # Test between two clefs should have treble in effect
-        assert(staff.active_clef_at(staff.beat(1, 4)).clef_type == 'treble')
+        assert(staff.active_clef_at(Mm(1)).clef_type == 'treble')
         # Test after bass clef goes into effect
-        assert(staff.active_clef_at(staff.beat(3, 4)).clef_type == 'bass')
+        assert(staff.active_clef_at(Mm(11)).clef_type == 'bass')
 
     def test_active_clef_at_with_implicit_default_clef(self):
         staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
@@ -64,12 +65,12 @@ class TestStaff(unittest.TestCase):
 
     def test_middle_c_at_with_explicit_clefs(self):
         staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
-        staff.add_clef((0, 4), 'treble')
-        staff.add_clef((2, 4), 'bass')
+        Clef(staff, Mm(0), 'treble')
+        Clef(staff, Mm(10), 'bass')
         # Test between two clefs should be in treble mode
-        assert(staff.middle_c_at(staff.beat(1, 4)) == staff.unit(5))
+        assert(staff.middle_c_at(Mm(1)) == staff.unit(5))
         # Test after bass clef goes into effect
-        assert(staff.middle_c_at(staff.beat(3, 4)) == staff.unit(-1))
+        assert(staff.middle_c_at(Mm(11)) == staff.unit(-1))
 
     def test_middle_c_at_with_implicit_default_clef(self):
         staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
@@ -78,7 +79,7 @@ class TestStaff(unittest.TestCase):
 
     def test_middle_c_at_with_active_octave_line(self):
         staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
-        staff.add_clef((0, 4), 'treble')
+        Clef(staff, Mm(0), 'treble')
         octave_line = OctaveLine((Mm(20), Mm(0)), staff, Mm(80),
                                  indication='8va')
         # Before octave_line goes into effect

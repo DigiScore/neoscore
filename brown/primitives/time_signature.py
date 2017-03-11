@@ -23,7 +23,7 @@ class TimeSignature(ObjectGroup, StaffObject):
         Args:
             position_x (StaffUnit): The x position relative to the
                 parent staff
-            duration (Duration): The length of a measure in this
+            duration (Beat): The length of a measure in this
                 time signature. The numerator and denominators
                 of this duration are used literally as the numbers
                 in the rendered representation of the signature.

@@ -40,7 +40,6 @@ class Staff(Path):
         self._width = width
         self.unit = self._make_unit_class(staff_unit if staff_unit
                                           else config.DEFAULT_STAFF_UNIT)
-        self.beat = Beat.make_concrete_beat(self.unit(40))
         if music_font is None:
             self.music_font = MusicFont(config.DEFAULT_MUSIC_FONT_NAME,
                                         self.unit)
@@ -52,10 +51,10 @@ class Staff(Path):
 
         # Create first measure with given time signature duration
         if default_time_signature_duration:
-            self.default_time_signature_duration = self.beat(
+            self.default_time_signature_duration = Beat(
                 default_time_signature_duration)
         else:
-            self.default_time_signature_duration = self.beat(4, 4)
+            self.default_time_signature_duration = Beat(4, 4)
 
     ######## PUBLIC PROPERTIES ########
 
@@ -93,54 +92,6 @@ class Staff(Path):
         return self.unit((self.line_count - 1))
 
     ######## PUBLIC METHODS ########
-
-    # Object adder methods ----------------------------------------------------
-
-    def add_clef(self, time, clef_type):
-        """Add a clef.
-
-        Args:
-            time (Beat tuple):
-            clef_type (str): One of: 'treble', 'bass', '8vb bass',
-                'tenor', or 'alto'
-
-        Returns: None
-        """
-        # Clef initializer registers the
-        # new anonymous object in self.children
-        Clef(self, self.beat(*time), clef_type)
-
-    def add_time_signature(self, measure_number, duration):
-        """Add a time signature.
-
-        Args:
-            measure_number (int): The bar number
-            duration (Beat tuple): The length of a measure in this
-                time signature. The numerator and denominators
-                of this duration are used literally as the numbers
-                in the rendered representation of the signature.
-                While a 6/8 measure will take the same amount of time
-                as a 3/4 measure, the representations (and note groupings)
-                are different.
-
-        Returns: None
-        """
-        # TimeSignature initializer registers the
-        # new anonymous object in self.children
-        TimeSignature(self.beat(measure_number, 1),
-                      self.beat(*duration),
-                      self)
-
-    def add_chordrest(self, time, pitches, duration):
-        """
-        Args:
-            time (Beat tuple):
-            pitches (list[str]):
-            duration (Beat tuple):
-        """
-        # ChordRest initializer registers the
-        # new anonymous object in self.children
-        ChordRest(self.beat(*time), self, pitches, self.beat(*duration))
 
     # Other methods -----------------------------------------------------------
 
