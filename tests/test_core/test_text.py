@@ -3,7 +3,7 @@ import unittest
 
 from brown.core import brown
 from brown.core.text import Text
-from brown.config import config
+from brown import config
 from brown.core.font import Font
 
 from tests.mocks.mock_graphic_object import MockGraphicObject

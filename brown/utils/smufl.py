@@ -1,7 +1,7 @@
 import json
 import os
 
-from brown.config import config
+from brown import config
 
 # Load metadata into dictionaries
 

@@ -1,4 +1,4 @@
-from brown.config import config
+from brown import config
 from brown.core.music_font import MusicFont
 from brown.core.path import Path
 from brown.models.beat import Beat

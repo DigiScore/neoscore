@@ -1,7 +1,7 @@
 import unittest
 
 from brown.core import brown
-from brown.config import config
+from brown import config
 from brown.core.pen import Pen
 from brown.utils.color import Color
 from brown.utils.units import Unit

@@ -1,4 +1,4 @@
-from brown.config import config
+from brown import config
 
 from brown.core import brown
 from brown.core.brush import Brush

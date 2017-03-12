@@ -4,7 +4,7 @@ import unittest
 import pytest
 
 from brown.core import brown
-from brown.config import config
+from brown import config
 from brown.core.font import Font
 from brown.core.text import Text
 from brown.utils.anchored_point import AnchoredPoint

@@ -1,6 +1,6 @@
 from abc import ABC
 
-from brown.config import config
+from brown import config
 from brown.core import brown
 from brown.core.fill_pattern import FillPattern
 from brown.interface.brush_interface import BrushInterface

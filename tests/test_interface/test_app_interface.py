@@ -6,7 +6,7 @@ from PyQt5 import QtGui
 import pytest
 
 from brown.interface.app_interface import AppInterface, FontRegistrationError
-from brown.config import config
+from brown import config
 
 
 @pytest.mark.skip

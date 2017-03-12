@@ -4,7 +4,7 @@ import os
 import pytest
 from PyQt5 import QtGui
 
-from brown.config import config
+from brown import config
 from brown.core import brown
 from brown.interface.font_interface import FontInterface
 from brown.utils.units import Unit

@@ -1,4 +1,4 @@
-from brown.config import config
+from brown import config
 from brown.interface.pen_interface import PenInterface
 from brown.utils.color import Color
 from brown.core.stroke_pattern import StrokePattern

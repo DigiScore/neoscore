@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from brown.config import config
+from brown import config
 from brown.core import brown
 from brown.core.music_font import MusicFont
 from brown.core.staff import Staff

@@ -1,3 +1,6 @@
+"""Common configuration values and default settings."""
+
+
 import os
 
 from brown.utils.units import Mm, Inch, GraphicUnit
@@ -10,7 +13,7 @@ class InvalidConfigError(Exception):
 
 ######## Constants that really shouldn't be changed ########
 
-BROWN_ROOT_DIR = os.path.join(os.path.dirname(__file__), '..')
+BROWN_ROOT_DIR = os.path.join(os.path.dirname(__file__))
 RESOURCES_DIR = os.path.join(BROWN_ROOT_DIR, 'resources')
 
 ######## Defaults ##########################################

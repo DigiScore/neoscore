@@ -3,7 +3,7 @@ import unittest
 
 from tests.mocks.mock_graphic_object import MockGraphicObject
 
-from brown.config import config
+from brown import config
 from brown.core import brown
 from brown.core.music_char import MusicChar
 from brown.core.music_font import MusicFont

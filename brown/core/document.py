@@ -1,4 +1,4 @@
-from brown.config import config
+from brown import config
 from brown.core.paper import Paper
 from brown.utils.point import Point
 from brown.utils.rect import Rect

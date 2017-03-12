@@ -1,6 +1,6 @@
 import json
 
-from brown.config import config
+from brown import config
 from brown.core.document import Document
 from brown.core.font import Font
 from brown.interface.app_interface import AppInterface, FontRegistrationError
