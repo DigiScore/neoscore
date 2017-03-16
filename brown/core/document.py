@@ -13,6 +13,11 @@ class Document:
     """
 
     def __init__(self, paper=None):
+        """
+        Args:
+            paper (Paper): The paper to use in the document. If None,
+                this defaults to config.DEFAULT_PAPER_TYPE
+        """
         if paper is None:
             try:
                 self.paper = Paper.from_template(config.DEFAULT_PAPER_TYPE)
