@@ -1,10 +1,5 @@
-from brown.utils.point import Point
+from brown.utils.exceptions import NoAncestorStaffError
 from brown.core.graphic_object import GraphicObject
-
-
-class NoAncestorStaffError(Exception):
-    """Exception raised when a StaffObject does not have an ancestor Staff"""
-    pass
 
 
 class StaffObject:

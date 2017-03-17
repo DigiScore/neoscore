@@ -1,14 +1,8 @@
 """Common configuration values and default settings."""
 
-
 import os
 
 from brown.utils.units import Mm, Inch, GraphicUnit
-
-
-class InvalidConfigError(Exception):
-    """Exception raised when a configuration is set to something invalid."""
-    pass
 
 
 ######## Constants that really shouldn't be changed ########

@@ -2,17 +2,10 @@ from brown import config
 from brown.core.music_font import MusicFont
 from brown.core.path import Path
 from brown.models.beat import Beat
-from brown.models.container import Container
-from brown.primitives.chordrest import ChordRest
 from brown.primitives.clef import Clef
-from brown.primitives.time_signature import TimeSignature
 from brown.primitives.octave_line import OctaveLine
+from brown.utils.exceptions import NoClefError
 from brown.utils.units import GraphicUnit, Unit
-
-
-class NoClefError(Exception):
-    """Exception raised when no clef is present in a Staff where needed"""
-    pass
 
 
 class Staff(Path):

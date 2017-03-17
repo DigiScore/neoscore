@@ -1,17 +1,5 @@
 from brown.core.music_text import MusicText
-
-
-class DynamicStringError(Exception):
-
-    """Exception raised when a dynamic string cannot be parsed."""
-
-    def __init__(self, string, character):
-        self.message = (
-            'Cannot parse dynamic string "{}" - '
-            'character "{}" unknown. '
-            'Valid chars are: {}'
-        ).format(string, character, list(Dynamic._dynamic_letter_map.keys()))
-        super().__init__(self.message)
+from brown.utils.exceptions import DynamicStringError
 
 
 class Dynamic(MusicText):

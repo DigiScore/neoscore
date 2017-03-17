@@ -5,22 +5,7 @@ from PyQt5.QtPrintSupport import QPrinter
 
 from brown import config
 from brown.interface.qt_to_util import rect_to_qt_rect_f
-
-
-class FontRegistrationError(Exception):
-    """Exception raised when a font is loaded from disk unsuccessfully."""
-
-    def __init__(self, font_file_path):
-        """
-        Args:
-            font_file_path (str): The path to the font file which could
-                not be registered.
-        """
-        self.message = "Could not register font from file '{}'.".format(
-            font_file_path)
-        if not os.path.isfile(font_file_path):
-            self.message += " That path doesn't seem to point to a file."
-        super().__init__(self.message)
+from brown.utils.exceptions import FontRegistrationError
 
 
 class AppInterface:

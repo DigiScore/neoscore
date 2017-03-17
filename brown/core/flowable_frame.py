@@ -2,13 +2,9 @@ from brown.core import brown
 from brown.core.auto_new_line import AutoNewLine
 from brown.core.auto_new_page import AutoNewPage
 from brown.core.invisible_object import InvisibleObject
+from brown.utils.exceptions import OutOfBoundsError
 from brown.utils.point import Point
 from brown.utils.units import Mm, Unit
-
-
-class OutOfBoundsError(Exception):
-    """Exception raised when a point lies outside of a FlowableFrame"""
-    pass
 
 
 class FlowableFrame(InvisibleObject):

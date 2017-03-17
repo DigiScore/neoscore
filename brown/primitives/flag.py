@@ -1,14 +1,7 @@
 from brown.core.music_text import MusicText
+from brown.utils.exceptions import NoFlagNeededError
 from brown.utils.point import Point
 from brown.utils.units import Unit
-
-
-class NoFlagNeededError(Exception):
-    """Exception raised when a Flag is created with a non-flaggable duration"""
-
-    def __init__(self, duration):
-        self.message = ('Cannot create a flag for {}'.format(duration))
-        super().__init__(self.message)
 
 
 class Flag(MusicText):

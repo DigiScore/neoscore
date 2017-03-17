@@ -1,11 +1,7 @@
 import re
 
 from brown.models.virtual_accidental import VirtualAccidental
-
-
-class InvalidPitchDescriptionError(Exception):
-    """An exception raised when an invalid pitch specifier is used."""
-    pass
+from brown.utils.exceptions import InvalidPitchDescriptionError
 
 
 class Pitch:

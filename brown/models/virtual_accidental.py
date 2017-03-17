@@ -1,6 +1,4 @@
-class InvalidAccidentalError(Exception):
-    """Exception thrown when an invalid accidental descriptor is requested."""
-    pass
+from brown.utils.exceptions import InvalidAccidentalError
 
 
 class VirtualAccidental:

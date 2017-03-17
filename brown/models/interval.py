@@ -1,9 +1,6 @@
 import re
 
-
-class InvalidIntervalError(Exception):
-    """An exception raised when an invalid interval specifier is used."""
-    pass
+from brown.utils.exceptions import InvalidIntervalError
 
 
 class Interval:

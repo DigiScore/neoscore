@@ -5,13 +5,6 @@ from brown.utils.rect import Rect
 from brown.utils.units import GraphicUnit
 
 
-class UnknownFontFamilyError(Exception):
-    """
-    Exception raised when an invalid font name is passed to a FontInterface.
-    """
-    pass
-
-
 class FontInterface:
     def __init__(self, family_name, size, weight=1, italic=False):
         """

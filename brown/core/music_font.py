@@ -2,17 +2,9 @@ from brown.core import brown
 from brown.core.font import Font
 from brown.interface.font_interface import FontInterface
 from brown.utils import smufl
+from brown.utils.exceptions import (MusicFontMetadataNotFoundError,
+                                    MusicFontGlyphNotFoundError)
 from brown.utils.units import convert_all_to_unit
-
-
-class MusicFontMetadataNotFoundError(Exception):
-    """Exception raised when metadata for a music font can't be found."""
-    pass
-
-
-class MusicFontGlyphNotFoundError(Exception):
-    """Exception raised when a glyph cannot be found in a MusicFont"""
-    pass
 
 
 class MusicFont(Font):
