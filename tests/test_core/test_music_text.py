@@ -16,20 +16,17 @@ class TestMusicText(unittest.TestCase):
 
     def setUp(self):
         brown.setup()
-        font_file_path = os.path.join(
-            config.RESOURCES_DIR, 'fonts', 'Bravura.otf')
-        metadata_file_path = os.path.join(
-            config.RESOURCES_DIR, 'fonts', 'bravura_metadata.json')
-        self.font_id = brown.register_music_font(
-            font_file_path, metadata_file_path)
+        brown.register_music_font(config.DEFAULT_MUSIC_FONT_NAME,
+                                  config.DEFAULT_MUSIC_FONT_PATH,
+                                  config.DEFAULT_MUSIC_FONT_METADATA_PATH)
         self.staff = Staff((Mm(0), Mm(0)), Mm(100),
                            frame=None, staff_unit=Mm(1))
-        self.font = MusicFont('Bravura', self.staff.unit)
+        self.font = MusicFont(config.DEFAULT_MUSIC_FONT_NAME, self.staff.unit)
 
     def test_init(self):
         mock_parent = MockGraphicObject((10, 11), parent=self.staff)
         test_object = MusicText((5, 6),
-                                      'accidentalFlat',
+                                'accidentalFlat',
                                 mock_parent,
                                 self.font)
         assert(test_object.x == 5)

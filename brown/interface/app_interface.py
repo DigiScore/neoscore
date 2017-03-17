@@ -9,7 +9,18 @@ from brown.interface.qt_to_util import rect_to_qt_rect_f
 
 class FontRegistrationError(Exception):
     """Exception raised when a font is loaded from disk unsuccessfully."""
-    pass
+
+    def __init__(self, font_file_path):
+        """
+        Args:
+            font_file_path (str): The path to the font file which could
+                not be registered.
+        """
+        self.message = "Could not register font from file '{}'.".format(
+            font_file_path)
+        if not os.path.isfile(font_file_path):
+            self.message += " That path doesn't seem to point to a file."
+        super().__init__(self.message)
 
 
 class AppInterface:
@@ -87,13 +98,14 @@ class AppInterface:
                 Paths may be either absolute or relative to the package-level
                 `brown` directory. (One folder below the top)
 
-        Returns:
-            int: The id of the newly registered font
-            TODO: Investigate more if returning an ID is really
-                  the thing to do here...
+        Returns: None
+
+        Raises: FontRegistrationError: If the font could not be loaded.
+            Typically, this is because the given path does not lead to
+            a valid font file.
         """
         font_id = QtGui.QFontDatabase.addApplicationFont(font_file_path)
+        # Qt returns -1 if something went wrong.
         if font_id == -1:
-            raise FontRegistrationError(
-                'Font loaded from {} failed'.format(font_file_path))
-        return font_id
+            raise FontRegistrationError(font_file_path)
+        return

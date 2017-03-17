@@ -31,5 +31,5 @@ class TestText(unittest.TestCase):
     def test_default_init_values(self):
         # API default values canary
         test_object = Text((5, 6), 'testing')
-        assert(test_object.font == brown.text_font)
+        assert(test_object.font == brown.default_font)
         assert(test_object.parent == brown.document)
