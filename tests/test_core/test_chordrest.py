@@ -4,8 +4,8 @@ from brown.core import brown
 from brown.core.staff import Staff
 from brown.models.pitch import Pitch
 from brown.models.beat import Beat
-from brown.primitives.chordrest import ChordRest
-from brown.primitives.clef import Clef
+from brown.core.chordrest import ChordRest
+from brown.core.clef import Clef
 from brown.utils.point import Point
 from brown.utils.units import Mm
 

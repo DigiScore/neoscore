@@ -2,8 +2,8 @@ from brown import config
 from brown.core.music_font import MusicFont
 from brown.core.path import Path
 from brown.models.beat import Beat
-from brown.primitives.clef import Clef
-from brown.primitives.octave_line import OctaveLine
+from brown.core.clef import Clef
+from brown.core.octave_line import OctaveLine
 from brown.utils.exceptions import NoClefError
 from brown.utils.units import GraphicUnit, Unit
 

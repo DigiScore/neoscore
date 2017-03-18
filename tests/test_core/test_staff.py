@@ -6,8 +6,8 @@ from brown.core import brown
 from brown.core.flowable_frame import FlowableFrame
 from brown.core.paper import Paper
 from brown.core.staff import Staff, NoClefError
-from brown.primitives.clef import Clef
-from brown.primitives.octave_line import OctaveLine
+from brown.core.clef import Clef
+from brown.core.octave_line import OctaveLine
 from brown.utils.point import Point
 from brown.utils.units import Mm
 

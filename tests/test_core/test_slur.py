@@ -4,7 +4,7 @@ from brown.core import brown
 from brown.utils.units import Unit, Mm
 from brown.core.flowable_frame import FlowableFrame
 from brown.core.staff import Staff
-from brown.primitives.slur import Slur
+from brown.core.slur import Slur
 
 from tests.mocks.mock_staff_object import MockStaffObject
 

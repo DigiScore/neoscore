@@ -1,5 +1,5 @@
 from brown.models.container import Container
-from brown.primitives.time_signature import TimeSignature
+from brown.core.time_signature import TimeSignature
 
 
 class Measure(Container):

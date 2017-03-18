@@ -3,7 +3,7 @@ import unittest
 from brown.core import brown
 from brown.core.flowable_frame import FlowableFrame
 from brown.core.staff import Staff
-from brown.primitives.hairpin import Hairpin
+from brown.core.hairpin import Hairpin
 from brown.utils.anchored_point import AnchoredPoint
 from brown.utils.units import Unit, Mm
 
