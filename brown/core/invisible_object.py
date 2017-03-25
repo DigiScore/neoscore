@@ -1,5 +1,4 @@
 from brown.core.graphic_object import GraphicObject
-from brown.utils.units import Unit
 
 
 class InvisibleObject(GraphicObject):
@@ -15,7 +14,7 @@ class InvisibleObject(GraphicObject):
                 relative to the document.
             parent: The parent object or None
         """
-        super().__init__(pos, Unit(0), None, None, parent)
+        super().__init__(pos, parent=parent)
 
     def _render_complete(self, pos):
         pass

@@ -20,8 +20,8 @@ class TestHairpin(unittest.TestCase):
         self.right_parent = MockStaffObject((Unit(10), Unit(2)), self.staff)
 
     def test_find_hairpin_points_horizontal_same_parent(self):
-        cresc = Hairpin((Unit(0), Unit(0), 0, self.left_parent),
-                        (Unit(10), Unit(0), 0, self.left_parent),
+        cresc = Hairpin((Unit(0), Unit(0), self.left_parent),
+                        (Unit(10), Unit(0), self.left_parent),
                         1,
                         Unit(2))
         points = cresc._find_hairpin_points()
@@ -32,8 +32,8 @@ class TestHairpin(unittest.TestCase):
         assert(points[2] == AnchoredPoint(
             Unit(10), Unit(-1), parent=self.left_parent))
 
-        dim = Hairpin((Unit(0), Unit(0), 0, self.left_parent),
-                      (Unit(10), Unit(0), 0, self.left_parent),
+        dim = Hairpin((Unit(0), Unit(0), self.left_parent),
+                      (Unit(10), Unit(0), self.left_parent),
                       -1,
                       Unit(2))
         points = dim._find_hairpin_points()
@@ -45,8 +45,8 @@ class TestHairpin(unittest.TestCase):
             Unit(0), Unit(-1), parent=self.left_parent))
 
     def test_find_hairpin_points_horizontal_different_parent(self):
-        cresc = Hairpin((Unit(0), Unit(2), 0, self.left_parent),
-                        (Unit(1), Unit(0), 0, self.right_parent),
+        cresc = Hairpin((Unit(0), Unit(2), self.left_parent),
+                        (Unit(1), Unit(0), self.right_parent),
                         1,
                         Unit(2))
         points = cresc._find_hairpin_points()
@@ -57,8 +57,8 @@ class TestHairpin(unittest.TestCase):
         assert(points[2] == AnchoredPoint(
             Unit(1), Unit(-1), parent=self.right_parent))
 
-        dim = Hairpin((Unit(0), Unit(2), 0, self.left_parent),
-                      (Unit(1), Unit(0), 0, self.right_parent),
+        dim = Hairpin((Unit(0), Unit(2), self.left_parent),
+                      (Unit(1), Unit(0), self.right_parent),
                       -1,
                       Unit(2))
         points = dim._find_hairpin_points()
@@ -70,8 +70,8 @@ class TestHairpin(unittest.TestCase):
             Unit(0), Unit(1), parent=self.left_parent))
 
     def test_find_hairpin_points_vertical_same_parent(self):
-        cresc = Hairpin((Unit(0), Unit(0), 0, self.left_parent),
-                        (Unit(0), Unit(10), 0, self.left_parent),
+        cresc = Hairpin((Unit(0), Unit(0), self.left_parent),
+                        (Unit(0), Unit(10), self.left_parent),
                         1,
                         Unit(2))
         points = cresc._find_hairpin_points()
@@ -82,8 +82,8 @@ class TestHairpin(unittest.TestCase):
         assert(points[2] == AnchoredPoint(
             Unit(-1), Unit(10), parent=self.left_parent))
 
-        dim = Hairpin((Unit(0), Unit(0), 0, self.left_parent),
-                      (Unit(0), Unit(10), 0, self.left_parent),
+        dim = Hairpin((Unit(0), Unit(0), self.left_parent),
+                      (Unit(0), Unit(10), self.left_parent),
                       -1,
                       Unit(2))
         points = dim._find_hairpin_points()
@@ -98,8 +98,8 @@ class TestHairpin(unittest.TestCase):
         # For reference...
         # self.left_parent = MockStaffObject((Unit(0), Unit(0)), self.staff)
         # self.right_parent = MockStaffObject((Unit(10), Unit(2)), self.staff)
-        cresc = Hairpin((Unit(0), Unit(0), 0, self.left_parent),
-                        (Unit(-10), Unit(1), 0, self.right_parent),
+        cresc = Hairpin((Unit(0), Unit(0), self.left_parent),
+                        (Unit(-10), Unit(1), self.right_parent),
                         1,
                         Unit(2))
         points = cresc._find_hairpin_points()
@@ -110,8 +110,8 @@ class TestHairpin(unittest.TestCase):
         assert(points[2] == AnchoredPoint(
             Unit(-11), Unit(1), parent=self.right_parent))
 
-        dim = Hairpin((Unit(0), Unit(0), 0, self.left_parent),
-                      (Unit(-10), Unit(1), 0, self.right_parent),
+        dim = Hairpin((Unit(0), Unit(0), self.left_parent),
+                      (Unit(-10), Unit(1), self.right_parent),
                       -1,
                       Unit(2))
         points = dim._find_hairpin_points()
@@ -126,8 +126,8 @@ class TestHairpin(unittest.TestCase):
         # For reference...
         # self.left_parent = MockStaffObject((Unit(0), Unit(0)), self.staff)
         # self.right_parent = MockStaffObject((Unit(10), Unit(2)), self.staff)
-        cresc = Hairpin((Unit(0), Unit(0), 0, self.left_parent),
-                        (Unit(4), Unit(4), 0, self.left_parent),
+        cresc = Hairpin((Unit(0), Unit(0), self.left_parent),
+                        (Unit(4), Unit(4), self.left_parent),
                         1,
                         Unit(2))
         # Spanner line slope should be Unit(1)
@@ -139,8 +139,8 @@ class TestHairpin(unittest.TestCase):
         assert(points[1] == AnchoredPoint(
             Unit(0), Unit(0), parent=self.left_parent))
 
-        dim = Hairpin((Unit(0), Unit(0), 0, self.left_parent),
-                      (Unit(4), Unit(4), 0, self.left_parent),
+        dim = Hairpin((Unit(0), Unit(0), self.left_parent),
+                      (Unit(4), Unit(4), self.left_parent),
                       -1,
                       Unit(2))
         # Spanner line slope should be Unit(1)
@@ -156,8 +156,8 @@ class TestHairpin(unittest.TestCase):
         # For reference...
         # self.left_parent = MockStaffObject((Unit(0), Unit(0)), self.staff)
         # self.right_parent = MockStaffObject((Unit(10), Unit(2)), self.staff)
-        cresc = Hairpin((Unit(10), Unit(2), 0, self.left_parent),
-                        (Unit(4), Unit(4), 0, self.right_parent),
+        cresc = Hairpin((Unit(10), Unit(2), self.left_parent),
+                        (Unit(4), Unit(4), self.right_parent),
                         1,
                         Unit(2))
         # Spanner line slope should be Unit(1)
@@ -169,8 +169,8 @@ class TestHairpin(unittest.TestCase):
         assert(points[1] == AnchoredPoint(
             Unit(10), Unit(2), parent=self.left_parent))
 
-        dim = Hairpin((Unit(0), Unit(0), 0, self.left_parent),
-                      (Unit(-6), Unit(2), 0, self.right_parent),
+        dim = Hairpin((Unit(0), Unit(0), self.left_parent),
+                      (Unit(-6), Unit(2), self.right_parent),
                       -1,
                       Unit(2))
         # Spanner line slope should be Unit(1)

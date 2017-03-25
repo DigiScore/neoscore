@@ -23,5 +23,5 @@ class TestSlur(unittest.TestCase):
 
         TODO: Replace this with real tests
         """
-        slur = Slur((Mm(1), Mm(2), 0, self.left_parent),
-                    (Mm(3), Mm(4), 0, self.right_parent))
+        slur = Slur((Mm(1), Mm(2), self.left_parent),
+                    (Mm(3), Mm(4), self.right_parent))

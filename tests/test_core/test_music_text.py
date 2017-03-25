@@ -1,10 +1,9 @@
 import os
 import unittest
 
-from tests.mocks.mock_graphic_object import MockGraphicObject
-
 from brown import config
 from brown.core import brown
+from brown.core.invisible_object import InvisibleObject
 from brown.core.music_char import MusicChar
 from brown.core.music_font import MusicFont
 from brown.core.music_text import MusicText
@@ -24,7 +23,7 @@ class TestMusicText(unittest.TestCase):
         self.font = MusicFont(config.DEFAULT_MUSIC_FONT_NAME, self.staff.unit)
 
     def test_init(self):
-        mock_parent = MockGraphicObject((10, 11), parent=self.staff)
+        mock_parent = InvisibleObject((10, 11), parent=self.staff)
         test_object = MusicText((5, 6),
                                 'accidentalFlat',
                                 mock_parent,

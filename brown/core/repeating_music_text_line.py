@@ -37,12 +37,12 @@ class RepeatingMusicTextLine(MusicText, Spanner):
         # repetition of `text` is in order to calculate how many
         # repetitions are needed to cover the spanner.
         MusicText.__init__(self,
-                           (start.x, start.y, start.page),
+                           Point(start.x, start.y),
                            text,
                            start.parent,
                            font,
                            scale_factor)
-        Spanner.__init__(self, Point(stop.x, stop.y, stop.page), stop.parent)
+        Spanner.__init__(self, Point(stop.x, stop.y), stop.parent)
         self.repeating_music_chars = self.music_chars
         self.repeating_text = self.text
         repetitions = self._repetitions_needed

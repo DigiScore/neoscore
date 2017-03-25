@@ -10,18 +10,17 @@ class AnchoredPoint(Point):
     relative to the parent.
     """
 
-    __slots__ = ('_x', '_y', '_page', '_parent')
+    __slots__ = ('_x', '_y', '_parent')
 
-    def __init__(self, x, y, page=0, parent=None):
+    def __init__(self, x, y, parent=None):
         """
         Args:
             x (float or Unit):
             y (float or Unit):
             parent (GraphicObject or None): The object this point
                 is anchored to. If None, this object acts like a Point
-            page (int): The page number.
         """
-        super().__init__(x, y, page)
+        super().__init__(x, y)
         self._parent = parent
 
     ######## PUBLIC CLASS METHODS ########
@@ -35,12 +34,29 @@ class AnchoredPoint(Point):
 
         Returns: AnchoredPoint
         """
-        return cls(anchored_point.x,
-                   anchored_point.y,
-                   anchored_point.page,
-                   anchored_point.parent)
+        return cls(anchored_point.x, anchored_point.y, anchored_point.parent)
+
+    @classmethod
+    def from_point(cls, point, parent):
+        """Create an AnchoredPoint from an existing Point and a parent.
+
+        Args:
+            point (Point):
+            parent (GraphicObject):
+        """
+        return cls(point.x, point.y, parent)
 
     ######## SPECIAL METHODS ########
+
+    def __repr__(self):
+        return '{}({}, {}, {})'.format(
+            type(self).__name__,
+            self.x,
+            self.y,
+            self.parent)
+
+    def __hash__(self):
+        return hash(self.__repr__())
 
     def __eq__(self, other):
         """Two AnchoredPoints are equal if their attributes are all equal.
@@ -50,7 +66,6 @@ class AnchoredPoint(Point):
         if isinstance(other, type(self)):
             return (self.x == other.x and
                     self.y == other.y and
-                    self.page == other.page and
                     self.parent == other.parent)
         else:
             return False
@@ -60,15 +75,13 @@ class AnchoredPoint(Point):
 
         Returns: AnchoredPoint
         """
-        if not isinstance(other, type(self)):
-            raise TypeError('Cannot add "{}" and "{}"'.format(
-                type(self).__name__, type(other).__name__))
+        if type(other) != type(self):
+            raise TypeError
         elif self.parent != other.parent:
-            raise TypeError('Cannot add "{}"s with different parents'.format(
-                type(self).__name__))
+            raise AttributeError(
+                'Cannot add AnchoredPoints with different parents')
         return type(self)(self.x + other.x,
                           self.y + other.y,
-                          self.page + other.page,
                           self.parent)
 
     def __sub__(self, other):
@@ -76,40 +89,25 @@ class AnchoredPoint(Point):
 
         Returns: AnchoredPoint
         """
-        if not isinstance(other, type(self)):
-            raise TypeError('Cannot subtract "{}" and "{}"'.format(
-                type(self).__name__, type(other).__name__))
+        if type(other) != type(self):
+            raise TypeError
         elif self.parent != other.parent:
-            raise TypeError('Cannot subtract "{}"s with different parents'.format(
-                type(self).__name__))
+            raise AttributeError(
+                'Cannot subtract AnchoredPoints with different parents')
         return type(self)(self.x - other.x,
                           self.y - other.y,
-                          self.page - other.page,
                           self.parent)
 
     def __mul__(self, other):
         """`AnchoredPoint`s may be multiplied with scalars.
 
-        The page number of the resulting point will always
-        be the same as the original point.
-
         Returns: AnchoredPoint
         """
         if not isinstance(other, (Unit, int, float)):
-            raise TypeError('Cannot multiply "{}" and "{}"'.format(
-                type(self).__name__, type(other).__name__))
+            raise TypeError
         return type(self)(self.x * other,
                           self.y * other,
-                          self.page,
                           self.parent)
-
-    def __repr__(self):
-        return '{}({}, {}, {}, parent={})'.format(
-            type(self).__name__,
-            self.x,
-            self.y,
-            self.page,
-            self.parent)
 
     ######## PUBLIC PROPERTIES ########
 

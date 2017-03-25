@@ -1,5 +1,6 @@
 from brown import config
 from brown.core.paper import Paper
+from brown.core.page_supplier import PageSupplier
 from brown.utils.point import Point
 from brown.utils.rect import Rect
 from brown.utils.units import Mm, GraphicUnit
@@ -8,6 +9,12 @@ from brown.utils.units import Mm, GraphicUnit
 class Document:
 
     """The document root object.
+
+    This object should not be created directly by users - it is instantiated
+    by `brown.setup()`, which creates a global instance of this class which
+    can be then accessed as `brown.document`.
+
+    This object should be created by `brown.setup()`
 
     NOTE: Paper gutters are not yet implemented
     """
@@ -27,6 +34,7 @@ class Document:
                         config.DEFAULT_PAPER_TYPE))
         else:
             self.paper = paper
+        self._pages = PageSupplier(self)
         self._children = set()
 
     ######## PUBLIC PROPERTIES ########
@@ -39,6 +47,35 @@ class Document:
     @paper.setter
     def paper(self, value):
         self._paper = value
+
+    @property
+    def pages(self):
+        """PageSupplier: The `Page`s in the document.
+
+        Pages are created on-demand by accessing this property.
+
+        This property can be treated like a managed list:
+
+            >>> from brown.core import brown; brown.setup()
+            >>> len(brown.document.pages)             # No pages exist yet
+            0
+            >>> first_page = brown.document.pages[0]  # Get the first page
+            >>> len(brown.document.pages)             # One page now exists
+            1
+            >>> sixth_page = brown.document.pages[5]  # Get the sixth page
+            >>> len(brown.document.pages)             # 5 new pages are created
+            6
+
+            # Pages can be accessed by negative indexing too
+            >>> assert(first_page == brown.document.pages[-6])
+            >>> assert(sixth_page == brown.document.pages[-1])
+
+        For more information on this object, see `PageSupplier`.
+
+        This property (and the pages accessed through it)
+        should be treated as read-only.
+        """
+        return self._pages
 
     @property
     def children(self):
@@ -57,8 +94,8 @@ class Document:
 
         Warning: This is a computationally expensive calculation
         """
-        min_page, max_page = Document._min_max_pages(self.children)
-        # Be sure to include max page in the range() by adding 1
+        min_page, max_page = self._min_max_pages(self.children)
+        # Include the last page in range() by adding 1
         return range(min_page, max_page + 1)
 
     ######## PRIVATE PROPERTIES ########
@@ -66,12 +103,12 @@ class Document:
     @property
     def _page_display_gap(self):
         """float: The visual horizontal gap between pages, in pixels."""
+        # TODO: Move to config
         return Mm(150)
 
     ######## PRIVATE METHODS ########
 
-    @staticmethod
-    def _min_max_pages(graphic_objects):
+    def _min_max_pages(self, graphic_objects):
         """Find the min and max pages of an iterable of GraphicObjects
 
         Args:
@@ -82,17 +119,17 @@ class Document:
         min_page = float('inf')
         max_page = -float('inf')
         for current in graphic_objects:
-            current_page = Document.doc_pos_of(current).page
+            current_page_num = current.page_index
             if current.children:
-                child_min_max = Document._min_max_pages(current.children)
+                child_min_max = self._min_max_pages(current.children)
                 min_page = min(min_page,
-                               current_page,
+                               current_page_num,
                                child_min_max[0])
-                max_page = max(max_page, current_page, child_min_max[1])
+                max_page = max(max_page, current_page_num, child_min_max[1])
             else:
                 min_page = min(min_page,
-                               current_page)
-                max_page = max(max_page, current_page)
+                               current_page_num)
+                max_page = max(max_page, current_page_num)
         return min_page, max_page
 
     def _register_child(self, child):
@@ -115,7 +152,7 @@ class Document:
         """
         self.children.remove(child)
 
-    def _page_origin_in_canvas_space(self, page_number):
+    def _page_origin(self, page_number):
         """Find the origin point of a given page number.
 
         The origin is the top left corner of the live area, equivalent to
@@ -137,7 +174,7 @@ class Document:
         y_page_origin = self.paper.margin_top
         return Point(x_page_origin, y_page_origin)
 
-    def _paper_origin_in_canvas_space(self, page_number):
+    def _paper_origin(self, page_number):
         """Find the paper origin point of a given page number.
 
         This gives the position of the top left corner of the actual
@@ -153,28 +190,13 @@ class Document:
                 is considered relative to the document's origin.
         """
         return Point(
-            ((self.paper.width + self._page_display_gap)
-             * page_number),
+            (self.paper.width + self._page_display_gap) * page_number,
             GraphicUnit(0)
         )
 
-    def _map_to_canvas(self, pos):
-        """Find the global document position of a given point.
-
-        The resulting Point will have the page number of 0.
-
-        Args:
-            pos (Point):
-
-        Returns: Point:
-        """
-        page_origin = self._page_origin_in_canvas_space(pos.page)
-        return Point(page_origin.x + pos.x, page_origin.y + pos.y, 0)
-
     ######## PUBLIC METHODS ########
 
-    @classmethod
-    def doc_pos_of(cls, graphic_object):
+    def canvas_pos_of(self, graphic_object):
         """Find the paged document position of a GraphicObject.
 
         Args:
@@ -184,13 +206,13 @@ class Document:
         """
         pos = Point(GraphicUnit(0), GraphicUnit(0))
         current = graphic_object
-        while type(current) != cls:
+        while current != self:
             pos += current.pos
             current = current.parent
             if type(current).__name__ == 'FlowableFrame':
-                # If it turns out we are inside a flowable frame,
-                # short circuit and ask the frame where we are
-                return current._map_to_doc(pos)
+                # If the parent is a flowable frame,
+                # let it decide where this point goes.
+                return current._map_to_canvas(pos)
         return pos
 
     def page_bounding_rect(self, page_number):
@@ -207,7 +229,7 @@ class Document:
 
         Returns: Rect
         """
-        page_origin = self._page_origin_in_canvas_space(page_number)
+        page_origin = self._page_origin(page_number)
         return Rect(
             page_origin.x,
             page_origin.y,
@@ -229,7 +251,7 @@ class Document:
 
         Returns: Rect
         """
-        paper_origin = self._paper_origin_in_canvas_space(page_number)
+        paper_origin = self._paper_origin(page_number)
         return Rect(
             paper_origin.x,
             paper_origin.y,

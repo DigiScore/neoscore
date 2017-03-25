@@ -25,8 +25,8 @@ class TestRepeatingMusicTextLine(unittest.TestCase):
             scale_factor=2)._bounding_rect.width
 
     def test_repetition_count(self):
-        line = RepeatingMusicTextLine((Mm(1), Mm(2), 0, self.left_parent),
-                                      (Mm(3), Mm(0), 0, self.right_parent),
+        line = RepeatingMusicTextLine((Mm(1), Mm(2), self.left_parent),
+                                      (Mm(3), Mm(0), self.right_parent),
                                       self.char,
                                       scale_factor=2)
         expected = int(Mm(12) / self.single_repetition_width)

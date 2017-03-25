@@ -1,6 +1,5 @@
 from brown.core import brown
 from brown.core.auto_new_line import AutoNewLine
-from brown.core.auto_new_page import AutoNewPage
 from brown.core.invisible_object import InvisibleObject
 from brown.utils.exceptions import OutOfBoundsError
 from brown.utils.point import Point
@@ -84,43 +83,51 @@ class FlowableFrame(InvisibleObject):
         x_progress = Mm(0)
         # Current position on the page relative to the top left corner
         # of the live page area
-        pos = Point(self.pos.x, self.pos.y, 0)
-        # Attach initial starting NewLine
+        pos = Point(self.pos.x, self.pos.y)
+        current_page = 0
+        # Attach initial line controller
         self.layout_controllers.append(
-            AutoNewPage(self, x_progress, pos))
+            AutoNewLine(pos, brown.document.pages[current_page],
+                        self, x_progress))
         while True:
             delta_x = live_page_width - pos.x
             x_progress += delta_x
             pos.y = pos.y + self.height + self.y_padding
             if x_progress >= self.width:
+                # End of breakable width - Done.
                 break
             if pos.y > live_page_height:
-                pos = Point(Mm(0), Mm(0), pos.page + 1)
+                # Page break - No y offset
+                pos = Point(Mm(0), Mm(0))
+                current_page += 1
                 self.layout_controllers.append(
-                    AutoNewPage(self, x_progress, pos))
+                    AutoNewLine(pos, brown.document.pages[current_page],
+                                self, x_progress))
             else:
+                # Line break - self.y_padding as y offset
                 pos.x = Mm(0)
                 self.layout_controllers.append(
-                    AutoNewLine(self, x_progress, pos, self.y_padding))
+                    AutoNewLine(pos, brown.document.pages[current_page],
+                                self, x_progress, self.y_padding))
 
-    def _map_to_doc(self, local_point):
-        """Convert a position inside the frame to its position in the document.
+    def _map_to_canvas(self, local_point):
+        """Convert a local point to its position in the canvas.
 
         Args:
-            local_point (Point): A position in flowable space.
-                The page number for this point should be 0.
+            local_point (Point): A position in the frame's local space.
 
         Returns:
-            Point: A coordinate in document space with a page number.
+            Point: The position mapped to the canvas.
 
-        TODO: This currently assumes that the frame's direct parent is the document.
+        Note: This gives a simple position in the canvas - the graphical
+              position of the point when rendered. If you need to know
+              more contextual information, use `_map_to_page`
+              (TODO: NOT YET IMPLEMENTED)
         """
-        if local_point.x < 0 or local_point.x > self.width:
-            raise OutOfBoundsError(
-                '{} lies outside of the FlowableFrame'.format(local_point))
-        current_line = self._last_break_at(local_point.x)
-        return (current_line.pos +
-                Point(local_point.x - current_line.x, local_point.y))
+        line = self._last_break_at(local_point.x)
+        line_canvas_pos = brown.document.canvas_pos_of(line)
+        return (line_canvas_pos
+                + Point(local_point.x - line.local_x, local_point.y))
 
     def _x_pos_rel_to_line_start(self, x):
         """Find the distance of an x-pos to the left edge of its laid-out line.
@@ -131,7 +138,7 @@ class FlowableFrame(InvisibleObject):
         Returns: Unit
         """
         line_start = self._last_break_at(x)
-        return x - line_start.x
+        return x - line_start.local_x
 
     def _dist_to_line_end(self, x):
         """Find the distance of an x-pos to the right edge of its laid-out line.

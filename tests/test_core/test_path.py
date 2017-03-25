@@ -3,12 +3,12 @@ import unittest
 import pytest
 
 from brown.core import brown
+from brown.core.brush import Brush
+from brown.core.invisible_object import InvisibleObject
 from brown.core.path import Path
+from brown.core.pen import Pen
 from brown.utils.path_element_type import PathElementType
 from brown.utils.point import Point
-from brown.core.pen import Pen
-from brown.core.brush import Brush
-from tests.mocks.mock_graphic_object import MockGraphicObject
 
 
 class TestPath(unittest.TestCase):
@@ -17,7 +17,7 @@ class TestPath(unittest.TestCase):
         brown.setup()
 
     def test_init(self):
-        mock_parent = MockGraphicObject((0, 0), parent=None)
+        mock_parent = InvisibleObject((0, 0), parent=None)
         test_pen = Pen('#eeeeee')
         test_brush = Brush('#dddddd')
         path = Path((5, 6), test_pen, test_brush, mock_parent)
@@ -53,7 +53,7 @@ class TestPath(unittest.TestCase):
 
     def test_line_to_with_parent(self):
         path = Path((5, 6))
-        parent = MockGraphicObject((100, 50))
+        parent = InvisibleObject((100, 50))
         path.line_to(1, 3, parent)
         assert(path.elements[-1].parent == parent)
 
@@ -74,9 +74,9 @@ class TestPath(unittest.TestCase):
 
     def test_cubic_to_with_parents(self):
         path = Path((0, 0))
-        parent_1 = MockGraphicObject((100, 50))
-        parent_2 = MockGraphicObject((100, 50))
-        parent_3 = MockGraphicObject((100, 50))
+        parent_1 = InvisibleObject((100, 50))
+        parent_2 = InvisibleObject((100, 50))
+        parent_3 = InvisibleObject((100, 50))
         path.cubic_to(10, 11, 0, 1, 5, 6, parent_1, parent_2, parent_3)
         assert(len(path.elements) == 4)
         assert(path.elements[0].element_type == PathElementType.move_to)
@@ -104,7 +104,7 @@ class TestPath(unittest.TestCase):
 
     def test_move_to_with_parent(self):
         path = Path((0, 0))
-        parent = MockGraphicObject((100, 50))
+        parent = InvisibleObject((100, 50))
         path.move_to(10, 11, parent)
         assert(len(path.elements) == 1)
         assert(path.elements[0].element_type == PathElementType.move_to)

@@ -12,6 +12,7 @@ from brown.utils.units import Unit
 class Hairpin(Path, StaffObject, Spanner):
 
     """A crescendo/diminuendo hairpin spanner."""
+
     def __init__(self, start, stop, direction, width=None):
         """
         Args:
@@ -31,10 +32,10 @@ class Hairpin(Path, StaffObject, Spanner):
         stop = (stop if isinstance(stop, AnchoredPoint)
                 else AnchoredPoint(*stop))
         Path.__init__(self,
-                      (start.x, start.y, start.page),
+                      start,
                       parent=start.parent)
         StaffObject.__init__(self, start.parent)
-        Spanner.__init__(self, Point(stop.x, stop.y, stop.page), stop.parent)
+        Spanner.__init__(self, stop, stop.parent)
         self.direction = direction
         self.width = width if width is not None else self.staff.unit(1)
         self.thickness = self.staff.music_font.engraving_defaults[

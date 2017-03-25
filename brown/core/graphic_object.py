@@ -16,6 +16,17 @@ class GraphicObject(ABC):
     calculated at render-time. If the object's ancestor is a FlowableFrame,
     it will be rendered as a flowable object, capable of being wrapped around
     lines.
+
+    The position of this object is relative to that of its parent.
+    Each GraphicObject has another GraphicObject for a parent, except
+    `Page` objects, whose parent is always the global `Document`.
+
+    For convenience, the parent may be initialized to None to indicate
+    the first page of the document.
+
+    To place objects directly in the scene on pages other than the first,
+    simply set the parent to the desired page, accessed through the
+    global document with `brown.document.pages[n]`
     """
     def __init__(self, pos, breakable_width=None,
                  pen=None, brush=None, parent=None):
@@ -115,7 +126,10 @@ class GraphicObject(ABC):
 
     @property
     def parent(self):
-        """GraphicObject or Document: The parent object"""
+        """GraphicObject: The parent object.
+
+        If this is set to None, it defaults to the first page of the document.
+        """
         return self._parent
 
     @parent.setter
@@ -123,7 +137,7 @@ class GraphicObject(ABC):
         if hasattr(self, '_parent') and self._parent is not None:
             self._parent._unregister_child(self)
         if value is None:
-            value = brown.document
+            value = brown.document.pages[0]
         self._parent = value
         self._parent._register_child(self)
 
@@ -166,6 +180,18 @@ class GraphicObject(ABC):
             return None
 
     @property
+    def page_index(self):
+        """The index of the page this object appears on.
+
+        This property is read-only.
+        """
+        # Traverse the parent chain until a page is found and returns its index
+        ancestor = self.parent
+        while type(ancestor).__name__ != 'Page':
+            ancestor = ancestor.parent
+        return ancestor.page_index
+
+    @property
     def is_in_flowable(self):
         """bool: Whether or not this object is in a FlowableFrame"""
         return (self.frame is not None)
@@ -186,8 +212,8 @@ class GraphicObject(ABC):
         """
         # inefficient for now - find position relative to doc root of both
         # and find delta between the two.
-        return (Document.doc_pos_of(destination) -
-                Document.doc_pos_of(source))
+        return (brown.document.canvas_pos_of(destination) -
+                brown.document.canvas_pos_of(source))
 
     ######## PUBLIC METHODS ########
 
@@ -199,7 +225,7 @@ class GraphicObject(ABC):
         if self.is_in_flowable:
             self._render_flowable()
         else:
-            self._render_complete(Document.doc_pos_of(self))
+            self._render_complete(brown.document.canvas_pos_of(self))
         for child in self.children:
             child.render()
 
@@ -261,15 +287,15 @@ class GraphicObject(ABC):
         remaining_x = (self.breakable_width +
                        self.frame._dist_to_line_end(pos_in_flowable.x))
         if remaining_x < Unit(0):
-            self._render_complete(Document.doc_pos_of(self))
+            self._render_complete(brown.document.canvas_pos_of(self))
             return
 
         # Render before break
         first_line_i = self.frame._last_break_index_at(pos_in_flowable.x)
         current_line = self.frame.layout_controllers[first_line_i]
-        render_start_pos = Document.doc_pos_of(self)
+        render_start_pos = brown.document.canvas_pos_of(self)
         first_line_length = self.frame._dist_to_line_end(pos_in_flowable.x) * -1
-        render_end_pos = (render_start_pos + Point(first_line_length, Unit(0)))
+        render_end_pos = (render_start_pos + Point(first_line_length, 0))
         self._render_before_break(Unit(0), render_start_pos, render_end_pos)
 
         # Iterate through remaining breakable_width
@@ -278,9 +304,9 @@ class GraphicObject(ABC):
             current_line = self.frame.layout_controllers[current_line_i]
             if remaining_x > current_line.length:
                 # Render spanning continuation
-                render_start_pos = Point(current_line.pos.x,
-                                         current_line.pos.y + pos_in_flowable.y,
-                                         current_line.pos.page)
+                line_pos = brown.document.canvas_pos_of(current_line)
+                render_start_pos = Point(line_pos.x,
+                                         line_pos.y + pos_in_flowable.y)
                 render_end_pos = render_start_pos + Point(current_line.length, 0)
                 self._render_spanning_continuation(
                     self.breakable_width - remaining_x,
@@ -291,8 +317,8 @@ class GraphicObject(ABC):
                 break
 
         # Render end
-        render_start_pos = self.frame._map_to_doc(
-            Point(current_line.x, pos_in_flowable.y))
+        render_start_pos = self.frame._map_to_canvas(
+            Point(current_line.local_x, pos_in_flowable.y))
         render_end_pos = render_start_pos + Point(remaining_x, 0)
         self._render_after_break(self.breakable_width - remaining_x,
                                  render_start_pos,

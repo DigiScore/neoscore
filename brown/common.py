@@ -20,7 +20,6 @@ from brown.core.music_char import MusicChar
 from brown.core.music_font import MusicFont
 from brown.core.music_text import MusicText
 from brown.core.new_line import NewLine
-from brown.core.new_page import NewPage
 from brown.core.notehead import Notehead
 from brown.core.object_group import ObjectGroup
 from brown.core.octave_line import OctaveLine

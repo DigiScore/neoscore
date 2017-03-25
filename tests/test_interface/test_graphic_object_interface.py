@@ -21,42 +21,20 @@ class TestGraphicObjectInterface(unittest.TestCase):
     def setUp(self):
         brown.setup()
 
-    def test_map_to_qt_canvas_on_first_page(self):
-        expected = point_to_qt_point_f(
-            brown.document._map_to_canvas(
-                Point(GraphicUnit(10), GraphicUnit(11), 0)))
-        actual = GraphicObjectInterface._map_to_qt_canvas(
-            Point(GraphicUnit(10), GraphicUnit(11)))
-        self.assertAlmostEqual(expected.x(), actual.x())
-        self.assertAlmostEqual(expected.y(), actual.y())
-
-    def test_map_to_qt_canvas_on_second_page(self):
-        expected = point_to_qt_point_f(
-            brown.document._map_to_canvas(
-                Point(GraphicUnit(10), GraphicUnit(11), 1)))
-        actual = GraphicObjectInterface._map_to_qt_canvas(
-            Point(GraphicUnit(10), GraphicUnit(11), 1))
-        self.assertAlmostEqual(expected.x(), actual.x())
-        self.assertAlmostEqual(expected.y(), actual.y())
-
     def test_interface_properties_after_init(self):
         grob = MockGraphicObjectInterface((GraphicUnit(5), GraphicUnit(6)))
         assert(grob.pos == Point(GraphicUnit(5), GraphicUnit(6)))
 
     def test_qt_pos_after_init(self):
-        expected = point_to_qt_point_f(
-            brown.document._map_to_canvas(
-                Point(GraphicUnit(5), GraphicUnit(6), 0)))
         grob = MockGraphicObjectInterface((GraphicUnit(5), GraphicUnit(6)))
+        expected = QPointF(5, 6)
         self.assertAlmostEqual(expected.x(), grob._qt_object.x())
         self.assertAlmostEqual(expected.y(), grob._qt_object.y())
 
     def test_pos_setter_changes_qt_object(self):
         grob = MockGraphicObjectInterface((GraphicUnit(0), GraphicUnit(0)))
         grob.pos = (GraphicUnit(10), GraphicUnit(11))
-        expected = point_to_qt_point_f(
-            brown.document._map_to_canvas(
-                Point(GraphicUnit(10), GraphicUnit(11), 0)))
+        expected = QPointF(10, 11)
         assert(grob.x == grob.pos.x)
         assert(grob.y == grob.pos.y)
         self.assertAlmostEqual(expected.x(), grob._qt_object.x())
@@ -65,18 +43,14 @@ class TestGraphicObjectInterface(unittest.TestCase):
     def test_x_setter_changes_qt_object(self):
         grob = MockGraphicObjectInterface((GraphicUnit(5), GraphicUnit(6)))
         grob.x = GraphicUnit(100)
-        expected = point_to_qt_point_f(
-            brown.document._map_to_canvas(
-                Point(GraphicUnit(100), GraphicUnit(6), 0)))
+        expected = QPointF(100, 6)
         self.assertAlmostEqual(expected.x(), grob._qt_object.x())
         self.assertAlmostEqual(expected.y(), grob._qt_object.y())
 
     def test_y_setter_changes_qt_object(self):
         grob = MockGraphicObjectInterface((GraphicUnit(5), GraphicUnit(6)))
         grob.y = GraphicUnit(100)
-        expected = point_to_qt_point_f(
-            brown.document._map_to_canvas(
-                Point(GraphicUnit(5), GraphicUnit(100), 0)))
+        expected = QPointF(5, 100)
         self.assertAlmostEqual(expected.x(), grob._qt_object.x())
         self.assertAlmostEqual(expected.y(), grob._qt_object.y())
 

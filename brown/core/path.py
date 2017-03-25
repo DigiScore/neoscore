@@ -27,8 +27,7 @@ class Path(GraphicObject):
     def __init__(self, pos, pen=None, brush=None, parent=None):
         """
         Args:
-            pos (Point): The position of the path relative
-                to the document
+            pos (Point): The position of the path root.
             pen (Pen): The pen to draw outlines with.
             brush (Brush): The brush to draw outlines with.
             parent (GraphicObject): The parent object or None
@@ -38,12 +37,6 @@ class Path(GraphicObject):
         self.elements = []
 
     ######## CLASSMETHODS ########
-
-    """
-    TODO: Change signatures around path drawing methods so the user doesn't
-    have to worry so much about the page number. The page number of Point()
-    and AnchoredPoint will almost never be used in this context!
-    """
 
     @classmethod
     def straight_line(cls, start, stop, pen=None, brush=None, parent=None):
@@ -90,8 +83,7 @@ class Path(GraphicObject):
 
     @property
     def current_path_position(self):
-        """
-        Point[GraphicUnit]: The current relative drawing position.
+        """Point: The current relative drawing position.
 
         This is the location from which operations like line_to() will draw,
         relative to the position of the Path (`self.x` and `self.y`).

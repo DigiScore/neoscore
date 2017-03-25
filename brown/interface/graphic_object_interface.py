@@ -1,7 +1,6 @@
 from abc import ABC
 
 from brown import config
-from brown.core import brown
 from brown.core.fill_pattern import FillPattern
 from brown.interface.brush_interface import BrushInterface
 from brown.interface.pen_interface import PenInterface
@@ -15,19 +14,19 @@ from brown.utils.units import GraphicUnit
 class GraphicObjectInterface(ABC):
     """Interface for a generic graphic object.
 
-    This is a top-level abstract interface class.
+    This is a top-level abstract interface class. All graphic interfaces
+    for renderable objects should descend from this.
+
+    `GraphicObjectInterface` classes have no concept of parentage, or,
+    by extension, page numbers. The `GraphicObject`s responsible for
+    creating these interface objects should pass only document-space
+    positions to these.
     """
     def __init__(self, pos, pen=None, brush=None):
         """
-        Must define and set:
-
-            self._qt_object = # Some subclass of QGraphicsItem
-            self.x = x
-            self.y = y
-
         Args:
             pos (Point[GraphicUnit] or tuple): The position of the path root
-                relative to the document.
+                relative to the document origin.
             pen (PenInterface): The pen to draw outlines with.
             brush (BrushInterface): The brush to draw outlines with.
         """
@@ -37,7 +36,7 @@ class GraphicObjectInterface(ABC):
 
     @property
     def pos(self):
-        """Point(GraphicUnit): The absolute position of the object."""
+        """Point[Unit]: The absolute position of the object."""
         return self._pos
 
     @pos.setter
@@ -46,32 +45,28 @@ class GraphicObjectInterface(ABC):
             value = Point(*value)
         else:
             value = Point.from_existing(value)
-        value.to_unit(GraphicUnit)
         self._pos = value
-        self._qt_object.setPos(
-            GraphicObjectInterface._map_to_qt_canvas(self._pos))
+        self._qt_object.setPos(point_to_qt_point_f(self.pos))
 
     @property
     def x(self):
-        """GraphicUnit: The absolute x position of the object"""
+        """Unit: The absolute x position of the object"""
         return self.pos.x
 
     @x.setter
     def x(self, value):
-        self.pos.x = GraphicUnit(value)
-        self._qt_object.setPos(
-            GraphicObjectInterface._map_to_qt_canvas(self.pos))
+        self.pos.x = value
+        self._qt_object.setPos(point_to_qt_point_f(self.pos))
 
     @property
     def y(self):
-        """GraphicUnit: The absolute y position of the object"""
+        """Unit: The absolute y position of the object"""
         return self.pos.y
 
     @y.setter
     def y(self, value):
         self.pos.y = GraphicUnit(value)
-        self._qt_object.setPos(
-            GraphicObjectInterface._map_to_qt_canvas(self.pos))
+        self._qt_object.setPos(point_to_qt_point_f(self.pos))
 
     @property
     def pen(self):
@@ -121,24 +116,6 @@ class GraphicObjectInterface(ABC):
                                    FillPattern.SOLID_COLOR)
         self._brush = value
         self._qt_object.setBrush(self._brush._qt_object)
-
-    ######## PRIVATE METHODS ########
-
-    @staticmethod
-    def _map_to_qt_canvas(pos):
-        """Map a position in the document to the canvas.
-
-        This takes a paged position and queries the global
-        document to determine where it should actually appear
-        on the canvas. All coordinates passed to Qt should
-        be mapped through this method!
-
-        Args:
-            pos (Point): A paged document position
-
-        Returns: QPointF
-        """
-        return point_to_qt_point_f(brown.document._map_to_canvas(pos))
 
     ######## PUBLIC METHODS ########
 

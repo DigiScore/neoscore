@@ -1,12 +1,12 @@
-from brown.core import brown
 from brown.core.layout_controller import LayoutController
 from brown.utils.point import Point
+from brown.utils.units import Unit
 
 
 class NewLine(LayoutController):
     """A line break controller."""
 
-    def __init__(self, flowable_frame, x, pos, offset_y=0):
+    def __init__(self, pos, page, flowable_frame, local_x, offset_y=None):
         """
         Args:
             flowable_frame (FlowableFrame): The parent frame.
@@ -14,17 +14,16 @@ class NewLine(LayoutController):
                 line begins.
             pos (Point): The position of the top left corner of this line.
             offset_y (Unit): The space between the bottom of the
-                current line and the top of the next.
+                current line and the top of the next. Defaults to `Unit(0)`
         """
-        super().__init__(flowable_frame, x)
-        self.pos = pos
-        self.offset_y = offset_y
+        super().__init__(pos, page, flowable_frame, local_x)
+        self.offset_y = offset_y if offset_y else Unit(0)
 
     ######## PUBLIC PROPERTIES ########
 
     @property
     def offset_y(self):
-        """Unit: The space in pixels before the next line."""
+        """Unit: The space before the next line."""
         return self._offset_y
 
     @offset_y.setter
@@ -32,21 +31,10 @@ class NewLine(LayoutController):
         self._offset_y = value
 
     @property
-    def pos(self):
-        """Point: The position of the top left corner of this line."""
-        return self._pos
-
-    @pos.setter
-    def pos(self, value):
-        if not isinstance(value, Point):
-            value = Point(*value)
-        else:
-            value = Point.from_existing(value)
-        self._pos = value
-
-    @property
     def doc_end_pos(self):
-        """Point: The position of the new line's bottom right corner in doc space
+        """Point: The position of the new line's bottom right corner.
+
+        This position is relative to the page.
 
         This property is read-only
         """
@@ -58,8 +46,7 @@ class NewLine(LayoutController):
 
         This property is read-only.
         """
-        # TODO: When breaks are made more flexible this needs to be updated.
-        return brown.document.paper.live_width - self.pos.x
+        return self.page.paper.live_width - self.pos.x
 
     @property
     def height(self):
@@ -67,11 +54,4 @@ class NewLine(LayoutController):
 
         This property is read-only.
         """
-        # TODO: When breaks are made more flexible this needs to be updated.
         return self.flowable_frame.height
-
-    ######## PRIVATE PROPERTIES ########
-
-    @property
-    def _is_automatic(self):
-        return False

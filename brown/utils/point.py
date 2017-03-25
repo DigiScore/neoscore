@@ -2,20 +2,21 @@ from brown.utils.units import Unit
 
 
 class Point:
-    """An (x, y) point with a page number"""
+    """A two dimensional point.
 
-    __slots__ = ('_x', '_y', '_page')
+    The x-axis grows left-to right, and the y-axis grows top-to-bottom.
+    """
 
-    def __init__(self, x, y, page=0):
+    __slots__ = ('_x', '_y')
+
+    def __init__(self, x, y):
         """
         Args:
             x (float or Unit): The x axis position
             y (float or Unit): The y axis position
-            page (int): The page number.
         """
         self._x = x
         self._y = y
-        self._page = page
 
     ######## PUBLIC CLASS METHODS ########
 
@@ -28,7 +29,18 @@ class Point:
 
         Returns: Point
         """
-        return cls(point.x, point.y, point.page)
+        return cls(point.x, point.y)
+
+    @classmethod
+    def from_anchored_point(cls, anchored_point):
+        """Create a Point from an AnchoredPoint, discarding its parent.
+
+        Args:
+            anchored_point (AnchoredPoint):
+
+        Returns: Point
+        """
+        return cls(anchored_point.x, anchored_point.y)
 
     ######## PUBLIC PROPERTIES ########
 
@@ -50,20 +62,6 @@ class Point:
     def y(self, value):
         self._y = value
 
-    @property
-    def page(self):
-        """int: The page number of the point.
-
-        Note that, like the `x` and `y` properties, the page number
-        is a *relative* value. As a result, `page=0` relative to the
-        document root actually means the first printed page.
-        """
-        return self._page
-
-    @page.setter
-    def page(self, value):
-        self._page = value
-
     ######## PUBLIC METHODS ########
 
     def to_unit(self, unit):
@@ -82,10 +80,9 @@ class Point:
     ######## SPECIAL METHODS ########
 
     def __repr__(self):
-        return '{}({}, {}, {})'.format(type(self).__name__,
-                                       self.x,
-                                       self.y,
-                                       self.page)
+        return '{}({}, {})'.format(type(self).__name__,
+                                   self.x,
+                                   self.y)
 
     def __hash__(self):
         return hash(self.__repr__())
@@ -96,9 +93,7 @@ class Point:
         Returns: Bool
         """
         if isinstance(other, type(self)):
-            return (self.x == other.x and
-                    self.y == other.y and
-                    self.page == other.page)
+            return self.x == other.x and self.y == other.y
         else:
             return False
 
@@ -107,24 +102,20 @@ class Point:
 
         Returns: Point
         """
-        if not isinstance(other, type(self)):
-            raise TypeError('Cannot add "{}" and "{}"'.format(
-                type(self).__name__, type(other).__name__))
+        if type(other) != type(self):
+            raise TypeError
         return type(self)(self.x + other.x,
-                          self.y + other.y,
-                          self.page + other.page)
+                          self.y + other.y)
 
     def __sub__(self, other):
         """`Point`s are subtracted by adding their x and y values in a new `Point`
 
         Returns: Point
         """
-        if not isinstance(other, type(self)):
-            raise TypeError('Cannot subtract "{}" and "{}"'.format(
-                type(self).__name__, type(other).__name__))
+        if type(other) != type(self):
+            raise TypeError
         return type(self)(self.x - other.x,
-                          self.y - other.y,
-                          self.page - other.page)
+                          self.y - other.y)
 
     def __mul__(self, other):
         """Points may be multiplied with scalars.
@@ -133,19 +124,14 @@ class Point:
             other (Unit, int, float): A scalar value
 
         Returns: Point
-
-        The resulting Point's page number will always be the same as the original.
         """
         if not isinstance(other, (Unit, int, float)):
-            raise TypeError('Cannot multiply "{}" and "{}"'.format(
-                type(self).__name__, type(other).__name__))
-        return type(self)(self.x * other, self.y * other, self.page)
+            raise TypeError
+        return type(self)(self.x * other, self.y * other)
 
     def __abs__(self):
-        # TODO: Evaluate if this is needed (probably not!)
-        return type(self)(abs(self.x), abs(self.y), abs(self.page))
+        return type(self)(abs(self.x), abs(self.y))
 
     def __round__(self, ndigits=None):
         return type(self)(round(self.x, ndigits),
-                          round(self.y, ndigits),
-                          self.page)
+                          round(self.y, ndigits))

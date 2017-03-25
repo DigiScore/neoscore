@@ -30,7 +30,7 @@ class Slur(Path, StaffObject, Spanner):
                       brush=Brush((0, 0, 0, 255)))
         StaffObject.__init__(self, self.parent)
         Spanner.__init__(self, Point(stop.x, stop.y), stop.parent)
-        # Is this pos override necessary? Probably not???
+        # TODO: is this pos override necessary? Probably not???
         self.pos = Point(self.staff.unit(0), self.staff.unit(0))
         self.direction = direction
         # Load relevant engraving defaults from music font
