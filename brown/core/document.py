@@ -102,9 +102,14 @@ class Document:
 
     @property
     def _page_display_gap(self):
-        """float: The visual horizontal gap between pages, in pixels."""
-        # TODO: Move to config
-        return Mm(150)
+        """Unit: The visual horizontal gap between pages on the canvas.
+
+        This only affects page display in the rendered preview,
+        and has no effect on exported documents.
+
+        To change this, set `config.PAGE_DISPLAY_GAP`.
+        """
+        return config.PAGE_DISPLAY_GAP
 
     ######## PRIVATE METHODS ########
 
