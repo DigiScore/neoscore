@@ -99,6 +99,8 @@ text_on_third_page = Text((Mm(0), Mm(0)),
 explicit_path_on_second_page = Path((Mm(0), Mm(0)), parent=text_on_second_page)
 explicit_path_on_second_page.line_to(Mm(100), Mm(60))
 
+ped_and_star_mark = PedAndStar((Mm(260), staff.unit(7)), staff, (Mm(30), staff.unit(0)))
+
 # brown.show()
 
 output_path = os.path.join(os.path.dirname(__file__), 'output', 'vtest_out.pdf')
