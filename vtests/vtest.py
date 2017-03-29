@@ -101,6 +101,13 @@ explicit_path_on_second_page.line_to(Mm(100), Mm(60))
 
 ped_and_star_mark = PedAndStar((Mm(260), staff.unit(7)), staff, (Mm(30), staff.unit(0)))
 
+pedal_line = PedalLine((Mm(500), staff.unit(7)), staff,
+                       Mm(200),
+                       half_lift_positions=[
+                           Mm(30),
+                           Mm(60),
+                           Mm(100)])
+
 # brown.show()
 
 output_path = os.path.join(os.path.dirname(__file__), 'output', 'vtest_out.pdf')

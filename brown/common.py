@@ -26,6 +26,7 @@ from brown.core.octave_line import OctaveLine
 from brown.core.paper import Paper
 from brown.core.path import Path
 from brown.core.ped_and_star import PedAndStar
+from brown.core.pedal_line import PedalLine
 from brown.core.pen import Pen
 from brown.core.repeating_music_text_line import RepeatingMusicTextLine
 from brown.core.rest import Rest
