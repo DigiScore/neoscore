@@ -6,7 +6,7 @@ from brown.utils.units import GraphicUnit
 
 
 class FontInterface:
-    def __init__(self, family_name, size, weight=1, italic=False):
+    def __init__(self, family_name, size, weight, italic):
         """
         Args:
             family_name (str): The name of the font family

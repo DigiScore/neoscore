@@ -51,8 +51,12 @@ Notes on Qt path quirks:
 
 class PathInterface(GraphicObjectInterface):
     """Interface for a generic graphic path object."""
-    def __init__(self, pos, pen=None, brush=None,
-                 clip_start_x=None, clip_width=None):
+    def __init__(self,
+                 pos,
+                 pen,
+                 brush,
+                 clip_start_x=None,
+                 clip_width=None):
         """
         Args:
             pos (Point[GraphicUnit] or tuple): The position of the path root

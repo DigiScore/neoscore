@@ -3,6 +3,9 @@
 import os
 
 from brown.utils.units import Mm, Inch, GraphicUnit
+from brown.core.stroke_pattern import StrokePattern
+from brown.core.fill_pattern import FillPattern
+from brown.utils.color import Color
 
 
 ######## Constants that really shouldn't be changed ########
@@ -12,12 +15,15 @@ RESOURCES_DIR = os.path.join(BROWN_ROOT_DIR, 'resources')
 
 ######## Defaults ##########################################
 
-# Default colors
-DEFAULT_PEN_COLOR = (0, 0, 0)
-DEFAULT_BRUSH_COLOR = (0, 0, 0, 0)
-
-# Default pen thickness
+# Default pen properties
+DEFAULT_PEN_COLOR = Color(0, 0, 0)
 DEFAULT_PEN_THICKNESS = GraphicUnit(0)  # GraphicUnits
+DEFAULT_PEN_PATTERN = StrokePattern.SOLID
+
+# Default brush properties
+DEFAULT_BRUSH_COLOR = Color(0, 0, 0, 255)
+DEFAULT_PATH_BRUSH_COLOR = Color(0, 0, 0, 0)
+DEFAULT_BRUSH_PATTERN = FillPattern.SOLID_COLOR
 
 # Paper type
 DEFAULT_PAPER_TYPE = 'Letter'

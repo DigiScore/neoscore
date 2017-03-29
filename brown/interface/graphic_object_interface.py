@@ -1,13 +1,7 @@
 from abc import ABC
 
-from brown import config
-from brown.core.fill_pattern import FillPattern
-from brown.interface.brush_interface import BrushInterface
-from brown.interface.pen_interface import PenInterface
 from brown.interface.qt_to_util import point_to_qt_point_f
-from brown.utils.color import Color
 from brown.utils.point import Point
-from brown.core.stroke_pattern import StrokePattern
 from brown.utils.units import GraphicUnit
 
 
@@ -22,13 +16,15 @@ class GraphicObjectInterface(ABC):
     creating these interface objects should pass only document-space
     positions to these.
     """
-    def __init__(self, pos, pen=None, brush=None):
+    def __init__(self):
         """
-        Args:
-            pos (Point[GraphicUnit] or tuple): The position of the path root
-                relative to the document origin.
-            pen (PenInterface): The pen to draw outlines with.
-            brush (BrushInterface): The brush to draw outlines with.
+        This method should (in this order):
+        1) Create a QGraphicsItem subclass object and store it in
+           self._qt_object
+        2) Set the following properties:
+           a) self.pos
+           b) self.pen
+           c) self.brush
         """
         raise NotImplementedError
 
@@ -75,45 +71,16 @@ class GraphicObjectInterface(ABC):
 
     @pen.setter
     def pen(self, value):
-        # TODO: interface objects should really take a Pen as a mandatory arg,
-        #       higher level classes should handle default values.
-        if value:
-            if isinstance(value, str):
-                value = PenInterface(value)
-            elif isinstance(value, PenInterface):
-                pass
-            else:
-                raise TypeError
-        else:
-            value = PenInterface(Color(*config.DEFAULT_PEN_COLOR),
-                                 GraphicUnit(config.DEFAULT_PEN_THICKNESS),
-                                 StrokePattern(1))
         self._pen = value
         self._qt_object.setPen(self._pen._qt_object)
 
     @property
     def brush(self):
-        """BrushInterface: The brush to fill shapes with.
-
-        As a convenience, this may be set with a hex color string
-        for a solid color brush of that color. For brushes using
-        alpha channels and non-solid-color fill patterns, a fully
-        initialized BrushInterface must be passed to this.
-        """
+        """BrushInterface: The brush to fill shapes with."""
         return self._brush
 
     @brush.setter
     def brush(self, value):
-        if value:
-            if isinstance(value, str):
-                value = BrushInterface(value)
-            elif isinstance(value, BrushInterface):
-                pass
-            else:
-                raise TypeError
-        else:
-            value = BrushInterface(Color(*config.DEFAULT_BRUSH_COLOR),
-                                   FillPattern.SOLID_COLOR)
         self._brush = value
         self._qt_object.setBrush(self._brush._qt_object)
 

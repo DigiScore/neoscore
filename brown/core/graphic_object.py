@@ -1,7 +1,9 @@
 from abc import ABC
 
+from brown import config
 from brown.core import brown
-from brown.core.document import Document
+from brown.core.brush import Brush
+from brown.core.pen import Pen
 from brown.utils.point import Point
 from brown.utils.units import Unit
 
@@ -28,6 +30,13 @@ class GraphicObject(ABC):
     simply set the parent to the desired page, accessed through the
     global document with `brown.document.pages[n]`
     """
+
+    default_pen = Pen(config.DEFAULT_PEN_COLOR,
+                      config.DEFAULT_PEN_THICKNESS,
+                      config.DEFAULT_PEN_PATTERN)
+    default_brush = Brush(config.DEFAULT_BRUSH_COLOR,
+                          config.DEFAULT_BRUSH_PATTERN)
+
     def __init__(self, pos, breakable_width=None,
                  pen=None, brush=None, parent=None):
         """
@@ -113,15 +122,39 @@ class GraphicObject(ABC):
 
     @pen.setter
     def pen(self, value):
+        if value:
+            if isinstance(value, str):
+                value = Pen(value)
+            elif isinstance(value, Pen):
+                pass
+            else:
+                raise TypeError
+        else:
+            value = Pen.from_existing(type(self).default_pen)
         self._pen = value
 
     @property
     def brush(self):
-        """Brush: The brush to draw outlines with"""
+        """Brush: The brush to draw outlines with
+
+        As a convenience, this may be set with a hex color string
+        for a solid color brush of that color. For brushes using
+        alpha channels and non-solid-color fill patterns, a fully
+        initialized brush must be passed to this.
+        """
         return self._brush
 
     @brush.setter
     def brush(self, value):
+        if value:
+            if isinstance(value, str):
+                value = Brush(value)
+            elif isinstance(value, Brush):
+                pass
+            else:
+                raise TypeError
+        else:
+            value = Brush.from_existing(type(self).default_brush)
         self._brush = value
 
     @property

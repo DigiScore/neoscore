@@ -27,8 +27,9 @@ class QEnhancedTextItem(QtWidgets.QGraphicsSimpleTextItem):
                  **kwargs):
         """
         Args:
-            origin_offset(QPointF): The offset of the glyph's origin from (0, 0)
-            scale_factor(float): A hard scaling factor.
+            brush (QBrush):
+            origin_offset (QPointF): The offset of the glyph's origin from (0, 0)
+            scale_factor (float): A hard scaling factor.
             clip_start_x (Unit or None): The local starting position for the
                 clipping region. Use `None` to render from the start.
             clip_width (Unit or None): The width of the clipping region.

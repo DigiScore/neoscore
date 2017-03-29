@@ -36,6 +36,17 @@ class Pen:
                                                 self.thickness,
                                                 self.pattern)
 
+    ######## CONSTRUCOTRS ########
+
+    @classmethod
+    def from_existing(cls, pen):
+        """Clone a pen.
+
+        Args:
+            pen (Pen): An existing pen.
+        """
+        return cls(pen.color, pen.thickness, pen.pattern)
+
     ######## PUBLIC PROPERTIES ########
 
     @property

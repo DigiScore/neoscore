@@ -30,6 +30,17 @@ class Brush:
             self.pattern = FillPattern(pattern)
         self._create_interface()
 
+    ######## CONSTRUCOTRS ########
+
+    @classmethod
+    def from_existing(cls, brush):
+        """Clone a brush.
+
+        Args:
+            brush (Brush): An existing brush.
+        """
+        return cls(brush.color, brush.pattern)
+
     ######## PUBLIC PROPERTIES ########
 
     @property

@@ -154,6 +154,7 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
                 start,
                 self.text,
                 self.font._interface,
+                self.brush._interface,
                 origin_offset=self._origin_offset)
             interface.render()
             self.interfaces.add(interface)
@@ -163,6 +164,7 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
                 start,
                 self.parenthesized_text,
                 self.font._interface,
+                self.brush._interface,
                 origin_offset=self._origin_offset)
             interface.render()
             self.interfaces.add(interface)
@@ -172,6 +174,7 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
                 start,
                 self.parenthesized_text,
                 self.font._interface,
+                self.brush._interface,
                 origin_offset=self._origin_offset)
             interface.render()
             self.interfaces.add(interface)

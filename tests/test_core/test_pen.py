@@ -1,8 +1,9 @@
 import unittest
 
-from brown.core import brown
 from brown import config
+from brown.core import brown
 from brown.core.pen import Pen
+from brown.core.stroke_pattern import StrokePattern
 from brown.utils.color import Color
 from brown.utils.units import Unit
 
@@ -24,3 +25,15 @@ class TestPen(unittest.TestCase):
         test_pen = Pen(('#eeddcc', 200))
         self.assertAlmostEqual(Unit(test_pen.thickness).value,
                                Unit(config.DEFAULT_PEN_THICKNESS).value)
+
+    def test_init_default_pattern(self):
+        test_pen = Pen()
+        assert(test_pen.pattern == StrokePattern.SOLID)
+
+    def test_from_existing(self):
+        original = Pen(Color("#eeddcc"), Unit(2), StrokePattern.DASH)
+        clone = Pen.from_existing(original)
+        assert(id(original) != id(clone))
+        assert(original.color == clone.color)
+        assert(original.thickness == clone.thickness)
+        assert(original.pattern == clone.pattern)

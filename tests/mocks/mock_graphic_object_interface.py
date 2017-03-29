@@ -1,8 +1,11 @@
 from PyQt5 import QtWidgets
 
+from brown.core.fill_pattern import FillPattern
+from brown.core.stroke_pattern import StrokePattern
+from brown.interface.brush_interface import BrushInterface
 from brown.interface.graphic_object_interface import GraphicObjectInterface
-from brown.utils.point import Point
-from brown.utils.units import Unit
+from brown.interface.pen_interface import PenInterface
+from brown.utils.color import Color
 
 
 """A mock concrete GraphicObjectInterface subclass for testing"""
@@ -16,5 +19,13 @@ class MockGraphicObjectInterface(GraphicObjectInterface):
         self._qt_object = QtWidgets.QGraphicsRectItem(
             0, 0, 10, 10)
         self.pos = pos
-        self.pen = pen
-        self.brush = brush
+        if pen:
+            self.pen = pen
+        else:
+            self.pen = PenInterface(
+                Color('#000000'), 0, StrokePattern.SOLID)
+        if brush:
+            self.brush = brush
+        else:
+            self.brush = BrushInterface(
+                Color('#000000'), FillPattern.SOLID_COLOR)

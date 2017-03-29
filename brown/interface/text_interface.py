@@ -7,12 +7,11 @@ from brown.utils.point import Point
 
 class TextInterface(GraphicObjectInterface):
 
-    _interface_class = QEnhancedTextItem
-
     def __init__(self,
                  pos,
                  text,
                  font,
+                 brush,
                  origin_offset=None,
                  scale_factor=1,
                  clip_start_x=None,
@@ -23,6 +22,7 @@ class TextInterface(GraphicObjectInterface):
                 relative to the document.
             text (str): The text for the object
             font (FontInterface): The font object for the text
+            brush (BrushInterface): The brush for the object.
             scale_factor (float): A hard scaling factor.
             clip_start_x (Unit or None): The local starting position for the
                 clipping region. Use `None` to render from the start.
@@ -37,7 +37,7 @@ class TextInterface(GraphicObjectInterface):
         self._text = text
         self.clip_start_x = clip_start_x
         self.clip_width = clip_width
-        self._qt_object = self._interface_class(
+        self._qt_object = QEnhancedTextItem(
             self.text,
             origin_offset=point_to_qt_point_f(self.origin_offset),
             scale_factor=self.scale_factor,
@@ -46,6 +46,7 @@ class TextInterface(GraphicObjectInterface):
         # Let setters trigger Qt setters for attributes not in constructor
         self.font = font
         self.pos = pos
+        self.brush = brush
 
     ######## PUBLIC PROPERTIES ########
 

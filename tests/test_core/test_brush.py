@@ -30,3 +30,10 @@ class TestBrush(unittest.TestCase):
     def test_pattern_set_from_int_enum_value(self):
         test_brush = Brush('#ffffff', FillPattern.DENSE_1.value)
         assert(test_brush.pattern == FillPattern.DENSE_1)
+
+    def test_from_existing(self):
+        original = Brush(Color('#ffffff'), FillPattern.DENSE_1.value)
+        clone = Brush.from_existing(original)
+        assert(id(original) != id(clone))
+        assert(original.color == clone.color)
+        assert(original.pattern == clone.pattern)

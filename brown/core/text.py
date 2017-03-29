@@ -95,6 +95,7 @@ class Text(GraphicObject):
             pos,
             self.text,
             self.font._interface,
+            self.brush._interface,
             origin_offset=self._origin_offset,
             scale_factor=self.scale_factor,
             clip_start_x=clip_start_x,

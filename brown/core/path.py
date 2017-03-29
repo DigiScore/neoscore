@@ -1,3 +1,5 @@
+from brown import config
+from brown.core.brush import Brush
 from brown.core.graphic_object import GraphicObject
 from brown.core.path_element import PathElement
 from brown.interface.path_interface import PathInterface
@@ -23,6 +25,8 @@ class Path(GraphicObject):
     """
 
     _interface_class = PathInterface
+    default_brush = Brush(config.DEFAULT_PATH_BRUSH_COLOR,
+                          config.DEFAULT_BRUSH_PATTERN)
 
     def __init__(self, pos, pen=None, brush=None, parent=None):
         """
@@ -253,9 +257,9 @@ class Path(GraphicObject):
               be able to just be copied from one slice interface to the next.
         """
         slice_interface = self._interface_class(
-            pos=pos,
-            pen=self.pen._interface if self.pen else None,
-            brush=self.brush._interface if self.brush else None,
+            pos,
+            self.pen._interface,
+            self.brush._interface,
             clip_start_x=clip_start_x,
             clip_width=clip_width)
         # Maintain a buffer of control points to be sent to the PathInterface
