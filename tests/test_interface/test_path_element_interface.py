@@ -17,7 +17,7 @@ class TestPathElementInterface(unittest.TestCase):
     def setUp(self):
         brown.setup()
         self.pen = PenInterface(Color('#000000'), 0, StrokePattern.SOLID)
-        self.brush = BrushInterface(Color('#000000'), FillPattern.SOLID_COLOR)
+        self.brush = BrushInterface(Color('#000000'), FillPattern.SOLID)
 
     def test_init(self):
         test_path = PathInterface(Point(5, 6), self.pen, self.brush)

@@ -28,4 +28,4 @@ class MockGraphicObjectInterface(GraphicObjectInterface):
             self.brush = brush
         else:
             self.brush = BrushInterface(
-                Color('#000000'), FillPattern.SOLID_COLOR)
+                Color('#000000'), FillPattern.SOLID)

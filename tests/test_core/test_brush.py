@@ -21,7 +21,7 @@ class TestBrush(unittest.TestCase):
 
     def test_pattern_defaults_to_solid_color(self):
         test_brush = Brush('#ffffff')
-        assert(test_brush.pattern == FillPattern.SOLID_COLOR)
+        assert(test_brush.pattern == FillPattern.SOLID)
 
     def test_pattern_set_from_real_pattern_object(self):
         test_brush = Brush('#ffffff', FillPattern.DENSE_1)

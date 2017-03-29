@@ -14,7 +14,7 @@ class FillPattern(Enum):
     # No brush pattern. This is equivalent to a fully transparent color.
     NO_BRUSH = 0
     # Uniform solid color.
-    SOLID_COLOR = 1
+    SOLID = 1
     # Extremely dense brush pattern.
     DENSE_1 = 2
     # Very dense brush pattern.

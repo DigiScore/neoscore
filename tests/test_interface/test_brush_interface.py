@@ -9,7 +9,7 @@ class TestBrushInterface(unittest.TestCase):
 
     def test_color_passed_to_qt(self):
         brush = BrushInterface(Color(0, 100, 200, 250),
-                               FillPattern.SOLID_COLOR)
+                               FillPattern.SOLID)
         assert(brush._qt_object.color().red() == 0)
         assert(brush._qt_object.color().green() == 100)
         assert(brush._qt_object.color().blue() == 200)
@@ -17,8 +17,8 @@ class TestBrushInterface(unittest.TestCase):
 
     def test_fill_pattern_passed_to_qt(self):
         brush = BrushInterface(Color(0, 0, 0),
-                               FillPattern.SOLID_COLOR)
-        assert(brush._qt_object.style() == FillPattern.SOLID_COLOR.value)
+                               FillPattern.SOLID)
+        assert(brush._qt_object.style() == FillPattern.SOLID.value)
 
         brush = BrushInterface(Color(0, 0, 0),
                                FillPattern.DENSE_1)

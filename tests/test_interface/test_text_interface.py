@@ -12,7 +12,7 @@ class TestTextInterface(unittest.TestCase):
 
     def setUp(self):
         brown.setup()
-        self.brush = BrushInterface(Color('#000000'), FillPattern.SOLID_COLOR)
+        self.brush = BrushInterface(Color('#000000'), FillPattern.SOLID)
 
     def test_init(self):
         test_font = FontInterface('Bravura', 12, 1, False)

@@ -68,7 +68,7 @@ class TestGraphicObjectInterface(unittest.TestCase):
         assert(grob._qt_object.pen() == grob.pen._qt_object)
 
     def test_brush_after_init(self):
-        brush = BrushInterface(Color('#eeeeee'), FillPattern.SOLID_COLOR)
+        brush = BrushInterface(Color('#eeeeee'), FillPattern.SOLID)
         grob = MockGraphicObjectInterface((5, 6), brush=brush)
         assert(grob.brush == grob._brush)
         assert(grob.brush == brush)
@@ -76,6 +76,6 @@ class TestGraphicObjectInterface(unittest.TestCase):
 
     def test_brush_setter_changes_qt_object(self):
         grob = MockGraphicObjectInterface((5, 6), brush=None)
-        brush = BrushInterface(Color('#eeeeee'), FillPattern.SOLID_COLOR)
+        brush = BrushInterface(Color('#eeeeee'), FillPattern.SOLID)
         grob.brush = brush
         assert(grob._qt_object.brush() == grob.brush._qt_object)

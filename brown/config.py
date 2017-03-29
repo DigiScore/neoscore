@@ -23,7 +23,7 @@ DEFAULT_PEN_PATTERN = StrokePattern.SOLID
 # Default brush properties
 DEFAULT_BRUSH_COLOR = Color(0, 0, 0, 255)
 DEFAULT_PATH_BRUSH_COLOR = Color(0, 0, 0, 0)
-DEFAULT_BRUSH_PATTERN = FillPattern.SOLID_COLOR
+DEFAULT_BRUSH_PATTERN = FillPattern.SOLID
 
 # Paper type
 DEFAULT_PAPER_TYPE = 'Letter'

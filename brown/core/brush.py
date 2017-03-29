@@ -11,7 +11,7 @@ class Brush:
 
     _interface_class = BrushInterface
 
-    def __init__(self, color='#000000', pattern=FillPattern.SOLID_COLOR):
+    def __init__(self, color='#000000', pattern=FillPattern.SOLID):
         """
         Args:
             color (Color or args for Color): The brush color
