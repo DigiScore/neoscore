@@ -34,7 +34,7 @@ from brown.core.slur import Slur
 from brown.core.staff import Staff
 from brown.core.staff_object import StaffObject
 from brown.core.stem import Stem
-from brown.core.pen_pattern import PenPattern
+from brown.utils.pen_pattern import PenPattern
 from brown.core.text import Text
 from brown.core.time_signature import TimeSignature
 

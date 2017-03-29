@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets
 
-from brown.core.brush_pattern import BrushPattern
-from brown.core.pen_pattern import PenPattern
+from brown.utils.brush_pattern import BrushPattern
+from brown.utils.pen_pattern import PenPattern
 from brown.interface.brush_interface import BrushInterface
 from brown.interface.graphic_object_interface import GraphicObjectInterface
 from brown.interface.pen_interface import PenInterface

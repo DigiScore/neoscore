@@ -3,7 +3,7 @@ import unittest
 from brown import config
 from brown.core import brown
 from brown.core.pen import Pen
-from brown.core.pen_pattern import PenPattern
+from brown.utils.pen_pattern import PenPattern
 from brown.utils.color import Color
 from brown.utils.units import Unit
 

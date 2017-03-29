@@ -1,7 +1,7 @@
 import unittest
 
 from brown.core import brown
-from brown.core.brush_pattern import BrushPattern
+from brown.utils.brush_pattern import BrushPattern
 from brown.utils.color import Color
 from brown.core.brush import Brush
 

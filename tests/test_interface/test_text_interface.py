@@ -1,7 +1,7 @@
 import unittest
 
 from brown.core import brown
-from brown.core.brush_pattern import BrushPattern
+from brown.utils.brush_pattern import BrushPattern
 from brown.interface.brush_interface import BrushInterface
 from brown.interface.font_interface import FontInterface
 from brown.interface.text_interface import TextInterface

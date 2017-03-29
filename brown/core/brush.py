@@ -1,4 +1,4 @@
-from brown.core.brush_pattern import BrushPattern
+from brown.utils.brush_pattern import BrushPattern
 from brown.interface.brush_interface import BrushInterface
 from brown.utils.color import Color
 
