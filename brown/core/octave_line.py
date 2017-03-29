@@ -6,7 +6,7 @@ from brown.core.path import Path
 from brown.core.pen import Pen
 from brown.core.staff_object import StaffObject
 from brown.utils.point import Point
-from brown.core.stroke_pattern import StrokePattern
+from brown.core.pen_pattern import PenPattern
 from brown.utils.units import GraphicUnit
 from brown.models.transposition import Transposition
 
@@ -95,7 +95,7 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
             pen=Pen(
                 thickness=self.staff.music_font.engraving_defaults[
                     'octaveLineThickness'],
-                pattern=StrokePattern.DASH
+                pattern=PenPattern.DASH
             ),
             parent=self
         )

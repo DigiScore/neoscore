@@ -1,4 +1,4 @@
-from brown.core.fill_pattern import FillPattern
+from brown.core.brush_pattern import BrushPattern
 from brown.interface.brush_interface import BrushInterface
 from brown.utils.color import Color
 
@@ -11,11 +11,11 @@ class Brush:
 
     _interface_class = BrushInterface
 
-    def __init__(self, color='#000000', pattern=FillPattern.SOLID):
+    def __init__(self, color='#000000', pattern=BrushPattern.SOLID):
         """
         Args:
             color (Color or args for Color): The brush color
-            pattern (FillPattern or int enum value): The brush fill pattern.
+            pattern (BrushPattern or int enum value): The brush fill pattern.
                 Defaults to a solid color.
         """
         if isinstance(color, Color):
@@ -24,10 +24,10 @@ class Brush:
             self.color = Color(*color)
         else:
             self.color = Color(color)
-        if isinstance(pattern, FillPattern):
+        if isinstance(pattern, BrushPattern):
             self.pattern = pattern
         else:
-            self.pattern = FillPattern(pattern)
+            self.pattern = BrushPattern(pattern)
         self._create_interface()
 
     ######## CONSTRUCOTRS ########
@@ -54,7 +54,7 @@ class Brush:
 
     @property
     def pattern(self):
-        """FillPattern: The fill pattern."""
+        """BrushPattern: The fill pattern."""
         return self._pattern
 
     @pattern.setter

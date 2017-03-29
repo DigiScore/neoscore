@@ -3,7 +3,7 @@ import unittest
 from brown import config
 from brown.core import brown
 from brown.core.pen import Pen
-from brown.core.stroke_pattern import StrokePattern
+from brown.core.pen_pattern import PenPattern
 from brown.utils.color import Color
 from brown.utils.units import Unit
 
@@ -28,10 +28,10 @@ class TestPen(unittest.TestCase):
 
     def test_init_default_pattern(self):
         test_pen = Pen()
-        assert(test_pen.pattern == StrokePattern.SOLID)
+        assert(test_pen.pattern == PenPattern.SOLID)
 
     def test_from_existing(self):
-        original = Pen(Color("#eeddcc"), Unit(2), StrokePattern.DASH)
+        original = Pen(Color("#eeddcc"), Unit(2), PenPattern.DASH)
         clone = Pen.from_existing(original)
         assert(id(original) != id(clone))
         assert(original.color == clone.color)

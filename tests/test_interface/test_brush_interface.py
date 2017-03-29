@@ -1,6 +1,6 @@
 import unittest
 
-from brown.core.fill_pattern import FillPattern
+from brown.core.brush_pattern import BrushPattern
 from brown.interface.brush_interface import BrushInterface
 from brown.utils.color import Color
 
@@ -9,17 +9,17 @@ class TestBrushInterface(unittest.TestCase):
 
     def test_color_passed_to_qt(self):
         brush = BrushInterface(Color(0, 100, 200, 250),
-                               FillPattern.SOLID)
+                               BrushPattern.SOLID)
         assert(brush._qt_object.color().red() == 0)
         assert(brush._qt_object.color().green() == 100)
         assert(brush._qt_object.color().blue() == 200)
         assert(brush._qt_object.color().alpha() == 250)
 
-    def test_fill_pattern_passed_to_qt(self):
+    def test_brush_pattern_passed_to_qt(self):
         brush = BrushInterface(Color(0, 0, 0),
-                               FillPattern.SOLID)
-        assert(brush._qt_object.style() == FillPattern.SOLID.value)
+                               BrushPattern.SOLID)
+        assert(brush._qt_object.style() == BrushPattern.SOLID.value)
 
         brush = BrushInterface(Color(0, 0, 0),
-                               FillPattern.DENSE_1)
-        assert(brush._qt_object.style() == FillPattern.DENSE_1.value)
+                               BrushPattern.DENSE_1)
+        assert(brush._qt_object.style() == BrushPattern.DENSE_1.value)

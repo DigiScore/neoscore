@@ -1,7 +1,7 @@
 import unittest
 
 from brown.core import brown
-from brown.core.fill_pattern import FillPattern
+from brown.core.brush_pattern import BrushPattern
 from brown.utils.color import Color
 from brown.core.brush import Brush
 
@@ -21,18 +21,18 @@ class TestBrush(unittest.TestCase):
 
     def test_pattern_defaults_to_solid_color(self):
         test_brush = Brush('#ffffff')
-        assert(test_brush.pattern == FillPattern.SOLID)
+        assert(test_brush.pattern == BrushPattern.SOLID)
 
     def test_pattern_set_from_real_pattern_object(self):
-        test_brush = Brush('#ffffff', FillPattern.DENSE_1)
-        assert(test_brush.pattern == FillPattern.DENSE_1)
+        test_brush = Brush('#ffffff', BrushPattern.DENSE_1)
+        assert(test_brush.pattern == BrushPattern.DENSE_1)
 
     def test_pattern_set_from_int_enum_value(self):
-        test_brush = Brush('#ffffff', FillPattern.DENSE_1.value)
-        assert(test_brush.pattern == FillPattern.DENSE_1)
+        test_brush = Brush('#ffffff', BrushPattern.DENSE_1.value)
+        assert(test_brush.pattern == BrushPattern.DENSE_1)
 
     def test_from_existing(self):
-        original = Brush(Color('#ffffff'), FillPattern.DENSE_1.value)
+        original = Brush(Color('#ffffff'), BrushPattern.DENSE_1.value)
         clone = Brush.from_existing(original)
         assert(id(original) != id(clone))
         assert(original.color == clone.color)

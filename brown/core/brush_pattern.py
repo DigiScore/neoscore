@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class FillPattern(Enum):
+class BrushPattern(Enum):
 
     """An enumeration of pen stroke patterns.
 

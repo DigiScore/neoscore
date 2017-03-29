@@ -1,6 +1,6 @@
 from PyQt5 import QtGui
 
-from brown.core.stroke_pattern import StrokePattern
+from brown.core.pen_pattern import PenPattern
 from brown.utils.units import GraphicUnit
 
 
@@ -15,7 +15,7 @@ class PenInterface:
         Args:
             color (Color): The color for the pen
             thickness (Unit): The stroke thickness of the pen
-            pattern (StrokePattern or int enum value): The stroke pattern.
+            pattern (PenPattern or int enum value): The stroke pattern.
                 Defaults to a solid line.
         """
         # HACK: Initialize color to bright red to this not being set
@@ -56,10 +56,10 @@ class PenInterface:
 
     @property
     def pattern(self):
-        """StrokePattern: The stroke pattern."""
+        """PenPattern: The stroke pattern."""
         return self._pattern
 
     @pattern.setter
     def pattern(self, value):
-        self._pattern = StrokePattern(value)
+        self._pattern = PenPattern(value)
         self._qt_object.setStyle(self.pattern.value)

@@ -1,7 +1,7 @@
 import unittest
 
 from brown.core import brown
-from brown.core.fill_pattern import FillPattern
+from brown.core.brush_pattern import BrushPattern
 from brown.interface.brush_interface import BrushInterface
 from brown.interface.font_interface import FontInterface
 from brown.interface.text_interface import TextInterface
@@ -12,7 +12,7 @@ class TestTextInterface(unittest.TestCase):
 
     def setUp(self):
         brown.setup()
-        self.brush = BrushInterface(Color('#000000'), FillPattern.SOLID)
+        self.brush = BrushInterface(Color('#000000'), BrushPattern.SOLID)
 
     def test_init(self):
         test_font = FontInterface('Bravura', 12, 1, False)

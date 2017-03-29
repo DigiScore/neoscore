@@ -11,7 +11,7 @@ class BrushInterface:
         """
         Args:
             color (Color): The color of the brush.
-            pattern (FillPattern): The fill pattern of the brush.
+            pattern (BrushPattern): The fill pattern of the brush.
         """
         # Initialize color to bright red to signal this not being
         # set correctly by color setter
@@ -36,7 +36,7 @@ class BrushInterface:
 
     @property
     def pattern(self):
-        """FillPattern: The fill pattern."""
+        """BrushPattern: The fill pattern."""
         return self._pattern
 
     @pattern.setter

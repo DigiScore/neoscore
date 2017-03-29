@@ -1,7 +1,7 @@
 from brown import config
 from brown.interface.pen_interface import PenInterface
 from brown.utils.color import Color
-from brown.core.stroke_pattern import StrokePattern
+from brown.core.pen_pattern import PenPattern
 from brown.utils.units import GraphicUnit
 
 
@@ -16,12 +16,12 @@ class Pen:
     def __init__(self,
                  color='#000000',
                  thickness=None,
-                 pattern=StrokePattern.SOLID):
+                 pattern=PenPattern.SOLID):
         """
         Args:
             color (Color or args for Color): The stroke color
             thickness (Unit): The stroke thickness
-            pattern (StrokePattern): The stroke pattern.
+            pattern (PenPattern): The stroke pattern.
                 Defaults to a solid line.
         """
         if isinstance(color, Color):
@@ -74,7 +74,7 @@ class Pen:
 
     @property
     def pattern(self):
-        """StrokePattern: The stroke pattern."""
+        """PenPattern: The stroke pattern."""
         return self._pattern
 
     @pattern.setter

@@ -3,7 +3,7 @@ import unittest
 from PyQt5.QtCore import QPointF
 
 from brown.core import brown
-from brown.core.fill_pattern import FillPattern
+from brown.core.brush_pattern import BrushPattern
 from brown.interface.graphic_object_interface import GraphicObjectInterface
 from brown.interface.pen_interface import PenInterface
 from brown.interface.brush_interface import BrushInterface
@@ -11,7 +11,7 @@ from brown.interface.qt_to_util import point_to_qt_point_f
 from brown.utils.point import Point
 from brown.utils.units import GraphicUnit
 from brown.utils.color import Color
-from brown.core.stroke_pattern import StrokePattern
+from brown.core.pen_pattern import PenPattern
 
 from tests.mocks.mock_graphic_object_interface import MockGraphicObjectInterface
 
@@ -55,7 +55,7 @@ class TestGraphicObjectInterface(unittest.TestCase):
         self.assertAlmostEqual(expected.y(), grob._qt_object.y())
 
     def test_pen_after_init(self):
-        pen = PenInterface(Color('#eeeeee'), 0, StrokePattern(1))
+        pen = PenInterface(Color('#eeeeee'), 0, PenPattern(1))
         grob = MockGraphicObjectInterface((5, 6), pen=pen)
         assert(grob.pen == grob._pen)
         assert(grob.pen == pen)
@@ -63,12 +63,12 @@ class TestGraphicObjectInterface(unittest.TestCase):
 
     def test_pen_setter_changes_qt_object(self):
         grob = MockGraphicObjectInterface((5, 6), pen=None)
-        pen = PenInterface(Color('#eeeeee'), 0, StrokePattern(1))
+        pen = PenInterface(Color('#eeeeee'), 0, PenPattern(1))
         grob.pen = pen
         assert(grob._qt_object.pen() == grob.pen._qt_object)
 
     def test_brush_after_init(self):
-        brush = BrushInterface(Color('#eeeeee'), FillPattern.SOLID)
+        brush = BrushInterface(Color('#eeeeee'), BrushPattern.SOLID)
         grob = MockGraphicObjectInterface((5, 6), brush=brush)
         assert(grob.brush == grob._brush)
         assert(grob.brush == brush)
@@ -76,6 +76,6 @@ class TestGraphicObjectInterface(unittest.TestCase):
 
     def test_brush_setter_changes_qt_object(self):
         grob = MockGraphicObjectInterface((5, 6), brush=None)
-        brush = BrushInterface(Color('#eeeeee'), FillPattern.SOLID)
+        brush = BrushInterface(Color('#eeeeee'), BrushPattern.SOLID)
         grob.brush = brush
         assert(grob._qt_object.brush() == grob.brush._qt_object)

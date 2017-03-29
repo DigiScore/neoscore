@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets
 
-from brown.core.fill_pattern import FillPattern
-from brown.core.stroke_pattern import StrokePattern
+from brown.core.brush_pattern import BrushPattern
+from brown.core.pen_pattern import PenPattern
 from brown.interface.brush_interface import BrushInterface
 from brown.interface.graphic_object_interface import GraphicObjectInterface
 from brown.interface.pen_interface import PenInterface
@@ -23,9 +23,9 @@ class MockGraphicObjectInterface(GraphicObjectInterface):
             self.pen = pen
         else:
             self.pen = PenInterface(
-                Color('#000000'), 0, StrokePattern.SOLID)
+                Color('#000000'), 0, PenPattern.SOLID)
         if brush:
             self.brush = brush
         else:
             self.brush = BrushInterface(
-                Color('#000000'), FillPattern.SOLID)
+                Color('#000000'), BrushPattern.SOLID)
