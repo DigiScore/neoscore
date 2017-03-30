@@ -1,7 +1,7 @@
 from brown.core.music_text import MusicText
 from brown.models.virtual_accidental import (VirtualAccidental,
                                              InvalidAccidentalError)
-from brown.utils.exceptions import NoneVirtualAccidentalInRealAccidentalError
+from brown.utils.exceptions import InvalidVirtualAccidentalError
 
 
 class Accidental(MusicText):
@@ -25,7 +25,7 @@ class Accidental(MusicText):
         try:
             self.virtual_accidental = VirtualAccidental(kind)
             if self.virtual_accidental.value is None:
-                raise NoneVirtualAccidentalInRealAccidentalError(
+                raise InvalidVirtualAccidentalError(
                     "cannot create real Accidental object "
                     "with VirtualAccidental('None')")
         except InvalidAccidentalError as error:

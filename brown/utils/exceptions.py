@@ -28,10 +28,8 @@ class NoAncestorStaffError(Exception):
     pass
 
 
-class NoneVirtualAccidentalInRealAccidentalError(Exception):
+class InvalidVirtualAccidentalError(Exception):
     """Exception raised when an Accidental is given a `None` VirtualAccidental"""
-
-    # TODO: Rename me?
     pass
 
 
