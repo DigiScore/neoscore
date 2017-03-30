@@ -1,6 +1,6 @@
 from brown.core.music_text import MusicText
 from brown.core.spanner import Spanner
-from brown.utils.anchored_point import AnchoredPoint
+from brown.utils.parent_point import ParentPoint
 from brown.utils.point import Point
 
 
@@ -18,8 +18,8 @@ class RepeatingMusicTextLine(MusicText, Spanner):
     def __init__(self, start, stop, text, font=None, scale_factor=1):
         """
         Args:
-            start (AnchoredPoint or tuple init args):
-            stop (AnchoredPoint or tuple init args):
+            start (ParentPoint or tuple init args):
+            stop (ParentPoint or tuple init args):
             text (str, tuple, MusicChar, or list of these):
                 The text to be repeated over the spanner,
                 represented as a str (glyph name), tuple
@@ -29,10 +29,10 @@ class RepeatingMusicTextLine(MusicText, Spanner):
             scale_factor (float): A hard scaling factor to be applied
                 in addition to the size of the music font.
         """
-        start = (start if isinstance(start, AnchoredPoint)
-                 else AnchoredPoint(*start))
-        stop = (stop if isinstance(stop, AnchoredPoint)
-                else AnchoredPoint(*stop))
+        start = (start if isinstance(start, ParentPoint)
+                 else ParentPoint(*start))
+        stop = (stop if isinstance(stop, ParentPoint)
+                else ParentPoint(*stop))
         # init the MusicText to ask it how wide a single
         # repetition of `text` is in order to calculate how many
         # repetitions are needed to cover the spanner.

@@ -30,7 +30,7 @@ class TestSpanner(unittest.TestCase):
     def setUp(self):
         brown.setup()
 
-    def test_inputs_converted_to_anchored_points(self):
+    def test_inputs_converted_to_parent_points(self):
         spanner = MockSpanner((Unit(0), Unit(1)),
                               None,
                               (Unit(2), Unit(3)),

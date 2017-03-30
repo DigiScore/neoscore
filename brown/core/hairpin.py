@@ -4,7 +4,7 @@ from brown.core.graphic_object import GraphicObject
 from brown.core.path import Path
 from brown.core.spanner import Spanner
 from brown.core.staff_object import StaffObject
-from brown.utils.anchored_point import AnchoredPoint
+from brown.utils.parent_point import ParentPoint
 from brown.utils.point import Point
 from brown.utils.units import Unit
 
@@ -16,9 +16,9 @@ class Hairpin(Path, StaffObject, Spanner):
     def __init__(self, start, stop, direction, width=None):
         """
         Args:
-            start (AnchoredPoint or tuple init args): The starting point.
+            start (ParentPoint or tuple init args): The starting point.
                 This must have a parent which is a StaffObject or Staff.
-            stop (AnchoredPoint or tuple init args): The stopping point.
+            stop (ParentPoint or tuple init args): The stopping point.
                 If this point's parent is `None`, the parent will default
                 to the starting point.
             direction (int): The direction of the hairpin,
@@ -27,10 +27,10 @@ class Hairpin(Path, StaffObject, Spanner):
             width (Unit): The width of the wide hairpin part.
                 Defaults to `self.staff.unit(1)`
         """
-        start = (start if isinstance(start, AnchoredPoint)
-                 else AnchoredPoint(*start))
-        stop = (stop if isinstance(stop, AnchoredPoint)
-                else AnchoredPoint(*stop))
+        start = (start if isinstance(start, ParentPoint)
+                 else ParentPoint(*start))
+        stop = (stop if isinstance(stop, ParentPoint)
+                else ParentPoint(*stop))
         Path.__init__(self,
                       start,
                       parent=start.parent)
@@ -65,7 +65,7 @@ class Hairpin(Path, StaffObject, Spanner):
         """Find the hairpin path points for a set of parameters.
 
         Returns:
-            tuple(AnchoredPoint, AnchoredPoint, AnchoredPoint):
+            tuple(ParentPoint, ParentPoint, ParentPoint):
                 The three points of the path. The center point
                 is the point on the small end of the hairpin,
                 while the outer points are those on the open
@@ -77,14 +77,14 @@ class Hairpin(Path, StaffObject, Spanner):
               line would be.
         """
         if self.direction == -1:
-            joint = AnchoredPoint(
+            joint = ParentPoint(
                 self.end_pos.x, self.end_pos.y, parent=self.end_parent)
-            end_center = AnchoredPoint(
+            end_center = ParentPoint(
                 self.x, self.y, parent=self.parent)
         else:
-            joint = AnchoredPoint(
+            joint = ParentPoint(
                 self.x, self.y, parent=self.parent)
-            end_center = AnchoredPoint(
+            end_center = ParentPoint(
                 self.end_pos.x, self.end_pos.y, parent=self.end_parent)
         dist = self.width / 2
         # Find relative distance from joint to end_center
@@ -95,21 +95,21 @@ class Hairpin(Path, StaffObject, Spanner):
                          - Point(joint.x, joint.y))
         if relative_stop.y == Unit(0):
             return(
-                (AnchoredPoint(end_center.x,
+                (ParentPoint(end_center.x,
                                end_center.y + dist,
                                parent=end_center.parent)),
                 joint,
-                (AnchoredPoint(end_center.x,
+                (ParentPoint(end_center.x,
                                end_center.y - dist,
                                parent=end_center.parent))
             )
         elif relative_stop.x == Unit(0):
             return(
-                (AnchoredPoint(end_center.x + dist,
+                (ParentPoint(end_center.x + dist,
                                end_center.y,
                                parent=end_center.parent)),
                 joint,
-                (AnchoredPoint(end_center.x - dist,
+                (ParentPoint(end_center.x - dist,
                                end_center.y,
                                parent=end_center.parent))
             )
@@ -133,9 +133,9 @@ class Hairpin(Path, StaffObject, Spanner):
         first_y = (opening_slope * first_x) - opening_y_intercept
         last_y = (opening_slope * last_x) - opening_y_intercept
         return(
-                (AnchoredPoint(first_x, first_y, parent=end_center.parent)),
+                (ParentPoint(first_x, first_y, parent=end_center.parent)),
                 joint,
-                (AnchoredPoint(last_x, last_y, parent=end_center.parent))
+                (ParentPoint(last_x, last_y, parent=end_center.parent))
         )
 
     def _draw_path(self):

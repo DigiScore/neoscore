@@ -2,8 +2,8 @@ from brown.utils.point import Point
 from brown.utils.units import Unit
 
 
-class AnchoredPoint(Point):
-    """A Point with an optional parent anchor.
+class ParentPoint(Point):
+    """A Point with an optional parent.
 
     This is identical to a Point except that it has an additional
     `parent` attribute. Its coordinates are then considered to be
@@ -18,7 +18,7 @@ class AnchoredPoint(Point):
             x (float or Unit):
             y (float or Unit):
             parent (GraphicObject or None): The object this point
-                is anchored to. If None, this object acts like a Point
+                is anchored to.
         """
         super().__init__(x, y)
         self._parent = parent
@@ -26,19 +26,19 @@ class AnchoredPoint(Point):
     ######## PUBLIC CLASS METHODS ########
 
     @classmethod
-    def from_existing(cls, anchored_point):
-        """Clone an AnchoredPoint.
+    def from_existing(cls, parent_point):
+        """Clone an ParentPoint.
 
         Args:
-            anchored_point (AnchoredPoint): The anchored point to clone
+            parent_point (ParentPoint): The anchored point to clone
 
-        Returns: AnchoredPoint
+        Returns: ParentPoint
         """
-        return cls(anchored_point.x, anchored_point.y, anchored_point.parent)
+        return cls(parent_point.x, parent_point.y, parent_point.parent)
 
     @classmethod
     def from_point(cls, point, parent):
-        """Create an AnchoredPoint from an existing Point and a parent.
+        """Create an ParentPoint from an existing Point and a parent.
 
         Args:
             point (Point):
@@ -59,7 +59,7 @@ class AnchoredPoint(Point):
         return hash(self.__repr__())
 
     def __eq__(self, other):
-        """Two AnchoredPoints are equal if their attributes are all equal.
+        """Two ParentPoints are equal if their attributes are all equal.
 
         Return: Bool
         """
@@ -71,37 +71,37 @@ class AnchoredPoint(Point):
             return False
 
     def __add__(self, other):
-        """`AnchoredPoint`s may be added with each other if they share a parent
+        """`ParentPoint`s may be added with each other if they share a parent
 
-        Returns: AnchoredPoint
+        Returns: ParentPoint
         """
         if type(other) != type(self):
             raise TypeError
         elif self.parent != other.parent:
             raise AttributeError(
-                'Cannot add AnchoredPoints with different parents')
+                'Cannot add ParentPoints with different parents')
         return type(self)(self.x + other.x,
                           self.y + other.y,
                           self.parent)
 
     def __sub__(self, other):
-        """`AnchoredPoint`s may be subtracted with each other if they share a parent
+        """`ParentPoint`s may be subtracted with each other if they share a parent
 
-        Returns: AnchoredPoint
+        Returns: ParentPoint
         """
         if type(other) != type(self):
             raise TypeError
         elif self.parent != other.parent:
             raise AttributeError(
-                'Cannot subtract AnchoredPoints with different parents')
+                'Cannot subtract ParentPoints with different parents')
         return type(self)(self.x - other.x,
                           self.y - other.y,
                           self.parent)
 
     def __mul__(self, other):
-        """`AnchoredPoint`s may be multiplied with scalars.
+        """`ParentPoint`s may be multiplied with scalars.
 
-        Returns: AnchoredPoint
+        Returns: ParentPoint
         """
         if not isinstance(other, (Unit, int, float)):
             raise TypeError

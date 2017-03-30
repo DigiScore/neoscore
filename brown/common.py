@@ -34,13 +34,13 @@ from brown.core.slur import Slur
 from brown.core.staff import Staff
 from brown.core.staff_object import StaffObject
 from brown.core.stem import Stem
-from brown.utils.pen_pattern import PenPattern
 from brown.core.text import Text
 from brown.core.time_signature import TimeSignature
+from brown.utils.pen_pattern import PenPattern
 
 from brown.models.beat import Beat
 
-from brown.utils.anchored_point import AnchoredPoint
+from brown.utils.parent_point import ParentPoint
 from brown.utils.color import Color
 from brown.utils.point import Point
 from brown.utils.rect import Rect

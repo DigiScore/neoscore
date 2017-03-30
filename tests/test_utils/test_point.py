@@ -3,7 +3,7 @@ import pytest
 
 from brown.utils.units import Unit, Mm
 from brown.utils.point import Point
-from brown.utils.anchored_point import AnchoredPoint
+from brown.utils.parent_point import ParentPoint
 
 
 class TestPoint(unittest.TestCase):
@@ -21,8 +21,8 @@ class TestPoint(unittest.TestCase):
         assert(original.x == clone.x)
         assert(original.y == clone.y)
 
-    def test_from_anchored_point(self):
-        original = AnchoredPoint(5, 6, 'mock parent')
+    def test_from_parent_point(self):
+        original = ParentPoint(5, 6, 'mock parent')
         clone = Point.from_existing(original)
         # NOTE: id() check may fail on non-CPython interpreters
         assert(id(original) != id(clone))
@@ -65,7 +65,7 @@ class TestPoint(unittest.TestCase):
         assert(p1 + p2 == Point(4, 6))
         with pytest.raises(TypeError):
             p1 + 1
-            p1 + AnchoredPoint(0, 0, 'mock parent')
+            p1 + ParentPoint(0, 0, 'mock parent')
 
     def test__sub__(self):
         p1 = Point(1, 2)
@@ -73,7 +73,7 @@ class TestPoint(unittest.TestCase):
         assert(p1 - p2 == Point(-2, -2))
         with pytest.raises(TypeError):
             p1 - 1
-            p1 - AnchoredPoint(0, 0, 'mock parent')
+            p1 - ParentPoint(0, 0, 'mock parent')
 
     def test__mul__(self):
         p1 = Point(1, 2)

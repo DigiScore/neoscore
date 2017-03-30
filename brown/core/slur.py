@@ -2,7 +2,7 @@ from brown.core.brush import Brush
 from brown.core.path import Path
 from brown.core.spanner import Spanner
 from brown.core.staff_object import StaffObject
-from brown.utils.anchored_point import AnchoredPoint
+from brown.utils.parent_point import ParentPoint
 from brown.utils.point import Point
 
 
@@ -16,15 +16,15 @@ class Slur(Path, StaffObject, Spanner):
     def __init__(self, start, stop, direction=-1):
         """
         Args:
-            start (AnchoredPoint or tuple init args):
-            stop (AnchoredPoint or tuple init args):
+            start (ParentPoint or tuple init args):
+            stop (ParentPoint or tuple init args):
             direction (int): The direction of the slur, where
                 -1 indicates curving upward, and 1 vice versa.
         """
-        start = (start if isinstance(start, AnchoredPoint)
-                 else AnchoredPoint(*start))
-        stop = (stop if isinstance(stop, AnchoredPoint)
-                else AnchoredPoint(*stop))
+        start = (start if isinstance(start, ParentPoint)
+                 else ParentPoint(*start))
+        stop = (stop if isinstance(stop, ParentPoint)
+                else ParentPoint(*stop))
         Path.__init__(self, (start.x, start.y),
                       parent=start.parent,
                       brush=Brush((0, 0, 0, 255)))
@@ -56,13 +56,13 @@ class Slur(Path, StaffObject, Spanner):
         self.move_to(self.staff.unit(0),
                      end_height,
                      self)
-        control_1 = AnchoredPoint(self.staff.unit(1),
+        control_1 = ParentPoint(self.staff.unit(1),
                                   mid_upper_height,
                                   parent=self)
-        control_2 = AnchoredPoint(self.end_pos.x - self.staff.unit(1),
+        control_2 = ParentPoint(self.end_pos.x - self.staff.unit(1),
                                   self.end_pos.y + mid_upper_height,
                                   parent=self.end_parent)
-        end = AnchoredPoint(self.end_pos.x,
+        end = ParentPoint(self.end_pos.x,
                             self.end_pos.y + end_height,
                             parent=self.end_parent)
         self.cubic_to(control_1.x, control_1.y,
@@ -74,13 +74,13 @@ class Slur(Path, StaffObject, Spanner):
                      self.end_pos.y,
                      self.end_parent)
         # Draw lower curve part
-        control_1 = AnchoredPoint(self.end_pos.x - self.staff.unit(1),
+        control_1 = ParentPoint(self.end_pos.x - self.staff.unit(1),
                                   self.end_pos.y + mid_height,
                                   parent=self.end_parent)
-        control_2 = AnchoredPoint(self.x + self.staff.unit(1),
+        control_2 = ParentPoint(self.x + self.staff.unit(1),
                                   self.y + mid_height,
                                   parent=self)
-        end = AnchoredPoint(self.x,
+        end = ParentPoint(self.x,
                             self.y,
                             parent=self)
         self.cubic_to(control_1.x, control_1.y,

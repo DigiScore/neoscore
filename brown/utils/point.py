@@ -32,15 +32,15 @@ class Point:
         return cls(point.x, point.y)
 
     @classmethod
-    def from_anchored_point(cls, anchored_point):
-        """Create a Point from an AnchoredPoint, discarding its parent.
+    def from_parent_point(cls, parent_point):
+        """Create a Point from an ParentPoint, discarding its parent.
 
         Args:
-            anchored_point (AnchoredPoint):
+            parent_point (ParentPoint):
 
         Returns: Point
         """
-        return cls(anchored_point.x, anchored_point.y)
+        return cls(parent_point.x, parent_point.y)
 
     ######## PUBLIC PROPERTIES ########
 

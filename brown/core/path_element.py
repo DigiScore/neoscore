@@ -35,3 +35,29 @@ class PathElement(InvisibleObject):
     @element_type.setter
     def element_type(self, value):
         self._element_type = PathElementType(value)
+
+    ######## PRIVATE METHODS ########
+
+    @staticmethod
+    def _assert_soft_equal(first, second):
+        """An internal soft equality assertion for testing.
+
+        Tells whether the following properties are equal with another object:
+
+            * Type
+            * pos
+            * parent
+            * parent_path
+            * element_type
+
+        WARNING: This is for testing purposes only.
+
+        Returns: Bool
+
+        Raises: AssertionError
+        """
+        assert(type(first) == type(second) == PathElement)
+        assert(first.pos == second.pos)
+        assert(first.parent == second.parent)
+        assert(first.parent_path == second.parent_path)
+        assert(first.element_type == second.element_type)

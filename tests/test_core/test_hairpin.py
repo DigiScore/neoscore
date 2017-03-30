@@ -4,7 +4,7 @@ from brown.core import brown
 from brown.core.flowable_frame import FlowableFrame
 from brown.core.staff import Staff
 from brown.core.hairpin import Hairpin
-from brown.utils.anchored_point import AnchoredPoint
+from brown.utils.parent_point import ParentPoint
 from brown.utils.units import Unit, Mm
 
 from tests.mocks.mock_staff_object import MockStaffObject
@@ -25,11 +25,11 @@ class TestHairpin(unittest.TestCase):
                         1,
                         Unit(2))
         points = cresc._find_hairpin_points()
-        assert(points[0] == AnchoredPoint(
+        assert(points[0] == ParentPoint(
             Unit(10), Unit(1), parent=self.left_parent))
-        assert(points[1] == AnchoredPoint(
+        assert(points[1] == ParentPoint(
             Unit(0), Unit(0), parent=self.left_parent))
-        assert(points[2] == AnchoredPoint(
+        assert(points[2] == ParentPoint(
             Unit(10), Unit(-1), parent=self.left_parent))
 
         dim = Hairpin((Unit(0), Unit(0), self.left_parent),
@@ -37,11 +37,11 @@ class TestHairpin(unittest.TestCase):
                       -1,
                       Unit(2))
         points = dim._find_hairpin_points()
-        assert(points[0] == AnchoredPoint(
+        assert(points[0] == ParentPoint(
             Unit(0), Unit(1), parent=self.left_parent))
-        assert(points[1] == AnchoredPoint(
+        assert(points[1] == ParentPoint(
             Unit(10), Unit(0), parent=self.left_parent))
-        assert(points[2] == AnchoredPoint(
+        assert(points[2] == ParentPoint(
             Unit(0), Unit(-1), parent=self.left_parent))
 
     def test_find_hairpin_points_horizontal_different_parent(self):
@@ -50,11 +50,11 @@ class TestHairpin(unittest.TestCase):
                         1,
                         Unit(2))
         points = cresc._find_hairpin_points()
-        assert(points[0] == AnchoredPoint(
+        assert(points[0] == ParentPoint(
             Unit(1), Unit(1), parent=self.right_parent))
-        assert(points[1] == AnchoredPoint(
+        assert(points[1] == ParentPoint(
             Unit(0), Unit(2), parent=self.left_parent))
-        assert(points[2] == AnchoredPoint(
+        assert(points[2] == ParentPoint(
             Unit(1), Unit(-1), parent=self.right_parent))
 
         dim = Hairpin((Unit(0), Unit(2), self.left_parent),
@@ -62,11 +62,11 @@ class TestHairpin(unittest.TestCase):
                       -1,
                       Unit(2))
         points = dim._find_hairpin_points()
-        assert(points[0] == AnchoredPoint(
+        assert(points[0] == ParentPoint(
             Unit(0), Unit(3), parent=self.left_parent))
-        assert(points[1] == AnchoredPoint(
+        assert(points[1] == ParentPoint(
             Unit(1), Unit(0), parent=self.right_parent))
-        assert(points[2] == AnchoredPoint(
+        assert(points[2] == ParentPoint(
             Unit(0), Unit(1), parent=self.left_parent))
 
     def test_find_hairpin_points_vertical_same_parent(self):
@@ -75,11 +75,11 @@ class TestHairpin(unittest.TestCase):
                         1,
                         Unit(2))
         points = cresc._find_hairpin_points()
-        assert(points[0] == AnchoredPoint(
+        assert(points[0] == ParentPoint(
             Unit(1), Unit(10), parent=self.left_parent))
-        assert(points[1] == AnchoredPoint(
+        assert(points[1] == ParentPoint(
             Unit(0), Unit(0), parent=self.left_parent))
-        assert(points[2] == AnchoredPoint(
+        assert(points[2] == ParentPoint(
             Unit(-1), Unit(10), parent=self.left_parent))
 
         dim = Hairpin((Unit(0), Unit(0), self.left_parent),
@@ -87,11 +87,11 @@ class TestHairpin(unittest.TestCase):
                       -1,
                       Unit(2))
         points = dim._find_hairpin_points()
-        assert(points[0] == AnchoredPoint(
+        assert(points[0] == ParentPoint(
             Unit(1), Unit(0), parent=self.left_parent))
-        assert(points[1] == AnchoredPoint(
+        assert(points[1] == ParentPoint(
             Unit(0), Unit(10), parent=self.left_parent))
-        assert(points[2] == AnchoredPoint(
+        assert(points[2] == ParentPoint(
             Unit(-1), Unit(0), parent=self.left_parent))
 
     def test_find_hairpin_points_vertical_different_parents(self):
@@ -103,11 +103,11 @@ class TestHairpin(unittest.TestCase):
                         1,
                         Unit(2))
         points = cresc._find_hairpin_points()
-        assert(points[0] == AnchoredPoint(
+        assert(points[0] == ParentPoint(
             Unit(-9), Unit(1), parent=self.right_parent))
-        assert(points[1] == AnchoredPoint(
+        assert(points[1] == ParentPoint(
             Unit(0), Unit(0), parent=self.left_parent))
-        assert(points[2] == AnchoredPoint(
+        assert(points[2] == ParentPoint(
             Unit(-11), Unit(1), parent=self.right_parent))
 
         dim = Hairpin((Unit(0), Unit(0), self.left_parent),
@@ -115,11 +115,11 @@ class TestHairpin(unittest.TestCase):
                       -1,
                       Unit(2))
         points = dim._find_hairpin_points()
-        assert(points[0] == AnchoredPoint(
+        assert(points[0] == ParentPoint(
             Unit(1), Unit(0), parent=self.left_parent))
-        assert(points[1] == AnchoredPoint(
+        assert(points[1] == ParentPoint(
             Unit(-10), Unit(1), parent=self.right_parent))
-        assert(points[2] == AnchoredPoint(
+        assert(points[2] == ParentPoint(
             Unit(-1), Unit(0), parent=self.left_parent))
 
     def test_hairpin_points_diagonal_same_parent(self):
@@ -136,7 +136,7 @@ class TestHairpin(unittest.TestCase):
                                Unit(points[2].y).value)
         self.assertAlmostEqual(Unit(points[0].y).value,
                                Unit(points[2].x).value)
-        assert(points[1] == AnchoredPoint(
+        assert(points[1] == ParentPoint(
             Unit(0), Unit(0), parent=self.left_parent))
 
         dim = Hairpin((Unit(0), Unit(0), self.left_parent),
@@ -149,7 +149,7 @@ class TestHairpin(unittest.TestCase):
                                Unit(points[2].y).value)
         self.assertAlmostEqual(Unit(points[0].y).value,
                                Unit(points[2].x).value)
-        assert(points[1] == AnchoredPoint(Unit(4), Unit(4),
+        assert(points[1] == ParentPoint(Unit(4), Unit(4),
                                           parent=self.left_parent))
 
     def test_hairpin_points_diagonal_different_parents(self):
@@ -166,7 +166,7 @@ class TestHairpin(unittest.TestCase):
                                Unit(points[2].y).value)
         self.assertAlmostEqual(Unit(points[0].y).value,
                                Unit(points[2].x).value)
-        assert(points[1] == AnchoredPoint(
+        assert(points[1] == ParentPoint(
             Unit(10), Unit(2), parent=self.left_parent))
 
         dim = Hairpin((Unit(0), Unit(0), self.left_parent),
@@ -179,5 +179,5 @@ class TestHairpin(unittest.TestCase):
                                Unit(points[2].y).value)
         self.assertAlmostEqual(Unit(points[0].y).value,
                                Unit(points[2].x).value)
-        assert(points[1] == AnchoredPoint(
+        assert(points[1] == ParentPoint(
             Unit(-6), Unit(2), parent=self.right_parent))
