@@ -1,5 +1,5 @@
 from brown.core.invisible_object import InvisibleObject
-from brown.utils.path_element_type import PathElementType
+from brown.core.path_element_type import PathElementType
 
 
 class PathElement(InvisibleObject):

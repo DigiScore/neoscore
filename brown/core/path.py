@@ -3,7 +3,7 @@ from brown.core.brush import Brush
 from brown.core.graphic_object import GraphicObject
 from brown.core.path_element import PathElement
 from brown.interface.path_interface import PathInterface
-from brown.utils.path_element_type import PathElementType
+from brown.core.path_element_type import PathElementType
 from brown.utils.point import Point
 from brown.utils.units import GraphicUnit
 

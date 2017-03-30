@@ -2,7 +2,7 @@ import unittest
 
 from brown.core import brown
 from brown.utils.point import Point
-from brown.utils.path_element_type import PathElementType
+from brown.core.path_element_type import PathElementType
 from brown.utils.color import Color
 from brown.utils.brush_pattern import BrushPattern
 from brown.utils.pen_pattern import PenPattern

@@ -1,4 +1,4 @@
-from brown.utils.path_element_type import PathElementType
+from brown.core.path_element_type import PathElementType
 from brown.utils.point import Point
 from brown.utils.units import GraphicUnit
 

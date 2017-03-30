@@ -8,7 +8,7 @@ from brown.interface.path_element_interface import PathElementInterface
 from brown.interface.path_interface import PathInterface
 from brown.interface.pen_interface import PenInterface
 from brown.utils.color import Color
-from brown.utils.path_element_type import PathElementType
+from brown.core.path_element_type import PathElementType
 from brown.utils.point import Point
 
 
