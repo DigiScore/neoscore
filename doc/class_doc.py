@@ -1,0 +1,106 @@
+import re
+
+from doc.attribute_doc import AttributeDoc
+from doc.method_doc import MethodDoc
+from doc.method_type import MethodType
+from doc.utils import (previous_line_ending_index_from,
+                       first_or_none,
+                       whole_line_at)
+
+
+class ClassDoc:
+    """A Python class as far as docs are concerned."""
+
+    docstring_re = re.compile(
+        r'(\"\"\"(?P<content>.*?)\"\"\")',
+        flags=re.DOTALL)
+    method_re = re.compile(r'^ +def (?P<method>[a-z_][A-Za-z_0-9]*)'
+                                    '\((?P<args>.*?)\):\n',
+                                    flags=re.DOTALL | re.MULTILINE)
+    staticmethod_re = re.compile(r'^ +\@staticmethod\n',
+                                 flags=re.MULTILINE)
+    classmethod_re = re.compile(r'^ +\@classmethod\n',
+                                flags=re.MULTILINE)
+    property_re = re.compile(r'^ +\@property\n',
+                             flags=re.MULTILINE)
+    setter_re = re.compile(r'^ +\@(?P<name>\w+)\.setter\n',
+                           flags=re.MULTILINE)
+    attribute_re = re.compile(r'^    (?P<name>\w+) = (?P<value>.*$)\n',
+                              flags=re.MULTILINE)
+    warning_re = re.compile(r'^ *Warning:\s*(?P<body>.*?)\n(\n| *?\Z)',
+                            flags=re.DOTALL | re.MULTILINE)
+
+    def __init__(self, name, parent, superclass_string, docstring, body):
+        # Parent can be a Module or another Class
+        self.name = name
+        self.parent = parent
+        self.superclass_string = superclass_string
+        self.docstring = docstring
+        self.body = body
+        self.summary = ''
+        self.details = ''
+        self.methods = {}
+        self.properties = {}
+        self.class_attributes = {}
+        self.parse_class()
+
+    def parse_class(self):
+        # Grab summary
+        self.summary, self.details = self.docstring.split('\n\n', 1)
+
+        # Match remaining docstrings with property/attrs/methods
+        docstrings = list(re.finditer(ClassDoc.docstring_re, self.body))
+        methods = list(re.finditer(ClassDoc.method_re, self.body))
+        attributes = list(re.finditer(ClassDoc.attribute_re, self.body))
+        staticmethod_decorators = list(re.finditer(ClassDoc.staticmethod_re, self.body))
+        classmethod_decorators = list(re.finditer(ClassDoc.classmethod_re, self.body))
+        property_decorators = list(re.finditer(ClassDoc.property_re, self.body))
+        setter_decorators = list(re.finditer(ClassDoc.setter_re, self.body))
+        names_with_setters = set(setter.group('name') for setter in setter_decorators)
+        for docstring in docstrings:
+            last_line_end_i = previous_line_ending_index_from(
+                docstring.start(0), self.body)
+            docstring_content = docstring.group('content')
+            method_match = first_or_none(
+                m for m in methods
+                if m.end(0) - 1 == last_line_end_i)
+            attribute_match = first_or_none(
+                a for a in attributes
+                if a.end(0) - 1 == last_line_end_i)
+            #if docstring_content.startswith("float: the ratio of"):
+            #    import pdb;pdb.set_trace()
+            if method_match:
+                # Determine what type of method/property this is
+                line_before_method = whole_line_at(method_match.start(0) - 1, self.body)
+                if ClassDoc.property_re.search(line_before_method):
+                    self.properties[method_match.group('method')] = AttributeDoc(
+                        method_match.group('method'),
+                        self,
+                        docstring_content,
+                        True,
+                        method_match.group('method') not in names_with_setters,
+                        None)
+                else:
+                    if ClassDoc.staticmethod_re.search(line_before_method):
+                        method_type = MethodType.staticmethod
+                    elif ClassDoc.classmethod_re.search(line_before_method):
+                        method_type = MethodType.classmethod
+                    else:
+                        method_type = MethodType.normal
+                    self.methods[method_match.group('method')] = MethodDoc(
+                        method_match.group('method'),
+                        self,
+                        method_match.group('args'),
+                        docstring_content,
+                        method_type)
+            elif attribute_match:
+                self.class_attributes[attribute_match.group('name')] = AttributeDoc(
+                    attribute_match.group('name'),
+                    self,
+                    docstring_content,
+                    False,
+                    True,
+                    attribute_match.group('value'))
+            else:
+                # Orphan docstring, append to class details body.
+                self.details += '\n\n' + docstring_content
