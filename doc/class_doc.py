@@ -5,7 +5,8 @@ from doc.method_doc import MethodDoc
 from doc.method_type import MethodType
 from doc.utils import (previous_line_ending_index_from,
                        first_or_none,
-                       whole_line_at)
+                       whole_line_at,
+                       clean_whitespace)
 
 
 class ClassDoc:
@@ -30,13 +31,16 @@ class ClassDoc:
     warning_re = re.compile(r'^ *Warning:\s*(?P<body>.*?)\n(\n| *?\Z)',
                             flags=re.DOTALL | re.MULTILINE)
 
-    def __init__(self, name, parent, superclass_string, docstring, body):
-        # Parent can be a Module or another Class
+    def __init__(self, name, parent, superclass_string, docstring, body,
+                 global_index):
+        # Parent can be a ModuleDoc or another Class
         self.name = name
         self.parent = parent
         self.superclass_string = superclass_string
         self.docstring = docstring
         self.body = body
+        self.global_index = global_index
+        self.global_index.add(self)
         self.summary = ''
         self.details = ''
         self.methods = {}
@@ -44,9 +48,17 @@ class ClassDoc:
         self.class_attributes = {}
         self.parse_class()
 
+    @property
+    def url(self):
+        return self.parent.url + '#' + self.name
+
     def parse_class(self):
         # Grab summary
-        self.summary, self.details = self.docstring.split('\n\n', 1)
+        if '\n\n' in self.docstring:
+            self.summary, self.details = self.docstring.split('\n\n', 1)
+        else:
+            self.summary = self.docstring
+            self.details = ''
 
         # Match remaining docstrings with property/attrs/methods
         docstrings = list(re.finditer(ClassDoc.docstring_re, self.body))
@@ -67,8 +79,6 @@ class ClassDoc:
             attribute_match = first_or_none(
                 a for a in attributes
                 if a.end(0) - 1 == last_line_end_i)
-            #if docstring_content.startswith("float: the ratio of"):
-            #    import pdb;pdb.set_trace()
             if method_match:
                 # Determine what type of method/property this is
                 line_before_method = whole_line_at(method_match.start(0) - 1, self.body)
@@ -79,7 +89,8 @@ class ClassDoc:
                         docstring_content,
                         True,
                         method_match.group('method') not in names_with_setters,
-                        None)
+                        None,
+                        self.global_index)
                 else:
                     if ClassDoc.staticmethod_re.search(line_before_method):
                         method_type = MethodType.staticmethod
@@ -92,7 +103,8 @@ class ClassDoc:
                         self,
                         method_match.group('args'),
                         docstring_content,
-                        method_type)
+                        method_type,
+                        self.global_index)
             elif attribute_match:
                 self.class_attributes[attribute_match.group('name')] = AttributeDoc(
                     attribute_match.group('name'),
@@ -100,7 +112,14 @@ class ClassDoc:
                     docstring_content,
                     False,
                     True,
-                    attribute_match.group('value'))
+                    attribute_match.group('value'),
+                    self.global_index)
             else:
                 # Orphan docstring, append to class details body.
                 self.details += '\n\n' + docstring_content
+        self.clean_whitespace()
+
+    def clean_whitespace(self):
+        """Strip excessive whitespace but leave blank lines in tact."""
+        self.summary = clean_whitespace(self.summary)
+        self.details = clean_whitespace(self.details)

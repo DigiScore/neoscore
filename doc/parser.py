@@ -2,13 +2,14 @@ import sys
 import os
 
 from doc.package import Package
-from doc.module import Module
+from doc.module_doc import ModuleDoc
 from doc.utils import module_path_to_import_name, package_path_to_import_name
 
 
 def parse_dir(top):
     packages = {}
     modules = {}
+    global_index = set()
 
     # Discover packages and modules
     for root, dirs, files in os.walk(top):
@@ -19,7 +20,8 @@ def parse_dir(top):
         for file in files:
             if file.endswith('.py') and file != '__init__.py':
                 module_name = module_path_to_import_name(root, file)
-                modules[module_name] = Module(os.path.join(root, file), module_name)
+                modules[module_name] = ModuleDoc(os.path.join(root, file),
+                                              module_name, global_index)
 
     # Link subpackages to parent packages
     for package_name, package in packages.items():
@@ -43,11 +45,17 @@ def parse_dir(top):
             packages[package_name].modules[module_name] = module
             module.package = packages[package_name]
 
-    return packages, modules
+    # Perform basic parsing of all modules, in turn discovering and parsing
+    # classes, modules, attributes, etc.
+    for module in modules.values():
+        module.parse_module()
+
+
+    return packages, modules, global_index
 
 
 if __name__ == '__main__':
     from pprint import pprint
-    packages, modules = parse_dir(sys.argv[1])
+    packages, modules, global_index = parse_dir(sys.argv[1])
     pprint(packages)
     pprint(modules)

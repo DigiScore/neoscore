@@ -1,6 +1,6 @@
 import re
 
-from doc.utils import indentation_level_at
+from doc.utils import indentation_level_at, clean_whitespace
 
 
 class MethodDoc:
@@ -15,8 +15,9 @@ class MethodDoc:
     raises_re = re.compile(r'^ *Raises:\n(?P<body>.*?)\n(\n| *?\Z)',
                            flags=re.DOTALL | re.MULTILINE)
 
-    def __init__(self, name, parent, args_string, docstring, method_type):
-        # parent can be a Module or Class
+    def __init__(self, name, parent, args_string, docstring, method_type,
+                 global_index):
+        # parent can be a ModuleDoc or Class
         self.name = name
         self.parent = parent
         self.args_string = args_string
@@ -25,13 +26,22 @@ class MethodDoc:
         self.args = self.args_string.split(', ')
         if self.args[0] in ['self', 'cls']:
             self.args.pop(0)
+        self.global_index = global_index
+        self.global_index.add(self)
         self.summary = ''
-        self.details_body = ''
+        self.details = ''
         self.args_details = []
         self.returns = ''
         self.exceptions = []
         self.warning = ''
         self.parse_method()
+
+    @property
+    def url(self):
+        if type(self.parent).__name__ == 'ClassDoc':
+            return self.parent.url + '.' + self.name
+        else:
+            return self.parent.url + '#' + self.name
 
     def parse_method(self):
         current_i = 0
@@ -43,12 +53,12 @@ class MethodDoc:
         returns_block = MethodDoc.returns_re.search(self.docstring)
         warning_block = MethodDoc.warning_re.search(self.docstring)
         raises_block = MethodDoc.raises_re.search(self.docstring)
-        details_body_end = min((match.start(0)
-                                for match in [args_block, returns_block,
-                                              warning_block, raises_block]
-                                if match),
-                               default=len(self.docstring))
-        self.details_body = self.docstring[current_i + 1: details_body_end]
+        details_end = min((match.start(0)
+                           for match in [args_block, returns_block,
+                                         warning_block, raises_block]
+                           if match),
+                          default=len(self.docstring))
+        self.details = self.docstring[current_i + 1: details_end]
         if args_block:
             args_lines = args_block.group('body').split('\n')
             main_indentation_level = indentation_level_at(0, args_lines[0])
@@ -77,3 +87,11 @@ class MethodDoc:
                 self.exceptions.append(current_exception)
         if warning_block:
             self.warning = warning_block.group('body')
+        self.clean_whitespace()
+
+    def clean_whitespace(self):
+        """Strip excessive whitespace but leave blank lines in tact."""
+        self.summary = clean_whitespace(self.summary)
+        self.details = clean_whitespace(self.details)
+        self.returns = clean_whitespace(self.returns)
+        self.warning = clean_whitespace(self.warning)

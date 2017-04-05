@@ -1,5 +1,10 @@
 import re
 
+from warnings import warn
+
+
+messy_whitespace_re = re.compile(r'(?<!\n)\n *')
+
 
 def package_path_to_import_name(path):
     """Convert a package path to an importable package name."""
@@ -51,12 +56,17 @@ def whole_line_at(index, string):
     """Return the whole line of a string at a given point."""
     for i in range(index, -1, -1):
         if string[i] == '\n':
+            start_i = i + 1
             break
-    start_i = i
+    else:
+        start_i = index + 1
+
     for i in range(index, len(string)):
         if string[i] == '\n':
+            end_i = i + 1
             break
-    end_i = i + 1
+    else:
+        end_i = index + 1
     return string[start_i: end_i]
 
 
@@ -82,3 +92,63 @@ def everything_in_indentation_block(index, string):
             # This block goes to the end of the string
             return string[start_i:]
     return string[start_i: current_i]
+
+
+def clean_whitespace(string):
+    return re.sub(messy_whitespace_re, ' ', string)
+
+
+def resolve_name(string, context):
+    """Attempt to find the url for the symbol named in a string.
+
+    Args:
+        string: The name to resolve. This should contain only
+            one name.
+        context: The ClassDoc or ModuleDoc this name appears in
+
+    Packages are specified by their qualified importable names.
+
+    Modules are specified by their qualified importable names.
+
+    Classes are expected to simply be specified by their names.
+
+    * Methods/attributes in the same context may be referred to by their
+      simple name.
+    * Methods/attributes in classes may be referred to by self.name
+    * Methods/attributes in classes are specified as ClassName.name
+    * Methods/attributes at module-levels are specified as module_name.name
+
+    If multiple resolutions can be found for the string, a warning
+    will be emitted and the first found will be returned.
+
+    Returns:
+        str: The resolved url of the given name
+        None: If the name could not be resolved
+    """
+    global_index = context.global_index
+
+    matches = []
+    for item in global_index:
+        if (item.name == string and type(item).__name__ in
+                ['PackageDoc', 'ModuleDoc', 'ClassDoc']):
+            matches.append(item.url)
+        if type(item).__name__ in ['MethodDoc', 'AttributeDoc']:
+            if item.parent == context:
+                if string.startswith('self.'):
+                    if item.name == string[5:]:
+                        matches.append(item.url)
+                if item.name == string:
+                    matches.append(item.url)
+            if type(item.parent).__name__ in ['ModuleDoc', 'ClassDoc']:
+                if string == item.parent.name + '.' + item.name:
+                    matches.append(item.url)
+
+    if matches:
+        if len(matches) > 1:
+            warn('Multiple possible resolutions of name "{}" in context "{}".\n'
+                 'Could match: {}. Choosing "{}".'.format(string,
+                                                          context.name,
+                                                          matches[0]))
+        return matches[0]
+    else:
+        return None
