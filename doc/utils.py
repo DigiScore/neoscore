@@ -149,6 +149,21 @@ def resolve_name(string, context):
                  'Could match: {}. Choosing "{}".'.format(string,
                                                           context.name,
                                                           matches[0]))
-        return matches[0]
+        return '<a href="{}">{}</a>'.format(matches[0], string)
     else:
         return None
+
+
+def resolution_or_name(string, context):
+    """Like resolve_name, but returns the input string if no match is found."""
+    resolution = resolve_name(string, context)
+    return resolution if resolution else string
+
+
+def parse_type_string(string, context):
+
+    def resolve_with_context(match):
+        # Replacement method with context closure
+        return resolution_or_name(match[0], context)
+
+    return re.sub('\w+', resolve_with_context, string)

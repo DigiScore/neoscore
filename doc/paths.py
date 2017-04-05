@@ -1,1 +1,1 @@
-API = 'api'
+API = '/docs/api'
