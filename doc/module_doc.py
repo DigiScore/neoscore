@@ -6,7 +6,7 @@ from doc.utils import (module_path_to_import_name,
                        previous_line_ending_index_from,
                        indentation_level_at,
                        everything_in_indentation_block,
-                       clean_whitespace)
+                       parse_general_text)
 from doc.attribute_doc import AttributeDoc
 from doc.class_doc import ClassDoc
 from doc.method_doc import MethodDoc
@@ -116,8 +116,5 @@ class ModuleDoc:
                     else:
                         self.summary = docstring
                         self.details = ''
-
-    def clean_whitespace(self):
-        """Strip excessive whitespace but leave blank lines in tact."""
-        self.summary = clean_whitespace(self.summary)
-        self.details = clean_whitespace(self.details)
+        self.summary = parse_general_text(self.summary, self)
+        self.details = parse_general_text(self.details, self)

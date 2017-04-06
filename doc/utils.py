@@ -106,7 +106,7 @@ def resolve_name(string, context):
             one name.
         context: The ClassDoc or ModuleDoc this name appears in
 
-    Packages are specified by their qualified importable names.
+    PackageDocs are specified by their qualified importable names.
 
     Modules are specified by their qualified importable names.
 
@@ -179,6 +179,12 @@ def surround_with_tag(string, tag, **kwargs):
         string,
         tag
     )
+
+
+def parse_type_and_add_code_tags(string, context):
+    parsed_string = parse_type_string(string, context)
+    code_block = surround_with_tag(parsed_string, 'code')
+    return surround_with_tag(code_block, 'pre')
 
 
 def at_line_beginning(string, index):

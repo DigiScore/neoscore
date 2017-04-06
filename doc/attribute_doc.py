@@ -1,6 +1,4 @@
-import re
-
-from doc.utils import clean_whitespace
+from doc.utils import parse_general_text
 
 
 class AttributeDoc:
@@ -39,9 +37,4 @@ class AttributeDoc:
         else:
             self.type_string = ''
             self.summary = first_line
-
-    def clean_whitespace(self):
-        """Strip excessive whitespace but leave blank lines in tact."""
-        self.type_string = clean_whitespace(self.type_string)
-        self.summary = clean_whitespace(self.summary)
-        self.details = clean_whitespace(self.details)
+        self.summary = parse_general_text(self.summary, self.parent)

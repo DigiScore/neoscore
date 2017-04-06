@@ -6,7 +6,10 @@ from doc.method_type import MethodType
 from doc.utils import (previous_line_ending_index_from,
                        first_or_none,
                        whole_line_at,
-                       clean_whitespace)
+                       parse_general_text,
+                       surround_with_tag,
+                       parse_type_and_add_code_tags,
+                       parse_type_string)
 
 
 class ClassDoc:
@@ -36,7 +39,7 @@ class ClassDoc:
         # Parent can be a ModuleDoc or another Class
         self.name = name
         self.parent = parent
-        self.superclass_string = superclass_string
+        self.superclass_string = superclass_string if superclass_string else ''
         self.docstring = docstring
         self.body = body
         self.global_index = global_index
@@ -53,7 +56,16 @@ class ClassDoc:
         return self.parent.url + '#' + self.name
 
     def parse_class(self):
-        # Grab summary
+        # Parse superclasses
+        def re_type_sub(match):
+            return parse_type_string(match['content'], self.parent)
+        super_classes = []
+        for superclass in self.superclass_string.split(', '):
+            super_classes.append(
+                parse_type_and_add_code_tags(superclass, self))
+        self.superclass_string = ', '.join(super_classes)
+
+        # Extract summary and details
         if '\n\n' in self.docstring:
             self.summary, self.details = self.docstring.split('\n\n', 1)
         else:
@@ -64,9 +76,6 @@ class ClassDoc:
         docstrings = list(re.finditer(ClassDoc.docstring_re, self.body))
         methods = list(re.finditer(ClassDoc.method_re, self.body))
         attributes = list(re.finditer(ClassDoc.attribute_re, self.body))
-        staticmethod_decorators = list(re.finditer(ClassDoc.staticmethod_re, self.body))
-        classmethod_decorators = list(re.finditer(ClassDoc.classmethod_re, self.body))
-        property_decorators = list(re.finditer(ClassDoc.property_re, self.body))
         setter_decorators = list(re.finditer(ClassDoc.setter_re, self.body))
         names_with_setters = set(setter.group('name') for setter in setter_decorators)
         for docstring in docstrings:
@@ -117,8 +126,5 @@ class ClassDoc:
             else:
                 # Orphan docstring, append to class details body.
                 self.details += '\n\n' + docstring_content
-
-    def clean_whitespace(self):
-        """Strip excessive whitespace but leave blank lines in tact."""
-        self.summary = clean_whitespace(self.summary)
-        self.details = clean_whitespace(self.details)
+        self.summary = parse_general_text(self.summary, self.parent)
+        self.details = parse_general_text(self.details, self.parent)

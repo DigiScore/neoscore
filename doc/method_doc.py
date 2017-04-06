@@ -1,6 +1,10 @@
 import re
 
-from doc.utils import indentation_level_at, clean_whitespace
+from doc.utils import (indentation_level_at,
+                       parse_general_text,
+                       parse_type_string,
+                       parse_type_and_add_code_tags,
+                       surround_with_tag)
 
 
 class MethodDoc:
@@ -44,6 +48,12 @@ class MethodDoc:
             return self.parent.url + '#' + self.name
 
     def parse_method(self):
+
+        def re_type_sub(match):
+            parsed_string = parse_type_string(match['content'], self.parent)
+            code_block = surround_with_tag(parsed_string, 'code')
+            return surround_with_tag(code_block, 'pre')
+
         current_i = 0
         while (current_i < len(self.docstring)
                and self.docstring[current_i] != '\n'):
@@ -59,6 +69,7 @@ class MethodDoc:
                            if match),
                           default=len(self.docstring))
         self.details = self.docstring[current_i + 1: details_end]
+
         if args_block:
             args_lines = args_block.group('body').split('\n')
             main_indentation_level = indentation_level_at(0, args_lines[0])
@@ -66,13 +77,21 @@ class MethodDoc:
             for line in args_lines:
                 if (indentation_level_at(0, line) == main_indentation_level
                         and current_arg):
+                    current_arg = re.sub(r'(?P<content>)\:',
+                                         re_type_sub, current_arg, 1)
                     self.args_details.append(current_arg)
                     current_arg = ''
                 current_arg += line
             if current_arg:
+                current_arg = re.sub(r'(?P<content>)\:',
+                                     re_type_sub, current_arg, 1)
                 self.args_details.append(current_arg)
+
         if returns_block:
-            self.returns = returns_block.group('body')
+            returns = returns_block.group('body')
+            self.returns = re.sub(r'(?P<content>)\:',
+                                  re_type_sub, returns, 1)
+
         if raises_block:
             exception_lines = raises_block.group('body').split('\n')
             main_indentation_level = indentation_level_at(0, exception_lines[0])
@@ -80,17 +99,23 @@ class MethodDoc:
             for line in exception_lines:
                 if (indentation_level_at(0, line) == main_indentation_level
                         and current_exception):
+                    current_exception = re.sub(r'(?P<content>)\:',
+                                               re_type_sub, current_arg, 1)
                     self.exceptions.append(current_exception)
                     current_exception = ''
                 current_exception += line
             if current_exception:
+                current_exception = re.sub(r'(?P<content>)\:',
+                                           re_type_sub, current_arg, 1)
                 self.exceptions.append(current_exception)
         if warning_block:
             self.warning = warning_block.group('body')
 
-    def clean_whitespace(self):
-        """Strip excessive whitespace but leave blank lines in tact."""
-        self.summary = clean_whitespace(self.summary)
-        self.details = clean_whitespace(self.details)
-        self.returns = clean_whitespace(self.returns)
-        self.warning = clean_whitespace(self.warning)
+        self.summary = parse_general_text(self.summary, self.parent)
+        self.details = parse_general_text(self.details, self.parent)
+        self.warning = parse_general_text(self.warning, self.parent)
+        self.returns = parse_general_text(self.returns, self.parent)
+        self.args_details = [parse_general_text(arg, self.parent)
+                             for arg in self.args_details]
+        self.exceptions = [parse_general_text(e, self.parent)
+                           for e in self.exceptions]

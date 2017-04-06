@@ -1,7 +1,7 @@
 import sys
 import os
 
-from doc.package import Package
+from doc.package_doc import PackageDoc
 from doc.module_doc import ModuleDoc
 from doc.utils import module_path_to_import_name, package_path_to_import_name
 
@@ -16,12 +16,12 @@ def parse_dir(top):
         if root.endswith('__pycache__') or '__init__.py' not in files:
             continue
         package_name = package_path_to_import_name(root)
-        packages[package_name] = Package(root, package_name)
+        packages[package_name] = PackageDoc(root, package_name)
         for file in files:
             if file.endswith('.py') and file != '__init__.py':
                 module_name = module_path_to_import_name(root, file)
                 modules[module_name] = ModuleDoc(os.path.join(root, file),
-                                              module_name, global_index)
+                                                 module_name, global_index)
 
     # Link subpackages to parent packages
     for package_name, package in packages.items():
@@ -49,7 +49,6 @@ def parse_dir(top):
     # classes, modules, attributes, etc.
     for module in modules.values():
         module.parse_module()
-
 
     return packages, modules, global_index
 
