@@ -116,7 +116,6 @@ class ModuleDoc:
                     else:
                         self.summary = docstring
                         self.details = ''
-        self.clean_whitespace()
 
     def clean_whitespace(self):
         """Strip excessive whitespace but leave blank lines in tact."""

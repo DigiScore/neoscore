@@ -39,7 +39,6 @@ class AttributeDoc:
         else:
             self.type_string = ''
             self.summary = first_line
-        self.clean_whitespace()
 
     def clean_whitespace(self):
         """Strip excessive whitespace but leave blank lines in tact."""

@@ -146,9 +146,10 @@ def resolve_name(string, context):
     if matches:
         if len(matches) > 1:
             warn('Multiple possible resolutions of name "{}" in context "{}".\n'
-                 'Could match: {}. Choosing "{}".'.format(string,
-                                                          context.name,
-                                                          matches[0]))
+                 'Possible resolutions: {}. Choosing "{}".'.format(
+                     string,
+                     context.name,
+                     matches[0]))
         return '<a href="{}">{}</a>'.format(matches[0], string)
     else:
         return None
@@ -167,3 +168,133 @@ def parse_type_string(string, context):
         return resolution_or_name(match[0], context)
 
     return re.sub('\w+', resolve_with_context, string)
+
+
+def surround_with_tag(string, tag, **kwargs):
+    return '<{}{}{}>{}</{}>'.format(
+        tag,
+        ' ' if kwargs else '',
+        ' '.join('{}="{}"'.format(key, value)
+                 for key, value in kwargs.items()),
+        string,
+        tag
+    )
+
+
+def at_line_beginning(string, index):
+    if index == 0:
+        return True
+    for i in range(index - 1, -1, -1):
+        if string[i] == '\n':
+            return True
+        elif string[i] == ' ':
+            continue
+        else:
+            return False
+    return True
+
+
+def parse_bulleted_lists(string):
+    """Convert markdown style bulleted lists to HTML unordered lists.
+
+    "Look mom I built a state machine because I don't like Sphinx!"
+    """
+
+    result_string = ''
+    in_list = False
+    indentation_level = None
+    bullets = []
+    for i, char in enumerate(string):
+        if in_list:
+            if at_line_beginning(string, i):
+                if char == ' ':
+                    # Continuation of bullet point
+                    bullets[-1] += char
+                else:
+                    if indentation_level_at(i, string) <= indentation_level:
+                        if char == '*':
+                            # Next bullet point
+                            bullets.append('')
+                        else:
+                            # End of list
+                            block = surround_with_tag(''.join(
+                                            surround_with_tag(point, 'li')
+                                            for point in bullets),
+                                        'ul')
+                            result_string += block
+                            result_string += char
+                            bullets = []
+                            in_list = False
+                            indentation_level = None
+                    else:
+                        # Continuation of bullet point
+                        bullets[-1] += char
+            else:
+                # Continuation of bullet point
+                bullets[-1] += char
+        else:
+            if char == '*' and at_line_beginning(string, i):
+                # Enter list
+                in_list = True
+                indentation_level = indentation_level_at(i, string)
+                bullets.append('')
+            else:
+                # Normal character outside of list
+                result_string += char
+    return result_string
+
+
+def parse_italics(string):
+    def replace_function(match):
+        return surround_with_tag(match['content'], 'i')
+    return re.sub(r'\*(?P<content>\w+.*)\*', replace_function, string)
+
+
+def parse_bold(string):
+    def replace_function(match):
+        return surround_with_tag(match['content'], 'strong')
+    return re.sub(r'\*\*(?P<content>\w+.*)\*\*', replace_function, string)
+
+
+def parse_inline_code(string, context):
+    def replace_function(match):
+        typed_code = parse_type_string(match['content'], context)
+        code_block = surround_with_tag(typed_code, 'code')
+        return surround_with_tag(code_block, 'pre')
+    return re.sub(r'`(?P<content>\w+.*)`', replace_function, string)
+
+
+def parse_doctest_code(string, context):
+    def replace_function(match):
+        typed_code = parse_type_string(match[0], context)
+        code_block = surround_with_tag(typed_code, 'code')
+        pre_block = surround_with_tag(code_block, 'pre')
+        # Normalize whitespace
+        return re.sub(r'\n(\s*)', '\n', pre_block)
+    return re.sub(r'>>> .*(\n *\.\.\. .*)*', replace_function, string)
+
+
+def parse_general_text(string, context):
+    """Perform common text parsing and return ready-to-go HTML.
+
+    * Splits paragraphs separated by blank lines into <p> blocks
+    * Converts bulleted lists into <ul><li> blocks
+    * Converts *italic text* and **bold text** <i> and <strong> blocks.
+    * Recognizes doctest/example code blocks in >>> ... style
+      and surrounds them with <code> tags
+    * Recognizes arbitrary code surrounded by ` marks and surrounds
+      them with <code> tags (must be contained in one line)
+    * Attempts to resolve all names in code blocks as <a> links
+      to the documentation of those names if they are brown names.
+    """
+    # The order of these operations matters, as the parsing
+    # helper methods make a lot of assumptions.
+    string = parse_bulleted_lists(string)
+    string = parse_doctest_code(string, context)
+    paragraphs = [p for p in re.split(r'\n\n', string) if p]
+    string = ''.join(surround_with_tag(paragraph, 'p')
+                     for paragraph in paragraphs)
+    string = parse_bold(string)
+    string = parse_italics(string)
+    string = parse_inline_code(string, context)
+    return string

@@ -87,7 +87,6 @@ class MethodDoc:
                 self.exceptions.append(current_exception)
         if warning_block:
             self.warning = warning_block.group('body')
-        self.clean_whitespace()
 
     def clean_whitespace(self):
         """Strip excessive whitespace but leave blank lines in tact."""

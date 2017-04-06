@@ -117,7 +117,6 @@ class ClassDoc:
             else:
                 # Orphan docstring, append to class details body.
                 self.details += '\n\n' + docstring_content
-        self.clean_whitespace()
 
     def clean_whitespace(self):
         """Strip excessive whitespace but leave blank lines in tact."""
