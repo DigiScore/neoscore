@@ -9,15 +9,21 @@ class AttributeDoc:
         self.name = name
         self.parent = parent
         self.docstring = docstring
-        self.parse_attribute
         self.is_property = is_property
+        self.is_read_only = is_read_only
         self.default_value = default_value
         self.global_index = global_index
         self.global_index.add(self)
         self.type_string = ''
         self.summary = ''
         self.details = ''
-        self.parse_attribute()
+
+    @property
+    def html_id(self):
+        if type(self.parent).__name__ == 'ClassDoc':
+            return self.parent.name + '.' + self.name
+        else:
+            return self.name
 
     @property
     def url(self):
@@ -26,7 +32,7 @@ class AttributeDoc:
         else:
             return self.parent.url + '#' + self.name
 
-    def parse_attribute(self):
+    def resolve_names_and_parse_html(self):
         if '\n\n' in self.docstring:
             first_line, self.details = self.docstring.split('\n\n', 1)
         else:
@@ -37,4 +43,5 @@ class AttributeDoc:
         else:
             self.type_string = ''
             self.summary = first_line
+
         self.summary = parse_general_text(self.summary, self.parent)

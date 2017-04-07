@@ -1,0 +1,19 @@
+{% macro attribute_doc(attribute) -%}
+
+<div class="{% if attribute.is_property %}attribute{% else %}property{% endif %}"
+     id="{{ attribute.html_id }}">
+    <p>
+        <span class="attribute-name">{{attribute.name}}</span>:
+        <span class="type">{{attribute.type_string}}</span>
+    </p>
+    <p class="summary">{{attribute.summary}}</p>
+    <p class="details">{{attribute.details}}</p>
+    {% if attribute.is_read_only %}
+        <p class="read-only-notice">
+            This {% if attribute.is_property %}attribute{% else %}property{% endif %}
+            is read-only.
+        </p>
+    {% endif %}
+</div>
+
+{%- endmacro %}

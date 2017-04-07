@@ -27,9 +27,7 @@ class MethodDoc:
         self.args_string = args_string
         self.docstring = docstring
         self.method_type = method_type
-        self.args = self.args_string.split(', ')
-        if self.args[0] in ['self', 'cls']:
-            self.args.pop(0)
+        self.args = ''
         self.global_index = global_index
         self.global_index.add(self)
         self.summary = ''
@@ -38,7 +36,13 @@ class MethodDoc:
         self.returns = ''
         self.exceptions = []
         self.warning = ''
-        self.parse_method()
+
+    @property
+    def html_id(self):
+        if type(self.parent).__name__ == 'ClassDoc':
+            return self.parent.name + '.' + self.name
+        else:
+            return self.name
 
     @property
     def url(self):
@@ -47,7 +51,7 @@ class MethodDoc:
         else:
             return self.parent.url + '#' + self.name
 
-    def parse_method(self):
+    def resolve_names_and_parse_html(self):
 
         def re_type_sub(match):
             parsed_string = parse_type_string(match['content'], self.parent)
@@ -108,8 +112,14 @@ class MethodDoc:
                 current_exception = re.sub(r'(?P<content>)\:',
                                            re_type_sub, current_arg, 1)
                 self.exceptions.append(current_exception)
+
         if warning_block:
             self.warning = warning_block.group('body')
+
+        args = self.args_string.split(', ')
+        args = [a for a in args if a not in ['cls', 'self']]
+        args = ', '.join(a for a in args)
+        self.args_string = surround_with_tag(args, 'code')
 
         self.summary = parse_general_text(self.summary, self.parent)
         self.details = parse_general_text(self.details, self.parent)

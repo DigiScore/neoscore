@@ -56,15 +56,6 @@ class ClassDoc:
         return self.parent.url + '#' + self.name
 
     def parse_class(self):
-        # Parse superclasses
-        def re_type_sub(match):
-            return parse_type_string(match['content'], self.parent)
-        super_classes = []
-        for superclass in self.superclass_string.split(', '):
-            super_classes.append(
-                parse_type_and_add_code_tags(superclass, self))
-        self.superclass_string = ', '.join(super_classes)
-
         # Extract summary and details
         if '\n\n' in self.docstring:
             self.summary, self.details = self.docstring.split('\n\n', 1)
@@ -126,5 +117,16 @@ class ClassDoc:
             else:
                 # Orphan docstring, append to class details body.
                 self.details += '\n\n' + docstring_content
+
+    def resolve_names_and_parse_html(self):
+        # Parse superclasses
+        def re_type_sub(match):
+            return parse_type_string(match['content'], self.parent)
+        super_classes = []
+        for superclass in self.superclass_string.split(', '):
+            super_classes.append(
+                parse_type_and_add_code_tags(superclass, self))
+        self.superclass_string = ', '.join(super_classes)
+
         self.summary = parse_general_text(self.summary, self.parent)
         self.details = parse_general_text(self.details, self.parent)

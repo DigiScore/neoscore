@@ -1,0 +1,29 @@
+{% import "attribute.html" as attribute_template %}
+{% import "method.html" as method_template %}
+
+<div class="module">
+    <h1 class="module-name">{{module.name}}</h1>
+
+    {% if module.summary %}
+        <span class="summary">{{module.summary}}</span>
+    {% endif %}
+
+    {% if module.details %}
+        <div class="details">
+            {{module.details}}
+        </div>
+    {% endif %}
+
+    {% if module.methods %}
+        {% for method in module.methods %}
+            {{ method_template.method_doc(method) }}
+        {% endfor %}
+    {% endif %}
+
+    {% if module.attributes %}
+        {% for attribute in module.attributes %}
+            {{ attribute_template.attribute_doc(attribute) }}
+        {% endfor %}
+    {% endif %}
+
+</div>

@@ -1,0 +1,44 @@
+{% macro method_doc(method) -%}
+
+
+<div class="method"
+     id="{{ method.html_id }}">
+    <p>
+        <span class="method-name">{{method.name}}</span>({{method.args_string}})
+    </p>
+    <p class="summary">{{method.summary}}</p>
+    {% if method.args %}
+        <div class="args-block">
+            Arguments:
+            {% for arg in method.args_details %}
+                <div class="arg">
+                    {{arg}}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% if method.returns %}
+        <div class="returns">
+            Returns: {{method.returns}}
+        </div>
+    {% endif %}
+    {% if method.exceptions %}
+        <div class="exceptions-block">
+            Raises:
+            {% for exception in method.exceptions %}
+            <div class="exception">
+                {{exception}}
+            </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <p class="details">{{method.details}}</p>
+    {% if method.warning %}
+        <div class="warning">
+            {{method.warning}}
+        </div>
+    {% endif %}
+
+</div>
+
+{%- endmacro %}

@@ -1,3 +1,4 @@
+import os
 import re
 
 from warnings import warn
@@ -98,7 +99,7 @@ def clean_whitespace(string):
     return re.sub(messy_whitespace_re, ' ', string)
 
 
-def resolve_name(string, context):
+def resolve_name(string, context, link_style='HTML'):
     """Attempt to find the url for the symbol named in a string.
 
     Args:
@@ -150,22 +151,27 @@ def resolve_name(string, context):
                      string,
                      context.name,
                      matches[0]))
-        return '<a href="{}">{}</a>'.format(matches[0], string)
+        if link_style == 'HTML':
+            return '<a href="{}">{}</a>'.format(matches[0], string)
+        elif link_style == 'Markdown':
+            return '[{}]({})'.format(string, matches[0])
+        else:
+            raise ValueError('Invalid link_style: ' + link_style)
     else:
         return None
 
 
-def resolution_or_name(string, context):
+def resolution_or_name(string, context, link_style='HTML'):
     """Like resolve_name, but returns the input string if no match is found."""
-    resolution = resolve_name(string, context)
+    resolution = resolve_name(string, context, link_style)
     return resolution if resolution else string
 
 
-def parse_type_string(string, context):
+def parse_type_string(string, context, link_style='HTML'):
 
     def resolve_with_context(match):
         # Replacement method with context closure
-        return resolution_or_name(match[0], context)
+        return resolution_or_name(match[0], context, link_style)
 
     return re.sub('\w+', resolve_with_context, string)
 
@@ -181,7 +187,7 @@ def surround_with_tag(string, tag, **kwargs):
     )
 
 
-def parse_type_and_add_code_tags(string, context):
+def parse_type_and_add_code_tags(string, context, link_style='HTML'):
     parsed_string = parse_type_string(string, context)
     code_block = surround_with_tag(parsed_string, 'code')
     return surround_with_tag(code_block, 'pre')
@@ -262,12 +268,21 @@ def parse_bold(string):
     return re.sub(r'\*\*(?P<content>\w+.*)\*\*', replace_function, string)
 
 
-def parse_inline_code(string, context):
+def parse_backtick_code(string, context):
     def replace_function(match):
         typed_code = parse_type_string(match['content'], context)
         code_block = surround_with_tag(typed_code, 'code')
         return surround_with_tag(code_block, 'pre')
-    return re.sub(r'`(?P<content>\w+.*)`', replace_function, string)
+    return re.sub(r'`(?P<content>\w+.*?)`', replace_function, string,
+                  flags=re.DOTALL)
+
+
+def resolve_markdown_code_names(string, context):
+    def replace_function(match):
+        return surround_with_tag(
+            parse_type_string(match['content'], context), 'code')
+    return re.sub(r'<code>(?P<content>.*?)</code>', replace_function, string,
+                  flags=re.DOTALL)
 
 
 def parse_doctest_code(string, context):
@@ -288,8 +303,8 @@ def parse_general_text(string, context):
     * Converts *italic text* and **bold text** <i> and <strong> blocks.
     * Recognizes doctest/example code blocks in >>> ... style
       and surrounds them with <code> tags
-    * Recognizes arbitrary code surrounded by ` marks and surrounds
-      them with <code> tags (must be contained in one line)
+    * Recognizes arbitrary code surrounded by ` marks
+      and surrounds them with <code> tags
     * Attempts to resolve all names in code blocks as <a> links
       to the documentation of those names if they are brown names.
     """
@@ -302,5 +317,11 @@ def parse_general_text(string, context):
                      for paragraph in paragraphs)
     string = parse_bold(string)
     string = parse_italics(string)
-    string = parse_inline_code(string, context)
+    string = parse_backtick_code(string, context)
     return string
+
+
+def ensure_path_exists(path):
+    dir = os.path.dirname(path)
+    if not os.path.exists(dir):
+        os.makedirs(dir)

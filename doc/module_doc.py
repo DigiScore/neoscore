@@ -45,10 +45,11 @@ class ModuleDoc:
         self.global_index.add(self)
         self.summary = ''
         self.details = ''
+        self.parse_module()
 
     @property
     def url(self):
-        return paths.API + '/' + self.name.replace('.', '/')
+        return paths.API + '/' + self.name.replace('.', '/') + '.html'
 
     def read_file_lines(self):
         file = open(self.path, 'r')
@@ -116,5 +117,7 @@ class ModuleDoc:
                     else:
                         self.summary = docstring
                         self.details = ''
+
+    def resolve_names_and_parse_html(self):
         self.summary = parse_general_text(self.summary, self)
         self.details = parse_general_text(self.details, self)

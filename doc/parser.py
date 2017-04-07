@@ -16,7 +16,7 @@ def parse_dir(top):
         if root.endswith('__pycache__') or '__init__.py' not in files:
             continue
         package_name = package_path_to_import_name(root)
-        packages[package_name] = PackageDoc(root, package_name)
+        packages[package_name] = PackageDoc(root, package_name, global_index)
         for file in files:
             if file.endswith('.py') and file != '__init__.py':
                 module_name = module_path_to_import_name(root, file)
@@ -45,10 +45,8 @@ def parse_dir(top):
             packages[package_name].modules[module_name] = module
             module.package = packages[package_name]
 
-    # Perform basic parsing of all modules, in turn discovering and parsing
-    # classes, modules, attributes, etc.
-    for module in modules.values():
-        module.parse_module()
+    for doc_item in global_index:
+        doc_item.resolve_names_and_parse_html()
 
     return packages, modules, global_index
 
