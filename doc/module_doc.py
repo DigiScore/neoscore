@@ -1,6 +1,6 @@
 import re
 
-import doc.paths as paths
+import doc.doc_config as doc_config
 from doc.utils import (module_path_to_import_name,
                        first_or_none,
                        previous_line_ending_index_from,
@@ -38,9 +38,9 @@ class ModuleDoc:
         self.path = path
         self.name = name
         self.package = 'NOT YET KNOWN'
-        self.classes = {}
-        self.methods = {}
-        self.attributes = {}
+        self.classes = []
+        self.methods = []
+        self.attributes = []
         self.global_index = global_index
         self.global_index.add(self)
         self.summary = ''
@@ -49,7 +49,7 @@ class ModuleDoc:
 
     @property
     def url(self):
-        return paths.API + '/' + self.name.replace('.', '/') + '.html'
+        return doc_config.API + '/' + self.name.replace('.', '/') + '.html'
 
     def read_file_lines(self):
         file = open(self.path, 'r')
@@ -66,7 +66,7 @@ class ModuleDoc:
                                              contents))
         docstring_blocks = re.finditer(ModuleDoc.docstring_re, contents)
         # TODO: This completely ignores classes/methods without docstrings
-        for block in docstring_blocks:
+        for block_index, block in enumerate(docstring_blocks):
             last_line_end_i = previous_line_ending_index_from(
                 block.start(0), contents)
             docstring = block.group('content')
@@ -74,7 +74,7 @@ class ModuleDoc:
                 c for c in class_matches
                 if c.end(0) - 1 == last_line_end_i
                 # Allow a blank line before class docstring
-                or c.end(0) - 2 == last_line_end_i)
+                or c.end(0) == last_line_end_i)
             method_match = first_or_none(
                 m for m in method_matches
                 if m.end(0) - 1 == last_line_end_i)
@@ -84,39 +84,38 @@ class ModuleDoc:
             if class_match:
                 class_body = everything_in_indentation_block(
                     block.end(0), contents)
-                self.classes[class_match.group('class')] = ClassDoc(
+                self.classes.append(ClassDoc(
                     class_match.group('class'),
                     self,
                     class_match.group('superclasses'),
                     docstring,
                     class_body,
-                    self.global_index)
+                    self.global_index))
             elif method_match:
-                self.methods[method_match.group('method')] = MethodDoc(
+                self.methods.append(MethodDoc(
                     method_match.group('method'),
                     self,
                     method_match.group('args'),
                     docstring,
                     MethodType.normal,
-                    self.global_index)
+                    self.global_index))
             elif attribute_match:
-                self.attributes[attribute_match.group('name')] = AttributeDoc(
+                self.attributes.append(AttributeDoc(
                     attribute_match.group('name'),
                     self,
                     docstring,
                     False,
                     True,
                     attribute_match.group('value'),
-                    self.global_index)
-            else:
-                if self.summary:
-                    self.details += '\n\n' + docstring
+                    self.global_index))
+            elif block_index == 0:
+                if '\n\n' in docstring:
+                    self.summary, self.details = docstring.split('\n\n', 1)
                 else:
-                    if '\n\n' in docstring:
-                        self.summary, self.details = docstring.split('\n\n', 1)
-                    else:
-                        self.summary = docstring
-                        self.details = ''
+                    self.summary = docstring
+                    self.details = ''
+            else:
+                pass
 
     def resolve_names_and_parse_html(self):
         self.summary = parse_general_text(self.summary, self)

@@ -2,7 +2,7 @@ import os
 
 from markdown import markdown
 
-import doc.paths as paths
+import doc.doc_config as doc_config
 from doc.utils import resolve_markdown_code_names
 
 
@@ -21,7 +21,7 @@ class PackageDoc:
 
     @property
     def url(self):
-        return paths.API + '/' + self.name.replace('.', '/') + '.html'
+        return doc_config.API + '/' + self.name.replace('.', '/') + '.html'
 
     def resolve_names_and_parse_html(self):
         readme_path = os.path.join(self.path, 'README.md')

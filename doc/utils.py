@@ -187,10 +187,9 @@ def surround_with_tag(string, tag, **kwargs):
     )
 
 
-def parse_type_and_add_code_tags(string, context, link_style='HTML'):
+def parse_type_and_add_code_tag(string, context, link_style='HTML'):
     parsed_string = parse_type_string(string, context)
-    code_block = surround_with_tag(parsed_string, 'code')
-    return surround_with_tag(code_block, 'pre')
+    return surround_with_tag(parsed_string, 'code')
 
 
 def at_line_beginning(string, index):
@@ -271,8 +270,7 @@ def parse_bold(string):
 def parse_backtick_code(string, context):
     def replace_function(match):
         typed_code = parse_type_string(match['content'], context)
-        code_block = surround_with_tag(typed_code, 'code')
-        return surround_with_tag(code_block, 'pre')
+        return surround_with_tag(typed_code, 'code')
     return re.sub(r'`(?P<content>\w+.*?)`', replace_function, string,
                   flags=re.DOTALL)
 

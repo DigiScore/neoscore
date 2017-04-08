@@ -8,7 +8,7 @@ from doc.utils import (previous_line_ending_index_from,
                        whole_line_at,
                        parse_general_text,
                        surround_with_tag,
-                       parse_type_and_add_code_tags,
+                       parse_type_and_add_code_tag,
                        parse_type_string)
 
 
@@ -46,14 +46,38 @@ class ClassDoc:
         self.global_index.add(self)
         self.summary = ''
         self.details = ''
-        self.methods = {}
-        self.properties = {}
-        self.class_attributes = {}
+        self.methods = set()
+        self.properties = set()
+        self.class_attributes = set()
         self.parse_class()
 
     @property
     def url(self):
         return self.parent.url + '#' + self.name
+
+    @property
+    def init_method(self):
+        return next((method for method in self.methods
+                     if method.name == '__init__'),
+                    None)
+
+    @property
+    def normal_methods(self):
+        return [method for method in self.methods
+                if method.method_type == MethodType.normal
+                and method.name != '__init__']
+
+    @property
+    def class_methods(self):
+        return [method for method in self.methods
+                if method.method_type == MethodType.classmethod
+                and method.name != '__init__']
+
+    @property
+    def static_methods(self):
+        return [method for method in self.methods
+                if method.method_type == MethodType.staticmethod
+                and method.name != '__init__']
 
     def parse_class(self):
         # Extract summary and details
@@ -83,14 +107,14 @@ class ClassDoc:
                 # Determine what type of method/property this is
                 line_before_method = whole_line_at(method_match.start(0) - 1, self.body)
                 if ClassDoc.property_re.search(line_before_method):
-                    self.properties[method_match.group('method')] = AttributeDoc(
+                    self.properties.add(AttributeDoc(
                         method_match.group('method'),
                         self,
                         docstring_content,
                         True,
                         method_match.group('method') not in names_with_setters,
                         None,
-                        self.global_index)
+                        self.global_index))
                 else:
                     if ClassDoc.staticmethod_re.search(line_before_method):
                         method_type = MethodType.staticmethod
@@ -98,22 +122,22 @@ class ClassDoc:
                         method_type = MethodType.classmethod
                     else:
                         method_type = MethodType.normal
-                    self.methods[method_match.group('method')] = MethodDoc(
+                    self.methods.add(MethodDoc(
                         method_match.group('method'),
                         self,
                         method_match.group('args'),
                         docstring_content,
                         method_type,
-                        self.global_index)
+                        self.global_index))
             elif attribute_match:
-                self.class_attributes[attribute_match.group('name')] = AttributeDoc(
+                self.class_attributes.add(AttributeDoc(
                     attribute_match.group('name'),
                     self,
                     docstring_content,
                     False,
                     True,
                     attribute_match.group('value'),
-                    self.global_index)
+                    self.global_index))
             else:
                 # Orphan docstring, append to class details body.
                 self.details += '\n\n' + docstring_content
@@ -125,7 +149,7 @@ class ClassDoc:
         super_classes = []
         for superclass in self.superclass_string.split(', '):
             super_classes.append(
-                parse_type_and_add_code_tags(superclass, self))
+                parse_type_and_add_code_tag(superclass, self))
         self.superclass_string = ', '.join(super_classes)
 
         self.summary = parse_general_text(self.summary, self.parent)

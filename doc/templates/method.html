@@ -19,16 +19,21 @@
     {% endif %}
     {% if method.returns %}
         <div class="returns">
-            Returns: {{method.returns}}
+            Returns:
+            {% for return in method.returns %}
+                <div class="return">
+                    {{ return }}
+                </div>
+            {% endfor %}
         </div>
     {% endif %}
     {% if method.exceptions %}
         <div class="exceptions-block">
             Raises:
             {% for exception in method.exceptions %}
-            <div class="exception">
-                {{exception}}
-            </div>
+                <div class="exception">
+                    {{exception}}
+                </div>
             {% endfor %}
         </div>
     {% endif %}

@@ -1,0 +1,69 @@
+{% import "attribute.html" as attribute_template %}
+{% import "method.html" as method_template %}
+
+
+{% macro class_doc(class) -%}
+
+
+<div class="class"
+     id="{{ class.name }}">
+    <p>
+        <span class="class-name">{{class.name}}</span>({{superclass_string}})
+    </p>
+    <p class="summary">{{class.summary}}</p>
+    {% if class.details %}
+        <p class="details">{{class.details}}</p>
+    {% endif %}
+    {% if class.warning %}
+        <div class="warning">
+            {{class.warning}}
+        </div>
+    {% endif %}
+    {% if class.init_method %}
+        {{ method_template.method_doc(class.init_method) }}
+    {% endif %}
+    {% if class.class_attributes %}
+        <div class="attributes-section">
+            <h4>class attributes</h4>
+            {% for attribute in class.class_attributes %}
+                {{ attribute_template.attribute_doc(attribute) }}
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% if class.properties %}
+        <div class="properties-section">
+            <h4>properties</h4>
+            {% for property in class.properties %}
+                {{ attribute_template.attribute_doc(property) }}
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% if class.class_methods %}
+        <div class="class-methods-section">
+            <h4>class methods</h4>
+            {% for method in class.class_methods %}
+                {{ method_template.method_doc(method) }}
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% if class.static_methods %}
+        <div class="static-methods-section">
+            <h4>static methods</h4>
+            {% for method in class.static_methods %}
+                {{ method_template.method_doc(method) }}
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% if class.methods %}
+        <div class="methods-section">
+            <h4>methods</h4>
+            {% for method in class.normal_methods %}
+                {{ method_template.method_doc(method) }}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+
+</div>
+
+{%- endmacro %}

@@ -1,7 +1,9 @@
 {% import "attribute.html" as attribute_template %}
 {% import "method.html" as method_template %}
+{% import "class.html" as class_template %}
 
 <div class="module">
+
     <h1 class="module-name">{{module.name}}</h1>
 
     {% if module.summary %}
@@ -14,15 +16,24 @@
         </div>
     {% endif %}
 
+    {% if module.attributes %}
+        <h3>attributes</h3>
+        {% for attribute in module.attributes %}
+            {{ attribute_template.attribute_doc(attribute) }}
+        {% endfor %}
+    {% endif %}
+
     {% if module.methods %}
+        <h3>methods</h3>
         {% for method in module.methods %}
             {{ method_template.method_doc(method) }}
         {% endfor %}
     {% endif %}
 
-    {% if module.attributes %}
-        {% for attribute in module.attributes %}
-            {{ attribute_template.attribute_doc(attribute) }}
+    {% if module.classes %}
+        <h3>classes</h3>
+        {% for class in module.classes %}
+            {{ class_template.class_doc(class) }}
         {% endfor %}
     {% endif %}
 

@@ -3,7 +3,7 @@ import re
 from doc.utils import (indentation_level_at,
                        parse_general_text,
                        parse_type_string,
-                       parse_type_and_add_code_tags,
+                       parse_type_and_add_code_tag,
                        surround_with_tag)
 
 
@@ -33,7 +33,7 @@ class MethodDoc:
         self.summary = ''
         self.details = ''
         self.args_details = []
-        self.returns = ''
+        self.returns = []
         self.exceptions = []
         self.warning = ''
 
@@ -55,8 +55,17 @@ class MethodDoc:
 
         def re_type_sub(match):
             parsed_string = parse_type_string(match['content'], self.parent)
-            code_block = surround_with_tag(parsed_string, 'code')
-            return surround_with_tag(code_block, 'pre')
+            return surround_with_tag(parsed_string, 'code')
+
+        def re_type_sub_add_colon(match):
+            return re_type_sub(match) + ':'
+
+        def parse_type_and_explanation(string):
+            if ':' in string:
+                return re.sub(r'(?P<content>)\:',
+                              re_type_sub_add_colon, string, 1)
+            else:
+                return parse_type_and_add_code_tag(string, self.parent)
 
         current_i = 0
         while (current_i < len(self.docstring)
@@ -81,20 +90,28 @@ class MethodDoc:
             for line in args_lines:
                 if (indentation_level_at(0, line) == main_indentation_level
                         and current_arg):
-                    current_arg = re.sub(r'(?P<content>)\:',
-                                         re_type_sub, current_arg, 1)
+                    current_arg = parse_type_and_explanation(current_arg)
                     self.args_details.append(current_arg)
                     current_arg = ''
                 current_arg += line
             if current_arg:
-                current_arg = re.sub(r'(?P<content>)\:',
-                                     re_type_sub, current_arg, 1)
+                current_arg = parse_type_and_explanation(current_arg)
                 self.args_details.append(current_arg)
 
         if returns_block:
-            returns = returns_block.group('body')
-            self.returns = re.sub(r'(?P<content>)\:',
-                                  re_type_sub, returns, 1)
+            return_lines = returns_block.group('body').split('\n')
+            main_indentation_level = indentation_level_at(0, return_lines[0])
+            current_return = ''
+            for line in return_lines:
+                if (indentation_level_at(0, line) == main_indentation_level
+                        and current_return):
+                    current_return = parse_type_and_explanation(current_return)
+                    self.returns.append(current_return)
+                    current_return = ''
+                current_return += line
+            if current_return:
+                current_return = parse_type_and_explanation(current_return)
+                self.returns.append(current_return)
 
         if raises_block:
             exception_lines = raises_block.group('body').split('\n')
@@ -103,14 +120,12 @@ class MethodDoc:
             for line in exception_lines:
                 if (indentation_level_at(0, line) == main_indentation_level
                         and current_exception):
-                    current_exception = re.sub(r'(?P<content>)\:',
-                                               re_type_sub, current_arg, 1)
+                    current_exception = parse_type_and_explanation(current_exception)
                     self.exceptions.append(current_exception)
                     current_exception = ''
                 current_exception += line
             if current_exception:
-                current_exception = re.sub(r'(?P<content>)\:',
-                                           re_type_sub, current_arg, 1)
+                current_exception = parse_type_and_explanation(current_exception)
                 self.exceptions.append(current_exception)
 
         if warning_block:
@@ -124,7 +139,8 @@ class MethodDoc:
         self.summary = parse_general_text(self.summary, self.parent)
         self.details = parse_general_text(self.details, self.parent)
         self.warning = parse_general_text(self.warning, self.parent)
-        self.returns = parse_general_text(self.returns, self.parent)
+        if any(arg is None for arg in self.args_details):
+            import pdb;pdb.set_trace()
         self.args_details = [parse_general_text(arg, self.parent)
                              for arg in self.args_details]
         self.exceptions = [parse_general_text(e, self.parent)
