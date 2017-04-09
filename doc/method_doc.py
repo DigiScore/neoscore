@@ -28,7 +28,6 @@ class MethodDoc:
         self.args_string = args_string
         self.docstring = docstring
         self.method_type = method_type
-        self.args = ''
         self.global_index = global_index
         self.global_index.add(self)
         self.summary = ''
@@ -118,7 +117,9 @@ class MethodDoc:
         args = self.args_string.split(', ')
         args = [a for a in args if a not in ['cls', 'self']]
         args = ', '.join(a for a in args)
-        self.args_string = surround_with_tag(args, 'code')
+        if args:
+            args = surround_with_tag(args, 'code')
+        self.args_string = args
 
         self.summary = parse_general_text(self.summary, self.parent)
         self.details = parse_general_text(self.details, self.parent)

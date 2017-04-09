@@ -4,7 +4,10 @@
 <div class="method"
      id="{{ method.html_id }}">
     <p>
-        <span class="important-name">{{method.name}}</span>({{method.args_string}})
+        <span class="important-name">{{method.name}}</span>
+        {% if method.args_string %}
+            ({{method.args_string}})
+        {% endif %}
     </p>
     <div class="body">
         <p class="summary">{{method.summary}}</p>
