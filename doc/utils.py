@@ -172,10 +172,15 @@ def parse_type_string(string, context, link_style='HTML'):
         # Replacement method with context closure
         return resolution_or_name(match[0], context, link_style)
 
-    return re.sub('\w+', resolve_with_context, string)
+    return re.sub(r'(?:\w|\.)+', resolve_with_context, string)
 
 
 def surround_with_tag(string, tag, **kwargs):
+    attributes = kwargs
+    for key, value in attributes.items():
+        if key.endswith('_'):
+            del attributes[key]
+            attributes[key[:-1]] = value
     return '<{}{}{}>{}</{}>'.format(
         tag,
         ' ' if kwargs else '',
@@ -285,11 +290,11 @@ def resolve_markdown_code_names(string, context):
 def parse_doctest_code(string, context):
     def replace_function(match):
         typed_code = parse_type_string(match[0], context)
-        code_block = surround_with_tag(typed_code, 'code')
+        code_block = surround_with_tag(typed_code, 'code', class_="python")
         pre_block = surround_with_tag(code_block, 'pre')
         # Normalize whitespace
         return re.sub(r'\n(\s*)', '\n', pre_block)
-    return re.sub(r'>>> .*(\n *\.\.\. .*)*', replace_function, string)
+    return re.sub(r'>>> .*?\n\n', replace_function, string, flags=re.DOTALL)
 
 
 def parse_general_text(string, context, split_paragraphs=True):

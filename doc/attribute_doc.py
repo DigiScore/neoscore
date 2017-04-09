@@ -49,3 +49,4 @@ class AttributeDoc:
         self.summary = self.summary.replace('\n', '')
         self.summary = parse_general_text(self.summary, self.parent,
                                           split_paragraphs=False)
+        self.details = parse_general_text(self.details, self.parent)
