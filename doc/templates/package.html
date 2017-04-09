@@ -7,7 +7,7 @@
 {% if package.subpackages %}
     <h3>subpackages</h3>
     <ul>
-        {% for subpackage in package.subpackages.values() %}
+        {% for subpackage in package.subpackages %}
             <li><a href="{{ subpackage.url }}">{{ subpackage.name }}</a></li>
         {% endfor %}
     </ul>
@@ -15,7 +15,7 @@
 {% if package.modules %}
     <h3>modules</h3>
     <ul>
-        {% for module in package.modules.values() %}
+        {% for module in package.modules %}
             <li><a href="{{ module.url }}">{{ module.name }}</a></li>
         {% endfor %}
     </ul>

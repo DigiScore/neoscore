@@ -1,0 +1,48 @@
+{% macro package_toc(package) %}
+    <li><a href="{{package.url}}">{{package.unqualified_name}}</a></li>
+    {% if package.subpackages %}
+        <ul>
+            {% for subpackage in package.subpackages|sort(attribute="name") %}
+                {{ package_toc(subpackage) }}
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <ul>
+        {% for module in package.modules|sort(attribute="name") %}
+            <li><a href="{{module.url}}">{{module.unqualified_name}}</a></li>
+        {% endfor %}
+    </ul>
+{% endmacro %}
+
+<div id="sidebar">
+    <h3>brown</h3>
+    <h4>table of contents</h4>
+    <form id="site-search"
+          method="get"
+          onsubmit="submitSearch(); return false;">
+        <input type="text" name="q" value="" placeholder="search...">
+        <input type="submit" class="submit-button" value="go">
+    </form>
+    <div class="scrollable">
+        <ul>
+            {% for package in packages|sort(attribute="name") %}
+                {% if package.subpackages|length == 0 %}
+                    {{ package_toc(package) }}
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+<div id="sidebar-crook">
+</div>
+
+<script>
+ function clearSearchValue() {
+     document.getElementById("site-search").q.value = "";
+ }
+ function submitSearch() {
+     var query = document.getElementById("site-search").q.value += " site:{{ domain }}";
+     document.getElementById("site-search").reset()
+     window.open("https://duckduckgo.com/?q=" + query, "_blank");
+ }
+</script>

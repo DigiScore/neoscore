@@ -4,6 +4,7 @@ $code-block-bg: #faf5f5;
 $primary-text: #050505;
 $accent-bright: #1f427f;
 $accent-dark: #31231e;
+$super-accent: #9055a2;
 
 $hugest: 70px;
 $huge: 40px;
@@ -12,24 +13,130 @@ $medium: 20px;
 $small: 15px;
 $tiny: 13px;
 
-$small-space: 1em;
-$medium-space: 3em;
 $large-space: 5em;
+$medium-space: 3em;
+$small-space: 1em;
+$tiny-space: 0.5em;
+
+
+
+html {
+    margin: 0;
+    padding: 0;
+}
 
 body {
-    max-width: 900px;
-    margin: auto;
     color: $primary-text;
     font-family: 'Roboto', sans-serif;
     font-size: $small;
     background: $primary-bg;
+    overflow: auto;
+}
+
+.scrollable {
+    position: relative;
+    height: 100%;
+    margin-top: 1em;
+    overflow: hidden;
+
+    &:hover {
+        transition: auto;
+        overflow: scroll
+    }
+
+    ul {
+        margin: 0;
+        padding: 0;
+    }
+}
+
+#page-wrapper {
+    max-width: $large-space * 12;
+    padding: $large-space;
+    margin: auto;
+    position: relative;
+    background: $primary-bg;
+
+    border-left: 1px solid $accent-dark;
+    border-bottom: 1px solid $accent-dark;
+
+    -webkit-box-shadow: -1px 1px 5px 0px $accent-dark;
+    -moz-box-shadow:    -1px 1px 5px 0px $accent-dark;
+    box-shadow:         -1px 1px 5px 0px $accent-dark;
+}
+
+$sidebar-right: 225px;
+
+#sidebar {
+    width: $sidebar-right;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: $accent-bright;
+    height: 100%;
+    padding: $small-space;
+
+    border-right: 1px solid $accent-dark;
+
+    color: $primary-bg;
+    -webkit-box-shadow: 2px 1px 3px 0px $accent-dark;
+    -moz-box-shadow:    2px 1px 3px 0px $accent-dark;
+    box-shadow:         2px 1px 3px 0px $accent-dark;
+
+    h3 {
+        margin-top: 0;
+        margin-bottom: $small-space;
+    }
+
+    a {
+        color: $primary-bg;
+    }
+
+    ul {
+        padding: $tiny-space;
+        list-style: none;
+    }
+}
+
+#sidebar-crook {
+    width: 500px;
+    position: fixed;
+    top: 0;
+    left: $sidebar-right;
+    z-index: -1;
+    background: linear-gradient(135deg, $super-accent 300px, transparent 0) top left;
+    height: 100%;
+}
+
+#site-search {
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    width: 100%;
+    padding: 0;
+    height: $medium + 5px;
+
+    input {
+        margin: auto;
+        min-width: 0;
+    }
+
+    .submit-button {
+        min-width: auto;
+    }
 }
 
 /* Page titles */
 h1 {
-    font-family: 'Lobster', cursive;
+    font-family: 'Vollkorn', serif;
     font-size: $hugest;
+    font-style: italic;
+    font-weight: bold;
     color: $accent-bright;
+}
+
+.module > h1, .package > h1 {
+    margin: 0;
 }
 
 /* Major section */
@@ -74,7 +181,9 @@ pre > code {
 }
 
 .major-section-title {
-    font-family: 'Lobster', cursive;
+    font-family: 'Vollkorn', serif;
+    font-style: italic;
+    font-weight: bold;
     color: $accent-dark;
 }
 

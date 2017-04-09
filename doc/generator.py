@@ -52,17 +52,28 @@ def generate():
     module_template = env.get_template('module.html')
     package_template = env.get_template('package.html')
 
+    packages = [item for item in global_index
+                if type(item).__name__ == 'PackageDoc']
+
     for item in global_index:
         if type(item).__name__ == 'ModuleDoc':
             path = url_to_path(item.url)
             ensure_path_exists(path)
             with open(path, 'w') as file:
-                file.write(module_template.render(module=item))
+                file.write(module_template.render(
+                    module=item,
+                    global_index=item.global_index,
+                    packages=packages,
+                    domain=doc_config.DOMAIN))
         elif type(item).__name__ == 'PackageDoc':
             path = url_to_path(item.url)
             ensure_path_exists(path)
             with open(path, 'w') as file:
-                file.write(package_template.render(package=item))
+                file.write(package_template.render(
+                    package=item,
+                    global_index=item.global_index,
+                    packages=packages,
+                    domain=doc_config.DOMAIN))
 
 
 if __name__ == '__main__':

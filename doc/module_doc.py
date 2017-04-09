@@ -51,6 +51,12 @@ class ModuleDoc:
     def url(self):
         return doc_config.API + '/' + self.name.replace('.', '/') + '.html'
 
+    @property
+    def unqualified_name(self):
+        if '.' in self.name:
+            return self.name.split('.')[-1]
+        return self.name
+
     def read_file_lines(self):
         file = open(self.path, 'r')
         return file.readlines()

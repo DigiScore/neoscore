@@ -16,12 +16,18 @@ class PackageDoc:
         self.global_index = global_index
         self.global_index.add(self)
         self.details = ''
-        self.subpackages = {}
-        self.modules = {}
+        self.subpackages = set()
+        self.modules = set()
 
     @property
     def url(self):
         return doc_config.API + '/' + self.name.replace('.', '/') + '.html'
+
+    @property
+    def unqualified_name(self):
+        if '.' in self.name:
+            return self.name.rsplit('.', 1)[1]
+        return self.name
 
     def resolve_names_and_parse_html(self):
         readme_path = os.path.join(self.path, 'README.md')

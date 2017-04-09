@@ -23,7 +23,9 @@
         </div>
     {% endif %}
     {% if class.init_method %}
-        {{ method_template.method_doc(class.init_method) }}
+        <div>
+            {{ method_template.method_doc(class.init_method) }}
+        </div>
     {% endif %}
     {% if class.class_attributes %}
         <h4 class="major-section-title">class attributes</h4>
@@ -57,7 +59,7 @@
             {% endfor %}
         </div>
     {% endif %}
-    {% if class.methods %}
+    {% if class.normal_methods %}
         <h4 class="major-section-title">methods</h4>
         <div class="major-section">
             {% for method in class.normal_methods %}

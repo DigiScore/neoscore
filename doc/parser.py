@@ -6,9 +6,14 @@ from doc.module_doc import ModuleDoc
 from doc.utils import module_path_to_import_name, package_path_to_import_name
 
 
+def find_in_set_by_name(search_set, name):
+    return next((item for item in search_set if item.name == name),
+                None)
+
+
 def parse_dir(top):
-    packages = {}
-    modules = {}
+    packages = set()
+    modules = set()
     global_index = set()
 
     # Discover packages and modules
@@ -16,43 +21,32 @@ def parse_dir(top):
         if root.endswith('__pycache__') or '__init__.py' not in files:
             continue
         package_name = package_path_to_import_name(root)
-        packages[package_name] = PackageDoc(root, package_name, global_index)
+        packages.add(PackageDoc(root, package_name, global_index))
         for file in files:
             if file.endswith('.py') and file != '__init__.py':
                 module_name = module_path_to_import_name(root, file)
-                modules[module_name] = ModuleDoc(os.path.join(root, file),
-                                                 module_name, global_index)
+                modules.add(ModuleDoc(os.path.join(root, file),
+                                      module_name, global_index))
 
     # Link subpackages to parent packages
-    for package_name, package in packages.items():
-        parent_package_name = None
-        for i in range(len(package_name) - 1, -1, -1):
-            if package_name[i] == '.':
-                parent_package_name = package_name[:i]
-                break
-        if parent_package_name:
-            packages[parent_package_name].subpackages[package_name] = package
-            package.parent_package = packages[parent_package_name]
+    for package in packages:
+        if '.' in package.name:
+            parent_package_name = package.name.rsplit('.', 1)[0]
+            parent_package = find_in_set_by_name(packages, parent_package_name)
+            if parent_package:
+                parent_package.subpackages.add(package)
+                package.parent_package = parent_package
 
     # Link modules to packages
-    for module_name, module in modules.items():
-        package_name = None
-        for i in range(len(module_name) - 1, -1, -1):
-            if module_name[i] == '.':
-                package_name = module_name[:i]
-                break
-        if package_name:
-            packages[package_name].modules[module_name] = module
-            module.package = packages[package_name]
+    for module in modules:
+        if '.' in module.name:
+            parent_package_name = module.name.rsplit('.', 1)[0]
+            parent_package = find_in_set_by_name(packages, parent_package_name)
+            if parent_package:
+                parent_package.modules.add(module)
+                module.package = parent_package
 
     for doc_item in global_index:
         doc_item.resolve_names_and_parse_html()
 
     return packages, modules, global_index
-
-
-if __name__ == '__main__':
-    from pprint import pprint
-    packages, modules, global_index = parse_dir(sys.argv[1])
-    pprint(packages)
-    pprint(modules)
