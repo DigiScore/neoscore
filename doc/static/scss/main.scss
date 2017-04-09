@@ -1,0 +1,122 @@
+$primary-bg: #fffafe;
+$secondary-bg: #eeeff5;
+$primary-text: #050505;
+$accent-bright: #1f427f;
+$accent-dark: #31231e;
+
+$huge: 40px;
+$large: 35px;
+$medium: 20px;
+$small: 15px;
+
+$small-left-pad: 1em;
+$medium-left-pad: 3em;
+$standard-gap: 5em;
+
+body {
+    max-width: 900px;
+    margin: auto;
+    color: $primary-text;
+    font-family: 'Roboto', sans-serif;
+    font-size: $small;
+    background: $primary-bg;
+}
+
+/* Page titles */
+h1 {
+    color: $accent-dark;
+    font-size: $huge;
+}
+
+/* Major section */
+h2 {
+    color: $accent-dark;
+    font-size: $large;
+}
+
+/* /\* Minor sections *\/ */
+/* h3 { */
+/*     color: $accent-dark; */
+/*     font-size: $medium; */
+/* } */
+
+/* /\* Section division headings *\/ */
+/* h4 { */
+/*     color: $accent-dark; */
+/*     font-size: $medium; */
+/* } */
+
+a {
+    color: $accent-bright;
+}
+
+code {
+    background: $secondary-bg;
+    font-family: 'Source Code Pro', monospace;
+}
+
+.class-name {
+    font-size: $huge;
+    font-weight: bold;
+}
+
+.important-name {
+    font-size: $medium;
+    font-weight: bold;
+}
+
+.class {
+    padding-left: $small-left-pad;
+}
+
+.major-section-title {
+    font-family: 'Lobster', cursive;
+}
+
+.module > .major-section-title {
+    font-size: $huge;
+}
+
+.class > .major-section-title {
+    font-size: $large;
+    text-align: right;
+}
+
+.method {
+    padding-left: $small-left-pad;
+
+    margin-bottom: $standard-gap / 2;
+    padding-bottom: $standard-gap / 2;
+    /* border-bottom: 1px solid $accent-dark; */
+    &:last-child {
+        padding-bottom: 0;
+        margin-bottom: 0;
+        border-bottom: 0;
+    }
+    /* border: 2px solid black; */
+}
+
+.method > .body {
+    padding-left: $small-left-pad;
+}
+
+.property {
+    padding-left: $small-left-pad;
+    /* border: 2px solid green; */
+}
+
+.attribute {
+    padding-left: $small-left-pad;
+    /* border: 2px solid blue; */
+}
+
+.attribute > .body, .property > .body {
+    padding-left: $small-left-pad;
+}
+
+.type-details-list {
+    /* Regular small left pad,
+       plus a hack to indent wrapping lines. */
+    padding-left: $small-left-pad + $medium-left-pad;
+    text-indent: -1 * $medium-left-pad;
+}

@@ -1,3 +1,7 @@
+{% extends "main.html" %}
+
+{% block contents %}
+
 {{ package.details }}
 
 {% if package.subpackages %}
@@ -16,3 +20,5 @@
         {% endfor %}
     </ul>
 {% endif %}
+
+{% endblock %}

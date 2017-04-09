@@ -1,4 +1,5 @@
-from doc.utils import parse_general_text
+from doc.utils import (parse_general_text,
+                       parse_type_and_add_code_tag)
 
 
 class AttributeDoc:
@@ -40,8 +41,11 @@ class AttributeDoc:
             self.details = ''
         if ':' in first_line:
             self.type_string, self.summary = first_line.split(':', 1)
+            self.type_string = parse_type_and_add_code_tag(
+                self.type_string, self.parent)
         else:
             self.type_string = ''
             self.summary = first_line
-
-        self.summary = parse_general_text(self.summary, self.parent)
+        self.summary = self.summary.replace('\n', '')
+        self.summary = parse_general_text(self.summary, self.parent,
+                                          split_paragraphs=False)

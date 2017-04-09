@@ -1,10 +1,14 @@
+{% extends "main.html" %}
+
 {% import "attribute.html" as attribute_template %}
 {% import "method.html" as method_template %}
 {% import "class.html" as class_template %}
 
+{% block contents %}
+
 <div class="module">
 
-    <h1 class="module-name">{{module.name}}</h1>
+    <h1>{{module.name}}</h1>
 
     {% if module.summary %}
         <span class="summary">{{module.summary}}</span>
@@ -17,24 +21,26 @@
     {% endif %}
 
     {% if module.attributes %}
-        <h3>attributes</h3>
+        <h3 class="major-section-title">attributes</h3>
         {% for attribute in module.attributes %}
             {{ attribute_template.attribute_doc(attribute) }}
         {% endfor %}
     {% endif %}
 
     {% if module.methods %}
-        <h3>methods</h3>
+        <h3 class="major-section-title">methods</h3>
         {% for method in module.methods %}
             {{ method_template.method_doc(method) }}
         {% endfor %}
     {% endif %}
 
     {% if module.classes %}
-        <h3>classes</h3>
+        <h3 class="major-section-title">classes</h3>
         {% for class in module.classes %}
             {{ class_template.class_doc(class) }}
         {% endfor %}
     {% endif %}
 
 </div>
+
+{% endblock %}

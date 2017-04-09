@@ -46,9 +46,9 @@ class ClassDoc:
         self.global_index.add(self)
         self.summary = ''
         self.details = ''
-        self.methods = set()
-        self.properties = set()
-        self.class_attributes = set()
+        self.methods = []
+        self.properties = []
+        self.class_attributes = []
         self.parse_class()
 
     @property
@@ -107,7 +107,7 @@ class ClassDoc:
                 # Determine what type of method/property this is
                 line_before_method = whole_line_at(method_match.start(0) - 1, self.body)
                 if ClassDoc.property_re.search(line_before_method):
-                    self.properties.add(AttributeDoc(
+                    self.properties.append(AttributeDoc(
                         method_match.group('method'),
                         self,
                         docstring_content,
@@ -122,7 +122,7 @@ class ClassDoc:
                         method_type = MethodType.classmethod
                     else:
                         method_type = MethodType.normal
-                    self.methods.add(MethodDoc(
+                    self.methods.append(MethodDoc(
                         method_match.group('method'),
                         self,
                         method_match.group('args'),
@@ -130,7 +130,7 @@ class ClassDoc:
                         method_type,
                         self.global_index))
             elif attribute_match:
-                self.class_attributes.add(AttributeDoc(
+                self.class_attributes.append(AttributeDoc(
                     attribute_match.group('name'),
                     self,
                     docstring_content,
@@ -146,11 +146,12 @@ class ClassDoc:
         # Parse superclasses
         def re_type_sub(match):
             return parse_type_string(match['content'], self.parent)
-        super_classes = []
-        for superclass in self.superclass_string.split(', '):
-            super_classes.append(
-                parse_type_and_add_code_tag(superclass, self))
-        self.superclass_string = ', '.join(super_classes)
+        if self.superclass_string:
+            super_classes = []
+            for superclass in self.superclass_string.split(', '):
+                super_classes.append(
+                    parse_type_and_add_code_tag(superclass, self))
+            self.superclass_string = ', '.join(super_classes)
 
         self.summary = parse_general_text(self.summary, self.parent)
         self.details = parse_general_text(self.details, self.parent)

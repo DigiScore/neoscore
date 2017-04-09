@@ -55,19 +55,18 @@ def next_line_starting_index_from(index, string):
 
 def whole_line_at(index, string):
     """Return the whole line of a string at a given point."""
-    for i in range(index, -1, -1):
+    for i in range(index - 1, -1, -1):
         if string[i] == '\n':
-            start_i = i + 1
+            start_i = i
             break
     else:
-        start_i = index + 1
-
+        start_i = 0
     for i in range(index, len(string)):
         if string[i] == '\n':
             end_i = i + 1
             break
     else:
-        end_i = index + 1
+        end_i = len(string)
     return string[start_i: end_i]
 
 
@@ -293,7 +292,7 @@ def parse_doctest_code(string, context):
     return re.sub(r'>>> .*(\n *\.\.\. .*)*', replace_function, string)
 
 
-def parse_general_text(string, context):
+def parse_general_text(string, context, split_paragraphs=True):
     """Perform common text parsing and return ready-to-go HTML.
 
     * Splits paragraphs separated by blank lines into <p> blocks
@@ -310,9 +309,10 @@ def parse_general_text(string, context):
     # helper methods make a lot of assumptions.
     string = parse_bulleted_lists(string)
     string = parse_doctest_code(string, context)
-    paragraphs = [p for p in re.split(r'\n\n', string) if p]
-    string = ''.join(surround_with_tag(paragraph, 'p')
-                     for paragraph in paragraphs)
+    if split_paragraphs:
+        paragraphs = [p for p in re.split(r'\n\n', string) if p]
+        string = ''.join(surround_with_tag(paragraph, 'p')
+                         for paragraph in paragraphs)
     string = parse_bold(string)
     string = parse_italics(string)
     string = parse_backtick_code(string, context)

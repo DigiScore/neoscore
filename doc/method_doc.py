@@ -4,7 +4,8 @@ from doc.utils import (indentation_level_at,
                        parse_general_text,
                        parse_type_string,
                        parse_type_and_add_code_tag,
-                       surround_with_tag)
+                       surround_with_tag,
+                       whole_line_at)
 
 
 class MethodDoc:
@@ -51,7 +52,7 @@ class MethodDoc:
         else:
             return self.parent.url + '#' + self.name
 
-    def resolve_names_and_parse_html(self):
+    def parse_repeating_type_block(self, block_match):
 
         def re_type_sub(match):
             parsed_string = parse_type_string(match['content'], self.parent)
@@ -62,11 +63,30 @@ class MethodDoc:
 
         def parse_type_and_explanation(string):
             if ':' in string:
-                return re.sub(r'(?P<content>)\:',
+                return re.sub(r'(?P<content>.*?)\:',
                               re_type_sub_add_colon, string, 1)
             else:
                 return parse_type_and_add_code_tag(string, self.parent)
 
+        if block_match.group('body') is None:
+            return []
+        items = []
+        lines = block_match.group('body').split('\n')
+        main_indentation_level = indentation_level_at(0, lines[0])
+        current_item = ''
+        for line in lines:
+            if (indentation_level_at(0, line) == main_indentation_level
+                    and current_item):
+                current_item = parse_type_and_explanation(current_item)
+                items.append(current_item)
+                current_item = ''
+            current_item += line
+        if current_item:
+            current_item = parse_type_and_explanation(current_item)
+            items.append(current_item)
+        return items
+
+    def resolve_names_and_parse_html(self):
         current_i = 0
         while (current_i < len(self.docstring)
                and self.docstring[current_i] != '\n'):
@@ -84,49 +104,13 @@ class MethodDoc:
         self.details = self.docstring[current_i + 1: details_end]
 
         if args_block:
-            args_lines = args_block.group('body').split('\n')
-            main_indentation_level = indentation_level_at(0, args_lines[0])
-            current_arg = ''
-            for line in args_lines:
-                if (indentation_level_at(0, line) == main_indentation_level
-                        and current_arg):
-                    current_arg = parse_type_and_explanation(current_arg)
-                    self.args_details.append(current_arg)
-                    current_arg = ''
-                current_arg += line
-            if current_arg:
-                current_arg = parse_type_and_explanation(current_arg)
-                self.args_details.append(current_arg)
+            self.args_details = self.parse_repeating_type_block(args_block)
 
         if returns_block:
-            return_lines = returns_block.group('body').split('\n')
-            main_indentation_level = indentation_level_at(0, return_lines[0])
-            current_return = ''
-            for line in return_lines:
-                if (indentation_level_at(0, line) == main_indentation_level
-                        and current_return):
-                    current_return = parse_type_and_explanation(current_return)
-                    self.returns.append(current_return)
-                    current_return = ''
-                current_return += line
-            if current_return:
-                current_return = parse_type_and_explanation(current_return)
-                self.returns.append(current_return)
+            self.returns = self.parse_repeating_type_block(returns_block)
 
         if raises_block:
-            exception_lines = raises_block.group('body').split('\n')
-            main_indentation_level = indentation_level_at(0, exception_lines[0])
-            current_exception = ''
-            for line in exception_lines:
-                if (indentation_level_at(0, line) == main_indentation_level
-                        and current_exception):
-                    current_exception = parse_type_and_explanation(current_exception)
-                    self.exceptions.append(current_exception)
-                    current_exception = ''
-                current_exception += line
-            if current_exception:
-                current_exception = parse_type_and_explanation(current_exception)
-                self.exceptions.append(current_exception)
+            self.raises = self.parse_repeating_type_block(raises_block)
 
         if warning_block:
             self.warning = warning_block.group('body')
@@ -139,9 +123,9 @@ class MethodDoc:
         self.summary = parse_general_text(self.summary, self.parent)
         self.details = parse_general_text(self.details, self.parent)
         self.warning = parse_general_text(self.warning, self.parent)
-        if any(arg is None for arg in self.args_details):
-            import pdb;pdb.set_trace()
         self.args_details = [parse_general_text(arg, self.parent)
                              for arg in self.args_details]
+        self.returns = [parse_general_text(ret, self.parent)
+                        for ret in self.returns]
         self.exceptions = [parse_general_text(e, self.parent)
                            for e in self.exceptions]
