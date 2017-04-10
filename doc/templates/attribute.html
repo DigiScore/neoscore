@@ -9,6 +9,12 @@
     </p>
     <div class="body">
         <div class="details">{{attribute.details}}</div>
+        {% if attribute.warning %}
+            <h4>warning:</h4>
+            <div class="warning">
+                {{attribute.warning}}
+            </div>
+        {% endif %}
         {% if attribute.is_read_only %}
             <p class="read-only-notice">
                 read-only.

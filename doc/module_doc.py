@@ -79,8 +79,8 @@ class ModuleDoc:
             class_match = first_or_none(
                 c for c in class_matches
                 # Allow a blank line before class docstring
-                if c.end(0) == last_line_end_i
-                or c.end(0) + 1 == last_line_end_i)
+                if c.end(0) - 1 == last_line_end_i
+                or c.end(0) == last_line_end_i)
             method_match = first_or_none(
                 m for m in method_matches
                 if m.end(0) - 1 == last_line_end_i)

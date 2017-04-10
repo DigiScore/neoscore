@@ -51,7 +51,7 @@ class MethodDoc:
         else:
             return self.parent.url + '#' + self.name
 
-    def parse_repeating_type_block(self, block_match):
+    def parse_repeating_type_block(self, block_match, arg_mode=False):
 
         def re_type_sub(match):
             parsed_string = parse_type_string(match['content'], self.parent)
@@ -61,14 +61,28 @@ class MethodDoc:
             return re_type_sub(match) + ':'
 
         def parse_type_and_explanation(string):
+            string = string.strip()
             if ':' in string:
-                type_parsed_string = re.sub(r'(?P<content>.*?)\:',
-                                            re_type_sub_add_colon,
-                                            string,
-                                            1)
-                return parse_general_text(type_parsed_string, self.parent)
+                if arg_mode:
+                    arg_name, remainder = string.split(' ', 1)
+                    type_parsed_string = re.sub(r'(?P<content>.*?)\:',
+                                                re_type_sub_add_colon,
+                                                remainder,
+                                                1)
+                    recombined = arg_name + ' ' + type_parsed_string
+                    return parse_general_text(
+                        recombined, self.parent)
+                else:
+                    type_parsed_string = re.sub(r'(?P<content>.*?)\:',
+                                                re_type_sub_add_colon,
+                                                string,
+                                                1)
+                    return parse_general_text(type_parsed_string, self.parent)
             else:
-                return parse_type_and_add_code_tag(string, self.parent)
+                if arg_mode:
+                    return string
+                else:
+                    return parse_type_and_add_code_tag(string, self.parent)
 
         if block_match.group('body') is None:
             return []
@@ -107,7 +121,8 @@ class MethodDoc:
         self.details = self.docstring[current_i + 1: details_end]
 
         if args_block:
-            self.args_details = self.parse_repeating_type_block(args_block)
+            self.args_details = self.parse_repeating_type_block(args_block,
+                                                                arg_mode=True)
 
         if returns_block:
             self.returns = self.parse_repeating_type_block(returns_block)

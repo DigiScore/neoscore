@@ -93,7 +93,7 @@ def everything_in_indentation_block(index, string):
     start_i = next_line_starting_index_from(index, string)
     current_i = start_i
     while (indentation_level_at(current_i, string) >= level
-           or indentation_level_at(current_i, string) == 0):
+           or string[current_i] == '\n'):
         current_i = next_line_starting_index_from(current_i, string)
         if current_i is None:
             # This block goes to the end of the string
@@ -309,7 +309,7 @@ def parse_doctest_code(string, context):
         pre_block = surround_with_tag(code_block, 'pre')
         # Normalize whitespace
         return re.sub(r'\n(\s*)', '\n', pre_block)
-    return re.sub(r'>>> .*?\n\n', replace_function, string, flags=re.DOTALL)
+    return re.sub(r'>>> .*?(?:\n\n|$)', replace_function, string, flags=re.DOTALL)
 
 
 def parse_general_text(string, context, split_paragraphs=True):

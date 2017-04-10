@@ -4,6 +4,7 @@ $code-block-bg: #faf5f5;
 $primary-text: #050505;
 $accent-bright: #1f427f;
 $accent-dark: #31231e;
+$accent-dark-transparent: fade_out($accent-dark, 0.7);
 $super-accent: #9055a2;
 
 $hugest: 70px;
@@ -159,8 +160,11 @@ pre > code {
 
     background: $code-block-bg;
 
-    border-left: 1px solid $accent-bright;
-    border-bottom: 1px solid $accent-bright;
+    /* border-left: 1px solid $accent-bright; */
+    /* border-bottom: 1px solid $accent-bright; */
+    -webkit-box-shadow: inset -1px 2px 3px 0px $accent-dark-transparent;
+    -moz-box-shadow:    inset -1px 2px 3px 0px $accent-dark-transparent;
+    box-shadow:         inset -1px 2px 3px 0px $accent-dark-transparent;
 
     font-family: 'Source Code Pro', monospace;
     font-size: $tiny;
