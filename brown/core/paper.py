@@ -4,6 +4,8 @@ from brown.utils.paper_templates import paper_templates
 
 class Paper:
 
+    """A description of a type of paper to base `Page`s on."""
+
     def __init__(self, width, height,
                  margin_top, margin_right,
                  margin_bottom, margin_left,
@@ -34,6 +36,8 @@ class Paper:
 
         Args:
             template (str): Name of the Paper template (case-sensitive)
+
+        Returns: Paper
         """
         try:
             return cls(*paper_templates[template])

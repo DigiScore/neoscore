@@ -8,6 +8,20 @@ from brown.utils.units import Mm, Unit
 
 class FlowableFrame(InvisibleObject):
 
+    """A flowable coordinate space container.
+
+    This provides a virtual horizontal strip of space in which
+    objects can be placed, and at render time be automatically
+    flowed across line breaks and page breaks in the document.
+
+    To place an object in a `FlowableFrame`, simply parent it
+    to one, or to an object already in one.
+
+    In typical scores, there will be a single `FlowableFrame`
+    placed in the first page of the document, and the vast
+    majority of objects will be placed inside it.
+    """
+
     def __init__(self, pos, width, height, y_padding=None):
         """
         Args:
@@ -70,8 +84,7 @@ class FlowableFrame(InvisibleObject):
         The generated controllers are stored in `self.layout_controllers`
         in sorted order according to ascending x position
 
-        Warning:
-            This overwrites the contents of self.layout_controllers
+        Warning: This overwrites the contents of self.layout_controllers
 
         Returns: None
         """

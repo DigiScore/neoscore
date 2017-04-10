@@ -4,6 +4,12 @@ from brown.utils.units import Unit
 
 class Clef(MusicText):
 
+    """A graphical and logical staff clef.
+
+    `Staff`s use these to determine how pitches within them
+    should be laid out.
+    """
+
     _canonical_names = {
         'treble': 'gClef',
         'bass': 'fClef',

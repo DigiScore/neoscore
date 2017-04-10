@@ -5,6 +5,12 @@ from brown.core.staff_object import StaffObject
 
 class LedgerLine(Path, StaffObject):
 
+    """A horizontal ledger line.
+
+    These are generated automatically by `ChordRest` objects,
+    but can be manually instantiated as well.
+    """
+
     def __init__(self, pos, parent, base_length):
         """
         Args:

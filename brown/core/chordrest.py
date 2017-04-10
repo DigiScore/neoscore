@@ -11,16 +11,33 @@ from brown.utils.point import Point
 
 
 class ChordRest(ObjectGroup, StaffObject):
-    # (use temporary None in duration until those are implemented)
+
+    """A chord or a rest.
+
+    This is a general unified interface for conventionally notated
+    musical notes/chords/rests. It can be given any number of pitches
+    to be used as notes in the chord, or `None` for a rest.
+
+    It will automatically generate and lay out:
+        * `Notehead`s if pitches are given
+        * a `Stem` if pitches are given and required by the given `Duration`
+        * a `Flag` if pitches are given and required by the given `Duration`
+        * `LedgerLine`s as needed (taking into consideration the given
+          pitches and their location on the `Staff`)
+        * `Accidental`s as needed by any given pitches
+        * a `Rest` if no pitches are given
+        * `RhythmDot`s if needed by the given `Duration`
+    """
+
     def __init__(self, pos_x, staff, pitches, duration):
-        '''
+        """
         Args:
             pos_x (Unit): The horizontal position
             staff (Staff): The staff the object is attached to
-            noteheads (list[str] or None): A list of pitch strings
+            pitches (list[str] or None): A list of pitch strings
                 representing noteheads. An empty list indicates a rest.
             duration (Beat): The duration of the ChordRest
-        '''
+        """
         StaffObject.__init__(self, staff)
         ObjectGroup.__init__(self, Point(pos_x, staff.unit(0)), staff, None)
         self.duration = duration

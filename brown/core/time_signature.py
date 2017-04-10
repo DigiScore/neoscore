@@ -6,6 +6,8 @@ from brown.utils.point import Point
 
 class TimeSignature(ObjectGroup, StaffObject):
 
+    """A logical and graphical time signature"""
+
     _glyphnames = {
         1: "timeSig1",
         2: "timeSig2",

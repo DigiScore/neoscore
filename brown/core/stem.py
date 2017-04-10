@@ -6,6 +6,8 @@ from brown.utils.math_helpers import sign
 
 class Stem(Path, StaffObject):
 
+    """A vertical note/chord stem."""
+
     def __init__(self, start, height, parent):
         """
         Args:

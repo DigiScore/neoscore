@@ -21,7 +21,7 @@ class Staff(Path):
             pos (Point): The position of the top-left corner of the staff
             width (Unit): The horizontal width of the staff
             staff_unit (Unit): The distance between two lines in the staff.
-                If not set, this will default to config.DEFAULT_STAFF_UNIT
+                If not set, this will default to `config.DEFAULT_STAFF_UNIT`
             line_count (int): The number of lines in the staff.
             music_font (MusicFont): The font to be used in all
                 MusicTextObjects unless otherwise specified.
@@ -91,7 +91,8 @@ class Staff(Path):
     def active_clef_at(self, pos_x):
         """Find and return the active clef at a given x position.
 
-        pos_x (Unit): An x-axis position on the staff
+        Args:
+            pos_x (Unit): An x-axis position on the staff
 
         Returns:
             Clef: The active clef at `pos_x`

@@ -19,7 +19,7 @@ class Pen:
                  pattern=PenPattern.SOLID):
         """
         Args:
-            color (Color or args for Color): The stroke color
+            color (Color or init tuple): The stroke color
             thickness (Unit): The stroke thickness
             pattern (PenPattern): The stroke pattern.
                 Defaults to a solid line.
@@ -62,8 +62,8 @@ class Pen:
     def thickness(self):
         """Unit: The stroke thickness.
 
-        A value of 0 (in any unit) indicates a cosmetic pixel width.
-        Setting to None will default to config.DEFAULT_PEN_THICKNESS
+        A value of `0` (in any unit) indicates a cosmetic pixel width.
+        Setting to `None` will default to `config.DEFAULT_PEN_THICKNESS`
         """
         return self._thickness
 

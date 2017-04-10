@@ -6,6 +6,8 @@ from brown.utils.exceptions import InvalidVirtualAccidentalError
 
 class Accidental(MusicText):
 
+    """A visible accidental."""
+
     _canonical_names = {
         -1: 'accidentalFlat',
         0:  'accidentalNatural',

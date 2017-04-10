@@ -36,9 +36,11 @@ class Unit:
 
     __slots__ = ('value')
 
-    # Ratio of this class's units to Units.
-    # Subclasses should override this.
     _conversion_rate = 1
+    """float: the ratio of this class to `Unit`s.
+
+    Subclasses should override this.
+    """
 
     def __init__(self, value):
         """
@@ -155,27 +157,23 @@ class Unit:
 
 
 class GraphicUnit(Unit):
-    # TODO: When stable, copy and tailor docstring from Unit
-    _conversion_rate = 1
+    """A unit with a 1:1 ratio with Qt units.
 
-    # (all other functionality implemented in Unit)
-    pass
+    This will typically be the size of a pixel in `brown.show()` preview mode.
+
+    In most cases, you probably want to use a more descriptive unit type.
+    """
+    _conversion_rate = 1
 
 
 class Inch(Unit):
-    # TODO: When stable, copy and tailor docstring from Unit
+    """An inch."""
     _conversion_rate = 300
-
-    # (all other functionality implemented in Unit)
-    pass
 
 
 class Mm(Unit):
-    # TODO: When stable, copy and tailor docstring from Unit
+    """A millimeter."""
     _conversion_rate = Inch._conversion_rate * 0.0393701
-
-    # (all other functionality implemented in Unit)
-    pass
 
 
 def _convert_all_to_unit_in_immutable(iterable, unit):
@@ -188,8 +186,8 @@ def _convert_all_to_unit_in_immutable(iterable, unit):
         unit (type): The unit to convert numerical elements to
 
     Returns:
-        An iterable the same type of the input.
-        (set --> set, tuple --> tuple, etc.)
+        iter(any): An iterable the same type of the input.
+            (set --> set, tuple --> tuple, etc.)
     """
     mutable_iterable = list(iterable)
     convert_all_to_unit(mutable_iterable, unit)

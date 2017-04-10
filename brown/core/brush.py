@@ -38,6 +38,8 @@ class Brush:
 
         Args:
             brush (Brush): An existing brush.
+
+        Returns: Brush
         """
         return cls(brush.color, brush.pattern)
 
@@ -67,6 +69,6 @@ class Brush:
     def _create_interface(self):
         """Construct an interface and store it in self._interface.
 
-        This should be called by self.__init__().
+        This should be called by `self.__init__()`
         """
         self._interface = self._interface_class(self.color, self.pattern)

@@ -3,14 +3,20 @@ from brown.utils.exceptions import InvalidAccidentalError
 
 class VirtualAccidental:
 
+    """A logical accidental descriptor.
+
+    These are used both in `Pitch` manipulations and in
+    graphical `Accidental` objects.
+    """
+
     def __init__(self, value):
         """
         Args:
             value (str or int or None): A description of the accidental.
-                'f' or -1: Flat
-                'n' or  0: Natural (Explicit)
-                's' or  1: Sharp
-                None     : No accidental, value depends on context.
+                * `'f'` or `-1`: Flat
+                * `'n'` or  `0`: Natural (Explicit)
+                * `'s'` or  `1`: Sharp
+                * `None`       : No accidental, value depends on context.
         """
         self.value = value
 
@@ -44,10 +50,10 @@ class VirtualAccidental:
         String values passed to this will be automatically converted
         to their integer representations. None values will remain None.
 
-        'f' or -1: Flat
-        'n' or  0: Natural (Explicit)
-        's' or  1: Sharp
-        None     : No accidental, value depends on context.
+        * `'f'` or `-1`: Flat
+        * `'n'` or  `0`: Natural (Explicit)
+        * `'s'` or  `1`: Sharp
+        * `None`       : No accidental, value depends on context.
         """
         return self._value
 

@@ -7,12 +7,18 @@ from brown.interface.app_interface import AppInterface
 
 """The global state of the application."""
 
-# Fetch and initialize app interface
 _app_interface_class = AppInterface
+
 _app_interface = None
+
 default_font = None
+"""Font: The default font to be used in `Text` objects."""
+
 document = None
+"""Document: The global document root object."""
+
 registered_music_fonts = {}
+
 registered_text_fonts = {}
 
 # Color of background between and around pages. (Not yet implemented)
@@ -54,8 +60,6 @@ def setup(initial_paper=None):
 
 def register_music_font(font_name, font_file_path, metadata_path):
     """Register a music font with the application.
-
-    This
 
     Args:
         font_name (str): The canonical name of this font.

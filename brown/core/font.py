@@ -3,6 +3,8 @@ from brown.interface.font_interface import FontInterface
 
 class Font:
 
+    """A text font."""
+
     _interface_class = FontInterface
 
     def __init__(self, family_name, size, weight=1, italic=False):

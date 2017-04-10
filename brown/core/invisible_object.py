@@ -10,7 +10,7 @@ class InvisibleObject(GraphicObject):
     def __init__(self, pos, parent=None):
         """
         Args:
-            pos (Point[GraphicUnit] or tuple): The position of the path root
+            pos (Point or init tuple): The position of the path root
                 relative to the document.
             parent: The parent object or None
         """

@@ -7,17 +7,19 @@ from brown.utils.units import GraphicUnit
 
 class Text(GraphicObject):
 
+    """A graphical text object."""
+
     _interface_class = TextInterface
 
     def __init__(self, pos, text, font=None, parent=None, scale_factor=1):
         """
         Args:
-            pos (Point[GraphicUnit] or tuple): The position of the path root
+            pos (Point or init tuple): The position of the path root
                 relative to the document.
             text (str): The text to be displayed
             font (Font): The font for the object.
             parent (GraphicObject): The parent (core-level) object or None
-            scale_factor(float): A hard scaling factor.
+            scale_factor (float): A hard scaling factor.
         """
         if font:
             self.font = font

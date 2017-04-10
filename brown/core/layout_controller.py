@@ -2,14 +2,13 @@ from brown.core.invisible_object import InvisibleObject
 
 
 class LayoutController(InvisibleObject):
-    """
-    An abstract layout controller for working with FlowableFrame layouts.
-    """
+    """An abstract layout controller for working with FlowableFrame layouts."""
 
+    _is_automatic = False
     """bool: Whether or not this controller class is automatically created
              by its `FlowableFrame`.
     """
-    _is_automatic = False
+
 
     def __init__(self, pos, page, flowable_frame, local_x):
         """

@@ -19,7 +19,7 @@ class Slur(Path, StaffObject, Spanner):
             start (ParentPoint or tuple init args):
             stop (ParentPoint or tuple init args):
             direction (int): The direction of the slur, where
-                -1 indicates curving upward, and 1 vice versa.
+                `-1` indicates curving upward, and `1` vice versa.
         """
         start = (start if isinstance(start, ParentPoint)
                  else ParentPoint(*start))

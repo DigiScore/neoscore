@@ -23,7 +23,7 @@ class Spanner:
     def __init__(self, end_pos, end_parent=None):
         """
         Args:
-            end_pos (Point or tuple init args): The position of the endpoint
+            end_pos (Point or init tuple): The position of the endpoint
             end_parent (GraphicObject or None): The parent of the endpoint.
                 `end_pos` will be relative to this object.
                 If None, this defaults to the spanner.

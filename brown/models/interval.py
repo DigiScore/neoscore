@@ -109,7 +109,7 @@ class Interval:
 
     @property
     def simple_distance(self):
-        """The simplified interval distance collapsing compound intervals.
+        """float: The simplified interval distance collapsing compound intervals.
 
         This value is the simplified version of `self.distance` where intervals
         larger than an octave are moved to be within one octave.

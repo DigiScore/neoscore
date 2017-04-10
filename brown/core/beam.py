@@ -7,6 +7,13 @@ from brown.utils.units import GraphicUnit
 
 class Beam(Path, StaffObject):
 
+    """A rhythmic beam connecting groups of notes.
+
+    This is a single beam - for multiple layers of beams
+    (e.g. 2 for 16th notes), multiple `Beam`s must be stacked
+    on top of each other.
+    """
+
     def __init__(self, start, stop):
         """
         Args:
