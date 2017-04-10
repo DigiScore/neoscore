@@ -18,7 +18,7 @@ class ModuleDoc:
     """A Python module as far as docs are concerned."""
 
     docstring_re = re.compile(
-        r'(\"\"\"(?P<content>.*?)\"\"\")',
+        r' *(\"\"\"(?P<content>.*?)\"\"\")',
         flags=re.DOTALL)
     class_name_re_capture = r'(?P<class>[A-Z]\w*)'
     class_re = re.compile(r'^class '
@@ -71,16 +71,16 @@ class ModuleDoc:
         attribute_matches = list(re.finditer(ModuleDoc.module_level_attribute_re,
                                              contents))
         docstring_blocks = re.finditer(ModuleDoc.docstring_re, contents)
-        # TODO: This completely ignores classes/methods without docstrings
+        # NOTE: This completely ignores classes/methods without docstrings
         for block_index, block in enumerate(docstring_blocks):
             last_line_end_i = previous_line_ending_index_from(
                 block.start(0), contents)
             docstring = block.group('content')
             class_match = first_or_none(
                 c for c in class_matches
-                if c.end(0) - 1 == last_line_end_i
                 # Allow a blank line before class docstring
-                or c.end(0) == last_line_end_i)
+                if c.end(0) == last_line_end_i
+                or c.end(0) + 1 == last_line_end_i)
             method_match = first_or_none(
                 m for m in method_matches
                 if m.end(0) - 1 == last_line_end_i)

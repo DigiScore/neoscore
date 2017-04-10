@@ -6,7 +6,9 @@
     <p>
         <span class="important-name">{{method.name}}</span>
         {% if method.args_string %}
-            ({{method.args_string}})
+            {{method.args_string}}
+        {% else %}
+            <code>()</code>
         {% endif %}
     </p>
     <div class="body">

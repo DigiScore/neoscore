@@ -233,6 +233,10 @@ pre > code {
        plus a hack to indent wrapping lines. */
     padding-left: $small-space + $medium-space;
     text-indent: -1 * $medium-space;
+    ul {
+        padding-left: 0;
+        text-indent: 0;
+    }
 }
 
 /* Syntax highlighting ======================================================

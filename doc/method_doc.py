@@ -62,8 +62,11 @@ class MethodDoc:
 
         def parse_type_and_explanation(string):
             if ':' in string:
-                return re.sub(r'(?P<content>.*?)\:',
-                              re_type_sub_add_colon, string, 1)
+                type_parsed_string = re.sub(r'(?P<content>.*?)\:',
+                                            re_type_sub_add_colon,
+                                            string,
+                                            1)
+                return parse_general_text(type_parsed_string, self.parent)
             else:
                 return parse_type_and_add_code_tag(string, self.parent)
 
@@ -79,7 +82,8 @@ class MethodDoc:
                 current_item = parse_type_and_explanation(current_item)
                 items.append(current_item)
                 current_item = ''
-            current_item += line
+            current_item += line + '\n'
+
         if current_item:
             current_item = parse_type_and_explanation(current_item)
             items.append(current_item)
@@ -118,6 +122,7 @@ class MethodDoc:
         args = [a for a in args if a not in ['cls', 'self']]
         args = ', '.join(a for a in args)
         if args:
+            args = '(' + args + ')'
             args = surround_with_tag(args, 'code')
         self.args_string = args
 

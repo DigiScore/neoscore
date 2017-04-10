@@ -31,6 +31,9 @@ def first_or_none(iter):
 def previous_line_ending_index_from(index, string):
     """Find the index of the end of the line above a point in a string.
 
+    This will be the index of the newline character at the end of the
+    previous line.
+
     If the given index is on the first line of the string, returns None.
     """
     for i in range(index - 1, -1, -1):
@@ -54,10 +57,14 @@ def next_line_starting_index_from(index, string):
 
 
 def whole_line_at(index, string):
-    """Return the whole line of a string at a given point."""
+    """Return the whole line of a string at a given point.
+
+    Unless the index is on the last line of a string,
+    this will always terminate with a newline.
+    """
     for i in range(index - 1, -1, -1):
         if string[i] == '\n':
-            start_i = i
+            start_i = i + 1
             break
     else:
         start_i = 0
@@ -85,7 +92,7 @@ def everything_in_indentation_block(index, string):
     level = indentation_level_at(index, string)
     start_i = next_line_starting_index_from(index, string)
     current_i = start_i
-    while (indentation_level_at(current_i, string) > level
+    while (indentation_level_at(current_i, string) >= level
            or indentation_level_at(current_i, string) == 0):
         current_i = next_line_starting_index_from(current_i, string)
         if current_i is None:
@@ -212,6 +219,8 @@ def at_line_beginning(string, index):
 def parse_bulleted_lists(string):
     """Convert markdown style bulleted lists to HTML unordered lists.
 
+    Nested lists are not supported.
+
     "Look mom I built a state machine because I don't like Sphinx!"
     """
 
@@ -256,6 +265,12 @@ def parse_bulleted_lists(string):
             else:
                 # Normal character outside of list
                 result_string += char
+    if in_list and bullets:
+        # List extends to the end of the string.
+        result_string += surround_with_tag(''.join(
+                surround_with_tag(point, 'li')
+                for point in bullets),
+            'ul')
     return result_string
 
 
@@ -275,7 +290,7 @@ def parse_backtick_code(string, context):
     def replace_function(match):
         typed_code = parse_type_string(match['content'], context)
         return surround_with_tag(typed_code, 'code')
-    return re.sub(r'`(?P<content>\w+.*?)`', replace_function, string,
+    return re.sub(r'`(?P<content>.+?)`', replace_function, string,
                   flags=re.DOTALL)
 
 
