@@ -51,6 +51,10 @@ body {
     }
 }
 
+.inherited {
+    display: none;
+}
+
 #page-wrapper {
     max-width: $large-space * 12;
     padding: $large-space;
@@ -197,6 +201,11 @@ pre > code {
 
 .class > .major-section-title {
     font-size: $large;
+    text-align: right;
+}
+
+.class > .inherited > .major-section-title {
+    font-size: $medium;
     text-align: right;
 }
 

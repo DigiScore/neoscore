@@ -3,6 +3,7 @@ import os
 
 from doc.package_doc import PackageDoc
 from doc.module_doc import ModuleDoc
+from doc.class_doc import ClassDoc
 from doc.utils import module_path_to_import_name, package_path_to_import_name
 
 
@@ -45,6 +46,10 @@ def parse_dir(top):
             if parent_package:
                 parent_package.modules.add(module)
                 module.package = parent_package
+
+    for class_doc in (item for item in global_index
+                      if isinstance(item, ClassDoc)):
+        class_doc.resolve_superclasses()
 
     for doc_item in global_index:
         doc_item.resolve_names_and_parse_html()

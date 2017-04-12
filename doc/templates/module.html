@@ -10,6 +10,8 @@
 
     <h1>{{module.name}}</h1>
 
+    {% include "show_inherited.html" %}
+
     {% if module.summary %}
         <span class="summary">{{module.summary}}</span>
     {% endif %}
@@ -23,14 +25,14 @@
     {% if module.attributes %}
         <h3 class="major-section-title">attributes</h3>
         {% for attribute in module.attributes %}
-            {{ attribute_template.attribute_doc(attribute) }}
+            {{ attribute_template.attribute_doc(attribute, false) }}
         {% endfor %}
     {% endif %}
 
     {% if module.methods %}
         <h3 class="major-section-title">methods</h3>
         {% for method in module.methods %}
-            {{ method_template.method_doc(method) }}
+            {{ method_template.method_doc(method, false) }}
         {% endfor %}
     {% endif %}
 

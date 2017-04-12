@@ -1,4 +1,8 @@
-{% macro method_doc(method) -%}
+{% import "inherited_note.html" as inherited_note %}
+{% import "overriden_note.html" as overriden_note %}
+
+
+{% macro method_doc(method, is_inherited) -%}
 
 
 <div class="method"
@@ -57,6 +61,12 @@
             <div class="warning">
                 {{method.warning}}
             </div>
+        {% endif %}
+        {% if is_inherited %}
+            {{ inherited_note.inherited(method) }}
+        {% endif %}
+        {% if method.overriden_from %}
+            {{ overriden_note.overriden(method) }}
         {% endif %}
     </div>
 </div>

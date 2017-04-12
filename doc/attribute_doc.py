@@ -18,6 +18,7 @@ class AttributeDoc:
         self.type_string = ''
         self.summary = ''
         self.details = ''
+        self.overriden_from = None
 
     @property
     def html_id(self):

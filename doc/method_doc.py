@@ -36,6 +36,7 @@ class MethodDoc:
         self.returns = []
         self.exceptions = []
         self.warning = ''
+        self.overriden_from = None
 
     @property
     def html_id(self):

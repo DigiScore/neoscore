@@ -1,4 +1,5 @@
 import re
+from itertools import chain
 
 from doc.attribute_doc import AttributeDoc
 from doc.method_doc import MethodDoc
@@ -46,9 +47,13 @@ class ClassDoc:
         self.global_index.add(self)
         self.summary = ''
         self.details = ''
+        self.superclasses = []
         self.methods = []
+        self.inherited_methods = []
         self.properties = []
+        self.inherited_properties = []
         self.class_attributes = []
+        self.inherited_class_attributes = []
         self.parse_class()
 
     @property
@@ -78,6 +83,50 @@ class ClassDoc:
         return [method for method in self.methods
                 if method.method_type == MethodType.staticmethod
                 and method.name != '__init__']
+
+    @property
+    def inherited_init_method(self):
+        return next((method for method in self.inherited_methods
+                     if method.name == '__init__'),
+                    None)
+
+    @property
+    def inherited_normal_methods(self):
+        return [method for method in self.inherited_methods
+                if method.method_type == MethodType.normal
+                and method.name != '__init__']
+
+    @property
+    def inherited_class_methods(self):
+        return [method for method in self.inherited_methods
+                if method.method_type == MethodType.classmethod
+                and method.name != '__init__']
+
+    @property
+    def inherited_static_methods(self):
+        return [method for method in self.inherited_methods
+                if method.method_type == MethodType.staticmethod
+                and method.name != '__init__']
+
+    @property
+    def all_normal_methods(self):
+        return self.normal_methods + self.inherited_normal_methods
+
+    @property
+    def all_class_methods(self):
+        return self.class_methods + self.inherited_class_methods
+
+    @property
+    def all_static_methods(self):
+        return self.static_methods + self.inherited_static_methods
+
+    @property
+    def all_class_attributes(self):
+        return self.class_attributes + self.inherited_class_attributes
+
+    @property
+    def all_properties(self):
+        return self.properties + self.inherited_properties
 
     def parse_class(self):
         # Extract summary and details
@@ -142,16 +191,86 @@ class ClassDoc:
                 # Orphan docstring, append to class details body.
                 self.details += '\n\n' + docstring_content
 
+    def find_inherited_names(self):
+        inherited_methods = {}
+        inherited_properties = {}
+        inherited_class_attributes = {}
+        for superclass in self.superclasses:
+            (super_inherited_methods,
+             super_inherited_properties,
+             super_inherited_class_attributes) = superclass.find_inherited_names()
+            inherited_methods = {
+                **{m.name: m for m in superclass.methods},
+                **super_inherited_methods,
+                **inherited_methods
+            }
+            inherited_properties = {
+                **{p.name: p for p in superclass.properties},
+                **super_inherited_properties,
+                **inherited_properties
+            }
+            inherited_class_attributes = {
+                **{a.name: a for a in superclass.class_attributes},
+                **super_inherited_class_attributes,
+                **inherited_class_attributes
+            }
+        return (inherited_methods,
+                inherited_properties,
+                inherited_class_attributes)
+
+    def discover_inheritence(self):
+        (inherited_methods,
+         inherited_properties,
+         inherited_class_attributes) = self.find_inherited_names()
+        all_inherited = (list(inherited_methods.values())
+                         + list(inherited_properties.values())
+                         + list(inherited_class_attributes.values()))
+        for inherited in all_inherited:
+            if type(inherited).__name__ == 'MethodDoc':
+                for method in self.methods:
+                    if method.name == inherited.name:
+                        method.overriden_from = inherited
+                        break
+                else:
+                    self.inherited_methods.append(inherited)
+            elif (type(inherited).__name__ == 'AttributeDoc'
+                    and not inherited.is_property):
+                for attribute in self.class_attributes:
+                    if attribute.name == inherited.name:
+                        attribute.overriden_from = inherited
+                        break
+                else:
+                    self.inherited_class_attributes.append(inherited)
+            else:
+                for property in self.properties:
+                    if property.name == inherited.name:
+                        property.overriden_from = inherited
+                        break
+                else:
+                    self.inherited_properties.append(inherited)
+
+    def resolve_superclasses(self):
+        for superclass_name in self.superclass_string.split(', '):
+            superclass = next((item for item in self.global_index
+                               if type(item).__name__ == 'ClassDoc'
+                               and item.name == superclass_name),
+                              None)
+            if superclass:
+                self.superclasses.append(superclass)
+
     def resolve_names_and_parse_html(self):
-        # Parse superclasses
+
+        self.discover_inheritence()
+
+        # Parse superclass string
         def re_type_sub(match):
             return parse_type_string(match['content'], self.parent)
         if self.superclass_string:
-            super_classes = []
+            superclasses = []
             for superclass in self.superclass_string.split(', '):
-                super_classes.append(
+                superclasses.append(
                     parse_type_and_add_code_tag(superclass, self))
-            self.superclass_string = ', '.join(super_classes)
+            self.superclass_string = ', '.join(superclasses)
 
         self.summary = parse_general_text(self.summary, self.parent)
         self.details = parse_general_text(self.details, self.parent)

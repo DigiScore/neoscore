@@ -1,0 +1,10 @@
+{% macro overriden(overriden_object) %}
+
+    <div class="overriden-note">
+        overriden from
+        <a href="{{ overriden_object.overriden_from.url }}">
+            {{ overriden_object.overriden_from.parent.name }}
+        </a>
+    </div>
+
+{% endmacro %}
