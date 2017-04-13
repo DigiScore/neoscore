@@ -28,6 +28,10 @@ def first_or_none(iter):
         return None
 
 
+def line_num_at(index, string):
+    return sum(1 for char in string[:index + 1] if char == '\n') + 1
+
+
 def previous_line_ending_index_from(index, string):
     """Find the index of the end of the line above a point in a string.
 

@@ -19,6 +19,7 @@ $medium-space: 3em;
 $small-space: 1em;
 $tiny-space: 0.5em;
 
+$a-color: $accent-bright;
 
 
 html {
@@ -151,7 +152,7 @@ h2 {
 }
 
 a {
-    color: $accent-bright;
+    color: $a-color
 }
 
 code {
@@ -211,34 +212,28 @@ pre > code {
 
 .method {
     padding-left: $small-space;
+    padding-bottom: $small-space;
+    padding-top: $small-space;
+    margin-bottom: 0;
 
-    margin-bottom: $large-space / 2;
-    padding-bottom: $large-space / 2;
-    /* border-bottom: 1px solid $accent-dark; */
-    &:last-child {
-        padding-bottom: 0;
-        margin-bottom: 0;
-        border-bottom: 0;
+    /* &:last-child { */
+    /*     padding-bottom: 0; */
+    /* } */
+
+    & > .body {
+        padding-left: $small-space;
     }
-    /* border: 2px solid black; */
 }
 
-.method > .body {
+.property, attribute {
     padding-left: $small-space;
-}
+    padding-bottom: $tiny-space;
+    padding-top: $tiny-space;
+    margin-bottom: 0;
 
-.property {
-    padding-left: $small-space;
-    /* border: 2px solid green; */
-}
-
-.attribute {
-    padding-left: $small-space;
-    /* border: 2px solid blue; */
-}
-
-.attribute > .body, .property > .body {
-    padding-left: $small-space;
+    & > .body {
+        padding-left: $small-space;
+    }
 }
 
 .type-details-list {
@@ -249,6 +244,34 @@ pre > code {
     ul {
         padding-left: 0;
         text-indent: 0;
+    }
+}
+
+.source-link {
+    float: right;
+    color: transparent;
+    /* transform-origin: right; */
+    transform: translateX(1em);
+    -webkit-transition: all 200ms linear;
+    -ms-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+
+.class:hover {
+    & > .source-link {
+        /* transform: scale(1); */
+        transform: translateX(0);
+        color: $a-color;
+    }
+}
+
+.method, .attribute, .property {
+    &:hover {
+        & .source-link {
+            /* transform: scale(1); */
+            transform: translateX(0);
+            color: $a-color;
+        }
     }
 }
 

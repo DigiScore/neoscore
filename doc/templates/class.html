@@ -1,5 +1,6 @@
 {% import "attribute.html" as attribute_template %}
 {% import "method.html" as method_template %}
+{% import "source_link.html" as source_link %}
 
 
 {% macro class_doc(class) -%}
@@ -12,6 +13,7 @@
                 ({{class.superclass_string}})
             {% endif %}
         </h2>
+        {{ source_link.link_to_source(class) }}
         <p class="summary">{{class.summary}}</p>
         {% if class.details %}
             <p class="details">{{class.details}}</p>

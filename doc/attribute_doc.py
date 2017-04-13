@@ -1,3 +1,4 @@
+import doc.doc_config as doc_config
 from doc.utils import (parse_general_text,
                        parse_type_and_add_code_tag)
 
@@ -6,7 +7,7 @@ class AttributeDoc:
     """A Python attribute or property as far as docs are concerned."""
 
     def __init__(self, name, parent, docstring, is_property, is_read_only,
-                 default_value, global_index):
+                 default_value, global_index, line_num):
         self.name = name
         self.parent = parent
         self.docstring = docstring
@@ -15,6 +16,7 @@ class AttributeDoc:
         self.default_value = default_value
         self.global_index = global_index
         self.global_index.add(self)
+        self.line_num = line_num
         self.type_string = ''
         self.summary = ''
         self.details = ''
@@ -33,6 +35,17 @@ class AttributeDoc:
             return self.parent.url + '.' + self.name
         else:
             return self.parent.url + '#' + self.name
+
+    @property
+    def source_url(self):
+        if type(self.parent).__name__ == 'MethodDoc':
+            path = self.parent.path
+        else:
+            path = self.parent.parent.path
+        return '{}/{}#L{}'.format(
+            doc_config.SOURCE_ROOT,
+            path,
+            self.line_num)
 
     def resolve_names_and_parse_html(self):
         if '\n\n' in self.docstring:

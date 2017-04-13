@@ -1,5 +1,6 @@
 {% import "inherited_note.html" as inherited_note %}
 {% import "overriden_note.html" as overriden_note %}
+{% import "source_link.html" as source_link %}
 
 
 {% macro method_doc(method, is_inherited) -%}
@@ -14,6 +15,7 @@
         {% else %}
             <code>()</code>
         {% endif %}
+        {{ source_link.link_to_source(method) }}
     </p>
     <div class="body">
         <p class="summary">{{method.summary}}</p>

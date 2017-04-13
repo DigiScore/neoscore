@@ -1,10 +1,9 @@
 import re
 
 import doc.doc_config as doc_config
-from doc.utils import (module_path_to_import_name,
-                       first_or_none,
+from doc.utils import (first_or_none,
+                       line_num_at,
                        previous_line_ending_index_from,
-                       indentation_level_at,
                        everything_in_indentation_block,
                        parse_general_text)
 from doc.attribute_doc import AttributeDoc
@@ -52,6 +51,16 @@ class ModuleDoc:
         return doc_config.API + '/' + self.name.replace('.', '/') + '.html'
 
     @property
+    def source_url(self):
+        if type(self.parent).__name__ == 'MethodDoc':
+            path = self.parent.path
+        else:
+            path = self.parent.parent.path
+        return '{}/{}'.format(
+            doc_config.SOURCE_ROOT,
+            path)
+
+    @property
     def unqualified_name(self):
         if '.' in self.name:
             return self.name.split('.')[-1]
@@ -96,7 +105,9 @@ class ModuleDoc:
                     class_match.group('superclasses'),
                     docstring,
                     class_body,
-                    self.global_index))
+                    self.global_index,
+                    line_num_at(class_match.start(0), contents),
+                    line_num_at(block.end(0), contents)))
             elif method_match:
                 self.methods.append(MethodDoc(
                     method_match.group('method'),
@@ -104,7 +115,8 @@ class ModuleDoc:
                     method_match.group('args'),
                     docstring,
                     MethodType.normal,
-                    self.global_index))
+                    self.global_index,
+                    line_num_at(method_match.start(0), contents)))
             elif attribute_match:
                 self.attributes.append(AttributeDoc(
                     attribute_match.group('name'),
@@ -113,7 +125,8 @@ class ModuleDoc:
                     False,
                     True,
                     attribute_match.group('value'),
-                    self.global_index))
+                    self.global_index,
+                    line_num_at(attribute_match.start(0), contents)))
             elif block_index == 0:
                 if '\n\n' in docstring:
                     self.summary, self.details = docstring.split('\n\n', 1)

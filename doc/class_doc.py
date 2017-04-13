@@ -1,6 +1,6 @@
 import re
-from itertools import chain
 
+import doc.doc_config as doc_config
 from doc.attribute_doc import AttributeDoc
 from doc.method_doc import MethodDoc
 from doc.method_type import MethodType
@@ -8,9 +8,9 @@ from doc.utils import (previous_line_ending_index_from,
                        first_or_none,
                        whole_line_at,
                        parse_general_text,
-                       surround_with_tag,
                        parse_type_and_add_code_tag,
-                       parse_type_string)
+                       parse_type_string,
+                       line_num_at)
 
 
 class ClassDoc:
@@ -36,7 +36,7 @@ class ClassDoc:
                             flags=re.DOTALL | re.MULTILINE)
 
     def __init__(self, name, parent, superclass_string, docstring, body,
-                 global_index):
+                 global_index, line_num, body_start_line_num):
         # Parent can be a ModuleDoc or another Class
         self.name = name
         self.parent = parent
@@ -45,6 +45,8 @@ class ClassDoc:
         self.body = body
         self.global_index = global_index
         self.global_index.add(self)
+        self.line_num = line_num
+        self.body_start_line_num = body_start_line_num
         self.summary = ''
         self.details = ''
         self.superclasses = []
@@ -59,6 +61,13 @@ class ClassDoc:
     @property
     def url(self):
         return self.parent.url + '#' + self.name
+
+    @property
+    def source_url(self):
+        return '{}/{}#L{}'.format(
+            doc_config.SOURCE_ROOT,
+            self.parent.path,
+            self.line_num)
 
     @property
     def init_method(self):
@@ -163,7 +172,9 @@ class ClassDoc:
                         True,
                         method_match.group('method') not in names_with_setters,
                         None,
-                        self.global_index))
+                        self.global_index,
+                        self.body_start_line_num + line_num_at(
+                            method_match.start(0), self.body) - 1))
                 else:
                     if ClassDoc.staticmethod_re.search(line_before_method):
                         method_type = MethodType.staticmethod
@@ -177,7 +188,9 @@ class ClassDoc:
                         method_match.group('args'),
                         docstring_content,
                         method_type,
-                        self.global_index))
+                        self.global_index,
+                        self.body_start_line_num + line_num_at(
+                            method_match.start(0), self.body) - 1))
             elif attribute_match:
                 self.class_attributes.append(AttributeDoc(
                     attribute_match.group('name'),
@@ -186,7 +199,9 @@ class ClassDoc:
                     False,
                     True,
                     attribute_match.group('value'),
-                    self.global_index))
+                    self.global_index,
+                    self.body_start_line_num + line_num_at(
+                        attribute_match.start(0), self.body) - 1))
             else:
                 # Orphan docstring, append to class details body.
                 self.details += '\n\n' + docstring_content

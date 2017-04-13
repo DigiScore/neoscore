@@ -10,3 +10,5 @@ BUILD_DIR = os.path.join(os.path.dirname(__file__), 'build')
 PACKAGE_TO_DOC = os.path.join('brown')
 
 DOMAIN = 'example.com'
+
+SOURCE_ROOT = 'https://github.com/ajyoon/brown/blob/master'

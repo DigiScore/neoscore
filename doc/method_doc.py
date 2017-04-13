@@ -1,5 +1,6 @@
 import re
 
+import doc.doc_config as doc_config
 from doc.utils import (indentation_level_at,
                        parse_general_text,
                        parse_type_string,
@@ -21,7 +22,7 @@ class MethodDoc:
                            flags=re.DOTALL | re.MULTILINE)
 
     def __init__(self, name, parent, args_string, docstring, method_type,
-                 global_index):
+                 global_index, line_num):
         # parent can be a ModuleDoc or Class
         self.name = name
         self.parent = parent
@@ -30,6 +31,7 @@ class MethodDoc:
         self.method_type = method_type
         self.global_index = global_index
         self.global_index.add(self)
+        self.line_num = line_num
         self.summary = ''
         self.details = ''
         self.args_details = []
@@ -51,6 +53,17 @@ class MethodDoc:
             return self.parent.url + '.' + self.name
         else:
             return self.parent.url + '#' + self.name
+
+    @property
+    def source_url(self):
+        if type(self.parent).__name__ == 'MethodDoc':
+            path = self.parent.path
+        else:
+            path = self.parent.parent.path
+        return '{}/{}#L{}'.format(
+            doc_config.SOURCE_ROOT,
+            path,
+            self.line_num)
 
     def parse_repeating_type_block(self, block_match, arg_mode=False):
 
