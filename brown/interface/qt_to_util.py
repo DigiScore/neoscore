@@ -1,4 +1,4 @@
-"""Various helper functions to convert Qt objects to util objects"""
+"""Helper methods for conversion between `brown.utils` and Qt classes"""
 
 from PyQt5.QtCore import QPoint, QPointF, QRect, QRectF
 

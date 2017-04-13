@@ -9,43 +9,42 @@ from brown.utils.units import GraphicUnit
 
 
 """
-Notes on Qt path quirks:
+Qt paths have a few quirks which are good to know about if you're
+working with them at a lower level.
 
-* At creation time, paths have an elementCount() of 0,
-  but after a line is created, elementCount() == 2. First element
-  is a moveTo to the origin; second is the lineTo you asked for
+At creation time, paths have `elementCount() == 0`,
+but after a line is created, `elementCount() == 2`. The first element
+is a `moveTo` to the origin; second is the `lineTo` you asked for.
+`brown` paths maintain this behavior.
 
-* If a lineTo is drawn to (0, 0), a moveTo 0, 0 is performed instead:
+TODO: This is out of date and may not be true.
 
-    line_to_origin = PathInterface((5, 6))
-    line_to_origin.line_to((0, 0))
-    assert(line_to_origin._qt_path == line_to_origin._qt_object.path())
-    assert(line_to_origin._qt_path.elementCount() == 1)
-    assert(line_to_origin._qt_path.elementAt(0).isMoveTo() == True)
-    line_to_elsewhere = PathInterface((5, 6))
-    line_to_elsewhere.line_to((1, 0))
-    assert(line_to_elsewhere._qt_path == line_to_elsewhere._qt_object.path())
-    assert(line_to_elsewhere._qt_path.elementCount() == 2)
-    assert(line_to_elsewhere._qt_path.elementAt(0).isMoveTo() == True)
-    assert(line_to_elsewhere._qt_path.elementAt(1).isLineTo() == True)
-    # (All pass)
+If a `lineTo(0, 0)`, a `moveTo(0, 0)` is performed instead:
 
-* QPainterPath::ElementType is ambiguous in differentiating between
-  curve control points and curve end points. They are stored sequentially
-  in the path element list; the first element in the sequence is a
-  CurveToElement (enum 2), all following elements in the curve are
-  CurveToDataElement (enum 3). Despite this, all elements until the last
-  in the sequence are control points; the final element is the curve end point.
+    >>> from brown.core import brown; brown.setup()
+    >>> line_to_origin = PathInterface((5, 6))
+    >>> line_to_origin.line_to((0, 0))
+    >>> assert(line_to_origin._qt_path == line_to_origin._qt_object.path())
+    >>> assert(line_to_origin._qt_path.elementCount() == 1)
+    >>> assert(line_to_origin._qt_path.elementAt(0).isMoveTo() == True)
+    >>> line_to_elsewhere = PathInterface((5, 6))
+    >>> line_to_elsewhere.line_to((1, 0))
+    >>> assert(line_to_elsewhere._qt_path == line_to_elsewhere._qt_object.path())
+    >>> assert(line_to_elsewhere._qt_path.elementCount() == 2)
+    >>> assert(line_to_elsewhere._qt_path.elementAt(0).isMoveTo() == True)
+    >>> assert(line_to_elsewhere._qt_path.elementAt(1).isLineTo() == True)
 
-  For instance, if a cubic line is drawn with two control points, they are
-  stored in the element list like so:
+`QPainterPath::ElementType` is ambiguous in differentiating between
+curve control points and curve end points. They are stored sequentially
+in the path element list; the first element in the sequence is a
+`CurveToElement` (enum 2), all following elements in the curve are
+`CurveToDataElement` (enum 3). Despite this, all elements until the last
+in the sequence are control points; the final element is the curve end point.
 
-    cubic_to((0, 5), (10, 5), (10, 0))
-    ---> Qt element list == [CurveToElement, CurveToDataElement, CurveToDataElement]
-
-  Which the brown API translates to:
-
-    ---> brown element list == [control_point, control_point, curve_to]
+For instance, if a cubic line is drawn with two control points -
+`cubic_to((0, 5), (10, 5), (10, 0))` - they are stored in the Qt
+element list as `[CurveToElement, CurveToDataElement, CurveToDataElement]`,
+which the brown API translates to: `[control_point, control_point, curve_to]`
 """
 
 

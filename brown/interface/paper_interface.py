@@ -7,6 +7,12 @@ from brown.interface.qt_to_util import unit_to_qt_float
 
 class PaperInterface(QPageLayout):
 
+    """A thin conversion layer between `Paper` and `QPageLayout`.
+
+    TODO: The pattern used here goes against the interface layer's
+    general contract, and should be refactored.
+    """
+
     def __init__(self, paper):
         """Initialize a QPageLayout from a Paper object
 

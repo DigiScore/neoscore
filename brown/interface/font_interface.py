@@ -6,6 +6,9 @@ from brown.utils.units import GraphicUnit
 
 
 class FontInterface:
+
+    """An interface for fonts, exposing many font metadata properties."""
+
     def __init__(self, family_name, size, weight, italic):
         """
         Args:

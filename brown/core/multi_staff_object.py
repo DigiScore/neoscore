@@ -22,7 +22,7 @@ class MultiStaffObject:
     def __init__(self, staves):
         """
         Args:
-            staves(set{Staff}): The set of Staff objects this belongs to.
+            staves (set{Staff}): The set of Staff objects this belongs to.
         """
         self.staves = staves
 

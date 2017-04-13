@@ -7,6 +7,8 @@ from brown.utils.point import Point
 
 class TextInterface(GraphicObjectInterface):
 
+    """An interface for graphical text objects."""
+
     def __init__(self,
                  pos,
                  text,

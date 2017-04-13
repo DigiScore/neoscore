@@ -50,7 +50,7 @@ class PathElement(InvisibleObject):
             * parent_path
             * element_type
 
-        WARNING: This is for testing purposes only.
+        Warning: This is for testing purposes only.
 
         Returns: Bool
 

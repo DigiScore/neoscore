@@ -43,7 +43,7 @@ class AppInterface:
             pages (iter[int]): The page numbers to render
             path (str): An output file path.
 
-        WARNING: If the file at `path` already exists, it will be overwritten.
+        Warning: If the file at `path` already exists, it will be overwritten.
         """
         printer = QPrinter()
         printer.setOutputFormat(QPrinter.PdfFormat)
