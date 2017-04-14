@@ -157,6 +157,7 @@ a {
 
 code {
     background: $code-inline-bg;
+    z-index: -1;
 }
 
 pre > code {
@@ -165,8 +166,6 @@ pre > code {
 
     background: $code-block-bg;
 
-    /* border-left: 1px solid $accent-bright; */
-    /* border-bottom: 1px solid $accent-bright; */
     -webkit-box-shadow: inset -1px 2px 3px 0px $accent-dark-transparent;
     -moz-box-shadow:    inset -1px 2px 3px 0px $accent-dark-transparent;
     box-shadow:         inset -1px 2px 3px 0px $accent-dark-transparent;
@@ -216,10 +215,6 @@ pre > code {
     padding-top: $small-space;
     margin-bottom: 0;
 
-    /* &:last-child { */
-    /*     padding-bottom: 0; */
-    /* } */
-
     & > .body {
         padding-left: $small-space;
     }
@@ -247,30 +242,34 @@ pre > code {
     }
 }
 
-.source-link {
+.permalink-and-source {
     float: right;
-    color: transparent;
-    /* transform-origin: right; */
     transform: translateX(1em);
-    -webkit-transition: all 200ms linear;
-    -ms-transition: all 200ms linear;
     transition: all 200ms linear;
+    & > a {
+        color: transparent;
+        transition: all 200ms linear;
+    }
 }
 
 .class:hover {
-    & > .source-link {
+    & > .permalink-and-source {
         /* transform: scale(1); */
         transform: translateX(0);
-        color: $a-color;
+        & > a {
+            color: $a-color;
+        }
     }
 }
 
 .method, .attribute, .property {
     &:hover {
-        & .source-link {
+        & .permalink-and-source {
             /* transform: scale(1); */
             transform: translateX(0);
-            color: $a-color;
+            & > a {
+                color: $a-color;
+            }
         }
     }
 }

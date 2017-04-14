@@ -1,6 +1,6 @@
 {% import "inherited_note.html" as inherited_note %}
 {% import "overriden_note.html" as overriden_note %}
-{% import "source_link.html" as source_link %}
+{% import "permalink_and_source.html" as name_links %}
 
 
 {% macro attribute_doc(attribute, is_inherited) -%}
@@ -11,7 +11,7 @@
         <span class="important-name">{{attribute.name}}</span>:
         <span class="type">{{attribute.type_string}}</span>
         &mdash;<span class="summary">{{attribute.summary}}</span>
-        {{ source_link.link_to_source(attribute) }}
+        {{ name_links.permalink_and_source(attribute) }}
     </p>
     <div class="body">
         <div class="details">{{attribute.details}}</div>

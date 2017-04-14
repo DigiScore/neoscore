@@ -1,0 +1,6 @@
+{% macro permalink_and_source(object_with_url) %}
+    <span class="permalink-and-source">
+        <a href="{{ object_with_url.url }}">permalink</a>
+        <a href="{{ object_with_url.source_url }}">view source</a>
+    </span>
+{% endmacro %}
