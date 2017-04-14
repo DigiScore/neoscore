@@ -1,7 +1,9 @@
 import os
+import pkg_resources
 
+VERSION = pkg_resources.require("brown")[0].version
 
-API = '/docs/api'
+API = '/docs/{}/api'.format(VERSION)
 
 STATIC_DIR = os.path.join(os.path.dirname(__file__), 'static')
 
