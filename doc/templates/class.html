@@ -7,13 +7,15 @@
 
     <div class="class"
          id="{{ class.name }}">
-        <h2>
-            <span class="class-name">{{class.name}}</span>
-            {% if class.superclass_string %}
-                ({{class.superclass_string}})
-            {% endif %}
-        </h2>
-        {{ name_links.permalink_and_source(class) }}
+        <div class="class-name-wrapper">
+            {{ name_links.permalink_and_source(class) }}
+            <h2>
+                <span class="class-name">{{class.name}}</span>
+                {% if class.superclass_string %}
+                    ({{class.superclass_string}})
+                {% endif %}
+            </h2>
+        </div>
         <p class="summary">{{class.summary}}</p>
         {% if class.details %}
             <p class="details">{{class.details}}</p>

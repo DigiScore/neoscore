@@ -64,7 +64,8 @@ def generate():
                     module=item,
                     global_index=item.global_index,
                     packages=packages,
-                    domain=doc_config.DOMAIN))
+                    domain=doc_config.DOMAIN,
+                    page_url=item.url))
         elif type(item).__name__ == 'PackageDoc':
             path = url_to_path(item.url)
             ensure_path_exists(path)
@@ -73,7 +74,8 @@ def generate():
                     package=item,
                     global_index=item.global_index,
                     packages=packages,
-                    domain=doc_config.DOMAIN))
+                    domain=doc_config.DOMAIN,
+                    page_url=item.url))
 
 
 if __name__ == '__main__':
