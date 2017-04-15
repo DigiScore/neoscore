@@ -82,10 +82,7 @@ class VirtualAccidental:
 
     @property
     def value_as_str(self):
-        """str or None: The str (or None) version of the accidental value.
-
-        Read-only.
-        """
+        """str or None: The str (or None) version of the accidental value."""
         if self._value == -1:
             return 'f'
         elif self._value == 0:

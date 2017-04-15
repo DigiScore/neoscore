@@ -25,8 +25,9 @@ class Path(GraphicObject):
     """
 
     _interface_class = PathInterface
-    default_brush = Brush(config.DEFAULT_PATH_BRUSH_COLOR,
-                          config.DEFAULT_BRUSH_PATTERN)
+
+    _default_brush = Brush(config.DEFAULT_PATH_BRUSH_COLOR,
+                           config.DEFAULT_BRUSH_PATTERN)
 
     def __init__(self, pos, pen=None, brush=None, parent=None):
         """
@@ -37,7 +38,7 @@ class Path(GraphicObject):
             parent (GraphicObject): The parent object or None
         """
         super().__init__(pos, GraphicUnit(0), pen, brush, parent)
-        self._current_path_position = Point(GraphicUnit(0), GraphicUnit(0))
+        self._current_draw_pos = Point(GraphicUnit(0), GraphicUnit(0))
         self.elements = []
 
     ######## CLASSMETHODS ########
@@ -86,15 +87,14 @@ class Path(GraphicObject):
         return max_x - min_x
 
     @property
-    def current_path_position(self):
+    def current_draw_pos(self):
         """Point: The current relative drawing position.
 
         This is the location from which operations like line_to() will draw,
-        relative to the position of the Path (`self.x` and `self.y`).
+        relative to `self.pos`.
 
-        This property is read-only. To move the current position, use
-        the move_to() method, implicitly closing the current sub-path and
-        beginning a new one.
+        This property is read-only. To change this without connecting a line
+        to the new position, use `self.move_to`.
         """
         if self.elements:
             if self.is_in_flowable:
@@ -106,35 +106,13 @@ class Path(GraphicObject):
         else:
             return Point(GraphicUnit(0), GraphicUnit(0))
 
-    @property
-    def current_path_x(self):
-        """
-        GraphicUnit: The current relative drawing x-axis position
-
-        This property is read-only. To move the current position, use
-        the move_to() method, implicitly closing the current sub-path and
-        beginning a new one.
-        """
-        return self.current_path_position.x
-
-    @property
-    def current_path_y(self):
-        """
-        GraphicUnit: The current relative drawing y-axis position
-
-        This property is read-only. To move the current position, use
-        the move_to() method, implicitly closing the current sub-path and
-        beginning a new one.
-        """
-        return self.current_path_position.y
-
     ######## Public Methods ########
 
     def line_to(self, x, y, parent=None):
         """Draw a path from the current position to a new point.
 
         Connect a path from the current position to a new position specified
-        by `x` and `y`, and move `self.current_path_position` to the new point.
+        by `x` and `y`, and move `self.current_draw_pos` to the new point.
 
         A point parent may be passed as well, anchored the target point to
         a separate GraphicObject. In this case, the coordinates passed will be
@@ -162,7 +140,7 @@ class Path(GraphicObject):
         """Close the current sub-path and start a new one.
 
         A point parent may be passed as well, anchored the target point to
-        a separate GraphicObject. In this case, the coordinates passed will be
+        a separate `GraphicObjec`t. In this case, the coordinates passed will be
         considered relative to the parent.
 
         Args:
@@ -184,14 +162,14 @@ class Path(GraphicObject):
     def close_subpath(self):
         """Close the current sub-path and start a new one at (0, 0).
 
-        This is equivalent to `move_to((GraphicUnit(0), GraphicUnit(0)))`
+        This is equivalent to `move_to((Unit(0), Unit(0)))`
 
         Returns: None
 
         Note:
             This convenience method does not support point parentage.
             If you need to anchor the new move_to point, use an explicit
-            move_to((0, 0), 0, parent) instead.
+            `move_to((0, 0), 0, parent)` instead.
         """
         self.move_to(GraphicUnit(0), GraphicUnit(0))
 
@@ -204,7 +182,7 @@ class Path(GraphicObject):
                  end_parent=None):
         """Draw a cubic bezier curve from the current position to a new point.
 
-        Moves `self.current_path_position` to the new end point.
+        Moves `self.current_draw_pos` to the new end point.
 
         Args:
             control_1_x (Unit): The x coordinate of the first control point.
@@ -214,11 +192,11 @@ class Path(GraphicObject):
             end_x (Unit): The x coordinate of the curve target.
             end_y (Unit): The y coordinate of the curve target.
             control_1_parent (GraphicObject or None): An optional parent for
-                the first control point. If None, this defaults to the path.
+                the first control point. If `None`, this defaults to the path.
             control_2_parent (GraphicObject or None): An optional parent for
-                the second control point. If None, this defaults to the path.
+                the second control point. If `None`, this defaults to the path.
             end_parent (GraphicObject or None): An optional parent for the
-                curve target. If None, this defaults to the path.
+                curve target. If `None`, this defaults to the path.
 
         Returns: None
         """

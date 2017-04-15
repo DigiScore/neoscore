@@ -71,15 +71,12 @@ class Document:
             >>> assert(sixth_page == brown.document.pages[-1])
 
         For more information on this object, see `PageSupplier`.
-
-        This property (and the pages accessed through it)
-        should be treated as read-only.
         """
         return self._pages
 
     @property
     def children(self):
-        """set{GraphicObject}: All objects who have self as their parent."""
+        """set(GraphicObject): All objects who have self as their parent."""
         return self._children
 
     @children.setter

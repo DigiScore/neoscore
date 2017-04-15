@@ -112,11 +112,7 @@ class Pitch:
 
     @property
     def letter(self):
-        """str: The a-g letter name of the pitch
-
-        This property is read-only. To modify, set the `pitch` property.
-        TODO: maybe implement setters
-        """
+        """str: The a-g letter name of the pitch."""
         return self._letter
 
     @property
@@ -128,9 +124,6 @@ class Pitch:
         * 'n': natural (explicit)
         * 's': sharp
         * None: no accidental
-
-        This property is read-only. To modify, set the `pitch` property.
-        TODO: maybe implement setters
         """
         return self._virtual_accidental
 
@@ -140,9 +133,6 @@ class Pitch:
 
         `octave == 4` corresponds to middle-C.
         Descending pitches correspond to lower octave numbers.
-
-        This property is read-only. To modify, set the `pitch` property.
-        TODO: maybe implement setters
         """
         return self._octave
 

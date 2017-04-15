@@ -52,7 +52,7 @@ class HorizontalSpanner(Spanner):
     def end_y(self):
         """Unit: The y position of the endpoint.
 
-        Unlike that in Spanner, this property is *read-only* in order
+        Unlike that in `Spanner`, this property is read-only in order
         to maintain its horizontal guarantees.
         """
         if self.end_parent == self:

@@ -129,18 +129,15 @@ class Beat:
 
     @property
     def numerator(self):
-        """int or Beat.
+        """int or Beat: The numerator component of the beat fraction.
 
-        This property is read-only.
+        If this is a `Beat`, `self` will represent a tuplet.
         """
         return self._numerator
 
     @property
     def denominator(self):
-        """int.
-
-        This property is read-only.
-        """
+        """int: The denominator component of the beat fraction."""
         return self._denominator
 
     @property
@@ -155,7 +152,7 @@ class Beat:
 
     @property
     def collapsed_fraction(self):
-        """Fraction: The collapsed int / int Fraction of this Beat."""
+        """Fraction: The collapsed `int / int` `Fraction` of this beat."""
         return self._collapsed_fraction
 
     ######## SPECIAL METHODS ########
@@ -167,10 +164,11 @@ class Beat:
             self.denominator)
 
     def __hash__(self):
+        """`Beat`s equal to each other share the same hash."""
         return hash(self.__repr__())
 
     def __float__(self):
-        """Reduce the fractional representation to a float and return it."""
+        """Reduce the fractional representation to a `float` and return it."""
         return float(self.collapsed_fraction)
 
     def __eq__(self, other):

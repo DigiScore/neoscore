@@ -56,17 +56,12 @@ class Staff(Path):
         """GraphicUnit: The height of the staff from top to bottom line.
 
         If the staff only has one line, its height is defined as 0.
-
-        This property is read-only.
         """
         return self.unit(self.line_count - 1)
 
     @property
     def line_count(self):
-        """int: The number of lines in the staff
-
-        This property is read-only. TODO: Low priority: implement setter?
-        """
+        """int: The number of lines in the staff"""
         return self._line_count
 
     @property
@@ -207,7 +202,7 @@ class Staff(Path):
         Args:
             position (StaffUnit): Any y-axis position
 
-        Returns: set{StaffUnit}
+        Returns: set(StaffUnit)
         """
         # Work on positions as integers for simplicity, but return as StaffUnits
         start = int(self.unit(position).value)

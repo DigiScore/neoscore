@@ -1,6 +1,7 @@
 from PyQt5 import QtGui
 
 from brown.core import brown
+from brown.core.path_element_type import PathElementType
 from brown.interface.graphic_object_interface import GraphicObjectInterface
 from brown.interface.path_element_interface import PathElementInterface
 from brown.interface.qt_ext.q_clipping_path import QClippingPath
@@ -79,7 +80,7 @@ class PathInterface(GraphicObjectInterface):
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def current_path_position(self):
+    def current_draw_pos(self):
         """Point[GraphicUnit]: The current relative drawing position.
 
         This is the location from which operations like line_to() will draw,
@@ -95,26 +96,6 @@ class PathInterface(GraphicObjectInterface):
             return Point(0, 0)
 
     @property
-    def current_path_x(self):
-        """GraphicUnit: The current relative drawing x-axis position
-
-        This property is read-only. To move the current position, use
-        the move_to() method, implicitly closing the current sub-path and
-        beginning a new one.
-        """
-        return self.current_path_position.x
-
-    @property
-    def current_path_y(self):
-        """GraphicUnit: The current relative drawing y-axis position
-
-        This property is read-only. To move the current position, use
-        the move_to() method, implicitly closing the current sub-path and
-        beginning a new one.
-        """
-        return self.current_path_position.y
-
-    @property
     def element_count(self):
         """int: The number of elements in the path."""
         return self._qt_path.elementCount()
@@ -127,7 +108,7 @@ class PathInterface(GraphicObjectInterface):
         """Draw a path from the current position to a new point.
 
         Connect a path from the current position to a new position specified
-        by `pos`, and move `self.current_path_position` to the new point.
+        by `pos`, and move `self.current_draw_pos` to the new point.
 
         Args:
             pos (Point or tuple): The target position
@@ -144,7 +125,7 @@ class PathInterface(GraphicObjectInterface):
                  end):
         """Draw a cubic spline from the current position to a new point.
 
-        Moves `self.current_path_position` to the new end point.
+        Moves `self.current_draw_pos` to the new end point.
 
         Args:
             control_1_x (Point): The local position of the 1st control point
@@ -204,20 +185,22 @@ class PathInterface(GraphicObjectInterface):
             qt_index = index
         qt_element = self._qt_path.elementAt(qt_index)
         # Determine the element type
-        if qt_element.type in [0, 1]:
-            element_type = qt_element.type
+        if qt_element.type == 0:
+            element_type = PathElementType.move_to
+        elif qt_element.type == 1:
+            element_type = PathElementType.line_to
         elif qt_element.type == 2:
             # First element in curve sequence is always a control point
-            element_type = 3
+            element_type = PathElementType.control_point
         else:
             # Otherwise to distinguish control point from curve,
             # look right and find if this is the last element before
             # something other than 3. See module note for more detail.
             if (qt_index == self.element_count or
                     self._qt_path.elementAt(qt_index + 1).type != 3):
-                element_type = 2
+                element_type = PathElementType.curve_to
             else:
-                element_type = 3
+                element_type = PathElementType.control_point
             # TODO: Somehow there is a race condition being introduced here.
             #       Tests sometimes fail saying what should be a curve_to
             #       is actually being set as a control_point here.

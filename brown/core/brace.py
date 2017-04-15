@@ -24,7 +24,7 @@ class Brace(MultiStaffObject, MusicText):
         Args:
             pos_x (Unit): Where this brace goes into effect
             length (Unit): How long this brace is in effect
-            staves (set{Staff}): The staves this brace spans
+            staves (set(Staff)): The staves this brace spans
         """
         MultiStaffObject.__init__(self, staves)
         # Calculate the height of the brace in highest_staff staff units

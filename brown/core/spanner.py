@@ -5,19 +5,19 @@ from brown.utils.point import Point
 
 
 class Spanner:
-    """A Mixin class for GraphicObjects with starting and ending anchors.
+    """A Mixin class for `GraphicObject`s with starting and ending anchors.
 
-    If the spanner (main GraphicObject) is in a FlowableFrame, the endpoint
+    If the spanner (main `GraphicObject`) is in a `FlowableFrame`, the endpoint
     must be in the same one. Likewise, if the spanner is *not* in one,
     the endpoint must not be in one either.
 
-    This mixin only provides a common property interface for
-    starting and ending anchors. It is up to the concrete object
-    to determine how rendering logic should use this information.
+    This mixin only provides a common interface for ending anchors.
+    The starting position of this spanner should be the main object's
+    `GraphicObject.pos`, and the starting anchored should be the its
+    `GraphicObject.parent`. It is up to the implementing class to
+    decide how to use this information.
 
-    This class is a mixin meant to be combined with GraphicObjects.
-    In the implementing class's `__init__` method, the Spanner class
-    should be initialized after the GraphicObject.
+    For an example implementation, see `Slur`.
     """
 
     def __init__(self, end_pos, end_parent=None):
@@ -28,13 +28,13 @@ class Spanner:
                 `end_pos` will be relative to this object.
                 If None, this defaults to the spanner.
 
-        Warning: If the spanner is in a FlowableFrame, `end_parent` must be
+        Warning: If the spanner is in a `FlowableFrame`, `end_parent` must be
             in the same one. Likewise, if the spanner is not in a
-            FlowableFrame, this must not be either.
+            `FlowableFrame`, this must not be either.
         """
         self._end_pos = (end_pos if isinstance(end_pos, Point)
                          else Point(*end_pos))
-        self.end_parent = end_parent if end_parent else self
+        self._end_parent = end_parent if end_parent else self
 
     ######## PUBLIC PROPERTIES ########
 
@@ -66,10 +66,24 @@ class Spanner:
         self._end_pos = value
 
     @property
+    def end_parent(self):
+        """GraphicObject: The parent of the endpoint.
+
+        `self.end_pos` is measured relative to this.
+        To make `self.end_pos` relative to `self.pos`,
+        simply set this to `self`.
+        """
+        return self._end_parent
+
+    @end_parent.setter
+    def end_parent(self, value):
+        self._end_parent = value
+
+    @property
     def length(self):
         """Unit: The length of the spanner.
 
-        The exact unit type will be the type of `self.start.x`
+        The exact unit type will be the type of `self.pos.x`
         """
         if self.end_parent == self:
             relative_stop = Point.from_existing(self.end_pos)

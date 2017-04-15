@@ -35,23 +35,15 @@ class NewLine(LayoutController):
         """Point: The position of the new line's bottom right corner.
 
         This position is relative to the page.
-
-        This property is read-only
         """
         return self.pos + Point(self.length, self.height)
 
     @property
     def length(self):
-        """Unit: The length of the line.
-
-        This property is read-only.
-        """
+        """Unit: The length of the line."""
         return self.page.paper.live_width - self.pos.x
 
     @property
     def height(self):
-        """Unit: The height of the line.
-
-        This property is read-only.
-        """
+        """Unit: The height of the line."""
         return self.flowable_frame.height

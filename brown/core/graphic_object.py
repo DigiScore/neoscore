@@ -5,7 +5,7 @@ from brown.core import brown
 from brown.core.brush import Brush
 from brown.core.pen import Pen
 from brown.utils.point import Point
-from brown.utils.units import Unit
+from brown.utils.units import Unit, Mm
 
 
 class GraphicObject(ABC):
@@ -34,8 +34,8 @@ class GraphicObject(ABC):
     default_pen = Pen(config.DEFAULT_PEN_COLOR,
                       config.DEFAULT_PEN_THICKNESS,
                       config.DEFAULT_PEN_PATTERN)
-    default_brush = Brush(config.DEFAULT_BRUSH_COLOR,
-                          config.DEFAULT_BRUSH_PATTERN)
+    _default_brush = Brush(config.DEFAULT_BRUSH_COLOR,
+                           config.DEFAULT_BRUSH_PATTERN)
 
     def __init__(self, pos, breakable_width=None,
                  pen=None, brush=None, parent=None):
@@ -63,7 +63,7 @@ class GraphicObject(ABC):
 
     @property
     def interfaces(self):
-        """set{GraphicObjectInterface}: The interfaces for this object
+        """set(GraphicObjectInterface): The interfaces for this object
 
         Interface objects are created upon calling `GraphicObject.render()`
 
@@ -154,7 +154,7 @@ class GraphicObject(ABC):
             else:
                 raise TypeError
         else:
-            value = Brush.from_existing(type(self).default_brush)
+            value = Brush.from_existing(type(self)._default_brush)
         self._brush = value
 
     @property
@@ -176,7 +176,7 @@ class GraphicObject(ABC):
 
     @property
     def children(self):
-        """set{GraphicObject}: All objects who have self as their parent."""
+        """set(GraphicObject): All objects who have self as their parent."""
         return self._children
 
     @children.setter
@@ -200,10 +200,7 @@ class GraphicObject(ABC):
 
     @property
     def frame(self):
-        """FlowableFrame or None: The frame this object belongs in.
-
-        This property is read-only
-        """
+        """FlowableFrame or None: The frame this object belongs in."""
         try:
             ancestor = self.parent
             while type(ancestor).__name__ != 'FlowableFrame':
@@ -216,7 +213,14 @@ class GraphicObject(ABC):
     def page_index(self):
         """The index of the page this object appears on.
 
-        This property is read-only.
+            >>> from brown.core import brown; brown.setup()
+            >>> some_object = GraphicObject((Mm(20), Mm(50)),
+            ...                             parent=brown.document.pages[5])
+            >>> some_object.page_index
+            5
+            >>> some_object in brown.document.pages[5].all_descendants
+            True
+
         """
         # Traverse the parent chain until a page is found and returns its index
         ancestor = self.parent

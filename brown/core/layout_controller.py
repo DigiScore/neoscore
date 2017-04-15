@@ -33,8 +33,6 @@ class LayoutController(InvisibleObject):
 
         This is identical to `self.parent`. For readability, it is encouraged
         to refer to the parent through this property.
-
-        This property is read-only.
         """
         return self.parent
 

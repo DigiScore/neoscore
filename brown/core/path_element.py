@@ -25,10 +25,7 @@ class PathElement(InvisibleObject):
 
     @property
     def element_type(self):
-        """PathElementType: Enumeration for the type of element.
-
-        This value is read-only.
-        """
+        """PathElementType: Enumeration for the type of element."""
         return self._element_type
         return self._path_element_interface.element_type
 

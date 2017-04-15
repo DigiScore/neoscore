@@ -53,10 +53,7 @@ class Page:
 
     @property
     def page_index(self):
-        """The index of this page.
-
-        This property is read-only.
-        """
+        """The index of this page in its managing `PageSupplier` object."""
         return self._page_index
 
     def _register_child(self, child):

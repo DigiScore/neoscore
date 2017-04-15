@@ -57,7 +57,7 @@ class ChordRest(ObjectGroup, StaffObject):
 
     @property
     def noteheads(self):
-        """set{Notehead}: The noteheads contained in this ChordRest."""
+        """set(Notehead): The noteheads contained in this ChordRest."""
         return self._noteheads
 
     @property
@@ -71,12 +71,12 @@ class ChordRest(ObjectGroup, StaffObject):
 
     @property
     def accidentals(self):
-        """set{Accidental}: The accidentals contained in this ChordRest."""
+        """set(Accidental): The accidentals contained in this ChordRest."""
         return self._accidentals
 
     @property
     def ledgers(self):
-        """set{LedgerLine}: The ledger lines contained in this ChordRest.
+        """set(LedgerLine): The ledger lines contained in this ChordRest.
 
         An empty set means no ledgers.
         """
@@ -94,6 +94,12 @@ class ChordRest(ObjectGroup, StaffObject):
 
     @property
     def duration(self):
+        """Beat: The length of this event.
+
+        This is used to determine which (if any) `Flag`s, `RhythmDot`s,
+        and `Notehead`/`Rest` styles. Higher level managers may also
+        use this information to inform layout decisions and `Beam` groupings.
+        """
         return self._duration
 
     @duration.setter
@@ -102,11 +108,11 @@ class ChordRest(ObjectGroup, StaffObject):
 
     @property
     def ledger_line_positions(self):
-        """set{int}: A set of staff positions of needed ledger lines.
+        """set(int): A set of staff positions of needed ledger lines.
 
         Positions are in centered staff positions.
 
-        An empty set means no ledger lines are needed
+        An empty set means no ledger lines are needed.
         """
         highest = self.highest_notehead.staff_position
         lowest = self.lowest_notehead.staff_position
@@ -134,49 +140,49 @@ class ChordRest(ObjectGroup, StaffObject):
                             dottable.y + y_offset))
     @property
     def furthest_notehead(self):
-        """Notehead or None: The Notehead furthest from the staff center"""
+        """Notehead or None: The `Notehead` furthest from the staff center"""
         return max(self.noteheads,
                    key=lambda n: abs(n.staff_position - self.staff.center_pos_y),
                    default=None)
 
     @property
     def highest_notehead(self):
-        """Notehead of None: The highest Notehead in the chord."""
+        """Notehead or None: The highest `Notehead` in the chord."""
         return min(self.noteheads,
                    key=lambda n: n.staff_position,
                    default=None)
 
     @property
     def lowest_notehead(self):
-        """Notehead of None: The lowest Notehead in the chord."""
+        """Notehead or None: The lowest `Notehead` in the chord."""
         return max(self.noteheads,
                    key=lambda n: n.staff_position,
                    default=None)
 
     @property
     def leftmost_notehead(self):
-        """Notehead or None: the Notehead furthest to the left in the chord"""
+        """Notehead or None: the `Notehead` furthest to the left in the chord"""
         return min(self.noteheads,
                    key=lambda n: n.x,
                    default=None)
 
     @property
     def rightmost_notehead(self):
-        """Notehead or None: the Notehead furthest to the right in the chord"""
+        """Notehead or None: the `Notehead` furthest to the right in the chord"""
         return max(self.noteheads,
                    key=lambda n: n.x,
                    default=None)
 
     @property
     def widest_notehead(self):
-        """Notehead or None: the Notehead with the greatest `visual_width`"""
+        """Notehead or None: the `Notehead` with the greatest `visual_width`"""
         return max(self.noteheads,
                    key=lambda n: n.visual_width,
                    default=None)
 
     @property
     def notehead_column_width(self):
-        """Unit: The total width of all Noteheads in the chord"""
+        """Unit: The total width of all `Notehead`s in the chord"""
         if not self.noteheads:
             return self.staff.unit(0)
         else:
@@ -187,20 +193,20 @@ class ChordRest(ObjectGroup, StaffObject):
 
     @property
     def noteheads_outside_staff(self):
-        """set{Notehead}: All noteheads which are above or below the staff"""
+        """set(Notehead): All noteheads which are above or below the staff"""
         return set(note for note in self.noteheads
                    if self.staff._position_outside_staff(note.staff_position))
 
     @property
     def leftmost_notehead_outside_staff(self):
-        """Notehead or None: the Notehead furthest to the left outside the staff"""
+        """Notehead or None: the `Notehead` furthest to the left outside the staff"""
         return min(self.noteheads_outside_staff,
                    key=lambda n: n.x,
                    default=None)
 
     @property
     def rightmost_notehead_outside_staff(self):
-        """Notehead or None: the Notehead furthest to the right outside the staff"""
+        """Notehead or None: the `Notehead` furthest to the right outside the staff"""
         return max(self.noteheads_outside_staff,
                    key=lambda n: n.x,
                    default=None)
@@ -250,30 +256,19 @@ class ChordRest(ObjectGroup, StaffObject):
     ######## PUBLIC METHODS ########
 
     def render(self):
-        if list(self.noteheads):
-            self._render_with_notes()
-        else:
-            self._render_with_rest()
+        if self.noteheads:
+            # Chord-specific aux objects
+            self._position_noteheads_horizontally()
+            self._position_accidentals_horizontally()
+            self._create_accidentals()
+            self._create_ledgers()
+            self._create_stem()
+            self._create_flag()
+        # Both rests and chords needs dots
+        self._create_dots()
+        super().render()
 
     ######## PRIVATE METHODS ########
-
-    def _render_with_notes(self):
-        """Render with notes and auxillary objects"""
-        # Position noteheads and accidentals
-        self._position_noteheads_horizontally()
-        self._position_accidentals_horizontally()
-        # Generate non-notehead group members
-        self._create_dots()
-        self._create_accidentals()
-        self._create_ledgers()
-        self._create_stem()
-        self._create_flag()
-        super().render()
-
-    def _render_with_rest(self):
-        """Render as a single rest with no auxillary objects"""
-        self._create_dots()
-        super().render()
 
     def _create_ledgers(self):
         """Create all required ledger lines and store them in `self.ledgers`
@@ -284,7 +279,6 @@ class ChordRest(ObjectGroup, StaffObject):
                  as it relies on the position of noteheads in the chord to
                  calculate the position and length of the ledger lines
         """
-        # Calculate x position and length of ledger lines
         pos_x = self.leftmost_notehead.x
         length = self.notehead_column_outside_staff_width
         for staff_pos in self.ledger_line_positions:
@@ -294,7 +288,7 @@ class ChordRest(ObjectGroup, StaffObject):
         padding = self.staff.unit(-1.2)
         for notehead in self.noteheads:
             if notehead.pitch.virtual_accidental.value is None:
-                # Don't draw imaginary accidentals
+                # Ignore None accidentals
                 continue
             self.accidentals.add(Accidental((padding, self.staff.unit(0)),
                                             notehead.pitch.virtual_accidental,

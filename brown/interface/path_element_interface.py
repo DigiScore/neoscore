@@ -53,21 +53,19 @@ class PathElementInterface:
 
     @property
     def parent_path(self):
-        """PathInterface: The path this element belongs to.
-
-        This property is read-only."""
+        """PathInterface: The path interface this element belongs in."""
         return self._parent_path
 
     @property
     def index(self):
-        """int: The position of this element in the parent path"""
+        """int: The index of this element in the parent path"""
         return self._index
 
     @property
     def element_type(self):
-        """PathElementType: Enumeration for the type of element.
+        """PathElementType: The type of this element.
 
-        This value is read-only.
+        This has a 1:1 correspondence with `PathElement.element_type`.
         """
         # TODO: This is not accurate.
         #       When creating a curve, Qt marks the first control point
