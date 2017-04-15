@@ -31,9 +31,9 @@ octave_line = OctaveLine((Mm(20), staff.unit(-2)), staff,
                          indication='8vb')
 
 
-ChordRest(Mm(10), staff, ["a'", "bs"], Beat(2, 4))
-ChordRest(Mm(40), staff, ["a'", "bs"], Beat(2, 4))
-ChordRest(Mm(60), staff, ["b'", "bs"], Beat(2, 4))
+Chordrest(Mm(10), staff, ["a'", "bs"], Beat(2, 4))
+Chordrest(Mm(40), staff, ["a'", "bs"], Beat(2, 4))
+Chordrest(Mm(60), staff, ["b'", "bs"], Beat(2, 4))
 
 font = Font('Cormorant Garamond', Mm(2), weight=100, italic=True)
 

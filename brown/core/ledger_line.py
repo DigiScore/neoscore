@@ -7,7 +7,7 @@ class LedgerLine(Path, StaffObject):
 
     """A horizontal ledger line.
 
-    These are generated automatically by `ChordRest` objects,
+    These are generated automatically by `Chordrest` objects,
     but can be manually instantiated as well.
     """
 

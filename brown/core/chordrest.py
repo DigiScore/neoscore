@@ -10,7 +10,7 @@ from brown.core.stem import Stem
 from brown.utils.point import Point
 
 
-class ChordRest(ObjectGroup, StaffObject):
+class Chordrest(ObjectGroup, StaffObject):
 
     """A chord or a rest.
 
@@ -36,7 +36,7 @@ class ChordRest(ObjectGroup, StaffObject):
             staff (Staff): The staff the object is attached to
             pitches (list[str] or None): A list of pitch strings
                 representing noteheads. An empty list indicates a rest.
-            duration (Beat): The duration of the ChordRest
+            duration (Beat): The duration of the Chordrest
         """
         StaffObject.__init__(self, staff)
         ObjectGroup.__init__(self, Point(pos_x, staff.unit(0)), staff, None)
@@ -57,7 +57,7 @@ class ChordRest(ObjectGroup, StaffObject):
 
     @property
     def noteheads(self):
-        """set(Notehead): The noteheads contained in this ChordRest."""
+        """set(Notehead): The noteheads contained in this Chordrest."""
         return self._noteheads
 
     @property
@@ -71,12 +71,12 @@ class ChordRest(ObjectGroup, StaffObject):
 
     @property
     def accidentals(self):
-        """set(Accidental): The accidentals contained in this ChordRest."""
+        """set(Accidental): The accidentals contained in this Chordrest."""
         return self._accidentals
 
     @property
     def ledgers(self):
-        """set(LedgerLine): The ledger lines contained in this ChordRest.
+        """set(LedgerLine): The ledger lines contained in this Chordrest.
 
         An empty set means no ledgers.
         """
@@ -84,7 +84,7 @@ class ChordRest(ObjectGroup, StaffObject):
 
     @property
     def stem(self):
-        """Stem or None: The Stem for the ChordRest."""
+        """Stem or None: The Stem for the Chordrest."""
         return self._stem
 
     @property
@@ -295,7 +295,7 @@ class ChordRest(ObjectGroup, StaffObject):
                                             notehead))
 
     def _create_dots(self):
-        """Create all the RhythmDots needed by this ChordRest."""
+        """Create all the RhythmDots needed by this Chordrest."""
         for dot_pos in self.rhythm_dot_positions:
             self.dots.add(RhythmDot(dot_pos, self))
 

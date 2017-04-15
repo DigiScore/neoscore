@@ -6,7 +6,7 @@ from brown.core.bar_line import BarLine
 from brown.core.beam import Beam
 from brown.core.brace import Brace
 from brown.core.brush import Brush
-from brown.core.chordrest import ChordRest
+from brown.core.chordrest import Chordrest
 from brown.core.clef import Clef
 from brown.core.document import Document
 from brown.core.dynamic import Dynamic
