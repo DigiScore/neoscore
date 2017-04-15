@@ -6,7 +6,6 @@
 
 set -e # Exit with nonzero exit code if anything fails
 
-SOURCE_BRANCH="master"
 TARGET_BRANCH="master"
 
 # Pull requests and commits to other branches shouldn't try to deploy site.
@@ -15,12 +14,16 @@ if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_BRANCH" != "$SOURCE_BRANCH" ]
     exit 0
 fi
 
+echo "Beginning site deploy."
+
 TARGET_REPO_SSH='git@github.com:ajyoon/brown-site.git'
 git clone $TARGET_REPO_SSH ../target
 
+echo "Installing doc generator dependencies"
 pip3 install -r doc/doc_requirements.txt
+echo "Generating site."
 python3 doc/generator.py site
-
+echo "Moving site to target"
 cp -r doc/site ../target/
 
 cd ../target
@@ -35,10 +38,12 @@ fi
 
 # Commit the "changes", i.e. the new version.
 # The delta will show diffs between new and old versions.
+echo "Committing site changes"
 git add .
 git commit -m "Deploy site"
 
 # Get the deploy key by using Travis's stored variables to decrypt deploy_key.enc
+echo "Decrpyting site ssh key"
 ENCRYPTED_KEY_VAR="encrypted_${ENCRYPTION_LABEL}_key"
 ENCRYPTED_IV_VAR="encrypted_${ENCRYPTION_LABEL}_iv"
 ENCRYPTED_KEY=${!ENCRYPTED_KEY_VAR}
@@ -48,5 +53,8 @@ chmod 600 deploy_key
 eval `ssh-agent -s`
 ssh-add deploy_key
 
+echo "Pushing site changes"
 # Now that we're all set up, we can push.
-git push $SSH_SOURCE_REPO $TARGET_BRANCH
+git push $TARGET_REPO_SSH $TARGET_BRANCH
+
+echo "Site deployed successfully."
