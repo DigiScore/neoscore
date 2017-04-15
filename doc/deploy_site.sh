@@ -31,16 +31,19 @@ ssh-add deploy_key
 
 TARGET_REPO_SSH='git@github.com:ajyoon/brown-site.git'
 git clone $TARGET_REPO_SSH ../target
+cd ../target
+rm -r !(LICENSE|README.md)
+cd ../brown
 
 echo "Installing doc generator dependencies"
 pip3 install -r doc/doc_requirements.txt
 echo "Generating site."
 python3 doc/generator.py site
 echo "Moving site to target"
-cp -r site ../target/
+cp -r site/* ../target/
 
 cd ../target
-git config user.name "Travis CI"
+git config user.name "travis-ci-doc-build-robot"
 git config user.email "$COMMIT_AUTHOR_EMAIL"
 
 # If there are no changes to the compiled out (e.g. this is a README update) then just bail.
