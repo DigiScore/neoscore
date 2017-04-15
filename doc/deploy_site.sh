@@ -32,7 +32,7 @@ ssh-add deploy_key
 TARGET_REPO_SSH='git@github.com:ajyoon/brown-site.git'
 git clone $TARGET_REPO_SSH ../target
 cd ../target
-rm -r !(LICENSE|README.md)
+find . -type f -not -name 'README.md' -not -name 'LICENSE' -not -name 'CNAME' -print0 | xargs -0 rm -r --
 cd ../brown
 
 echo "Installing doc generator dependencies"
