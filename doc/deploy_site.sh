@@ -37,7 +37,7 @@ pip3 install -r doc/doc_requirements.txt
 echo "Generating site."
 python3 doc/generator.py site
 echo "Moving site to target"
-cp -r doc/site ../target/
+cp -r site ../target/
 
 cd ../target
 git config user.name "Travis CI"
