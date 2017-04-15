@@ -6,6 +6,7 @@
 
 set -e # Exit with nonzero exit code if anything fails
 
+SOURCE_BRANCH="master"
 TARGET_BRANCH="master"
 
 # Pull requests and commits to other branches shouldn't try to deploy site.
