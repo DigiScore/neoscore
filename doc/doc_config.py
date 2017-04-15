@@ -7,7 +7,7 @@ API = '/docs/{}/api'.format(VERSION)
 
 STATIC_DIR = os.path.join(os.path.dirname(__file__), 'static')
 
-BUILD_DIR = os.path.join(os.path.dirname(__file__), 'build')
+DEFAULT_BUILD_DIR = os.path.join(os.path.dirname(__file__), 'build')
 
 PACKAGE_TO_DOC = os.path.join('brown')
 
