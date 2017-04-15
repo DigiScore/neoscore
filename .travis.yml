@@ -20,3 +20,8 @@ before_script:
 
 script:
  - pytest
+ - bash doc/deploy_site.sh
+env:
+  global:
+  - ENCRYPTION_LABEL: "56df1d613926"
+  - COMMIT_AUTHOR_EMAIL: "andrewyoon2@gmail.com"
