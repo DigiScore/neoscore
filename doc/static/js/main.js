@@ -101,7 +101,7 @@
     document.getElementById("site-search").q.value = "";
   }
 function submitSearch() {
-  var query = document.getElementById("site-search").q.value += " site:{{ domain }}";
+  var query = document.getElementById("site-search").q.value += " site:brown-notation.org";
   document.getElementById("site-search").reset();
   window.open("https://duckduckgo.com/?q=" + query, "_blank");
 }
