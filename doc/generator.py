@@ -64,6 +64,13 @@ def parse_dir(top):
     return packages, modules, global_index
 
 
+def make_custom_pages(build_dir):
+    """Copy the `custom_pages` tree into the build root."""
+    custom_pages_source_dir = os.path.join(os.path.dirname(__file__),
+                                           'custom_pages')
+    shutil.copytree(custom_pages_source_dir, build_dir)
+
+
 def url_to_path(build_root, url):
     return os.path.join(build_root, url[1:].replace('/', os.sep))
 
@@ -130,6 +137,8 @@ def generate(build_dir):
                     packages=packages,
                     domain=doc_config.DOMAIN,
                     page_url=item.url))
+
+    make_custom_pages(build_dir)
 
 
 def print_help():
