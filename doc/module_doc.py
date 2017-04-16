@@ -66,6 +66,10 @@ class ModuleDoc:
             return self.name.split('.')[-1]
         return self.name
 
+    @property
+    def display_name(self):
+        return self.name.replace('.', '<wbr>.')
+
     def read_file_lines(self):
         file = open(self.path, 'r')
         return file.readlines()

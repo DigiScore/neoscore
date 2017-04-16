@@ -68,7 +68,13 @@ def make_custom_pages(build_dir):
     """Copy the `custom_pages` tree into the build root."""
     custom_pages_source_dir = os.path.join(os.path.dirname(__file__),
                                            'custom_pages')
-    shutil.copytree(custom_pages_source_dir, build_dir)
+    for item in os.listdir(custom_pages_source_dir):
+        source = os.path.join(custom_pages_source_dir, item)
+        target = os.path.join(build_dir, item)
+        if os.path.isdir(source):
+            shutil.copytree(source, target)
+        else:
+            shutil.copy2(source, target)
 
 
 def url_to_path(build_root, url):

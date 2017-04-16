@@ -6,9 +6,7 @@
 
 {% block contents %}
 
-<div class="module">
-
-    <h1>{{module.name}}</h1>
+    <h1 id="page-title">{{module.display_name}}</h1>
 
     {% include "show_inherited.html" %}
 
@@ -42,7 +40,5 @@
             {{ class_template.class_doc(class) }}
         {% endfor %}
     {% endif %}
-
-</div>
 
 {% endblock %}

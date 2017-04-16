@@ -170,9 +170,6 @@ h1 {
     font-style: italic;
     font-weight: bold;
     color: $accent-bright;
-}
-
-.module > h1, .package > h1 {
     margin: 0;
 }
 
@@ -226,7 +223,7 @@ pre > code {
     color: $accent-dark;
 }
 
-.module > .major-section-title {
+.major-section-title {
     font-size: $huge;
 }
 
@@ -284,7 +281,7 @@ pre > code {
 }
 
 .class > .class-name-wrapper > h2 {
-    overflow: hidden;
+    overflow: visible;
 }
 
 .class:hover {
