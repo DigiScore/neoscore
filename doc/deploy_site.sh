@@ -29,7 +29,7 @@ chmod 600 deploy_key
 eval `ssh-agent -s`
 ssh-add deploy_key
 
-TARGET_REPO_SSH='git@github.com:ajyoon/brown-site.git'
+TARGET_REPO_SSH='git@github.com:brown-notation/brown-notation.github.io.git'
 git clone $TARGET_REPO_SSH ../target
 cd ../target
 
