@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class VirtualAccidental(Enum):
+class AccidentalType(Enum):
 
     """A logical accidental descriptor.
 
@@ -22,10 +22,10 @@ class VirtualAccidental(Enum):
     """A sharp accidental"""
 
     f = flat
-    """Shorthand for `VirtualAccidental.flat`"""
+    """Shorthand for `AccidentalType.flat`"""
 
     n = natural
-    """Shorthand for `VirtualAccidental.natural`"""
+    """Shorthand for `AccidentalType.natural`"""
 
     s = sharp
-    """Shorthand for `VirtualAccidental.sharp`"""
+    """Shorthand for `AccidentalType.sharp`"""

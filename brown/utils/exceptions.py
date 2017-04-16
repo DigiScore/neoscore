@@ -28,8 +28,8 @@ class NoAncestorStaffError(Exception):
     pass
 
 
-class InvalidVirtualAccidentalError(Exception):
-    """Raised when a nonexistent `VirtualAccidental` enum name is requested."""
+class InvalidAccidentalTypeError(Exception):
+    """Raised when a nonexistent `AccidentalType` enum name is requested."""
     pass
 
 

@@ -1,6 +1,6 @@
 from brown.core.music_text import MusicText
-from brown.models.virtual_accidental import VirtualAccidental
-from brown.utils.exceptions import InvalidVirtualAccidentalError
+from brown.models.accidental_type import AccidentalType
+from brown.utils.exceptions import InvalidAccidentalTypeError
 
 
 class Accidental(MusicText):
@@ -17,28 +17,28 @@ class Accidental(MusicText):
         """
         Args:
             pos (Point): The position of the accidental
-            kind (VirtualAccidental or str): The type of accidental.
-                For convenience, any `str` of a `VirtualAccidental`
+            kind (AccidentalType or str): The type of accidental.
+                For convenience, any `str` of a `AccidentalType`
                 enum name may be passed.
             parent (StaffObject or Staff):
         """
-        if isinstance(kind, VirtualAccidental):
-            self.virtual_accidental = kind
+        if isinstance(kind, AccidentalType):
+            self.accidental_type = kind
         else:
             try:
-                self.virtual_accidental = VirtualAccidental[kind]
+                self.accidental_type = AccidentalType[kind]
             except KeyError:
-                raise InvalidVirtualAccidentalError
-        canonical_name = self._canonical_names[self.virtual_accidental.name]
+                raise InvalidAccidentalTypeError
+        canonical_name = self._canonical_names[self.accidental_type.name]
         super().__init__(pos, [canonical_name], parent)
 
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def virtual_accidental(self):
-        """VirtualAccidental: What type of accidental this is."""
-        return self._virtual_accidental
+    def accidental_type(self):
+        """AccidentalType: What type of accidental this is."""
+        return self._accidental_type
 
-    @virtual_accidental.setter
-    def virtual_accidental(self, value):
-        self._virtual_accidental = value
+    @accidental_type.setter
+    def accidental_type(self, value):
+        self._accidental_type = value

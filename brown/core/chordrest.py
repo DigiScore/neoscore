@@ -287,10 +287,10 @@ class Chordrest(ObjectGroup, StaffObject):
     def _create_accidentals(self):
         padding = self.staff.unit(-1.2)
         for notehead in self.noteheads:
-            if notehead.pitch.virtual_accidental is None:
+            if notehead.pitch.accidental_type is None:
                 continue
             self.accidentals.add(Accidental((padding, self.staff.unit(0)),
-                                            notehead.pitch.virtual_accidental,
+                                            notehead.pitch.accidental_type,
                                             notehead))
 
     def _create_dots(self):

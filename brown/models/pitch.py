@@ -1,6 +1,6 @@
 import re
 
-from brown.models.virtual_accidental import VirtualAccidental
+from brown.models.accidental_type import AccidentalType
 from brown.utils.exceptions import InvalidPitchDescriptionError
 
 
@@ -49,7 +49,7 @@ class Pitch:
         """
         # These three are initialized by the pitch setter
         self._letter = None
-        self._virtual_accidental = None
+        self._accidental_type = None
         self._octave = None
         self.pitch = pitch
 
@@ -75,7 +75,7 @@ class Pitch:
         """
         return (isinstance(other, type(self)) and
                 self.letter == other.letter and
-                self.virtual_accidental == other.virtual_accidental and
+                self.accidental_type == other.accidental_type and
                 self.octave == other.octave)
 
     def __hash__(self):
@@ -104,9 +104,9 @@ class Pitch:
         ticks = match.group(3)
         self._letter = letter
         if accidental_str:
-            self._virtual_accidental = VirtualAccidental[accidental_str]
+            self._accidental_type = AccidentalType[accidental_str]
         else:
-            self._virtual_accidental = None
+            self._accidental_type = None
         if not ticks:
             self._octave = 3
         else:
@@ -119,13 +119,13 @@ class Pitch:
         return self._letter
 
     @property
-    def virtual_accidental(self):
-        """VirtualAccidental or None: The accidental descriptor.
+    def accidental_type(self):
+        """AccidentalType or None: The accidental descriptor.
 
         If no accidental is needed for this pitch (e.g. C-natural in C Major),
         this should be left as `None`.
         """
-        return self._virtual_accidental
+        return self._accidental_type
 
     @property
     def octave(self):
@@ -140,8 +140,8 @@ class Pitch:
     def pitch_class(self):
         """int: The 0-11 pitch class of this pitch."""
         natural = Pitch.natural_pitch_classes[self.letter]
-        if self.virtual_accidental:
-            return natural + self.virtual_accidental.value
+        if self.accidental_type:
+            return natural + self.accidental_type.value
         return natural
 
     @property
@@ -197,8 +197,8 @@ class Pitch:
     def string_desriptor(self):
         """str: The string that can be used to recreate this Pitch"""
         descriptor = self.letter
-        if self.virtual_accidental is not None:
-            descriptor += self.virtual_accidental.name
+        if self.accidental_type is not None:
+            descriptor += self.accidental_type.name
         if self.octave > 3:
             descriptor += "'" * (self.octave - 3)
         elif self.octave < 3:

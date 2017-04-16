@@ -11,7 +11,7 @@ class TestPitch(unittest.TestCase):
         test_pitch = Pitch(pitch_string)
         assert(test_pitch.pitch == pitch_string)
         assert(test_pitch.letter == 'a')
-        assert(test_pitch.virtual_accidental.value == -1)
+        assert(test_pitch.accidental_type.value == -1)
         assert(test_pitch.octave == 1)
 
     def test_pitch_init_no_letter_fails(self):
