@@ -21,7 +21,7 @@
                 {{attribute.warning}}
             </div>
         {% endif %}
-        {% if attribute.is_read_only %}
+        {% if attribute.is_read_only and attribute.is_property %}
             <p class="read-only-notice">
                 read-only.
             </p>

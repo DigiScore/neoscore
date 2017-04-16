@@ -35,7 +35,11 @@
             </div>
         {% endif %}
         {% if class.class_attributes %}
-            <h4 class="major-section-title">class attributes</h4>
+            {% if class.superclass_string == "<code>Enum</code>" %}
+                <h4 class="major-section-title">enumerations</h4>
+            {% else %}
+                <h4 class="major-section-title">class attributes</h4>
+            {% endif %}
             <div class="major-section">
                 {% for attribute in class.class_attributes %}
                     {{ attribute_template.attribute_doc(attribute, false) }}
