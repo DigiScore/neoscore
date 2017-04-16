@@ -29,7 +29,7 @@ class NoAncestorStaffError(Exception):
 
 
 class InvalidVirtualAccidentalError(Exception):
-    """Exception raised when an Accidental is given a `None` VirtualAccidental"""
+    """Raised when a nonexistent `VirtualAccidental` enum name is requested."""
     pass
 
 
@@ -91,11 +91,6 @@ class ColorBoundsError(Exception):
                                                  max_allowed,
                                                  value))
         super().__init__(self.message)
-
-
-class InvalidAccidentalError(Exception):
-    """Exception thrown when an invalid accidental descriptor is requested."""
-    pass
 
 
 class InvalidIntervalError(Exception):

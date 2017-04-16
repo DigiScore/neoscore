@@ -5,7 +5,8 @@ from brown.utils.exceptions import InvalidPitchDescriptionError
 
 
 class Pitch:
-    """A pitch with a letter, octave, and virtual accidental"""
+
+    """A pitch with a letter, octave, and accidental"""
 
     _pitch_regex = re.compile("^([a-g])([snf])?('*|,*)$")
     natural_pitch_classes = {
@@ -31,21 +32,20 @@ class Pitch:
 
     def __init__(self, pitch):
         """
+        Valid pitch accidentals suffixes are `s` for sharp, `f` for flat,
+        and `n` for explicit natural.
+
+        Octaves are denoted by suffixes of commas or apostrophes,
+        where none is C below middle-C, and each comma / apostrophe
+        indicates an octave down or up, respectively.
+
+        TODO: Explain better, needs examples - most users will not be
+              familiar with lilypond pitch notation
+
         Args:
             pitch (str): A pitch representation of a string
                 in lilypond notation
 
-        Notes:
-            Valid pitch accidentals suffixes are `s` for sharp, `f` for flat,
-            and `n` for explicit natural.
-
-            Octaves are denoted by suffixes of commas or apostrophes,
-            where none is C below middle-C, and each comma / apostrophe
-            indicates an octave down or up, respectively.
-
-            TODO: Support other input methods, as in mothballed version
-            TODO: Explain better, needs examples - most users will not be
-                  familiar with lilypond pitch notation
         """
         # These three are initialized by the pitch setter
         self._letter = None
@@ -90,7 +90,7 @@ class Pitch:
     def pitch(self):
         """str: A string representation of the pitch.
 
-        See __init__() documentation for a complete description.
+        See `__init__` documentation for a complete description.
         """
         return self._pitch
 
@@ -100,10 +100,13 @@ class Pitch:
         if match is None:
             raise InvalidPitchDescriptionError
         letter = match.group(1)
-        virtual_accidental = match.group(2)
+        accidental_str = match.group(2)
         ticks = match.group(3)
         self._letter = letter
-        self._virtual_accidental = VirtualAccidental(virtual_accidental)
+        if accidental_str:
+            self._virtual_accidental = VirtualAccidental[accidental_str]
+        else:
+            self._virtual_accidental = None
         if not ticks:
             self._octave = 3
         else:
@@ -117,13 +120,10 @@ class Pitch:
 
     @property
     def virtual_accidental(self):
-        """str or None: A character representing the accidental.
+        """VirtualAccidental or None: The accidental descriptor.
 
-        Supported values:
-        * 'f': flat
-        * 'n': natural (explicit)
-        * 's': sharp
-        * None: no accidental
+        If no accidental is needed for this pitch (e.g. C-natural in C Major),
+        this should be left as `None`.
         """
         return self._virtual_accidental
 
@@ -140,7 +140,7 @@ class Pitch:
     def pitch_class(self):
         """int: The 0-11 pitch class of this pitch."""
         natural = Pitch.natural_pitch_classes[self.letter]
-        if self.virtual_accidental.value is not None:
+        if self.virtual_accidental:
             return natural + self.virtual_accidental.value
         return natural
 
@@ -197,8 +197,8 @@ class Pitch:
     def string_desriptor(self):
         """str: The string that can be used to recreate this Pitch"""
         descriptor = self.letter
-        if self.virtual_accidental.value is not None:
-            descriptor += self.virtual_accidental.value_as_str
+        if self.virtual_accidental is not None:
+            descriptor += self.virtual_accidental.name
         if self.octave > 3:
             descriptor += "'" * (self.octave - 3)
         elif self.octave < 3:

@@ -37,8 +37,8 @@ def setup(initial_paper=None):
     calling this multiple times in one script will cause unexpected behavior.
 
     Args:
-        paper (Paper): The paper to use in the document. If None,
-                this defaults to config.DEFAULT_PAPER_TYPE
+        paper (Paper): The paper to use in the document.
+            If `None`, this defaults to `config.DEFAULT_PAPER_TYPE`
 
     Returns: None
     """
