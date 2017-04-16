@@ -1,6 +1,6 @@
 # brown-notation.org site & docs generator
 
-This is an automatic generator of [brown-notation.org](brown-notation.org).
+This is the generator of [brown-notation.org](http://brown-notation.org).
 It automatically parses the `brown` package and converts its docstrings
 and readme files into an API reference, combined with a few manually
 assembled HTML documents which form the non-reference component of the site.

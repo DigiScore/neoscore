@@ -19,6 +19,18 @@ $medium-space: 3em;
 $small-space: 1em;
 $tiny-space: 0.5em;
 
+$main-page-width: $large-space * 12;
+$main-page-padding: $large-space;
+$main-page-width-full: $main-page-width + ($large-space * 2);
+
+$sidebar-width: 16em;
+$sidebar-padding: 1em;
+$sidebar-width-full: $sidebar-width + ($sidebar-padding * 2);
+
+$page-body-gap-large: 8em;
+$page-body-gap-medium: 4em;
+$page-body-gap-none: 0;
+
 $a-color: $accent-bright;
 
 
@@ -28,6 +40,7 @@ html {
 }
 
 body {
+    margin: 0;
     color: $primary-text;
     font-family: 'Roboto', sans-serif;
     font-size: $small;
@@ -71,10 +84,16 @@ body {
 }
 
 #page-wrapper {
-    max-width: $large-space * 12;
-    padding: $large-space;
-    margin: auto;
+    margin-left: $sidebar-width-full;
+}
+
+#page-body {
     position: relative;
+
+    max-width: $main-page-width;
+    padding: $main-page-padding;
+    margin-left: $page-body-gap-large;
+
     background: $primary-bg;
 
     border-left: 1px solid $accent-dark;
@@ -85,10 +104,8 @@ body {
     box-shadow:         -1px 1px 5px 0px $accent-dark;
 }
 
-$sidebar-right: 225px;
-
 #sidebar {
-    width: $sidebar-right;
+    width: $sidebar-width;
     position: fixed;
     top: 0;
     left: 0;
@@ -122,7 +139,7 @@ $sidebar-right: 225px;
     width: 500px;
     position: fixed;
     top: 0;
-    left: $sidebar-right;
+    left: $sidebar-width;
     z-index: -1;
     background: linear-gradient(135deg, $super-accent 300px, transparent 0) top left;
     height: 100%;
@@ -289,6 +306,19 @@ pre > code {
                 color: $a-color;
             }
         }
+    }
+}
+
+/* Media breakpoints */
+@media (max-width: #{$sidebar-width-full + $page-body-gap-large + $main-page-width-full}) {
+    #page-body {
+        margin-left: $page-body-gap-medium;
+    }
+}
+
+@media (max-width: #{$sidebar-width-full + $page-body-gap-medium + $main-page-width-full}) {
+    #page-body {
+        margin-left: $page-body-gap-none;
     }
 }
 

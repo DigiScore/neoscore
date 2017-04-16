@@ -2,6 +2,8 @@
 
 <html>
     <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="/static/css/main.css">
         <link href="https://fonts.googleapis.com/css?family=Roboto|Source+Code+Pro|Vollkorn" rel="stylesheet">
         <script src="/static/js/main.js"></script>
@@ -13,7 +15,9 @@
     <body>
         {% include "sidebar.html" %}
         <div id="page-wrapper">
-            {% block contents %}{% endblock %}
+            <div id="page-body">
+                {% block contents %}{% endblock %}
+            </div>
         </div>
     </body>
 </html>
