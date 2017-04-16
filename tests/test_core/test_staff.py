@@ -8,6 +8,7 @@ from brown.core.paper import Paper
 from brown.core.staff import Staff, NoClefError
 from brown.core.clef import Clef
 from brown.core.octave_line import OctaveLine
+from brown.models.clef_type import ClefType
 from brown.utils.point import Point
 from brown.utils.units import Mm
 
@@ -44,9 +45,9 @@ class TestStaff(unittest.TestCase):
         Clef(staff, Mm(0), 'treble')
         Clef(staff, Mm(10), 'bass')
         # Test between two clefs should have treble in effect
-        assert(staff.active_clef_at(Mm(1)).clef_type == 'treble')
+        assert(staff.active_clef_at(Mm(1)).clef_type == ClefType.treble)
         # Test after bass clef goes into effect
-        assert(staff.active_clef_at(Mm(11)).clef_type == 'bass')
+        assert(staff.active_clef_at(Mm(11)).clef_type == ClefType.bass)
 
     def test_active_clef_at_with_implicit_default_clef(self):
         staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)

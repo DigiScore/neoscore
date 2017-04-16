@@ -13,20 +13,20 @@ class Accidental(MusicText):
         'sharp':  'accidentalSharp',
     }
 
-    def __init__(self, pos, kind, parent):
+    def __init__(self, pos, accidental_type, parent):
         """
         Args:
             pos (Point): The position of the accidental
-            kind (AccidentalType or str): The type of accidental.
+            accidental_type (AccidentalType or str): The type of accidental.
                 For convenience, any `str` of a `AccidentalType`
                 enum name may be passed.
             parent (StaffObject or Staff):
         """
-        if isinstance(kind, AccidentalType):
-            self.accidental_type = kind
+        if isinstance(accidental_type, AccidentalType):
+            self.accidental_type = accidental_type
         else:
             try:
-                self.accidental_type = AccidentalType[kind]
+                self.accidental_type = AccidentalType[accidental_type]
             except KeyError:
                 raise InvalidAccidentalTypeError
         canonical_name = self._canonical_names[self.accidental_type.name]

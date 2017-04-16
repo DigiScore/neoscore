@@ -60,7 +60,7 @@ brown.setup()
 
 flowable_frame = FlowableFrame((Mm(0), Mm(0)), Mm(2000), Mm(30))
 staff = Staff((Mm(0), Mm(0)), Mm(2000), flowable_frame)
-clef = Clef(staff, Mm(0), '8vb bass')
+clef = Clef(staff, Mm(0), 'bass_8vb')
 text = Text((Mm(3), staff.unit(-1)), 'Hello, world!')
 
 brown.show()

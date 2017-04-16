@@ -1,5 +1,5 @@
 from brown.core.music_text import MusicText
-from brown.utils.units import Unit
+from brown.models.clef_type import ClefType
 
 
 class Clef(MusicText):
@@ -11,40 +11,46 @@ class Clef(MusicText):
     """
 
     _canonical_names = {
-        'treble': 'gClef',
-        'bass': 'fClef',
-        '8vb bass': 'fClef8vb',
-        'tenor': 'cClef',
-        'alto': 'cClef',
+        ClefType.treble: 'gClef',
+        ClefType.bass: 'fClef',
+        ClefType.bass_8vb: 'fClef8vb',
+        ClefType.tenor: 'cClef',
+        ClefType.alto: 'cClef',
     }
     _baseline_staff_positions = {
-        'treble': 3,
-        'bass': 1,
-        '8vb bass': 1,
-        'tenor': 1,
-        'alto': 2,
+        ClefType.treble: 3,
+        ClefType.bass: 1,
+        ClefType.bass_8vb: 1,
+        ClefType.tenor: 1,
+        ClefType.alto: 2,
     }
     _middle_c_staff_positions = {
-        'treble': 5,
-        'bass': -1,
-        '8vb bass': -6.5,
-        'tenor': 1,
-        'alto': 2,
+        ClefType.treble: 5,
+        ClefType.bass: -1,
+        ClefType.bass_8vb: -6.5,
+        ClefType.tenor: 1,
+        ClefType.alto: 2,
     }
 
     def __init__(self, staff, position_x, clef_type):
         """
         Args:
             staff (Staff):
-            position_x (float):
-            clef_type (str): One of: 'treble', 'bass', '8vb bass',
-                'tenor', or 'alto'
+            position_x (Unit):
+            clef_type (ClefType or str): The type of clef.
+                For convenience, any `str` of a `ClefType`
+                enum name may be passed.
+
+        Raises:
+            KeyError: If the given `clef_type` is not a valid
+                `ClefType` or `ClefType` enum name.
         """
-        self._clef_type = clef_type
-        # staff_position relies on an existing MusicText object,
-        # so start with a temp y position, then set the real one
-        MusicText.__init__(self, (position_x, Unit(0)),
-                           self._canonical_names[clef_type],
+        if isinstance(clef_type, ClefType):
+            self._clef_type = clef_type
+        else:
+            self._clef_type = ClefType[clef_type]
+        MusicText.__init__(self, (position_x, 0),
+                           self._canonical_names[self._clef_type],
                            staff)
         self.y = self.staff_position
 

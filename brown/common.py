@@ -36,12 +36,14 @@ from brown.core.staff_object import StaffObject
 from brown.core.stem import Stem
 from brown.core.text import Text
 from brown.core.time_signature import TimeSignature
-from brown.utils.pen_pattern import PenPattern
 
+from brown.models.accidental_type import AccidentalType
 from brown.models.beat import Beat
+from brown.models.clef_type import ClefType
 
-from brown.utils.parent_point import ParentPoint
 from brown.utils.color import Color
+from brown.utils.parent_point import ParentPoint
+from brown.utils.pen_pattern import PenPattern
 from brown.utils.point import Point
 from brown.utils.rect import Rect
 from brown.utils.units import GraphicUnit, Mm, Inch
