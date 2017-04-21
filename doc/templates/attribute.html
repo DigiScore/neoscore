@@ -14,6 +14,9 @@
         {{ name_links.permalink_and_source(attribute) }}
     </p>
     <div class="body">
+        {% if attribute.overriden_from %}
+            {{ overriden_note.overriden(attribute) }}
+        {% endif %}
         <div class="details">{{attribute.details}}</div>
         {% if attribute.warning %}
             <h4>warning:</h4>
@@ -28,9 +31,6 @@
         {% endif %}
         {% if is_inherited %}
             {{ inherited_note.inherited(attribute) }}
-        {% endif %}
-        {% if attribute.overriden_from %}
-            {{ overriden_note.overriden(attribute) }}
         {% endif %}
     </div>
 </div>

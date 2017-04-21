@@ -19,6 +19,9 @@
     </p>
     <div class="body">
         <p class="summary">{{method.summary}}</p>
+        {% if method.overriden_from %}
+            {{ overriden_note.overriden(method) }}
+        {% endif %}
         {% if method.args_details %}
             <h4>arguments:</h4>
             <div class="type-details-list">
@@ -66,9 +69,6 @@
         {% endif %}
         {% if is_inherited %}
             {{ inherited_note.inherited(method) }}
-        {% endif %}
-        {% if method.overriden_from %}
-            {{ overriden_note.overriden(method) }}
         {% endif %}
     </div>
 </div>
