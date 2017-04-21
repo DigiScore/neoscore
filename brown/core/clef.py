@@ -6,8 +6,11 @@ class Clef(MusicText):
 
     """A graphical and logical staff clef.
 
-    `Staff`s use these to determine how pitches within them
-    should be laid out.
+    `Clef`s are drawn at the initially specified position, and at the
+    beginning of new lines in the parent `Staff` until a new `Clef`
+    is encountered or the end of the `Staff`.
+
+    `Staff`s use these to determine how pitches within them should be laid out.
     """
 
     _canonical_names = {
@@ -58,11 +61,12 @@ class Clef(MusicText):
 
     @property
     def clef_type(self):
-        """str: The type of clef (e.g. 'treble', 'bass').
-
-        Currently supported types are: `'treble'` and `'bass'`
-        """
+        """ClefType: The type of clef, both logical and graphical."""
         return self._clef_type
+
+    @property
+    def breakable_width(self):
+        return self.staff.distance_to_next_of_type(self)
 
     @property
     def staff_position(self):
@@ -86,3 +90,16 @@ class Clef(MusicText):
         which take a clef into account
         """
         return self.staff.unit(Clef._middle_c_staff_positions[self.clef_type])
+
+    ######## PRIVATE METHODS ########
+
+    # Always render the whole glyph.
+
+    def _render_before_break(self, local_start_x, start, stop):
+        self._render_slice(start, None)
+
+    def _render_after_break(self, local_start_x, start, stop):
+        self._render_slice(start, None)
+
+    def _render_spanning_continuation(self, local_start_x, start, stop):
+        self._render_slice(start, None)
