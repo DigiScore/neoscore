@@ -1,9 +1,10 @@
 from brown import config
+from brown.core.clef import Clef
+from brown.core.graphic_object import GraphicObject
 from brown.core.music_font import MusicFont
+from brown.core.octave_line import OctaveLine
 from brown.core.path import Path
 from brown.models.beat import Beat
-from brown.core.clef import Clef
-from brown.core.octave_line import OctaveLine
 from brown.utils.exceptions import NoClefError
 from brown.utils.units import GraphicUnit, Unit
 
@@ -30,7 +31,6 @@ class Staff(Path):
         """
         super().__init__(pos, parent=frame)
         self._line_count = line_count
-        self._width = width
         self.unit = self._make_unit_class(staff_unit if staff_unit
                                           else config.DEFAULT_STAFF_UNIT)
         if music_font is None:
@@ -81,7 +81,34 @@ class Staff(Path):
 
     ######## PUBLIC METHODS ########
 
-    # Other methods -----------------------------------------------------------
+    def distance_to_next_of_type(self, staff_object):
+        """Find the x distance until the next occurrence of an object's type.
+
+        If the object is the last of its type, this gives the remaining length
+        of the staff after the object.
+
+        This is useful for determining rendering behavior of `StaffObject`s
+        who are active until another of their type occurs,
+        such as `KeySignature`s, or `Clef`s.
+
+        Args:
+            staff_object (StaffObject):
+
+        Returns: Unit
+        """
+        start_x = self.frame.map_between_items_in_frame(self, staff_object).x
+        all_others_of_class = (
+            item for item in self.all_descendants_with_exact_class(
+                type(staff_object))
+            if item != staff_object)
+        closest_x = Unit(float('inf'))
+        for item in all_others_of_class:
+            relative_x = self.frame.map_between_items_in_frame(self, item).x
+            if relative_x > start_x and closest_x > relative_x:
+                closest_x = relative_x
+        if closest_x == Unit(float('inf')):
+            return self.breakable_width - start_x
+        return closest_x - start_x
 
     def active_clef_at(self, pos_x):
         """Find and return the active clef at a given x position.

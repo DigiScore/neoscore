@@ -40,6 +40,13 @@ class TestStaff(unittest.TestCase):
                   self.frame, staff_unit=Mm(1), line_count=4).height,
             Mm(3))
 
+    def test_distance_to_next_of_type(self):
+        staff = Staff((Mm(10), Mm(0)), Mm(100), self.frame)
+        treble = Clef(staff, Mm(11), 'treble')
+        bass = Clef(staff, Mm(31), 'bass')
+        staff.distance_to_next_of_type(treble)._assert_almost_equal(Mm(20))
+        staff.distance_to_next_of_type(bass)._assert_almost_equal(Mm(100 - 31))
+
     def test_active_clef_at_with_explicit_clefs(self):
         staff = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
         Clef(staff, Mm(0), 'treble')
