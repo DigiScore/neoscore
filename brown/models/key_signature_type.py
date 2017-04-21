@@ -32,7 +32,7 @@ class KeySignatureType(Enum):
         'g': None,
     }
 
-    a_minor = c_major.value
+    a_minor = c_major.copy()
 
     df_major = {
         'a': flat,
@@ -44,7 +44,7 @@ class KeySignatureType(Enum):
         'g': flat,
     }
 
-    bf_minor = df_major.value
+    bf_minor = df_major.copy()
 
     # Ha
     cs_major = {
@@ -67,7 +67,7 @@ class KeySignatureType(Enum):
         'g': None,
     }
 
-    b_minor = d_major.value
+    b_minor = d_major.copy()
 
     ef_major = {
         'a': flat,
@@ -79,7 +79,7 @@ class KeySignatureType(Enum):
         'g': None,
     }
 
-    bf_minor = ef_major.value
+    c_minor = ef_major.copy()
 
     e_major = {
         'a': None,
@@ -91,7 +91,7 @@ class KeySignatureType(Enum):
         'g': sharp,
     }
 
-    cs_minor = e_major.value
+    cs_minor = e_major.copy()
 
     f_major = {
         'a': None,
@@ -103,7 +103,7 @@ class KeySignatureType(Enum):
         'g': None,
     }
 
-    d_minor = f_major.value
+    d_minor = f_major.copy()
 
     gf_major = {
         'a': flat,
@@ -115,7 +115,7 @@ class KeySignatureType(Enum):
         'g': flat,
     }
 
-    ef_minor = gf_major.value
+    ef_minor = gf_major.copy()
 
     fs_major = {
         'a': sharp,
@@ -127,7 +127,7 @@ class KeySignatureType(Enum):
         'g': sharp,
     }
 
-    ds_minor = fs_major.value
+    ds_minor = fs_major.copy()
 
     g_major = {
         'a': None,
@@ -139,7 +139,7 @@ class KeySignatureType(Enum):
         'g': None,
     }
 
-    e_minor = g_major.value
+    e_minor = g_major.copy()
 
     af_major = {
         'a': flat,
@@ -151,7 +151,7 @@ class KeySignatureType(Enum):
         'g': None,
     }
 
-    f_minor = af_major.value
+    f_minor = af_major.copy()
 
     a_major = {
         'a': None,
@@ -163,7 +163,7 @@ class KeySignatureType(Enum):
         'g': sharp,
     }
 
-    fs_minor = a_major.value
+    fs_minor = a_major.copy()
 
     bf_major = {
         'a': None,
@@ -175,7 +175,7 @@ class KeySignatureType(Enum):
         'g': None,
     }
 
-    g_minor = bf_major.value
+    g_minor = bf_major.copy()
 
     b_major = {
         'a': sharp,
@@ -187,7 +187,7 @@ class KeySignatureType(Enum):
         'g': sharp,
     }
 
-    gs_minor = b_major.value
+    gs_minor = b_major.copy()
 
     cf_major = {
         'a': flat,
