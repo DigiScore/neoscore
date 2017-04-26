@@ -244,8 +244,7 @@ class GraphicObject(ABC):
             destination (GraphicObject): The object to map to
 
         Returns:
-            Point: The relative page position of `destination`,
-                relative to `source`
+            Point: The canvas position of `destination` relative to `source`
         """
         # inefficient for now - find position relative to doc root of both
         # and find delta between the two.

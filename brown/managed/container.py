@@ -7,7 +7,7 @@ class Container(list):
 
     The most obvious use case for this is in the context of a Staff,
     where it is highly desirable to be able to create objects like
-    ChordRests and spanners by specifying their musical properties
+    Chordrests and spanners by specifying their musical properties
     alone, allowing the Staff (or whatever layout system) to decide
     exactly where and how these objects should be displayed.
     """

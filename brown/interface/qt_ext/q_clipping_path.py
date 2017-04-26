@@ -1,4 +1,4 @@
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtWidgets, QtGui
 
 from brown.utils.units import GraphicUnit
 
@@ -26,9 +26,10 @@ class QClippingPath(QtWidgets.QGraphicsPathItem):
         super().__init__(qt_path)
 
     def paint(self, painter, *args, **kwargs):
-        """Paint, clipping by `self._clip_area`.
+        """Paint with automatic clipping.
 
-        This is an overload of `QGraphicsPathItem.paint()`"""
+        This is overridden from `QGraphicsPathItem.paint()`
+        """
         painter.save()
         if self.clip_start_x is not None:
             painter.translate(QtCore.QPointF(

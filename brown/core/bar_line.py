@@ -18,7 +18,7 @@ class BarLine(Path, MultiStaffObject):
 
     def __init__(self, position_x, staves):
         """
-        Args
+        Args:
             position_x (StaffUnit): The barline position relative to
                 the top staff.
             staves (iter[Staff]):

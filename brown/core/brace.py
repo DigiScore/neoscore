@@ -9,7 +9,8 @@ class Brace(MultiStaffObject, MusicText):
     """A brace spanning staves, recurring at line beginnings.
 
     The brace is drawn at the beginning of every line
-    and after its initial x position through its length.
+    after its initial x position through its length.
+
     A brace will be drawn on the first line it appears on
     if and only if it is placed *exactly* at the line beginning.
 
