@@ -7,14 +7,11 @@ class MultiStaffObject:
 
     This is a Mixin class, meant to be combined with GraphicObject classes.
 
-    If an class is both a MultiStaffObject and a StaffObject, the parent staff
-    should be the top staff listed in `self.staves`.
+    `MultiStaffObject`s must have their visually highest staff as their parent.
 
-    MultiStaffObjects will typically have their visually highest staff
-    as their parent.
-
-    In most MultiStaffObject classes, object-wide property will be derived
-    from the visually highest staff.
+    If an class is both a `MultiStaffObject` and a `StaffObject`,
+    the parent staff should be the visually highest staff listed in
+    `self.staves`.
 
     TODO: Cache potentially expensive property calculations
     """

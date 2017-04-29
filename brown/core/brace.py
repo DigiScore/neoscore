@@ -2,6 +2,7 @@ from brown.core.multi_staff_object import MultiStaffObject
 from brown.core.music_font import MusicFontGlyphNotFoundError
 from brown.core.music_text import MusicText
 from brown.utils.units import GraphicUnit
+from brown.utils.point import Point
 
 
 class Brace(MultiStaffObject, MusicText):
@@ -9,22 +10,21 @@ class Brace(MultiStaffObject, MusicText):
     """A brace spanning staves, recurring at line beginnings.
 
     The brace is drawn at the beginning of every line
-    after its initial x position through its length.
+    after its initial x position until the end of the staff.
 
     A brace will be drawn on the first line it appears on
     if and only if it is placed *exactly* at the line beginning.
 
     Consequently, `Brace(Mm(0), Mm(1000), some_staves)` will appear
     on the first line of the flowable, while
-    `Brace(Mm(1), Mm(1000), some_staves) will not begin drawing
+    `Brace(Mm(1), Mm(1000), some_staves)` will not begin drawing
     until the second line.
     """
 
-    def __init__(self, pos_x, length, staves):
+    def __init__(self, pos_x, staves):
         """
         Args:
             pos_x (Unit): Where this brace goes into effect
-            length (Unit): How long this brace is in effect
             staves (set(Staff)): The staves this brace spans
         """
         MultiStaffObject.__init__(self, staves)
@@ -54,7 +54,6 @@ class Brace(MultiStaffObject, MusicText):
                                      'brace',
                                self.highest_staff,
                                scale_factor=scale)
-        self._breakable_width = length
 
     ######## PUBLIC PROPERTIES ########
 
@@ -64,16 +63,20 @@ class Brace(MultiStaffObject, MusicText):
 
         This is used to determine how and where rendering cuts should be made.
         """
-        return self._breakable_width
+        return (self.staff.breakable_width
+                - self.frame.map_between_items_in_frame(self.staff, self).x)
 
     ######## PRIVATE METHODS ########
 
     def _render_before_break(self, local_start_x, start, stop):
         if start.x == GraphicUnit(0):
-            self._render_complete(start)
+            self._render_complete(
+                Point(start.x - self._bounding_rect.width, start.y))
 
     def _render_after_break(self, local_start_x, start, stop):
-        self._render_complete(start)
+        self._render_complete(
+            Point(start.x - self._bounding_rect.width, start.y))
 
     def _render_spanning_continuation(self, local_start_x, start, stop):
-        self._render_complete(start)
+        self._render_complete(
+            Point(start.x - self._bounding_rect.width, start.y))

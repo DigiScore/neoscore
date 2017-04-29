@@ -14,7 +14,8 @@ class KeySignature(ObjectGroup, StaffObject):
     """A logical and graphical key signature.
 
     The signature will be rendered initially at the given `pos_x`,
-    and at the beginning of subsequent lines throughout its duration.
+    and at the beginning of subsequent lines until a new
+    `KeySignature` is encountered.
 
     All traditional key signatures (those included in `KeySignatureTypes`)
     are supported by this class. Nontraditional key signatures could
