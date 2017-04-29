@@ -97,7 +97,7 @@ class KeySignatureType(Enum):
         'a': None,
         'b': flat,
         'c': None,
-        'd': sharp,
+        'd': None,
         'e': None,
         'f': None,
         'g': None,

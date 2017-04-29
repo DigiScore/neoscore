@@ -8,9 +8,9 @@ class Accidental(MusicText):
     """A visible accidental."""
 
     _canonical_names = {
-        'flat': 'accidentalFlat',
-        'natural':  'accidentalNatural',
-        'sharp':  'accidentalSharp',
+        AccidentalType.flat: 'accidentalFlat',
+        AccidentalType.natural:  'accidentalNatural',
+        AccidentalType.sharp:  'accidentalSharp',
     }
 
     def __init__(self, pos, accidental_type, parent):
@@ -29,7 +29,7 @@ class Accidental(MusicText):
                 self.accidental_type = AccidentalType[accidental_type]
             except KeyError:
                 raise InvalidAccidentalTypeError
-        canonical_name = self._canonical_names[self.accidental_type.name]
+        canonical_name = self._canonical_names[self.accidental_type]
         super().__init__(pos, [canonical_name], parent)
 
     ######## PUBLIC PROPERTIES ########

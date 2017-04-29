@@ -14,6 +14,7 @@ from brown.core.flag import Flag
 from brown.core.flowable_frame import FlowableFrame
 from brown.core.font import Font
 from brown.core.hairpin import Hairpin
+from brown.core.key_signature import KeySignature
 from brown.core.ledger_line import LedgerLine
 from brown.core.multi_staff_object import MultiStaffObject
 from brown.core.music_char import MusicChar
@@ -40,6 +41,7 @@ from brown.core.time_signature import TimeSignature
 from brown.models.accidental_type import AccidentalType
 from brown.models.beat import Beat
 from brown.models.clef_type import ClefType
+from brown.models.key_signature_type import KeySignatureType
 
 from brown.utils.color import Color
 from brown.utils.parent_point import ParentPoint

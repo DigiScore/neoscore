@@ -22,9 +22,16 @@ lowest_staff = Staff((Mm(10), Mm(18)), Mm(2000), flow, Mm(1))
 
 barline = BarLine(Mm(30), [staff, lower_staff, lowest_staff])
 
-upper_staff_clef = Clef(staff, Mm(0), 'treble')
-lower_staff_clef = Clef(staff, Mm(0), 'treble')
 upper_staff_time_signature = TimeSignature(Mm(0), Beat(4, 4), staff)
+
+upper_staff_clef = Clef(staff, Mm(0), 'treble')
+lower_staff_clef = Clef(lower_staff, Mm(0), 'alto')
+lowest_staff_clef = Clef(lowest_staff, Mm(0), 'bass')
+
+upper_staff_key_signature = KeySignature(Mm(0), staff, 'af_major')
+lower_staff_key_signature = KeySignature(Mm(0), lower_staff, 'cs_major')
+lowest_staff_key_signature = KeySignature(Mm(0), lowest_staff, 'd_minor')
+
 
 octave_line = OctaveLine((Mm(20), staff.unit(-2)), staff,
                          Mm(1000),

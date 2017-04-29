@@ -16,5 +16,10 @@ class InvisibleObject(GraphicObject):
         """
         super().__init__(pos, parent=parent)
 
-    def _render_complete(self, pos):
-        pass
+    def render(self):
+        """Render all child objects.
+
+        Returns: None
+        """
+        for child in self.children:
+            child.render()
