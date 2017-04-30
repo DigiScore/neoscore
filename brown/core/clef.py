@@ -95,7 +95,11 @@ class Clef(MusicText):
 
     # Always render the whole glyph.
 
-    def _render_before_break(self, local_start_x, start, stop):
+    def _render_before_break(self,
+                             local_start_x,
+                             start,
+                             stop,
+                             dist_to_line_start):
         self._render_slice(start, None)
 
     def _render_after_break(self, local_start_x, start, stop):

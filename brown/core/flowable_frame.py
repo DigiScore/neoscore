@@ -138,58 +138,55 @@ class FlowableFrame(InvisibleObject):
         return (line_canvas_pos
                 + Point(local_point.x - line.local_x, local_point.y))
 
-    def _x_pos_rel_to_line_start(self, x):
+    def _dist_to_line_start(self, local_x):
         """Find the distance of an x-pos to the left edge of its laid-out line.
 
         Args:
-            x (Unit): The local x-position.
+            local_x (Unit): The local x-position.
 
         Returns: Unit
         """
-        line_start = self._last_break_at(x)
-        return x - line_start.local_x
+        line_start = self._last_break_at(local_x)
+        return local_x - line_start.local_x
 
-    def _dist_to_line_end(self, x):
+    def _dist_to_line_end(self, local_x):
         """Find the distance of an x-pos to the right edge of its laid-out line.
 
         Args:
-            x (Unit): The local x coordinate.
+            local_x (Unit): The local x coordinate.
 
         Returns: Unit
         """
-        return (self._x_pos_rel_to_line_start(x) -
+        return (self._dist_to_line_start(local_x) -
                 brown.document.paper.live_width)
 
-    def _last_break_at(self, x):
-        """
-        Find the last line/page break that occured before a given local x-pos
+    def _last_break_at(self, local_x):
+        """Find the last `NewLine` that occurred before a given local local_x-pos
 
         Args:
-            pos (Point): A local x-position
+            local_x (Unit): The local x coordinate.
 
         Returns:
             NewLine:
         """
-        return self.layout_controllers[self._last_break_index_at(x)]
+        return self.layout_controllers[self._last_break_index_at(local_x)]
 
-    def _last_break_index_at(self, x):
-        """
-        Like `_last_break_at`, but returns the break index instead of the break
+    def _last_break_index_at(self, local_x):
+        """Like `_last_break_at`, but returns an index.
 
         Args:
-            pos (Point): A local x-position
+            pos (Point): A local local_x-position
 
-        Returns:
-            int
+        Returns: int
         """
-        remaining_x = x
+        remaining_x = local_x
         for i, controller in enumerate(self.layout_controllers):
             remaining_x -= controller.length
             if remaining_x < 0:
                 return i
         else:
             raise OutOfBoundsError(
-                'x={} lies outside of this FlowableFrame'.format(x))
+                'local_x={} lies outside of this FlowableFrame'.format(local_x))
 
     def pos_in_frame_of(self, graphic_object):
         """Find the position of an object in (unwrapped) flowable space.
@@ -197,9 +194,11 @@ class FlowableFrame(InvisibleObject):
         Args:
             graphic_object (GraphicObject): An object in the frame.
 
-        Returns: Point: A non-paged point relative to the flowable frame.
+        Returns:
+            Point: A non-paged point relative to the flowable frame.
 
-        Raises: ValueError: If `graphic_object` is not in the frame.
+        Raises:
+            ValueError: If `graphic_object` is not in the frame.
         """
         pos = Point(Unit(0), Unit(0))
         current = graphic_object
@@ -221,7 +220,6 @@ class FlowableFrame(InvisibleObject):
         Returns:
             Point: The relative position of `destination`,
                 relative to `source` within the local frame space.
-                This will have a page number of 0.
 
         Raises:
             ValueError: If either `source` or `destination` are not

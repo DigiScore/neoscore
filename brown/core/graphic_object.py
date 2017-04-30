@@ -130,7 +130,7 @@ class GraphicObject(ABC):
             else:
                 raise TypeError
         else:
-            value = Pen.from_existing(type(self).default_pen)
+            value = Pen.from_existing(self.default_pen)
         self._pen = value
 
     @property
@@ -154,7 +154,7 @@ class GraphicObject(ABC):
             else:
                 raise TypeError
         else:
-            value = Brush.from_existing(type(self)._default_brush)
+            value = Brush.from_existing(self._default_brush)
         self._brush = value
 
     @property
@@ -259,7 +259,7 @@ class GraphicObject(ABC):
         Returns: None
         """
         if self.is_in_flowable:
-            self._render_flowable()
+            self._render_in_flowable()
         else:
             self._render_complete(brown.document.canvas_pos_of(self))
         for child in self.children:
@@ -311,7 +311,7 @@ class GraphicObject(ABC):
         """
         self.children.remove(child)
 
-    def _render_flowable(self):
+    def _render_in_flowable(self):
         """Render the object to the scene, dispatching partial rendering calls
         when needed if an object flows across a break in the frame.
 
@@ -323,7 +323,9 @@ class GraphicObject(ABC):
         remaining_x = (self.length +
                        self.frame._dist_to_line_end(pos_in_flowable.x))
         if remaining_x < Unit(0):
-            self._render_complete(brown.document.canvas_pos_of(self))
+            self._render_complete(
+                brown.document.canvas_pos_of(self),
+                self.frame._dist_to_line_start(pos_in_flowable.x))
             return
 
         # Render before break
@@ -332,7 +334,11 @@ class GraphicObject(ABC):
         render_start_pos = brown.document.canvas_pos_of(self)
         first_line_length = self.frame._dist_to_line_end(pos_in_flowable.x) * -1
         render_end_pos = (render_start_pos + Point(first_line_length, 0))
-        self._render_before_break(Unit(0), render_start_pos, render_end_pos)
+        self._render_before_break(
+            Unit(0),
+            render_start_pos,
+            render_end_pos,
+            self.frame._dist_to_line_start(pos_in_flowable.x))
 
         # Iterate through remaining length
         for current_line_i in range(first_line_i + 1,
@@ -360,18 +366,23 @@ class GraphicObject(ABC):
                                  render_start_pos,
                                  render_end_pos)
 
-    def _render_complete(self, pos):
+    def _render_complete(self, pos, dist_to_line_start=None):
         """Render the entire object.
 
-        For use in flowable containers when rendering a FlowableObject
-        which happens to completely fit within a span of the FlowableFrame.
-        This function should render the entire object at `self.pos`
+        This is used to render all objects outside of `FlowableFrame`s,
+        as well as those inside frames when they fit completely in
+        one span of the frame.
 
         This method should create a GraphicInterface and store it in
         `self.interfaces`.
 
         Args:
             pos (Point): The rendering position in document space for drawing.
+            dist_to_line_start (Unit): If in a `FlowableFrame`,
+                the x-axis distance from the active `NewLine`s beginning.
+                Otherwise, this is always `None`. Subclasses may use this
+                information to perform basic position modifications at
+                render time, though in most cases this field can be ignored.
 
         Returns: None
 
@@ -380,7 +391,11 @@ class GraphicObject(ABC):
         """
         raise NotImplementedError
 
-    def _render_before_break(self, local_start_x, start, stop):
+    def _render_before_break(self,
+                             local_start_x,
+                             start,
+                             stop,
+                             dist_to_line_start):
         """Render the beginning of the object up to a stopping point.
 
         For use in flowable containers when rendering an object that
@@ -395,10 +410,14 @@ class GraphicObject(ABC):
                 drawing segment.
             start (Point): The starting point in document space for drawing.
             stop (Point): The stopping point in document space for drawing.
+            dist_to_line_start (Unit): The x-axis distance from the active
+                `NewLine`s beginning. Subclasses may use this
+                information to perform basic position modifications at
+                render time, though in most cases this field can be ignored.
 
         Returns: None
 
-        Note: Any GraphicObject subclasses whose length can
+        Note: All GraphicObject subclasses whose `length` can
               be nonzero must implement this method.
         """
         raise NotImplementedError
@@ -421,7 +440,7 @@ class GraphicObject(ABC):
 
         Returns: None
 
-        Note: Any GraphicObject subclasses whose length can
+        Note: All GraphicObject subclasses whose `length` can
               be nonzero must implement this method.
         """
         raise NotImplementedError
@@ -445,7 +464,7 @@ class GraphicObject(ABC):
 
         Returns: None
 
-        Note: Any GraphicObject subclasses whose length can
+        Note: All GraphicObject subclasses whose `length` can
               be nonzero must implement this method.
         """
         raise NotImplementedError

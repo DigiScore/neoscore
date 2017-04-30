@@ -120,8 +120,8 @@ class TestFlowableFrame(unittest.TestCase):
 
     def test_x_pos_rel_to_line_start(self):
         test_frame = FlowableFrame((Mm(10), Mm(0)), Mm(500), Mm(90), Mm(5))
-        assert(test_frame._x_pos_rel_to_line_start(Mm(170)) == Mm(20))
-        assert(test_frame._x_pos_rel_to_line_start(Mm(320)) == Mm(10))
+        assert(test_frame._dist_to_line_start(Mm(170)) == Mm(20))
+        assert(test_frame._dist_to_line_start(Mm(320)) == Mm(10))
 
     def test_dist_to_line_end(self):
         test_frame = FlowableFrame((Mm(10), Mm(0)), Mm(500), Mm(90), Mm(5))

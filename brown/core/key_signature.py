@@ -112,10 +112,14 @@ class KeySignature(ObjectGroup, StaffObject):
         def length(self):
             return self._length
 
-        def _render_complete(self, pos):
+        def _render_complete(self, pos, dist_to_line_start=None):
             self._render_slice(pos + self.mid_system_offset, None)
 
-        def _render_before_break(self, local_start_x, start, stop):
+        def _render_before_break(self,
+                                 local_start_x,
+                                 start,
+                                 stop,
+                                 dist_to_line_start):
             self._render_slice(start + self.mid_system_offset, None)
 
         def _render_after_break(self, local_start_x, start, stop):
