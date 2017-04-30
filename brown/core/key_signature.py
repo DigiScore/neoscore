@@ -98,9 +98,10 @@ class KeySignature(ObjectGroup, StaffObject):
         This should only be used within this class.
         """
         def __init__(self, occurrence_offset, clef_offset, text, parent,
-                     font, scale_factor, length):
+                     font, scale_factor, length, clef):
             super().__init__(Point(Unit(0), Unit(0)), text, parent,
                              font, scale_factor)
+            self.clef = clef
             self.clef_offset = clef_offset
             self.mid_system_offset = occurrence_offset
             self.recurring_offset = Point(
@@ -112,15 +113,26 @@ class KeySignature(ObjectGroup, StaffObject):
         def length(self):
             return self._length
 
+        @property
+        def _overlaps_with_clef(self):
+            return (self.frame.map_between_items_in_frame(self.clef, self).x
+                    < self.clef_offset)
+
         def _render_complete(self, pos, dist_to_line_start=None):
-            self._render_slice(pos + self.mid_system_offset, None)
+            if self._overlaps_with_clef:
+                self._render_slice(start + self.recurring_offset, None)
+            else:
+                self._render_slice(start + self.mid_system_offset, None)
 
         def _render_before_break(self,
                                  local_start_x,
                                  start,
                                  stop,
                                  dist_to_line_start):
-            self._render_slice(start + self.mid_system_offset, None)
+            if self._overlaps_with_clef:
+                self._render_slice(start + self.recurring_offset, None)
+            else:
+                self._render_slice(start + self.mid_system_offset, None)
 
         def _render_after_break(self, local_start_x, start, stop):
             self._render_slice(start + self.recurring_offset, None)
@@ -156,4 +168,5 @@ class KeySignature(ObjectGroup, StaffObject):
                 self,
                 self.staff.music_font,
                 1,
-                self.length)
+                self.length,
+                clef)
