@@ -2,6 +2,7 @@ import math
 
 from brown.core.graphic_object import GraphicObject
 from brown.utils.point import Point
+from brown.utils.units import Unit
 
 
 class Spanner:
@@ -16,6 +17,8 @@ class Spanner:
     `GraphicObject.pos`, and the starting anchored should be the its
     `GraphicObject.parent`. It is up to the implementing class to
     decide how to use this information.
+
+    In order to prevent a diamond problem, this class
 
     For an example implementation, see `Slur`.
     """
@@ -80,10 +83,24 @@ class Spanner:
         self._end_parent = value
 
     @property
-    def length(self):
-        """Unit: The length of the spanner.
+    def spanner_x_length(self):
+        """Unit: The x-axis length of the spanner.
 
-        The exact unit type will be the type of `self.pos.x`
+        Implementing subclasses will often want to override
+        `GraphicObject.length` to return this.
+        """
+        if self.end_parent == self:
+            return Unit.from_existing(self.end_pos.x)
+        else:
+            return (GraphicObject.map_between_items(self, self.end_parent).x
+                    + self.end_pos.x)
+
+    @property
+    def spanner_length(self):
+        """Unit: The 2d length of the spanner.
+
+        Note: This takes into account both the x and y axis. For only
+            the horizontal length, use `spanner_x_length`.
         """
         if self.end_parent == self:
             relative_stop = Point.from_existing(self.end_pos)

@@ -57,7 +57,7 @@ class MusicText(Text, StaffObject):
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def breakable_width(self):
+    def length(self):
         """Unit: The breakable width of the object.
 
         This is used to determine how and where rendering cuts should be made.

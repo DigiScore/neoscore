@@ -66,6 +66,19 @@ class Unit:
                 'Cannot create {} from {}'.format(type(self).__name__,
                                                   type(value).__name__))
 
+    ######## CONSTRUCTORS ########
+
+    @classmethod
+    def from_existing(cls, existing):
+        """Clone any Unit object.
+
+        Args:
+            existing (Unit): An existing unit
+
+        Returns: Unit
+        """
+        return type(existing)(existing.value)
+
     ######## PRIVATE METHODS ########
 
     def _to_base_unit_float(self):

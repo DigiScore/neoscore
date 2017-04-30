@@ -12,7 +12,7 @@ flow = FlowableFrame((Mm(0), Mm(0)), Mm(35000), Mm(30), Mm(10))
 
 counting_string = '    '.join(str(x) for x in range(600))
 counting_text = Text((Mm(0), Mm(0)), counting_string, parent=flow)
-counting_text._breakable_width = Mm(10000)
+counting_text._length = Mm(10000)
 
 staff = Staff((Mm(0), Mm(0)), Mm(10000), flow, Mm(1))
 

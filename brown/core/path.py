@@ -65,10 +65,12 @@ class Path(GraphicObject):
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def breakable_width(self):
-        """Unit: The breakable width of the object.
+    def length(self):
+        """Unit: The breakable length of the path.
 
-        This is used to determine how and where rendering cuts should be made.
+        This is calculated automatically from path contents. By extension,
+        this means that by default all `Path` objects will automatically
+        wrap in `FlowableFrame`s.
         """
         # Find the positions of every path element relative to the path
         min_x = GraphicUnit(float("inf"))

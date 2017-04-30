@@ -9,7 +9,6 @@ class LayoutController(InvisibleObject):
              by its `FlowableFrame`.
     """
 
-
     def __init__(self, pos, page, flowable_frame, local_x):
         """
         Args:

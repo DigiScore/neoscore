@@ -22,7 +22,7 @@ class TestFlowableFrame(unittest.TestCase):
         assert(test_frame.pos == Point(Mm(10), Mm(11)))
         assert(test_frame.x == Mm(10))
         assert(test_frame.y == Mm(11))
-        assert(test_frame.width == Mm(1000))
+        assert(test_frame.length == Mm(1000))
         assert(test_frame.height == Mm(100))
         assert(test_frame.y_padding == Mm(5))
 

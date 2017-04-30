@@ -86,7 +86,7 @@ class KeySignature(ObjectGroup, StaffObject):
         return self._key_signature_type
 
     @property
-    def breakable_width(self):
+    def length(self):
         """`KeySignature`s extend until another is found in the staff."""
         return self.staff.distance_to_next_of_type(self)
 
@@ -98,7 +98,7 @@ class KeySignature(ObjectGroup, StaffObject):
         This should only be used within this class.
         """
         def __init__(self, occurrence_offset, clef_offset, text, parent,
-                     font, scale_factor, breakable_width):
+                     font, scale_factor, length):
             super().__init__(Point(Unit(0), Unit(0)), text, parent,
                              font, scale_factor)
             self.clef_offset = clef_offset
@@ -106,11 +106,11 @@ class KeySignature(ObjectGroup, StaffObject):
             self.recurring_offset = Point(
                 self.mid_system_offset.x + self.clef_offset,
                 self.mid_system_offset.y)
-            self._breakable_width = breakable_width
+            self._length = length
 
         @property
-        def breakable_width(self):
-            return self._breakable_width
+        def length(self):
+            return self._length
 
         def _render_complete(self, pos):
             self._render_slice(pos + self.mid_system_offset, None)
@@ -152,4 +152,4 @@ class KeySignature(ObjectGroup, StaffObject):
                 self,
                 self.staff.music_font,
                 1,
-                self.breakable_width)
+                self.length)

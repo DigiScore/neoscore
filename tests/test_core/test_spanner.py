@@ -44,7 +44,8 @@ class TestSpanner(unittest.TestCase):
                               (Unit(5), Unit(7)),
                               brown.document)
         # math.sqrt(((5-1)**2) + ((7-2)**2))
-        self.assertAlmostEqual(Unit(spanner.length).value, 6.4031242374328485)
+        self.assertAlmostEqual(Unit(spanner.spanner_length).value,
+                               6.4031242374328485)
 
     def test_length_with_self_parent(self):
         parent = MockSpanner((Unit(1), Unit(2)),
@@ -56,7 +57,8 @@ class TestSpanner(unittest.TestCase):
                               (Unit(4), Unit(5)),
                               None)
         # math.sqrt((4**2) + (5**2))
-        self.assertAlmostEqual(Unit(spanner.length).value, 6.4031242374328485)
+        self.assertAlmostEqual(Unit(spanner.spanner_length).value,
+                               6.4031242374328485)
 
     def test_length_with_parents(self):
         parent_1 = MockSpanner((Unit(1), Unit(2)),
@@ -72,4 +74,5 @@ class TestSpanner(unittest.TestCase):
                               (Unit(4), Unit(5)),
                               parent_2)
         # math.sqrt(((15-2)**2) + ((17-4)**2))
-        self.assertAlmostEqual(Unit(spanner.length).value, 18.384776310850235)
+        self.assertAlmostEqual(Unit(spanner.spanner_length).value,
+                               18.384776310850235)

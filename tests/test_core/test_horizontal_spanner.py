@@ -26,7 +26,7 @@ class MockHorizontalSpanner(GraphicObject, HorizontalSpanner):
         HorizontalSpanner.__init__(self, end_x, end_parent)
 
 
-class TestSpanner(unittest.TestCase):
+class TestHorizontalSpanner(unittest.TestCase):
 
     def setUp(self):
         brown.setup()

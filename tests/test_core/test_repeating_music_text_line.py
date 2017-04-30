@@ -21,7 +21,7 @@ class TestRepeatingMusicTextLine(unittest.TestCase):
         self.single_repetition_width = MusicText(
             (Mm(0), Mm(0)),
             self.char,
-            self.left_parent,
+            self.staff,
             scale_factor=2)._bounding_rect.width
 
     def test_repetition_count(self):

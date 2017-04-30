@@ -49,6 +49,12 @@ class RepeatingMusicTextLine(MusicText, Spanner):
         self.music_chars = self.music_chars * repetitions
         self._text = self.text * repetitions
 
+    ######## PUBLIC PROPERTIES ########
+
+    @property
+    def length(self):
+        return self.spanner_x_length
+
     ######## PRIVATE PROPERTIES ########
 
     @property

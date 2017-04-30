@@ -110,6 +110,10 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
                                 + self.staff.unit(0.75 * hook_direction)),
                                self.end_parent)
 
+    @property
+    def length(self):
+        return self.spanner_x_length
+
     class _OctaveLineText(MusicText):
         """An octave text mark recurring at line beginnings with added parenthesis.
 
@@ -135,17 +139,13 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
             self.parenthesized_text = (open_paren_char.codepoint
                                        + self.text
                                        + close_paren_char.codepoint)
-            self._breakable_width = length
+            self._length = length
 
         ######## PUBLIC PROPERTIES ########
 
         @property
-        def breakable_width(self):
-            """Unit: The breakable width of the object.
-
-            This is used to determine how and where rendering cuts should be made.
-            """
-            return self._breakable_width
+        def length(self):
+            return self._length
 
         ######## PRIVATE METHODS ########
 

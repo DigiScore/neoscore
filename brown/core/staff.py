@@ -14,13 +14,13 @@ class Staff(Path):
 
     _whole_note_size = 8  # StaffUnits
 
-    def __init__(self, pos, width, frame,
+    def __init__(self, pos, length, frame,
                  staff_unit=None, line_count=5, music_font=None,
                  default_time_signature_duration=None):
         """
         Args:
             pos (Point): The position of the top-left corner of the staff
-            width (Unit): The horizontal width of the staff
+            length (Unit): The horizontal width of the staff
             staff_unit (Unit): The distance between two lines in the staff.
                 If not set, this will default to `config.DEFAULT_STAFF_UNIT`
             line_count (int): The number of lines in the staff.
@@ -40,7 +40,7 @@ class Staff(Path):
         for i in range(self.line_count):
             y_offset = self.unit(i)
             self.move_to(GraphicUnit(0), y_offset)
-            self.line_to(width, y_offset)
+            self.line_to(length, y_offset)
 
         # Create first measure with given time signature duration
         if default_time_signature_duration:
@@ -104,10 +104,10 @@ class Staff(Path):
         closest_x = Unit(float('inf'))
         for item in all_others_of_class:
             relative_x = self.frame.map_between_items_in_frame(self, item).x
-            if relative_x > start_x and closest_x > relative_x:
+            if start_x < relative_x < closest_x:
                 closest_x = relative_x
         if closest_x == Unit(float('inf')):
-            return self.breakable_width - start_x
+            return self.length - start_x
         return closest_x - start_x
 
     def active_clef_at(self, pos_x):

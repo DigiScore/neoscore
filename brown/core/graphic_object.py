@@ -37,22 +37,22 @@ class GraphicObject(ABC):
     _default_brush = Brush(config.DEFAULT_BRUSH_COLOR,
                            config.DEFAULT_BRUSH_PATTERN)
 
-    def __init__(self, pos, breakable_width=None,
+    def __init__(self, pos, length=None,
                  pen=None, brush=None, parent=None):
         """
         Args:
             pos (Point[Unit] or tuple): The position of the object
                 relative to its parent
-            breakable_width (Unit): The width of the object which can be
-                subject to breaking across line breaks when in a FlowableFrame.
-                If the object is not inside a FlowableFrame, this has no effect
+            length (Unit): The width of the object which can be
+                subject to breaking across lines when in a`FlowableFrame`.
+                If the object is not inside a `FlowableFrame`,
+                this has no effect
             pen (Pen): The pen to draw outlines with.
             brush (Brush): The brush to draw outlines with.
             parent (GraphicObject): The parent object or None
         """
         self.pos = pos
-        self._breakable_width = (breakable_width if breakable_width
-                                 else Unit(0))
+        self._length = length if length else Unit(0)
         self.pen = pen
         self.brush = brush
         self._children = set()
@@ -108,12 +108,12 @@ class GraphicObject(ABC):
         self.pos.y = value
 
     @property
-    def breakable_width(self):
-        """Unit: The breakable_width of the object.
+    def length(self):
+        """Unit: The breakable length of the object.
 
         This is used to determine how and where rendering cuts should be made.
         """
-        return self._breakable_width
+        return self._length
 
     @property
     def pen(self):
@@ -320,7 +320,7 @@ class GraphicObject(ABC):
         # Calculate position within flowable
         pos_in_flowable = self.frame.pos_in_frame_of(self)
 
-        remaining_x = (self.breakable_width +
+        remaining_x = (self.length +
                        self.frame._dist_to_line_end(pos_in_flowable.x))
         if remaining_x < Unit(0):
             self._render_complete(brown.document.canvas_pos_of(self))
@@ -334,7 +334,7 @@ class GraphicObject(ABC):
         render_end_pos = (render_start_pos + Point(first_line_length, 0))
         self._render_before_break(Unit(0), render_start_pos, render_end_pos)
 
-        # Iterate through remaining breakable_width
+        # Iterate through remaining length
         for current_line_i in range(first_line_i + 1,
                                     len(self.frame.layout_controllers)):
             current_line = self.frame.layout_controllers[current_line_i]
@@ -345,7 +345,7 @@ class GraphicObject(ABC):
                                          line_pos.y + pos_in_flowable.y)
                 render_end_pos = render_start_pos + Point(current_line.length, 0)
                 self._render_spanning_continuation(
-                    self.breakable_width - remaining_x,
+                    self.length - remaining_x,
                     render_start_pos,
                     render_end_pos)
                 remaining_x -= current_line.length
@@ -356,7 +356,7 @@ class GraphicObject(ABC):
         render_start_pos = self.frame._map_to_canvas(
             Point(current_line.local_x, pos_in_flowable.y))
         render_end_pos = render_start_pos + Point(remaining_x, 0)
-        self._render_after_break(self.breakable_width - remaining_x,
+        self._render_after_break(self.length - remaining_x,
                                  render_start_pos,
                                  render_end_pos)
 
@@ -398,7 +398,7 @@ class GraphicObject(ABC):
 
         Returns: None
 
-        Note: Any GraphicObject subclasses whose breakable_width can
+        Note: Any GraphicObject subclasses whose length can
               be nonzero must implement this method.
         """
         raise NotImplementedError
@@ -421,7 +421,7 @@ class GraphicObject(ABC):
 
         Returns: None
 
-        Note: Any GraphicObject subclasses whose breakable_width can
+        Note: Any GraphicObject subclasses whose length can
               be nonzero must implement this method.
         """
         raise NotImplementedError
@@ -445,7 +445,7 @@ class GraphicObject(ABC):
 
         Returns: None
 
-        Note: Any GraphicObject subclasses whose breakable_width can
+        Note: Any GraphicObject subclasses whose length can
               be nonzero must implement this method.
         """
         raise NotImplementedError

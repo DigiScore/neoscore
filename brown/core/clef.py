@@ -65,7 +65,7 @@ class Clef(MusicText):
         return self._clef_type
 
     @property
-    def breakable_width(self):
+    def length(self):
         return self.staff.distance_to_next_of_type(self)
 
     @property

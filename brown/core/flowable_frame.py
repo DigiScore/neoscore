@@ -27,12 +27,12 @@ class FlowableFrame(InvisibleObject):
         Args:
             pos (Point or tuple): Starting position in relative to
                 the top left corner of the live document area of the first page
-            width (GraphicUnit): width of the frame
+            width (GraphicUnit): length of the frame
             height (GraphicUnit): height of the frame
             y_padding (GraphicUnit): The min gap between frame sections
         """
         super().__init__(pos)
-        self._width = width
+        self._length = width
         self._height = height
         self._y_padding = y_padding if y_padding else Mm(5)
         self._layout_controllers = []
@@ -41,13 +41,9 @@ class FlowableFrame(InvisibleObject):
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def width(self):
-        """Unit: The width (length) of the unwrapped frame"""
-        return self._width
-
-    @width.setter
-    def width(self, value):
-        self._width = value
+    def length(self):
+        """Unit: The length (length) of the unwrapped frame"""
+        return self._length
 
     @property
     def height(self):
@@ -106,7 +102,7 @@ class FlowableFrame(InvisibleObject):
             delta_x = live_page_width - pos.x
             x_progress += delta_x
             pos.y = pos.y + self.height + self.y_padding
-            if x_progress >= self.width:
+            if x_progress >= self.length:
                 # End of breakable width - Done.
                 break
             if pos.y > live_page_height:
