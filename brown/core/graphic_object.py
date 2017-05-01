@@ -321,21 +321,21 @@ class GraphicObject(ABC):
         pos_in_flowable = self.frame.pos_in_frame_of(self)
 
         remaining_x = (self.length +
-                       self.frame._dist_to_line_end(pos_in_flowable.x))
+                       self.frame.dist_to_line_end(pos_in_flowable.x))
         if remaining_x < Unit(0):
             self._render_complete(
                 brown.document.canvas_pos_of(self),
-                self.frame._dist_to_line_start(pos_in_flowable.x))
+                self.frame.dist_to_line_start(pos_in_flowable.x))
             return
 
         # Render before break
-        first_line_i = self.frame._last_break_index_at(pos_in_flowable.x)
+        first_line_i = self.frame.last_break_index_at(pos_in_flowable.x)
         current_line = self.frame.layout_controllers[first_line_i]
         render_start_pos = brown.document.canvas_pos_of(self)
-        first_line_length = self.frame._dist_to_line_end(pos_in_flowable.x) * -1
+        first_line_length = self.frame.dist_to_line_end(pos_in_flowable.x) * -1
         render_end_pos = (render_start_pos + Point(first_line_length, 0))
         self._render_before_break(render_start_pos, render_end_pos,
-                                  self.frame._dist_to_line_start(
+                                  self.frame.dist_to_line_start(
                                       pos_in_flowable.x))
 
         # Iterate through remaining length
@@ -357,7 +357,7 @@ class GraphicObject(ABC):
                 break
 
         # Render end
-        render_start_pos = self.frame._map_to_canvas(
+        render_start_pos = self.frame.map_to_canvas(
             Point(current_line.local_x, pos_in_flowable.y))
         render_end_pos = render_start_pos + Point(remaining_x, 0)
         self._render_after_break(self.length - remaining_x,

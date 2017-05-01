@@ -119,7 +119,7 @@ class FlowableFrame(InvisibleObject):
                     AutoNewLine(pos, brown.document.pages[current_page],
                                 self, x_progress, self.y_padding))
 
-    def _map_to_canvas(self, local_point):
+    def map_to_canvas(self, local_point):
         """Convert a local point to its position in the canvas.
 
         Args:
@@ -133,12 +133,12 @@ class FlowableFrame(InvisibleObject):
               more contextual information, use `_map_to_page`
               (TODO: NOT YET IMPLEMENTED)
         """
-        line = self._last_break_at(local_point.x)
+        line = self.last_break_at(local_point.x)
         line_canvas_pos = brown.document.canvas_pos_of(line)
         return (line_canvas_pos
                 + Point(local_point.x - line.local_x, local_point.y))
 
-    def _dist_to_line_start(self, local_x):
+    def dist_to_line_start(self, local_x):
         """Find the distance of an x-pos to the left edge of its laid-out line.
 
         Args:
@@ -146,10 +146,10 @@ class FlowableFrame(InvisibleObject):
 
         Returns: Unit
         """
-        line_start = self._last_break_at(local_x)
+        line_start = self.last_break_at(local_x)
         return local_x - line_start.local_x
 
-    def _dist_to_line_end(self, local_x):
+    def dist_to_line_end(self, local_x):
         """Find the distance of an x-pos to the right edge of its laid-out line.
 
         Args:
@@ -157,10 +157,10 @@ class FlowableFrame(InvisibleObject):
 
         Returns: Unit
         """
-        return (self._dist_to_line_start(local_x) -
+        return (self.dist_to_line_start(local_x) -
                 brown.document.paper.live_width)
 
-    def _last_break_at(self, local_x):
+    def last_break_at(self, local_x):
         """Find the last `NewLine` that occurred before a given local local_x-pos
 
         Args:
@@ -169,10 +169,10 @@ class FlowableFrame(InvisibleObject):
         Returns:
             NewLine:
         """
-        return self.layout_controllers[self._last_break_index_at(local_x)]
+        return self.layout_controllers[self.last_break_index_at(local_x)]
 
-    def _last_break_index_at(self, local_x):
-        """Like `_last_break_at`, but returns an index.
+    def last_break_index_at(self, local_x):
+        """Like `last_break_at`, but returns an index.
 
         Args:
             pos (Point): A local local_x-position

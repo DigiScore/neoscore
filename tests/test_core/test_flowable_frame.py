@@ -120,22 +120,22 @@ class TestFlowableFrame(unittest.TestCase):
 
     def test_x_pos_rel_to_line_start(self):
         test_frame = FlowableFrame((Mm(10), Mm(0)), Mm(500), Mm(90), Mm(5))
-        assert(test_frame._dist_to_line_start(Mm(170)) == Mm(20))
-        assert(test_frame._dist_to_line_start(Mm(320)) == Mm(10))
+        assert(test_frame.dist_to_line_start(Mm(170)) == Mm(20))
+        assert(test_frame.dist_to_line_start(Mm(320)) == Mm(10))
 
-    def test_dist_to_line_end(self):
+    def testdist_to_line_end(self):
         test_frame = FlowableFrame((Mm(10), Mm(0)), Mm(500), Mm(90), Mm(5))
-        assert(test_frame._dist_to_line_end(Mm(170)) == Mm(-140))
-        assert(test_frame._dist_to_line_end(Mm(320)) == Mm(-150))
+        assert(test_frame.dist_to_line_end(Mm(170)) == Mm(-140))
+        assert(test_frame.dist_to_line_end(Mm(320)) == Mm(-150))
 
-    def test_last_break_at(self):
+    def testlast_break_at(self):
         test_frame = FlowableFrame((Mm(10), Mm(0)), Mm(500), Mm(90), Mm(5))
-        assert(test_frame._last_break_at(Mm(140)) ==
+        assert(test_frame.last_break_at(Mm(140)) ==
                test_frame.layout_controllers[0])
-        assert(test_frame._last_break_at(Mm(180)) ==
+        assert(test_frame.last_break_at(Mm(180)) ==
                test_frame.layout_controllers[1])
 
-    def test_last_break_at_raises_out_of_bounds_when_needed(self):
+    def testlast_break_at_raises_out_of_bounds_when_needed(self):
         test_frame = FlowableFrame((Mm(10), Mm(0)), Mm(10000), Mm(90), Mm(5))
         with pytest.raises(OutOfBoundsError):
-            test_frame._last_break_at(Mm(10000000))
+            test_frame.last_break_at(Mm(10000000))

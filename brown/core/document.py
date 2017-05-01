@@ -214,7 +214,7 @@ class Document:
             if type(current).__name__ == 'FlowableFrame':
                 # If the parent is a flowable frame,
                 # let it decide where this point goes.
-                return current._map_to_canvas(pos)
+                return current.map_to_canvas(pos)
         return pos
 
     def page_bounding_rect(self, page_number):
