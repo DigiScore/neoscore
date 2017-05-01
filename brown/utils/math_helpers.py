@@ -1,5 +1,6 @@
-"""Helper functions for simple mathematical calculations"""
+"""General math helper tools."""
 
+from fractions import Fraction
 
 from brown.utils.point import Point
 
@@ -85,3 +86,37 @@ def sign(value):
         return -1
     else:
         return 1
+
+
+def float_to_rounded_fraction_tuple(value,
+                                    target_denominator=None,
+                                    limit_denominator=1024):
+    """Make a rounded fraction tuple from a float.
+
+    Args:
+        value (float): The value to convert into a fraction tuple.
+        target_denominator (int): A denominator to use in the resulting tuple.
+            If `None`, the denominator is calculated with a maximum
+            value of `limit_denominator`.
+        limit_denominator (int): The maximum denominator value.
+            If `round_to` is specified, this does nothing.
+
+    Returns: tuple(numerator, denominator)
+
+    Examples:
+        >>> float_to_rounded_fraction_tuple(0.4)
+        (2, 5)
+        >>> float_to_rounded_fraction_tuple(0.4, 2)
+        (1, 2)
+        >>> float_to_rounded_fraction_tuple(0.4, 4)
+        (2, 4)
+    """
+    fraction = Fraction(value).limit_denominator(limit_denominator)
+    if target_denominator is None:
+        return fraction.numerator, fraction.denominator
+
+    multiplier = target_denominator / fraction.denominator
+    return (
+        int(round(multiplier * fraction.numerator)),
+        target_denominator
+    )

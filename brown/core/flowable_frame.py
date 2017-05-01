@@ -142,7 +142,7 @@ class FlowableFrame(InvisibleObject):
         """Find the distance of an x-pos to the left edge of its laid-out line.
 
         Args:
-            local_x (Unit): The local x-position.
+            local_x (Unit): An x-axis location in the virtual frame space.
 
         Returns: Unit
         """
@@ -153,7 +153,7 @@ class FlowableFrame(InvisibleObject):
         """Find the distance of an x-pos to the right edge of its laid-out line.
 
         Args:
-            local_x (Unit): The local x coordinate.
+            local_x (Unit): An x-axis location in the virtual frame space.
 
         Returns: Unit
         """
@@ -164,7 +164,7 @@ class FlowableFrame(InvisibleObject):
         """Find the last `NewLine` that occurred before a given local local_x-pos
 
         Args:
-            local_x (Unit): The local x coordinate.
+            local_x (Unit): An x-axis location in the virtual frame space.
 
         Returns:
             NewLine:
@@ -175,7 +175,7 @@ class FlowableFrame(InvisibleObject):
         """Like `last_break_at`, but returns an index.
 
         Args:
-            pos (Point): A local local_x-position
+            local_x (Unit): An x-axis location in the virtual frame space.
 
         Returns: int
         """

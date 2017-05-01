@@ -3,7 +3,8 @@ from brown.utils.point import Point
 from brown.utils.math_helpers import (linear_interp,
                                       clamp_value,
                                       min_and_max,
-                                      sign)
+                                      sign,
+                                      float_to_rounded_fraction_tuple)
 
 
 def test_linear_interp():
@@ -40,3 +41,7 @@ def test_sign():
     assert(sign(1) == 1)
     assert(sign(0) == 1)
     assert(sign(-1) == -1)
+
+
+def test_float_to_rounded_fraction():
+    assert(float_to_rounded_fraction_tuple(0.4, 4) == (2, 4))

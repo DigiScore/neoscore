@@ -1,7 +1,7 @@
 from fractions import Fraction
-from warnings import warn
 
 from brown.utils.units import Unit
+from brown.utils.math_helpers import float_to_rounded_fraction_tuple
 
 
 class Beat:
@@ -58,12 +58,12 @@ class Beat:
                 self._numerator = args[0].numerator
                 self._denominator = args[0].denominator
             else:
-                fraction = self._float_to_rounded_fraction_tuple(args[0])
+                fraction = float_to_rounded_fraction_tuple(args[0])
                 self._numerator, self._denominator = fraction
         else:
             raise TypeError('Invalid Beat init signature')
 
-        self._collapsed_fraction = self._as_collapsed_fraction()
+        self._collapsed_fraction = self.as_collapsed_fraction()
 
         # Calculate base division and dot count
         if isinstance(self.numerator, type(self)):
@@ -110,7 +110,7 @@ class Beat:
             >>> Beat.from_float(0.4, 4)
             Beat(2, 4)
         """
-        fraction_tuple = cls._float_to_rounded_fraction_tuple(
+        fraction_tuple = float_to_rounded_fraction_tuple(
             value,
             round_to,
             limit_denominator)
@@ -246,45 +246,13 @@ class Beat:
         return (self < other
                 or self.collapsed_fraction == other.collapsed_fraction)
 
-    ######## PRIVATE METHODS ########
+    ######## PUBLIC METHODS ########
 
-    @staticmethod
-    def _float_to_rounded_fraction_tuple(value,
-                                         round_to=None,
-                                         limit_denominator=1024):
-        """Make a rounded fraction tuple from a float.
+    def as_collapsed_fraction(self):
+        """Collapse this `Beat` into a single `Fraction` and return it.
 
-        Args:
-            value (float):
-            round_to (int): A denominator to round toward.
-            limit_denominator (int): The maximum denominator value.
-                If `round_to` is specified, this does nothing.
-
-        Returns: tuple(numerator, denominator)
-
-        Examples:
-            >>> Beat._float_to_rounded_fraction_tuple(0.4)
-            (2, 5)
-            >>> Beat._float_to_rounded_fraction_tuple(0.4, 2)
-            (1, 2)
-            >>> Beat._float_to_rounded_fraction_tuple(0.4, 4)
-            (2, 4)
-        """
-        fraction = Fraction(value).limit_denominator(limit_denominator)
-        if round_to is None:
-            return (fraction.numerator, fraction.denominator)
-
-        multiplier = round_to / fraction.denominator
-        return (
-            int(round(multiplier * fraction.numerator)),
-            round_to
-        )
-
-    def _as_collapsed_fraction(self):
-        """Collapse this Beat into a single Fraction and return it.
-
-        This recursively collapses any nested Beats and simplifies
-        the returned Fraction.
+        This recursively collapses any nested `Beat`s and simplifies
+        the returned `Fraction`.
 
         Returns: Fraction
         """
