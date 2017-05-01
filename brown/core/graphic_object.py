@@ -334,11 +334,9 @@ class GraphicObject(ABC):
         render_start_pos = brown.document.canvas_pos_of(self)
         first_line_length = self.frame._dist_to_line_end(pos_in_flowable.x) * -1
         render_end_pos = (render_start_pos + Point(first_line_length, 0))
-        self._render_before_break(
-            Unit(0),
-            render_start_pos,
-            render_end_pos,
-            self.frame._dist_to_line_start(pos_in_flowable.x))
+        self._render_before_break(render_start_pos, render_end_pos,
+                                  self.frame._dist_to_line_start(
+                                      pos_in_flowable.x))
 
         # Iterate through remaining length
         for current_line_i in range(first_line_i + 1,
@@ -391,11 +389,7 @@ class GraphicObject(ABC):
         """
         raise NotImplementedError
 
-    def _render_before_break(self,
-                             local_start_x,
-                             start,
-                             stop,
-                             dist_to_line_start):
+    def _render_before_break(self, start, stop, dist_to_line_start):
         """Render the beginning of the object up to a stopping point.
 
         For use in flowable containers when rendering an object that
@@ -406,8 +400,6 @@ class GraphicObject(ABC):
         `self.interfaces`.
 
         Args:
-            local_start_x (Unit): The local starting position of this
-                drawing segment.
             start (Point): The starting point in document space for drawing.
             stop (Point): The stopping point in document space for drawing.
             dist_to_line_start (Unit): The x-axis distance from the active

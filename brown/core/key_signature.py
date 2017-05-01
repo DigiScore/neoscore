@@ -20,6 +20,8 @@ class KeySignature(ObjectGroup, StaffObject):
     All traditional key signatures (those included in `KeySignatureTypes`)
     are supported by this class. Nontraditional key signatures could
     be implemented in a fairly straightforward way in a subclass of this.
+
+    TODO: Support clef changes during a key signature.
     """
 
     __sharp_positions = {
@@ -124,11 +126,7 @@ class KeySignature(ObjectGroup, StaffObject):
             else:
                 self._render_slice(start + self.mid_system_offset, None)
 
-        def _render_before_break(self,
-                                 local_start_x,
-                                 start,
-                                 stop,
-                                 dist_to_line_start):
+        def _render_before_break(self, start, stop, dist_to_line_start):
             if self._overlaps_with_clef:
                 self._render_slice(start + self.recurring_offset, None)
             else:

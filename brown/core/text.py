@@ -108,12 +108,8 @@ class Text(GraphicObject):
     def _render_complete(self, pos, dist_to_line_start=None):
         self._render_slice(pos, None, None)
 
-    def _render_before_break(self,
-                             local_start_x,
-                             start,
-                             stop,
-                             dist_to_line_start):
-        self._render_slice(start, local_start_x, stop.x - start.x)
+    def _render_before_break(self, start, stop, dist_to_line_start):
+        self._render_slice(start, GraphicUnit(0), stop.x - start.x)
 
     def _render_after_break(self, local_start_x, start, stop):
         self._render_slice(start, local_start_x, stop.x - start.x)

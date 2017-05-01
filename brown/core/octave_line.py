@@ -149,11 +149,7 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
 
         ######## PRIVATE METHODS ########
 
-        def _render_before_break(self,
-                                 local_start_x,
-                                 start,
-                                 stop,
-                                 dist_to_line_start):
+        def _render_before_break(self, start, stop, dist_to_line_start):
             interface = self._interface_class(
                 start,
                 self.text,
