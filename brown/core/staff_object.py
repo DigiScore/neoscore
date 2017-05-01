@@ -21,7 +21,7 @@ class StaffObject:
         Args:
             parent (Staff or StaffObject):
         """
-        self._staff = self._find_staff(parent)
+        self._staff = self.find_staff(parent)
         if not self._staff:
             raise NoAncestorStaffError
 
@@ -47,19 +47,14 @@ class StaffObject:
     ######## PRIVATE METHODS ########
 
     @staticmethod
-    def _find_staff(graphic_object):
+    def find_staff(graphic_object):
         """Find the first staff which is `graphic_object` or an ancestor of it.
+
+        Args:
+            graphic_object (GraphicObject):
 
         Returns: Staff or None
         """
-        current = graphic_object
-        while True:
-            # NOTE: This has the potential to fall into an infinite loop
-            #       if cyclic parentage exists. This should be protected
-            #       against in higher-up GraphicObject parent setters
-            if current is None or (not hasattr(current, 'parent')):
-                return None
-            elif type(current).__name__ == 'Staff':
-                return current
-            else:
-                current = current.parent
+        if type(graphic_object).__name__ == 'Staff':
+            return graphic_object
+        return graphic_object.first_ancestor_of_exact_class('Staff')

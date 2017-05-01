@@ -52,13 +52,13 @@ class TestGraphicObject(unittest.TestCase):
         child = InvisibleObject((0, 0), parent=parent)
         assert(child in parent.children)
 
-    def test_all_descendants(self):
+    def test_descendants(self):
         root = InvisibleObject((0, 0))
         child_1 = InvisibleObject((0, 0), parent=root)
         child_2 = InvisibleObject((0, 0), parent=root)
         subchild_1 = InvisibleObject((0, 0), parent=child_2)
         subchild_2 = InvisibleObject((0, 0), parent=child_2)
-        descendants = list(root.all_descendants)
+        descendants = list(root.descendants)
         descendants_set = set(descendants)
         # Assert no duplicates were yielded
         assert(len(descendants) == len(descendants_set))
@@ -67,7 +67,7 @@ class TestGraphicObject(unittest.TestCase):
         # Assert descendants content
         assert({child_1, child_2, subchild_1, subchild_2} == descendants_set)
 
-    def test_all_descendants_with_class_or_subclass(self):
+    def test_descendants_of_class_or_subclass(self):
         # Use two new mock classes for type filter testing
         class MockDifferentClass1(InvisibleObject):
             pass
@@ -78,7 +78,7 @@ class TestGraphicObject(unittest.TestCase):
         child_2 = MockDifferentClass1((0, 0), parent=root)
         subchild_1 = MockDifferentClass2((0, 0), parent=child_2)
         subchild_2 = MockDifferentClass2((0, 0), parent=child_2)
-        descendants = list(root.all_descendants_with_class_or_subclass(
+        descendants = list(root.descendants_of_class_or_subclass(
             MockDifferentClass1))
         descendants_set = set(descendants)
         # Assert no duplicates were yielded
@@ -88,7 +88,7 @@ class TestGraphicObject(unittest.TestCase):
         # Assert descendants content
         assert({child_2, subchild_1, subchild_2} == descendants_set)
 
-    def test_all_descendants_with_exact_class(self):
+    def test_descendants_of_exact_class(self):
         # Use two new mock classes for type filter testing
         class MockDifferentClass1(InvisibleObject):
             pass
@@ -99,7 +99,7 @@ class TestGraphicObject(unittest.TestCase):
         child_2 = MockDifferentClass1((0, 0), parent=root)
         subchild_1 = MockDifferentClass2((0, 0), parent=child_2)
         subchild_2 = MockDifferentClass2((0, 0), parent=child_2)
-        descendants = list(root.all_descendants_with_exact_class(
+        descendants = list(root.descendants_of_exact_class(
             MockDifferentClass1))
         descendants_set = set(descendants)
         # Assert no duplicates were yielded

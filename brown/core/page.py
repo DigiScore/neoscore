@@ -37,7 +37,7 @@ class Page:
         self.children = set()
 
     @property
-    def all_descendants(self):
+    def descendants(self):
         """iter[GraphicObject]: All of the objects in the children subtree.
 
         This recursively searches all of the object's children
@@ -84,7 +84,7 @@ class Page:
         for child in self.children:
             child.render()
 
-    def all_descendants_with_class_or_subclass(self, graphic_object_class):
+    def descendants_with_class_or_subclass(self, graphic_object_class):
         """Yield all child descendants with a given class or its subclasses.
 
         Args: graphic_object_class (type): The type to search for.
@@ -92,11 +92,11 @@ class Page:
 
         Yields: GraphicObject
         """
-        for descendant in self.all_descendants:
+        for descendant in self.descendants:
             if isinstance(descendant, graphic_object_class):
                 yield descendant
 
-    def all_descendants_with_exact_class(self, graphic_object_class):
+    def descendants_with_exact_class(self, graphic_object_class):
         """Yield all child descendants with a given class.
 
         Args: graphic_object_class (type): The type to search for.
@@ -104,6 +104,6 @@ class Page:
 
         Yields: GraphicObject
         """
-        for descendant in self.all_descendants:
+        for descendant in self.descendants:
             if type(descendant) == graphic_object_class:
                 yield descendant

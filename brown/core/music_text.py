@@ -29,7 +29,7 @@ class MusicText(Text, StaffObject):
                 in addition to the size of the music font.
         """
         if font is None:
-            font = StaffObject._find_staff(parent).music_font
+            font = StaffObject.find_staff(parent).music_font
         if isinstance(text, str):
             self.music_chars = [MusicChar(font, text)]
         elif isinstance(text, tuple):

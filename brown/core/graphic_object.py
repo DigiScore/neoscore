@@ -4,6 +4,7 @@ from brown import config
 from brown.core import brown
 from brown.core.brush import Brush
 from brown.core.pen import Pen
+from brown.core.page import Page
 from brown.utils.point import Point
 from brown.utils.units import Unit, Mm
 
@@ -184,7 +185,7 @@ class GraphicObject(ABC):
         self._children = value
 
     @property
-    def all_descendants(self):
+    def descendants(self):
         """iter[GraphicObject]: All of the objects in the children subtree.
 
         This recursively searches all of the object's children
@@ -199,15 +200,23 @@ class GraphicObject(ABC):
             yield child
 
     @property
+    def ancestors(self):
+        """iter[GraphicObject]: All ancestors of this object.
+
+        Follows the chain of parents until a document page is reached.
+        The iterable will *not* include the document `Page`.
+
+        The order begins with `self.parent` and traverses upward in the tree.
+        """
+        ancestor = self.parent
+        while type(ancestor) != Page:
+            yield ancestor
+            ancestor = ancestor.parent
+
+    @property
     def frame(self):
         """FlowableFrame or None: The frame this object belongs in."""
-        try:
-            ancestor = self.parent
-            while type(ancestor).__name__ != 'FlowableFrame':
-                ancestor = ancestor.parent
-            return ancestor
-        except AttributeError:
-            return None
+        return self.first_ancestor_of_exact_class('FlowableFrame')
 
     @property
     def page_index(self):
@@ -218,15 +227,18 @@ class GraphicObject(ABC):
             ...                             parent=brown.document.pages[5])
             >>> some_object.page_index
             5
-            >>> some_object in brown.document.pages[5].all_descendants
+            >>> some_object in brown.document.pages[5].descendants
             True
 
         """
-        # Traverse the parent chain until a page is found and returns its index
-        ancestor = self.parent
-        while type(ancestor).__name__ != 'Page':
-            ancestor = ancestor.parent
-        return ancestor.page_index
+        # The page will be the parent of the final ancestor
+        ancestor = None
+        for ancestor in self.ancestors:
+            pass
+        if ancestor is None:
+            # self.parent is a page
+            return self.parent.page_index
+        return ancestor.parent.page_index
 
     @property
     def is_in_flowable(self):
@@ -265,7 +277,7 @@ class GraphicObject(ABC):
         for child in self.children:
             child.render()
 
-    def all_descendants_with_class_or_subclass(self, graphic_object_class):
+    def descendants_of_class_or_subclass(self, graphic_object_class):
         """Yield all child descendants with a given class or its subclasses.
 
         Args: graphic_object_class (type): The type to search for.
@@ -273,11 +285,11 @@ class GraphicObject(ABC):
 
         Yields: GraphicObject
         """
-        for descendant in self.all_descendants:
+        for descendant in self.descendants:
             if isinstance(descendant, graphic_object_class):
                 yield descendant
 
-    def all_descendants_with_exact_class(self, graphic_object_class):
+    def descendants_of_exact_class(self, graphic_object_class):
         """Yield all child descendants with a given class.
 
         Args: graphic_object_class (type): The type to search for.
@@ -285,9 +297,44 @@ class GraphicObject(ABC):
 
         Yields: GraphicObject
         """
-        for descendant in self.all_descendants:
+        for descendant in self.descendants:
             if type(descendant) == graphic_object_class:
                 yield descendant
+
+    def first_ancestor_of_class_or_subclass(self, graphic_object_class):
+        """Get the closest ancestor with a class or its subclasses.
+
+        If none can be found, returns `None`.
+
+        Args:
+            graphic_object_class (type): The type to search for.
+                This should be a subclass of GraphicObject.
+
+        Returns: GraphicObject or None
+        """
+        return next((item for item in self.ancestors
+                     if isinstance(item, graphic_object_class)),
+                    None)
+
+    def first_ancestor_of_exact_class(self, graphic_object_class):
+        """Get the closest ancestor with a class.
+
+        If none can be found, returns `None`.
+
+        Args:
+            graphic_object_class (type or str): The type to search for.
+                This should be a subclass of GraphicObject.
+                A str of a class name may also be used.
+
+        Returns: GraphicObject or None
+        """
+        if isinstance(graphic_object_class, str):
+            return next((item for item in self.ancestors
+                         if type(item).__name__ == graphic_object_class),
+                        None)
+        return next((item for item in self.ancestors
+                     if type(item) == graphic_object_class),
+                    None)
 
     ######## PRIVATE METHODS ########
 

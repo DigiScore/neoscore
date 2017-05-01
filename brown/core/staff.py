@@ -98,7 +98,7 @@ class Staff(Path):
         """
         start_x = self.frame.map_between_items_in_frame(self, staff_object).x
         all_others_of_class = (
-            item for item in self.all_descendants_with_exact_class(
+            item for item in self.descendants_of_exact_class(
                 type(staff_object))
             if item != staff_object)
         closest_x = Unit(float('inf'))
@@ -121,7 +121,7 @@ class Staff(Path):
             None: If no clef is active at `pos_x`
         """
         return max(
-            (clef for clef in self.all_descendants_with_class_or_subclass(Clef)
+            (clef for clef in self.descendants_of_class_or_subclass(Clef)
              if clef.pos_in_staff.x <= pos_x),
             key=lambda clef: clef.pos_in_staff.x,
             default=None
@@ -142,7 +142,7 @@ class Staff(Path):
             Transposition: The active transposition at `pos_x`
             None: If no transposition was found.
         """
-        for item in self.all_descendants_with_class_or_subclass(OctaveLine):
+        for item in self.descendants_of_class_or_subclass(OctaveLine):
             line_pos = self.frame.map_between_items_in_frame(self, item).x
             if line_pos <= pos_x <= line_pos + item.length:
                 return item.transposition
