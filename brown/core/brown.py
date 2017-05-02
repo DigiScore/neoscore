@@ -37,7 +37,7 @@ def setup(initial_paper=None):
     calling this multiple times in one script will cause unexpected behavior.
 
     Args:
-        paper (Paper): The paper to use in the document.
+        initial_paper (Paper): The paper to use in the document.
             If `None`, this defaults to `config.DEFAULT_PAPER_TYPE`
 
     Returns: None
@@ -65,7 +65,7 @@ def register_music_font(font_name, font_file_path, metadata_path):
         font_name (str): The canonical name of this font.
             This is used as a dict key for the font metadata
             in `brown.registered_music_fonts`.
-        font_file_paths (str): A path to a font file
+        font_file_path (str): A path to a font file
         metadata_path (str): A path to a SMuFL metadata JSON file
             for this font. The standard SMuFL format for this file name
             will be {lowercase_font_name}_metadata.json.

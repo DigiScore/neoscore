@@ -166,7 +166,7 @@ class Pitch:
         return Pitch._diatonic_degrees_in_c[self.letter]
 
     @property
-    def staff_position_relative_to_middle_c(self):
+    def staff_pos_from_middle_c(self):
         """float: The pitch's staff position relative to middle C.
 
         Values are in numeric pseudo-staff-units where positive
@@ -174,15 +174,15 @@ class Pitch:
         mean positions above it.
 
         Examples:
-            >>> Pitch("c'").staff_position_relative_to_middle_c
+            >>> Pitch("c'").staff_pos_from_middle_c
             0
-            >>> Pitch("cs'").staff_position_relative_to_middle_c
+            >>> Pitch("cs'").staff_pos_from_middle_c
             0
-            >>> Pitch("d'").staff_position_relative_to_middle_c
+            >>> Pitch("d'").staff_pos_from_middle_c
             -0.5
-            >>> Pitch("d''").staff_position_relative_to_middle_c
+            >>> Pitch("d''").staff_pos_from_middle_c
             -4
-            >>> Pitch("cn,").staff_position_relative_to_middle_c
+            >>> Pitch("cn,").staff_pos_from_middle_c
             7
         """
         middle_c = (4 * 7) + 1  # C at octave 4

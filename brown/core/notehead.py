@@ -2,11 +2,12 @@ from brown.core.music_text import MusicText
 from brown.models.pitch import Pitch
 from brown.utils.point import Point
 from brown.utils.units import Mm
+from brown.models.beat import Beat
 
 
 class Notehead(MusicText):
 
-    """A simple Notehead glyph whose appearance is determined by a Duration
+    """A simple notehead glyph whose appearance is determined by a Duration
 
     Currently, values larger than whole notes are not supported.
     """
@@ -25,32 +26,42 @@ class Notehead(MusicText):
         1: 'noteheadWhole',
     }
 
-    def __init__(self, position_x, pitch, duration, parent):
+    def __init__(self, pos_x, pitch, duration, parent):
         """
         Args:
-            staff (Staff)
-            position_x (Unit):
-            duration (Beat or Beat tuple):
-            pitch (Pitch):
+            pos_x (Unit): The x-axis position relative to `parent`.
+                The y-axis position is calculated automatically based
+                on `pitch` and contextual information in `self.staff`.
+            pitch (Pitch or str): May be a `str` pitch representation.
+                See `Pitch` for valid signatures.
+            duration (Beat or init tuple): The logical duration of
+                the notehead. This is used to determine the glyph style.
+            parent (GraphicObject): Must either be a `Staff` or an object
+                with an ancestor `Staff`.
         """
-        self.pitch = pitch
-        self.duration = duration
-        # HACK: init pos to temporary position, then set for real
-        super().__init__((position_x, Mm(0)),
+        self._pitch = (pitch if isinstance(pitch, Pitch)
+                       else Pitch(pitch))
+        self._duration = (duration if isinstance(duration, Beat)
+                          else Beat(*duration))
+        # Use a temporary y-axis position before calculating it for real
+        super().__init__((pos_x, Mm(0)),
                          [self._glyphnames[self.duration.base_division]],
                          parent)
-        self.pos = Point(position_x, self.staff_position)
+
+        self.y = self.staff.unit(
+            self.staff_position
+            - self.frame.map_between_items_in_frame(self.staff, self.parent).y)
 
     ######## PUBLIC PROPERTIES ########
 
     @property
     def visual_width(self):
-        """Unit: The width of the Notehead"""
-        return self.staff.unit(self._bounding_rect.width)
+        """Unit: The visual width of the Notehead"""
+        return self._bounding_rect.width
 
     @property
     def pitch(self):
-        """Pitch: The pitch of this notehead.
+        """Pitch: The logical pitch.
 
         May be set to a valid string pitch descriptor.
         See Pitch docs.
@@ -59,10 +70,7 @@ class Notehead(MusicText):
 
     @pitch.setter
     def pitch(self, value):
-        if isinstance(value, Pitch):
-            self._pitch = value
-        else:
-            self._pitch = Pitch(value)
+        self._pitch = value
 
     @property
     def duration(self):
@@ -75,10 +83,11 @@ class Notehead(MusicText):
 
     @property
     def staff_position(self):
+        """StaffUnit: The y-axis relative to the staff"""
         """StaffUnit: The notehead position in the staff.
 
         StaffUnit(0) means the top staff line, higher values
         mean lower pitches, and vice versa.
         """
         return (self.staff.middle_c_at(self.pos_in_staff.x) +
-                self.staff.unit(self.pitch.staff_position_relative_to_middle_c))
+                self.staff.unit(self.pitch.staff_pos_from_middle_c))

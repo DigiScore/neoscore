@@ -73,7 +73,7 @@ class PedalLine(HorizontalSpanner, Path, StaffObject):
             if isinstance(pos, tuple):
                 lift_parent = pos[1]
                 lift_center_x = pos[0]
-                if self.is_in_flowable:
+                if self.frame is not None:
                     lift_center_y = self.frame.map_between_items_in_frame(
                         lift_parent, self).y + DESCENT
             elif isinstance(pos, Unit):

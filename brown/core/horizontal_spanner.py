@@ -57,7 +57,7 @@ class HorizontalSpanner(Spanner):
         """
         if self.end_parent == self:
             return GraphicUnit(0)
-        elif self.is_in_flowable:
+        elif self.frame is not None:
             return self.frame.map_between_items_in_frame(
                 self.end_parent, self).y
         else:

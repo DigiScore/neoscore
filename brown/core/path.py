@@ -2,26 +2,21 @@ from brown import config
 from brown.core.brush import Brush
 from brown.core.graphic_object import GraphicObject
 from brown.core.path_element import PathElement
-from brown.interface.path_interface import PathInterface
 from brown.core.path_element_type import PathElementType
+from brown.interface.path_interface import PathInterface
+from brown.utils.exceptions import IllegalNumberOfControlPointsError
 from brown.utils.point import Point
 from brown.utils.units import GraphicUnit
 
 
 class Path(GraphicObject):
 
-    """An vector path whose points can be anchored to other objects.
+    """A vector path whose points can be anchored to other objects.
 
-    If a Path is in a FlowableFrame, any point anchors in the path
-    should be anchored to objects in the same FlowableFrame, or
+    If a Path is in a `FlowableFrame`, any point anchors in the path
+    should be anchored to objects in the same `FlowableFrame`, or
     undefined behavior may occur. Likewise, if a Path is not
-    in a FlowableFrame, all point anchors should not be in one either.
-
-    Note: The path drawing methods to not support placing points
-          on different pages than the path. If this is required,
-          it would not be difficult to extend the behavior of the
-          drawing methods to take a page parameter and pass it to
-          the PathElements.
+    in a `FlowableFrame`, all point anchors should not be in one either.
     """
 
     _interface_class = PathInterface
@@ -32,7 +27,7 @@ class Path(GraphicObject):
     def __init__(self, pos, pen=None, brush=None, parent=None):
         """
         Args:
-            pos (Point): The position of the path root.
+            pos (Point or init tuple): The position of the path root.
             pen (Pen): The pen to draw outlines with.
             brush (Brush): The brush to draw outlines with.
             parent (GraphicObject): The parent object or None
@@ -75,7 +70,7 @@ class Path(GraphicObject):
         # Find the positions of every path element relative to the path
         min_x = GraphicUnit(float("inf"))
         max_x = GraphicUnit(-float("inf"))
-        in_flowable = self.is_in_flowable
+        in_flowable = self.frame is not None
         for element in self.elements:
             if in_flowable:
                 relative_x = (self.frame.pos_in_frame_of(element)
@@ -90,16 +85,15 @@ class Path(GraphicObject):
 
     @property
     def current_draw_pos(self):
-        """Point: The current relative drawing position.
+        """Point: The current drawing position relative to `self.pos`.
 
-        This is the location from which operations like line_to() will draw,
-        relative to `self.pos`.
+        This is the location from which operations like `line_to()` will draw.
 
-        This property is read-only. To change this without connecting a line
-        to the new position, use `self.move_to`.
+        To change this without connecting the path to the new position,
+        use `move_to()`.
         """
         if self.elements:
-            if self.is_in_flowable:
+            if self.frame is not None:
                 return self.frame.map_between_items_in_frame(
                     self, self.elements[-1])
             else:
@@ -123,9 +117,7 @@ class Path(GraphicObject):
         Args:
             x (Unit): The end x position
             y (Unit): The end y position
-            page (int): The end relative page number.
-                For most cases, this should be 0.
-            parent (GraphicObject): An optional parent, whose position
+            parent (GraphicObject or Page): An optional parent, whose position
                 the target coordinate will be relative to.
 
         Returns: None
@@ -142,15 +134,13 @@ class Path(GraphicObject):
         """Close the current sub-path and start a new one.
 
         A point parent may be passed as well, anchored the target point to
-        a separate `GraphicObjec`t. In this case, the coordinates passed will be
+        a separate `GraphicObject`. In this case, the coordinates passed will be
         considered relative to the parent.
 
         Args:
             x (Unit): The end x position
             y (Unit): The end y position
-            page (int): The end relative page number.
-                For most cases, this should be 0.
-            parent (GraphicObject): An optional parent, whose position
+            parent (GraphicObject or Page): An optional parent, whose position
                 the target coordinate will be relative to.
 
         Returns: None
@@ -162,7 +152,7 @@ class Path(GraphicObject):
                         parent if parent else self))
 
     def close_subpath(self):
-        """Close the current sub-path and start a new one at (0, 0).
+        """Close the current sub-path and start a new one at the local origin.
 
         This is equivalent to `move_to((Unit(0), Unit(0)))`
 
@@ -170,8 +160,8 @@ class Path(GraphicObject):
 
         Note:
             This convenience method does not support point parentage.
-            If you need to anchor the new move_to point, use an explicit
-            `move_to((0, 0), 0, parent)` instead.
+            If you need to anchor the new point, use an explicit
+            `move_to((Unit(0), Unit(0)), parent)` instead.
         """
         self.move_to(GraphicUnit(0), GraphicUnit(0))
 
@@ -184,8 +174,6 @@ class Path(GraphicObject):
                  end_parent=None):
         """Draw a cubic bezier curve from the current position to a new point.
 
-        Moves `self.current_draw_pos` to the new end point.
-
         Args:
             control_1_x (Unit): The x coordinate of the first control point.
             control_1_y (Unit): The y coordinate of the first control point.
@@ -193,12 +181,12 @@ class Path(GraphicObject):
             control_2_y (Unit): The y coordinate of the second control point.
             end_x (Unit): The x coordinate of the curve target.
             end_y (Unit): The y coordinate of the curve target.
-            control_1_parent (GraphicObject or None): An optional parent for
-                the first control point. If `None`, this defaults to the path.
-            control_2_parent (GraphicObject or None): An optional parent for
-                the second control point. If `None`, this defaults to the path.
-            end_parent (GraphicObject or None): An optional parent for the
-                curve target. If `None`, this defaults to the path.
+            control_1_parent (GraphicObject or Page): An optional parent for
+                the first control point. Defaults to `self`.
+            control_2_parent (GraphicObject or Page): An optional parent for
+                the second control point. Defaults to `self`.
+            end_parent (GraphicObject or Page): An optional parent for the
+                curve target. Defaults to `self`.
 
         Returns: None
         """
@@ -248,7 +236,7 @@ class Path(GraphicObject):
             # Interface drawing methods expect coordinates
             # relative to PathInterface root
             if element.parent != self:
-                if self.is_in_flowable:
+                if self.frame is not None:
                     relative_pos = self.frame.map_between_items_in_frame(
                         self, element)
                 else:
@@ -262,10 +250,11 @@ class Path(GraphicObject):
                 slice_interface.line_to(relative_pos)
             elif element.element_type == PathElementType.curve_to:
                 if len(control_point_buffer) == 2:
-                    slice_interface.cubic_to(*control_point_buffer, relative_pos)
+                    slice_interface.cubic_to(*control_point_buffer,
+                                             relative_pos)
                 else:
-                    raise NotImplementedError(
-                        'Curves with >2 control points not implemented')
+                    raise IllegalNumberOfControlPointsError(
+                        len(control_point_buffer))
                 control_point_buffer = []
             elif element.element_type == PathElementType.control_point:
                 control_point_buffer.append(relative_pos)

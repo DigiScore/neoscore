@@ -25,9 +25,9 @@ class Brush:
         else:
             self.color = Color(color)
         if isinstance(pattern, BrushPattern):
-            self.pattern = pattern
+            self._pattern = pattern
         else:
-            self.pattern = BrushPattern(pattern)
+            self._pattern = BrushPattern(pattern)
         self._create_interface()
 
     ######## CONSTRUCOTRS ########

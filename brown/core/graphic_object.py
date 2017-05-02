@@ -240,11 +240,6 @@ class GraphicObject(ABC):
             return self.parent.page_index
         return ancestor.parent.page_index
 
-    @property
-    def is_in_flowable(self):
-        """bool: Whether or not this object is in a FlowableFrame"""
-        return (self.frame is not None)
-
     ######## CLASS METHODS ########
 
     @classmethod
@@ -270,7 +265,7 @@ class GraphicObject(ABC):
 
         Returns: None
         """
-        if self.is_in_flowable:
+        if self.frame is not None:
             self._render_in_flowable()
         else:
             self._render_complete(brown.document.canvas_pos_of(self))

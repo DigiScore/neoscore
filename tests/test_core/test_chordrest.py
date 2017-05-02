@@ -1,11 +1,12 @@
 import unittest
 
 from brown.core import brown
-from brown.core.staff import Staff
-from brown.models.pitch import Pitch
-from brown.models.beat import Beat
 from brown.core.chordrest import Chordrest
 from brown.core.clef import Clef
+from brown.core.flowable_frame import FlowableFrame
+from brown.core.staff import Staff
+from brown.models.beat import Beat
+from brown.models.pitch import Pitch
 from brown.utils.point import Point
 from brown.utils.units import Mm
 
@@ -13,7 +14,8 @@ from brown.utils.units import Mm
 class TestChordrest(unittest.TestCase):
     def setUp(self):
         brown.setup()
-        self.staff = Staff(Point(Mm(0), Mm(0)), Mm(100), None)
+        self.frame = FlowableFrame(Point(Mm(0), Mm(0)), Mm(10000), Mm(100))
+        self.staff = Staff(Point(Mm(0), Mm(0)), Mm(100), self.frame)
         Clef(self.staff, Mm(0), 'treble')
 
     def test_ledger_line_positions(self):
@@ -35,24 +37,32 @@ class TestChordrest(unittest.TestCase):
 
     def test_rhythm_dot_positions_with_rest(self):
         chord = Chordrest(Mm(1), self.staff, None, Beat(7, 16))
-        dots = set(chord.rhythm_dot_positions)
-        assert(dots == {
-            Point(self.staff.unit(1.076), self.staff.unit(1.5)),
-            Point(self.staff.unit(1.576), self.staff.unit(1.5)),
-        })
+        dots = list(chord.rhythm_dot_positions)
+        dots.sort(key=lambda d: d.x)
+        dots[0]._assert_almost_equal(
+            Point(self.staff.unit(1.076), self.staff.unit(1.5)))
+        dots[1]._assert_almost_equal(
+            Point(self.staff.unit(1.576), self.staff.unit(1.5)))
 
     def test_rhythm_dot_positions_with_noteheads(self):
         pitches = ["e,", "d", "e'''"]
         chord = Chordrest(Mm(1), self.staff, pitches, Beat(7, 16))
-        dots = set(chord.rhythm_dot_positions)
-        assert(dots == {
-            Point(self.staff.unit(1.18), self.staff.unit(-3.5)),
-            Point(self.staff.unit(1.68), self.staff.unit(-3.5)),
-            Point(self.staff.unit(1.18), self.staff.unit(7.5)),
-            Point(self.staff.unit(1.68), self.staff.unit(7.5)),
-            Point(self.staff.unit(1.18), self.staff.unit(10.5)),
-            Point(self.staff.unit(1.68), self.staff.unit(10.5)),
-        })
+        dots = list(chord.rhythm_dot_positions)
+        dots.sort(key=lambda d: d.x)
+        dots.sort(key=lambda d: d.y)
+        #import pdb;pdb.set_trace()
+        dots[0]._assert_almost_equal(
+            Point(self.staff.unit(1.18), self.staff.unit(-3.5)))
+        dots[1]._assert_almost_equal(
+            Point(self.staff.unit(1.68), self.staff.unit(-3.5)))
+        dots[2]._assert_almost_equal(
+            Point(self.staff.unit(1.18), self.staff.unit(7.5)))
+        dots[3]._assert_almost_equal(
+            Point(self.staff.unit(1.68), self.staff.unit(7.5)))
+        dots[4]._assert_almost_equal(
+            Point(self.staff.unit(1.18), self.staff.unit(10.5)))
+        dots[5]._assert_almost_equal(
+            Point(self.staff.unit(1.68), self.staff.unit(10.5)))
 
     def test_furthest_notehead_with_one_note(self):
         pitches = ["b'"]

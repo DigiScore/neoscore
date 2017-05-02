@@ -87,8 +87,8 @@ class FlowableFrame(InvisibleObject):
         self._layout_controllers = []
         live_page_width = brown.document.paper.live_width
         live_page_height = brown.document.paper.live_height
-        # The progress the layout generation has reached along the frame's width.
-        # When the entire flowable has been covered, this value will == self.width
+        # local progress of layout generation; when the entire frame has
+        # been covered, this will be equal to `self.width`
         x_progress = Mm(0)
         # Current position on the page relative to the top left corner
         # of the live page area

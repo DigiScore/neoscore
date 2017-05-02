@@ -54,15 +54,15 @@ class TestPitch(unittest.TestCase):
             assert(Pitch(letter).diatonic_degree_in_c == number)
 
     def test_staff_position_relative_to_middle_c(self):
-        assert(Pitch("c'").staff_position_relative_to_middle_c == 0)
-        assert(Pitch("cs'").staff_position_relative_to_middle_c == 0)
-        assert(Pitch("d'").staff_position_relative_to_middle_c == -0.5)
-        assert(Pitch("d''").staff_position_relative_to_middle_c == -4)
-        assert(Pitch("cn,").staff_position_relative_to_middle_c == 7)
+        assert(Pitch("c'").staff_pos_from_middle_c == 0)
+        assert(Pitch("cs'").staff_pos_from_middle_c == 0)
+        assert(Pitch("d'").staff_pos_from_middle_c == -0.5)
+        assert(Pitch("d''").staff_pos_from_middle_c == -4)
+        assert(Pitch("cn,").staff_pos_from_middle_c == 7)
 
     def test_staff_position_relative_to_middle_c_doesnt_give_negative_0(self):
         # Cosmetic regression where Pitch("cs'") might actually be -0.0
-        assert(str(Pitch("cs'").staff_position_relative_to_middle_c) == '0')
+        assert(str(Pitch("cs'").staff_pos_from_middle_c) == '0')
 
     def test__eq__(self):
         assert(Pitch("c") == Pitch("c"))

@@ -16,10 +16,11 @@ class MusicText(Text, StaffObject):
     def __init__(self, pos, text, parent, font=None, scale_factor=1):
         """
         Args:
-            pos (Point): The position of the glyph
+            pos (Point or init tuple): The position of the text
             text (str, tuple, MusicChar, or list of these):
-                The text to be used, represented as a str (glyph name), tuple
-                (glyph name, alternate number), MusicChar, or a list of them.
+                The text to be used, represented as a either a `str`
+                (glyph name), `tuple` (glyph name, alternate number),
+                `MusicChar`, or a list of these.
             parent (GraphicObject): The parent of the glyph. This should
                 either be a `Staff` or an object which has a `Staff` as
                 an ancestor.

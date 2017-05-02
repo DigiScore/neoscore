@@ -23,3 +23,15 @@ class InvisibleObject(GraphicObject):
         """
         for child in self.children:
             child.render()
+
+    def _render_before_break(self, start, stop, dist_to_line_start):
+        pass
+
+    def _render_spanning_continuation(self, local_start_x, start, stop):
+        pass
+
+    def _render_after_break(self, local_start_x, start, stop):
+        pass
+
+    def _render_complete(self, pos, dist_to_line_start=None):
+        pass

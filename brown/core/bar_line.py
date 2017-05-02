@@ -3,6 +3,7 @@ from brown.core.multi_staff_object import MultiStaffObject
 from brown.core.path import Path
 from brown.core.pen import Pen
 from brown.utils.units import Unit
+from brown.utils.point import Point
 
 
 class BarLine(Path, MultiStaffObject):
@@ -25,7 +26,7 @@ class BarLine(Path, MultiStaffObject):
         """
         MultiStaffObject.__init__(self, set(staves))
         Path.__init__(self,
-                      (position_x, Unit(0)),
+                      Point(position_x, Unit(0)),
                       parent=self.highest_staff)
         engraving_defaults = self.highest_staff.music_font.engraving_defaults
         thickness = engraving_defaults['thinBarlineThickness']

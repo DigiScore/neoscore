@@ -23,10 +23,10 @@ class Accidental(MusicText):
             parent (StaffObject or Staff):
         """
         if isinstance(accidental_type, AccidentalType):
-            self.accidental_type = accidental_type
+            self._accidental_type = accidental_type
         else:
             try:
-                self.accidental_type = AccidentalType[accidental_type]
+                self._accidental_type = AccidentalType[accidental_type]
             except KeyError:
                 raise InvalidAccidentalTypeError
         canonical_name = self._canonical_names[self.accidental_type]
