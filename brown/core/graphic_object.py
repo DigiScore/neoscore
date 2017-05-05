@@ -16,7 +16,7 @@ class GraphicObject(ABC):
     should be subclasses of this.
 
     A single GraphicObject can have multiple graphical representations,
-    calculated at render-time. If the object's ancestor is a FlowableFrame,
+    calculated at render-time. If the object's ancestor is a Flowable,
     it will be rendered as a flowable object, capable of being wrapped around
     lines.
 
@@ -45,8 +45,8 @@ class GraphicObject(ABC):
             pos (Point[Unit] or tuple): The position of the object
                 relative to its parent
             length (Unit): The width of the object which can be
-                subject to breaking across lines when in a`FlowableFrame`.
-                If the object is not inside a `FlowableFrame`,
+                subject to breaking across lines when in a`Flowable`.
+                If the object is not inside a `Flowable`,
                 this has no effect
             pen (Pen): The pen to draw outlines with.
             brush (Brush): The brush to draw outlines with.
@@ -214,9 +214,9 @@ class GraphicObject(ABC):
             ancestor = ancestor.parent
 
     @property
-    def frame(self):
-        """FlowableFrame or None: The frame this object belongs in."""
-        return self.first_ancestor_of_exact_class('FlowableFrame')
+    def flowable(self):
+        """Flowable or None: The flowable this object belongs in."""
+        return self.first_ancestor_of_exact_class('Flowable')
 
     @property
     def page_index(self):
@@ -265,7 +265,7 @@ class GraphicObject(ABC):
 
         Returns: None
         """
-        if self.frame is not None:
+        if self.flowable is not None:
             self._render_in_flowable()
         else:
             self._render_complete(brown.document.canvas_pos_of(self))
@@ -355,35 +355,35 @@ class GraphicObject(ABC):
 
     def _render_in_flowable(self):
         """Render the object to the scene, dispatching partial rendering calls
-        when needed if an object flows across a break in the frame.
+        when needed if an object flows across a break in the flowable.
 
         Returns: None
         """
         # Calculate position within flowable
-        pos_in_flowable = self.frame.pos_in_frame_of(self)
+        pos_in_flowable = self.flowable.pos_in_flowable_of(self)
 
         remaining_x = (self.length +
-                       self.frame.dist_to_line_end(pos_in_flowable.x))
+                       self.flowable.dist_to_line_end(pos_in_flowable.x))
         if remaining_x < Unit(0):
             self._render_complete(
                 brown.document.canvas_pos_of(self),
-                self.frame.dist_to_line_start(pos_in_flowable.x))
+                self.flowable.dist_to_line_start(pos_in_flowable.x))
             return
 
         # Render before break
-        first_line_i = self.frame.last_break_index_at(pos_in_flowable.x)
-        current_line = self.frame.layout_controllers[first_line_i]
+        first_line_i = self.flowable.last_break_index_at(pos_in_flowable.x)
+        current_line = self.flowable.layout_controllers[first_line_i]
         render_start_pos = brown.document.canvas_pos_of(self)
-        first_line_length = self.frame.dist_to_line_end(pos_in_flowable.x) * -1
+        first_line_length = self.flowable.dist_to_line_end(pos_in_flowable.x) * -1
         render_end_pos = (render_start_pos + Point(first_line_length, 0))
         self._render_before_break(render_start_pos, render_end_pos,
-                                  self.frame.dist_to_line_start(
+                                  self.flowable.dist_to_line_start(
                                       pos_in_flowable.x))
 
         # Iterate through remaining length
         for current_line_i in range(first_line_i + 1,
-                                    len(self.frame.layout_controllers)):
-            current_line = self.frame.layout_controllers[current_line_i]
+                                    len(self.flowable.layout_controllers)):
+            current_line = self.flowable.layout_controllers[current_line_i]
             if remaining_x > current_line.length:
                 # Render spanning continuation
                 line_pos = brown.document.canvas_pos_of(current_line)
@@ -399,7 +399,7 @@ class GraphicObject(ABC):
                 break
 
         # Render end
-        render_start_pos = self.frame.map_to_canvas(
+        render_start_pos = self.flowable.map_to_canvas(
             Point(current_line.local_x, pos_in_flowable.y))
         render_end_pos = render_start_pos + Point(remaining_x, 0)
         self._render_after_break(self.length - remaining_x,
@@ -409,16 +409,16 @@ class GraphicObject(ABC):
     def _render_complete(self, pos, dist_to_line_start=None):
         """Render the entire object.
 
-        This is used to render all objects outside of `FlowableFrame`s,
-        as well as those inside frames when they fit completely in
-        one span of the frame.
+        This is used to render all objects outside of `Flowable`s,
+        as well as those inside flowables when they fit completely in
+        one span of the flowable.
 
         This method should create a GraphicInterface and store it in
         `self.interfaces`.
 
         Args:
             pos (Point): The rendering position in document space for drawing.
-            dist_to_line_start (Unit): If in a `FlowableFrame`,
+            dist_to_line_start (Unit): If in a `Flowable`,
                 the x-axis distance from the active `NewLine`s beginning.
                 Otherwise, this is always `None`. Subclasses may use this
                 information to perform basic position modifications at

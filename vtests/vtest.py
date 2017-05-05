@@ -8,7 +8,7 @@ from brown.common import *
 
 brown.setup()
 
-flow = FlowableFrame((Mm(0), Mm(0)), Mm(35000), Mm(30), Mm(10))
+flow = Flowable((Mm(0), Mm(0)), Mm(35000), Mm(30), Mm(10))
 
 counting_string = '    '.join(str(x) for x in range(600))
 counting_text = Text((Mm(0), Mm(0)), counting_string, parent=flow)

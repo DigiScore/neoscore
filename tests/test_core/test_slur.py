@@ -2,7 +2,7 @@ import unittest
 
 from brown.core import brown
 from brown.utils.units import Unit, Mm
-from brown.core.flowable_frame import FlowableFrame
+from brown.core.flowable import Flowable
 from brown.core.staff import Staff
 from brown.core.slur import Slur
 
@@ -13,8 +13,8 @@ class TestSlur(unittest.TestCase):
 
     def setUp(self):
         brown.setup()
-        self.frame = FlowableFrame((Mm(0), Mm(0)), Mm(10000), Mm(30), Mm(5))
-        self.staff = Staff((Mm(0), Mm(0)), Mm(5000), self.frame)
+        self.flowable = Flowable((Mm(0), Mm(0)), Mm(10000), Mm(30), Mm(5))
+        self.staff = Staff((Mm(0), Mm(0)), Mm(5000), self.flowable)
         self.left_parent = MockStaffObject((Unit(0), Unit(0)), self.staff)
         self.right_parent = MockStaffObject((Unit(10), Unit(2)), self.staff)
 

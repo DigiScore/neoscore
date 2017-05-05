@@ -1,7 +1,7 @@
 import unittest
 
 from brown.core import brown
-from brown.core.flowable_frame import FlowableFrame
+from brown.core.flowable import Flowable
 from brown.core.graphic_object import GraphicObject
 from brown.core.horizontal_spanner import HorizontalSpanner
 from brown.utils.point import Point
@@ -65,11 +65,11 @@ class TestHorizontalSpanner(unittest.TestCase):
         assert(spanner.end_pos == Point(Unit(30), Unit(35)))
 
     def test_y_mapping_no_parent_inside_flowable(self):
-        frame = FlowableFrame(Point(Unit(10), Unit(12)),
+        flowable = Flowable(Point(Unit(10), Unit(12)),
                               Unit(10000),
                               Unit(100))
         spanner = MockHorizontalSpanner(Point(Unit(20), Unit(5)),
-                                        frame,
+                                        flowable,
                                         Unit(3000),
                                         None)
         assert(spanner.end_parent == spanner)
@@ -78,12 +78,12 @@ class TestHorizontalSpanner(unittest.TestCase):
         assert(spanner.end_pos == Point(Unit(3000), Unit(0)))
 
     def test_y_mapping_with_end_parent_inside_flowable(self):
-        frame = FlowableFrame(Point(Unit(10), Unit(12)),
+        flowable = Flowable(Point(Unit(10), Unit(12)),
                               Unit(10000),
                               Unit(100))
-        end_parent = GraphicObject(Point(Unit(5000), Unit(10)), parent=frame)
+        end_parent = GraphicObject(Point(Unit(5000), Unit(10)), parent=flowable)
         spanner = MockHorizontalSpanner(Point(Unit(20), Unit(5)),
-                                        frame,
+                                        flowable,
                                         Unit(3000),
                                         end_parent)
         assert(spanner.end_parent == end_parent)
@@ -92,11 +92,11 @@ class TestHorizontalSpanner(unittest.TestCase):
         assert(spanner.end_pos == Point(Unit(3000), Unit(-5)))
 
     def test_y_mapping_with_start_and_end_parent_inside_flowable(self):
-        frame = FlowableFrame(Point(Unit(10), Unit(12)),
+        flowable = Flowable(Point(Unit(10), Unit(12)),
                               Unit(10000),
                               Unit(100))
-        start_parent = GraphicObject(Point(Unit(10), Unit(10)), parent=frame)
-        end_parent = GraphicObject(Point(Unit(6000), Unit(-20)), parent=frame)
+        start_parent = GraphicObject(Point(Unit(10), Unit(10)), parent=flowable)
+        end_parent = GraphicObject(Point(Unit(6000), Unit(-20)), parent=flowable)
         spanner = MockHorizontalSpanner(Point(Unit(20), Unit(5)),
                                         start_parent,
                                         Unit(3000),

@@ -101,7 +101,7 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
         )
         # Drawn main line part
         self.line_path.line_to(self.end_pos.x, path_y, self.end_parent)
-        pos_relative_to_staff = self.frame.map_between_items_in_frame(
+        pos_relative_to_staff = self.flowable.map_between_locally(
             self.staff, self)
         # Draw end hook pointing toward the staff
         hook_direction = 1 if pos_relative_to_staff.y <= GraphicUnit(0) else -1

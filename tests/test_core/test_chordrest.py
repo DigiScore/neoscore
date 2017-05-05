@@ -3,7 +3,7 @@ import unittest
 from brown.core import brown
 from brown.core.chordrest import Chordrest
 from brown.core.clef import Clef
-from brown.core.flowable_frame import FlowableFrame
+from brown.core.flowable import Flowable
 from brown.core.staff import Staff
 from brown.models.beat import Beat
 from brown.models.pitch import Pitch
@@ -14,8 +14,8 @@ from brown.utils.units import Mm
 class TestChordrest(unittest.TestCase):
     def setUp(self):
         brown.setup()
-        self.frame = FlowableFrame(Point(Mm(0), Mm(0)), Mm(10000), Mm(100))
-        self.staff = Staff(Point(Mm(0), Mm(0)), Mm(100), self.frame)
+        self.flowable = Flowable(Point(Mm(0), Mm(0)), Mm(10000), Mm(100))
+        self.staff = Staff(Point(Mm(0), Mm(0)), Mm(100), self.flowable)
         Clef(self.staff, Mm(0), 'treble')
 
     def test_ledger_line_positions(self):

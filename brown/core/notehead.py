@@ -50,7 +50,7 @@ class Notehead(MusicText):
 
         self.y = self.staff.unit(
             self.staff_position
-            - self.frame.map_between_items_in_frame(self.staff, self.parent).y)
+            - self.flowable.map_between_locally(self.staff, self.parent).y)
 
     ######## PUBLIC PROPERTIES ########
 

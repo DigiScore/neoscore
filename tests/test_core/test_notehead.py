@@ -1,7 +1,7 @@
 import unittest
 
 from brown.core import brown
-from brown.core.flowable_frame import FlowableFrame
+from brown.core.flowable import Flowable
 from brown.core.staff import Staff
 from brown.models.beat import Beat
 from brown.core.clef import Clef
@@ -12,8 +12,8 @@ from brown.utils.units import Mm
 class TestNotehead(unittest.TestCase):
     def setUp(self):
         brown.setup()
-        self.frame = FlowableFrame((Mm(0), Mm(0)), Mm(10000), Mm(30), Mm(5))
-        self.staff = Staff((Mm(0), Mm(0)), Mm(10000), frame=self.frame)
+        self.flowable = Flowable((Mm(0), Mm(0)), Mm(10000), Mm(30), Mm(5))
+        self.staff = Staff((Mm(0), Mm(0)), Mm(10000), flowable=self.flowable)
         Clef(self.staff, Mm(0), 'treble')
 
     def test_staff_position_middle_c_treble(self):

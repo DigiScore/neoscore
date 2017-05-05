@@ -13,10 +13,10 @@ class Path(GraphicObject):
 
     """A vector path whose points can be anchored to other objects.
 
-    If a Path is in a `FlowableFrame`, any point anchors in the path
-    should be anchored to objects in the same `FlowableFrame`, or
+    If a Path is in a `Flowable`, any point anchors in the path
+    should be anchored to objects in the same `Flowable`, or
     undefined behavior may occur. Likewise, if a Path is not
-    in a `FlowableFrame`, all point anchors should not be in one either.
+    in a `Flowable`, all point anchors should not be in one either.
     """
 
     _interface_class = PathInterface
@@ -65,16 +65,16 @@ class Path(GraphicObject):
 
         This is calculated automatically from path contents. By extension,
         this means that by default all `Path` objects will automatically
-        wrap in `FlowableFrame`s.
+        wrap in `Flowable`s.
         """
         # Find the positions of every path element relative to the path
         min_x = GraphicUnit(float("inf"))
         max_x = GraphicUnit(-float("inf"))
-        in_flowable = self.frame is not None
+        in_flowable = self.flowable is not None
         for element in self.elements:
             if in_flowable:
-                relative_x = (self.frame.pos_in_frame_of(element)
-                              - self.frame.pos_in_frame_of(self)).x
+                relative_x = (self.flowable.pos_in_flowable_of(element)
+                              - self.flowable.pos_in_flowable_of(self)).x
             else:
                 relative_x = GraphicObject.map_between_items(self, element).x
             if relative_x > max_x:
@@ -93,8 +93,8 @@ class Path(GraphicObject):
         use `move_to()`.
         """
         if self.elements:
-            if self.frame is not None:
-                return self.frame.map_between_items_in_frame(
+            if self.flowable is not None:
+                return self.flowable.map_between_locally(
                     self, self.elements[-1])
             else:
                 return GraphicObject.map_between_items(
@@ -236,8 +236,8 @@ class Path(GraphicObject):
             # Interface drawing methods expect coordinates
             # relative to PathInterface root
             if element.parent != self:
-                if self.frame is not None:
-                    relative_pos = self.frame.map_between_items_in_frame(
+                if self.flowable is not None:
+                    relative_pos = self.flowable.map_between_locally(
                         self, element)
                 else:
                     relative_pos = GraphicObject.map_between_items(

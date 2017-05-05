@@ -6,17 +6,17 @@ from brown.utils.units import Unit
 class NewLine(LayoutController):
     """A line break controller."""
 
-    def __init__(self, pos, page, flowable_frame, local_x, offset_y=None):
+    def __init__(self, pos, page, flowable, local_x, offset_y=None):
         """
         Args:
-            flowable_frame (FlowableFrame): The parent frame.
-            x (Unit): The x position in the frame's local space where this
+            flowable (Flowable): The parent flowable.
+            x (Unit): The x position in the flowable's local space where this
                 line begins.
             pos (Point): The position of the top left corner of this line.
             offset_y (Unit): The space between the bottom of the
                 current line and the top of the next. Defaults to `Unit(0)`
         """
-        super().__init__(pos, page, flowable_frame, local_x)
+        super().__init__(pos, page, flowable, local_x)
         self.offset_y = offset_y if offset_y else Unit(0)
 
     ######## PUBLIC PROPERTIES ########
@@ -46,4 +46,4 @@ class NewLine(LayoutController):
     @property
     def height(self):
         """Unit: The height of the line."""
-        return self.flowable_frame.height
+        return self.flowable.height

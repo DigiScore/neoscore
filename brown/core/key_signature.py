@@ -117,7 +117,7 @@ class KeySignature(ObjectGroup, StaffObject):
 
         @property
         def _overlaps_with_clef(self):
-            return (self.frame.map_between_items_in_frame(self.clef, self).x
+            return (self.flowable.map_between_locally(self.clef, self).x
                     < self.clef_offset)
 
         def _render_complete(self, pos, dist_to_line_start=None):
@@ -141,7 +141,7 @@ class KeySignature(ObjectGroup, StaffObject):
     ######## PRIVATE METHODS ########
 
     def _create_pseudo_accidentals(self):
-        pos_in_staff = self.frame.map_between_items_in_frame(
+        pos_in_staff = self.flowable.map_between_locally(
             self.staff, self).x
         clef = self.staff.active_clef_at(pos_in_staff)
         if clef is None:

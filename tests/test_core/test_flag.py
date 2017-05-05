@@ -13,7 +13,7 @@ class TestFlag(unittest.TestCase):
 
     def setUp(self):
         brown.setup()
-        self.staff = Staff((Mm(0), Mm(0)), Mm(100), frame=None)
+        self.staff = Staff((Mm(0), Mm(0)), Mm(100), flowable=None)
 
     def test_glyphnames(self):
         # All flags with durations in the following denominations should

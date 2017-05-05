@@ -1,7 +1,7 @@
 import unittest
 
 from brown.core import brown
-from brown.core.flowable_frame import FlowableFrame
+from brown.core.flowable import Flowable
 from brown.core.paper import Paper
 from brown.core.staff import Staff
 from brown.utils.point import Point
@@ -15,8 +15,8 @@ class TestStaffObject(unittest.TestCase):
     def setUp(self):
         brown.setup(
             Paper(*[Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]))
-        self.frame = FlowableFrame((Mm(0), Mm(0)), Mm(10000), Mm(30), Mm(5))
-        self.staff = Staff((Mm(0), Mm(0)), Mm(5000), self.frame)
+        self.flowable = Flowable((Mm(0), Mm(0)), Mm(10000), Mm(30), Mm(5))
+        self.staff = Staff((Mm(0), Mm(0)), Mm(5000), self.flowable)
 
     def test_find_staff_with_direct_parent(self):
         child_object = MockStaffObject((Mm(0), Mm(0)), self.staff)

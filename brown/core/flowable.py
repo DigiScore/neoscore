@@ -6,7 +6,7 @@ from brown.utils.point import Point
 from brown.utils.units import Mm, Unit
 
 
-class FlowableFrame(InvisibleObject):
+class Flowable(InvisibleObject):
 
     """A flowable coordinate space container.
 
@@ -14,10 +14,10 @@ class FlowableFrame(InvisibleObject):
     objects can be placed, and at render time be automatically
     flowed across line breaks and page breaks in the document.
 
-    To place an object in a `FlowableFrame`, simply parent it
+    To place an object in a `Flowable`, simply parent it
     to one, or to an object already in one.
 
-    In typical scores, there will be a single `FlowableFrame`
+    In typical scores, there will be a single `Flowable`
     placed in the first page of the document, and the vast
     majority of objects will be placed inside it.
     """
@@ -27,9 +27,9 @@ class FlowableFrame(InvisibleObject):
         Args:
             pos (Point or tuple): Starting position in relative to
                 the top left corner of the live document area of the first page
-            width (GraphicUnit): length of the frame
-            height (GraphicUnit): height of the frame
-            y_padding (GraphicUnit): The min gap between frame sections
+            width (GraphicUnit): length of the flowable
+            height (GraphicUnit): height of the flowable
+            y_padding (GraphicUnit): The min gap between flowable sections
         """
         super().__init__(pos)
         self._length = width
@@ -42,12 +42,12 @@ class FlowableFrame(InvisibleObject):
 
     @property
     def length(self):
-        """Unit: The length (length) of the unwrapped frame"""
+        """Unit: The length (length) of the unwrapped flowable"""
         return self._length
 
     @property
     def height(self):
-        """Unit: The height of the unwrapped frame"""
+        """Unit: The height of the unwrapped flowable"""
         return self._height
 
     @height.setter
@@ -56,7 +56,7 @@ class FlowableFrame(InvisibleObject):
 
     @property
     def y_padding(self):
-        """Unit: The padding between wrapped sections of the frame"""
+        """Unit: The padding between wrapped sections of the flowable"""
         return self._y_padding
 
     @y_padding.setter
@@ -87,7 +87,7 @@ class FlowableFrame(InvisibleObject):
         self._layout_controllers = []
         live_page_width = brown.document.paper.live_width
         live_page_height = brown.document.paper.live_height
-        # local progress of layout generation; when the entire frame has
+        # local progress of layout generation; when the entire flowable has
         # been covered, this will be equal to `self.width`
         x_progress = Mm(0)
         # Current position on the page relative to the top left corner
@@ -123,7 +123,7 @@ class FlowableFrame(InvisibleObject):
         """Convert a local point to its position in the canvas.
 
         Args:
-            local_point (Point): A position in the frame's local space.
+            local_point (Point): A position in the flowable's local space.
 
         Returns:
             Point: The position mapped to the canvas.
@@ -142,7 +142,7 @@ class FlowableFrame(InvisibleObject):
         """Find the distance of an x-pos to the left edge of its laid-out line.
 
         Args:
-            local_x (Unit): An x-axis location in the virtual frame space.
+            local_x (Unit): An x-axis location in the virtual flowable space.
 
         Returns: Unit
         """
@@ -153,7 +153,7 @@ class FlowableFrame(InvisibleObject):
         """Find the distance of an x-pos to the right edge of its laid-out line.
 
         Args:
-            local_x (Unit): An x-axis location in the virtual frame space.
+            local_x (Unit): An x-axis location in the virtual flowable space.
 
         Returns: Unit
         """
@@ -164,7 +164,7 @@ class FlowableFrame(InvisibleObject):
         """Find the last `NewLine` that occurred before a given local local_x-pos
 
         Args:
-            local_x (Unit): An x-axis location in the virtual frame space.
+            local_x (Unit): An x-axis location in the virtual flowable space.
 
         Returns:
             NewLine:
@@ -175,7 +175,7 @@ class FlowableFrame(InvisibleObject):
         """Like `last_break_at`, but returns an index.
 
         Args:
-            local_x (Unit): An x-axis location in the virtual frame space.
+            local_x (Unit): An x-axis location in the virtual flowable space.
 
         Returns: int
         """
@@ -186,19 +186,19 @@ class FlowableFrame(InvisibleObject):
                 return i
         else:
             raise OutOfBoundsError(
-                'local_x={} lies outside of this FlowableFrame'.format(local_x))
+                'local_x={} lies outside of this Flowable'.format(local_x))
 
-    def pos_in_frame_of(self, graphic_object):
+    def pos_in_flowable_of(self, graphic_object):
         """Find the position of an object in (unwrapped) flowable space.
 
         Args:
-            graphic_object (GraphicObject): An object in the frame.
+            graphic_object (GraphicObject): An object in the flowable.
 
         Returns:
-            Point: A non-paged point relative to the flowable frame.
+            Point: A non-paged point relative to the flowable flowable.
 
         Raises:
-            ValueError: If `graphic_object` is not in the frame.
+            ValueError: If `graphic_object` is not in the flowable.
         """
         pos = Point(Unit(0), Unit(0))
         current = graphic_object
@@ -208,10 +208,10 @@ class FlowableFrame(InvisibleObject):
                 current = current.parent
             return pos
         except AttributeError:
-            raise ValueError('object is not in this FlowableFrame')
+            raise ValueError('object is not in this Flowable')
 
-    def map_between_items_in_frame(self, source, destination):
-        """Find the relative position between two objects in this frame.
+    def map_between_locally(self, source, destination):
+        """Find the relative position between two objects in this flowable.
 
         Args:
             source (GraphicObject): The object to map from
@@ -219,10 +219,10 @@ class FlowableFrame(InvisibleObject):
 
         Returns:
             Point: The relative position of `destination`,
-                relative to `source` within the local frame space.
+                relative to `source` within the local flowable space.
 
         Raises:
             ValueError: If either `source` or `destination` are not
-                in the frame.
+                in the flowable.
         """
-        return self.pos_in_frame_of(destination) - self.pos_in_frame_of(source)
+        return self.pos_in_flowable_of(destination) - self.pos_in_flowable_of(source)

@@ -40,8 +40,8 @@ class StaffObject:
 
         # TODO: Definitely cache me when property caching is implemented
         """
-        if self.frame:
-            return self.frame.map_between_items_in_frame(self.staff, self)
+        if self.flowable:
+            return self.flowable.map_between_locally(self.staff, self)
         return GraphicObject.map_between_items(self.staff, self)
 
     ######## PRIVATE METHODS ########

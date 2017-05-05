@@ -12,7 +12,7 @@ class TestNotehead(unittest.TestCase):
 
     def setUp(self):
         brown.setup()
-        self.staff = Staff((Mm(0), Mm(0)), Mm(100), frame=None)
+        self.staff = Staff((Mm(0), Mm(0)), Mm(100), flowable=None)
 
     def test_parse_dynamic_string(self):
         self.assertEqual(Dynamic._parse_dynamic_string('pmfrszn'),

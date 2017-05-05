@@ -58,8 +58,8 @@ from brown.common import *
 
 brown.setup()
 
-flowable_frame = FlowableFrame((Mm(0), Mm(0)), Mm(2000), Mm(30))
-staff = Staff((Mm(0), Mm(0)), Mm(2000), flowable_frame)
+flowable = Flowable((Mm(0), Mm(0)), Mm(2000), Mm(30))
+staff = Staff((Mm(0), Mm(0)), Mm(2000), flowable)
 clef = Clef(staff, Mm(0), 'bass_8vb')
 text = Text((Mm(3), staff.unit(-1)), 'Hello, world!')
 

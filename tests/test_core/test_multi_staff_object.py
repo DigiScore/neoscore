@@ -1,7 +1,7 @@
 import unittest
 
 from brown.core import brown
-from brown.core.flowable_frame import FlowableFrame
+from brown.core.flowable import Flowable
 from brown.core.multi_staff_object import MultiStaffObject
 from brown.core.staff import Staff
 from brown.utils.units import Mm
@@ -11,10 +11,10 @@ class TestMultiStaffObject(unittest.TestCase):
 
     def setUp(self):
         brown.setup()
-        self.frame = FlowableFrame((Mm(0), Mm(0)), Mm(10000), Mm(30), Mm(5))
-        self.staff_1 = Staff((Mm(0), Mm(0)), Mm(100), self.frame)
-        self.staff_2 = Staff((Mm(0), Mm(30)), Mm(100), self.frame)
-        self.staff_3 = Staff((Mm(0), Mm(50)), Mm(100), self.frame)
+        self.flowable = Flowable((Mm(0), Mm(0)), Mm(10000), Mm(30), Mm(5))
+        self.staff_1 = Staff((Mm(0), Mm(0)), Mm(100), self.flowable)
+        self.staff_2 = Staff((Mm(0), Mm(30)), Mm(100), self.flowable)
+        self.staff_3 = Staff((Mm(0), Mm(50)), Mm(100), self.flowable)
 
     def test_visually_sorted_staves(self):
         multi_object = MultiStaffObject({self.staff_1,

@@ -7,9 +7,9 @@ from brown.utils.units import GraphicUnit
 class HorizontalSpanner(Spanner):
     """A spanner which is perfectly horizontal.
 
-    When in a FlowableFrame, this spanner's end_y position always maps
+    When in a Flowable, this spanner's end_y position always maps
     to the same y-axis position as its starting position in
-    the FlowableFrame's local space.
+    the Flowable's local space.
 
     Otherwise, this spanner's end_y position always maps to the same
     y-axis position as its starting position in document space.
@@ -57,8 +57,8 @@ class HorizontalSpanner(Spanner):
         """
         if self.end_parent == self:
             return GraphicUnit(0)
-        elif self.frame is not None:
-            return self.frame.map_between_items_in_frame(
+        elif self.flowable is not None:
+            return self.flowable.map_between_locally(
                 self.end_parent, self).y
         else:
             return GraphicObject.map_between_items(self.end_parent, self).y

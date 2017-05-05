@@ -3,7 +3,7 @@ import unittest
 from brown.core import brown
 from brown.core.invisible_object import InvisibleObject
 from brown.core.paper import Paper
-from brown.core.flowable_frame import FlowableFrame
+from brown.core.flowable import Flowable
 from brown.utils.units import GraphicUnit
 from brown.utils.point import Point
 from brown.utils.units import Mm
@@ -14,7 +14,7 @@ class TestGraphicObject(unittest.TestCase):
     def setUp(self):
         brown.setup(
             Paper(*[Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]))
-        self.frame = FlowableFrame((Mm(0), Mm(0)), Mm(10000), Mm(30), Mm(5))
+        self.flowable = Flowable((Mm(0), Mm(0)), Mm(10000), Mm(30), Mm(5))
 
     def test_pos_setter_changes_x(self):
         grob = InvisibleObject((5, 6))

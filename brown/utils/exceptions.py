@@ -19,7 +19,7 @@ class NoClefError(Exception):
 
 
 class OutOfBoundsError(Exception):
-    """Exception raised when a point lies outside of a FlowableFrame"""
+    """Exception raised when a point lies outside of a Flowable"""
     pass
 
 

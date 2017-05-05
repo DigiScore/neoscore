@@ -11,7 +11,7 @@ from brown.core.clef import Clef
 from brown.core.document import Document
 from brown.core.dynamic import Dynamic
 from brown.core.flag import Flag
-from brown.core.flowable_frame import FlowableFrame
+from brown.core.flowable import Flowable
 from brown.core.font import Font
 from brown.core.hairpin import Hairpin
 from brown.core.key_signature import KeySignature

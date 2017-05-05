@@ -64,7 +64,7 @@ class Brace(MultiStaffObject, MusicText):
         This is used to determine how and where rendering cuts should be made.
         """
         return (self.staff.length
-                - self.frame.map_between_items_in_frame(self.staff, self).x)
+                - self.flowable.map_between_locally(self.staff, self).x)
 
     ######## PRIVATE METHODS ########
 

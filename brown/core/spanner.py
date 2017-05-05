@@ -8,7 +8,7 @@ from brown.utils.units import Unit
 class Spanner:
     """A Mixin class for `GraphicObject`s with starting and ending anchors.
 
-    If the spanner (main `GraphicObject`) is in a `FlowableFrame`, the endpoint
+    If the spanner (main `GraphicObject`) is in a `Flowable`, the endpoint
     must be in the same one. Likewise, if the spanner is *not* in one,
     the endpoint must not be in one either.
 
@@ -31,9 +31,9 @@ class Spanner:
                 `end_pos` will be relative to this object.
                 If None, this defaults to the spanner.
 
-        Warning: If the spanner is in a `FlowableFrame`, `end_parent` must be
+        Warning: If the spanner is in a `Flowable`, `end_parent` must be
             in the same one. Likewise, if the spanner is not in a
-            `FlowableFrame`, this must not be either.
+            `Flowable`, this must not be either.
         """
         self._end_pos = (end_pos if isinstance(end_pos, Point)
                          else Point(*end_pos))

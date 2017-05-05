@@ -2,26 +2,26 @@ from brown.core.invisible_object import InvisibleObject
 
 
 class LayoutController(InvisibleObject):
-    """An abstract layout controller for working with FlowableFrame layouts."""
+    """An abstract layout controller for working with Flowable layouts."""
 
     _is_automatic = False
     """bool: Whether or not this controller class is automatically created
-             by its `FlowableFrame`.
+             by its `Flowable`.
     """
 
-    def __init__(self, pos, page, flowable_frame, local_x):
+    def __init__(self, pos, page, flowable, local_x):
         """
         Args:
             pos (Point): The position of this controller relative to its page.
             page (Page): The page this controller appears on. This is used as
                 the object's parent.
-            flowable_frame (FlowableFrame): The frame this controller
+            flowable (Flowable): The flowable this controller
                 belongs in. Note that this is *not* the object's parent.
             local_x (Unit): The position of this controller within the
-                `FlowableFrame`s local space.
+                `Flowable`s local space.
         """
         super().__init__(pos, page)
-        self._flowable_frame = flowable_frame
+        self._flowable = flowable
         self._local_x = local_x
 
     ######## PUBLIC PROPERTIES ########
@@ -36,17 +36,17 @@ class LayoutController(InvisibleObject):
         return self.parent
 
     @property
-    def flowable_frame(self):
-        """FlowableFrame: The parent frame this controller is bound to."""
-        return self._flowable_frame
+    def flowable(self):
+        """Flowable: The parent flowable this controller is bound to."""
+        return self._flowable
 
-    @flowable_frame.setter
-    def flowable_frame(self, value):
-        self._flowable_frame = value
+    @flowable.setter
+    def flowable(self, value):
+        self._flowable = value
 
     @property
     def local_x(self):
-        """Unit: The x position in `self.flowable_frame`s local space."""
+        """Unit: The x position in `self.flowable`s local space."""
         return self._local_x
 
     @local_x.setter

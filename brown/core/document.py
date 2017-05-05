@@ -211,8 +211,8 @@ class Document:
         while current != self:
             pos += current.pos
             current = current.parent
-            if type(current).__name__ == 'FlowableFrame':
-                # If the parent is a flowable frame,
+            if type(current).__name__ == 'Flowable':
+                # If the parent is a flowable,
                 # let it decide where this point goes.
                 return current.map_to_canvas(pos)
         return pos
