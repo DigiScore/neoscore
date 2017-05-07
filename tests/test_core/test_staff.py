@@ -102,55 +102,55 @@ class TestStaff(unittest.TestCase):
         staff = Staff((Mm(0), Mm(0)), Mm(100), self.flowable, line_count=4)
         i = -1
         while i < 5:
-            assert(staff._position_outside_staff(staff.unit(i)) !=
-                   staff._position_inside_staff(staff.unit(i)))
+            assert(staff.y_outside_staff(staff.unit(i)) !=
+                   staff.y_inside_staff(staff.unit(i)))
             i += 1
 
     def test_position_inside_staff_with_odd_line_count(self):
         staff = Staff((Mm(0), Mm(0)), Mm(100), self.flowable, line_count=5)
-        assert(staff._position_inside_staff(staff.unit(0)) is True)
-        assert(staff._position_inside_staff(staff.unit(4)) is True)
-        assert(staff._position_inside_staff(staff.unit(5)) is False)
-        assert(staff._position_inside_staff(staff.unit(-5)) is False)
+        assert(staff.y_inside_staff(staff.unit(0)) is True)
+        assert(staff.y_inside_staff(staff.unit(4)) is True)
+        assert(staff.y_inside_staff(staff.unit(5)) is False)
+        assert(staff.y_inside_staff(staff.unit(-5)) is False)
 
     def test_position_inside_staff_with_even_line_count(self):
         staff = Staff((Mm(0), Mm(0)), Mm(100), self.flowable, line_count=4)
-        assert(staff._position_inside_staff(staff.unit(0)) is True)
-        assert(staff._position_inside_staff(staff.unit(3)) is True)
-        assert(staff._position_inside_staff(staff.unit(4)) is False)
-        assert(staff._position_inside_staff(staff.unit(-4)) is False)
+        assert(staff.y_inside_staff(staff.unit(0)) is True)
+        assert(staff.y_inside_staff(staff.unit(3)) is True)
+        assert(staff.y_inside_staff(staff.unit(4)) is False)
+        assert(staff.y_inside_staff(staff.unit(-4)) is False)
 
     def test_position_on_ledger_with_odd_line_count(self):
         staff = Staff((Mm(0), Mm(0)), Mm(100), self.flowable, line_count=5)
-        assert(staff._position_on_ledger(staff.unit(-1)) is True)
-        assert(staff._position_on_ledger(staff.unit(-0.5)) is False)
-        assert(staff._position_on_ledger(staff.unit(0)) is False)
-        assert(staff._position_on_ledger(staff.unit(4)) is False)
-        assert(staff._position_on_ledger(staff.unit(4.5)) is False)
-        assert(staff._position_on_ledger(staff.unit(5)) is True)
+        assert(staff.y_on_ledger(staff.unit(-1)) is True)
+        assert(staff.y_on_ledger(staff.unit(-0.5)) is False)
+        assert(staff.y_on_ledger(staff.unit(0)) is False)
+        assert(staff.y_on_ledger(staff.unit(4)) is False)
+        assert(staff.y_on_ledger(staff.unit(4.5)) is False)
+        assert(staff.y_on_ledger(staff.unit(5)) is True)
 
     def test_ledgers_needed_from_position_with_odd_line_count(self):
         staff = Staff((Mm(0), Mm(0)), Mm(100), self.flowable, line_count=5)
         # Inside the staff, no ledgers
-        assert(staff._ledgers_needed_from_position(staff.unit(0)) == set())
-        assert(staff._ledgers_needed_from_position(staff.unit(4)) == set())
+        assert(staff.ledgers_needed_for_y(staff.unit(0)) == set())
+        assert(staff.ledgers_needed_for_y(staff.unit(4)) == set())
         # Just outside the staff, no ledgers
-        assert(staff._ledgers_needed_from_position(staff.unit(-0.5)) == set())
-        assert(staff._ledgers_needed_from_position(staff.unit(4.5)) == set())
+        assert(staff.ledgers_needed_for_y(staff.unit(-0.5)) == set())
+        assert(staff.ledgers_needed_for_y(staff.unit(4.5)) == set())
         # Right on the first ledger
-        assert(staff._ledgers_needed_from_position(staff.unit(-1)) ==
+        assert(staff.ledgers_needed_for_y(staff.unit(-1)) ==
                {staff.unit(-1)})
-        assert(staff._ledgers_needed_from_position(staff.unit(5)) ==
+        assert(staff.ledgers_needed_for_y(staff.unit(5)) ==
                {staff.unit(5)})
         # Further outside with multiple ledgers, directly on lines
-        assert(staff._ledgers_needed_from_position(staff.unit(6)) ==
+        assert(staff.ledgers_needed_for_y(staff.unit(6)) ==
                {staff.unit(6), staff.unit(5)})
-        assert(staff._ledgers_needed_from_position(staff.unit(-2)) ==
+        assert(staff.ledgers_needed_for_y(staff.unit(-2)) ==
                {staff.unit(-2), staff.unit(-1)})
         # Further outside with multiple ledgers, between lines
-        assert(staff._ledgers_needed_from_position(staff.unit(6.5)) ==
+        assert(staff.ledgers_needed_for_y(staff.unit(6.5)) ==
                {staff.unit(6), staff.unit(5)})
-        assert(staff._ledgers_needed_from_position(staff.unit(-2.5)) ==
+        assert(staff.ledgers_needed_for_y(staff.unit(-2.5)) ==
                {staff.unit(-2), staff.unit(-1)})
 
     def test_elements_when_not_located_at_origin(self):

@@ -27,13 +27,13 @@ class Document:
         """
         if paper is None:
             try:
-                self.paper = Paper.from_template(config.DEFAULT_PAPER_TYPE)
+                self._paper = Paper.from_template(config.DEFAULT_PAPER_TYPE)
             except KeyError:
                 raise config.InvalidConfigError(
                     'DEFAULT_PAPER_TYPE of {} is not supported'.format(
                         config.DEFAULT_PAPER_TYPE))
         else:
-            self.paper = paper
+            self._paper = paper
         self._pages = PageSupplier(self)
         self._children = set()
 
@@ -76,24 +76,8 @@ class Document:
 
     @property
     def children(self):
-        """set(GraphicObject): All objects who have self as their parent."""
+        """set(GraphicObject): All objects who have `self` as their parent."""
         return self._children
-
-    @children.setter
-    def children(self, value):
-        self._children = value
-
-    @property
-    def occupied_pages(self):
-        """iter[int]: The nonempty pages in the document.
-
-        This iterator includes any blank pages between occupied pages as well.
-
-        Warning: This is a computationally expensive calculation
-        """
-        min_page, max_page = self._min_max_pages(self.children)
-        # Include the last page in range() by adding 1
-        return range(min_page, max_page + 1)
 
     ######## PRIVATE PROPERTIES ########
 
@@ -110,30 +94,6 @@ class Document:
 
     ######## PRIVATE METHODS ########
 
-    def _min_max_pages(self, graphic_objects):
-        """Find the min and max pages of an iterable of GraphicObjects
-
-        Args:
-            graphic_objects (iter[GraphicObject]):
-
-        Returns: tuple(int, int): (min, max)
-        """
-        min_page = float('inf')
-        max_page = -float('inf')
-        for current in graphic_objects:
-            current_page_num = current.page_index
-            if current.children:
-                child_min_max = self._min_max_pages(current.children)
-                min_page = min(min_page,
-                               current_page_num,
-                               child_min_max[0])
-                max_page = max(max_page, current_page_num, child_min_max[1])
-            else:
-                min_page = min(min_page,
-                               current_page_num)
-                max_page = max(max_page, current_page_num)
-        return min_page, max_page
-
     def _register_child(self, child):
         """Add an object to `self.children`.
 
@@ -142,7 +102,7 @@ class Document:
 
         Returns: None
         """
-        self.children.add(child)
+        self._children.add(child)
 
     def _unregister_child(self, child):
         """Remove an object from `self.children`.
@@ -152,9 +112,47 @@ class Document:
 
         Returns: None
         """
-        self.children.remove(child)
+        self._children.remove(child)
 
-    def _page_origin(self, page_number):
+    ######## PUBLIC METHODS ########
+
+    def page_range_of(self, graphic_objects):
+        """Find the page indices an iter of `GraphicObject`s appears on.
+
+            >>> from brown.common import *
+            >>> brown.setup()
+            >>> graphic_objects = [
+            ...     InvisibleObject((0, 0), brown.document.pages[1]),
+            ...     InvisibleObject((0, 0), brown.document.pages[5]),
+            ... ]
+            >>> brown.document.page_range_of(graphic_objects)
+            range(1, 6)
+
+        Args:
+            graphic_objects (iter[GraphicObject]):
+
+        Returns:
+            range: The range from the first page index to one after the last.
+                In order to be consistent with python's `range` semantics,
+                the range goes 1 past the maximum page objects appear on.
+        """
+        min_page = float('inf')
+        max_page = -float('inf')
+        for current in graphic_objects:
+            current_page_num = current.page_index
+            if current.children:
+                child_min_max = self.page_range_of(current.children)
+                min_page = min(min_page,
+                               current_page_num,
+                               child_min_max[0])
+                max_page = max(max_page, current_page_num, child_min_max[1])
+            else:
+                min_page = min(min_page,
+                               current_page_num)
+                max_page = max(max_page, current_page_num)
+        return range(min_page, max_page + 1)
+
+    def page_origin(self, page_number):
         """Find the origin point of a given page number.
 
         The origin is the top left corner of the live area, equivalent to
@@ -170,13 +168,13 @@ class Document:
                 is considered relative to the document's origin.
         """
         # Left edge of paper (not including margin/gutter)
-        x_page_left = ((self.paper.width + self._page_display_gap) *
-                       (page_number))
+        x_page_left = ((self.paper.width + self._page_display_gap)
+                       * page_number)
         x_page_origin = x_page_left + self.paper.margin_left
         y_page_origin = self.paper.margin_top
         return Point(x_page_origin, y_page_origin)
 
-    def _paper_origin(self, page_number):
+    def paper_origin(self, page_number):
         """Find the paper origin point of a given page number.
 
         This gives the position of the top left corner of the actual
@@ -195,8 +193,6 @@ class Document:
             (self.paper.width + self._page_display_gap) * page_number,
             GraphicUnit(0)
         )
-
-    ######## PUBLIC METHODS ########
 
     def canvas_pos_of(self, graphic_object):
         """Find the paged document position of a GraphicObject.
@@ -231,7 +227,7 @@ class Document:
 
         Returns: Rect
         """
-        page_origin = self._page_origin(page_number)
+        page_origin = self.page_origin(page_number)
         return Rect(
             page_origin.x,
             page_origin.y,
@@ -253,7 +249,7 @@ class Document:
 
         Returns: Rect
         """
-        paper_origin = self._paper_origin(page_number)
+        paper_origin = self.paper_origin(page_number)
         return Rect(
             paper_origin.x,
             paper_origin.y,

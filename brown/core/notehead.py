@@ -83,8 +83,7 @@ class Notehead(MusicText):
 
     @property
     def staff_position(self):
-        """StaffUnit: The y-axis relative to the staff"""
-        """StaffUnit: The notehead position in the staff.
+        """StaffUnit: The y-axis position in the staff.
 
         StaffUnit(0) means the top staff line, higher values
         mean lower pitches, and vice versa.

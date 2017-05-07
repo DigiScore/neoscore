@@ -117,8 +117,8 @@ class Chordrest(ObjectGroup, StaffObject):
         highest = self.highest_notehead.staff_position
         lowest = self.lowest_notehead.staff_position
         # Join sets of needed ledgers above and below with union operator
-        return (self.staff._ledgers_needed_from_position(lowest) |
-                self.staff._ledgers_needed_from_position(highest))
+        return (self.staff.ledgers_needed_for_y(lowest) |
+                self.staff.ledgers_needed_for_y(highest))
 
     @property
     def rhythm_dot_positions(self):
@@ -195,7 +195,7 @@ class Chordrest(ObjectGroup, StaffObject):
     def noteheads_outside_staff(self):
         """set(Notehead): All noteheads which are above or below the staff"""
         return set(note for note in self.noteheads
-                   if self.staff._position_outside_staff(note.staff_position))
+                   if self.staff.y_outside_staff(note.staff_position))
 
     @property
     def leftmost_notehead_outside_staff(self):

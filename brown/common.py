@@ -14,6 +14,7 @@ from brown.core.flag import Flag
 from brown.core.flowable import Flowable
 from brown.core.font import Font
 from brown.core.hairpin import Hairpin
+from brown.core.invisible_object import InvisibleObject
 from brown.core.key_signature import KeySignature
 from brown.core.ledger_line import LedgerLine
 from brown.core.multi_staff_object import MultiStaffObject

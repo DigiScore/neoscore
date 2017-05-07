@@ -95,7 +95,7 @@ class KeySignature(ObjectGroup, StaffObject):
     ######## INNER CLASSES ########
 
     class _KeySignatureAccidental(MusicText):
-        """An visual accidental.
+        """A visual accidental.
 
         This should only be used within this class.
         """

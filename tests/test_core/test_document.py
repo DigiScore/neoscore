@@ -21,7 +21,7 @@ class TestDocument(unittest.TestCase):
         test_paper = Paper(Mm(200), Mm(250),
                            top_margin, Mm(10), Mm(20), left_margin, 0)
         test_doc = Document(test_paper)
-        found = test_doc._page_origin(0)
+        found = test_doc.page_origin(0)
         expected_x = left_margin
         expected_y = top_margin
         self.assertAlmostEqual(found.x, expected_x)
@@ -34,7 +34,7 @@ class TestDocument(unittest.TestCase):
         test_paper = Paper(width, Mm(250),
                            top_margin, Mm(10), Mm(20), left_margin, 0)
         test_doc = Document(test_paper)
-        found = test_doc._page_origin(1)
+        found = test_doc.page_origin(1)
         page_width = width
         expected_x = (left_margin +
                       page_width + test_doc._page_display_gap)
@@ -49,7 +49,7 @@ class TestDocument(unittest.TestCase):
         test_paper = Paper(width, Mm(250),
                            top_margin, Mm(10), Mm(20), left_margin, 0)
         test_doc = Document(test_paper)
-        found = test_doc._page_origin(2)
+        found = test_doc.page_origin(2)
         page_width = width
         expected_x = (left_margin +
                       ((page_width + test_doc._page_display_gap) * 2))

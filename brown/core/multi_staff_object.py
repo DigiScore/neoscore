@@ -23,7 +23,6 @@ class MultiStaffObject:
         """
         self.staves = staves
 
-
     ######## PUBLIC PROPERTIES ########
 
     @property

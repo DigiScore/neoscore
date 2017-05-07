@@ -31,4 +31,3 @@ class LedgerLine(Path, StaffObject):
         length = base_length + extension
         self.move_to(extension * -1, self.staff.unit(0))
         self.line_to(length, self.staff.unit(0))
-

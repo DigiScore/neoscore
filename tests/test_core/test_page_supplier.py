@@ -29,7 +29,7 @@ class TestPageSupplier(unittest.TestCase):
         assert(len(supplier) == 3)
         assert(new_page == supplier[2])
         assert(isinstance(new_page, Page))
-        assert(new_page.pos == brown.document._page_origin(2))
+        assert(new_page.pos == brown.document.page_origin(2))
         assert(new_page.parent == brown.document)
         assert(new_page.paper == brown.document.paper)
 
@@ -41,7 +41,7 @@ class TestPageSupplier(unittest.TestCase):
         for i in range(3):
             page = supplier[i]
             assert(isinstance(page, Page))
-            assert(page.pos == brown.document._page_origin(i))
+            assert(page.pos == brown.document.page_origin(i))
             assert(page.parent == brown.document)
             assert(page.paper == brown.document.paper)
 

@@ -31,8 +31,8 @@ class Staff(Path):
         """
         super().__init__(pos, parent=flowable)
         self._line_count = line_count
-        self.unit = self._make_unit_class(staff_unit if staff_unit
-                                          else config.DEFAULT_STAFF_UNIT)
+        self._unit = self._make_unit_class(staff_unit if staff_unit
+                                           else config.DEFAULT_STAFF_UNIT)
         if music_font is None:
             self.music_font = MusicFont(config.DEFAULT_MUSIC_FONT_NAME,
                                         self.unit)
@@ -50,6 +50,22 @@ class Staff(Path):
             self.default_time_signature_duration = Beat(4, 4)
 
     ######## PUBLIC PROPERTIES ########
+
+    @property
+    def unit(self):
+        """type: The standard distance between two lines in this staff.
+
+        This is a generated class with the name `StaffUnit`. All `Staff`
+        objects have a unique `StaffUnit` class such that different sized
+        staves may coexist within a score and `StaffObject`s placed within
+        them will be able to correctly position and scale themselves
+        accordingly.
+
+        This class is generated automatically according to `self.height`
+        and `self.line_count`, with the assumption that all staff lines
+        are evenly spaced.
+        """
+        return self._unit
 
     @property
     def height(self):
@@ -169,6 +185,63 @@ class Staff(Path):
             else:
                 return clef.middle_c_staff_position
 
+    def y_inside_staff(self, pos_y):
+        """Determine if a y-axis position is inside the staff.
+
+        This is true for any position within or on the outer lines.
+
+        Args:
+            pos_y (StaffUnit): A vertical staff position
+
+        Returns: bool
+        """
+        return self.top_line_y <= pos_y <= self.bottom_line_y
+
+    def y_outside_staff(self, pos_y):
+        """Determine if a y-axis position is outside of the staff.
+
+        This is true for any position not on or between the outer staff lines.
+
+        Args:
+            pos_y (StaffUnit): A vertical staff position
+
+        Returns: bool
+        """
+        return not self.y_inside_staff(pos_y)
+
+    def y_on_ledger(self, pos_y):
+        """Determine if a y-axis position is on a ledger line position
+
+        This is true for any whole-number position outside of the staff
+
+        Args:
+            pos_y (StaffUnit): A vertical staff position
+
+        Returns: bool
+        """
+        return (self.y_outside_staff(pos_y) and
+                self.unit(pos_y).value % 1 == 0)
+
+    def ledgers_needed_for_y(self, position):
+        """Find the y positions of all ledgers needed for a given y position
+
+        Args:
+            position (StaffUnit): Any y-axis position
+
+        Returns: set(StaffUnit)
+        """
+        # Work on positions as integers for simplicity
+        start = int(self.unit(position).value)
+        if start < 0:
+            return set(self.unit(pos)
+                       for pos in range(start, 0, 1))
+        elif start > self.line_count - 1:
+            return set(self.unit(pos)
+                       for pos in
+                       range(start, self.line_count - 1, -1))
+        else:
+            return set()
+
     ######## PRIVATE METHODS ########
 
     @staticmethod
@@ -182,62 +255,6 @@ class Staff(Path):
             type: A new StaffUnit class specifically for use in this staff.
         """
         class StaffUnit(Unit):
-            _conversion_rate = float(Unit(staff_unit_size))
+            _conversion_rate = Unit(staff_unit_size).value
             # (all other functionality implemented in Unit)
         return StaffUnit
-
-    def _position_inside_staff(self, position):
-        """Determine if a position is inside the staff.
-
-        This is true for any position within or on the outer lines.
-
-        Args:
-            position (StaffUnit): A vertical staff position
-
-        Returns: bool
-        """
-        return self.top_line_y <= position <= self.bottom_line_y
-
-    def _position_outside_staff(self, position):
-        """Determine if a position is outside of the staff.
-
-        This is true for any position not on or between the outer staff lines.
-
-        Args:
-            position (StaffUnit): A vertical staff position
-
-        Returns: bool
-        """
-        return not self._position_inside_staff(position)
-
-    def _position_on_ledger(self, position):
-        """Tell if a position is on a ledger line position
-
-        This is true for any whole-number position outside of the staff
-
-        Args:
-            position (StaffUnit): A vertical staff position
-
-        Returns: bool
-        """
-        return (self._position_outside_staff(position) and
-                self.unit(position).value % 1 == 0)
-
-    def _ledgers_needed_from_position(self, position):
-        """Find the y positions of all ledgers needed for a given y position
-
-        Args:
-            position (StaffUnit): Any y-axis position
-
-        Returns: set(StaffUnit)
-        """
-        # Work on positions as integers for simplicity, but return as StaffUnits
-        start = int(self.unit(position).value)
-        if start < 0:
-            return set(self.unit(pos)
-                       for pos in range(start, 0, 1))
-        elif start > self.line_count - 1:
-            return set(self.unit(pos)
-                       for pos in range(start, self.line_count - 1, -1))
-        else:
-            return set()

@@ -40,10 +40,6 @@ class LayoutController(InvisibleObject):
         """Flowable: The parent flowable this controller is bound to."""
         return self._flowable
 
-    @flowable.setter
-    def flowable(self, value):
-        self._flowable = value
-
     @property
     def local_x(self):
         """Unit: The x position in `self.flowable`s local space."""

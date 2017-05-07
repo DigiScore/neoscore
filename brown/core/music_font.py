@@ -31,7 +31,7 @@ class MusicFont(Font):
 
     @property
     def em_size(self):
-        """GraphicUnit: The em size for the font."""
+        """Unit: The em size for the font."""
         return self._em_size
 
     @property

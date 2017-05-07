@@ -4,9 +4,8 @@ from brown.utils.rect import Rect
 class MusicChar:
     """A SMuFL music character.
 
-
     Attributes:
-        font (MusicFont): The font used to derivce SMuFL spec information
+        font (MusicFont): The font used to derive SMuFL spec information
             about this glyph.
         canonical_name (str): The canonical SMuFL name of this font
         alternate_number (int or None): An optional alternate glyph code.

@@ -17,7 +17,7 @@ class NewLine(LayoutController):
                 current line and the top of the next. Defaults to `Unit(0)`
         """
         super().__init__(pos, page, flowable, local_x)
-        self.offset_y = offset_y if offset_y else Unit(0)
+        self._offset_y = offset_y if offset_y else Unit(0)
 
     ######## PUBLIC PROPERTIES ########
 

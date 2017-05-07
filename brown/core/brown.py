@@ -116,4 +116,5 @@ def render_pdf(path):
     global document
     global _app_interface
     document.render()
-    _app_interface.render_pdf(document.occupied_pages, path)
+    _app_interface.render_pdf((page.page_index for page in document.pages),
+                              path)

@@ -32,7 +32,7 @@ class PageSupplier:
         if index >= len(self._page_list):
             for new_index in range(len(self._page_list), index + 1):
                 self._page_list.append(
-                    Page(self.document._page_origin(new_index),
+                    Page(self.document.page_origin(new_index),
                          self.document,
                          new_index,
                          self.document.paper))
