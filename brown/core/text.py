@@ -95,7 +95,7 @@ class Text(GraphicObject):
             scale_factor=self.scale_factor,
             clip_start_x=clip_start_x,
             clip_width=clip_width)
-        slice_interface._render()
+        slice_interface.render()
         self.interfaces.add(slice_interface)
 
     def _render_complete(self, pos, dist_to_line_start=None):

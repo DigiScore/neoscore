@@ -39,7 +39,7 @@ class TextInterface(GraphicObjectInterface):
         self._text = text
         self.clip_start_x = clip_start_x
         self.clip_width = clip_width
-        self._qt_object = QEnhancedTextItem(
+        self.qt_object = QEnhancedTextItem(
             self.text,
             origin_offset=point_to_qt_point_f(self.origin_offset),
             scale_factor=self.scale_factor,
@@ -60,7 +60,7 @@ class TextInterface(GraphicObjectInterface):
     @text.setter
     def text(self, value):
         self._text = value
-        self._qt_object.setText(value)
+        self.qt_object.setText(value)
 
     @property
     def font(self):
@@ -70,7 +70,7 @@ class TextInterface(GraphicObjectInterface):
     @font.setter
     def font(self, value):
         self._font = value
-        self._qt_object.setFont(value._qt_object)
+        self.qt_object.setFont(value.qt_object)
 
     @property
     def origin_offset(self):
@@ -80,7 +80,7 @@ class TextInterface(GraphicObjectInterface):
     @origin_offset.setter
     def origin_offset(self, value):
         self._origin_offset = value
-        self._qt_object._origin_offset = self._origin_offset
+        self.qt_object._origin_offset = self._origin_offset
 
     @property
     def scale_factor(self):
@@ -90,13 +90,13 @@ class TextInterface(GraphicObjectInterface):
     @scale_factor.setter
     def scale_factor(self, value):
         self._scale_factor = value
-        self._qt_object._scale_factor = self._scale_factor
+        self.qt_object._scale_factor = self._scale_factor
 
     ######## PUBLIC METHODS ########
 
-    def _render(self):
+    def render(self):
         """Render the line to the scene.
 
         Returns: None
         """
-        brown._app_interface.scene.addItem(self._qt_object)
+        brown._app_interface.scene.addItem(self.qt_object)

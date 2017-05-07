@@ -156,7 +156,7 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
                 self.font._interface,
                 self.brush._interface,
                 origin_offset=self._origin_offset)
-            interface._render()
+            interface.render()
             self.interfaces.add(interface)
 
         def _render_after_break(self, local_start_x, start, stop):
@@ -166,7 +166,7 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
                 self.font._interface,
                 self.brush._interface,
                 origin_offset=self._origin_offset)
-            interface._render()
+            interface.render()
             self.interfaces.add(interface)
 
         def _render_spanning_continuation(self, local_start_x, start, stop):
@@ -176,5 +176,5 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
                 self.font._interface,
                 self.brush._interface,
                 origin_offset=self._origin_offset)
-            interface._render()
+            interface.render()
             self.interfaces.add(interface)

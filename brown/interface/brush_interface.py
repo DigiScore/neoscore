@@ -15,7 +15,7 @@ class BrushInterface:
         """
         # Initialize color to bright red to signal this not being
         # set correctly by color setter
-        self._qt_object = QtGui.QBrush(QtGui.QColor('#ff0000'))
+        self.qt_object = QtGui.QBrush(QtGui.QColor('#ff0000'))
         self.color = color
         self.pattern = pattern
 
@@ -23,23 +23,31 @@ class BrushInterface:
 
     @property
     def color(self):
-        """Color: The color for the brush"""
+        """Color: The color for the brush.
+        
+        This setter automatically propagates changes to the
+        underlying Qt object.
+        """
         return self._colorterm
 
     @color.setter
     def color(self, color):
         self._color = color
-        self._qt_object.setColor(QtGui.QColor(color.red,
-                                              color.green,
-                                              color.blue,
-                                              color.alpha))
+        self.qt_object.setColor(QtGui.QColor(color.red,
+                                             color.green,
+                                             color.blue,
+                                             color.alpha))
 
     @property
     def pattern(self):
-        """BrushPattern: The fill pattern."""
+        """BrushPattern: The fill pattern.
+        
+        This setter automatically propagates changes to the
+        underlying Qt object.
+        """
         return self._pattern
 
     @pattern.setter
     def pattern(self, value):
         self._pattern = value
-        self._qt_object.setStyle(self.pattern.value)
+        self.qt_object.setStyle(self.pattern.value)

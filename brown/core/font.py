@@ -92,4 +92,4 @@ class Font:
         Returns:
             Rect[Unit]: a bounding rectangle.
         """
-        return self._interface.tight_bounding_rect_of(string)
+        return self._interface.bounding_rect_of(string)

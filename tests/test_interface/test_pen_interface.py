@@ -10,31 +10,31 @@ class TestPenInterface(unittest.TestCase):
 
     def test_color_passed_to_qt(self):
         pen = PenInterface(Color(0, 100, 200, 250), Mm(1), PenPattern(1))
-        assert(pen._qt_object.color().red() == 0)
-        assert(pen._qt_object.color().green() == 100)
-        assert(pen._qt_object.color().blue() == 200)
-        assert(pen._qt_object.color().alpha() == 250)
+        assert(pen.qt_object.color().red() == 0)
+        assert(pen.qt_object.color().green() == 100)
+        assert(pen.qt_object.color().blue() == 200)
+        assert(pen.qt_object.color().alpha() == 250)
 
     def test_thickness_converted_to_qt_units(self):
         pen = PenInterface(Color("#ffffff"), Mm(1), PenPattern(1))
-        self.assertAlmostEqual(pen._qt_object.widthF(),
+        self.assertAlmostEqual(pen.qt_object.widthF(),
                                GraphicUnit(Mm(1)).value)
 
-    def test_change_color_changes_qt_object(self):
+    def test_change_color_changesqt_object(self):
         pen = PenInterface(Color("#ffffff"), Mm(1), PenPattern(1))
         pen.color = Color(0, 100, 200, 250)
-        assert(pen._qt_object.color().red() == 0)
-        assert(pen._qt_object.color().green() == 100)
-        assert(pen._qt_object.color().blue() == 200)
-        assert(pen._qt_object.color().alpha() == 250)
+        assert(pen.qt_object.color().red() == 0)
+        assert(pen.qt_object.color().green() == 100)
+        assert(pen.qt_object.color().blue() == 200)
+        assert(pen.qt_object.color().alpha() == 250)
 
-    def test_change_thickness_changes_qt_object(self):
+    def test_change_thickness_changesqt_object(self):
         pen = PenInterface(Color("#ffffff"), 0, PenPattern(1))
         pen.thickness = Mm(1)
-        self.assertAlmostEqual(pen._qt_object.widthF(),
+        self.assertAlmostEqual(pen.qt_object.widthF(),
                                GraphicUnit(Mm(1)).value)
 
-    def test_change_pen_pattern_changes_qt_object(self):
+    def test_change_pen_pattern_changesqt_object(self):
         pen = PenInterface(Color("#ffffff"), 0, PenPattern(1))
-        pen._qt_object.setStyle(2)
-        assert(pen._qt_object.style() == 2)
+        pen.qt_object.setStyle(2)
+        assert(pen.qt_object.style() == 2)

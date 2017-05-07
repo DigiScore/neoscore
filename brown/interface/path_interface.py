@@ -25,12 +25,12 @@ If a `lineTo(0, 0)`, a `moveTo(0, 0)` is performed instead:
     >>> from brown.core import brown; brown.setup()
     >>> line_to_origin = PathInterface((5, 6))
     >>> line_to_origin.line_to((0, 0))
-    >>> assert(line_to_origin._qt_path == line_to_origin._qt_object.path())
+    >>> assert(line_to_origin._qt_path == line_to_origin.qt_object.path())
     >>> assert(line_to_origin._qt_path.elementCount() == 1)
     >>> assert(line_to_origin._qt_path.elementAt(0).isMoveTo() == True)
     >>> line_to_elsewhere = PathInterface((5, 6))
     >>> line_to_elsewhere.line_to((1, 0))
-    >>> assert(line_to_elsewhere._qt_path == line_to_elsewhere._qt_object.path())
+    >>> assert(line_to_elsewhere._qt_path == line_to_elsewhere.qt_object.path())
     >>> assert(line_to_elsewhere._qt_path.elementCount() == 2)
     >>> assert(line_to_elsewhere._qt_path.elementAt(0).isMoveTo() == True)
     >>> assert(line_to_elsewhere._qt_path.elementAt(1).isLineTo() == True)
@@ -69,7 +69,7 @@ class PathInterface(GraphicObjectInterface):
                 Use `None` to render to the end
         """
         self._qt_path = QtGui.QPainterPath()
-        self._qt_object = QClippingPath(self._qt_path,
+        self.qt_object = QClippingPath(self._qt_path,
                                         clip_start_x, clip_width)
         self.pos = pos
         self.pen = pen
@@ -117,7 +117,7 @@ class PathInterface(GraphicObjectInterface):
         """
         target = Point(pos.x, pos.y).to_unit(GraphicUnit)
         self._qt_path.lineTo(target.x.value, target.y.value)
-        self._update_qt_object_path()
+        self.update_qt_path()
 
     def cubic_to(self,
                  control_1,
@@ -128,9 +128,9 @@ class PathInterface(GraphicObjectInterface):
         Moves `self.current_draw_pos` to the new end point.
 
         Args:
-            control_1_x (Point): The local position of the 1st control point
-            control_2_x (Point): The local position of the 2nd control point
-            end_x (Point): The local position of the end point
+            control_1 (Point): The local position of the 1st control point
+            control_2 (Point): The local position of the 2nd control point
+            end (Point): The local position of the end point
 
         Returns: None
         """
@@ -144,7 +144,7 @@ class PathInterface(GraphicObjectInterface):
             control_2_point.y.value,
             end_point.x.value,
             end_point.y.value)
-        self._update_qt_object_path()
+        self.update_qt_path()
 
     def move_to(self, pos):
         """Close the current sub-path and start a new one.
@@ -156,7 +156,7 @@ class PathInterface(GraphicObjectInterface):
         """
         target = Point(pos.x, pos.y).to_unit(GraphicUnit)
         self._qt_path.moveTo(target.x.value, target.y.value)
-        self._update_qt_object_path()
+        self.update_qt_path()
 
     def close_subpath(self):
         """Close the current sub-path and start a new one at (0, 0).
@@ -166,7 +166,7 @@ class PathInterface(GraphicObjectInterface):
         Returns: None
         """
         self._qt_path.closeSubpath()
-        self._update_qt_object_path()
+        self.update_qt_path()
 
     def element_at(self, index):
         """Find the element at a given index and return it.
@@ -201,13 +201,6 @@ class PathInterface(GraphicObjectInterface):
                 element_type = PathElementType.curve_to
             else:
                 element_type = PathElementType.control_point
-            # TODO: Somehow there is a race condition being introduced here.
-            #       Tests sometimes fail saying what should be a curve_to
-            #       is actually being set as a control_point here.
-            #
-            #       Possibly something like Qt is populating the QPainterPath
-            #       element list in another thread, and this code is reaching
-            #       it earlier than expected.
         return PathElementInterface(qt_element, self, qt_index, element_type)
 
     def set_element_position_at(self, index, pos):
@@ -224,22 +217,20 @@ class PathInterface(GraphicObjectInterface):
                 'Element index {} out of bounds (max is {})'.format(
                     index, self._qt_path.elementCount()))
         self._qt_path.setElementPositionAt(index,
-                                           float(GraphicUnit(pos.x)),
-                                           float(GraphicUnit(pos.y)))
-        self._update_qt_object_path()
+                                           GraphicUnit(pos.x).value,
+                                           GraphicUnit(pos.y).value)
+        self.update_qt_path()
 
-    def _render(self):
+    def render(self):
         """Render the line to the scene.
 
         Returns: None
         """
-        brown._app_interface.scene.addItem(self._qt_object)
+        brown._app_interface.scene.addItem(self.qt_object)
 
-    ######## PRIVATE METHODS ########
-
-    def _update_qt_object_path(self):
-        """Synchronize the contents of self._qt_path to self._qt_object
+    def update_qt_path(self):
+        """Synchronize the contents of self._qt_path to self.qt_object
 
         Returns: None
         """
-        self._qt_object.setPath(self._qt_path)
+        self.qt_object.setPath(self._qt_path)

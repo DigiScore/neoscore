@@ -1,11 +1,12 @@
 import os
 import unittest
 
+from brown import config
 from brown.core import brown
+from brown.core.font import Font
 from brown.core.invisible_object import InvisibleObject
 from brown.core.text import Text
-from brown import config
-from brown.core.font import Font
+from brown.interface.app_interface import AppInterface
 
 
 class TestText(unittest.TestCase):
@@ -14,7 +15,7 @@ class TestText(unittest.TestCase):
         brown.setup()
         self.test_font_file_path = os.path.join(
             config.RESOURCES_DIR, 'fonts', 'Bravura.otf')
-        self.font_id = brown._app_interface.register_font(
+        self.font_id = AppInterface.register_font(
             self.test_font_file_path)
         self.font = Font('Bravura', 12, 1, False)
 

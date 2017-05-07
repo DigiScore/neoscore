@@ -26,10 +26,10 @@ class TestPathElementInterface(unittest.TestCase):
         test_element = PathElementInterface(qt_element, test_path, 1, 1)
         assert(float(test_element.pos.x) == 10)
         assert(float(test_element.pos.y) == 11)
-        assert(test_element.parent_path == test_path)
+        assert(test_element.path_interface == test_path)
         assert(test_element.element_type == PathElementType.line_to)
         assert(test_element.index == 1)
-        assert(test_element._qt_object == qt_element)
+        assert(test_element.qt_object == qt_element)
 
     def test_is_move_to(self):
         test_path = PathInterface(Point(5, 6), self.pen, self.brush)

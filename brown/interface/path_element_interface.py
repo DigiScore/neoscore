@@ -19,26 +19,19 @@ class PathElementInterface:
             qt_object (QtGui.Element): The Qt object this element refers to
             parent_path (PathInterface): The path this element belongs to
             index (int): The position of this element in the parent path.
-            element_type (int): The type of element this represents. If None,
-                this will attempt to guess the type. Type guessing for move_to
-                and line_to elements is guaranteed to be accurate, but
-                for distinguishing curves and control points is unsafe and
-                will throw a ValueError
+            element_type (PathElementType or int enum value):
+                The type of element this represents.
 
         Raises:
             ValueError:
         """
-        self._qt_object = qt_object
+        self.qt_object = qt_object
         self._parent_path = parent_path
         self._index = index
         self._pos = Point(qt_object.x, qt_object.y).to_unit(GraphicUnit)
-        if isinstance(element_type, int):
-            # TODO: Clean up this logic
-            self._element_type = PathElementType(element_type)
-        elif isinstance(element_type, PathElementType):
-            self._element_type = element_type
-        else:
-            raise TypeError
+        self._element_type = (element_type
+                              if isinstance(element_type, PathElementType)
+                              else PathElementType(element_type))
 
     ######## PUBLIC PROPERTIES ########
 
@@ -49,10 +42,10 @@ class PathElementInterface:
     @pos.setter
     def pos(self, value):
         self._pos = value
-        self._update_element_in_parent_path()
+        self.update_element_in_path_interface()
 
     @property
-    def parent_path(self):
+    def path_interface(self):
         """PathInterface: The path interface this element belongs in."""
         return self._parent_path
 
@@ -75,12 +68,12 @@ class PathElementInterface:
         #       end point.
         return self._element_type
 
-    ######## PRIVATE PROPERTIES ########
+    ######## PUBLIC METHODS ########
 
-    def _update_element_in_parent_path(self):
-        """Push element properties to self._qt_object and the parent path
+    def update_element_in_path_interface(self):
+        """Push element properties to self.qt_object and the parent path
 
         Returns: None
         """
-        self.parent_path.set_element_position_at(self.index, self.pos)
-        self.parent_path._update_qt_object_path()
+        self.path_interface.set_element_position_at(self.index, self.pos)
+        self.path_interface.update_qt_path()

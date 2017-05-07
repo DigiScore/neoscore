@@ -27,7 +27,6 @@ class QEnhancedTextItem(QtWidgets.QGraphicsSimpleTextItem):
                  **kwargs):
         """
         Args:
-            brush (QBrush):
             origin_offset (QPointF): The offset of the glyph's origin from (0, 0)
             scale_factor (float): A hard scaling factor.
             clip_start_x (Unit or None): The local starting position for the
@@ -60,7 +59,8 @@ class QEnhancedTextItem(QtWidgets.QGraphicsSimpleTextItem):
         painter.scale(self.scale_factor, self.scale_factor)
         if self.clip_start_x is not None:
             clip_offset = QtCore.QPointF(
-                -1 * unit_to_qt_float(self.clip_start_x / self.scale_factor), 0)
+                -1 * unit_to_qt_float(self.clip_start_x / self.scale_factor),
+                0)
         else:
             clip_offset = QtCore.QPointF(0, 0)
         painter.translate((self.origin_offset * -1) + clip_offset)

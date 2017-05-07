@@ -47,7 +47,6 @@ class PathElement(InvisibleObject):
             * Type
             * pos
             * parent
-            * parent_path
             * element_type
 
         Returns: Bool
@@ -57,5 +56,4 @@ class PathElement(InvisibleObject):
         assert(type(first) == type(second) == PathElement)
         assert(first.pos == second.pos)
         assert(first.parent == second.parent)
-        assert(first.parent_path == second.parent_path)
         assert(first.element_type == second.element_type)

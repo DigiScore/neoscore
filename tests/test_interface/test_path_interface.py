@@ -21,9 +21,9 @@ class TestPathInterface(unittest.TestCase):
     def test_init(self):
         test_path = PathInterface(Point(5, 6), self.pen, self.brush)
         assert(test_path.brush == self.brush)
-        assert(test_path._qt_object.brush() == self.brush._qt_object)
+        assert(test_path.qt_object.brush() == self.brush.qt_object)
         assert(test_path.pen == self.pen)
-        assert(test_path._qt_object.pen() == self.pen._qt_object)
+        assert(test_path.qt_object.pen() == self.pen.qt_object)
         assert(test_path.current_draw_pos.x == 0)
         assert(test_path.current_draw_pos.y == 0)
 
@@ -36,7 +36,7 @@ class TestPathInterface(unittest.TestCase):
         test_path.line_to(Point(10, 12))
         assert(test_path.current_draw_pos.x == 10)
         assert(test_path.current_draw_pos.y == 12)
-        assert(test_path._qt_path == test_path._qt_object.path())
+        assert(test_path._qt_path == test_path.qt_object.path())
         assert(test_path._qt_path.currentPosition().x() == 10)
         assert(test_path._qt_path.currentPosition().y() == 12)
         assert(test_path._qt_path.elementCount() == 2)
@@ -62,7 +62,7 @@ class TestPathInterface(unittest.TestCase):
         assert(test_path._qt_path.elementCount() == 1)
         assert(float(move_to_el.pos.x) == 10)
         assert(float(move_to_el.pos.y) == 11)
-        assert(move_to_el.parent_path == test_path)
+        assert(move_to_el.path_interface == test_path)
         assert(move_to_el.element_type == PathElementType.move_to)
 
     def test_close_subpath(self):
@@ -81,7 +81,7 @@ class TestPathInterface(unittest.TestCase):
         line_to_el = test_path.element_at(1)
         assert(float(line_to_el.pos.x) == 10)
         assert(float(line_to_el.pos.y) == 11)
-        assert(line_to_el.parent_path == test_path)
+        assert(line_to_el.path_interface == test_path)
         assert(line_to_el.element_type == PathElementType.line_to)
 
     def test_set_element_position_at(self):

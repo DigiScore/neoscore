@@ -74,7 +74,7 @@ def register_music_font(font_name, font_file_path, metadata_path):
     """
     global _app_interface
     global registered_music_fonts
-    _app_interface.register_font(font_file_path)
+    AppInterface.register_font(font_file_path)
     try:
         with open(metadata_path, 'r') as metadata_file:
             metadata = json.load(metadata_file)

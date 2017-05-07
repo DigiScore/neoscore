@@ -34,7 +34,7 @@ class Unit:
         TypeError: unsupported operand type(s) for +: 'int' and 'Inch'
     """
 
-    __slots__ = ('value')
+    __slots__ = ('value',)
 
     _conversion_rate = 1
     """float: the ratio of this class to `Unit`s.
@@ -45,7 +45,7 @@ class Unit:
     def __init__(self, value):
         """
         Args:
-            value (int, float, Unit): The value of the unit.
+            value (int, float, or Unit): The value of the unit.
                 `int` and `float` literals will be stored directly
                 into `self.value`. Any value which is a unit subclass of
                 `Unit` will be converted to that value in this unit.

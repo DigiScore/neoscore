@@ -21,13 +21,13 @@ class FontInterface:
         self.size = size
         self.weight = weight
         self.italic = italic
-        self._qt_object = QtGui.QFont(self.family_name,
-                                      GraphicUnit(self.size).value,
-                                      self.weight,
-                                      self.italic)
-        self._qt_font_info_object = QtGui.QFontInfo(self._qt_object)
+        self.qt_object = QtGui.QFont(self.family_name,
+                                     GraphicUnit(self.size).value,
+                                     self.weight,
+                                     self.italic)
+        self._qt_font_info_object = QtGui.QFontInfo(self.qt_object)
         self._qt_font_metrics_object = QtGui.QFontMetricsF(
-            self._qt_object,
+            self.qt_object,
             brown._app_interface.view)
 
     ######## PUBLIC PROPERTIES ########
@@ -61,7 +61,7 @@ class FontInterface:
 
     ######## PUBLIC METHODS ########
 
-    def tight_bounding_rect_of(self, text):
+    def bounding_rect_of(self, text):
         """Calculate the tight bounding rectangle around a string in this font.
 
         Args:

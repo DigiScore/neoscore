@@ -15,7 +15,7 @@ def unit_to_qt_int(unit):
 
     Returns: int
     """
-    return int(GraphicUnit(unit))
+    return int(GraphicUnit(unit).value)
 
 
 def unit_to_qt_float(unit):
@@ -26,7 +26,7 @@ def unit_to_qt_float(unit):
 
     Returns: float
     """
-    return float(GraphicUnit(unit))
+    return GraphicUnit(unit).value
 
 
 def qt_point_to_point(qt_point, unit=None):

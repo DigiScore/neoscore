@@ -7,6 +7,7 @@ from PyQt5 import QtGui
 from brown import config
 from brown.core import brown
 from brown.interface.font_interface import FontInterface
+from brown.interface.app_interface import AppInterface
 from brown.utils.units import Unit
 
 
@@ -20,7 +21,7 @@ class TestFontInterface(unittest.TestCase):
         brown.setup()
         test_font_file_path = os.path.join(
             config.RESOURCES_DIR, 'fonts', 'Bravura.otf')
-        self.font_id = brown._app_interface.register_font(
+        self.font_id = AppInterface.register_font(
             test_font_file_path)
 
     def test_init(self):
@@ -32,11 +33,11 @@ class TestFontInterface(unittest.TestCase):
 
     def test_init_qt_attribute_transfer(self):
         test_font = FontInterface('Bravura', MockUnit(12), 1, False)
-        assert(isinstance(test_font._qt_object, QtGui.QFont))
-        assert(test_font._qt_object.bold() is False)
-        assert(test_font._qt_object.italic() is False)
-        assert(test_font._qt_object.pointSize() == 6)
-        assert(test_font._qt_object.weight() == 1)
+        assert(isinstance(test_font.qt_object, QtGui.QFont))
+        assert(test_font.qt_object.bold() is False)
+        assert(test_font.qt_object.italic() is False)
+        assert(test_font.qt_object.pointSize() == 6)
+        assert(test_font.qt_object.weight() == 1)
 
     @pytest.mark.skip
     # Skip this test - seems to vary by OS or display settings?

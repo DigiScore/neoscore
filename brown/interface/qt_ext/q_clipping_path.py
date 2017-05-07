@@ -33,7 +33,7 @@ class QClippingPath(QtWidgets.QGraphicsPathItem):
         painter.save()
         if self.clip_start_x is not None:
             painter.translate(QtCore.QPointF(
-                -1 * float(GraphicUnit(self.clip_start_x)), 0))
+                -1 * GraphicUnit(self.clip_start_x).value, 0))
         clip_area = self.create_clipping_area(
             self.path().boundingRect(),
             self.clip_start_x,
@@ -54,7 +54,7 @@ class QClippingPath(QtWidgets.QGraphicsPathItem):
             bounding_rect (QRectF): The full shape's bounding rectangle
             clip_start_x (Unit or None): The local starting position for the
                 clipping region. Use `None` to render from the start.
-            width (Unit or None): The width of the clipping region.
+            clip_width (Unit or None): The width of the clipping region.
                 Use `None` to render to the end
             extra_padding (float): Extra area padding to be added to all
                 sides of the clipping area. This might be useful, for instance,
@@ -65,12 +65,12 @@ class QClippingPath(QtWidgets.QGraphicsPathItem):
         if clip_start_x is None:
             clip_start_x = bounding_rect.x()
         else:
-            clip_start_x = float(GraphicUnit(clip_start_x))
+            clip_start_x = GraphicUnit(clip_start_x).value
         if clip_width is None:
             clip_width = bounding_rect.width() - clip_start_x
         else:
-            clip_width = float(GraphicUnit(clip_width))
-        padding = float(GraphicUnit(extra_padding))
+            clip_width = GraphicUnit(clip_width).value
+        padding = GraphicUnit(extra_padding).value
         return QtCore.QRectF(clip_start_x - padding,
                              bounding_rect.y() - padding,
                              clip_width + (padding * 2),

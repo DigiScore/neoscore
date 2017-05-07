@@ -18,48 +18,54 @@ class PenInterface:
             pattern (PenPattern or int enum value): The stroke pattern.
                 Defaults to a solid line.
         """
-        # HACK: Initialize color to bright red to this not being set
-        #       by color setter
-        self._qt_object = QtGui.QPen(QtGui.QColor('#FF0000'))
+        self.qt_object = QtGui.QPen()
         self.thickness = thickness
         self.color = color
-        self.pattern = pattern
+        self.pattern = (pattern if isinstance(pattern, PenPattern)
+                        else PenPattern(pattern))
 
     ######## PUBLIC PROPERTIES ########
 
     @property
     def color(self):
-        """Color: The color for the pen"""
+        """Color: The color for the pen.
+        
+        This setter propagates changes to the underlying Qt object.
+        """
         return self._color
 
     @color.setter
     def color(self, color):
         self._color = color
-        self._qt_object.setColor(QtGui.QColor(color.red,
-                                              color.green,
-                                              color.blue,
-                                              color.alpha))
+        self.qt_object.setColor(QtGui.QColor(color.red,
+                                             color.green,
+                                             color.blue,
+                                             color.alpha))
 
     @property
     def thickness(self):
         """Unit: The drawing thickness of the pen.
 
         If set to None, the value defaults to 0, a cosmetic pixel width.
+
+        This setter propagates changes to the underlying Qt object.
         """
         return self._thickness
 
     @thickness.setter
     def thickness(self, value):
         self._thickness = value
-        self._qt_object.setWidthF(
-            float(GraphicUnit(self._thickness)))
+        self.qt_object.setWidthF(GraphicUnit(value).value)
 
     @property
     def pattern(self):
-        """PenPattern: The stroke pattern."""
+        """PenPattern: The stroke pattern.
+        
+        This setter propagates changes to the underlying Qt object.
+        """
         return self._pattern
 
     @pattern.setter
     def pattern(self, value):
-        self._pattern = PenPattern(value)
-        self._qt_object.setStyle(self.pattern.value)
+        self._pattern = value
+        self.qt_object.setStyle(value.value)

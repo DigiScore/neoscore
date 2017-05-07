@@ -75,11 +75,14 @@ class AppInterface:
         self.app = None
         self.scene = None
 
-    def register_font(self, font_file_path):
+    ######## STATIC METHODS ########
+
+    @staticmethod
+    def register_font(font_file_path):
         """Register a list of fonts to the graphics engine.
 
         Args:
-            font_file_paths (str): A list of paths to font files.
+            font_file_path (str): A list of paths to font files.
                 Paths may be either absolute or relative to the package-level
                 `brown` directory. (One folder below the top)
 
@@ -93,4 +96,3 @@ class AppInterface:
         # Qt returns -1 if something went wrong.
         if font_id == -1:
             raise FontRegistrationError(font_file_path)
-        return
