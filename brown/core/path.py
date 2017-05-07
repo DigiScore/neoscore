@@ -260,7 +260,7 @@ class Path(GraphicObject):
                 control_point_buffer.append(relative_pos)
             else:
                 raise AssertionError('Unknown element_type in Path')
-        slice_interface.render()
+        slice_interface._render()
         self.interfaces.add(slice_interface)
 
     def _render_complete(self, pos, dist_to_line_start=None):

@@ -84,9 +84,9 @@ class GraphicObjectInterface(ABC):
         self._brush = value
         self._qt_object.setBrush(self._brush._qt_object)
 
-    ######## PUBLIC METHODS ########
+    ######## PRIVATE METHODS ########
 
-    def render(self):
+    def _render(self):
         """Render the object to the scene.
 
         Returns: None

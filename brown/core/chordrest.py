@@ -252,10 +252,9 @@ class Chordrest(ObjectGroup, StaffObject):
         abs_height = max(min_abs_height, fitted_abs_height)
         return abs_height * self.stem_direction
 
+    ######## PRIVATE METHODS ########
 
-    ######## PUBLIC METHODS ########
-
-    def render(self):
+    def _render(self):
         if self.noteheads:
             # Chord-specific aux objects
             self._position_noteheads_horizontally()
@@ -266,9 +265,7 @@ class Chordrest(ObjectGroup, StaffObject):
             self._create_flag()
         # Both rests and chords needs dots
         self._create_dots()
-        super().render()
-
-    ######## PRIVATE METHODS ########
+        super()._render()
 
     def _create_ledgers(self):
         """Create all required ledger lines and store them in `self.ledgers`

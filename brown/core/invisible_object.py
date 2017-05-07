@@ -16,13 +16,13 @@ class InvisibleObject(GraphicObject):
         """
         super().__init__(pos, parent=parent)
 
-    def render(self):
+    def _render(self):
         """Render all child objects.
 
         Returns: None
         """
         for child in self.children:
-            child.render()
+            child._render()
 
     def _render_before_break(self, start, stop, dist_to_line_start):
         pass

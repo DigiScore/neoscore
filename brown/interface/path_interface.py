@@ -228,7 +228,7 @@ class PathInterface(GraphicObjectInterface):
                                            float(GraphicUnit(pos.y)))
         self._update_qt_object_path()
 
-    def render(self):
+    def _render(self):
         """Render the line to the scene.
 
         Returns: None

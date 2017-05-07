@@ -114,6 +114,14 @@ class Document:
         """
         self._children.remove(child)
 
+    def _render(self):
+        """Render all items in the document.
+
+        Returns: None
+        """
+        for page in self.pages:
+            page._render()
+
     ######## PUBLIC METHODS ########
 
     def page_range_of(self, graphic_objects):
@@ -256,11 +264,3 @@ class Document:
             self.paper.width,
             self.paper.height
         )
-
-    def render(self):
-        """Render all items in the document.
-
-        Returns: None
-        """
-        for child in self.children:
-            child.render()

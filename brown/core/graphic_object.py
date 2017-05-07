@@ -260,18 +260,6 @@ class GraphicObject(ABC):
 
     ######## PUBLIC METHODS ########
 
-    def render(self):
-        """Render the object and all its children.
-
-        Returns: None
-        """
-        if self.flowable is not None:
-            self._render_in_flowable()
-        else:
-            self._render_complete(brown.document.canvas_pos_of(self))
-        for child in self.children:
-            child.render()
-
     def descendants_of_class_or_subclass(self, graphic_object_class):
         """Yield all child descendants with a given class or its subclasses.
 
@@ -332,6 +320,18 @@ class GraphicObject(ABC):
                     None)
 
     ######## PRIVATE METHODS ########
+
+    def _render(self):
+        """Render the object and all its children.
+
+        Returns: None
+        """
+        if self.flowable is not None:
+            self._render_in_flowable()
+        else:
+            self._render_complete(brown.document.canvas_pos_of(self))
+        for child in self.children:
+            child._render()
 
     def _register_child(self, child):
         """Add an object to `self.children`.

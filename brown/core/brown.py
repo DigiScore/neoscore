@@ -101,7 +101,7 @@ def show():
     """
     global document
     global _app_interface
-    document.render()
+    document._render()
     _app_interface.show()
 
 
@@ -115,6 +115,6 @@ def render_pdf(path):
     """
     global document
     global _app_interface
-    document.render()
+    document._render()
     _app_interface.render_pdf((page.page_index for page in document.pages),
                               path)

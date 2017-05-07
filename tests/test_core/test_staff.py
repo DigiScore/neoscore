@@ -161,7 +161,7 @@ class TestStaff(unittest.TestCase):
         """
         staff = Staff((Mm(2), Mm(3)), Mm(10),
                       self.flowable, staff_unit=Mm(1), line_count=5)
-        staff.render()
+        staff._render()
         # Top line
         assert(staff.elements[0].pos == Point(Mm(0), Mm(0)))
         assert(staff.elements[0].parent == staff)

@@ -76,13 +76,13 @@ class Page:
         """
         self.children.remove(child)
 
-    def render(self):
+    def _render(self):
         """Render every object in the page.
 
         Returns: None
         """
         for child in self.children:
-            child.render()
+            child._render()
 
     def descendants_with_class_or_subclass(self, graphic_object_class):
         """Yield all child descendants with a given class or its subclasses.

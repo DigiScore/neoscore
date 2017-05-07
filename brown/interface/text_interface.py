@@ -94,7 +94,7 @@ class TextInterface(GraphicObjectInterface):
 
     ######## PUBLIC METHODS ########
 
-    def render(self):
+    def _render(self):
         """Render the line to the scene.
 
         Returns: None
