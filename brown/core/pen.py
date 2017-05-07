@@ -20,18 +20,21 @@ class Pen:
         """
         Args:
             color (Color or init tuple): The stroke color
-            thickness (Unit): The stroke thickness
+            thickness (Unit): The stroke thickness.
+                A value of `0` indicates Args cosmetic pixel width.
+                Defaults to `config.DEFAULT_PEN_THICKNESS`.
             pattern (PenPattern): The stroke pattern.
                 Defaults to a solid line.
         """
         if isinstance(color, Color):
-            self.color = color
+            self._color = color
         elif isinstance(color, tuple):
-            self.color = Color(*color)
+            self._color = Color(*color)
         else:
-            self.color = Color(color)
-        self.thickness = thickness
-        self.pattern = pattern
+            self._color = Color(color)
+        self._thickness = (thickness if thickness is not None
+                           else GraphicUnit(config.DEFAULT_PEN_THICKNESS))
+        self._pattern = pattern
         self._interface = self._interface_class(self.color,
                                                 self.thickness,
                                                 self.pattern)
@@ -60,17 +63,12 @@ class Pen:
 
     @property
     def thickness(self):
-        """Unit: The stroke thickness.
-
-        A value of `0` (in any unit) indicates a cosmetic pixel width.
-        Setting to `None` will default to `config.DEFAULT_PEN_THICKNESS`
-        """
+        """Unit: The stroke thickness."""
         return self._thickness
 
     @thickness.setter
     def thickness(self, value):
-        self._thickness = (value if value is not None
-                           else GraphicUnit(config.DEFAULT_PEN_THICKNESS))
+        self._thickness = value
 
     @property
     def pattern(self):

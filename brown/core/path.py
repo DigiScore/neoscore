@@ -214,7 +214,8 @@ class Path(GraphicObject):
         Args:
             pos (Point): The doc-space position of the slice beginning
                 (at the top-left corner of the slice)
-            clip_start_x (Unit): The starting x position in the path of the slice
+            clip_start_x (Unit): The starting x position in the path
+                of the slice
             clip_width (Unit): The horizontal length of the slice to
                 be rendered
 

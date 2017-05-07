@@ -39,10 +39,6 @@ class TimeSignature(ObjectGroup, StaffObject):
         self._duration = duration
         # Add one glyph for each digit
         # TODO: This does not currently support multi-digit values
-        #       so time signatures like 12/8 are not supported.
-        #       this may be a good case for making a MusicText
-        #       as that would automatically be able to handle multi-line
-        #       positioning, text centering, etc.
         self._numerator_glyph = MusicText(
             (staff.unit(0), staff.unit(1)),
             self._glyphnames[self.duration.numerator],

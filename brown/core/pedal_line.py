@@ -61,12 +61,12 @@ class PedalLine(HorizontalSpanner, Path, StaffObject):
         """
         # Set up constants
         # The vertical extent of the shape
-        DESCENT = self.staff.unit(1)
+        descent = self.staff.unit(1)
         # The horizontal distance extended to from half lift positions
-        HALF_LIFT_X_EXTENT = self.staff.unit(0.5)
+        half_lift_x_extent = self.staff.unit(0.5)
 
         # Draw opening crook
-        self.line_to(self.staff.unit(0), DESCENT)
+        self.line_to(self.staff.unit(0), descent)
 
         # Draw half lift positions, if any exist
         for pos in self.half_lift_positions:
@@ -75,20 +75,20 @@ class PedalLine(HorizontalSpanner, Path, StaffObject):
                 lift_center_x = pos[0]
                 if self.flowable is not None:
                     lift_center_y = self.flowable.map_between_locally(
-                        lift_parent, self).y + DESCENT
+                        lift_parent, self).y + descent
             elif isinstance(pos, Unit):
                 lift_parent = self
                 lift_center_x = pos
-                lift_center_y = DESCENT
+                lift_center_y = descent
             else:
                 raise AttributeError(
                     'Invalid half lift position: {}'.format(pos))
-            lift_left_x = lift_center_x - HALF_LIFT_X_EXTENT
-            lift_right_x = lift_center_x + HALF_LIFT_X_EXTENT
+            lift_left_x = lift_center_x - half_lift_x_extent
+            lift_right_x = lift_center_x + half_lift_x_extent
             self.line_to(lift_left_x, lift_center_y, lift_parent)
-            self.line_to(lift_center_x, lift_center_y - DESCENT, lift_parent)
+            self.line_to(lift_center_x, lift_center_y - descent, lift_parent)
             self.line_to(lift_right_x, lift_center_y, lift_parent)
 
         # Draw closing crook
-        self.line_to(self.end_x, self.end_y + DESCENT, self.end_parent)
+        self.line_to(self.end_x, self.end_y + descent, self.end_parent)
         self.line_to(self.end_x, self.end_y, self.end_parent)

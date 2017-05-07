@@ -46,10 +46,11 @@ class Chordrest(ObjectGroup, StaffObject):
         self._ledgers = set()
         if pitches:
             for pitch in pitches:
-                self._noteheads.add(Notehead(staff.unit(0), pitch, self.duration, self))
+                self._noteheads.add(
+                    Notehead(staff.unit(0), pitch, self.duration, self))
             self.rest = None
         else:
-            self.rest = Rest(staff.unit(0), duration, self)
+            self.rest = Rest(staff.unit(0), self, duration)
         self._stem = None
         self._flag = None
 
@@ -114,8 +115,8 @@ class Chordrest(ObjectGroup, StaffObject):
 
         An empty set means no ledger lines are needed.
         """
-        highest = self.highest_notehead.staff_position
-        lowest = self.lowest_notehead.staff_position
+        highest = self.highest_notehead.staff_pos
+        lowest = self.lowest_notehead.staff_pos
         # Join sets of needed ledgers above and below with union operator
         return (self.staff.ledgers_needed_for_y(lowest) |
                 self.staff.ledgers_needed_for_y(highest))
@@ -142,21 +143,21 @@ class Chordrest(ObjectGroup, StaffObject):
     def furthest_notehead(self):
         """Notehead or None: The `Notehead` furthest from the staff center"""
         return max(self.noteheads,
-                   key=lambda n: abs(n.staff_position - self.staff.center_pos_y),
+                   key=lambda n: abs(n.staff_pos - self.staff.center_pos_y),
                    default=None)
 
     @property
     def highest_notehead(self):
         """Notehead or None: The highest `Notehead` in the chord."""
         return min(self.noteheads,
-                   key=lambda n: n.staff_position,
+                   key=lambda n: n.staff_pos,
                    default=None)
 
     @property
     def lowest_notehead(self):
         """Notehead or None: The lowest `Notehead` in the chord."""
         return max(self.noteheads,
-                   key=lambda n: n.staff_position,
+                   key=lambda n: n.staff_pos,
                    default=None)
 
     @property
@@ -195,7 +196,7 @@ class Chordrest(ObjectGroup, StaffObject):
     def noteheads_outside_staff(self):
         """set(Notehead): All noteheads which are above or below the staff"""
         return set(note for note in self.noteheads
-                   if self.staff.y_outside_staff(note.staff_position))
+                   if self.staff.y_outside_staff(note.staff_pos))
 
     @property
     def leftmost_notehead_outside_staff(self):
@@ -234,7 +235,7 @@ class Chordrest(ObjectGroup, StaffObject):
         """
         furthest = self.furthest_notehead
         if furthest:
-            return (1 if furthest.staff_position <= self.staff.center_pos_y
+            return (1 if furthest.staff_pos <= self.staff.center_pos_y
                     else -1)
         else:
             return None
@@ -301,7 +302,7 @@ class Chordrest(ObjectGroup, StaffObject):
         Returns: None
         """
         self._stem = Stem(Point(self.staff.unit(0),
-                                self.furthest_notehead.staff_position),
+                                self.furthest_notehead.staff_pos),
                           self.stem_height, self)
 
     def _create_flag(self):
@@ -330,9 +331,9 @@ class Chordrest(ObjectGroup, StaffObject):
         # Start prev_side at wrong side so first note goes on the default side
         prev_side = -1 * default_side
         for note in sorted(self.noteheads,
-                           key=lambda n: n.staff_position,
+                           key=lambda n: n.staff_pos,
                            reverse=(self.stem_direction == -1)):
-            if abs(prev_staff_pos - note.staff_position) < 1:
+            if abs(prev_staff_pos - note.staff_pos) < 1:
                 # This note collides with previous, use switch sides
                 prev_side = -1 * prev_side
             else:
@@ -341,7 +342,7 @@ class Chordrest(ObjectGroup, StaffObject):
             if prev_side == -1:
                 note.x -= note.visual_width
             # Lastly, update prev_staff_pos
-            prev_staff_pos = note.staff_position
+            prev_staff_pos = note.staff_pos
 
     def _position_accidentals_horizontally(self):
         """Reposition accidentals so that they are laid out correctly

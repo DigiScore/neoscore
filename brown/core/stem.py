@@ -43,10 +43,10 @@ class Stem(Path, StaffObject):
 
     @property
     def start_point(self):
-        """PathElement: The inner element attached to a Notehead."""
+        """PathElement: The inner point; attached to a `Notehead`."""
         return self.elements[0]
 
     @property
     def end_point(self):
-        """PathElement: The outer element reaching above or below the Chordrest."""
+        """PathElement: The outer point; not attached to a `Notehead`."""
         return self.elements[1]

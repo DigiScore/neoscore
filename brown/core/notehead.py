@@ -49,7 +49,7 @@ class Notehead(MusicText):
                          parent)
 
         self.y = self.staff.unit(
-            self.staff_position
+            self.staff_pos
             - self.flowable.map_between_locally(self.staff, self.parent).y)
 
     ######## PUBLIC PROPERTIES ########
@@ -82,10 +82,10 @@ class Notehead(MusicText):
         self._duration = value
 
     @property
-    def staff_position(self):
+    def staff_pos(self):
         """StaffUnit: The y-axis position in the staff.
 
-        StaffUnit(0) means the top staff line, higher values
+        `StaffUnit(0)` means the top staff line, higher values
         mean lower pitches, and vice versa.
         """
         return (self.staff.middle_c_at(self.pos_in_staff.x) +

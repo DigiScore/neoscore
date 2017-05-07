@@ -1,4 +1,5 @@
 from brown.core.music_text import MusicText
+from brown.models.beat import Beat
 from brown.utils.point import Point
 from brown.utils.units import Unit
 
@@ -28,14 +29,18 @@ class Rest(MusicText):
         1: 'restWhole',
     }
 
-    def __init__(self, pos_x, duration, parent):
+    def __init__(self, pos_x, parent, duration):
         """
         Args:
-            pos_x (StaffUnit):
-            staff (Staff):
-            duration (Beat):
+            pos_x (StaffUnit): The x-axis position relative to the parent.
+                The y-axis position will be determined automatically.
+                TODO: Pass in a Point here - users may want to give
+                specific rest locations.
+            duration (Beat or init tuple):
+            parent (StaffObject or Staff):
         """
-        self.duration = duration
+        self._duration = (duration if isinstance(duration, Beat)
+                          else Beat(*duration))
         super().__init__(Point(pos_x, Unit(0)),
                          [self._glyphnames[self.duration.base_division]],
                          parent)

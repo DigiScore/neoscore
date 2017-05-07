@@ -30,8 +30,6 @@ class Slur(Path, StaffObject, Spanner):
                       brush=Brush((0, 0, 0, 255)))
         StaffObject.__init__(self, self.parent)
         Spanner.__init__(self, Point(stop.x, stop.y), stop.parent)
-        # TODO: is this pos override necessary? Probably not???
-        self.pos = Point(self.staff.unit(0), self.staff.unit(0))
         self.direction = direction
         # Load relevant engraving defaults from music font
         engraving_defaults = self.staff.music_font.engraving_defaults
@@ -49,22 +47,22 @@ class Slur(Path, StaffObject, Spanner):
         Returns: None
         """
         mid_height = self.staff.unit(2) * self.direction
-        mid_upper_height = ((self.staff.unit(2) + self.midpoint_thickness) *
-                            self.direction)
-        end_height = (self.endpoint_thickness) * self.direction
+        mid_upper_height = ((self.staff.unit(2) + self.midpoint_thickness)
+                            * self.direction)
+        end_height = self.endpoint_thickness * self.direction
         # Draw upper curve part
         self.move_to(self.staff.unit(0),
                      end_height,
                      self)
         control_1 = ParentPoint(self.staff.unit(1),
-                                  mid_upper_height,
-                                  parent=self)
+                                mid_upper_height,
+                                parent=self)
         control_2 = ParentPoint(self.end_pos.x - self.staff.unit(1),
-                                  self.end_pos.y + mid_upper_height,
-                                  parent=self.end_parent)
+                                self.end_pos.y + mid_upper_height,
+                                parent=self.end_parent)
         end = ParentPoint(self.end_pos.x,
-                            self.end_pos.y + end_height,
-                            parent=self.end_parent)
+                          self.end_pos.y + end_height,
+                          parent=self.end_parent)
         self.cubic_to(control_1.x, control_1.y,
                       control_2.x, control_2.y,
                       end.x, end.y,
@@ -75,14 +73,14 @@ class Slur(Path, StaffObject, Spanner):
                      self.end_parent)
         # Draw lower curve part
         control_1 = ParentPoint(self.end_pos.x - self.staff.unit(1),
-                                  self.end_pos.y + mid_height,
-                                  parent=self.end_parent)
+                                self.end_pos.y + mid_height,
+                                parent=self.end_parent)
         control_2 = ParentPoint(self.x + self.staff.unit(1),
-                                  self.y + mid_height,
-                                  parent=self)
+                                self.y + mid_height,
+                                parent=self)
         end = ParentPoint(self.x,
-                            self.y,
-                            parent=self)
+                          self.y,
+                          parent=self)
         self.cubic_to(control_1.x, control_1.y,
                       control_2.x, control_2.y,
                       end.x, end.y,

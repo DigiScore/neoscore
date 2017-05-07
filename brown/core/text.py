@@ -22,9 +22,9 @@ class Text(GraphicObject):
             scale_factor (float): A hard scaling factor.
         """
         if font:
-            self.font = font
+            self._font = font
         else:
-            self.font = brown.default_font
+            self._font = brown.default_font
         self._text = text
         self.scale_factor = scale_factor
         super().__init__(pos, parent=parent)

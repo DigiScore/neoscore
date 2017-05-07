@@ -20,13 +20,13 @@ class Paper:
             margin_left (Unit): The paper left margin.
             gutter (Unit): The paper gutter.
         """
-        self.width = width
-        self.height = height
-        self.margin_top = margin_top
-        self.margin_right = margin_right
-        self.margin_bottom = margin_bottom
-        self.margin_left = margin_left
-        self.gutter = gutter
+        self._width = width
+        self._height = height
+        self._margin_top = margin_top
+        self._margin_right = margin_right
+        self._margin_bottom = margin_bottom
+        self._margin_left = margin_left
+        self._gutter = gutter
 
     ######## CLASS METHODS ########
 

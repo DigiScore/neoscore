@@ -83,7 +83,7 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
         self.transposition = Transposition(OctaveLine.intervals[indication])
         self.line_text = OctaveLine._OctaveLineText(
             # No offset relative to ObjectGroup
-            pos=(GraphicUnit(0), GraphicUnit(0)),
+            pos=Point(GraphicUnit(0), GraphicUnit(0)),
             parent=self,
             length=self.length,
             indication=indication)

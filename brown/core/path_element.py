@@ -19,7 +19,9 @@ class PathElement(InvisibleObject):
         """
         super().__init__(pos, parent=parent)
         self.parent_path = path
-        self.element_type = element_type
+        self._element_type = (element_type
+                              if isinstance(element_type, PathElementType)
+                              else PathElementType(element_type))
 
     ######## PUBLIC PROPERTIES ########
 
@@ -27,17 +29,18 @@ class PathElement(InvisibleObject):
     def element_type(self):
         """PathElementType: Enumeration for the type of element."""
         return self._element_type
-        return self._path_element_interface.element_type
 
     @element_type.setter
     def element_type(self, value):
-        self._element_type = PathElementType(value)
+        self._element_type = value
 
     ######## PRIVATE METHODS ########
 
     @staticmethod
     def _assert_soft_equal(first, second):
         """An internal soft equality assertion for testing.
+
+        **FOR TESTING PURPOSES ONLY**
 
         Tells whether the following properties are equal with another object:
 
@@ -46,8 +49,6 @@ class PathElement(InvisibleObject):
             * parent
             * parent_path
             * element_type
-
-        Warning: This is for testing purposes only.
 
         Returns: Bool
 
