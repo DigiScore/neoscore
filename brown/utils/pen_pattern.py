@@ -10,13 +10,17 @@ class PenPattern(Enum):
     patterns. See the following page from the relevant Qt docs:
         http://doc.qt.io/qt-5.7/qt.html#PenStyle-enum
     """
-    # A solid line
     SOLID = 1
-    # Dashes separated by blank space
+    """A solid line"""
+
     DASH = 2
-    # Small dots separated by blank space
+    """Dashes separated by blank space"""
+
     DOT = 3
-    # Alternating dashes and dots
+    """Small dots separated by blank space"""
+
     DASHDOT = 4
-    # A repeating pattern of one dash and two dots
+    """Alternating dashes and dots"""
+
     DASHDOTDOT = 5
+    """A repeating pattern of one dash and two dots"""

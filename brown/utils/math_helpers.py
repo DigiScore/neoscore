@@ -5,7 +5,7 @@ from fractions import Fraction
 from brown.utils.point import Point
 
 
-def linear_interp(line_start, line_end, x):
+def interpolate(line_start, line_end, x):
     """Calculate the value of a line defined by two points at a given x pos
 
     Args:

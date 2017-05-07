@@ -1,6 +1,6 @@
 from brown.utils.units import Unit
 from brown.utils.point import Point
-from brown.utils.math_helpers import (linear_interp,
+from brown.utils.math_helpers import (interpolate,
                                       clamp_value,
                                       min_and_max,
                                       sign,
@@ -8,17 +8,17 @@ from brown.utils.math_helpers import (linear_interp,
 
 
 def test_linear_interp():
-    assert(linear_interp((0, 0), (1, 1), 2) == 2)
-    assert(linear_interp((1, 1), (0, 0), -1) == -1)
-    assert(linear_interp((0, 0), (2, 1), 3) == 1.5)
+    assert(interpolate((0, 0), (1, 1), 2) == 2)
+    assert(interpolate((1, 1), (0, 0), -1) == -1)
+    assert(interpolate((0, 0), (2, 1), 3) == 1.5)
 
 
 def test_linear_interp_with_points():
-    assert(linear_interp(Point(0, 0), Point(1, 1), 2) == 2)
+    assert(interpolate(Point(0, 0), Point(1, 1), 2) == 2)
 
 
 def test_linear_interp_with_units_preserves_units():
-    assert(linear_interp(
+    assert(interpolate(
         (Unit(0), Unit(0)),
         (Unit(2), Unit(1)),
         Unit(3)

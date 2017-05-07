@@ -63,7 +63,7 @@ class Beat:
         else:
             raise TypeError('Invalid Beat init signature')
 
-        self._collapsed_fraction = self.as_collapsed_fraction()
+        self._collapsed_fraction = self.to_fraction()
 
         # Calculate base division and dot count
         if isinstance(self.numerator, type(self)):
@@ -248,7 +248,7 @@ class Beat:
 
     ######## PUBLIC METHODS ########
 
-    def as_collapsed_fraction(self):
+    def to_fraction(self):
         """Collapse this `Beat` into a single `Fraction` and return it.
 
         This recursively collapses any nested `Beat`s and simplifies

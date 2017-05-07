@@ -110,6 +110,6 @@ class TestBeat(unittest.TestCase):
         assert(Beat(7, 16).dot_count == 2)
 
     def test_collapsed_fraction(self):
-        assert (Beat(1, 4)).as_collapsed_fraction() == Fraction(1, 4)
-        assert (Beat(2, 4)).as_collapsed_fraction() == Fraction(1, 2)
-        assert(Beat(Beat(1, 2), 4).as_collapsed_fraction() == Fraction(1, 8))
+        assert (Beat(1, 4)).to_fraction() == Fraction(1, 4)
+        assert (Beat(2, 4)).to_fraction() == Fraction(1, 2)
+        assert(Beat(Beat(1, 2), 4).to_fraction() == Fraction(1, 8))

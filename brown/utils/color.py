@@ -10,7 +10,7 @@ class Color:
             * Color(red, green, blue)
             * Color(red, green, blue, alpha)
             * Color(hex_string)
-            * Color(hex_stirng, alpha)
+            * Color(hex_string, alpha)
 
         Currently entering these values as keyword arguments
         is not supported.
@@ -50,7 +50,6 @@ class Color:
         Colors with equal properties will have the same hash.
         """
         return hash(self.__repr__())
-
 
     ######## PUBLIC PROPERTIES ########
 
@@ -100,33 +99,33 @@ class Color:
 
     ######## PRIVATE METHODS ########
 
-    def _set_with_hex(self, hex):
+    def _set_with_hex(self, hex_value):
         """Set properties from an #rrggbb hex string
 
         Args:
-            hex (str): A hexadecimal color string with 6 characters
+            hex_value (str): A hexadecimal color string with 6 characters
                 (or 7 if including a leading "#")
 
         Returns: None
         """
-        if len(hex) > 6:
-            hex = hex[-6:]
-        self.red = int(hex[0:2], 16)
-        self.green = int(hex[2:4], 16)
-        self.blue = int(hex[4:6], 16)
+        if hex_value.startswith('#'):
+            hex_value = hex_value[1:]
+        self.red = int(hex_value[0:2], 16)
+        self.green = int(hex_value[2:4], 16)
+        self.blue = int(hex_value[4:6], 16)
         self.alpha = 255
 
-    def _set_with_hex_alpha(self, hex, alpha):
+    def _set_with_hex_alpha(self, hex_value, alpha):
         """Set properties from an #rrggbb hex string and a 0-255 alpha value
 
         Args:
-            hex (str): A hexadecimal color string with 6 characters
+            hex_value (str): A hexadecimal color string with 6 characters
                 (or 7 if including a leading "#")
             alpha (int): A 0-255 alpha channel value
 
         Returns: None
         """
-        self._set_with_hex(hex)
+        self._set_with_hex(hex_value)
         self.alpha = alpha
 
     def _set_with_rgb(self, red, green, blue):
@@ -155,5 +154,7 @@ class Color:
 
         Returns: None
         """
-        self._set_with_rgb(red, green, blue)
+        self.red = red
+        self.green = green
+        self.blue = blue
         self.alpha = alpha
