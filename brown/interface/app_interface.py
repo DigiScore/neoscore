@@ -79,12 +79,12 @@ class AppInterface:
 
     @staticmethod
     def register_font(font_file_path):
-        """Register a list of fonts to the graphics engine.
+        """Register a font file with the graphics engine.
 
         Args:
-            font_file_path (str): A list of paths to font files.
-                Paths may be either absolute or relative to the package-level
-                `brown` directory. (One folder below the top)
+            font_file_path (str): A path to a font file. The path should
+                be relative to the main `brown` package. Currently only
+                TrueType and OpenType fonts are supported.
 
         Returns: None
 

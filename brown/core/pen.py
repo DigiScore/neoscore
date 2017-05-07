@@ -11,8 +11,6 @@ class Pen:
     Currently only solid colors are supported.
     """
 
-    _interface_class = PenInterface
-
     def __init__(self,
                  color='#000000',
                  thickness=None,
@@ -35,9 +33,9 @@ class Pen:
         self._thickness = (thickness if thickness is not None
                            else GraphicUnit(config.DEFAULT_PEN_THICKNESS))
         self._pattern = pattern
-        self._interface = self._interface_class(self.color,
-                                                self.thickness,
-                                                self.pattern)
+        self._interface = PenInterface(self.color,
+                                       self.thickness,
+                                       self.pattern)
 
     ######## CONSTRUCOTRS ########
 

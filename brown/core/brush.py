@@ -4,12 +4,12 @@ from brown.utils.color import Color
 
 
 class Brush:
-    """Class for a generic drawing brush controlling fill patterns.
 
-    Currently only solid colors are supported.
+    """A specifier for fill patterns.
+    
+    In general, `Pen`s are responsible for drawing shape outlines
+    while `Brush`es are responsible for filling in shapes.
     """
-
-    _interface_class = BrushInterface
 
     def __init__(self, color='#000000', pattern=BrushPattern.SOLID):
         """
@@ -28,7 +28,7 @@ class Brush:
             self._pattern = pattern
         else:
             self._pattern = BrushPattern(pattern)
-        self._create_interface()
+        self._interface = BrushInterface(self.color, self.pattern)
 
     ######## CONSTRUCOTRS ########
 
@@ -62,13 +62,3 @@ class Brush:
     @pattern.setter
     def pattern(self, value):
         self._pattern = value
-
-
-    ######## PRIVATE METHODS ########
-
-    def _create_interface(self):
-        """Construct an interface and store it in self._interface.
-
-        This should be called by `self.__init__()`
-        """
-        self._interface = self._interface_class(self.color, self.pattern)

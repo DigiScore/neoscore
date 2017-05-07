@@ -7,8 +7,6 @@ from brown.interface.app_interface import AppInterface
 
 """The global state of the application."""
 
-_app_interface_class = AppInterface
-
 _app_interface = None
 
 default_font = None
@@ -48,7 +46,7 @@ def setup(initial_paper=None):
     global document
     global registered_text_fonts
     document = Document(initial_paper)
-    _app_interface = _app_interface_class(document)
+    _app_interface = AppInterface(document)
     register_music_font(config.DEFAULT_MUSIC_FONT_NAME,
                         config.DEFAULT_MUSIC_FONT_PATH,
                         config.DEFAULT_MUSIC_FONT_METADATA_PATH)
@@ -58,6 +56,30 @@ def setup(initial_paper=None):
                         config.DEFAULT_TEXT_FONT_ITALIC)
 
 
+def register_font(font_file_path):
+    """Register a font file with the application.
+
+    If highly consistent typesetting is a concern for your score and
+    you wish to use non-standard fonts (e.g. Times New Roman), it is
+    recommended that you distribute your fonts with `brown` scripts
+    whenever possible, and call this immediately after `brown.setup()`.
+
+    If successful, this makes the font available for use in `Font` objects,
+    to be referenced by the family name embedded in the font file.
+
+    Args:
+        font_file_path (str): A path to a font file. Currently only
+            TrueType and OpenType fonts are supported.
+
+    Returns: None
+
+    Raises: FontRegistrationError: If the font could not be loaded.
+        Typically, this is because the given path does not lead to
+        a valid font file.
+    """
+    AppInterface.register_font(font_file_path)
+
+
 def register_music_font(font_name, font_file_path, metadata_path):
     """Register a music font with the application.
 
@@ -65,16 +87,15 @@ def register_music_font(font_name, font_file_path, metadata_path):
         font_name (str): The canonical name of this font.
             This is used as a dict key for the font metadata
             in `brown.registered_music_fonts`.
-        font_file_path (str): A path to a font file
+        font_file_path (str): A path to a font file.
         metadata_path (str): A path to a SMuFL metadata JSON file
             for this font. The standard SMuFL format for this file name
             will be {lowercase_font_name}_metadata.json.
 
     Returns: None
     """
-    global _app_interface
     global registered_music_fonts
-    AppInterface.register_font(font_file_path)
+    register_font(font_file_path)
     try:
         with open(metadata_path, 'r') as metadata_file:
             metadata = json.load(metadata_file)
@@ -82,10 +103,10 @@ def register_music_font(font_name, font_file_path, metadata_path):
         raise FileNotFoundError(
             'Music font metadata file {} could not be found'.format(
                 metadata_path))
-    except json.JSONDecodeError:
-        raise json.JSONDecodeError(
-            'Invalid JSON metadata in music font '
-            'metadata file {}'.format(metadata_path))
+    except json.JSONDecodeError as e:
+        e.msg = ('Invalid JSON metadata in music font '
+                 'metadata file {}'.format(metadata_path))
+        raise e
     registered_music_fonts[font_name] = metadata
     return metadata
 

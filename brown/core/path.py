@@ -19,8 +19,6 @@ class Path(GraphicObject):
     in a `Flowable`, all point anchors should not be in one either.
     """
 
-    _interface_class = PathInterface
-
     _default_brush = Brush(config.DEFAULT_PATH_BRUSH_COLOR,
                            config.DEFAULT_BRUSH_PATTERN)
 
@@ -225,7 +223,7 @@ class Path(GraphicObject):
               interface and re-drawing the interface path here. This should
               be able to just be copied from one slice interface to the next.
         """
-        slice_interface = self._interface_class(
+        slice_interface = PathInterface(
             pos,
             self.pen._interface,
             self.brush._interface,

@@ -5,10 +5,11 @@ from brown.core.object_group import ObjectGroup
 from brown.core.path import Path
 from brown.core.pen import Pen
 from brown.core.staff_object import StaffObject
-from brown.utils.point import Point
-from brown.utils.pen_pattern import PenPattern
-from brown.utils.units import GraphicUnit
+from brown.interface.text_interface import TextInterface
 from brown.models.transposition import Transposition
+from brown.utils.pen_pattern import PenPattern
+from brown.utils.point import Point
+from brown.utils.units import GraphicUnit
 
 
 class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
@@ -81,7 +82,7 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
         HorizontalSpanner.__init__(self, end_x, end_parent)
         StaffObject.__init__(self, self.parent)
         self.transposition = Transposition(OctaveLine.intervals[indication])
-        self.line_text = OctaveLine._OctaveLineText(
+        self.line_text = _OctaveLineText(
             # No offset relative to ObjectGroup
             pos=Point(GraphicUnit(0), GraphicUnit(0)),
             parent=self,
@@ -114,67 +115,68 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
     def length(self):
         return self.spanner_x_length
 
-    class _OctaveLineText(MusicText):
-        """An octave text mark recurring at line beginnings with added parenthesis.
 
-        This is a private class meant to be used exclusively in the context
-        of an OctaveLine
+class _OctaveLineText(MusicText):
+    """An octave text mark recurring at line beginnings with added parenthesis.
+
+    This is a private class meant to be used exclusively in the context
+    of an OctaveLine
+    """
+
+    def __init__(self, pos, parent, length, indication):
         """
+        Args:
+            pos (Point):
+            parent (GraphicObject):
+            length (Unit):
+            indication (str): A valid octave indication.
+                Should be a valid entry in OctaveLine.glyphs.
+        """
+        MusicText.__init__(self,
+                           pos,
+                           OctaveLine.glyphs[indication],
+                           parent)
+        open_paren_char = MusicChar(self.font, OctaveLine.glyphs['('])
+        close_paren_char = MusicChar(self.font, OctaveLine.glyphs[')'])
+        self.parenthesized_text = (open_paren_char.codepoint
+                                   + self.text
+                                   + close_paren_char.codepoint)
+        self._length = length
 
-        def __init__(self, pos, parent, length, indication):
-            """
-            Args:
-                pos (Point):
-                parent (GraphicObject):
-                length (Unit):
-                indication (str): A valid octave indication.
-                    Should be a valid entry in OctaveLine.glyphs.
-            """
-            MusicText.__init__(self,
-                               pos,
-                               OctaveLine.glyphs[indication],
-                               parent)
-            open_paren_char = MusicChar(self.font, OctaveLine.glyphs['('])
-            close_paren_char = MusicChar(self.font, OctaveLine.glyphs[')'])
-            self.parenthesized_text = (open_paren_char.codepoint
-                                       + self.text
-                                       + close_paren_char.codepoint)
-            self._length = length
+    ######## PUBLIC PROPERTIES ########
 
-        ######## PUBLIC PROPERTIES ########
+    @property
+    def length(self):
+        return self._length
 
-        @property
-        def length(self):
-            return self._length
+    ######## PRIVATE METHODS ########
 
-        ######## PRIVATE METHODS ########
+    def _render_before_break(self, start, stop, dist_to_line_start):
+        interface = TextInterface(
+            start,
+            self.text,
+            self.font._interface,
+            self.brush._interface,
+            origin_offset=self._origin_offset)
+        interface.render()
+        self.interfaces.add(interface)
 
-        def _render_before_break(self, start, stop, dist_to_line_start):
-            interface = self._interface_class(
-                start,
-                self.text,
-                self.font._interface,
-                self.brush._interface,
-                origin_offset=self._origin_offset)
-            interface.render()
-            self.interfaces.add(interface)
+    def _render_after_break(self, local_start_x, start, stop):
+        interface = TextInterface(
+            start,
+            self.parenthesized_text,
+            self.font._interface,
+            self.brush._interface,
+            origin_offset=self._origin_offset)
+        interface.render()
+        self.interfaces.add(interface)
 
-        def _render_after_break(self, local_start_x, start, stop):
-            interface = self._interface_class(
-                start,
-                self.parenthesized_text,
-                self.font._interface,
-                self.brush._interface,
-                origin_offset=self._origin_offset)
-            interface.render()
-            self.interfaces.add(interface)
-
-        def _render_spanning_continuation(self, local_start_x, start, stop):
-            interface = self._interface_class(
-                start,
-                self.parenthesized_text,
-                self.font._interface,
-                self.brush._interface,
-                origin_offset=self._origin_offset)
-            interface.render()
-            self.interfaces.add(interface)
+    def _render_spanning_continuation(self, local_start_x, start, stop):
+        interface = TextInterface(
+            start,
+            self.parenthesized_text,
+            self.font._interface,
+            self.brush._interface,
+            origin_offset=self._origin_offset)
+        interface.render()
+        self.interfaces.add(interface)

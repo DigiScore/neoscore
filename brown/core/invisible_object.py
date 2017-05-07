@@ -5,8 +5,6 @@ class InvisibleObject(GraphicObject):
 
     """A non-renderable object."""
 
-    _interface_class = None
-
     def __init__(self, pos, parent=None):
         """
         Args:

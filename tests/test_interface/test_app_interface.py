@@ -45,7 +45,7 @@ class TestAppInterface(unittest.TestCase):
         font_id = AppInterface.register_font(test_font_file_path)
         assert(QtGui.QFontDatabase.applicationFontFamilies(font_id) == ['Bravura'])
 
-    def test_register_font_with_(self):
+    def test_register_font_with_invalid_path(self):
         test_font_file_path = "path that doesn't exist"
         with pytest.raises(FontRegistrationError):
             AppInterface.register_font(test_font_file_path)

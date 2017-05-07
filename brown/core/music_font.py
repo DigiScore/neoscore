@@ -1,6 +1,5 @@
 from brown.core import brown
 from brown.core.font import Font
-from brown.interface.font_interface import FontInterface
 from brown.utils import smufl
 from brown.utils.exceptions import (MusicFontMetadataNotFoundError,
                                     MusicFontGlyphNotFoundError)
@@ -10,8 +9,6 @@ from brown.utils.units import convert_all_to_unit
 class MusicFont(Font):
 
     """A SMuFL compliant music font"""
-
-    _interface_class = FontInterface
 
     def __init__(self, family_name, staff_unit):
         self.unit = staff_unit

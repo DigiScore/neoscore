@@ -14,8 +14,6 @@ class Document:
     by `brown.setup()`, which creates a global instance of this class which
     can be then accessed as `brown.document`.
 
-    This object should be created by `brown.setup()`
-
     NOTE: Paper gutters are not yet implemented
     """
 
@@ -23,7 +21,7 @@ class Document:
         """
         Args:
             paper (Paper): The paper to use in the document. If None,
-                this defaults to config.DEFAULT_PAPER_TYPE
+                this defaults to `config.DEFAULT_PAPER_TYPE`
         """
         if paper is None:
             try:
@@ -201,9 +199,6 @@ class Document:
         The resulting rect will cover the *live page area* - that is,
         the area within the margins of the page
 
-        All points in the resulting rect will have page=0,
-        as this is considered in canvas space.
-
         Args:
             page_number (int):
 
@@ -222,9 +217,6 @@ class Document:
 
         The resulting rect will cover the entire paper sheet -
         regardless of margins and gutter.
-
-        All points in the resulting rect will have page=0,
-        as this is considered in canvas space.
 
         Args:
             page_number (int):

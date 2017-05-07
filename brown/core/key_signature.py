@@ -92,52 +92,6 @@ class KeySignature(ObjectGroup, StaffObject):
         """`KeySignature`s extend until another is found in the staff."""
         return self.staff.distance_to_next_of_type(self)
 
-    ######## INNER CLASSES ########
-
-    class _KeySignatureAccidental(MusicText):
-        """A visual accidental.
-
-        This should only be used within this class.
-        """
-        def __init__(self, occurrence_offset, clef_offset, text, parent,
-                     font, scale_factor, length, clef):
-            super().__init__(Point(Unit(0), Unit(0)), text, parent,
-                             font, scale_factor)
-            self.clef = clef
-            self.clef_offset = clef_offset
-            self.mid_system_offset = occurrence_offset
-            self.recurring_offset = Point(
-                self.mid_system_offset.x + self.clef_offset,
-                self.mid_system_offset.y)
-            self._length = length
-
-        @property
-        def length(self):
-            return self._length
-
-        @property
-        def _overlaps_with_clef(self):
-            return (self.flowable.map_between_locally(self.clef, self).x
-                    < self.clef_offset)
-
-        def _render_complete(self, pos, dist_to_line_start=None):
-            if self._overlaps_with_clef:
-                self._render_slice(start + self.recurring_offset, None)
-            else:
-                self._render_slice(start + self.mid_system_offset, None)
-
-        def _render_before_break(self, start, stop, dist_to_line_start):
-            if self._overlaps_with_clef:
-                self._render_slice(start + self.recurring_offset, None)
-            else:
-                self._render_slice(start + self.mid_system_offset, None)
-
-        def _render_after_break(self, local_start_x, start, stop):
-            self._render_slice(start + self.recurring_offset, None)
-
-        def _render_spanning_continuation(self, local_start_x, start, stop):
-            self._render_slice(start + self.recurring_offset, None)
-
     ######## PRIVATE METHODS ########
 
     def _create_pseudo_accidentals(self):
@@ -159,7 +113,7 @@ class KeySignature(ObjectGroup, StaffObject):
                 pos_tuple = KeySignature.flat_positions[clef_type][key]
             pos = Point(self.staff.unit(pos_tuple[0]),
                         self.staff.unit(pos_tuple[1]))
-            KeySignature._KeySignatureAccidental(
+            _KeySignatureAccidental(
                 pos,
                 clef_offset,
                 Accidental._canonical_names[value],
@@ -168,3 +122,48 @@ class KeySignature(ObjectGroup, StaffObject):
                 1,
                 self.length,
                 clef)
+
+
+class _KeySignatureAccidental(MusicText):
+    """A visual accidental.
+
+    This should only be used within this class.
+    """
+    def __init__(self, occurrence_offset, clef_offset, text, parent,
+                 font, scale_factor, length, clef):
+        super().__init__(Point(Unit(0), Unit(0)), text, parent,
+                         font, scale_factor)
+        self.clef = clef
+        self.clef_offset = clef_offset
+        self.mid_system_offset = occurrence_offset
+        self.recurring_offset = Point(
+            self.mid_system_offset.x + self.clef_offset,
+            self.mid_system_offset.y)
+        self._length = length
+
+    @property
+    def length(self):
+        return self._length
+
+    @property
+    def _overlaps_with_clef(self):
+        return (self.flowable.map_between_locally(self.clef, self).x
+                < self.clef_offset)
+
+    def _render_complete(self, pos, dist_to_line_start=None):
+        if self._overlaps_with_clef:
+            self._render_slice(start + self.recurring_offset, None)
+        else:
+            self._render_slice(start + self.mid_system_offset, None)
+
+    def _render_before_break(self, start, stop, dist_to_line_start):
+        if self._overlaps_with_clef:
+            self._render_slice(start + self.recurring_offset, None)
+        else:
+            self._render_slice(start + self.mid_system_offset, None)
+
+    def _render_after_break(self, local_start_x, start, stop):
+        self._render_slice(start + self.recurring_offset, None)
+
+    def _render_spanning_continuation(self, local_start_x, start, stop):
+        self._render_slice(start + self.recurring_offset, None)

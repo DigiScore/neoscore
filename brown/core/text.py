@@ -9,8 +9,6 @@ class Text(GraphicObject):
 
     """A graphical text object."""
 
-    _interface_class = TextInterface
-
     def __init__(self, pos, text, font=None, parent=None, scale_factor=1):
         """
         Args:
@@ -26,7 +24,7 @@ class Text(GraphicObject):
         else:
             self._font = brown.default_font
         self._text = text
-        self.scale_factor = scale_factor
+        self._scale_factor = scale_factor
         super().__init__(pos, parent=parent)
 
     ######## PUBLIC PROPERTIES ########
@@ -86,7 +84,7 @@ class Text(GraphicObject):
 
         Returns: None
         """
-        slice_interface = self._interface_class(
+        slice_interface = TextInterface(
             pos,
             self.text,
             self.font._interface,
