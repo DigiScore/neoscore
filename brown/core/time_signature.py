@@ -20,10 +20,10 @@ class TimeSignature(ObjectGroup, StaffObject):
         9: "timeSig9",
     }
 
-    def __init__(self, position_x, duration, staff):
+    def __init__(self, pos_x, duration, staff):
         """
         Args:
-            position_x (StaffUnit): The x position relative to the
+            pos_x (StaffUnit): The x position relative to the
                 parent staff
             duration (Beat): The length of a measure in this
                 time signature. The numerator and denominators
@@ -34,7 +34,7 @@ class TimeSignature(ObjectGroup, StaffObject):
                 are different.
             staff (Staff): The parent staff
         """
-        ObjectGroup.__init__(self, Point(position_x, staff.unit(0)), staff)
+        ObjectGroup.__init__(self, Point(pos_x, staff.unit(0)), staff)
         StaffObject.__init__(self, staff)
         self._duration = duration
         # Add one glyph for each digit

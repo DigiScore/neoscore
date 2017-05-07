@@ -148,7 +148,7 @@ class Staff(Path):
                 return item.transposition
         return None
 
-    def middle_c_at(self, position_x):
+    def middle_c_at(self, pos_x):
         """Find the vertical staff position of middle-c at a given point.
 
         Looks for clefs and other transposing modifiers to determine
@@ -158,8 +158,8 @@ class Staff(Path):
 
         Returns: StaffUnit: A vertical staff position
         """
-        clef = self.active_clef_at(position_x)
-        transposition = self.active_transposition_at(position_x)
+        clef = self.active_clef_at(pos_x)
+        transposition = self.active_transposition_at(pos_x)
         if clef is None:
             raise NoClefError
         else:

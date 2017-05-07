@@ -64,20 +64,13 @@ class Text(GraphicObject):
     @property
     def _bounding_rect(self):
         """The bounding rect override for this text."""
-        return None
+        return self.font.bounding_rect_of(self.text)
 
     @property
     def _origin_offset(self):
         """Point: The origin offset override for this glyph."""
         return Point(GraphicUnit(0),
                      GraphicUnit(self.font.ascent))
-
-    ######## PUBLIC METHODS ########
-
-    def position_y_baseline(self, y):
-        """Position the object such that its first line baseline is at `y`"""
-        self.y = y - self.font.ascent
-
 
     ######## PRIVATE METHODS ########
 

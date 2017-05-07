@@ -1,8 +1,8 @@
 from PyQt5 import QtGui
 
 from brown.core import brown
-from brown.utils.rect import Rect
 from brown.utils.units import GraphicUnit
+from brown.interface.qt_to_util import qt_rect_to_rect
 
 
 class FontInterface:
@@ -61,7 +61,7 @@ class FontInterface:
 
     ######## PUBLIC METHODS ########
 
-    def tight_bounding_rect_around(self, text):
+    def tight_bounding_rect_of(self, text):
         """Calculate the tight bounding rectangle around a string in this font.
 
         Args:
@@ -70,8 +70,6 @@ class FontInterface:
         Returns:
             Rect[GraphicUnit]
         """
-        qt_rect = self._qt_font_metrics_object.tightBoundingRect(text)
-        return Rect(GraphicUnit(qt_rect.x()),
-                    GraphicUnit(qt_rect.y()),
-                    GraphicUnit(qt_rect.width()),
-                    GraphicUnit(qt_rect.height()))
+        return qt_rect_to_rect(
+            self._qt_font_metrics_object.tightBoundingRect(text),
+            GraphicUnit)

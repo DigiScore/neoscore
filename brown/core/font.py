@@ -80,3 +80,16 @@ class Font:
     def em_size(self):
         """GraphicUnit: The em size for the font."""
         return self._interface.em_size
+
+    ######## PUBLIC METHODS ########
+
+    def bounding_rect_of(self, string):
+        """Approximate the bounding rect of a string in this font.
+
+        Args:
+            string (str): The string to derive the rect from
+
+        Returns:
+            Rect[Unit]: a bounding rectangle.
+        """
+        return self._interface.tight_bounding_rect_of(string)
