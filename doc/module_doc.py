@@ -19,7 +19,7 @@ class ModuleDoc:
     docstring_re = re.compile(
         r' *(\"\"\"(?P<content>.*?)\"\"\")',
         flags=re.DOTALL)
-    class_name_re_capture = r'(?P<class>[A-Z]\w*)'
+    class_name_re_capture = r'(?P<class>[A-Z_]\w*)'
     class_re = re.compile(r'^class '
                           + class_name_re_capture
                           + r'(\((?P<superclasses>.*?)\))?'

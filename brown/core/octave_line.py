@@ -130,7 +130,7 @@ class _OctaveLineText(MusicText):
             parent (GraphicObject):
             length (Unit):
             indication (str): A valid octave indication.
-                Should be a valid entry in OctaveLine.glyphs.
+                Should be a valid entry in `OctaveLine.glyphs`.
         """
         MusicText.__init__(self,
                            pos,

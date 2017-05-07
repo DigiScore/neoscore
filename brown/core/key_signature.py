@@ -127,7 +127,7 @@ class KeySignature(ObjectGroup, StaffObject):
 class _KeySignatureAccidental(MusicText):
     """A visual accidental.
 
-    This should only be used within this class.
+    This should only be used within `KeySignature`s.
     """
     def __init__(self, occurrence_offset, clef_offset, text, parent,
                  font, scale_factor, length, clef):
