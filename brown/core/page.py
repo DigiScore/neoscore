@@ -30,11 +30,15 @@ class Page:
             paper (Paper): The type of paper this page uses.
         """
         self.pos = pos if isinstance(pos, Point) else Point(*pos)
-        self.parent = document
-        self.parent._register_child(self)
+        self._document = document
         self._page_index = page_index
         self.paper = paper
         self.children = set()
+
+    @property
+    def parent(self):
+        """Document: The document this page belongs in."""
+        return self._document
 
     @property
     def descendants(self):

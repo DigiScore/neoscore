@@ -35,7 +35,6 @@ class Document:
         else:
             self._paper = paper
         self._pages = PageSupplier(self)
-        self._children = set()
 
     ######## PUBLIC PROPERTIES ########
 
@@ -74,11 +73,6 @@ class Document:
         """
         return self._pages
 
-    @property
-    def children(self):
-        """set(GraphicObject): All objects who have `self` as their parent."""
-        return self._children
-
     ######## PRIVATE PROPERTIES ########
 
     @property
@@ -93,26 +87,6 @@ class Document:
         return config.PAGE_DISPLAY_GAP
 
     ######## PRIVATE METHODS ########
-
-    def _register_child(self, child):
-        """Add an object to `self.children`.
-
-        Args:
-            child (GraphicObject): The object to add
-
-        Returns: None
-        """
-        self._children.add(child)
-
-    def _unregister_child(self, child):
-        """Remove an object from `self.children`.
-
-        Args:
-            child (GraphicObject): The object to remove
-
-        Returns: None
-        """
-        self._children.remove(child)
 
     def _render(self):
         """Render all items in the document.

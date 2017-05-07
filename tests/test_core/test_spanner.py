@@ -40,9 +40,9 @@ class TestSpanner(unittest.TestCase):
 
     def test_length_no_parents(self):
         spanner = MockSpanner((Unit(1), Unit(2)),
-                              brown.document,
+                              brown.document.pages[0],
                               (Unit(5), Unit(7)),
-                              brown.document)
+                              brown.document.pages[0])
         # math.sqrt(((5-1)**2) + ((7-2)**2))
         self.assertAlmostEqual(Unit(spanner.spanner_length).value,
                                6.4031242374328485)
