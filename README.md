@@ -79,6 +79,6 @@ $ python vtests/vtest.py
 
 ### documentation
 
-The documentation (also a work in progress) is hosted at [brown-notation.org](brown-notation.org).
+The documentation (also a work in progress) is hosted at [brown-notation.org](www.brown-notation.org).
 
 Stay tuned for more!
