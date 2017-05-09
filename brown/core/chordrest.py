@@ -29,7 +29,7 @@ class Chordrest(ObjectGroup, StaffObject):
         * `RhythmDot`s if needed by the given `Duration`
     """
 
-    def __init__(self, pos_x, staff, pitches, duration):
+    def __init__(self, pos_x, staff, pitches, duration, stem_direction=None):
         """
         Args:
             pos_x (Unit): The horizontal position
@@ -37,6 +37,10 @@ class Chordrest(ObjectGroup, StaffObject):
             pitches (list[str] or None): A list of pitch strings
                 representing noteheads. An empty list indicates a rest.
             duration (Beat): The duration of the Chordrest
+            stem_direction (int or None): An optional stem direction override
+                where `1` points down and `-1` points up. If omitted, the
+                direction is automatically calculated to point away from
+                the furthest-out notehead.
         """
         StaffObject.__init__(self, staff)
         ObjectGroup.__init__(self, Point(pos_x, staff.unit(0)), staff, None)
@@ -44,6 +48,7 @@ class Chordrest(ObjectGroup, StaffObject):
         self._noteheads = set()
         self._accidentals = set()
         self._ledgers = set()
+        self._stem_direction_override = stem_direction
         if pitches:
             for pitch in pitches:
                 self._noteheads.add(
@@ -225,20 +230,30 @@ class Chordrest(ObjectGroup, StaffObject):
 
     @property
     def stem_direction(self):
-        """int: The direction of the stem, either 1 (down) or -1 (up)
+        """int: The direction of the stem, either `1` (down) or `-1` (up)
 
         Takes the notehead furthest from the center of the staff,
         and returns the opposite direction.
 
         If the furthest notehead is in the center of the staff,
-        the direction defaults to 1
+        the direction defaults to `1`.
+
+        This automatically calculated property may be overridden using
+        its setter. To revert back to the automatically calculated value
+        set this property to `None`.
         """
+        if self._stem_direction_override is not None:
+            return self._stem_direction_override
         furthest = self.furthest_notehead
         if furthest:
             return (1 if furthest.staff_pos <= self.staff.center_pos_y
                     else -1)
         else:
             return None
+
+    @stem_direction.setter
+    def stem_direction(self, value):
+        self._stem_direction_override = value
 
     @property
     def stem_height(self):

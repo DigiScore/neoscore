@@ -119,6 +119,14 @@ class TestChordrest(unittest.TestCase):
         chord = Chordrest(Mm(1), self.staff, pitches, Beat(1, 4))
         assert(chord.stem_direction == 1)
 
+    def test_stem_direction_override(self):
+        pitches = ["b'"]
+        chord = Chordrest(Mm(1), self.staff, pitches, Beat(1, 4), -1)
+        assert(chord.stem_direction == -1)
+        # Setting stem_direction = None should revert to default 1
+        chord.stem_direction = None
+        assert(chord.stem_direction == 1)
+
     def test_stem_height_min(self):
         pitches = ["b'"]
         chord = Chordrest(Mm(1), self.staff, pitches, Beat(1, 4))
