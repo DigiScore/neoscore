@@ -152,9 +152,9 @@ class _KeySignatureAccidental(MusicText):
 
     def _render_complete(self, pos, dist_to_line_start=None):
         if self._overlaps_with_clef:
-            self._render_slice(start + self.recurring_offset, None)
+            self._render_slice(pos + self.recurring_offset, None)
         else:
-            self._render_slice(start + self.mid_system_offset, None)
+            self._render_slice(pos + self.mid_system_offset, None)
 
     def _render_before_break(self, start, stop, dist_to_line_start):
         if self._overlaps_with_clef:
