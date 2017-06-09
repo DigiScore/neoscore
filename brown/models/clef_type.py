@@ -1,4 +1,4 @@
-from enum import Enum, auto
+from enum import Enum
 
 
 class ClefType(Enum):
@@ -8,17 +8,17 @@ class ClefType(Enum):
     The enumeration values are not meaningful.
     """
 
-    treble = auto()
+    treble = 0
     """A typical treble clef."""
 
-    bass = auto()
+    bass = 1
     """A bass clef."""
 
-    bass_8vb = auto()
+    bass_8vb = 2
     """An octave-down transposing bass clef."""
 
-    tenor = auto()
+    tenor = 3
     """A tenor clef."""
 
-    alto = auto()
+    alto = 4
     """An alto clef."""
