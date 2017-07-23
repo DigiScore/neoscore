@@ -5,6 +5,7 @@ from PyQt5.QtPrintSupport import QPrinter
 
 from brown import config
 from brown.interface.qt_to_util import rect_to_qt_rect_f
+from brown.interface.view_interface import ViewInterface
 from brown.utils.exceptions import FontRegistrationError
 
 
@@ -25,8 +26,7 @@ class AppInterface:
         self.app = QtWidgets.QApplication([])
         self.scene = QtWidgets.QGraphicsScene()
         self.registered_music_fonts = {}
-        self.view = QtWidgets.QGraphicsView(self.scene)
-        self.view.setRenderHint(QtGui.QPainter.Antialiasing)
+        self.view = ViewInterface(self.scene)
 
     ######## PUBLIC METHODS ########
 
