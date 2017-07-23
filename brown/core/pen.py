@@ -33,7 +33,8 @@ class Pen:
         self._thickness = (thickness if thickness is not None
                            else GraphicUnit(config.DEFAULT_PEN_THICKNESS))
         self._pattern = pattern
-        self._interface = PenInterface(self.color,
+        self._interface = PenInterface(self,
+                                       self.color,
                                        self.thickness,
                                        self.pattern)
 

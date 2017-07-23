@@ -15,5 +15,5 @@ setup(
     long_description=open(os.path.join(os.path.dirname(__file__),
                                        'README.md')).read(),
     classifiers=[
-    ],
+    ], install_requires=['PyQt5']
 )

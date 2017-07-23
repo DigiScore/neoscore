@@ -1,21 +1,21 @@
 from abc import ABC
 
+from brown.interface.interface import Interface
 from brown.interface.qt_to_util import point_to_qt_point_f
 from brown.utils.point import Point
 from brown.utils.units import GraphicUnit
 
 
-class GraphicObjectInterface(ABC):
+class GraphicObjectInterface(Interface):
     """Interface for a generic graphic object.
 
-    This is a top-level abstract interface class. All graphic interfaces
-    for renderable objects should descend from this.
+    All graphic interfaces for renderable objects should descend from this.
 
     `GraphicObjectInterface` classes have no concept of parentage, or,
     by extension, page numbers. The `GraphicObject`s responsible for
     creating these interface objects should pass only document-space
     positions to these.
-    
+
     Implementing class `__init__` methods should, in the following order:
     * Create a `QGraphicsItem` subclass object and store it in
       `self.qt_object`.
@@ -24,12 +24,19 @@ class GraphicObjectInterface(ABC):
       translated into Qt-compatible values.
     """
 
+    def __init__(self, brown_object):
+        """
+        Args:
+            brown_object (GraphicObject): the brown object this belongs to
+        """
+        super().__init__(brown_object)
+
     ######## PUBLIC PROPERTIES ########
 
     @property
     def pos(self):
         """Point[Unit]: The absolute position of the object.
-        
+
         This setter automatically propagates changes to
         the underlying Qt object.
         """
@@ -47,7 +54,7 @@ class GraphicObjectInterface(ABC):
     @property
     def x(self):
         """Unit: The absolute x position of the object
-        
+
         This setter automatically propagates changes to
         the underlying Qt object.
         """
@@ -61,7 +68,7 @@ class GraphicObjectInterface(ABC):
     @property
     def y(self):
         """Unit: The absolute y position of the object
-        
+
         This setter automatically propagates changes to
         the underlying Qt object.
         """
@@ -75,7 +82,7 @@ class GraphicObjectInterface(ABC):
     @property
     def pen(self):
         """PenInterface: The pen to draw outlines with.
-        
+
         This setter automatically propagates changes to
         the underlying Qt object.
         """
@@ -89,7 +96,7 @@ class GraphicObjectInterface(ABC):
     @property
     def brush(self):
         """BrushInterface: The brush to fill shapes with.
-        
+
         This setter automatically propagates changes to
         the underlying Qt object.
         """

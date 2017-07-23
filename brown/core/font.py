@@ -17,7 +17,8 @@ class Font:
         self.size = size
         self.weight = weight
         self.italic = italic
-        self._interface = FontInterface(self.family_name,
+        self._interface = FontInterface(self,
+                                        self.family_name,
                                         self.size,
                                         self.weight,
                                         self.italic)

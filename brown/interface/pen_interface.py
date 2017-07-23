@@ -1,16 +1,17 @@
 from PyQt5 import QtGui
 
+from brown.interface.interface import Interface
 from brown.utils.pen_pattern import PenPattern
 from brown.utils.units import GraphicUnit
 
 
-class PenInterface:
+class PenInterface(Interface):
     """Interface for a generic drawing pen controlling path outline appearance.
 
     Currently only solid colors are supported.
     """
 
-    def __init__(self, color, thickness, pattern):
+    def __init__(self, brown_object, color, thickness, pattern):
         """
         Args:
             color (Color): The color for the pen
@@ -18,6 +19,7 @@ class PenInterface:
             pattern (PenPattern or int enum value): The stroke pattern.
                 Defaults to a solid line.
         """
+        super().__init__(brown_object)
         self.qt_object = QtGui.QPen()
         self.thickness = thickness
         self.color = color
@@ -29,7 +31,7 @@ class PenInterface:
     @property
     def color(self):
         """Color: The color for the pen.
-        
+
         This setter propagates changes to the underlying Qt object.
         """
         return self._color
@@ -60,7 +62,7 @@ class PenInterface:
     @property
     def pattern(self):
         """PenPattern: The stroke pattern.
-        
+
         This setter propagates changes to the underlying Qt object.
         """
         return self._pattern

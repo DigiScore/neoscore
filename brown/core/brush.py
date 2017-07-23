@@ -6,7 +6,7 @@ from brown.utils.color import Color
 class Brush:
 
     """A specifier for fill patterns.
-    
+
     In general, `Pen`s are responsible for drawing shape outlines
     while `Brush`es are responsible for filling in shapes.
     """
@@ -28,7 +28,7 @@ class Brush:
             self._pattern = pattern
         else:
             self._pattern = BrushPattern(pattern)
-        self._interface = BrushInterface(self.color, self.pattern)
+        self._interface = BrushInterface(self, self.color, self.pattern)
 
     ######## CONSTRUCOTRS ########
 

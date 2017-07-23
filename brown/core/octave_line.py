@@ -153,6 +153,7 @@ class _OctaveLineText(MusicText):
 
     def _render_before_break(self, start, stop, dist_to_line_start):
         interface = TextInterface(
+            self,
             start,
             self.text,
             self.font._interface,
@@ -163,6 +164,7 @@ class _OctaveLineText(MusicText):
 
     def _render_after_break(self, local_start_x, start, stop):
         interface = TextInterface(
+            self,
             start,
             self.parenthesized_text,
             self.font._interface,
@@ -173,6 +175,7 @@ class _OctaveLineText(MusicText):
 
     def _render_spanning_continuation(self, local_start_x, start, stop):
         interface = TextInterface(
+            self,
             start,
             self.parenthesized_text,
             self.font._interface,

@@ -11,6 +11,9 @@ class PathElementInterface:
     to instantiate an instance of this class you should query the parent
     PathInterface.elements[-1] after creating an element, and pass its
     result to the constructor here.
+
+    TODO: Figure out how to elegantly bind these with
+          their PathElement counterparts
     """
 
     def __init__(self, qt_object, parent_path, index, element_type):

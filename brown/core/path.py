@@ -224,6 +224,7 @@ class Path(GraphicObject):
               be able to just be copied from one slice interface to the next.
         """
         slice_interface = PathInterface(
+            self,
             pos,
             self.pen._interface,
             self.brush._interface,

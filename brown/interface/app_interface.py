@@ -4,12 +4,13 @@ from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtPrintSupport import QPrinter
 
 from brown import config
+from brown.interface.interface import Interface
 from brown.interface.qt_to_util import rect_to_qt_rect_f
 from brown.interface.view_interface import ViewInterface
 from brown.utils.exceptions import FontRegistrationError
 
 
-class AppInterface:
+class AppInterface(Interface):
     """The primary interface to the application state.
 
     This holds much of the global state for interacting with the API,
@@ -22,6 +23,8 @@ class AppInterface:
         Args:
             document (Document):
         """
+        super().__init__(None)  # no brown object exists for this
+                                # TODO: make one
         self.document = document
         self.app = QtWidgets.QApplication([])
         self.scene = QtWidgets.QGraphicsScene()
