@@ -1,7 +1,7 @@
 from PyQt5 import QtGui, QtWidgets
 
 
-class ViewInterface(QtWidgets.QGraphicsView):
+class Viewport(QtWidgets.QGraphicsView):
     """The graphical view and working area.
 
     Includes some basic hacky interactivity features,
@@ -18,7 +18,6 @@ class ViewInterface(QtWidgets.QGraphicsView):
         # Default configs
         self.setRenderHint(QtGui.QPainter.Antialiasing)
         self.setDragMode(1)  # ScrollHandDrag
-
 
     def wheelEvent(self, event):
         """Zoom in or out of the view."""

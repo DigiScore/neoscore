@@ -4,9 +4,9 @@ from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtPrintSupport import QPrinter
 
 from brown import config
+from brown.earle.ui.main_window import MainWindow
 from brown.interface.interface import Interface
 from brown.interface.qt_to_util import rect_to_qt_rect_f
-from brown.interface.view_interface import ViewInterface
 from brown.utils.exceptions import FontRegistrationError
 
 
@@ -27,16 +27,19 @@ class AppInterface(Interface):
                                 # TODO: make one
         self.document = document
         self.app = QtWidgets.QApplication([])
+        self.main_window = MainWindow()
         self.scene = QtWidgets.QGraphicsScene()
+        self.view = self.main_window.graphicsView
+        self.view.setScene(self.scene)
         self.registered_music_fonts = {}
-        self.view = ViewInterface(self.scene)
 
     ######## PUBLIC METHODS ########
 
     def show(self):
         """Open a window showing a preview of the document."""
         print('Launching Qt Application instance')
-        self.view.show()
+        #self.view.show()
+        self.main_window.show()
         self.app.exit(self.app.exec_())
 
     def render_pdf(self, pages, path):

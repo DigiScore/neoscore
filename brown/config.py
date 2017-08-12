@@ -12,6 +12,7 @@ from brown.utils.color import Color
 
 BROWN_ROOT_DIR = os.path.join(os.path.dirname(__file__))
 RESOURCES_DIR = os.path.join(BROWN_ROOT_DIR, 'resources')
+UI_DIR = os.path.join(BROWN_ROOT_DIR, 'earle', 'ui')
 
 ######## Defaults ##########################################
 
