@@ -3,6 +3,7 @@ import json
 from brown import config
 from brown.core.document import Document
 from brown.core.font import Font
+from brown.utils.exceptions import FontRegistrationError
 from brown.interface.app_interface import AppInterface
 
 """The global state of the application."""
@@ -78,7 +79,6 @@ def register_font(font_file_path):
         a valid font file.
     """
     AppInterface.register_font(font_file_path)
-
 
 def register_music_font(font_name, font_file_path, metadata_path):
     """Register a music font with the application.

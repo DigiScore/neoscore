@@ -36,13 +36,14 @@ class QEnhancedTextItem(QtWidgets.QGraphicsSimpleTextItem):
 
         All other args are passed directly to QGraphicsSimpleTextItem
         """
+        super().__init__(*args, **kwargs)
         self.origin_offset = origin_offset
         self.scale_factor = scale_factor
         self.clip_start_x = clip_start_x
         self.clip_width = clip_width
-        super().__init__(*args, **kwargs)
+        self.update_geometry()
 
-    def boundingRect(self):
+    def calculate_bounding_rect(self):
         rect = super().boundingRect()
         rect.translate(self.origin_offset * -1)
         scaled_rect = QtCore.QRectF(rect.x() * self.scale_factor,
@@ -51,28 +52,41 @@ class QEnhancedTextItem(QtWidgets.QGraphicsSimpleTextItem):
                                     rect.height() * self.scale_factor)
         return scaled_rect
 
-    def paint(self, painter, option, widget):
-        # For some reason, this seems to need to be scaled *before*
-        # translating, while the boundingRect needs to be translated
-        # before scaling...
-        painter.save()
-        painter.scale(self.scale_factor, self.scale_factor)
-        if self.clip_start_x is not None:
-            clip_offset = QtCore.QPointF(
-                -1 * unit_to_qt_float(self.clip_start_x / self.scale_factor),
-                0)
-        else:
-            clip_offset = QtCore.QPointF(0, 0)
-        painter.translate((self.origin_offset * -1) + clip_offset)
-
-        clip_area = QClippingPath.create_clipping_area(
-            # Get clip area in logical (not scaled or offset) space
+    def calculate_clip_rect(self):
+        # Get clip area in logical (not scaled or offset) space
+        return QClippingPath.calculate_clipping_area(
             super().boundingRect(),
             (self.clip_start_x / self.scale_factor
              if self.clip_start_x is not None else None),
             (self.clip_width / self.scale_factor
              if self.clip_width is not None else None),
             self.pen().width() / self.scale_factor)
-        painter.setClipRect(clip_area)
+
+    def calculate_clip_offset(self):
+        if self.clip_start_x is not None:
+            main_offset = QtCore.QPointF(
+                -1 * unit_to_qt_float(self.clip_start_x / self.scale_factor),
+                0)
+        else:
+            main_offset = QtCore.QPointF(0, 0)
+        return (self.origin_offset * -1) + main_offset
+
+    def update_geometry(self):
+        self.bounding_rect = self.calculate_bounding_rect()
+        self.painter_offset = self.calculate_clip_offset()
+        self.clip_rect = self.calculate_clip_rect()
+        self.prepareGeometryChange()
+
+    def boundingRect(self):
+        return self.bounding_rect
+
+    def paint(self, painter, option, widget):
+        # For some reason, this seems to need to be scaled *before*
+        # translating, while the boundingRect needs to be translated
+        # before scaling...
+        painter.save()
+        painter.scale(self.scale_factor, self.scale_factor)
+        painter.translate(self.painter_offset)
+        painter.setClipRect(self.clip_rect)
         super().paint(painter, option, widget)
         painter.restore()

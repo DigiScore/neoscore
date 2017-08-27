@@ -19,10 +19,7 @@ class TestFontInterface(unittest.TestCase):
 
     def setUp(self):
         brown.setup()
-        test_font_file_path = os.path.join(
-            config.RESOURCES_DIR, 'fonts', 'Bravura.otf')
-        self.font_id = AppInterface.register_font(
-            test_font_file_path)
+        AppInterface._remove_all_loaded_fonts()
 
     def test_init(self):
         test_font = FontInterface(None, 'Bravura', MockUnit(12), 1, False)

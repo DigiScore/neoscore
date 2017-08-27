@@ -94,11 +94,19 @@ class AppInterface(Interface):
 
         Returns: None
 
-        Raises: FontRegistrationError: If the font could not be loaded.
-            Typically, this is because the given path does not lead to
-            a valid font file.
+        Raises: FontRegistrationError: if the registration fails.
         """
         font_id = QtGui.QFontDatabase.addApplicationFont(font_file_path)
         # Qt returns -1 if something went wrong.
         if font_id == -1:
             raise FontRegistrationError(font_file_path)
+
+    @staticmethod
+    def _remove_all_loaded_fonts():
+        """Remove all fonts registered with `AppInterface.register_font`.
+
+        This is primarily useful for testing purposes.
+        """
+        success = QtGui.QFontDatabase.removeAllApplicationFonts()
+        if not success:
+            raise RuntimeError('Failed to remove application fonts.')

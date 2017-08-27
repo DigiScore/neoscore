@@ -55,16 +55,16 @@ class NoFlagNeededError(Exception):
 class FontRegistrationError(Exception):
     """Exception raised when a font is loaded from disk unsuccessfully."""
 
-    def __init__(self, font_file_path):
+    def __init__(self, font_file_path, detail=None):
         """
         Args:
             font_file_path (str): The path to the font file which could
                 not be registered.
+            detail (str): Optional error details.
         """
-        self.message = "Could not register font from file '{}'.".format(
-            font_file_path)
-        if not os.path.isfile(font_file_path):
-            self.message += " That path doesn't seem to point to a file."
+        self.message = "Could not register font from file '{}'.{}".format(
+            font_file_path,
+            ' ' + detail if detail else '')
         super().__init__(self.message)
 
 

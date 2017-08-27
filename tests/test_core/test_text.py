@@ -13,10 +13,6 @@ class TestText(unittest.TestCase):
 
     def setUp(self):
         brown.setup()
-        self.test_font_file_path = os.path.join(
-            config.RESOURCES_DIR, 'fonts', 'Bravura.otf')
-        self.font_id = brown.register_font(
-            self.test_font_file_path)
         self.font = Font('Bravura', 12, 1, False)
 
     def test_init(self):

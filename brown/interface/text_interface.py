@@ -45,6 +45,7 @@ class TextInterface(GraphicObjectInterface):
         self.font = font
         self.pos = pos
         self.brush = brush
+        self.update_geometry()
 
     ######## PUBLIC PROPERTIES ########
 
@@ -89,6 +90,9 @@ class TextInterface(GraphicObjectInterface):
         self.qt_object._scale_factor = self._scale_factor
 
     ######## PUBLIC METHODS ########
+
+    def update_geometry(self):
+        self.qt_object.update_geometry()
 
     def render(self):
         """Render the line to the scene.

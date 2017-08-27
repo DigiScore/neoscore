@@ -15,9 +15,6 @@ class TestMusicText(unittest.TestCase):
 
     def setUp(self):
         brown.setup()
-        brown.register_music_font(config.DEFAULT_MUSIC_FONT_NAME,
-                                  config.DEFAULT_MUSIC_FONT_PATH,
-                                  config.DEFAULT_MUSIC_FONT_METADATA_PATH)
         self.staff = Staff((Mm(0), Mm(0)), Mm(100),
                            flowable=None, staff_unit=Mm(1))
         self.font = MusicFont(config.DEFAULT_MUSIC_FONT_NAME, self.staff.unit)

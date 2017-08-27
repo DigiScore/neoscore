@@ -66,8 +66,8 @@ class PathInterface(GraphicObjectInterface):
                 Use `None` to render to the end
         """
         super().__init__(brown_object)
-        self._qt_path = QtGui.QPainterPath()
-        self.qt_object = QClippingPath(self._qt_path,
+        self.qt_path = QtGui.QPainterPath()
+        self.qt_object = QClippingPath(self.qt_path,
                                         clip_start_x, clip_width)
         self.pos = pos
         self.pen = pen
@@ -96,11 +96,14 @@ class PathInterface(GraphicObjectInterface):
     @property
     def element_count(self):
         """int: The number of elements in the path."""
-        return self._qt_path.elementCount()
+        return self.qt_path.elementCount()
 
     ######## Public Methods ########
 
     # TODO: Update signatures to reflect new Path API
+
+    def update_geometry(self):
+        self.qt_object.update_geometry()
 
     def line_to(self, pos):
         """Draw a path from the current position to a new point.
@@ -114,7 +117,7 @@ class PathInterface(GraphicObjectInterface):
         Returns: None
         """
         target = Point(pos.x, pos.y).to_unit(GraphicUnit)
-        self._qt_path.lineTo(target.x.value, target.y.value)
+        self.qt_path.lineTo(target.x.value, target.y.value)
         self.update_qt_path()
 
     def cubic_to(self,
@@ -135,7 +138,7 @@ class PathInterface(GraphicObjectInterface):
         control_1_point = Point(control_1.x, control_1.y).to_unit(GraphicUnit)
         control_2_point = Point(control_2.x, control_2.y).to_unit(GraphicUnit)
         end_point = Point(end.x, end.y).to_unit(GraphicUnit)
-        self._qt_path.cubicTo(
+        self.qt_path.cubicTo(
             control_1_point.x.value,
             control_1_point.y.value,
             control_2_point.x.value,
@@ -153,7 +156,7 @@ class PathInterface(GraphicObjectInterface):
         Returns: None
         """
         target = Point(pos.x, pos.y).to_unit(GraphicUnit)
-        self._qt_path.moveTo(target.x.value, target.y.value)
+        self.qt_path.moveTo(target.x.value, target.y.value)
         self.update_qt_path()
 
     def close_subpath(self):
@@ -163,7 +166,7 @@ class PathInterface(GraphicObjectInterface):
 
         Returns: None
         """
-        self._qt_path.closeSubpath()
+        self.qt_path.closeSubpath()
         self.update_qt_path()
 
     def element_at(self, index):
@@ -181,7 +184,7 @@ class PathInterface(GraphicObjectInterface):
             qt_index = self.element_count + index
         else:
             qt_index = index
-        qt_element = self._qt_path.elementAt(qt_index)
+        qt_element = self.qt_path.elementAt(qt_index)
         # Determine the element type
         if qt_element.type == 0:
             element_type = PathElementType.move_to
@@ -195,7 +198,7 @@ class PathInterface(GraphicObjectInterface):
             # look right and find if this is the last element before
             # something other than 3. See module note for more detail.
             if (qt_index == self.element_count or
-                    self._qt_path.elementAt(qt_index + 1).type != 3):
+                    self.qt_path.elementAt(qt_index + 1).type != 3):
                 element_type = PathElementType.curve_to
             else:
                 element_type = PathElementType.control_point
@@ -210,11 +213,11 @@ class PathInterface(GraphicObjectInterface):
 
         Returns: None
         """
-        if index > self._qt_path.elementCount():
+        if index > self.qt_path.elementCount():
             raise IndexError(
                 'Element index {} out of bounds (max is {})'.format(
-                    index, self._qt_path.elementCount()))
-        self._qt_path.setElementPositionAt(index,
+                    index, self.qt_path.elementCount()))
+        self.qt_path.setElementPositionAt(index,
                                            GraphicUnit(pos.x).value,
                                            GraphicUnit(pos.y).value)
         self.update_qt_path()
@@ -227,8 +230,8 @@ class PathInterface(GraphicObjectInterface):
         brown._app_interface.scene.addItem(self.qt_object)
 
     def update_qt_path(self):
-        """Synchronize the contents of self._qt_path to self.qt_object
+        """Synchronize the contents of self.qt_path to self.qt_object
 
         Returns: None
         """
-        self.qt_object.setPath(self._qt_path)
+        self.qt_object.setPath(self.qt_path)
