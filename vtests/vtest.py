@@ -88,8 +88,9 @@ pen = Pen(thickness=Mm(0.2), pattern=5)
 explicit_path = Path((Mm(0), Mm(0)), pen, parent=p)
 explicit_path.line_to(Mm(5000), Mm(100))
 
-fake_trill = RepeatingMusicTextLine((Mm(30), staff.unit(-6), staff),
-                                    (Mm(5000), staff.unit(-6), staff),
+fake_trill = RepeatingMusicTextLine((Mm(30), staff.unit(-6)),
+                                    staff,
+                                    Mm(5000),
                                     'wiggleTrill')
 
 text_on_first_page = Text((Mm(0), Mm(0)),

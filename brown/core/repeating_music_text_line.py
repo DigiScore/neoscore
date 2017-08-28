@@ -1,48 +1,40 @@
 from brown.core.music_text import MusicText
-from brown.core.spanner import Spanner
+from brown.core.horizontal_spanner import HorizontalSpanner
 from brown.utils.parent_point import ParentPoint
 from brown.utils.point import Point
 
 
-class RepeatingMusicTextLine(MusicText, Spanner):
+class RepeatingMusicTextLine(MusicText, HorizontalSpanner):
 
     """A spanner of repeating music text over its length.
 
-    Currently only perfectly horizontal spanners are supported.
-    Additionally, the stop position should be to the right of the start.
-
-    TODO: Implement text spanners that are not perfectly horizontal.
-    TODO: Support stop.x < start.x
+    All of these spanners must be hori
     """
 
-    def __init__(self, start, stop, text, font=None, scale_factor=1):
+    def __init__(self, start, parent, end_x, text, end_parent=None,
+                 font=None, scale_factor=1):
         """
         Args:
-            start (ParentPoint or tuple init args):
-            stop (ParentPoint or tuple init args):
+            start (Point or init tuple): The starting point.
+            parent (GraphicObject): The parent of the starting point.
+            end_x (Unit): The end x position.
             text (str, tuple, MusicChar, or list of these):
                 The text to be repeated over the spanner,
                 represented as a str (glyph name), tuple
                 (glyph name, alternate number), MusicChar, or a list of them.
+            end_parent (GraphicObject): An optional parent of the end point.
+                If omitted, the end position is relative to the main object.
             font (MusicFont): The music font to be used. If not specified,
                 the font is taken from the ancestor staff.
             scale_factor (float): A hard scaling factor to be applied
                 in addition to the size of the music font.
         """
-        start = (start if isinstance(start, ParentPoint)
-                 else ParentPoint(*start))
-        stop = (stop if isinstance(stop, ParentPoint)
-                else ParentPoint(*stop))
+        start = start if isinstance(start, Point) else Point(*start)
         # init the MusicText to ask it how wide a single
         # repetition of `text` is in order to calculate how many
         # repetitions are needed to cover the spanner.
-        MusicText.__init__(self,
-                           Point(start.x, start.y),
-                           text,
-                           start.parent,
-                           font,
-                           scale_factor)
-        Spanner.__init__(self, Point(stop.x, stop.y), stop.parent)
+        MusicText.__init__(self, start, text, parent, font, scale_factor)
+        HorizontalSpanner.__init__(self, end_x, end_parent)
         self.repeating_music_chars = self.music_chars
         self.repeating_text = self.text
         repetitions = self._repetitions_needed

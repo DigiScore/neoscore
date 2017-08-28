@@ -209,6 +209,10 @@ class Path(GraphicObject):
     def _render_slice(self, pos, clip_start_x=None, clip_width=None):
         """Render a horizontal slice of a path.
 
+        If this proves to be a performance bottleneck in the future,
+        it is very possible to optimize this to create `PathInterface`s
+        which reuse `QPainterPath`s.
+
         Args:
             pos (Point): The doc-space position of the slice beginning
                 (at the top-left corner of the slice)
@@ -218,10 +222,6 @@ class Path(GraphicObject):
                 be rendered
 
         Returns: None
-
-        TODO: There is a lot of repeated work going on with re-creating the
-              interface and re-drawing the interface path here. This should
-              be able to just be copied from one slice interface to the next.
         """
         slice_interface = PathInterface(
             self,
