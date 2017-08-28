@@ -97,7 +97,6 @@ class MusicText(Text, StaffObject):
         Raises:
             ValueError: if `music_chars` is empty.
         """
-        # TODO: This is still a little off...
         if not music_chars:
             raise ValueError('Cannot find the bounding rect of an '
                              'empty character sequence.')

@@ -127,11 +127,6 @@ class Flowable(InvisibleObject):
 
         Returns:
             Point: The position mapped to the canvas.
-
-        Note: This gives a simple position in the canvas - the graphical
-              position of the point when rendered. If you need to know
-              more contextual information, use `_map_to_page`
-              (TODO: NOT YET IMPLEMENTED)
         """
         line = self.last_break_at(local_point.x)
         line_canvas_pos = brown.document.canvas_pos_of(line)

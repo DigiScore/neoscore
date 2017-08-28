@@ -70,11 +70,6 @@ class Hairpin(Path, StaffObject, Spanner):
                 is the point on the small end of the hairpin,
                 while the outer points are those on the open
                 end of the shape.
-
-        TODO: Refactor. Pull some of the line geometry related logic
-              out either into the Spanner mixin or into a dedicated
-              Line class which knows things like what its perpendicular
-              line would be.
         """
         if self.direction == -1:
             joint = ParentPoint(

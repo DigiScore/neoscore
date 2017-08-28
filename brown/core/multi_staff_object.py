@@ -12,8 +12,6 @@ class MultiStaffObject:
     If an class is both a `MultiStaffObject` and a `StaffObject`,
     the parent staff should be the visually highest staff listed in
     `self.staves`.
-
-    TODO: Cache potentially expensive property calculations
     """
 
     def __init__(self, staves):

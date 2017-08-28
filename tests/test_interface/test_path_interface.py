@@ -40,8 +40,6 @@ class TestPathInterface(unittest.TestCase):
         assert(test_path.qt_path.currentPosition().x() == 10)
         assert(test_path.qt_path.currentPosition().y() == 12)
         assert(test_path.qt_path.elementCount() == 2)
-        # TODO: Actually inspect contents of path and make sure they
-        #       are as expected
 
     def test_cubic_to(self):
         test_path = PathInterface(None, Point(5, 6), self.pen, self.brush)
@@ -52,8 +50,6 @@ class TestPathInterface(unittest.TestCase):
         assert(test_path.current_draw_pos.y == 6)
         assert(test_path.qt_path.currentPosition().x() == 5)
         assert(test_path.qt_path.currentPosition().y() == 6)
-        # TODO: Actually inspect contents of path and make sure they
-        #       are as expected
 
     def test_move_to(self):
         test_path = PathInterface(None, Point(5, 6), self.pen, self.brush)
@@ -72,8 +68,6 @@ class TestPathInterface(unittest.TestCase):
         assert(test_path.current_draw_pos.y == 0)
         assert(test_path.qt_path.currentPosition().x() == 0)
         assert(test_path.qt_path.currentPosition().y() == 0)
-        # TODO: Actually inspect contents of path and make sure they
-        #       are as expected
 
     def test_element_at(self):
         test_path = PathInterface(None, Point(5, 6), self.pen, self.brush)

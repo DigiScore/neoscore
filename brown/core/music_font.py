@@ -10,6 +10,9 @@ class MusicFont(Font):
 
     """A SMuFL compliant music font"""
 
+    # Scaling factor which may or may not work for fonts other than Bravura.
+    __magic_em_scale_factor = 3
+
     def __init__(self, family_name, staff_unit):
         self.unit = staff_unit
         try:
@@ -19,9 +22,7 @@ class MusicFont(Font):
         except KeyError:
             raise MusicFontMetadataNotFoundError
         self._engraving_defaults = self.metadata['engravingDefaults']
-        # TODO: Investigate why staff_unit(3) is the
-        #       magic scaling factor here, and how to not rely on it
-        self._em_size = self.unit(3)
+        self._em_size = self.unit(self.__magic_em_scale_factor)
         super().__init__(family_name, self._em_size, 1, False)
 
     ######## PUBLIC PROPERTIES ########
