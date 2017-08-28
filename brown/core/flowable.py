@@ -163,6 +163,8 @@ class Flowable(InvisibleObject):
     def last_break_at(self, local_x):
         """Find the last `NewLine` that occurred before a given local local_x-pos
 
+        The result of this function will be accurate within Unit(1)
+
         Args:
             local_x (Unit): An x-axis location in the virtual flowable space.
 
@@ -174,6 +176,8 @@ class Flowable(InvisibleObject):
     def last_break_index_at(self, local_x):
         """Like `last_break_at`, but returns an index.
 
+        The result of this function will be accurate within Unit(1)
+
         Args:
             local_x (Unit): An x-axis location in the virtual flowable space.
 
@@ -182,7 +186,9 @@ class Flowable(InvisibleObject):
         remaining_x = local_x
         for i, controller in enumerate(self.layout_controllers):
             remaining_x -= controller.length
-            if remaining_x < 0:
+            # Allow error of Unit(1) to compensate for repeated subtraction
+            # rounding errors.
+            if Unit(remaining_x).value < -1:
                 return i
         else:
             raise OutOfBoundsError(

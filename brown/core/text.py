@@ -73,7 +73,7 @@ class Text(GraphicObject):
     ######## PRIVATE METHODS ########
 
     def _render_slice(self, pos, clip_start_x=None, clip_width=None):
-        """Render a horizontal slice of a path.
+        """Render a horizontal slice of a text object.
 
         Args:
             pos (Point): The doc-space position of the slice beginning
