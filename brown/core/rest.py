@@ -29,19 +29,20 @@ class Rest(MusicText):
         1: 'restWhole',
     }
 
-    def __init__(self, pos_x, parent, duration):
+    def __init__(self, pos, parent, duration):
         """
         Args:
-            pos_x (StaffUnit): The x-axis position relative to the parent.
-                The y-axis position will be determined automatically.
-                TODO: Pass in a Point here - users may want to give
-                specific rest locations.
+            pos (Unit or Point): The position relative to the parent.
+                For convenience, a `Unit` may be passed representing the x-axis
+                position, in which case the y-axis position defaults
+                to `Unit(0)`.
             duration (Beat or init tuple):
             parent (StaffObject or Staff):
         """
+        pos = pos if isinstance(pos, Point) else Point(pos, Unit(0))
         self._duration = (duration if isinstance(duration, Beat)
                           else Beat(*duration))
-        super().__init__(Point(pos_x, Unit(0)),
+        super().__init__(pos,
                          [self._glyphnames[self.duration.base_division]],
                          parent)
         # Currently use a fixed vertical position for rests
