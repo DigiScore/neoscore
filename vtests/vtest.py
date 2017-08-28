@@ -42,7 +42,7 @@ Chordrest(Mm(10), staff, ["a'", "bs"], Beat(2, 4))
 Chordrest(Mm(40), staff, ["a'", "bs"], Beat(2, 4))
 Chordrest(Mm(60), staff, ["b'", "bs"], Beat(2, 4))
 
-font = Font('Cormorant Garamond', Mm(2), weight=100, italic=True)
+font = Font('Lora', Mm(2), weight=100, italic=True)
 
 regular_text = Text((Mm(20), staff.unit(-1)),
                     'piu mosso',
@@ -117,7 +117,7 @@ pedal_line = PedalLine((Mm(500), staff.unit(7)), staff,
 
 brown.show()
 
-# output_path = os.path.join(os.path.dirname(__file__), 'output',
-# 'vtest_out.pdf')
-# brown.render_pdf(output_path)
-# print('Score exported to {}'.format(output_path))
+output_path = os.path.join(os.path.dirname(__file__), 'output',
+'vtest_out.pdf')
+brown.render_pdf(output_path)
+print('Score exported to {}'.format(output_path))

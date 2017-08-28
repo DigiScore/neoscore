@@ -48,13 +48,10 @@ def setup(initial_paper=None):
     global registered_text_fonts
     document = Document(initial_paper)
     _app_interface = AppInterface(document)
-    register_music_font(config.DEFAULT_MUSIC_FONT_NAME,
-                        config.DEFAULT_MUSIC_FONT_PATH,
-                        config.DEFAULT_MUSIC_FONT_METADATA_PATH)
+    _register_default_fonts()
     default_font = Font(config.DEFAULT_TEXT_FONT_NAME,
                         config.DEFAULT_TEXT_FONT_SIZE,
-                        config.DEFAULT_TEXT_FONT_WEIGHT,
-                        config.DEFAULT_TEXT_FONT_ITALIC)
+                        1, False)
 
 
 def register_font(font_file_path):
@@ -139,3 +136,13 @@ def render_pdf(path):
     document._render()
     _app_interface.render_pdf((page.page_index for page in document.pages),
                               path)
+
+
+def _register_default_fonts():
+    register_music_font(config.DEFAULT_MUSIC_FONT_NAME,
+                        config.DEFAULT_MUSIC_FONT_PATH,
+                        config.DEFAULT_MUSIC_FONT_METADATA_PATH)
+    register_font(config.DEFAULT_TEXT_FONT_REGULAR_PATH)
+    register_font(config.DEFAULT_TEXT_FONT_BOLD_PATH)
+    register_font(config.DEFAULT_TEXT_FONT_ITALIC_PATH)
+    register_font(config.DEFAULT_TEXT_FONT_BOLD_ITALIC_PATH)
