@@ -24,44 +24,6 @@ class KeySignature(ObjectGroup, StaffObject):
     TODO: Support clef changes during a key signature.
     """
 
-    __sharp_positions = {
-        'f': (0, 0),
-        'c': (1, 1.5),
-        'g': (2, -0.5),
-        'd': (3, 1),
-        'a': (4, 2.5),
-        'e': (5, 0.5),
-        'b': (6, 2),
-    }
-    __flat_positions = {
-        'b': (0, 2),
-        'e': (1, 0.5),
-        'a': (2, 2.5),
-        'd': (3, 1),
-        'g': (4, 3),
-        'c': (5, 1.5),
-        'f': (6, 3.5),
-    }
-    sharp_positions = {
-        ClefType.treble: __sharp_positions,
-        ClefType.bass: {key: (value[0], value[1] + 1)
-                        for key, value in __sharp_positions.items()},
-        ClefType.alto: {key: (value[0], value[1] + 0.5)
-                        for key, value in __sharp_positions.items()},
-        ClefType.tenor: {key: (value[0], value[1] - 0.5)
-                         for key, value in __sharp_positions.items()}
-    }
-
-    flat_positions = {
-        ClefType.treble: __flat_positions,
-        ClefType.bass: {key: (value[0], value[1] + 1)
-                        for key, value in __flat_positions.items()},
-        ClefType.alto: {key: (value[0], value[1] + 0.5)
-                        for key, value in __flat_positions.items()},
-        ClefType.tenor: {key: (value[0], value[1] - 0.5)
-                         for key, value in __flat_positions.items()}
-    }
-
     def __init__(self, pos_x, staff, key_signature_type):
         """
         Args:
@@ -95,33 +57,16 @@ class KeySignature(ObjectGroup, StaffObject):
     ######## PRIVATE METHODS ########
 
     def _create_pseudo_accidentals(self):
-        pos_in_staff = self.flowable.map_between_locally(
-            self.staff, self).x
-        clef = self.staff.active_clef_at(pos_in_staff)
-        if clef is None:
-            return
-        clef_type = clef.clef_type
-        # Get extra offset for the clef
-        clef_offset = clef._bounding_rect.width + self.staff.unit(0.5)
-
         for key, value in self.key_signature_type.value.items():
-            if value is None:
-                continue
-            if value == AccidentalType.sharp:
-                pos_tuple = KeySignature.sharp_positions[clef_type][key]
-            else:
-                pos_tuple = KeySignature.flat_positions[clef_type][key]
-            pos = Point(self.staff.unit(pos_tuple[0]),
-                        self.staff.unit(pos_tuple[1]))
-            _KeySignatureAccidental(
-                pos,
-                clef_offset,
-                Accidental._canonical_names[value],
-                self,
-                self.staff.music_font,
-                1,
-                self.length,
-                clef)
+            if value is not None:
+                _KeySignatureAccidental(
+                    self.pos,
+                    key,
+                    value,
+                    self,
+                    self.staff.music_font,
+                    1,
+                    self.length)
 
 
 class _KeySignatureAccidental(MusicText):
@@ -129,41 +74,86 @@ class _KeySignatureAccidental(MusicText):
 
     This should only be used within `KeySignature`s.
     """
-    def __init__(self, occurrence_offset, clef_offset, text, parent,
-                 font, scale_factor, length, clef):
-        super().__init__(Point(Unit(0), Unit(0)), text, parent,
-                         font, scale_factor)
-        self.clef = clef
-        self.clef_offset = clef_offset
-        self.mid_system_offset = occurrence_offset
-        self.recurring_offset = Point(
-            self.mid_system_offset.x + self.clef_offset,
-            self.mid_system_offset.y)
+
+    __sharp_positions = {
+        'f': (0, 0),
+        'c': (1, 1.5),
+        'g': (2, -0.5),
+        'd': (3, 1),
+        'a': (4, 2.5),
+        'e': (5, 0.5),
+        'b': (6, 2),
+    }
+    __flat_positions = {
+        'b': (0, 2),
+        'e': (1, 0.5),
+        'a': (2, 2.5),
+        'd': (3, 1),
+        'g': (4, 3),
+        'c': (5, 1.5),
+        'f': (6, 3.5),
+    }
+    positions = {
+        AccidentalType.flat: {
+            ClefType.treble: __flat_positions,
+            ClefType.bass: {key: (value[0], value[1] + 1)
+                            for key, value in __flat_positions.items()},
+            ClefType.alto: {key: (value[0], value[1] + 0.5)
+                            for key, value in __flat_positions.items()},
+            ClefType.tenor: {key: (value[0], value[1] - 0.5)
+                             for key, value in __flat_positions.items()}
+        },
+        AccidentalType.sharp: {
+            ClefType.treble: __sharp_positions,
+            ClefType.bass: {key: (value[0], value[1] + 1)
+                            for key, value in __sharp_positions.items()},
+            ClefType.alto: {key: (value[0], value[1] + 0.5)
+                            for key, value in __sharp_positions.items()},
+            ClefType.tenor: {key: (value[0], value[1] - 0.5)
+                             for key, value in __sharp_positions.items()}
+        }
+    }
+
+    def __init__(self, pos, pitch_letter, accidental_type, key_signature,
+                 music_font, scale_factor, length):
+        super().__init__(pos, Accidental._canonical_names[accidental_type],
+                         key_signature, music_font, scale_factor)
         self._length = length
+        self.pitch_letter = pitch_letter
+        self.accidental_type = accidental_type
 
     @property
     def length(self):
         return self._length
 
-    @property
-    def _overlaps_with_clef(self):
-        return (self.flowable.map_between_locally(self.clef, self).x
-                < self.clef_offset)
+    def _overlaps_with_clef(self, clef, padded_clef_width):
+        return (self.flowable.map_between_locally(clef, self).x
+                < padded_clef_width)
 
-    def _render_complete(self, pos, dist_to_line_start=None):
-        if self._overlaps_with_clef:
-            self._render_slice(pos + self.recurring_offset, None)
-        else:
-            self._render_slice(pos + self.mid_system_offset, None)
+    def _render_occurrence(self, pos, local_start_x):
+        staff_pos_in_flowable = self.flowable.pos_in_flowable_of(self.staff)
+        pos_x_in_staff = local_start_x - staff_pos_in_flowable.x
+        clef = self.staff.active_clef_at(pos_x_in_staff)
+        if clef is None:
+            return
+        clef_type = clef.clef_type
+        padded_clef_width = clef._bounding_rect.width + self.staff.unit(0.5)
+        pos_tuple = _KeySignatureAccidental.positions[
+            self.accidental_type][clef_type][self.pitch_letter]
+        visual_pos = Point(self.staff.unit(pos_tuple[0]),
+                           self.staff.unit(pos_tuple[1])) + pos
+        if self._overlaps_with_clef(clef, padded_clef_width):
+            visual_pos.x += padded_clef_width
+        self._render_slice(visual_pos, None)
 
-    def _render_before_break(self, start, stop, dist_to_line_start):
-        if self._overlaps_with_clef:
-            self._render_slice(start + self.recurring_offset, None)
-        else:
-            self._render_slice(start + self.mid_system_offset, None)
+    def _render_complete(self, pos, dist_to_line_start=None, local_start_x=None):
+        self._render_occurrence(pos, local_start_x)
+
+    def _render_before_break(self, local_start_x, start, stop, dist_to_line_start):
+        self._render_occurrence(start, local_start_x)
 
     def _render_after_break(self, local_start_x, start, stop):
-        self._render_slice(start + self.recurring_offset, None)
+        self._render_occurrence(start, local_start_x)
 
     def _render_spanning_continuation(self, local_start_x, start, stop):
-        self._render_slice(start + self.recurring_offset, None)
+        self._render_occurrence(start, local_start_x)

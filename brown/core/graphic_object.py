@@ -365,9 +365,9 @@ class GraphicObject(ABC):
         remaining_x = (self.length +
                        self.flowable.dist_to_line_end(pos_in_flowable.x))
         if remaining_x < Unit(0):
-            self._render_complete(
-                brown.document.canvas_pos_of(self),
-                self.flowable.dist_to_line_start(pos_in_flowable.x))
+            self._render_complete(brown.document.canvas_pos_of(self),
+                                  self.flowable.dist_to_line_start(pos_in_flowable.x),
+                                  pos_in_flowable.x)
             return
 
         # Render before break
@@ -376,7 +376,9 @@ class GraphicObject(ABC):
         render_start_pos = brown.document.canvas_pos_of(self)
         first_line_length = self.flowable.dist_to_line_end(pos_in_flowable.x) * -1
         render_end_pos = (render_start_pos + Point(first_line_length, 0))
-        self._render_before_break(render_start_pos, render_end_pos,
+        self._render_before_break(pos_in_flowable.x,
+                                  render_start_pos,
+                                  render_end_pos,
                                   self.flowable.dist_to_line_start(
                                       pos_in_flowable.x))
 
@@ -406,7 +408,7 @@ class GraphicObject(ABC):
                                  render_start_pos,
                                  render_end_pos)
 
-    def _render_complete(self, pos, dist_to_line_start=None):
+    def _render_complete(self, pos, dist_to_line_start=None, local_start_x=None):
         """Render the entire object.
 
         This is used to render all objects outside of `Flowable`s,
@@ -423,6 +425,8 @@ class GraphicObject(ABC):
                 Otherwise, this is always `None`. Subclasses may use this
                 information to perform basic position modifications at
                 render time, though in most cases this field can be ignored.
+            local_start_x (Unit): If this object is in a flowable, the local
+                starting position of this drawing segment.
 
         Returns: None
 
@@ -431,7 +435,7 @@ class GraphicObject(ABC):
         """
         raise NotImplementedError
 
-    def _render_before_break(self, start, stop, dist_to_line_start):
+    def _render_before_break(self, local_start_x, start, stop, dist_to_line_start):
         """Render the beginning of the object up to a stopping point.
 
         For use in flowable containers when rendering an object that
@@ -442,6 +446,8 @@ class GraphicObject(ABC):
         `self.interfaces`.
 
         Args:
+            local_start_x (Unit): The local starting position of this
+                drawing segment.
             start (Point): The starting point in document space for drawing.
             stop (Point): The stopping point in document space for drawing.
             dist_to_line_start (Unit): The x-axis distance from the active

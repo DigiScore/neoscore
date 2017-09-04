@@ -68,15 +68,12 @@ class Brace(MultiStaffObject, MusicText):
 
     ######## PRIVATE METHODS ########
 
-    def _render_before_break(self, start, stop, dist_to_line_start):
+    def _render_before_break(self, local_start_x, start, stop, dist_to_line_start):
         if start.x == GraphicUnit(0):
-            self._render_complete(
-                Point(start.x - self._bounding_rect.width, start.y))
+            self._render_complete(Point(start.x - self._bounding_rect.width, start.y))
 
     def _render_after_break(self, local_start_x, start, stop):
-        self._render_complete(
-            Point(start.x - self._bounding_rect.width, start.y))
+        self._render_complete(Point(start.x - self._bounding_rect.width, start.y))
 
     def _render_spanning_continuation(self, local_start_x, start, stop):
-        self._render_complete(
-            Point(start.x - self._bounding_rect.width, start.y))
+        self._render_complete(Point(start.x - self._bounding_rect.width, start.y))

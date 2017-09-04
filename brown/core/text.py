@@ -97,10 +97,10 @@ class Text(GraphicObject):
         slice_interface.render()
         self.interfaces.add(slice_interface)
 
-    def _render_complete(self, pos, dist_to_line_start=None):
+    def _render_complete(self, pos, dist_to_line_start=None, local_start_x=None):
         self._render_slice(pos, None, None)
 
-    def _render_before_break(self, start, stop, dist_to_line_start):
+    def _render_before_break(self, local_start_x, start, stop, dist_to_line_start):
         self._render_slice(start, GraphicUnit(0), stop.x - start.x)
 
     def _render_after_break(self, local_start_x, start, stop):

@@ -27,6 +27,7 @@ upper_staff_time_signature = TimeSignature(Mm(0), Beat(4, 4), staff)
 upper_staff_clef = Clef(staff, Mm(0), 'treble')
 lower_staff_clef = Clef(lower_staff, Mm(0), 'alto')
 lowest_staff_clef = Clef(lowest_staff, Mm(0), 'bass')
+later_lowest_staff_clef = Clef(lowest_staff, Mm(100), 'treble')
 
 upper_staff_key_signature = KeySignature(Mm(0), staff, 'af_major')
 lower_staff_key_signature = KeySignature(Mm(0), lower_staff, 'cs_major')
@@ -116,9 +117,9 @@ pedal_line = PedalLine((Mm(500), staff.unit(7)), staff,
                            Mm(60),
                            Mm(100)])
 
-#brown.show()
+brown.show()
 
-output_path = os.path.join(os.path.dirname(__file__), 'output',
-'vtest_out.pdf')
-brown.render_pdf(output_path)
-print('Score exported to {}'.format(output_path))
+#output_path = os.path.join(os.path.dirname(__file__), 'output',
+#'vtest_out.pdf')
+#brown.render_pdf(output_path)
+#print('Score exported to {}'.format(output_path))

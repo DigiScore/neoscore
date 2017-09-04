@@ -151,7 +151,7 @@ class _OctaveLineText(MusicText):
 
     ######## PRIVATE METHODS ########
 
-    def _render_before_break(self, start, stop, dist_to_line_start):
+    def _render_before_break(self, local_start_x, start, stop, dist_to_line_start):
         interface = TextInterface(
             self,
             start,
