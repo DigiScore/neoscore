@@ -4,6 +4,7 @@ from brown.utils import smufl
 from brown.utils.exceptions import (MusicFontMetadataNotFoundError,
                                     MusicFontGlyphNotFoundError)
 from brown.utils.units import convert_all_to_unit
+from brown.utils.platforms import PlatformType, current_platform
 
 
 class MusicFont(Font):
@@ -11,7 +12,10 @@ class MusicFont(Font):
     """A SMuFL compliant music font"""
 
     # Scaling factor which may or may not work for fonts other than Bravura.
-    __magic_em_scale_factor = 3
+    if current_platform() == PlatformType.mac:
+        __magic_em_scale_factor = 4
+    else:
+        __magic_em_scale_factor = 3
 
     def __init__(self, family_name, staff_unit):
         self.unit = staff_unit
