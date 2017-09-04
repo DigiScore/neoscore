@@ -24,12 +24,12 @@ class TimeSignature(ObjectGroup, StaffObject):
         9: "timeSig9",
     }
 
-    def __init__(self, pos_x, duration, staff):
+    def __init__(self, pos_x, meter, staff):
         """
         Args:
             pos_x (StaffUnit): The x position relative to the
                 parent staff
-            duration (Beat): The length of a measure in this
+            meter (Beat): The length of a measure in this
                 time signature. The numerator and denominators
                 of this duration are used literally as the numbers
                 in the rendered representation of the signature.
@@ -40,15 +40,15 @@ class TimeSignature(ObjectGroup, StaffObject):
         """
         ObjectGroup.__init__(self, Point(pos_x, staff.unit(0)), staff)
         StaffObject.__init__(self, staff)
-        self._duration = duration
+        self._meter = meter
         # Add one glyph for each digit
         self._numerator_glyph = MusicText(
             (staff.unit(0), staff.unit(1)),
-            TimeSignature._glyphs_for_number(self.duration.numerator),
+            TimeSignature._glyphs_for_number(self.meter.numerator),
             self)
         self._denominator_glyph = MusicText(
             (staff.unit(0), staff.unit(3)),
-            TimeSignature._glyphs_for_number(self.duration.denominator),
+            TimeSignature._glyphs_for_number(self.meter.denominator),
             self)
 
     ######## PUBLIC PROPERTIES ########
@@ -64,9 +64,9 @@ class TimeSignature(ObjectGroup, StaffObject):
         return self._denominator_glyph
 
     @property
-    def duration(self):
-        """Duration: The length of one bar in this time signature"""
-        return self._duration
+    def meter(self):
+        """Beat: The length of one bar in this time signature"""
+        return self._meter
 
     ######## PRIVATE METHODS  ########
 
