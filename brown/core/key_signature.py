@@ -131,6 +131,15 @@ class _KeySignatureAccidental(MusicText):
                 < padded_clef_width)
 
     def _render_occurrence(self, pos, local_start_x):
+        """Render one appearance of one key signature accidental.
+
+        Because this performs a lot of nontrivial computation for each
+        occurrence of each accidental, this is very inefficient.
+
+        If this proves to be a performance bottleneck in the future,
+        there's lots of room for optimization here.
+        """
+
         staff_pos_in_flowable = self.flowable.pos_in_flowable_of(self.staff)
         pos_x_in_staff = local_start_x - staff_pos_in_flowable.x
         clef = self.staff.active_clef_at(pos_x_in_staff)
