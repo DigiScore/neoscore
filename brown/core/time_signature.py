@@ -6,9 +6,13 @@ from brown.utils.point import Point
 
 class TimeSignature(ObjectGroup, StaffObject):
 
-    """A logical and graphical time signature"""
+    """A logical and graphical time signature
 
-    _glyphnames = {
+    TODO: Time signatures with differing character-length numerators and
+    denominators (e.g. 12/8) currently display incorrectly as left-justified.
+    """
+
+    _glyph_names = {
         1: "timeSig1",
         2: "timeSig2",
         3: "timeSig3",
@@ -38,14 +42,13 @@ class TimeSignature(ObjectGroup, StaffObject):
         StaffObject.__init__(self, staff)
         self._duration = duration
         # Add one glyph for each digit
-        # TODO: This does not currently support multi-digit values
         self._numerator_glyph = MusicText(
             (staff.unit(0), staff.unit(1)),
-            self._glyphnames[self.duration.numerator],
+            TimeSignature._glyphs_for_number(self.duration.numerator),
             self)
         self._denominator_glyph = MusicText(
             (staff.unit(0), staff.unit(3)),
-            self._glyphnames[self.duration.denominator],
+            TimeSignature._glyphs_for_number(self.duration.denominator),
             self)
 
     ######## PUBLIC PROPERTIES ########
@@ -64,3 +67,17 @@ class TimeSignature(ObjectGroup, StaffObject):
     def duration(self):
         """Duration: The length of one bar in this time signature"""
         return self._duration
+
+    ######## PRIVATE METHODS  ########
+
+    @staticmethod
+    def _glyphs_for_number(number):
+        """Convert a number to a list of SMuFL glyph names.
+
+        Args:
+            number (int): The time signature number to derive from
+
+        Returns:
+            list[str]: The time signature glyph names for the digits of `number`.
+        """
+        return [TimeSignature._glyph_names[int(digit)] for digit in str(number)]
