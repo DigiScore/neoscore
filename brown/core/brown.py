@@ -1,10 +1,16 @@
 import json
+import os
+
+from warnings import warn
 
 from brown import config
 from brown.core.document import Document
 from brown.core.font import Font
-from brown.utils.exceptions import FontRegistrationError
+from brown.utils.exceptions import InvalidImageFormatError
 from brown.interface.app_interface import AppInterface
+from brown.utils import file_system, images
+from brown.utils.color import Color
+from brown.utils.rect import Rect
 
 """The global state of the application."""
 
@@ -77,6 +83,7 @@ def register_font(font_file_path):
     """
     AppInterface.register_font(font_file_path)
 
+
 def register_music_font(font_name, font_file_path, metadata_path):
     """Register a music font with the application.
 
@@ -136,6 +143,71 @@ def render_pdf(path):
     document._render()
     _app_interface.render_pdf((page.page_index for page in document.pages),
                               path)
+
+
+def render_image(rect, image_path, dpi=600, quality=-1, bg_color=None):
+    """Render a section of the document to an image.
+
+    The following file extensions are supported:
+        * `.bmp`
+        * `.jpg`
+        * `.png`
+        * `.pbm`
+        * `.pgm`
+        * `.ppm`
+        * `.xbm`
+        * `.xpm`
+
+    Args:
+        rect (Rect or arg tuple): The part of the document to render,
+            in document coordinates.
+        image_path (str): The path to the output image.
+            This must be a valid path relative to the current
+            working directory.
+        dpi (int): The pixels per inch of the rendered image.
+        quality (int): The quality of the output image for compressed
+            image formats. Must be either `-1` (default compression) or
+            between `0` (most compressed) and `100` (least compressed).
+        bg_color (Color or arg tuple): The background color for the image.
+            Defaults to solid white. Use a Color with `alpha=0` for a fully
+            transparent background.
+
+    Returns: None
+
+    Raises:
+        FileNotFoundError: If the given `image_path` does not point to a valid
+            location for a new file.
+        InvalidImageFormatError: If the given `image_path` does not have a
+            supported image format file extension.
+        ImageExportError: If low level Qt image export fails for
+            unknown reasons.
+    """
+    global document
+    global _app_interface
+
+    if not ((0 <= quality <= 100) or quality == -1):
+        warn('render_image quality {} invalid; using default.'.format(quality))
+        quality = -1
+
+    if not file_system.is_valid_file_path(image_path):
+        raise FileNotFoundError('Invalid image_path: ' + image_path)
+
+    if not os.path.splitext(image_path)[1] in images.supported_formats:
+        raise InvalidImageFormatError(
+            'image_path {} is not in a supported format.'.format(
+                image_path))
+
+    if not isinstance(rect, Rect):
+        rect = Rect(*rect)
+    if bg_color is None:
+        bg_color = Color(255, 255, 255, 255)
+    elif not isinstance(bg_color, Color):
+        bg_color = Color(bg_color)
+    dpm = images.dpi_to_dpm(dpi)
+
+    document._render()
+
+    _app_interface.render_image(rect, image_path, dpm, quality, bg_color)
 
 
 def _register_default_fonts():

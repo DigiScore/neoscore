@@ -222,6 +222,11 @@ class Mm(Unit):
     _conversion_rate = Inch._conversion_rate * 0.0393701
 
 
+class Meter(Unit):
+    """A meter."""
+    _conversion_rate = Mm._conversion_rate * 1000
+
+
 def _convert_all_to_unit_in_immutable(iterable, unit):
     """Recursively convert all numbers in an immutable iterable.
 

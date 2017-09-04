@@ -113,3 +113,13 @@ class IllegalNumberOfControlPointsError(Exception):
             self.message = ("Attempted to draw a curve with an illegal "
                             "number of control points.")
         super().__init__(self.message)
+
+
+class InvalidImageFormatError(Exception):
+    """Raised when an image format cannot be determined."""
+    pass
+
+
+class ImageExportError(Exception):
+    """Raised when low level image export fails."""
+    pass

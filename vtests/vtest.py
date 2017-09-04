@@ -119,7 +119,9 @@ pedal_line = PedalLine((Mm(500), staff.unit(7)), staff,
 
 brown.show()
 
-#output_path = os.path.join(os.path.dirname(__file__), 'output',
-#'vtest_out.pdf')
-#brown.render_pdf(output_path)
-#print('Score exported to {}'.format(output_path))
+#image_path = os.path.join(os.path.dirname(__file__), 'output',
+#                           'vtest_image.png')
+#pdf_path = os.path.join(os.path.dirname(__file__), 'output',
+#                        'vtest_pdf.pdf')
+#brown.render_pdf(pdf_path)
+#brown.render_image((Mm(0), Mm(0), Inch(2), Inch(2)), image_path, dpi=1200)

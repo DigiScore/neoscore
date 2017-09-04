@@ -1,10 +1,12 @@
 """Helper methods for conversion between `brown.utils` and Qt classes"""
 
 from PyQt5.QtCore import QPoint, QPointF, QRect, QRectF
+from PyQt5.QtGui import QColor
 
 from brown.utils.point import Point
 from brown.utils.rect import Rect
 from brown.utils.units import GraphicUnit
+from brown.utils.color import Color
 
 
 def unit_to_qt_int(unit):
@@ -109,3 +111,25 @@ def rect_to_qt_rect_f(rect):
     """
     return QRectF(unit_to_qt_float(rect.x), unit_to_qt_float(rect.y),
                   unit_to_qt_float(rect.width), unit_to_qt_float(rect.height))
+
+
+def color_to_q_color(color):
+    """Create a `QColor` from a `Color`
+
+    Args:
+        color (Color): The source `Color`
+
+    Returns: QColor
+    """
+    return QColor(color.red, color.green, color.blue, color.alpha)
+
+
+def q_color_to_color(q_color):
+    """Create a `Color` from a `QColor`
+
+    Args:
+        q_color (QColor): The source `QColor`
+
+    Returns: Color
+    """
+    return Color(q_color.red(), q_color.green(), q_color.blue(), q_color.alpha())

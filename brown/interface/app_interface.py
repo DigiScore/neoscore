@@ -6,8 +6,10 @@ from PyQt5.QtPrintSupport import QPrinter
 from brown import config
 from brown.earle.ui.main_window import MainWindow
 from brown.interface.interface import Interface
-from brown.interface.qt_to_util import rect_to_qt_rect_f
-from brown.utils.exceptions import FontRegistrationError
+from brown.interface.qt_to_util import rect_to_qt_rect_f, color_to_q_color
+from brown.utils.exceptions import (FontRegistrationError,
+                                    ImageExportError)
+from brown.utils.units import Unit, Meter
 
 
 class AppInterface(Interface):
@@ -73,6 +75,52 @@ class AppInterface(Interface):
             self.scene.render(painter, target=target_rect_scaled, source=source_rect)
             printer.newPage()
         painter.end()
+
+    def render_image(self, rect, image_path, dpm, quality, bg_color):
+        """Render a section of self.scene to an image.
+
+        It is assumed that all input arguments are valid.
+
+        Args:
+            rect (Rect): The part of the document to render,
+                in document coordinates.
+            image_path (str): The path to the output image.
+                This must be a valid path relative to the current
+                working directory.
+            dpm (int): The pixels per meter of the rendered image.
+            quality (int): The quality of the output image for compressed
+                image formats. Must be either `-1` (default compression) or
+                between `0` (most compressed) and `100` (least compressed).
+            bg_color (Color): The background color for the image.
+
+        Returns: None
+
+        Raises:
+            ImageExportError: If Qt image export fails for unknown reasons.
+        """
+        scale_factor = dpm / Unit(Meter(1)).value
+        pix_width = Unit(rect.width).value * scale_factor
+        pix_height = Unit(rect.height).value * scale_factor
+
+        q_image = QtGui.QImage(pix_width, pix_height,
+                               QtGui.QImage.Format_ARGB32)
+        q_image.setDotsPerMeterX(dpm)
+        q_image.setDotsPerMeterY(dpm)
+        q_image.fill(color_to_q_color(bg_color))
+
+        painter = QtGui.QPainter()
+        painter.begin(q_image)
+
+        target_rect = QtCore.QRectF(q_image.rect())
+        source_rect = rect_to_qt_rect_f(rect)
+
+        self.scene.render(painter, target=target_rect, source=source_rect)
+        success = q_image.save(image_path, quality=quality)
+        painter.end()
+
+        if not success:
+            raise ImageExportError(
+                'Unknown error occurred when exporting image to ' + image_path)
 
     def destroy(self):
         """Destroy the window and all global interface-level data."""
