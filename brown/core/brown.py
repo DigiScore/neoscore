@@ -1,15 +1,15 @@
 import json
 import os
-
 from warnings import warn
 
 from brown import config
 from brown.core.document import Document
 from brown.core.font import Font
-from brown.utils.exceptions import InvalidImageFormatError
 from brown.interface.app_interface import AppInterface
-from brown.utils import file_system, images
+from brown.interface import images
+from brown.utils import file_system
 from brown.utils.color import Color
+from brown.utils.exceptions import InvalidImageFormatError
 from brown.utils.rect import Rect
 
 """The global state of the application."""
@@ -145,7 +145,8 @@ def render_pdf(path):
                               path)
 
 
-def render_image(rect, image_path, dpi=600, quality=-1, bg_color=None):
+def render_image(rect, image_path, dpi=600, quality=-1, bg_color=None,
+                 autocrop=False):
     """Render a section of the document to an image.
 
     The following file extensions are supported:
@@ -171,6 +172,9 @@ def render_image(rect, image_path, dpi=600, quality=-1, bg_color=None):
         bg_color (Color or arg tuple): The background color for the image.
             Defaults to solid white. Use a Color with `alpha=0` for a fully
             transparent background.
+        autocrop (bool): Whether or not to crop the output image to tightly
+            fit the contents of the frame. If true, the image will be cropped
+            such that all 4 edges have at least one pixel not of `bg_color`.
 
     Returns: None
 
@@ -207,7 +211,8 @@ def render_image(rect, image_path, dpi=600, quality=-1, bg_color=None):
 
     document._render()
 
-    _app_interface.render_image(rect, image_path, dpm, quality, bg_color)
+    _app_interface.render_image(rect, image_path, dpm, quality, bg_color,
+                                autocrop)
 
 
 def _register_default_fonts():

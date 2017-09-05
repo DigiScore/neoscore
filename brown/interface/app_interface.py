@@ -5,6 +5,7 @@ from PyQt5.QtPrintSupport import QPrinter
 
 from brown import config
 from brown.earle.ui.main_window import MainWindow
+from brown.interface import images
 from brown.interface.interface import Interface
 from brown.interface.qt_to_util import rect_to_qt_rect_f, color_to_q_color
 from brown.utils.exceptions import (FontRegistrationError,
@@ -72,11 +73,12 @@ class AppInterface(Interface):
         for page_number in pages:
             source_rect = rect_to_qt_rect_f(
                 self.document.paper_bounding_rect(page_number))
-            self.scene.render(painter, target=target_rect_scaled, source=source_rect)
+            self.scene.render(painter,
+                              target=target_rect_scaled, source=source_rect)
             printer.newPage()
         painter.end()
 
-    def render_image(self, rect, image_path, dpm, quality, bg_color):
+    def render_image(self, rect, image_path, dpm, quality, bg_color, autocrop):
         """Render a section of self.scene to an image.
 
         It is assumed that all input arguments are valid.
@@ -92,6 +94,10 @@ class AppInterface(Interface):
                 image formats. Must be either `-1` (default compression) or
                 between `0` (most compressed) and `100` (least compressed).
             bg_color (Color): The background color for the image.
+            autocrop (bool): Whether or not to crop the output image to tightly
+                fit the contents of the frame. If true, the image will be
+                cropped such that all 4 edges have at least one pixel not of
+                `bg_color`.
 
         Returns: None
 
@@ -106,7 +112,8 @@ class AppInterface(Interface):
                                QtGui.QImage.Format_ARGB32)
         q_image.setDotsPerMeterX(dpm)
         q_image.setDotsPerMeterY(dpm)
-        q_image.fill(color_to_q_color(bg_color))
+        q_color = color_to_q_color(bg_color)
+        q_image.fill(q_color)
 
         painter = QtGui.QPainter()
         painter.begin(q_image)
@@ -115,8 +122,12 @@ class AppInterface(Interface):
         source_rect = rect_to_qt_rect_f(rect)
 
         self.scene.render(painter, target=target_rect, source=source_rect)
-        success = q_image.save(image_path, quality=quality)
         painter.end()
+
+        if autocrop:
+            q_image = images.autocrop(q_image, q_color)
+
+        success = q_image.save(image_path, quality=quality)
 
         if not success:
             raise ImageExportError(
