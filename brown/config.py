@@ -3,8 +3,8 @@
 import os
 
 from brown.utils.units import Mm, Inch, GraphicUnit
-from brown.utils.pen_pattern import PenPattern
-from brown.utils.brush_pattern import BrushPattern
+from brown.core.pen_pattern import PenPattern
+from brown.core.brush_pattern import BrushPattern
 from brown.utils.color import Color
 
 

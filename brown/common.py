@@ -6,6 +6,7 @@ from brown.core.bar_line import BarLine
 from brown.core.beam import Beam
 from brown.core.brace import Brace
 from brown.core.brush import Brush
+from brown.core.brush_pattern import BrushPattern
 from brown.core.chordrest import Chordrest
 from brown.core.clef import Clef
 from brown.core.document import Document
@@ -29,6 +30,7 @@ from brown.core.paper import Paper
 from brown.core.path import Path
 from brown.core.ped_and_star import PedAndStar
 from brown.core.pedal_line import PedalLine
+from brown.core.pen_pattern import PenPattern
 from brown.core.pen import Pen
 from brown.core.repeating_music_text_line import RepeatingMusicTextLine
 from brown.core.rest import Rest
@@ -46,7 +48,6 @@ from brown.models.key_signature_type import KeySignatureType
 
 from brown.utils.color import Color
 from brown.utils.parent_point import ParentPoint
-from brown.utils.pen_pattern import PenPattern
 from brown.utils.point import Point
 from brown.utils.rect import Rect
 from brown.utils.units import GraphicUnit, Mm, Inch

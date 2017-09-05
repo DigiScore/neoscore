@@ -2,7 +2,7 @@ import unittest
 
 from brown.utils.units import GraphicUnit, Mm
 from brown.utils.color import Color
-from brown.utils.pen_pattern import PenPattern
+from brown.core.pen_pattern import PenPattern
 from brown.interface.pen_interface import PenInterface
 
 
