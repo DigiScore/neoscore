@@ -4,16 +4,14 @@ from PyQt5.QtCore import QPointF
 
 from brown.core import brown
 from brown.core.brush_pattern import BrushPattern
-from brown.interface.graphic_object_interface import GraphicObjectInterface
-from brown.interface.pen_interface import PenInterface
+from brown.core.pen_pattern import PenPattern
 from brown.interface.brush_interface import BrushInterface
-from brown.interface.qt_to_util import point_to_qt_point_f
+from brown.interface.pen_interface import PenInterface
+from brown.utils.color import Color
 from brown.utils.point import Point
 from brown.utils.units import GraphicUnit
-from brown.utils.color import Color
-from brown.core.pen_pattern import PenPattern
-
-from tests.mocks.mock_graphic_object_interface import MockGraphicObjectInterface
+from tests.mocks.mock_graphic_object_interface import \
+    MockGraphicObjectInterface
 
 
 class TestGraphicObjectInterface(unittest.TestCase):

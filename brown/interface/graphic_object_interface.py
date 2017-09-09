@@ -1,9 +1,7 @@
-from abc import ABC
-
 from brown.interface.interface import Interface
-from brown.interface.qt_to_util import point_to_qt_point_f
 from brown.utils.point import Point
 from brown.utils.units import GraphicUnit
+from brown.interface.qt.converters import point_to_qt_point_f
 
 
 class GraphicObjectInterface(Interface):

@@ -1,9 +1,9 @@
 from PyQt5 import QtGui
 
 from brown.core import brown
-from brown.utils.units import GraphicUnit
 from brown.interface.interface import Interface
-from brown.interface.qt_to_util import qt_rect_to_rect
+from brown.utils.units import GraphicUnit
+from brown.interface.qt.converters import qt_rect_to_rect
 
 
 class FontInterface(Interface):

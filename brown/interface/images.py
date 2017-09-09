@@ -1,8 +1,7 @@
-from PyQt5.QtGui import QBitmap, QRegion
 from PyQt5.Qt import Qt
+from PyQt5.QtGui import QBitmap, QRegion
 
 from brown.utils.units import Mm, Inch
-from brown.interface.qt_to_util import color_to_q_color
 
 supported_formats = {'.bmp', '.jpg', '.jpeg', '.png',
                      '.pbm', '.pgm', '.ppm', '.xbm', '.xpm'}
