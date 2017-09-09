@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets, QtCore
 
-from brown.interface.qt_ext.q_clipping_path import QClippingPath
+from brown.interface.qt.q_clipping_path import QClippingPath
 from brown.interface.qt_to_util import unit_to_qt_float
 
 

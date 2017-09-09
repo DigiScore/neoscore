@@ -3,7 +3,7 @@ import unittest
 from PyQt5 import QtGui
 
 from brown.core import brown
-from brown.interface.qt_ext.q_clipping_path import QClippingPath
+from brown.interface.qt.q_clipping_path import QClippingPath
 
 
 class TestQClippingPath(unittest.TestCase):

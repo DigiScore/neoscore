@@ -1,6 +1,6 @@
 from brown.core import brown
 from brown.interface.graphic_object_interface import GraphicObjectInterface
-from brown.interface.qt_ext.q_enhanced_text_item import QEnhancedTextItem
+from brown.interface.qt.q_enhanced_text_item import QEnhancedTextItem
 from brown.interface.qt_to_util import point_to_qt_point_f
 from brown.utils.point import Point
 

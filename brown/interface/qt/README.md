@@ -1,4 +1,4 @@
-# brown.interface.qt_ext
+# brown.interface.qt
 
 ### Custom Qt subclass extensions
 

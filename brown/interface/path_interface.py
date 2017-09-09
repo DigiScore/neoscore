@@ -4,7 +4,7 @@ from brown.core import brown
 from brown.core.path_element_type import PathElementType
 from brown.interface.graphic_object_interface import GraphicObjectInterface
 from brown.interface.path_element_interface import PathElementInterface
-from brown.interface.qt_ext.q_clipping_path import QClippingPath
+from brown.interface.qt.q_clipping_path import QClippingPath
 from brown.utils.point import Point
 from brown.utils.units import GraphicUnit
 
