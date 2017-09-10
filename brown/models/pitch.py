@@ -6,7 +6,29 @@ from brown.utils.exceptions import InvalidPitchDescriptionError
 
 class Pitch:
 
-    """A pitch with a letter, octave, and accidental"""
+    """A pitch with a letter, octave, and accidental.
+
+    Pitches are represented as strings in a subset of lilypond pitch notation.
+
+    A pitch indicator has three parts: a pitch letter, an optional accidental
+    letter, and an optional octave mark.
+    * Pitch letters are the standard `c` through `b` letters.
+    * The accidental letter may be `f` for flat, `s` for sharp, and `n`
+      for natural. If omitted, the actual logical pitch depends on context
+      the pitch appears in.
+    * The octave indication is given by a series of apostrophes (`'`)
+      or commas (`,`), where each apostrophe increases the pitch by an octave,
+      and each comma decreases it. All octave transformations are relative to
+      the octave below middle-C. By extension, the absence of an octave
+      indicator means a pitch is within the octave below middle-C.
+
+    Some examples:
+
+    * Middle-C: `c'`
+    * The B directly below that: `b`
+    * The C one octave below middle-C: `c`
+    * The F-sharp above middle-C: `fs'`
+    """
 
     _pitch_regex = re.compile("^([a-g])([snf])?('*|,*)$")
     natural_pitch_classes = {
@@ -32,20 +54,8 @@ class Pitch:
 
     def __init__(self, pitch):
         """
-        Valid pitch accidentals suffixes are `s` for sharp, `f` for flat,
-        and `n` for explicit natural.
-
-        Octaves are denoted by suffixes of commas or apostrophes,
-        where none is C below middle-C, and each comma / apostrophe
-        indicates an octave down or up, respectively.
-
-        TODO: Explain better, needs examples - most users will not be
-              familiar with lilypond pitch notation
-
         Args:
-            pitch (str): A pitch representation of a string
-                in lilypond notation
-
+            pitch (str): A pitch indicator. (see above class documentation).
         """
         # These three are initialized by the pitch setter
         self._letter = None
@@ -88,10 +98,7 @@ class Pitch:
 
     @property
     def pitch(self):
-        """str: A string representation of the pitch.
-
-        See `__init__` documentation for a complete description.
-        """
+        """str: A pitch indicator."""
         return self._pitch
 
     @pitch.setter
@@ -155,13 +162,14 @@ class Pitch:
     def diatonic_degree_in_c(self):
         """int: The diatonic degree of the pitch as if it were in C.
 
-            'c': 1,
-            'd': 2,
-            'e': 3,
-            'f': 4,
-            'g': 5,
-            'a': 6,
-            'b': 7
+        >>> Pitch("c").diatonic_degree_in_c
+        1
+        >>> Pitch("c'").diatonic_degree_in_c
+        1
+        >>> Pitch("d'''").diatonic_degree_in_c
+        2
+        >>> Pitch("bf,").diatonic_degree_in_c
+        7
         """
         return Pitch._diatonic_degrees_in_c[self.letter]
 
@@ -173,17 +181,16 @@ class Pitch:
         values mean positions below middle C, and negative values
         mean positions above it.
 
-        Examples:
-            >>> Pitch("c'").staff_pos_from_middle_c
-            0
-            >>> Pitch("cs'").staff_pos_from_middle_c
-            0
-            >>> Pitch("d'").staff_pos_from_middle_c
-            -0.5
-            >>> Pitch("d''").staff_pos_from_middle_c
-            -4
-            >>> Pitch("cn,").staff_pos_from_middle_c
-            7
+        >>> Pitch("c'").staff_pos_from_middle_c
+        0
+        >>> Pitch("cs'").staff_pos_from_middle_c
+        0
+        >>> Pitch("d'").staff_pos_from_middle_c
+        -0.5
+        >>> Pitch("d''").staff_pos_from_middle_c
+        -4
+        >>> Pitch("cn,").staff_pos_from_middle_c
+        7
         """
         middle_c = (4 * 7) + 1  # C at octave 4
         note_pos = (self.octave * 7) + self.diatonic_degree_in_c
