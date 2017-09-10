@@ -30,15 +30,6 @@ class TestPitch(unittest.TestCase):
     def test_pitch_class(self):
         assert(Pitch('af').pitch_class == 8)
 
-    def test_midi_number(self):
-        assert(Pitch("a''").midi_number == 81)
-        assert(Pitch("a'").midi_number == 69)
-        assert(Pitch("c'").midi_number == 60)
-        assert(Pitch("cf").midi_number == 47)
-        assert(Pitch("c").midi_number == 48)
-        assert(Pitch("cn").midi_number == 48)
-        assert(Pitch("cs").midi_number == 49)
-
     def test_diatonic_degree_in_c(self):
         # Simple identity test - mostly to raise a flag if the API changes
         degrees = {

@@ -50,7 +50,6 @@ class Pitch:
         'b': 7
     }
     _middle_c_octave = 4
-    _midi_middle_c = 60
 
     def __init__(self, pitch):
         """
@@ -70,19 +69,7 @@ class Pitch:
         return '{}("{}")'.format(type(self).__name__, self.string_desriptor)
 
     def __eq__(self, other):
-        """Two Pitches are equal if all of their attributes are equal
-
-        Note that two pitches with the same midi number are not
-        necessarily equal. Enharmonically equivalent pitches are
-        not equal to each other.
-
-            >>> Pitch("c") == Pitch("c")
-            True
-            >>> Pitch("c") == Pitch("bs,")
-            False
-            >>> Pitch("c").midi_number == Pitch("bs,").midi_number
-            True
-        """
+        """Two Pitches are equal if all of their attributes are equal."""
         return (isinstance(other, type(self)) and
                 self.letter == other.letter and
                 self.accidental_type == other.accidental_type and
@@ -150,13 +137,6 @@ class Pitch:
         if self.accidental_type:
             return natural + self.accidental_type.value
         return natural
-
-    @property
-    def midi_number(self):
-        """int: The midi pitch number, where A440 == 69 and middle C == 60"""
-        return (Pitch._midi_middle_c +                           # Start point
-                ((self.octave - Pitch._middle_c_octave) * 12) +  # 8ve offset
-                self.pitch_class)                                # pitch offset
 
     @property
     def diatonic_degree_in_c(self):
