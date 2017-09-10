@@ -308,7 +308,8 @@ def resolve_markdown_code_names(string, context):
 
 def parse_doctest_code(string, context):
     def replace_function(match):
-        typed_code = parse_type_string(match[0], context)
+        without_doctest_annotations = strip_doctest_annotations(match[0])
+        typed_code = parse_type_string(without_doctest_annotations, context)
         code_block = surround_with_tag(typed_code, 'code', class_="python")
         pre_block = surround_with_tag(code_block, 'pre')
         # Normalize whitespace
@@ -342,6 +343,9 @@ def parse_general_text(string, context, split_paragraphs=True):
     string = parse_backtick_code(string, context)
     return string
 
+def strip_doctest_annotations(string):
+    doctest_re = re.compile(r'(# )?doctest: .*?$', flags=re.MULTILINE)
+    return re.sub(doctest_re, '', string)
 
 def ensure_path_exists(path):
     dir = os.path.dirname(path)
