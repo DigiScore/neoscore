@@ -41,6 +41,29 @@ class Instrument:
         raise TypeError("Instruments cannot be instantiated.")
 
 
+class Flute(Instrument):
+    name = 'Flute'
+    short_name = 'Fl'
+    staves = [(ClefType.treble, None)]
+    family = InstrumentFamily.wind
+
+
+class Trumpet(Instrument):
+    """A trumpet written in sounding pitch"""
+    name = 'Trumpet'
+    short_name = 'Tpt'
+    staves = [(ClefType.treble, None)]
+    family = InstrumentFamily.brass
+
+
+class Piano(Instrument):
+    """A two-staff piano"""
+    name = "Piano"
+    short_name = "Pno"
+    staves = [(ClefType.treble, None), (ClefType.bass, None)]
+    family = InstrumentFamily.keyboard
+
+
 class Violin(Instrument):
     """A general purpose violin"""
     name = 'Violin'
