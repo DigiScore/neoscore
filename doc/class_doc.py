@@ -19,7 +19,7 @@ class ClassDoc:
     docstring_re = re.compile(
         r'(\"\"\"(?P<content>.*?)\"\"\")',
         flags=re.DOTALL)
-    method_re = re.compile(r'^ +def (?P<method>[a-z_][A-Za-z_0-9]*)'
+    method_re = re.compile(r'^ +def (?P<method>(__|[a-z])[A-Za-z_0-9]*)'
                            '\((?P<args>.*?)\):\n',
                            flags=re.DOTALL | re.MULTILINE)
     staticmethod_re = re.compile(r'^ +\@staticmethod\n',

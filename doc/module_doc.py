@@ -26,7 +26,7 @@ class ModuleDoc:
                           + r':\n',
                           flags=re.DOTALL | re.MULTILINE)
     module_level_method_re = re.compile(
-        r'^def (?P<method>[a-z_][A-Za-z_0-9]*)'
+        r'^def (?P<method>(__|[a-z])[A-Za-z_0-9]*)'
         '\((?P<args>.*?)\):\n',
         flags=re.DOTALL | re.MULTILINE)
     module_level_attribute_re = re.compile(
