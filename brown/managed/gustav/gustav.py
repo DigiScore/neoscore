@@ -14,18 +14,18 @@ For example, a string quartet might be listed as:
 """
 
 
-def setup(self, instr, paper=None):
+def setup(instr, paper=None):
     """Set up the `gustav` context.
 
     In `gustav` scores, this should be used in place of `brown.setup()`.
 
     Args:
         instr (list[Instrument]): The instruments in the score
-        initial_paper (Paper): The paper to use in the document.
+        paper (Paper): The paper to use in the document.
             If `None`, this defaults to `config.DEFAULT_PAPER_TYPE`
 
     Returns: None
     """
     global instruments
     brown.setup(paper)
-    instruments = instruments
+    instruments = instr

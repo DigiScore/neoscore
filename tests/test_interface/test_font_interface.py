@@ -12,14 +12,14 @@ from brown.utils.units import Unit
 
 
 class MockUnit(Unit):
-    _conversion_rate = 0.5
+    CONVERSION_RATE = 0.5
 
 
 class TestFontInterface(unittest.TestCase):
 
     def setUp(self):
         brown.setup()
-        AppInterface._remove_all_loaded_fonts()
+        brown._app_interface._remove_all_loaded_fonts()
 
     def test_init(self):
         test_font = FontInterface(None, 'Bravura', MockUnit(12), 1, False)

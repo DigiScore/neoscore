@@ -8,7 +8,7 @@ class AbstractGraphicBeat(Beat, Unit):
 
     This is meant to be subclassed by class factory methods in
     context managers. Factory methods only need to define
-    `_conversion_rate` and `_constant_offset` to implement a
+    `CONVERSION_RATE` and `_constant_offset` to implement a
     concrete graphic beat.
 
     This should never be instantiated directly.
@@ -17,7 +17,7 @@ class AbstractGraphicBeat(Beat, Unit):
           and it doesn't work.
     """
     # Rate of a 1/1 beat to GraphicUnit(1)
-    _conversion_rate = None
+    CONVERSION_RATE = None
     # A constant offset to be applied to all unit conversions.
     _constant_offset = 0
 
@@ -42,7 +42,7 @@ class AbstractGraphicBeat(Beat, Unit):
     def from_unit(cls, unit):
         float_value = ((unit._to_base_unit_float()
                         - cls._constant_offset)
-                       / cls._conversion_rate)
+                       / cls.CONVERSION_RATE)
         return cls(float_value)
 
     ######## PRIVATE METHODS ########
@@ -53,10 +53,10 @@ class AbstractGraphicBeat(Beat, Unit):
         Returns: float
         """
         if self._constant_offset:
-            return ((self.value * self._conversion_rate)
+            return ((self.value * self.CONVERSION_RATE)
                     + Unit(self._constant_offset).value)
         else:
-            return self.value * self._conversion_rate
+            return self.value * self.CONVERSION_RATE
 
     @classmethod
     def make_concrete_beat(cls,
@@ -74,7 +74,7 @@ class AbstractGraphicBeat(Beat, Unit):
         Returns: type
         """
         class GraphicBeat(cls):
-            _conversion_rate = Unit(whole_note_size).value
+            CONVERSION_RATE = Unit(whole_note_size).value
             _constant_offset = (Unit(constant_offset).value if constant_offset
                                 else 0)
 

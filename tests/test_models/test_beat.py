@@ -36,6 +36,7 @@ class TestBeat(unittest.TestCase):
         assert(Beat(5, 8).requires_tie is True)
         assert(Beat(4, 8).requires_tie is False)
 
+    # noinspection PyPropertyAccess
     def test_properties_are_immutable(self):
         dur = Beat(2, 4)
         with pytest.raises(AttributeError):

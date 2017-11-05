@@ -12,6 +12,7 @@ class TestPageSupplier(unittest.TestCase):
     def setUp(self):
         brown.setup()
 
+    # noinspection PyStatementEffect
     def test_getitem_with_existing(self):
         supplier = PageSupplier(brown.document)
         supplier._page_list.extend([1, 2])

@@ -6,7 +6,7 @@ from brown.utils.units import Unit, Mm, Inch, GraphicUnit
 
 
 class MockUnit(Unit):
-    _conversion_rate = 2
+    CONVERSION_RATE = 2
     pass
 
 

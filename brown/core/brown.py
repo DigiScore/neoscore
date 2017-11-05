@@ -49,7 +49,6 @@ def setup(initial_paper=None):
     """
     global _app_interface
     global default_font
-    global paper
     global document
     global registered_text_fonts
     document = Document(initial_paper)
@@ -81,7 +80,8 @@ def register_font(font_file_path):
         Typically, this is because the given path does not lead to
         a valid font file.
     """
-    AppInterface.register_font(font_file_path)
+    global _app_interface
+    _app_interface.register_font(font_file_path)
 
 
 def register_music_font(font_name, font_file_path, metadata_path):

@@ -1,6 +1,5 @@
 from fractions import Fraction
 
-from brown.utils.units import Unit
 from brown.utils.math_helpers import float_to_rounded_fraction_tuple
 
 

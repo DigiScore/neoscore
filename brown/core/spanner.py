@@ -18,8 +18,6 @@ class Spanner:
     `GraphicObject.parent`. It is up to the implementing class to
     decide how to use this information.
 
-    In order to prevent a diamond problem, this class
-
     For an example implementation, see `Slur`.
     """
 

@@ -21,7 +21,7 @@ class Pen:
             thickness (Unit): The stroke thickness.
                 A value of `0` indicates Args cosmetic pixel width.
                 Defaults to `config.DEFAULT_PEN_THICKNESS`.
-            pattern (PenPattern): The stroke pattern.
+            pattern (PenPattern or int): The stroke pattern.
                 Defaults to a solid line.
         """
         if isinstance(color, Color):

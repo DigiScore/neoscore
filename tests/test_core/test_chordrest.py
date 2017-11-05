@@ -50,7 +50,6 @@ class TestChordrest(unittest.TestCase):
         dots = list(chord.rhythm_dot_positions)
         dots.sort(key=lambda d: d.x)
         dots.sort(key=lambda d: d.y)
-        #import pdb;pdb.set_trace()
         dots[0]._assert_almost_equal(
             Point(self.staff.unit(1.18), self.staff.unit(-3.5)))
         dots[1]._assert_almost_equal(

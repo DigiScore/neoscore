@@ -53,7 +53,7 @@ DEFAULT_MUSIC_FONT_METADATA_PATH = os.path.join(
 DEFAULT_MUSIC_FONT_NAME = 'Bravura'
 
 # Print PPI
-PRINT_DPI = Inch._conversion_rate
+PRINT_DPI = Inch.CONVERSION_RATE
 
 # Staff Height
 DEFAULT_STAFF_UNIT = Mm(1)

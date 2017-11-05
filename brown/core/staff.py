@@ -53,7 +53,7 @@ class Staff(Path):
 
     @property
     def unit(self):
-        """type: The standard distance between two lines in this staff.
+        """type(Unit): The standard distance between two lines in this staff.
 
         This is a generated class with the name `StaffUnit`. All `Staff`
         objects have a unique `StaffUnit` class such that different sized
@@ -69,7 +69,7 @@ class Staff(Path):
 
     @property
     def height(self):
-        """GraphicUnit: The height of the staff from top to bottom line.
+        """Unit: The height of the staff from top to bottom line.
 
         If the staff only has one line, its height is defined as 0.
         """
@@ -172,7 +172,8 @@ class Staff(Path):
 
         If no clef is present, a `NoClefError` is raised.
 
-        Returns: StaffUnit: A vertical staff position
+        Returns:
+            StaffUnit: A vertical staff position
         """
         clef = self.active_clef_at(pos_x)
         transposition = self.active_transposition_at(pos_x)
@@ -228,7 +229,7 @@ class Staff(Path):
         Args:
             position (StaffUnit): Any y-axis position
 
-        Returns: set(StaffUnit)
+        Returns: set[StaffUnit]
         """
         # Work on positions as integers for simplicity
         start = int(self.unit(position).value)
@@ -255,6 +256,6 @@ class Staff(Path):
             type: A new StaffUnit class specifically for use in this staff.
         """
         class StaffUnit(Unit):
-            _conversion_rate = Unit(staff_unit_size).value
+            CONVERSION_RATE = Unit(staff_unit_size).value
             # (all other functionality implemented in Unit)
         return StaffUnit

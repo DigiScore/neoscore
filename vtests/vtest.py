@@ -2,7 +2,7 @@
 
 """A development sandbox used for manually checking visual outputs."""
 
-import os
+import random
 
 from brown.common import *
 
@@ -33,11 +33,9 @@ upper_staff_key_signature = KeySignature(Mm(0), staff, 'af_major')
 lower_staff_key_signature = KeySignature(Mm(0), lower_staff, 'cs_major')
 lowest_staff_key_signature = KeySignature(Mm(0), lowest_staff, 'd_minor')
 
-
 octave_line = OctaveLine((Mm(20), staff.unit(-2)), staff,
                          Mm(1000),
                          indication='8vb')
-
 
 Chordrest(Mm(10), staff, ["a'", "bs"], Beat(2, 4))
 Chordrest(Mm(40), staff, ["a'", "bs"], Beat(2, 4))
@@ -61,7 +59,6 @@ slur = Slur((Mm(0), Mm(0), regular_text),
 
 brace = Brace(Mm(0), {staff, lower_staff, lowest_staff})
 
-import random
 random_wiggles = [random.choice(['wiggleRandom1',
                                  'wiggleRandom2',
                                  'wiggleRandom3',
@@ -108,7 +105,8 @@ text_on_third_page = Text((Mm(0), Mm(0)),
 explicit_path_on_second_page = Path((Mm(0), Mm(0)), parent=text_on_second_page)
 explicit_path_on_second_page.line_to(Mm(100), Mm(60))
 
-ped_and_star_mark = PedAndStar((Mm(260), staff.unit(7)), staff, (Mm(30), staff.unit(0)))
+ped_and_star_mark = PedAndStar((Mm(260), staff.unit(7)), staff,
+                               (Mm(30), staff.unit(0)))
 
 pedal_line = PedalLine((Mm(500), staff.unit(7)), staff,
                        Mm(200),
@@ -117,13 +115,13 @@ pedal_line = PedalLine((Mm(500), staff.unit(7)), staff,
                            Mm(60),
                            Mm(100)])
 
-#brown.show()
+brown.show()
 
-image_path = os.path.join(os.path.dirname(__file__), 'output',
-                           'vtest_image.png')
-brown.render_image((Mm(0), Mm(0), Inch(2), Inch(2)), image_path,
-                   autocrop=True)
-
-#pdf_path = os.path.join(os.path.dirname(__file__), 'output',
-#                        'vtest_pdf.pdf')
-#brown.render_pdf(pdf_path)
+# image_path = os.path.join(os.path.dirname(__file__), 'output',
+#                            'vtest_image.png')
+# brown.render_image((Mm(0), Mm(0), Inch(2), Inch(2)), image_path,
+#                    autocrop=True)
+#
+# pdf_path = os.path.join(os.path.dirname(__file__), 'output',
+#                         'vtest_pdf.pdf')
+# brown.render_pdf(pdf_path)

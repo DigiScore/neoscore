@@ -21,6 +21,8 @@ class AppInterface(Interface):
     working with the API.
     """
 
+    _QT_FONT_ERROR_CODE = -1
+
     def __init__(self, document):
         """
         Args:
@@ -35,6 +37,7 @@ class AppInterface(Interface):
         self.view = self.main_window.graphicsView
         self.view.setScene(self.scene)
         self.registered_music_fonts = {}
+        self.font_database = QtGui.QFontDatabase()
 
     ######## PUBLIC METHODS ########
 
@@ -140,10 +143,7 @@ class AppInterface(Interface):
         self.app = None
         self.scene = None
 
-    ######## STATIC METHODS ########
-
-    @staticmethod
-    def register_font(font_file_path):
+    def register_font(self, font_file_path):
         """Register a font file with the graphics engine.
 
         Args:
@@ -155,17 +155,15 @@ class AppInterface(Interface):
 
         Raises: FontRegistrationError: if the registration fails.
         """
-        font_id = QtGui.QFontDatabase.addApplicationFont(font_file_path)
-        # Qt returns -1 if something went wrong.
-        if font_id == -1:
+        font_id = self.font_database.addApplicationFont(font_file_path)
+        if font_id == AppInterface._QT_FONT_ERROR_CODE:
             raise FontRegistrationError(font_file_path)
 
-    @staticmethod
-    def _remove_all_loaded_fonts():
-        """Remove all fonts registered with `AppInterface.register_font`.
+    def _remove_all_loaded_fonts(self):
+        """Remove all fonts registered with `register_font()`.
 
         This is primarily useful for testing purposes.
         """
-        success = QtGui.QFontDatabase.removeAllApplicationFonts()
+        success = self.font_database.removeAllApplicationFonts()
         if not success:
             raise RuntimeError('Failed to remove application fonts.')

@@ -36,6 +36,7 @@ class TestPath(unittest.TestCase):
         assert(test_line.y == 6)
         assert(test_line.current_draw_pos == Point(10, 11))
 
+    # noinspection PyPropertyAccess
     def test_current_path_pos_has_no_setter(self):
         test_line = Path((0, 0))
         with pytest.raises(AttributeError):
