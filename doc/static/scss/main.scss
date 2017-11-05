@@ -2,10 +2,11 @@ $primary-bg: #fffafe;
 $code-inline-bg: #f1efef;
 $code-block-bg: #faf5f5;
 $primary-text: #050505;
-$accent-bright: #1f427f;
-$accent-dark: #31231e;
-$accent-dark-transparent: fade_out($accent-dark, 0.7);
-$super-accent: #9055a2;
+$accent-dark: #443730;
+$accent-darkest: #31231e;
+$accent-darkest-transparent: fade_out($accent-darkest, 0.7);
+$super-accent: #800000;
+$light-text: #f3f4f3;
 
 $hugest: 70px;
 $huge: 40px;
@@ -31,7 +32,7 @@ $page-body-gap-large: 8em;
 $page-body-gap-medium: 4em;
 $page-body-gap-none: 0;
 
-$a-color: $accent-bright;
+$a-color: $accent-dark;
 
 
 html {
@@ -66,15 +67,15 @@ body {
 
     #toc-link-to-current-page {
         background: $primary-bg;
-        -webkit-box-shadow: inset -1px 2px 3px 0px $accent-dark;
-        -moz-box-shadow:    inset -1px 2px 3px 0px $accent-dark;
-        box-shadow:         inset -1px 2px 3px 0px $accent-dark;
+        -webkit-box-shadow: inset -1px 2px 3px 0px $accent-darkest;
+        -moz-box-shadow:    inset -1px 2px 3px 0px $accent-darkest;
+        box-shadow:         inset -1px 2px 3px 0px $accent-darkest;
         padding-top: $tiny-space / 2;
         padding-bottom: $tiny-space / 2;
         padding-left: $tiny-space;
 
         a {
-            color: $accent-bright;
+            color: $accent-dark;
         }
     }
 }
@@ -96,12 +97,12 @@ body {
 
     background: $primary-bg;
 
-    border-left: 1px solid $accent-dark;
-    border-bottom: 1px solid $accent-dark;
+    border-left: 1px solid $accent-darkest;
+    border-bottom: 1px solid $accent-darkest;
 
-    -webkit-box-shadow: -1px 1px 5px 0px $accent-dark;
-    -moz-box-shadow:    -1px 1px 5px 0px $accent-dark;
-    box-shadow:         -1px 1px 5px 0px $accent-dark;
+    -webkit-box-shadow: -1px 1px 5px 0px $accent-darkest;
+    -moz-box-shadow:    -1px 1px 5px 0px $accent-darkest;
+    box-shadow:         -1px 1px 5px 0px $accent-darkest;
 }
 
 #sidebar {
@@ -109,16 +110,16 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    background: $accent-bright;
+    background: $accent-dark;
     height: 100%;
     padding: $small-space;
 
-    border-right: 1px solid $accent-dark;
+    border-right: 1px solid $accent-darkest;
 
-    color: $primary-bg;
-    -webkit-box-shadow: 2px 1px 3px 0px $accent-dark;
-    -moz-box-shadow:    2px 1px 3px 0px $accent-dark;
-    box-shadow:         2px 1px 3px 0px $accent-dark;
+    color: $light-text;
+    -webkit-box-shadow: 2px 1px 3px 0px $accent-darkest;
+    -moz-box-shadow:    2px 1px 3px 0px $accent-darkest;
+    box-shadow:         2px 1px 3px 0px $accent-darkest;
 
     h3 {
         margin-top: 0;
@@ -126,7 +127,7 @@ body {
     }
 
     a {
-        color: $primary-bg;
+        color: $light-text;
     }
 
     ul {
@@ -169,13 +170,13 @@ h1 {
     font-size: $hugest;
     font-style: italic;
     font-weight: bold;
-    color: $accent-bright;
+    color: $accent-dark;
     margin: 0;
 }
 
 /* Major section */
 h2 {
-    color: $accent-dark;
+    color: $accent-darkest;
     font-size: $large;
 }
 
@@ -194,9 +195,9 @@ pre > code {
 
     background: $code-block-bg;
 
-    -webkit-box-shadow: inset -1px 2px 3px 0px $accent-dark-transparent;
-    -moz-box-shadow:    inset -1px 2px 3px 0px $accent-dark-transparent;
-    box-shadow:         inset -1px 2px 3px 0px $accent-dark-transparent;
+    -webkit-box-shadow: inset -1px 2px 3px 0px $accent-darkest-transparent;
+    -moz-box-shadow:    inset -1px 2px 3px 0px $accent-darkest-transparent;
+    box-shadow:         inset -1px 2px 3px 0px $accent-darkest-transparent;
 
     font-family: 'Source Code Pro', monospace;
     font-size: $tiny;
@@ -220,7 +221,7 @@ pre > code {
     font-family: 'Vollkorn', serif;
     font-style: italic;
     font-weight: bold;
-    color: $accent-dark;
+    color: $accent-darkest;
 }
 
 .major-section-title {
