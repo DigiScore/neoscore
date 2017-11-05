@@ -1,6 +1,6 @@
-from brown.core.spanner import Spanner
 from brown.core.music_text import MusicText
 from brown.core.object_group import ObjectGroup
+from brown.core.spanner import Spanner
 from brown.core.staff_object import StaffObject
 from brown.utils.units import GraphicUnit
 

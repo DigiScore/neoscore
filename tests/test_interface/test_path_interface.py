@@ -1,14 +1,14 @@
 import unittest
 
 from brown.core import brown
-from brown.utils.point import Point
-from brown.core.path_element_type import PathElementType
-from brown.utils.color import Color
 from brown.core.brush_pattern import BrushPattern
+from brown.core.path_element_type import PathElementType
 from brown.core.pen_pattern import PenPattern
+from brown.interface.brush_interface import BrushInterface
 from brown.interface.path_interface import PathInterface
 from brown.interface.pen_interface import PenInterface
-from brown.interface.brush_interface import BrushInterface
+from brown.utils.color import Color
+from brown.utils.point import Point
 
 
 class TestPathInterface(unittest.TestCase):

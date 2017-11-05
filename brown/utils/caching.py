@@ -1,6 +1,3 @@
-from warnings import warn
-
-
 def _invalidate_cache(object_self, property_name):
     if property_name in object_self._cache_:
         del object_self._cache_[property_name]

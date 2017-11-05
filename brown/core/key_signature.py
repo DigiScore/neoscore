@@ -1,10 +1,10 @@
 from brown.core.accidental import Accidental
-from brown.models.accidental_type import AccidentalType
+from brown.core.music_text import MusicText
 from brown.core.object_group import ObjectGroup
 from brown.core.staff_object import StaffObject
-from brown.core.music_text import MusicText
-from brown.models.key_signature_type import KeySignatureType
+from brown.models.accidental_type import AccidentalType
 from brown.models.clef_type import ClefType
+from brown.models.key_signature_type import KeySignatureType
 from brown.utils.point import Point
 from brown.utils.units import Unit
 

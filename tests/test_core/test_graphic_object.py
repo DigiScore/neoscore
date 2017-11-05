@@ -1,11 +1,11 @@
 import unittest
 
 from brown.core import brown
+from brown.core.flowable import Flowable
 from brown.core.invisible_object import InvisibleObject
 from brown.core.paper import Paper
-from brown.core.flowable import Flowable
-from brown.utils.units import GraphicUnit
 from brown.utils.point import Point
+from brown.utils.units import GraphicUnit
 from brown.utils.units import Mm
 
 

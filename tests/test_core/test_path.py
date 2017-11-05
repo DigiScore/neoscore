@@ -6,8 +6,8 @@ from brown.core import brown
 from brown.core.brush import Brush
 from brown.core.invisible_object import InvisibleObject
 from brown.core.path import Path
-from brown.core.pen import Pen
 from brown.core.path_element_type import PathElementType
+from brown.core.pen import Pen
 from brown.utils.point import Point
 
 

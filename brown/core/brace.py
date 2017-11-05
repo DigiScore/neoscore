@@ -1,8 +1,8 @@
 from brown.core.multi_staff_object import MultiStaffObject
 from brown.core.music_font import MusicFontGlyphNotFoundError
 from brown.core.music_text import MusicText
-from brown.utils.units import GraphicUnit
 from brown.utils.point import Point
+from brown.utils.units import GraphicUnit
 
 
 class Brace(MultiStaffObject, MusicText):

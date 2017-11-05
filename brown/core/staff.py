@@ -1,6 +1,5 @@
 from brown import config
 from brown.core.clef import Clef
-from brown.core.graphic_object import GraphicObject
 from brown.core.music_font import MusicFont
 from brown.core.octave_line import OctaveLine
 from brown.core.path import Path

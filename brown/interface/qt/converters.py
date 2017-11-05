@@ -3,10 +3,10 @@
 from PyQt5.QtCore import QPoint, QPointF, QRect, QRectF
 from PyQt5.QtGui import QColor
 
+from brown.utils.color import Color
 from brown.utils.point import Point
 from brown.utils.rect import Rect
 from brown.utils.units import GraphicUnit
-from brown.utils.color import Color
 
 
 def unit_to_qt_int(unit):

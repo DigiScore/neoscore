@@ -1,9 +1,9 @@
 import unittest
 
 from brown.core import brown
-from brown.utils.units import Unit
 from brown.core.invisible_object import InvisibleObject
 from brown.earle.move import Move
+from brown.utils.units import Unit
 
 
 class TestMove(unittest.TestCase):

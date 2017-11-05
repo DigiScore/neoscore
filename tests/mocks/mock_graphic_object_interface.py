@@ -7,7 +7,6 @@ from brown.interface.graphic_object_interface import GraphicObjectInterface
 from brown.interface.pen_interface import PenInterface
 from brown.utils.color import Color
 
-
 """A mock concrete GraphicObjectInterface subclass for testing"""
 
 

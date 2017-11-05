@@ -4,9 +4,7 @@ from brown.core import brown
 from brown.core.flowable import Flowable
 from brown.core.paper import Paper
 from brown.core.staff import Staff
-from brown.utils.point import Point
 from brown.utils.units import Mm
-
 from tests.mocks.mock_staff_object import MockStaffObject
 
 

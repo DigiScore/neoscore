@@ -8,7 +8,6 @@ from brown.interface.qt.q_clipping_path import QClippingPath
 from brown.utils.point import Point
 from brown.utils.units import GraphicUnit
 
-
 """
 Qt paths have a few quirks which are good to know about if you're
 working with them at a lower level.

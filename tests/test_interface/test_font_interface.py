@@ -1,13 +1,10 @@
 import unittest
-import os
 
 import pytest
 from PyQt5 import QtGui
 
-from brown import config
 from brown.core import brown
 from brown.interface.font_interface import FontInterface
-from brown.interface.app_interface import AppInterface
 from brown.utils.units import Unit
 
 

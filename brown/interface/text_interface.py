@@ -1,8 +1,8 @@
 from brown.core import brown
 from brown.interface.graphic_object_interface import GraphicObjectInterface
+from brown.interface.qt.converters import point_to_qt_point_f
 from brown.interface.qt.q_enhanced_text_item import QEnhancedTextItem
 from brown.utils.point import Point
-from brown.interface.qt.converters import point_to_qt_point_f
 
 
 class TextInterface(GraphicObjectInterface):

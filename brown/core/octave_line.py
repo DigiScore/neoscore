@@ -4,10 +4,10 @@ from brown.core.music_text import MusicText
 from brown.core.object_group import ObjectGroup
 from brown.core.path import Path
 from brown.core.pen import Pen
+from brown.core.pen_pattern import PenPattern
 from brown.core.staff_object import StaffObject
 from brown.interface.text_interface import TextInterface
 from brown.models.transposition import Transposition
-from brown.core.pen_pattern import PenPattern
 from brown.utils.point import Point
 from brown.utils.units import GraphicUnit
 

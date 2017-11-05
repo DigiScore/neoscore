@@ -2,7 +2,6 @@ from enum import Enum
 
 from brown.models.accidental_type import AccidentalType
 
-
 flat = AccidentalType.flat
 sharp = AccidentalType.sharp
 

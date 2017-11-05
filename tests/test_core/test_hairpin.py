@@ -2,11 +2,10 @@ import unittest
 
 from brown.core import brown
 from brown.core.flowable import Flowable
-from brown.core.staff import Staff
 from brown.core.hairpin import Hairpin
+from brown.core.staff import Staff
 from brown.utils.parent_point import ParentPoint
 from brown.utils.units import Unit, Mm
-
 from tests.mocks.mock_staff_object import MockStaffObject
 
 

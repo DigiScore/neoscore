@@ -1,11 +1,11 @@
-from brown.core.object_group import ObjectGroup
-from brown.core.staff_object import StaffObject
 from brown.core.accidental import Accidental
 from brown.core.flag import Flag
 from brown.core.ledger_line import LedgerLine
 from brown.core.notehead import Notehead
+from brown.core.object_group import ObjectGroup
 from brown.core.rest import Rest
 from brown.core.rhythm_dot import RhythmDot
+from brown.core.staff_object import StaffObject
 from brown.core.stem import Stem
 from brown.utils.point import Point
 

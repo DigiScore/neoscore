@@ -1,10 +1,7 @@
-import os
 import unittest
 
-from brown import config
 from brown.core import brown
 from brown.core.font import Font
-from brown.interface.app_interface import AppInterface
 
 
 class TestFont(unittest.TestCase):

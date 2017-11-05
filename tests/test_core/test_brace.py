@@ -1,8 +1,8 @@
 import unittest
 
 from brown.core import brown
-from brown.core.staff import Staff
 from brown.core.brace import Brace
+from brown.core.staff import Staff
 from brown.utils.units import Mm
 
 

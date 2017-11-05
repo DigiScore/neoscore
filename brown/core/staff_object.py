@@ -1,5 +1,5 @@
-from brown.utils.exceptions import NoAncestorStaffError
 from brown.core.graphic_object import GraphicObject
+from brown.utils.exceptions import NoAncestorStaffError
 
 
 class StaffObject:

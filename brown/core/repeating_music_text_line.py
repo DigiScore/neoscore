@@ -1,6 +1,5 @@
-from brown.core.music_text import MusicText
 from brown.core.horizontal_spanner import HorizontalSpanner
-from brown.utils.parent_point import ParentPoint
+from brown.core.music_text import MusicText
 from brown.utils.point import Point
 
 

@@ -5,8 +5,8 @@ from warnings import warn
 from brown import config
 from brown.core.document import Document
 from brown.core.font import Font
-from brown.interface.app_interface import AppInterface
 from brown.interface import images
+from brown.interface.app_interface import AppInterface
 from brown.utils import file_system
 from brown.utils.color import Color
 from brown.utils.exceptions import InvalidImageFormatError

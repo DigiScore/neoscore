@@ -1,6 +1,5 @@
 import unittest
 
-
 from brown.utils.caching import cached_property, cache_broadcaster
 
 

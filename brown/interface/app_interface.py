@@ -7,10 +7,10 @@ from brown import config
 from brown.earle.ui.main_window import MainWindow
 from brown.interface import images
 from brown.interface.interface import Interface
+from brown.interface.qt.converters import rect_to_qt_rect_f, color_to_q_color
 from brown.utils.exceptions import (FontRegistrationError,
                                     ImageExportError)
 from brown.utils.units import Unit, Meter
-from brown.interface.qt.converters import rect_to_qt_rect_f, color_to_q_color
 
 
 class AppInterface(Interface):

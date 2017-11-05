@@ -3,8 +3,8 @@ from brown.core.font import Font
 from brown.utils import smufl
 from brown.utils.exceptions import (MusicFontMetadataNotFoundError,
                                     MusicFontGlyphNotFoundError)
-from brown.utils.units import convert_all_to_unit
 from brown.utils.platforms import PlatformType, current_platform
+from brown.utils.units import convert_all_to_unit
 
 
 class MusicFont(Font):

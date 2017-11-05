@@ -1,12 +1,9 @@
-import os
 import unittest
 
-from brown import config
 from brown.core import brown
 from brown.core.font import Font
 from brown.core.invisible_object import InvisibleObject
 from brown.core.text import Text
-from brown.interface.app_interface import AppInterface
 
 
 class TestText(unittest.TestCase):

@@ -1,10 +1,10 @@
 import unittest
 
 from brown.core import brown
-from brown.utils.point import Point
 from brown.core.path import Path
 from brown.core.path_element import PathElement
 from brown.core.path_element_type import PathElementType
+from brown.utils.point import Point
 
 
 class TestPathElement(unittest.TestCase):

@@ -1,9 +1,10 @@
 import unittest
+
 import pytest
 
-from brown.utils.units import Unit, Mm
-from brown.utils.point import Point
 from brown.utils.parent_point import ParentPoint
+from brown.utils.point import Point
+from brown.utils.units import Unit, Mm
 
 
 class TestPoint(unittest.TestCase):

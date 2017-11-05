@@ -3,8 +3,8 @@ from abc import ABC
 from brown import config
 from brown.core import brown
 from brown.core.brush import Brush
-from brown.core.pen import Pen
 from brown.core.page import Page
+from brown.core.pen import Pen
 from brown.utils.point import Point
 from brown.utils.units import Unit, Mm
 

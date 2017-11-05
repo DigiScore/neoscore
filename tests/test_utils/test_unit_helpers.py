@@ -1,7 +1,7 @@
 import pytest
 
-from brown.utils.units import convert_all_to_unit
 from brown.utils.units import GraphicUnit
+from brown.utils.units import convert_all_to_unit
 
 
 def test_convert_all_to_unit_simple_dict():

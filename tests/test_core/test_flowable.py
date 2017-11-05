@@ -2,11 +2,11 @@ import unittest
 
 import pytest
 
-from brown.core.paper import Paper
 from brown.core import brown
-from brown.utils.units import Mm
-from brown.utils.point import Point
 from brown.core.flowable import Flowable, OutOfBoundsError
+from brown.core.paper import Paper
+from brown.utils.point import Point
+from brown.utils.units import Mm
 
 
 class TestFlowable(unittest.TestCase):

@@ -1,7 +1,7 @@
 from PyQt5 import QtGui
 
-from brown.interface.interface import Interface
 from brown.core.pen_pattern import PenPattern
+from brown.interface.interface import Interface
 from brown.utils.units import GraphicUnit
 
 

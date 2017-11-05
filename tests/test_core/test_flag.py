@@ -3,9 +3,9 @@ import unittest
 import pytest
 
 from brown.core import brown
+from brown.core.flag import Flag, NoFlagNeededError
 from brown.core.staff import Staff
 from brown.models.beat import Beat
-from brown.core.flag import Flag, NoFlagNeededError
 from brown.utils.units import Mm
 
 

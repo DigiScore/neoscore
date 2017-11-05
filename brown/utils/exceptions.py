@@ -1,7 +1,5 @@
 """All custom exceptions used throughout brown."""
 
-import os
-
 
 class MusicFontMetadataNotFoundError(Exception):
     """Exception raised when metadata for a music font can't be found."""

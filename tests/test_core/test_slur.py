@@ -1,11 +1,10 @@
 import unittest
 
 from brown.core import brown
-from brown.utils.units import Unit, Mm
 from brown.core.flowable import Flowable
-from brown.core.staff import Staff
 from brown.core.slur import Slur
-
+from brown.core.staff import Staff
+from brown.utils.units import Unit, Mm
 from tests.mocks.mock_staff_object import MockStaffObject
 
 

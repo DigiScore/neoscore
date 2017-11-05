@@ -1,9 +1,9 @@
 from brown import config
-from brown.core.paper import Paper
 from brown.core.page_supplier import PageSupplier
+from brown.core.paper import Paper
 from brown.utils.point import Point
 from brown.utils.rect import Rect
-from brown.utils.units import Mm, GraphicUnit
+from brown.utils.units import GraphicUnit
 
 
 class Document:

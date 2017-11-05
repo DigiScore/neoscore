@@ -1,7 +1,7 @@
 from brown.core.path import Path
 from brown.core.staff_object import StaffObject
-from brown.utils.point import Point
 from brown.utils.parent_point import ParentPoint
+from brown.utils.point import Point
 from brown.utils.units import GraphicUnit
 
 

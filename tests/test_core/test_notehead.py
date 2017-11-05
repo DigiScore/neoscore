@@ -1,11 +1,11 @@
 import unittest
 
 from brown.core import brown
+from brown.core.clef import Clef
 from brown.core.flowable import Flowable
+from brown.core.notehead import Notehead
 from brown.core.staff import Staff
 from brown.models.beat import Beat
-from brown.core.clef import Clef
-from brown.core.notehead import Notehead
 from brown.utils.units import Mm
 
 
