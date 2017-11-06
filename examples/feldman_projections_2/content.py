@@ -1,5 +1,6 @@
 from collections import namedtuple
 
+from examples.feldman_projections_2.glyph_name import GlyphName
 from examples.feldman_projections_2.register import Register as Reg
 from examples.feldman_projections_2.grid_unit import GridUnit as G
 from examples.feldman_projections_2.measure import Measure as M
@@ -15,8 +16,7 @@ pnoR = InstrumentData('PianoR', G(3) * 4)
 pnoL = InstrumentData('PianoL', G(3) * 5)
 
 
-# DIAMOND = MusicChar(None, 'noteheadDiamondWhite')
-DIAMOND = 'noteheadDiamondWhite'
+DIAMOND = GlyphName('noteheadDiamondWhite')
 SUB_2 = '\u2082'
 P2 = 'P' + SUB_2
 

@@ -16,7 +16,7 @@ class FontInterface(Interface):
             brown_object (Brush): The object this interface belongs to
             family_name (str): The name of the font family
             size (Unit): The size of the font
-            weight (int): The font weight
+            weight (float): The font weight
             italic (bool): Italicized or not
         """
         super().__init__(brown_object)

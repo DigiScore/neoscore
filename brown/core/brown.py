@@ -19,8 +19,6 @@ _app_interface = None
 default_font = None
 """Font: The default font to be used in `Text` objects."""
 
-default_music_font = None
-
 document = None
 """Document: The global document root object."""
 
@@ -51,7 +49,6 @@ def setup(initial_paper=None):
     """
     global _app_interface
     global default_font
-    global default_music_font
     global document
     global registered_text_fonts
     document = Document(initial_paper)
@@ -60,7 +57,6 @@ def setup(initial_paper=None):
     default_font = Font(config.DEFAULT_TEXT_FONT_NAME,
                         config.DEFAULT_TEXT_FONT_SIZE,
                         1, False)
-    default_music_font = registered_music_fonts[config.DEFAULT_MUSIC_FONT_NAME]
 
 
 def register_font(font_file_path):

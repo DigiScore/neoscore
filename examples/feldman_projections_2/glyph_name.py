@@ -1,0 +1,2 @@
+class GlyphName(str):
+    pass
