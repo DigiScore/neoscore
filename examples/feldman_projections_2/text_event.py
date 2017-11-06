@@ -1,11 +1,19 @@
 from brown.core.text import Text
+from brown.utils.point import Point
 from examples.feldman_projections_2.event import Event
 from examples.feldman_projections_2.grid_unit import GridUnit
 
 
 class TextEvent(Event):
 
-    def __init__(self, pos, parent, length, text):
-
+    def __init__(self, pos, parent, length, text, font):
         Event.__init__(self, pos, parent, length)
-        self.text = Text((GridUnit(0), GridUnit(0)), text, parent=self)
+        text_pos = TextEvent.calculate_text_pos(text, font, length)
+        self.text = Text(text_pos, text, font, self)
+
+    @staticmethod
+    def calculate_text_pos(text, font, event_length):
+        text_rect = font.bounding_rect_of(text)
+        x = (GridUnit(1) - text_rect.width) / 2
+        y = GridUnit(1) - ((GridUnit(1) - text_rect.height) / 2)
+        return Point(x, y)
