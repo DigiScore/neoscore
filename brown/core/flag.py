@@ -1,10 +1,11 @@
 from brown.core.music_text import MusicText
+from brown.core.staff_object import StaffObject
 from brown.utils.exceptions import NoFlagNeededError
 from brown.utils.point import Point
 from brown.utils.units import Unit
 
 
-class Flag(MusicText):
+class Flag(MusicText, StaffObject):
 
     """A simple Flag glyph with a duration and direction
 
@@ -47,9 +48,11 @@ class Flag(MusicText):
             glyph_name = self._down_glyphnames[self.duration.base_division]
         else:
             glyph_name = self._up_glyphnames[self.duration.base_division]
-        super().__init__(Point(Unit(0), Unit(0)),
-                         [glyph_name],
-                         parent)
+        MusicText.__init__(self,
+                           Point(Unit(0), Unit(0)),
+                           [glyph_name],
+                           parent)
+        StaffObject.__init__(self, parent)
 
     ######## PUBLIC PROPERTIES ########
 

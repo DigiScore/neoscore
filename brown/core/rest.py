@@ -1,10 +1,11 @@
 from brown.core.music_text import MusicText
+from brown.core.staff_object import StaffObject
 from brown.models.beat import Beat
 from brown.utils.point import Point
 from brown.utils.units import Unit
 
 
-class Rest(MusicText):
+class Rest(MusicText, StaffObject):
 
     """A simple Rest glyph whose appearance is determined by a duration
 
@@ -42,9 +43,11 @@ class Rest(MusicText):
         pos = pos if isinstance(pos, Point) else Point(pos, Unit(0))
         self._duration = (duration if isinstance(duration, Beat)
                           else Beat(*duration))
-        super().__init__(pos,
-                         [self._glyphnames[self.duration.base_division]],
-                         parent)
+        MusicText.__init__(self,
+                           pos,
+                           [self._glyphnames[self.duration.base_division]],
+                           parent)
+        StaffObject.__init__(self, parent)
         # Currently use a fixed vertical position for rests
         self.pos.y = self.staff.unit(2)
 

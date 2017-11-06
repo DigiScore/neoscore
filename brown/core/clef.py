@@ -1,8 +1,9 @@
 from brown.core.music_text import MusicText
+from brown.core.staff_object import StaffObject
 from brown.models.clef_type import ClefType
 
 
-class Clef(MusicText):
+class Clef(MusicText, StaffObject):
 
     """A graphical and logical staff clef.
 
@@ -55,6 +56,7 @@ class Clef(MusicText):
         MusicText.__init__(self, (pos_x, 0),
                            self._canonical_names[self._clef_type],
                            staff)
+        StaffObject.__init__(self, staff)
         self.y = self.staff_position
 
     ######## PUBLIC PROPERTIES ########

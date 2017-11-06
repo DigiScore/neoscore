@@ -6,7 +6,6 @@ from brown.models.accidental_type import AccidentalType
 from brown.models.clef_type import ClefType
 from brown.models.key_signature_type import KeySignatureType
 from brown.utils.point import Point
-from brown.utils.units import Unit
 
 
 class KeySignature(ObjectGroup, StaffObject):
@@ -20,8 +19,6 @@ class KeySignature(ObjectGroup, StaffObject):
     All traditional key signatures (those included in `KeySignatureTypes`)
     are supported by this class. Nontraditional key signatures could
     be implemented in a fairly straightforward way in a subclass of this.
-
-    TODO: Support clef changes during a key signature.
     """
 
     def __init__(self, pos_x, staff, key_signature_type):
@@ -69,7 +66,7 @@ class KeySignature(ObjectGroup, StaffObject):
                     self.length)
 
 
-class _KeySignatureAccidental(MusicText):
+class _KeySignatureAccidental(MusicText, StaffObject):
     """A visual accidental.
 
     This should only be used within `KeySignature`s.
@@ -116,8 +113,9 @@ class _KeySignatureAccidental(MusicText):
 
     def __init__(self, pos, pitch_letter, accidental_type, key_signature,
                  music_font, scale_factor, length):
-        super().__init__(pos, Accidental._canonical_names[accidental_type],
-                         key_signature, music_font, scale_factor)
+        MusicText.__init__(self, pos, Accidental._canonical_names[accidental_type],
+                           key_signature, music_font, scale_factor)
+        StaffObject.__init__(self, key_signature)
         self._length = length
         self.pitch_letter = pitch_letter
         self.accidental_type = accidental_type

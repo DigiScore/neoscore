@@ -116,7 +116,7 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
         return self.spanner_x_length
 
 
-class _OctaveLineText(MusicText):
+class _OctaveLineText(MusicText, StaffObject):
     """An octave text mark recurring at line beginnings with added parenthesis.
 
     This is a private class meant to be used exclusively in the context
@@ -136,6 +136,7 @@ class _OctaveLineText(MusicText):
                            pos,
                            OctaveLine.glyphs[indication],
                            parent)
+        StaffObject.__init__(self, parent)
         open_paren_char = MusicChar(self.font, OctaveLine.glyphs['('])
         close_paren_char = MusicChar(self.font, OctaveLine.glyphs[')'])
         self.parenthesized_text = (open_paren_char.codepoint

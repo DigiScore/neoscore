@@ -1,7 +1,8 @@
 from brown.core.music_text import MusicText
+from brown.core.staff_object import StaffObject
 
 
-class RhythmDot(MusicText):
+class RhythmDot(MusicText, StaffObject):
 
     """A single rhythmic dot"""
 
@@ -14,4 +15,5 @@ class RhythmDot(MusicText):
             parent (StaffObject):
             font (MusicFont):
         """
-        super().__init__(pos, [self._glyph_name], font, parent)
+        MusicText.__init__(self, pos, [self._glyph_name], font, parent)
+        StaffObject.__init__(self, parent)

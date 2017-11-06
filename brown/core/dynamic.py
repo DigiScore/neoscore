@@ -1,8 +1,9 @@
 from brown.core.music_text import MusicText
+from brown.core.staff_object import StaffObject
 from brown.utils.exceptions import DynamicStringError
 
 
-class Dynamic(MusicText):
+class Dynamic(MusicText, StaffObject):
 
     """A textual dynamic marking"""
 
@@ -27,6 +28,7 @@ class Dynamic(MusicText):
         """
         parsed_text = self._parse_dynamic_string(text)
         MusicText.__init__(self, pos, parsed_text, parent)
+        StaffObject.__init__(self, parent)
 
     ######## CONSTRUCTORS ########
 

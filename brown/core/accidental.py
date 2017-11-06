@@ -1,9 +1,10 @@
 from brown.core.music_text import MusicText
+from brown.core.staff_object import StaffObject
 from brown.models.accidental_type import AccidentalType
 from brown.utils.exceptions import InvalidAccidentalTypeError
 
 
-class Accidental(MusicText):
+class Accidental(MusicText, StaffObject):
 
     """A visible accidental."""
 
@@ -30,7 +31,8 @@ class Accidental(MusicText):
             except KeyError:
                 raise InvalidAccidentalTypeError
         canonical_name = self._canonical_names[self.accidental_type]
-        super().__init__(pos, [canonical_name], parent)
+        MusicText.__init__(self, pos, [canonical_name], parent)
+        StaffObject.__init__(self, parent)
 
     ######## PUBLIC PROPERTIES ########
 

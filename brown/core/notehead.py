@@ -1,10 +1,11 @@
 from brown.core.music_text import MusicText
+from brown.core.staff_object import StaffObject
 from brown.models.beat import Beat
 from brown.models.pitch import Pitch
 from brown.utils.units import Mm
 
 
-class Notehead(MusicText):
+class Notehead(MusicText, StaffObject):
 
     """A simple notehead glyph whose appearance is determined by a Duration
 
@@ -43,10 +44,11 @@ class Notehead(MusicText):
         self._duration = (duration if isinstance(duration, Beat)
                           else Beat(*duration))
         # Use a temporary y-axis position before calculating it for real
-        super().__init__((pos_x, Mm(0)),
-                         [self._glyphnames[self.duration.base_division]],
-                         parent)
-
+        MusicText.__init__(self,
+                           (pos_x, Mm(0)),
+                           [self._glyphnames[self.duration.base_division]],
+                           parent)
+        StaffObject.__init__(self, parent)
         self.y = self.staff.unit(
             self.staff_pos
             - self.flowable.map_between_locally(self.staff, self.parent).y)

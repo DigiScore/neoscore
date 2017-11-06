@@ -1,11 +1,12 @@
 from brown.core.multi_staff_object import MultiStaffObject
 from brown.core.music_font import MusicFontGlyphNotFoundError
 from brown.core.music_text import MusicText
+from brown.core.staff_object import StaffObject
 from brown.utils.point import Point
 from brown.utils.units import GraphicUnit
 
 
-class Brace(MultiStaffObject, MusicText):
+class Brace(MultiStaffObject, StaffObject, MusicText):
 
     """A brace spanning staves, recurring at line beginnings.
 
@@ -28,6 +29,7 @@ class Brace(MultiStaffObject, MusicText):
             staves (set(Staff)): The staves this brace spans
         """
         MultiStaffObject.__init__(self, staves)
+        StaffObject.__init__(self, self.highest_staff)
         # Calculate the height of the brace in highest_staff staff units
         scale = self.vertical_span / self.highest_staff.unit(4)
         if self.vertical_span > self.highest_staff.unit(50):
