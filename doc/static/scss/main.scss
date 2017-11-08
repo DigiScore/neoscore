@@ -45,7 +45,11 @@ body {
     color: $primary-text;
     font-family: 'Roboto', sans-serif;
     font-size: $small;
-    background: $primary-bg;
+
+    background: #23074d;
+    background: -webkit-linear-gradient(to right, #cc5333, #23074d);
+    background: linear-gradient(to right, #cc5333, #23074d);
+
     overflow: auto;
 }
 
@@ -100,9 +104,9 @@ body {
     border-left: 1px solid $accent-darkest;
     border-bottom: 1px solid $accent-darkest;
 
-    -webkit-box-shadow: -1px 1px 5px 0px $accent-darkest;
-    -moz-box-shadow:    -1px 1px 5px 0px $accent-darkest;
-    box-shadow:         -1px 1px 5px 0px $accent-darkest;
+    -webkit-box-shadow: 2px 2px 5px 0px #000;
+    -moz-box-shadow:    2px 2px 5px 0px #000;
+    box-shadow:         2px 2px 5px 0px #000;
 }
 
 #sidebar {
