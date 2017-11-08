@@ -144,7 +144,7 @@ class _KeySignatureAccidental(MusicText, StaffObject):
         if clef is None:
             return
         clef_type = clef.clef_type
-        padded_clef_width = clef._bounding_rect.width + self.staff.unit(0.5)
+        padded_clef_width = clef.bounding_rect.width + self.staff.unit(0.5)
         pos_tuple = _KeySignatureAccidental.positions[
             self.accidental_type][clef_type][self.pitch_letter]
         visual_pos = Point(self.staff.unit(pos_tuple[0]),

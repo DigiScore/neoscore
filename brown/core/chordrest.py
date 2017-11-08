@@ -130,7 +130,7 @@ class Chordrest(ObjectGroup, StaffObject):
     def rhythm_dot_positions(self):
         """iter(Point): The positions of all rhythm dots needed."""
         if self.rest:
-            dot_start_x = self.rest.x + self.rest._bounding_rect.width
+            dot_start_x = self.rest.x + self.rest.bounding_rect.width
             dottables = {self.rest}
         else:
             dot_start_x = self.leftmost_notehead.x + self.notehead_column_width

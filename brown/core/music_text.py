@@ -45,12 +45,12 @@ class MusicText(Text):
 
         This is used to determine how and where rendering cuts should be made.
         """
-        return self._bounding_rect.width
+        return self.bounding_rect.width
 
     ######## PRIVATE PROPERTIES ########
 
     @property
-    def _bounding_rect(self):
+    def bounding_rect(self):
         """Rect: The bounding rect for this text when rendered."""
         return self._char_list_bounding_rect(self.music_chars)
 

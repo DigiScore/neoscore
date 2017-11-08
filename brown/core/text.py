@@ -60,7 +60,7 @@ class Text(GraphicObject):
     ######## PRIVATE PROPERTIES ########
 
     @property
-    def _bounding_rect(self):
+    def bounding_rect(self):
         """The bounding rect override for this text."""
         return self.font.bounding_rect_of(self.text)
 

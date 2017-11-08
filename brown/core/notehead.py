@@ -58,7 +58,7 @@ class Notehead(MusicText, StaffObject):
     @property
     def visual_width(self):
         """Unit: The visual width of the Notehead"""
-        return self._bounding_rect.width
+        return self.bounding_rect.width
 
     @property
     def pitch(self):

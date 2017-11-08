@@ -22,7 +22,7 @@ class TestRepeatingMusicTextLine(unittest.TestCase):
             (Mm(0), Mm(0)),
             self.char,
             self.staff,
-            scale_factor=2)._bounding_rect.width
+            scale_factor=2).bounding_rect.width
 
     def test_repetition_count(self):
         line = RepeatingMusicTextLine((Mm(1), Mm(2)),

@@ -90,7 +90,7 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
             indication=indication)
 
         # Vertically center the path relative to the text
-        path_y = self.line_text._bounding_rect.height / -2
+        path_y = self.line_text.bounding_rect.height / -2
         self.line_path = Path(
             pos=(GraphicUnit(0), path_y),
             pen=Pen(
