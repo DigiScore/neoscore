@@ -16,7 +16,7 @@ class Score(ObjectGroup):
     _TEXT_FONT_SIZE = GraphicUnit(GridUnit(0.5)).value
     _MUSIC_FONT_SIZE = Staff._make_unit_class(GridUnit(0.5))
 
-    def __init__(self, pos, content):
+    def __init__(self, pos, instruments):
         super().__init__(pos)
         self.events = []
         self.text_font = Font.deriving(
@@ -26,25 +26,33 @@ class Score(ObjectGroup):
             config.DEFAULT_MUSIC_FONT_NAME,
             Score._MUSIC_FONT_SIZE)
 
-        for event in content:
-            self.events.append(self._create_event(event))
+        for i, instrument in enumerate(instruments):
+            for event_data in instrument.event_data:
+                self.events.append(self._create_event(i, event_data))
 
-    def _create_text_event(self, content_tuple):
-        pos_x = content_tuple[1]
-        pos_y = content_tuple[0].vertical_offset + content_tuple[2].value
-        length = content_tuple[4]
-        text = content_tuple[3]
-        return TextEvent((pos_x, pos_y), self, length, content_tuple[3],
-                         self.text_font)
+    def _create_event(self, instrument_index, event_data):
+        if isinstance(event_data.text, GlyphName):
+            return self._create_music_text_event(instrument_index, event_data)
+        return self._create_text_event(instrument_index, event_data)
 
-    def _create_music_text_event(self, content_tuple):
-        pos_x = content_tuple[1]
-        pos_y = content_tuple[0].vertical_offset + content_tuple[2].value
-        length = content_tuple[4]
-        return MusicTextEvent((pos_x, pos_y), self, length, content_tuple[3],
-                              self.music_font)
+    def _create_text_event(self, instrument_index, event_data):
+        return TextEvent(
+            (event_data.pos_x, (Score._instrument_pos_y(instrument_index)
+                                + event_data.register.value)),
+            self,
+            event_data.length,
+            event_data.text,
+            self.text_font)
 
-    def _create_event(self, content_tuple):
-        if isinstance(content_tuple[3], GlyphName):
-            return self._create_music_text_event(content_tuple)
-        return self._create_text_event(content_tuple)
+    def _create_music_text_event(self, instrument_index, event_data):
+        return MusicTextEvent(
+            (event_data.pos_x, (Score._instrument_pos_y(instrument_index)
+                                + event_data.register.value)),
+            self,
+            event_data.length,
+            event_data.text,
+            self.music_font)
+
+    @staticmethod
+    def _instrument_pos_y(instrument_index):
+        return GridUnit(3 * instrument_index)

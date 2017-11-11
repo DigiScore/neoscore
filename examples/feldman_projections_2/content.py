@@ -1,19 +1,21 @@
 from collections import namedtuple
 
 from examples.feldman_projections_2.glyph_name import GlyphName
+from examples.feldman_projections_2.instrument_data import InstrumentData
 from examples.feldman_projections_2.register import Register as Reg
 from examples.feldman_projections_2.grid_unit import GridUnit as G
 from examples.feldman_projections_2.measure import Measure as M
 
 
-InstrumentData = namedtuple('InstrumentData', ('name', 'vertical_offset'))
+EventData = namedtuple('EventData',
+                       ('instrument', 'pos_x', 'register', 'text', 'length'))
 
-fl = InstrumentData('Flute', G(3) * 0)
-tpt = InstrumentData('Trumpet', G(3) * 1)
-vln = InstrumentData('Violin', G(3) * 2)
-vc = InstrumentData('Cello', G(3) * 3)
-pnoR = InstrumentData('PianoR', G(3) * 4)
-pnoL = InstrumentData('PianoL', G(3) * 5)
+fl = 'Flute'
+tpt = 'Trumpet'
+vln = 'Violin'
+vc = 'Cello'
+pnoR = 'PianoR'
+pnoL = 'PianoL'
 
 
 DIAMOND = GlyphName('noteheadDiamondWhite')
@@ -21,7 +23,7 @@ SUB_2 = '\u2082'
 P2 = 'P' + SUB_2
 
 
-content = [
+events = [EventData(*data) for data in [
     # (instrument, pos_x, Register, text, length)
     (pnoL, M(0) + G(1), Reg.L, '5',     G(3) + M(1) + G(2)),
     (tpt,  M(0) + G(2), Reg.M, '',      G(3)),
@@ -61,6 +63,18 @@ content = [
 
     (vc,   M(9) + G(2), Reg.H, 'A',     G(1)),
     (pnoR, M(9) + G(3), Reg.L, '1',     G(1)),
+]]
+
+instruments = [
+    InstrumentData(i, [
+        e for e in events
+        if e.instrument == i
+    ]) for i in [
+        fl,
+        tpt,
+        vln,
+        vc,
+        pnoR,
+        pnoL
+    ]
 ]
-
-
