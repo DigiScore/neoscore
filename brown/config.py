@@ -22,7 +22,7 @@ DEFAULT_PEN_THICKNESS = GraphicUnit(0)  # GraphicUnits
 DEFAULT_PEN_PATTERN = PenPattern.SOLID
 
 # Default brush properties
-DEFAULT_BRUSH_COLOR = Color(0, 0, 0, 0)
+DEFAULT_BRUSH_COLOR = Color(0, 0, 0, 255)
 DEFAULT_PATH_BRUSH_COLOR = Color(0, 0, 0, 0)
 DEFAULT_BRUSH_PATTERN = BrushPattern.SOLID
 
