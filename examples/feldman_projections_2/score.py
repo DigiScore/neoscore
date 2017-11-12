@@ -1,21 +1,21 @@
+from typing import Union
+
 from brown import config
 from brown.core import brown
-from brown.core.brush import Brush
+from brown.core.font import Font
 from brown.core.music_font import MusicFont
 from brown.core.object_group import ObjectGroup
-from brown.core.font import Font
 from brown.core.path import Path
 from brown.core.pen import Pen
 from brown.core.pen_pattern import PenPattern
 from brown.core.staff import Staff
-from brown.utils.color import Color
 from brown.utils.units import GraphicUnit
 from examples.feldman_projections_2.glyph_name import GlyphName
+from examples.feldman_projections_2.grid_unit import GridUnit
 from examples.feldman_projections_2.instrument_data import InstrumentData
 from examples.feldman_projections_2.measure import Measure
-from examples.feldman_projections_2.text_event import TextEvent
 from examples.feldman_projections_2.music_text_event import MusicTextEvent
-from examples.feldman_projections_2.grid_unit import GridUnit
+from examples.feldman_projections_2.text_event import TextEvent
 
 
 class Score(ObjectGroup):
@@ -39,7 +39,8 @@ class Score(ObjectGroup):
             for event_data in instrument.event_data:
                 self.events.append(self._create_event(i, event_data))
 
-        self.draw_instrument_separators()
+        self.draw_instrument_dividers()
+        self.draw_bar_lines()
 
     def _create_event(self, instrument_index, event_data):
         if isinstance(event_data.text, GlyphName):
@@ -79,26 +80,32 @@ class Score(ObjectGroup):
         return GridUnit(3 * divider_index)
 
     @staticmethod
-    def _divider_visible(instrument_above: InstrumentData,
-                         instrument_below: InstrumentData,
+    def _divider_visible(instrument_above: Union[InstrumentData, None],
+                         instrument_below: Union[InstrumentData, None],
                          measure_num: int) -> bool:
         return ((instrument_above is not None
                  and instrument_above.measure_has_events(measure_num))
                 or (instrument_below is not None
                     and instrument_below.measure_has_events(measure_num)))
 
-    def draw_instrument_separators(self):
+    def _bar_line_extends_below(self,
+                                measure_num: int,
+                                divider_num: int) -> bool:
+        if divider_num >= len(self.instruments):
+            return False
+        instrument = self.instruments[divider_num]
+        return (instrument.measure_has_events(measure_num - 1)
+                or instrument.measure_has_events(measure_num))
+
+    def draw_instrument_dividers(self):
         for divider in range(len(self.instruments) + 1):
-            #for divider in range(1):
             current_path = Path((Measure(0), Score._divider_pos_y(divider)),
                                 pen=Pen(thickness=GridUnit(0.1)),
                                 parent=self)
-            print(f'creating divider at {current_path.pos}')
             instrument_above = (self.instruments[divider - 1]
                                 if divider > 0 else None)
             instrument_below = (self.instruments[divider]
                                 if divider < len(self.instruments) else None)
-            print(f'begin divider between {instrument_above.name if instrument_above else None} and {instrument_below.name if instrument_below else None}')
             drawing = False
             for measure_num in range(self.measure_count + 1):
                 if Score._divider_visible(
@@ -108,7 +115,27 @@ class Score(ObjectGroup):
                         drawing = True
                 else:
                     if drawing:
-                        print(f'drawing line from {current_path.current_draw_pos.to_unit(Measure)} to {Measure(measure_num), GridUnit(0)}')
                         current_path.line_to(Measure(measure_num), GridUnit(0))
+                        drawing = False
+
+    def draw_bar_lines(self):
+        for measure_num in range(self.measure_count + 1):
+            current_path = Path((Measure(measure_num), GridUnit(0)),
+                                pen=Pen(thickness=GridUnit(0.05),
+                                        pattern=PenPattern.DOT),
+                                parent=self)
+            drawing = False
+            for divider_num in range(len(self.instruments) + 1):
+                if self._bar_line_extends_below(measure_num, divider_num):
+                    if not drawing:
+                        current_path.move_to(
+                            GridUnit(0),
+                            Score._instrument_pos_y(divider_num))
+                        drawing = True
+                else:
+                    if drawing:
+                        current_path.line_to(
+                            GridUnit(0),
+                            Score._instrument_pos_y(divider_num))
                         drawing = False
 

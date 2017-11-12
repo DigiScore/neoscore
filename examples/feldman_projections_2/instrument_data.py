@@ -9,7 +9,6 @@ class InstrumentData:
         self.event_data = event_data
         self.occupied_measures = self.calculate_occupied_measures(
             self.event_data)
-        print(f'occupied measures for {self.name}: {self.occupied_measures}')
 
     def measure_has_events(self, measure_number):
         return measure_number in self.occupied_measures
