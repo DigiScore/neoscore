@@ -1,6 +1,5 @@
-from examples.feldman_projections_2.grid_unit import GridUnit
-from brown.utils.units import Unit
+from brown.utils.units import Unit, Inch
 
 
 class Measure(Unit):
-    CONVERSION_RATE = GridUnit.CONVERSION_RATE * 4
+    CONVERSION_RATE = Inch.CONVERSION_RATE / 2
