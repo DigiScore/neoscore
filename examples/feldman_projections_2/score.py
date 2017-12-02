@@ -23,6 +23,9 @@ class Score(ObjectGroup):
     _TEXT_FONT_SIZE = GraphicUnit(GridUnit(0.5)).value
     _MUSIC_FONT_SIZE = Staff._make_unit_class(GridUnit(0.5))
 
+    _bar_line_pen = Pen(thickness=GridUnit(0.05), pattern=PenPattern.DOT)
+    _instrument_divider_pen = Pen(thickness=GridUnit(0.1))
+
     def __init__(self, pos, instruments, parent):
         super().__init__(pos, parent)
         self.events = []
@@ -100,7 +103,7 @@ class Score(ObjectGroup):
     def draw_instrument_dividers(self):
         for divider in range(len(self.instruments) + 1):
             current_path = Path((Measure(0), Score._divider_pos_y(divider)),
-                                pen=Pen(thickness=GridUnit(0.1)),
+                                pen=Score._instrument_divider_pen,
                                 parent=self)
             instrument_above = (self.instruments[divider - 1]
                                 if divider > 0 else None)
@@ -121,8 +124,7 @@ class Score(ObjectGroup):
     def draw_bar_lines(self):
         for measure_num in range(self.measure_count + 1):
             current_path = Path((Measure(measure_num), GridUnit(0)),
-                                pen=Pen(thickness=GridUnit(0.05),
-                                        pattern=PenPattern.DOT),
+                                pen=Score._bar_line_pen,
                                 parent=self)
             drawing = False
             for divider_num in range(len(self.instruments) + 1):

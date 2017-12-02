@@ -4,4 +4,4 @@ from examples.feldman_projections_2.measure import Measure
 
 class GridUnit(Unit):
 
-    CONVERSION_RATE = Measure.CONVERSION_RATE / 3
+    CONVERSION_RATE = Measure.CONVERSION_RATE / 4
