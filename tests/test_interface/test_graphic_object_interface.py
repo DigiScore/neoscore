@@ -4,6 +4,8 @@ from PyQt5.QtCore import QPointF
 
 from brown.core import brown
 from brown.core.brush_pattern import BrushPattern
+from brown.core.pen_cap_style import PenCapStyle
+from brown.core.pen_join_style import PenJoinStyle
 from brown.core.pen_pattern import PenPattern
 from brown.interface.brush_interface import BrushInterface
 from brown.interface.pen_interface import PenInterface
@@ -58,7 +60,8 @@ class TestGraphicObjectInterface(unittest.TestCase):
         self.assertAlmostEqual(expected.y(), grob.qt_object.y())
 
     def test_pen_after_init(self):
-        pen = PenInterface(None, Color('#eeeeee'), 0, PenPattern(1))
+        pen = PenInterface(None, Color('#eeeeee'), 0, PenPattern(1),
+                           PenJoinStyle.BEVEL, PenCapStyle.SQUARE)
         grob = MockGraphicObjectInterface(None, (5, 6), pen=pen)
         assert(grob.pen == grob._pen)
         assert(grob.pen == pen)
@@ -66,7 +69,8 @@ class TestGraphicObjectInterface(unittest.TestCase):
 
     def test_pen_setter_changesqt_object(self):
         grob = MockGraphicObjectInterface(None, (5, 6), pen=None)
-        pen = PenInterface(None, Color('#eeeeee'), 0, PenPattern(1))
+        pen = PenInterface(None, Color('#eeeeee'), 0, PenPattern(1),
+                           PenJoinStyle.BEVEL, PenCapStyle.SQUARE)
         grob.pen = pen
         assert(grob.qt_object.pen() == grob.pen.qt_object)
 

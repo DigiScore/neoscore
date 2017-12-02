@@ -1,6 +1,8 @@
 from PyQt5 import QtWidgets
 
 from brown.core.brush_pattern import BrushPattern
+from brown.core.pen_cap_style import PenCapStyle
+from brown.core.pen_join_style import PenJoinStyle
 from brown.core.pen_pattern import PenPattern
 from brown.interface.brush_interface import BrushInterface
 from brown.interface.graphic_object_interface import GraphicObjectInterface
@@ -22,10 +24,11 @@ class MockGraphicObjectInterface(GraphicObjectInterface):
         if pen:
             self.pen = pen
         else:
-            self.pen = PenInterface(None, Color('#000000'), 0,
-                                    PenPattern.SOLID)
+            self.pen = PenInterface(
+                None, Color('#000000'), 0,
+                PenPattern.SOLID, PenJoinStyle.BEVEL, PenCapStyle.SQUARE)
         if brush:
             self.brush = brush
         else:
-            self.brush = BrushInterface(None, Color('#000000'),
-                                        BrushPattern.SOLID)
+            self.brush = BrushInterface(
+                None, Color('#000000'), BrushPattern.SOLID)
