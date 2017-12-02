@@ -1,4 +1,6 @@
 from brown import config
+from brown.core.pen_cap_style import PenCapStyle
+from brown.core.pen_join_style import PenJoinStyle
 from brown.core.pen_pattern import PenPattern
 from brown.interface.pen_interface import PenInterface
 from brown.utils.color import Color
@@ -14,15 +16,20 @@ class Pen:
     def __init__(self,
                  color='#000000',
                  thickness=None,
-                 pattern=PenPattern.SOLID):
+                 pattern=PenPattern.SOLID,
+                 join_style=PenJoinStyle.BEVEL,
+                 cap_style=PenCapStyle.SQUARE):
         """
         Args:
             color (Color or init tuple): The stroke color
             thickness (Unit): The stroke thickness.
                 A value of `0` indicates Args cosmetic pixel width.
                 Defaults to `config.DEFAULT_PEN_THICKNESS`.
-            pattern (PenPattern or int): The stroke pattern.
+            pattern (PenPattern): The stroke pattern.
                 Defaults to a solid line.
+            join_style (PenJoinStyle): Defaults to a bevel join
+            cap_style (PenCapStyle): Defaults to a square cap
+
         """
         if isinstance(color, Color):
             self._color = color
@@ -33,10 +40,14 @@ class Pen:
         self._thickness = (thickness if thickness is not None
                            else GraphicUnit(config.DEFAULT_PEN_THICKNESS))
         self._pattern = pattern
+        self._join_style = join_style
+        self._cap_style = cap_style
         self._interface = PenInterface(self,
                                        self.color,
                                        self.thickness,
-                                       self.pattern)
+                                       self.pattern,
+                                       self.join_style,
+                                       self.cap_style)
 
     ######## CONSTRUCOTRS ########
 
@@ -47,7 +58,8 @@ class Pen:
         Args:
             pen (Pen): An existing pen.
         """
-        return cls(pen.color, pen.thickness, pen.pattern)
+        return cls(pen.color, pen.thickness, pen.pattern,
+                   pen.join_style, pen.cap_style)
 
     ######## PUBLIC PROPERTIES ########
 
@@ -77,3 +89,27 @@ class Pen:
     @pattern.setter
     def pattern(self, value):
         self._pattern = value
+
+    @property
+    def join_style(self):
+        """PenJoinStyle: the style of line sharp line joins.
+
+        This style has no effect on curved paths.
+        """
+        return self._join_style
+
+    @join_style.setter
+    def join_style(self, value):
+        self._join_style = value
+
+    @property
+    def cap_style(self):
+        """PenCapStyle: the style of unclosed path caps with this pen.
+
+        This style has no effect on closed paths."""
+        return self._cap_style
+
+    @cap_style.setter
+    def cap_style(self, value):
+        self._cap_style = value
+
