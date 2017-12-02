@@ -3,6 +3,8 @@ import unittest
 from brown.core import brown
 from brown.core.brush_pattern import BrushPattern
 from brown.core.path_element_type import PathElementType
+from brown.core.pen_cap_style import PenCapStyle
+from brown.core.pen_join_style import PenJoinStyle
 from brown.core.pen_pattern import PenPattern
 from brown.interface.brush_interface import BrushInterface
 from brown.interface.path_element_interface import PathElementInterface
@@ -16,7 +18,8 @@ class TestPathElementInterface(unittest.TestCase):
 
     def setUp(self):
         brown.setup()
-        self.pen = PenInterface(None, Color('#000000'), 0, PenPattern.SOLID)
+        self.pen = PenInterface(None, Color('#000000'), 0, PenPattern.SOLID,
+                                PenJoinStyle.BEVEL, PenCapStyle.SQUARE)
         self.brush = BrushInterface(None, Color('#000000'), BrushPattern.SOLID)
 
     def test_init(self):
