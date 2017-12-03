@@ -19,8 +19,7 @@ pnoL = 'PianoL'
 
 
 DIAMOND = GlyphName('noteheadDiamondWhite')
-SUB_2 = '\u2082'
-P2 = 'P' + SUB_2
+PZ = 'Pz'
 
 
 events = [EventData(*data) for data in [
@@ -35,17 +34,17 @@ events = [EventData(*data) for data in [
 
     (tpt,  M(2),         Reg.L, '',      G(2)),
     (vln,  M(2) + G(1),  Reg.H, DIAMOND, G(1)),
-    (vc,   M(2) + G(2),  Reg.M, P2,      G(1)),
+    (vc,   M(2) + G(2),  Reg.M, PZ,      G(1)),
     (pnoR, M(2) + G(2),  Reg.L, '1',     G(1)),
     (fl,   M(2) + G(3),  Reg.H, '',      G(1) + G(3)),
     (tpt,  M(2) + G(3),  Reg.H, '',      G(1)),
     (pnoR, M(2) + G(3),  Reg.H, '7',     G(1)),
 
-    (vc,   M(3) + G(2),  Reg.L, P2,      G(1)),
+    (vc,   M(3) + G(2),  Reg.L, PZ,      G(1)),
     (vln,  M(3) + G(3),  Reg.M, 'A',     G(1) + G(1)),
 
     (pnoR, M(4) + G(1),  Reg.L, '2',     G(1)),
-    (vc,   M(4) + G(2),  Reg.H, P2,      G(1)),
+    (vc,   M(4) + G(2),  Reg.H, PZ,      G(1)),
 
     (fl,   M(5),         Reg.M, '',      G(1)),
     (pnoL, M(5) + G(2),  Reg.M, '1',     G(2) + G(3)),
@@ -56,8 +55,8 @@ events = [EventData(*data) for data in [
     (tpt,  M(6) + G(3),  Reg.H, '',      G(1)),
     (pnoR, M(6) + G(3),  Reg.M, '3',     G(1)),
 
-    (vc,   M(7) + G(3),  Reg.M, P2,      G(1)),
-    (vln,  M(7) + G(3),  Reg.M, P2,      G(1)),
+    (vc,   M(7) + G(3),  Reg.M, PZ,      G(1)),
+    (vln,  M(7) + G(3),  Reg.M, PZ,      G(1)),
 
     (fl,   M(8) + G(3),  Reg.L, '',      G(1) + G(2)),
     (tpt,  M(8) + G(3),  Reg.L, '',      G(1) + G(2)),
@@ -83,7 +82,7 @@ events = [EventData(*data) for data in [
     (pnoR, M(14) + G(1), Reg.H, '3',     G(1)),
     (fl,   M(14) + G(2), Reg.L, '',      G(1)),
     (tpt,  M(14) + G(2), Reg.L, '',      G(1)),
-    (vc,   M(14) + G(2), Reg.H, P2,      G(1)),
+    (vc,   M(14) + G(2), Reg.H, PZ,      G(1)),
 
     (tpt,  M(15),        Reg.M, '',      G(1)),
     (fl,   M(15) + G(1), Reg.H, '',      G(3)),
@@ -93,14 +92,14 @@ events = [EventData(*data) for data in [
     (tpt,  M(16),        Reg.H, '',      G(1)),
 
     (tpt,  M(17) + G(1), Reg.H, '',      G(1)),
-    (vc,   M(17) + G(1), Reg.H, P2,      G(1)),
+    (vc,   M(17) + G(1), Reg.H, PZ,      G(1)),
     (pnoR, M(17) + G(2), Reg.H, '3',     G(1)),
     (vln,  M(17) + G(3), Reg.L, DIAMOND, G(1)),
 
     (pnoR, M(19) + G(1), Reg.L, '1',     G(1)),
     (fl,   M(19) + G(3), Reg.H, '',      G(1)),
     (vln,  M(19) + G(3), Reg.M, DIAMOND, G(1)),
-    (vc,   M(19) + G(3), Reg.L, P2,      G(1)),
+    (vc,   M(19) + G(3), Reg.L, PZ,      G(1)),
 ]]
 
 instruments = [

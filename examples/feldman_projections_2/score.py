@@ -20,18 +20,19 @@ from examples.feldman_projections_2.text_event import TextEvent
 
 class Score(ObjectGroup):
 
-    _TEXT_FONT_SIZE = GraphicUnit(GridUnit(0.5)).value
+    _TEXT_FONT_SIZE = GraphicUnit(GridUnit(0.6)).value
     _MUSIC_FONT_SIZE = Staff._make_unit_class(GridUnit(0.5))
 
     _bar_line_pen = Pen(thickness=GridUnit(0.05), pattern=PenPattern.DOT)
-    _instrument_divider_pen = Pen(thickness=GridUnit(0.1))
+    _instrument_divider_pen = Pen(thickness=GridUnit(0.05))
 
     def __init__(self, pos, instruments, parent):
         super().__init__(pos, parent)
         self.events = []
         self.text_font = Font.deriving(
             brown.default_font,
-            size=Score._TEXT_FONT_SIZE)
+            size=Score._TEXT_FONT_SIZE,
+            weight=60)
         self.music_font = MusicFont(
             config.DEFAULT_MUSIC_FONT_NAME,
             Score._MUSIC_FONT_SIZE)
