@@ -36,3 +36,23 @@ class TestPaper(unittest.TestCase):
         test_paper = Paper(*[Mm(val) for val in
                              [210, 297, 20, 30, 20, 30, 15]])
         assert(test_paper.live_height == 297 - 20 - 20)
+
+    def test_make_rotation(self):
+        original = Paper(*[Mm(val) for val in
+                           [100, 101, 1, 2, 3, 4, 5]])
+        rotated = original.make_rotation()
+        assert(rotated.width == original.height)
+        assert(rotated.height == original.width)
+        assert(rotated.margin_top == original.margin_left)
+        assert(rotated.margin_right == original.margin_top)
+        assert(rotated.margin_bottom == original.margin_right)
+        assert(rotated.margin_left == original.margin_bottom)
+        assert(rotated.gutter == original.gutter)
+
+    def test_make_rotation_four_times_no_change(self):
+        test_paper = Paper.from_template('Letter')
+        assert(test_paper
+               .make_rotation()
+               .make_rotation()
+               .make_rotation()
+               .make_rotation() == test_paper)

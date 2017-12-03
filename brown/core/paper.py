@@ -9,7 +9,7 @@ class Paper:
     def __init__(self, width, height,
                  margin_top, margin_right,
                  margin_bottom, margin_left,
-                 gutter=0):
+                 gutter=None):
         """
         Args:
             width (Unit): The paper width.
@@ -122,6 +122,52 @@ class Paper:
     def live_height(self):
         """The printable height of the page"""
         return self.height - self.margin_bottom - self.margin_top
+
+    ######## SPECIAL METHODS ########
+
+    def __repr__(self):
+        return '{}({}, {}, {}, {}, {}, {}, {})'.format(
+            type(self).__name__,
+            self.width, self.height,
+            self.margin_top, self.margin_right,
+            self.margin_bottom, self.margin_left,
+            self.gutter)
+
+    def __hash__(self):
+        return hash((
+            self.__class__,
+            self.width, self.height,
+            self.margin_top, self.margin_right,
+            self.margin_bottom, self.margin_left,
+            self.gutter))
+
+    def __eq__(self, other):
+        return (isinstance(other, self.__class__)
+                and self.width == other.width
+                and self.height == other.height
+                and self.margin_top == other.margin_top
+                and self.margin_right == other.margin_right
+                and self.margin_bottom == other.margin_bottom
+                and self.margin_left == other.margin_left
+                and self.gutter == other.gutter)
+
+    ######## PUBLIC METHODS ########
+
+    def make_rotation(self):
+        """Create a 90 degree clockwise rotation of this `Paper`.
+
+        The `gutter` field is not changed in this new `Paper`.
+
+        Returns: Paper
+        """
+        return Paper(
+            self.height,
+            self.width,
+            self.margin_left,
+            self.margin_top,
+            self.margin_right,
+            self.margin_bottom,
+            self.gutter)
 
     ######## PRIVATE METHODS ########
 
