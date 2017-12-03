@@ -16,13 +16,14 @@ class FontInterface(Interface):
             brown_object (Brush): The object this interface belongs to
             family_name (str): The name of the font family
             size (Unit): The size of the font
-            weight (float): The font weight
+            weight (int or None): The font weight. If `None`,
+                the system default font weight will be used.
             italic (bool): Italicized or not
         """
         super().__init__(brown_object)
         self.family_name = family_name
         self.size = size
-        self.weight = weight
+        self.weight = weight if weight is not None else -1
         self.italic = italic
         self.qt_object = QtGui.QFont(self.family_name,
                                      GraphicUnit(self.size).value,
