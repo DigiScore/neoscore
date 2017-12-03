@@ -8,18 +8,11 @@ from brown.interface.qt.q_clipping_path import QClippingPath
 
 class TestQClippingPath(unittest.TestCase):
 
-    def setUp(self):
-        brown.setup()
-        self.pen_with_zero_width = QtGui.QPen()
-        self.pen_with_zero_width.setWidth(0)
-
     def test_calculate_clipping_area_covering_full_path(self):
         painter_path = QtGui.QPainterPath()
         painter_path.lineTo(100, 200)
-        path_item = QClippingPath(painter_path, 0, 500)
-        path_item.setPen(self.pen_with_zero_width)
         expected_rect = painter_path.boundingRect()
-        result_rect = path_item.calculate_clipping_area(
+        result_rect = QClippingPath.calculate_clipping_area(
             painter_path.boundingRect(), None, None, 0)
         assert(result_rect.x() == expected_rect.x())
         assert(result_rect.y() == expected_rect.y())
@@ -29,9 +22,7 @@ class TestQClippingPath(unittest.TestCase):
     def test_calculate_clipping_area_starting_in_path(self):
         painter_path = QtGui.QPainterPath()
         painter_path.lineTo(100, 200)
-        path_item = QClippingPath(painter_path, 0, 500)
-        path_item.setPen(self.pen_with_zero_width)
-        result_rect = path_item.calculate_clipping_area(
+        result_rect = QClippingPath.calculate_clipping_area(
             painter_path.boundingRect(), 50, None, 0)
         assert(result_rect.x() == 50)
         assert(result_rect.y() == painter_path.boundingRect().y())
@@ -41,9 +32,7 @@ class TestQClippingPath(unittest.TestCase):
     def test_calculate_clipping_area_ending_in_path(self):
         painter_path = QtGui.QPainterPath()
         painter_path.lineTo(100, 200)
-        path_item = QClippingPath(painter_path, 0, 500)
-        path_item.setPen(self.pen_with_zero_width)
-        result_rect = path_item.calculate_clipping_area(
+        result_rect = QClippingPath.calculate_clipping_area(
             painter_path.boundingRect(), None, 50, 0)
         assert(result_rect.x() == 0)
         assert(result_rect.y() == painter_path.boundingRect().y())
@@ -53,9 +42,7 @@ class TestQClippingPath(unittest.TestCase):
     def test_calculate_clipping_area_starting_and_ending_in_path(self):
         painter_path = QtGui.QPainterPath()
         painter_path.lineTo(100, 200)
-        path_item = QClippingPath(painter_path, 0, 500)
-        path_item.setPen(self.pen_with_zero_width)
-        result_rect = path_item.calculate_clipping_area(
+        result_rect = QClippingPath.calculate_clipping_area(
             painter_path.boundingRect(), 25, 30, 0)
         assert(result_rect.x() == 25)
         assert(result_rect.y() == painter_path.boundingRect().y())

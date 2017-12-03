@@ -61,9 +61,9 @@ class QClippingPath(QtWidgets.QGraphicsPathItem):
 
     @staticmethod
     def calculate_clipping_area(bounding_rect,
-                             clip_start_x,
-                             clip_width,
-                             extra_padding):
+                                clip_start_x,
+                                clip_width,
+                                extra_padding):
         """Create a QRectF giving the painting area for the object.
 
         Args:
@@ -80,8 +80,10 @@ class QClippingPath(QtWidgets.QGraphicsPathItem):
         """
         clip_start_x = (bounding_rect.x() if clip_start_x is None
                         else GraphicUnit(clip_start_x).value)
-        clip_width = (bounding_rect.width() if clip_width is None
-                      else GraphicUnit(clip_width).value)
+        clip_width = (
+            bounding_rect.width() - (clip_start_x - bounding_rect.x())
+            if clip_width is None
+            else GraphicUnit(clip_width).value)
         padding = GraphicUnit(extra_padding).value
         return QtCore.QRectF(clip_start_x - padding,
                              bounding_rect.y() - padding,

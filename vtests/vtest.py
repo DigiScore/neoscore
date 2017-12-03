@@ -82,7 +82,7 @@ flowing_text = MusicText((Mm(155), lower_staff.unit(3)),
                          lower_staff,
                          scale_factor=1)
 
-pen = Pen(thickness=Mm(0.2), pattern=5)
+pen = Pen(thickness=Mm(0.2), pattern=PenPattern.DASHDOTDOT)
 explicit_path = Path((Mm(0), Mm(0)), pen, parent=p)
 explicit_path.line_to(Mm(5000), Mm(100))
 
