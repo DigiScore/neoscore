@@ -23,7 +23,7 @@ class TestFont(unittest.TestCase):
     def test_default_init_values(self):
         # API default values canary
         test_font = Font('Bravura', 12)
-        assert(test_font.weight == 1)
+        assert(test_font.weight is None)
         assert(test_font.italic is False)
 
     def test_deriving(self):

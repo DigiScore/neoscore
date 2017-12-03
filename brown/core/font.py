@@ -12,8 +12,7 @@ class Font:
             size (Unit): The size (height) of the font
             weight (int): The font weight on a 0-100 scale, where 50 is normal,
                 lower numbers are lighter, and higher are darker.
-                If `None` (the default), the system default font weight
-                will be used.
+                If `None` (the default), a normal weight will be used.
             italic (bool): Whether or not the font is italicized
         """
         self.family_name = family_name
@@ -35,17 +34,17 @@ class Font:
                  size=None,
                  weight=None,
                  italic=None):
-        """Derive a Font from an existing one.
+        """Derive a Font from an existing one, overriding the given properties.
 
         All properties not passed in args/kwargs will be copied
         from the existing Font.
 
         Args:
             existing_font (Font): An existing font.
-            family_name (str): The font family name
-            size (int): The height, in points, of the font
-            weight (float): The font weight, where 1 is normal
-            italic (bool): Whether or not the font is italicized
+            family_name (str):
+            size (int):
+            weight (int):
+            italic (bool):
         """
         return cls(
             family_name if family_name is not None
