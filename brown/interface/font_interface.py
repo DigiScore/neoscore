@@ -25,10 +25,11 @@ class FontInterface(Interface):
         self.size = size
         self.weight = weight
         self.italic = italic
-        self.qt_object = QtGui.QFont(self.family_name,
-                                     GraphicUnit(self.size).value,
-                                     self.weight,
-                                     self.italic)
+        self.qt_object = QtGui.QFont(
+            self.family_name,
+            GraphicUnit(self.size).value,
+            self.weight if self.weight is not None else -1,
+            self.italic)
         self._qt_font_info_object = QtGui.QFontInfo(self.qt_object)
         self._qt_font_metrics_object = QtGui.QFontMetricsF(
             self.qt_object,
