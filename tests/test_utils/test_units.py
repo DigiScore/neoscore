@@ -60,6 +60,9 @@ class TestUnit(unittest.TestCase):
         assert(Unit(1) == MockUnit(0.5))
         assert(not Unit(1) == MockUnit(1))
 
+    def test__eq__safe_on_incompatible_type(self):
+        assert(not Unit(1) == 'not a unit')
+
     def test__ne__(self):
         assert(Unit(1) != Unit(2))
         assert(not Unit(1) != Unit(1))

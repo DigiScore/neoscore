@@ -140,7 +140,8 @@ class Unit:
         return self.value <= type(self)(other).value
 
     def __eq__(self, other):
-        return self.value == type(self)(other).value
+        return (isinstance(other, (Unit, int, float))
+                and self.value == type(self)(other).value)
 
     def __gt__(self, other):
         return self.value > type(self)(other).value
