@@ -2,8 +2,7 @@
 
 
 class Unit:
-    """
-    A fundamental base unit acting as a common ground for unit conversions.
+    """An immutable graphical distance with a unit.
 
     Unit objects enable easy conversion from one unit to another and
     convenient operations between them.
@@ -32,6 +31,9 @@ class Unit:
         Traceback (most recent call last):
          ...
         TypeError: unsupported operand type(s) for +: 'int' and 'Inch'
+
+    Warning: `Unit` objects are immutable. Any attempts to modify them
+        in place will result in much sadness.
     """
 
     __slots__ = ('value',)

@@ -1,5 +1,6 @@
 from brown.core import brown
 from brown.core.auto_new_line import AutoNewLine
+from brown.core.break_opportunity import BreakOpportunity
 from brown.core.invisible_object import InvisibleObject
 from brown.utils.exceptions import OutOfBoundsError
 from brown.utils.point import Point
@@ -22,19 +23,24 @@ class Flowable(InvisibleObject):
     majority of objects will be placed inside it.
     """
 
-    def __init__(self, pos, width, height, y_padding=None):
+    def __init__(self, pos, width, height,
+                 y_padding=Mm(5), break_threshold=Mm(5)):
         """
         Args:
             pos (Point or tuple): Starting position in relative to
                 the top left corner of the live document area of the first page
-            width (GraphicUnit): length of the flowable
-            height (GraphicUnit): height of the flowable
-            y_padding (GraphicUnit): The min gap between flowable sections
+            width (Unit): length of the flowable
+            height (Unit): height of the flowable
+            y_padding (Unit): The vertical gap between flowable sections
+            break_threshold (Unit): The maximum distance the flowable will
+                shorten a line to allow a break to occur on a
+                `BreakOpportunity`
         """
         super().__init__(pos)
         self._length = width
         self._height = height
-        self._y_padding = y_padding if y_padding else Mm(5)
+        self._y_padding = y_padding
+        self._break_threshold = break_threshold
         self._layout_controllers = []
         self._generate_layout_controllers()
 
@@ -62,6 +68,22 @@ class Flowable(InvisibleObject):
     @y_padding.setter
     def y_padding(self, value):
         self._y_padding = value
+
+    @property
+    def break_threshold(self):
+        """Unit: The threshold for `BreakOpportunity`-aware line breaks.
+
+        This is the maximum distance the flowable will shorten a line to allow
+        a break to occur on a `BreakOpportunity`.
+
+        If set to `Unit(0)` (or in an equivalent unit), `BreakOpportunity`s
+        will be entirely ignored during layout.
+        """
+        return self._break_threshold
+
+    @break_threshold.setter
+    def break_threshold(self, value):
+        self._break_threshold = value
 
     @property
     def layout_controllers(self):
@@ -99,8 +121,7 @@ class Flowable(InvisibleObject):
             AutoNewLine(pos, brown.document.pages[current_page],
                         self, x_progress))
         while True:
-            delta_x = live_page_width - pos.x
-            x_progress += delta_x
+            x_progress += live_page_width - pos.x
             pos.y = pos.y + self.height + self.y_padding
             if x_progress >= self.length:
                 # End of breakable width - Done.
@@ -118,6 +139,23 @@ class Flowable(InvisibleObject):
                 self.layout_controllers.append(
                     AutoNewLine(pos, brown.document.pages[current_page],
                                 self, x_progress, self.y_padding))
+
+    def _last_break_opportunity(self, local_x):
+        """Find the `BreakOpporunity` closest to the left a local x position.
+
+        Args:
+            local_x(Unit): an x-axis position in the flowable space.
+
+        Returns:
+            BreakOpportunity or None: the closest `BreakOpporunity` to the left
+                of the given point, or `None` if none exists.
+        """
+        # Lots of room for optimization here if needed
+        opportunities = self.descendants_of_class_or_subclass(BreakOpportunity)
+        opportunities_before = (o for o in opportunities
+                                if self.pos_in_flowable_of(o) < local_x)
+        return max(opportunities_before,
+                   key=lambda o: self.pos_in_flowable_of(o).x)
 
     def map_to_canvas(self, local_point):
         """Convert a local point to its position in the canvas.
@@ -196,7 +234,7 @@ class Flowable(InvisibleObject):
             graphic_object (GraphicObject): An object in the flowable.
 
         Returns:
-            Point: A non-paged point relative to the flowable flowable.
+            Point: A non-paged point relative to the flowable.
 
         Raises:
             ValueError: If `graphic_object` is not in the flowable.
@@ -226,4 +264,5 @@ class Flowable(InvisibleObject):
             ValueError: If either `source` or `destination` are not
                 in the flowable.
         """
-        return self.pos_in_flowable_of(destination) - self.pos_in_flowable_of(source)
+        return (self.pos_in_flowable_of(destination)
+                - self.pos_in_flowable_of(source))
