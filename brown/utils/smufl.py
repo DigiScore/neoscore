@@ -1,11 +1,11 @@
 import json
 import os
 
-from brown import config
+from brown import constants
 
 # Load metadata into dictionaries
 
-smufl_dir = os.path.join(config.RESOURCES_DIR, 'smufl')
+smufl_dir = os.path.join(constants.RESOURCES_DIR, 'smufl')
 
 with open(os.path.join(smufl_dir, 'classes.json'), 'r') as classes_file:
     classes = json.load(classes_file)

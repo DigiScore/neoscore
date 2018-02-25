@@ -1,4 +1,4 @@
-from brown import config
+from brown import constants
 from brown.core.clef import Clef
 from brown.core.music_font import MusicFont
 from brown.core.octave_line import OctaveLine
@@ -21,7 +21,7 @@ class Staff(Path):
             pos (Point): The position of the top-left corner of the staff
             length (Unit): The horizontal width of the staff
             staff_unit (Unit): The distance between two lines in the staff.
-                If not set, this will default to `config.DEFAULT_STAFF_UNIT`
+                If not set, this will default to `constants.DEFAULT_STAFF_UNIT`
             line_count (int): The number of lines in the staff.
             music_font (MusicFont): The font to be used in all
                 MusicTextObjects unless otherwise specified.
@@ -31,9 +31,9 @@ class Staff(Path):
         super().__init__(pos, parent=flowable)
         self._line_count = line_count
         self._unit = self._make_unit_class(staff_unit if staff_unit
-                                           else config.DEFAULT_STAFF_UNIT)
+                                           else constants.DEFAULT_STAFF_UNIT)
         if music_font is None:
-            self.music_font = MusicFont(config.DEFAULT_MUSIC_FONT_NAME,
+            self.music_font = MusicFont(constants.DEFAULT_MUSIC_FONT_NAME,
                                         self.unit)
         # Construct the staff path
         for i in range(self.line_count):

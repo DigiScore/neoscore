@@ -1,4 +1,4 @@
-"""Common configuration values and default settings."""
+"""package-wide constants"""
 
 import os
 
@@ -8,13 +8,10 @@ from brown.core.brush_pattern import BrushPattern
 from brown.utils.color import Color
 
 
-######## Constants that really shouldn't be changed ########
-
+# Directories
 BROWN_ROOT_DIR = os.path.join(os.path.dirname(__file__))
 RESOURCES_DIR = os.path.join(BROWN_ROOT_DIR, 'resources')
 UI_DIR = os.path.join(BROWN_ROOT_DIR, 'earle', 'ui')
-
-######## Defaults ##########################################
 
 # Default pen properties
 DEFAULT_PEN_COLOR = Color(0, 0, 0)

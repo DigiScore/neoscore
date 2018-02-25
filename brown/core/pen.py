@@ -1,4 +1,4 @@
-from brown import config
+from brown import constants
 from brown.core.pen_cap_style import PenCapStyle
 from brown.core.pen_join_style import PenJoinStyle
 from brown.core.pen_pattern import PenPattern
@@ -24,7 +24,7 @@ class Pen:
             color (Color or init tuple): The stroke color
             thickness (Unit): The stroke thickness.
                 A value of `0` indicates Args cosmetic pixel width.
-                Defaults to `config.DEFAULT_PEN_THICKNESS`.
+                Defaults to `constants.DEFAULT_PEN_THICKNESS`.
             pattern (PenPattern): The stroke pattern.
                 Defaults to a solid line.
             join_style (PenJoinStyle): Defaults to a bevel join
@@ -38,7 +38,7 @@ class Pen:
         else:
             self._color = Color(color)
         self._thickness = (thickness if thickness is not None
-                           else GraphicUnit(config.DEFAULT_PEN_THICKNESS))
+                           else GraphicUnit(constants.DEFAULT_PEN_THICKNESS))
         self._pattern = pattern
         self._join_style = join_style
         self._cap_style = cap_style

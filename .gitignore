@@ -27,3 +27,6 @@ brown.config
 brown.creator
 brown.files
 brown.includes
+
+# pytest
+.pytest_cache

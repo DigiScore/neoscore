@@ -1,6 +1,6 @@
 from typing import Union
 
-from brown import config
+from brown import constants
 from brown.core import brown
 from brown.core.font import Font
 from brown.core.music_font import MusicFont
@@ -34,7 +34,7 @@ class Score(ObjectGroup):
             size=Score._TEXT_FONT_SIZE,
             weight=60)
         self.music_font = MusicFont(
-            config.DEFAULT_MUSIC_FONT_NAME,
+            constants.DEFAULT_MUSIC_FONT_NAME,
             Score._MUSIC_FONT_SIZE)
 
         self.instruments = instruments

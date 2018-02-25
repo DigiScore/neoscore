@@ -22,7 +22,7 @@ def setup(instr, paper=None):
     Args:
         instr (list[Instrument]): The instruments in the score
         paper (Paper): The paper to use in the document.
-            If `None`, this defaults to `config.DEFAULT_PAPER_TYPE`
+            If `None`, this defaults to `constants.DEFAULT_PAPER_TYPE`
 
     Returns: None
     """

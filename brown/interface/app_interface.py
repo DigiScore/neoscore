@@ -3,7 +3,7 @@ import os
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtPrintSupport import QPrinter
 
-from brown import config
+from brown import constants
 from brown.earle.ui.main_window import MainWindow
 from brown.interface import images
 from brown.interface.interface import Interface
@@ -60,12 +60,12 @@ class AppInterface(Interface):
         printer = QPrinter()
         printer.setOutputFormat(QPrinter.PdfFormat)
         printer.setOutputFileName(os.path.realpath(path))
-        printer.setResolution(config.PRINT_DPI)
+        printer.setResolution(constants.PRINT_DPI)
         printer.setPageLayout(self.document.paper._to_interface())
         painter = QtGui.QPainter()
         painter.begin(printer)
-        # Scaling ratio for Qt point 72dpi -> config.PRINT_DPI
-        ratio = (config.PRINT_DPI / 72)
+        # Scaling ratio for Qt point 72dpi -> constants.PRINT_DPI
+        ratio = (constants.PRINT_DPI / 72)
         target_rect_unscaled = printer.paperRect(QPrinter.Point)
         target_rect_scaled = QtCore.QRectF(
             target_rect_unscaled.x() * ratio,

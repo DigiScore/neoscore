@@ -1,7 +1,7 @@
 from PyQt5.QtCore import QSize, QMarginsF
 from PyQt5.QtGui import QPageLayout, QPageSize
 
-from brown import config
+from brown import constants
 from brown.interface.qt.converters import unit_to_qt_float
 
 
@@ -23,8 +23,8 @@ class PaperInterface(QPageLayout):
         Args:
             paper (Paper):
         """
-        # Scaling ratio for Qt point 72dpi -> config.PRINT_DPI
-        ratio = 72 / config.PRINT_DPI
+        # Scaling ratio for Qt point 72dpi -> constants.PRINT_DPI
+        ratio = 72 / constants.PRINT_DPI
         QPageLayout.__init__(
             self,
             QPageSize(

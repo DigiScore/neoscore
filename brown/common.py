@@ -1,4 +1,4 @@
-from brown import config
+from brown import constants
 
 from brown.core import brown
 from brown.core.accidental import Accidental

@@ -1,6 +1,6 @@
 import unittest
 
-from brown import config
+from brown import constants
 from brown.core import brown
 from brown.core.pen import Pen
 from brown.core.pen_cap_style import PenCapStyle
@@ -23,7 +23,7 @@ class TestPen(unittest.TestCase):
     def test_init_default_thicknes(self):
         test_pen = Pen(('#eeddcc', 200))
         self.assertAlmostEqual(Unit(test_pen.thickness).value,
-                               Unit(config.DEFAULT_PEN_THICKNESS).value)
+                               Unit(constants.DEFAULT_PEN_THICKNESS).value)
 
     def test_init_default_pattern(self):
         test_pen = Pen()

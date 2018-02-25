@@ -73,11 +73,6 @@ class UnknownFontFamilyError(Exception):
     pass
 
 
-class InvalidConfigError(Exception):
-    """Exception raised when a configuration is set to something invalid."""
-    pass
-
-
 class ColorBoundsError(Exception):
     """Exception raised when a color channel is set out of bounds"""
 

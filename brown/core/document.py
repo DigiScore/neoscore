@@ -1,4 +1,4 @@
-from brown import config
+from brown import constants
 from brown.core.page_supplier import PageSupplier
 from brown.core.paper import Paper
 from brown.utils.point import Point
@@ -21,15 +21,15 @@ class Document:
         """
         Args:
             paper (Paper): The paper to use in the document. If None,
-                this defaults to `config.DEFAULT_PAPER_TYPE`
+                this defaults to `constants.DEFAULT_PAPER_TYPE`
         """
         if paper is None:
             try:
-                self._paper = Paper.from_template(config.DEFAULT_PAPER_TYPE)
+                self._paper = Paper.from_template(constants.DEFAULT_PAPER_TYPE)
             except KeyError:
-                raise config.InvalidConfigError(
-                    'DEFAULT_PAPER_TYPE of {} is not supported'.format(
-                        config.DEFAULT_PAPER_TYPE))
+                raise ValueError(
+                    'DEFAULT_PAPER_TYPE of {} is not supported.'.format(
+                        constants.DEFAULT_PAPER_TYPE))
         else:
             self._paper = paper
         self._pages = PageSupplier(self)
@@ -80,9 +80,9 @@ class Document:
         This only affects page display in the rendered preview,
         and has no effect on exported documents.
 
-        To change this, set `config.PAGE_DISPLAY_GAP`.
+        To change this, set `constants.PAGE_DISPLAY_GAP`.
         """
-        return config.PAGE_DISPLAY_GAP
+        return constants.PAGE_DISPLAY_GAP
 
     ######## PRIVATE METHODS ########
 

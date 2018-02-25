@@ -2,7 +2,7 @@ import json
 import os
 from warnings import warn
 
-from brown import config
+from brown import constants
 from brown.core.document import Document
 from brown.core.font import Font
 from brown.interface import images
@@ -43,7 +43,7 @@ def setup(initial_paper=None):
 
     Args:
         initial_paper (Paper): The paper to use in the document.
-            If `None`, this defaults to `config.DEFAULT_PAPER_TYPE`
+            If `None`, this defaults to `constants.DEFAULT_PAPER_TYPE`
 
     Returns: None
     """
@@ -54,8 +54,8 @@ def setup(initial_paper=None):
     document = Document(initial_paper)
     _app_interface = AppInterface(document)
     _register_default_fonts()
-    default_font = Font(config.DEFAULT_TEXT_FONT_NAME,
-                        config.DEFAULT_TEXT_FONT_SIZE,
+    default_font = Font(constants.DEFAULT_TEXT_FONT_NAME,
+                        constants.DEFAULT_TEXT_FONT_SIZE,
                         1, False)
 
 
@@ -216,10 +216,10 @@ def render_image(rect, image_path, dpi=600, quality=-1, bg_color=None,
 
 
 def _register_default_fonts():
-    register_music_font(config.DEFAULT_MUSIC_FONT_NAME,
-                        config.DEFAULT_MUSIC_FONT_PATH,
-                        config.DEFAULT_MUSIC_FONT_METADATA_PATH)
-    register_font(config.DEFAULT_TEXT_FONT_REGULAR_PATH)
-    register_font(config.DEFAULT_TEXT_FONT_BOLD_PATH)
-    register_font(config.DEFAULT_TEXT_FONT_ITALIC_PATH)
-    register_font(config.DEFAULT_TEXT_FONT_BOLD_ITALIC_PATH)
+    register_music_font(constants.DEFAULT_MUSIC_FONT_NAME,
+                        constants.DEFAULT_MUSIC_FONT_PATH,
+                        constants.DEFAULT_MUSIC_FONT_METADATA_PATH)
+    register_font(constants.DEFAULT_TEXT_FONT_REGULAR_PATH)
+    register_font(constants.DEFAULT_TEXT_FONT_BOLD_PATH)
+    register_font(constants.DEFAULT_TEXT_FONT_ITALIC_PATH)
+    register_font(constants.DEFAULT_TEXT_FONT_BOLD_ITALIC_PATH)

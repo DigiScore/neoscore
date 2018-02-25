@@ -1,6 +1,6 @@
 from abc import ABC
 
-from brown import config
+from brown import constants
 from brown.core import brown
 from brown.core.brush import Brush
 from brown.core.page import Page
@@ -32,11 +32,11 @@ class GraphicObject(ABC):
     global document with `brown.document.pages[n]`
     """
 
-    default_pen = Pen(config.DEFAULT_PEN_COLOR,
-                      config.DEFAULT_PEN_THICKNESS,
-                      config.DEFAULT_PEN_PATTERN)
-    _default_brush = Brush(config.DEFAULT_BRUSH_COLOR,
-                           config.DEFAULT_BRUSH_PATTERN)
+    default_pen = Pen(constants.DEFAULT_PEN_COLOR,
+                      constants.DEFAULT_PEN_THICKNESS,
+                      constants.DEFAULT_PEN_PATTERN)
+    _default_brush = Brush(constants.DEFAULT_BRUSH_COLOR,
+                           constants.DEFAULT_BRUSH_PATTERN)
 
     def __init__(self, pos, length=None,
                  pen=None, brush=None, parent=None):

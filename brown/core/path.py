@@ -1,4 +1,4 @@
-from brown import config
+from brown import constants
 from brown.core.brush import Brush
 from brown.core.graphic_object import GraphicObject
 from brown.core.path_element import PathElement
@@ -19,8 +19,8 @@ class Path(GraphicObject):
     in a `Flowable`, all point anchors should not be in one either.
     """
 
-    _default_brush = Brush(config.DEFAULT_PATH_BRUSH_COLOR,
-                           config.DEFAULT_BRUSH_PATTERN)
+    _default_brush = Brush(constants.DEFAULT_PATH_BRUSH_COLOR,
+                           constants.DEFAULT_BRUSH_PATTERN)
 
     def __init__(self, pos, pen=None, brush=None, parent=None):
         """
