@@ -187,16 +187,15 @@ def parse_type_string(string, context, link_style='HTML'):
 
 
 def surround_with_tag(string, tag, **kwargs):
-    attributes = kwargs
-    for key, value in attributes.items():
-        if key.endswith('_'):
-            del attributes[key]
-            attributes[key[:-1]] = value
+    attributes = {
+        (key[:-1] if key.endswith('_') else key) : value
+        for key, value in kwargs.items()
+    }
     return '<{}{}{}>{}</{}>'.format(
         tag,
         ' ' if kwargs else '',
         ' '.join('{}="{}"'.format(key, value)
-                 for key, value in kwargs.items()),
+                 for key, value in attributes.items()),
         string,
         tag
     )
