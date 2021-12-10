@@ -271,6 +271,15 @@ class Chordrest(ObjectGroup, StaffObject):
     ######## PRIVATE METHODS ########
 
     def _render(self):
+        if self.accidentals:
+            # If accidentals exist, this has already been rendered, so
+            # reset everything first. This is a huge hack...
+            for note in self.noteheads:
+                note.x = self.staff.unit(0)
+            self._accidentals.clear()
+            self._ledgers.clear()
+            self._stem = None
+            self._flag = None
         if self.noteheads:
             # Chord-specific aux objects
             self._position_noteheads_horizontally()

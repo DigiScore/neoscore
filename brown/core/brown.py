@@ -130,6 +130,15 @@ def show():
     _app_interface.show()
 
 
+def _clear_interfaces():
+    global document
+    global _app_interface
+    _app_interface._clear_scene()
+    for page in document.pages:
+        for obj in page.descendants:
+            obj.interfaces.clear()
+
+
 def render_pdf(path):
     """Render the score as a pdf.
 
@@ -140,6 +149,7 @@ def render_pdf(path):
     """
     global document
     global _app_interface
+    _clear_interfaces()
     document._render()
     _app_interface.render_pdf((page.page_index for page in document.pages),
                               path)
@@ -188,6 +198,8 @@ def render_image(rect, image_path, dpi=600, quality=-1, bg_color=None,
     """
     global document
     global _app_interface
+
+    _clear_interfaces()
 
     if not ((0 <= quality <= 100) or quality == -1):
         warn('render_image quality {} invalid; using default.'.format(quality))

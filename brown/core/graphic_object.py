@@ -318,6 +318,11 @@ class GraphicObject(ABC):
         return next((item for item in self.ancestors
                      if type(item) == graphic_object_class),
                     None)
+    
+    def remove(self):
+        """Remove this object from the document."""
+        if (self.parent):
+            self.parent.children.remove(self)
 
     ######## PRIVATE METHODS ########
 

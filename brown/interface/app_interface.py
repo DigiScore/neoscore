@@ -47,6 +47,10 @@ class AppInterface(Interface):
         #self.view.show()
         self.main_window.show()
         self.app.exit(self.app.exec_())
+    
+    def _clear_scene(self):
+        """Clear the QT Scene. This should be called before each render."""
+        self.scene.clear()
 
     def render_pdf(self, pages, path):
         """Render the document to a pdf file.
