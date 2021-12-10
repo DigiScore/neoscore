@@ -43,10 +43,8 @@ class AppInterface(Interface):
 
     def show(self):
         """Open a window showing a preview of the document."""
-        print('Launching Qt Application instance')
-        #self.view.show()
         self.main_window.show()
-        self.app.exit(self.app.exec_())
+        self.app.exec_()
     
     def _clear_scene(self):
         """Clear the QT Scene. This should be called before each render."""

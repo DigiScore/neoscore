@@ -126,6 +126,7 @@ def show():
     """
     global document
     global _app_interface
+    _app_interface._clear_scene()
     document._render()
     _app_interface.show()
 
