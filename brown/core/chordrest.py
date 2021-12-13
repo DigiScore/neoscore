@@ -189,13 +189,13 @@ class Chordrest(ObjectGroup, StaffObject):
     @property
     def notehead_column_width(self):
         """Unit: The total width of all `Notehead`s in the chord"""
-        if not self.noteheads:
+        leftmost_notehead = self.leftmost_notehead
+        if not leftmost_notehead:
             return self.staff.unit(0)
         else:
-            left = self.leftmost_notehead.x
             extent = max((n.x + n.visual_width
                           for n in self.noteheads))
-            return extent - left
+            return extent - leftmost_notehead.x
 
     @property
     def noteheads_outside_staff(self):
@@ -220,13 +220,13 @@ class Chordrest(ObjectGroup, StaffObject):
     @property
     def notehead_column_outside_staff_width(self):
         """Unit: The total width of any noteheads outside the staff"""
-        if not self.noteheads:
+        left_bounding_note = self.leftmost_notehead_outside_staff
+        if not left_bounding_note:
             return self.staff.unit(0)
         else:
-            left = self.leftmost_notehead_outside_staff.x
             extent = max((n.x + n.visual_width
                           for n in self.noteheads_outside_staff))
-            return extent - left
+            return extent - left_bounding_note.x
 
     @property
     def stem_direction(self):

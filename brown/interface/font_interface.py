@@ -27,7 +27,7 @@ class FontInterface(Interface):
         self.italic = italic
         self.qt_object = QtGui.QFont(
             self.family_name,
-            GraphicUnit(self.size).value,
+            int(GraphicUnit(self.size).value),
             self.weight if self.weight is not None else -1,
             self.italic)
         self._qt_font_info_object = QtGui.QFontInfo(self.qt_object)
