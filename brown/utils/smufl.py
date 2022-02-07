@@ -55,7 +55,7 @@ def char_from_glyph_name(name):
 
 
 def description_from_glyph_name(name):
-    """Find the description for a given glyph name
+    """Find the description for a given glyph name.
 
     Args:
         name (str): The name of the glyph
