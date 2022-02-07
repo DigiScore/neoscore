@@ -1,5 +1,4 @@
-from brown.utils.units import Mm, Inch
-
+from brown.utils.units import Inch, Mm
 
 paper_templates = {
     "A4": [Mm(val) for val in [210, 297, 20, 20, 20, 20]],

@@ -1,17 +1,17 @@
 import re
 
 import doc.doc_config as doc_config
-from doc.utils import (
-    first_or_none,
-    line_num_at,
-    previous_line_ending_index_from,
-    everything_in_indentation_block,
-    parse_general_text,
-)
 from doc.attribute_doc import AttributeDoc
 from doc.class_doc import ClassDoc
 from doc.method_doc import MethodDoc
 from doc.method_type import MethodType
+from doc.utils import (
+    everything_in_indentation_block,
+    first_or_none,
+    line_num_at,
+    parse_general_text,
+    previous_line_ending_index_from,
+)
 
 
 class ModuleDoc:

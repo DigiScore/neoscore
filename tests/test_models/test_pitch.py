@@ -2,7 +2,7 @@ import unittest
 
 import pytest
 
-from brown.models.pitch import Pitch, InvalidPitchDescriptionError
+from brown.models.pitch import InvalidPitchDescriptionError, Pitch
 
 
 class TestPitch(unittest.TestCase):

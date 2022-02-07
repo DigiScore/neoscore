@@ -1,4 +1,4 @@
-from brown.utils.units import Unit, Inch
+from brown.utils.units import Inch, Unit
 
 
 class Measure(Unit):

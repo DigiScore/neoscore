@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QSize, QMarginsF
+from PyQt5.QtCore import QMarginsF, QSize
 from PyQt5.QtGui import QPageLayout, QPageSize
 
 from brown import constants

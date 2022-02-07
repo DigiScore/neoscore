@@ -6,14 +6,14 @@ from jinja2 import Environment, PackageLoader
 from scss.compiler import Compiler as ScssCompiler
 
 import doc.doc_config as doc_config
+from doc.class_doc import ClassDoc
+from doc.module_doc import ModuleDoc
+from doc.package_doc import PackageDoc
 from doc.utils import (
     ensure_path_exists,
     module_path_to_import_name,
     package_path_to_import_name,
 )
-from doc.package_doc import PackageDoc
-from doc.module_doc import ModuleDoc
-from doc.class_doc import ClassDoc
 
 
 def find_in_set_by_name(search_set, name):

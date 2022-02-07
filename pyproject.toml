@@ -12,6 +12,9 @@ PyQt5 = "^5.15.6"
 pytest = "^7.0"
 pytest-xdist = "^2.5"
 
+[tool.isort]
+profile = "black"
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"

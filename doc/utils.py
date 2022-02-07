@@ -1,8 +1,6 @@
 import os
 import re
-
 from warnings import warn
-
 
 messy_whitespace_re = re.compile(r"(?<!\n)\n *")
 

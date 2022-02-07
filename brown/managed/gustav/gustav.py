@@ -1,6 +1,5 @@
 from brown.core import brown
 
-
 """The main module and interface for the gustav notation context."""
 
 

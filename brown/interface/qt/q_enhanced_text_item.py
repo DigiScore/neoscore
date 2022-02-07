@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtCore, QtWidgets
 
 from brown.interface.qt.converters import unit_to_qt_float
 from brown.interface.qt.q_clipping_path import QClippingPath

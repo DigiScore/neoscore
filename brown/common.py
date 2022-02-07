@@ -1,5 +1,4 @@
 from brown import constants
-
 from brown.core import brown
 from brown.core.accidental import Accidental
 from brown.core.bar_line import BarLine
@@ -30,8 +29,8 @@ from brown.core.paper import Paper
 from brown.core.path import Path
 from brown.core.ped_and_star import PedAndStar
 from brown.core.pedal_line import PedalLine
-from brown.core.pen_pattern import PenPattern
 from brown.core.pen import Pen
+from brown.core.pen_pattern import PenPattern
 from brown.core.repeating_music_text_line import RepeatingMusicTextLine
 from brown.core.rest import Rest
 from brown.core.slur import Slur
@@ -40,14 +39,12 @@ from brown.core.staff_object import StaffObject
 from brown.core.stem import Stem
 from brown.core.text import Text
 from brown.core.time_signature import TimeSignature
-
 from brown.models.accidental_type import AccidentalType
 from brown.models.beat import Beat
 from brown.models.clef_type import ClefType
 from brown.models.key_signature_type import KeySignatureType
-
 from brown.utils.color import Color
 from brown.utils.parent_point import ParentPoint
 from brown.utils.point import Point
 from brown.utils.rect import Rect
-from brown.utils.units import GraphicUnit, Mm, Inch
+from brown.utils.units import GraphicUnit, Inch, Mm

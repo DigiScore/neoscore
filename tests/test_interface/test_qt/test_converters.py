@@ -1,9 +1,9 @@
 from PyQt5.QtCore import QPoint, QPointF, QRect, QRectF
 
 from brown.interface.qt.converters import (
-    qt_point_to_point,
     point_to_qt_point,
     point_to_qt_point_f,
+    qt_point_to_point,
     qt_rect_to_rect,
     rect_to_qt_rect,
     rect_to_qt_rect_f,
@@ -11,7 +11,6 @@ from brown.interface.qt.converters import (
 from brown.utils.point import Point
 from brown.utils.rect import Rect
 from brown.utils.units import GraphicUnit
-
 
 # qt_point_to_point ###########################################################
 

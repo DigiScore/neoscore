@@ -1,7 +1,7 @@
 from PyQt5.Qt import Qt
 from PyQt5.QtGui import QBitmap, QRegion
 
-from brown.utils.units import Mm, Inch
+from brown.utils.units import Inch, Mm
 
 supported_formats = {
     ".bmp",

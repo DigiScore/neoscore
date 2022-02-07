@@ -8,7 +8,7 @@ from brown.core.path_element_type import PathElementType
 from brown.core.staff import Staff
 from brown.utils.parent_point import ParentPoint
 from brown.utils.point import Point
-from brown.utils.units import Unit, Mm
+from brown.utils.units import Mm, Unit
 from tests.mocks.mock_staff_object import MockStaffObject
 
 

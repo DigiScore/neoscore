@@ -2,7 +2,7 @@ import unittest
 
 import pytest
 
-from brown.utils.units import Unit, Mm, Inch, GraphicUnit
+from brown.utils.units import GraphicUnit, Inch, Mm, Unit
 
 
 class MockUnit(Unit):

@@ -4,8 +4,8 @@ import doc.doc_config as doc_config
 from doc.utils import (
     indentation_level_at,
     parse_general_text,
-    parse_type_string,
     parse_type_and_add_code_tag,
+    parse_type_string,
     surround_with_tag,
     whole_line_at,
 )

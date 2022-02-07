@@ -1,11 +1,10 @@
 from collections import namedtuple
 
 from examples.feldman_projections_2.glyph_name import GlyphName
-from examples.feldman_projections_2.instrument_data import InstrumentData
-from examples.feldman_projections_2.register import Register as Reg
 from examples.feldman_projections_2.grid_unit import GridUnit as G
+from examples.feldman_projections_2.instrument_data import InstrumentData
 from examples.feldman_projections_2.measure import Measure as M
-
+from examples.feldman_projections_2.register import Register as Reg
 
 EventData = namedtuple(
     "EventData", ("instrument", "pos_x", "register", "text", "length")

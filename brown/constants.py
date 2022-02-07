@@ -2,11 +2,10 @@
 
 import os
 
-from brown.utils.units import Mm, Inch, GraphicUnit
-from brown.core.pen_pattern import PenPattern
 from brown.core.brush_pattern import BrushPattern
+from brown.core.pen_pattern import PenPattern
 from brown.utils.color import Color
-
+from brown.utils.units import GraphicUnit, Inch, Mm
 
 # Directories
 BROWN_ROOT_DIR = os.path.join(os.path.dirname(__file__))

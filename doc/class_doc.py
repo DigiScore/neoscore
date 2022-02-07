@@ -5,13 +5,13 @@ from doc.attribute_doc import AttributeDoc
 from doc.method_doc import MethodDoc
 from doc.method_type import MethodType
 from doc.utils import (
-    previous_line_ending_index_from,
     first_or_none,
-    whole_line_at,
+    line_num_at,
     parse_general_text,
     parse_type_and_add_code_tag,
     parse_type_string,
-    line_num_at,
+    previous_line_ending_index_from,
+    whole_line_at,
 )
 
 

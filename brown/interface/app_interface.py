@@ -1,15 +1,15 @@
 import os
 
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtPrintSupport import QPrinter
 
 from brown import constants
-from brown.interface.qt.main_window import MainWindow
 from brown.interface import images
 from brown.interface.interface import Interface
-from brown.interface.qt.converters import rect_to_qt_rect_f, color_to_q_color
+from brown.interface.qt.converters import color_to_q_color, rect_to_qt_rect_f
+from brown.interface.qt.main_window import MainWindow
 from brown.utils.exceptions import FontRegistrationError, ImageExportError
-from brown.utils.units import Unit, Meter
+from brown.utils.units import Meter, Unit
 
 
 class AppInterface(Interface):

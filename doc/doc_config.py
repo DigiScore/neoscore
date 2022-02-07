@@ -1,4 +1,5 @@
 import os
+
 import pkg_resources
 
 VERSION = pkg_resources.require("brown")[0].version
