@@ -22,178 +22,178 @@ class KeySignatureType(Enum):
     """
 
     c_major = {
-        'a': None,
-        'b': None,
-        'c': None,
-        'd': None,
-        'e': None,
-        'f': None,
-        'g': None,
+        "a": None,
+        "b": None,
+        "c": None,
+        "d": None,
+        "e": None,
+        "f": None,
+        "g": None,
     }
 
     a_minor = c_major.copy()
 
     df_major = {
-        'a': flat,
-        'b': flat,
-        'c': None,
-        'd': flat,
-        'e': flat,
-        'f': None,
-        'g': flat,
+        "a": flat,
+        "b": flat,
+        "c": None,
+        "d": flat,
+        "e": flat,
+        "f": None,
+        "g": flat,
     }
 
     bf_minor = df_major.copy()
 
     # Ha
     cs_major = {
-        'a': sharp,
-        'b': sharp,
-        'c': sharp,
-        'd': sharp,
-        'e': sharp,
-        'f': sharp,
-        'g': sharp,
+        "a": sharp,
+        "b": sharp,
+        "c": sharp,
+        "d": sharp,
+        "e": sharp,
+        "f": sharp,
+        "g": sharp,
     }
 
     d_major = {
-        'a': None,
-        'b': None,
-        'c': sharp,
-        'd': None,
-        'e': None,
-        'f': sharp,
-        'g': None,
+        "a": None,
+        "b": None,
+        "c": sharp,
+        "d": None,
+        "e": None,
+        "f": sharp,
+        "g": None,
     }
 
     b_minor = d_major.copy()
 
     ef_major = {
-        'a': flat,
-        'b': flat,
-        'c': None,
-        'd': None,
-        'e': flat,
-        'f': None,
-        'g': None,
+        "a": flat,
+        "b": flat,
+        "c": None,
+        "d": None,
+        "e": flat,
+        "f": None,
+        "g": None,
     }
 
     c_minor = ef_major.copy()
 
     e_major = {
-        'a': None,
-        'b': None,
-        'c': sharp,
-        'd': sharp,
-        'e': None,
-        'f': sharp,
-        'g': sharp,
+        "a": None,
+        "b": None,
+        "c": sharp,
+        "d": sharp,
+        "e": None,
+        "f": sharp,
+        "g": sharp,
     }
 
     cs_minor = e_major.copy()
 
     f_major = {
-        'a': None,
-        'b': flat,
-        'c': None,
-        'd': None,
-        'e': None,
-        'f': None,
-        'g': None,
+        "a": None,
+        "b": flat,
+        "c": None,
+        "d": None,
+        "e": None,
+        "f": None,
+        "g": None,
     }
 
     d_minor = f_major.copy()
 
     gf_major = {
-        'a': flat,
-        'b': flat,
-        'c': flat,
-        'd': flat,
-        'e': flat,
-        'f': None,
-        'g': flat,
+        "a": flat,
+        "b": flat,
+        "c": flat,
+        "d": flat,
+        "e": flat,
+        "f": None,
+        "g": flat,
     }
 
     ef_minor = gf_major.copy()
 
     fs_major = {
-        'a': sharp,
-        'b': None,
-        'c': sharp,
-        'd': sharp,
-        'e': sharp,
-        'f': sharp,
-        'g': sharp,
+        "a": sharp,
+        "b": None,
+        "c": sharp,
+        "d": sharp,
+        "e": sharp,
+        "f": sharp,
+        "g": sharp,
     }
 
     ds_minor = fs_major.copy()
 
     g_major = {
-        'a': None,
-        'b': None,
-        'c': None,
-        'd': None,
-        'e': None,
-        'f': sharp,
-        'g': None,
+        "a": None,
+        "b": None,
+        "c": None,
+        "d": None,
+        "e": None,
+        "f": sharp,
+        "g": None,
     }
 
     e_minor = g_major.copy()
 
     af_major = {
-        'a': flat,
-        'b': flat,
-        'c': None,
-        'd': flat,
-        'e': flat,
-        'f': None,
-        'g': None,
+        "a": flat,
+        "b": flat,
+        "c": None,
+        "d": flat,
+        "e": flat,
+        "f": None,
+        "g": None,
     }
 
     f_minor = af_major.copy()
 
     a_major = {
-        'a': None,
-        'b': None,
-        'c': sharp,
-        'd': None,
-        'e': None,
-        'f': sharp,
-        'g': sharp,
+        "a": None,
+        "b": None,
+        "c": sharp,
+        "d": None,
+        "e": None,
+        "f": sharp,
+        "g": sharp,
     }
 
     fs_minor = a_major.copy()
 
     bf_major = {
-        'a': None,
-        'b': flat,
-        'c': None,
-        'd': None,
-        'e': flat,
-        'f': None,
-        'g': None,
+        "a": None,
+        "b": flat,
+        "c": None,
+        "d": None,
+        "e": flat,
+        "f": None,
+        "g": None,
     }
 
     g_minor = bf_major.copy()
 
     b_major = {
-        'a': sharp,
-        'b': None,
-        'c': sharp,
-        'd': sharp,
-        'e': None,
-        'f': sharp,
-        'g': sharp,
+        "a": sharp,
+        "b": None,
+        "c": sharp,
+        "d": sharp,
+        "e": None,
+        "f": sharp,
+        "g": sharp,
     }
 
     gs_minor = b_major.copy()
 
     cf_major = {
-        'a': flat,
-        'b': flat,
-        'c': flat,
-        'd': flat,
-        'e': flat,
-        'f': flat,
-        'g': flat,
+        "a": flat,
+        "b": flat,
+        "c": flat,
+        "d": flat,
+        "e": flat,
+        "f": flat,
+        "g": flat,
     }

@@ -8,5 +8,6 @@ def is_valid_file_path(path):
 
     Returns: bool
     """
-    return (os.path.isdir(os.path.dirname(os.path.abspath(path)))
-            and not os.path.isdir(path))
+    return os.path.isdir(os.path.dirname(os.path.abspath(path))) and not os.path.isdir(
+        path
+    )

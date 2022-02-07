@@ -11,6 +11,7 @@ class BrushPattern(Enum):
     the relevant Qt docs:
         https://doc.qt.io/qt-5/qt.html#BrushStyle-enum
     """
+
     NO_BRUSH = 0
     """No brush pattern. This is equivalent to a fully transparent color."""
 

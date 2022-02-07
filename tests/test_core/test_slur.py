@@ -9,7 +9,6 @@ from tests.mocks.mock_staff_object import MockStaffObject
 
 
 class TestSlur(unittest.TestCase):
-
     def setUp(self):
         brown.setup()
         self.flowable = Flowable((Mm(0), Mm(0)), Mm(10000), Mm(30), Mm(5))
@@ -22,5 +21,4 @@ class TestSlur(unittest.TestCase):
 
         TODO: Replace this with real tests
         """
-        slur = Slur((Mm(1), Mm(2), self.left_parent),
-                    (Mm(3), Mm(4), self.right_parent))
+        slur = Slur((Mm(1), Mm(2), self.left_parent), (Mm(3), Mm(4), self.right_parent))

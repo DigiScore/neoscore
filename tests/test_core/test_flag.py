@@ -10,7 +10,6 @@ from brown.utils.units import Mm
 
 
 class TestFlag(unittest.TestCase):
-
     def setUp(self):
         brown.setup()
         self.staff = Staff((Mm(0), Mm(0)), Mm(100), flowable=None)
@@ -31,23 +30,24 @@ class TestFlag(unittest.TestCase):
             Flag(Beat(1, 8), -2, self.staff)
 
     def test_needs_flag(self):
-        assert(Flag.needs_flag(Beat(1, 4)) is False)
-        assert(Flag.needs_flag(Beat(1, 2)) is False)
-        assert(Flag.needs_flag(Beat(1, 8)) is True)
-        assert(Flag.needs_flag(Beat(1, 16)) is True)
+        assert Flag.needs_flag(Beat(1, 4)) is False
+        assert Flag.needs_flag(Beat(1, 2)) is False
+        assert Flag.needs_flag(Beat(1, 8)) is True
+        assert Flag.needs_flag(Beat(1, 16)) is True
 
     def test_vertical_offset_needed(self):
-        self.assertEqual(Flag.vertical_offset_needed(Beat(1, 4),
-                                                     self.staff.unit),
-                         self.staff.unit(0))
+        self.assertEqual(
+            Flag.vertical_offset_needed(Beat(1, 4), self.staff.unit), self.staff.unit(0)
+        )
 
-        self.assertEqual(Flag.vertical_offset_needed(Beat(1, 8),
-                                                     self.staff.unit),
-                         self.staff.unit(1))
+        self.assertEqual(
+            Flag.vertical_offset_needed(Beat(1, 8), self.staff.unit), self.staff.unit(1)
+        )
 
-        self.assertEqual(Flag.vertical_offset_needed(Beat(1, 16),
-                                                     self.staff.unit),
-                         self.staff.unit(1))
+        self.assertEqual(
+            Flag.vertical_offset_needed(Beat(1, 16), self.staff.unit),
+            self.staff.unit(1),
+        )
 
     def test_raises_no_flag_needed_error(self):
         # Test valid durations

@@ -10,6 +10,7 @@ class MusicText(Text):
     """
     A glyph with a MusicFont and convenient access to relevant SMuFL metadata.
     """
+
     def __init__(self, pos, text, parent, font=None, scale_factor=1):
         """
         Args:
@@ -29,13 +30,13 @@ class MusicText(Text):
         if font is None:
             ancestor_staff = StaffObject.find_staff(parent)
             if ancestor_staff is None:
-                raise ValueError('MusicText must be given either a '
-                                 'MusicFont or an ancestor staff')
+                raise ValueError(
+                    "MusicText must be given either a " "MusicFont or an ancestor staff"
+                )
             font = ancestor_staff.music_font
         self.music_chars = MusicText._resolve_music_chars(text, font)
-        text = ''.join(char.codepoint for char in self.music_chars)
-        Text.__init__(self, pos, text, font, parent,
-                      scale_factor=scale_factor)
+        text = "".join(char.codepoint for char in self.music_chars)
+        Text.__init__(self, pos, text, font, parent, scale_factor=scale_factor)
 
     ######## PUBLIC PROPERTIES ########
 
@@ -57,8 +58,7 @@ class MusicText(Text):
     @property
     def _origin_offset(self):
         """Point: The origin offset override for this glyph."""
-        return Point(GraphicUnit(0),
-                     self.font.ascent)
+        return Point(GraphicUnit(0), self.font.ascent)
 
     ######## PRIVATE METHODS ########
 
@@ -80,21 +80,24 @@ class MusicText(Text):
             ValueError: if `music_chars` is empty.
         """
         if not music_chars:
-            raise ValueError('Cannot find the bounding rect of an '
-                             'empty character sequence.')
-        x = music_chars[0].glyph_info['glyphBBox']['bBoxSW'][0]
-        y = music_chars[0].glyph_info['glyphBBox']['bBoxNE'][1]
+            raise ValueError(
+                "Cannot find the bounding rect of an " "empty character sequence."
+            )
+        x = music_chars[0].glyph_info["glyphBBox"]["bBoxSW"][0]
+        y = music_chars[0].glyph_info["glyphBBox"]["bBoxNE"][1]
         w = GraphicUnit(0)
         h = GraphicUnit(0)
         for char in music_chars:
-            char_x = char.glyph_info['glyphBBox']['bBoxSW'][0]
-            char_y = char.glyph_info['glyphBBox']['bBoxNE'][1]
-            w += char.glyph_info['glyphBBox']['bBoxNE'][0] - char_x
-            h += (char.glyph_info['glyphBBox']['bBoxSW'][1] - char_y) * -1
-        return Rect((x + self._origin_offset.x) * self.scale_factor,
-                    (y + self._origin_offset.y) * self.scale_factor,
-                    w * self.scale_factor,
-                    h * self.scale_factor)
+            char_x = char.glyph_info["glyphBBox"]["bBoxSW"][0]
+            char_y = char.glyph_info["glyphBBox"]["bBoxNE"][1]
+            w += char.glyph_info["glyphBBox"]["bBoxNE"][0] - char_x
+            h += (char.glyph_info["glyphBBox"]["bBoxSW"][1] - char_y) * -1
+        return Rect(
+            (x + self._origin_offset.x) * self.scale_factor,
+            (y + self._origin_offset.y) * self.scale_factor,
+            w * self.scale_factor,
+            h * self.scale_factor,
+        )
 
     @staticmethod
     def _resolve_music_chars(text, font):

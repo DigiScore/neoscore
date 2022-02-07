@@ -7,4 +7,5 @@ class BreakOpportunity:
 
     This mixin is only useful when used inside a `Flowable`.
     """
+
     pass

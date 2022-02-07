@@ -2,8 +2,8 @@ from brown.utils.units import Mm, Inch
 
 
 paper_templates = {
-    'A4': [Mm(val) for val in [210, 297, 20, 20, 20, 20]],
-    'Letter': [Inch(val) for val in [8.5, 11, 1, 1, 1, 1, 0.3]]
+    "A4": [Mm(val) for val in [210, 297, 20, 20, 20, 20]],
+    "Letter": [Inch(val) for val in [8.5, 11, 1, 1, 1, 1, 0.3]],
 }
 """A dictionary of paper templates.
 

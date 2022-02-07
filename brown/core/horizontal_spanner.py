@@ -58,8 +58,7 @@ class HorizontalSpanner(Spanner):
         if self.end_parent == self:
             return GraphicUnit(0)
         elif self.flowable is not None:
-            return self.flowable.map_between_locally(
-                self.end_parent, self).y
+            return self.flowable.map_between_locally(self.end_parent, self).y
         else:
             return GraphicObject.map_between_items(self.end_parent, self).y
 

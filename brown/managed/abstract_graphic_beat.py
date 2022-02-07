@@ -16,6 +16,7 @@ class AbstractGraphicBeat(Beat, Unit):
     NOTE: This was hackily extracted from an older version of Beat,
           and it doesn't work.
     """
+
     # Rate of a 1/1 beat to GraphicUnit(1)
     CONVERSION_RATE = None
     # A constant offset to be applied to all unit conversions.
@@ -40,9 +41,9 @@ class AbstractGraphicBeat(Beat, Unit):
 
     @classmethod
     def from_unit(cls, unit):
-        float_value = ((unit._to_base_unit_float()
-                        - cls._constant_offset)
-                       / cls.CONVERSION_RATE)
+        float_value = (
+            unit._to_base_unit_float() - cls._constant_offset
+        ) / cls.CONVERSION_RATE
         return cls(float_value)
 
     ######## PRIVATE METHODS ########
@@ -53,16 +54,14 @@ class AbstractGraphicBeat(Beat, Unit):
         Returns: float
         """
         if self._constant_offset:
-            return ((self.value * self.CONVERSION_RATE)
-                    + Unit(self._constant_offset).value)
+            return (self.value * self.CONVERSION_RATE) + Unit(
+                self._constant_offset
+            ).value
         else:
             return self.value * self.CONVERSION_RATE
 
     @classmethod
-    def make_concrete_beat(cls,
-                           whole_note_size,
-                           constant_offset=None,
-                           name=None):
+    def make_concrete_beat(cls, whole_note_size, constant_offset=None, name=None):
         """Make a concrete GraphicBeat class and return it.
 
         Args:
@@ -73,10 +72,10 @@ class AbstractGraphicBeat(Beat, Unit):
 
         Returns: type
         """
+
         class GraphicBeat(cls):
             CONVERSION_RATE = Unit(whole_note_size).value
-            _constant_offset = (Unit(constant_offset).value if constant_offset
-                                else 0)
+            _constant_offset = Unit(constant_offset).value if constant_offset else 0
 
         if name:
             GraphicBeat.__name__ = name

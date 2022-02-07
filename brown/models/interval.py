@@ -5,21 +5,14 @@ from brown.utils.exceptions import InvalidIntervalError
 
 class Interval:
     """A pitch interval."""
+
     _shorthand_regex = re.compile("^([ad])([mMPdA])([1-9]\d*)$")
-    _base_pc_deltas = {
-        1: 0,
-        2: 2,
-        3: 4,
-        4: 5,
-        5: 7,
-        6: 9,
-        7: 11
-    }
+    _base_pc_deltas = {1: 0, 2: 2, 3: 4, 4: 5, 5: 7, 6: 9, 7: 11}
     _qualities_in_english = {
-        'm': 'minor',
-        'M': 'Major',
-        'd': 'diminished',
-        'A': 'Augmented'
+        "m": "minor",
+        "M": "Major",
+        "d": "diminished",
+        "A": "Augmented",
     }
     _perfectable_distances = [1, 4, 5]
 
@@ -57,8 +50,11 @@ class Interval:
         self._quality = quality
         self._distance = distance
         # Check against invalid edge case intervals
-        if (self.simple_distance in Interval._perfectable_distances and
-                quality not in ['P', 'd', 'A']):
+        if self.simple_distance in Interval._perfectable_distances and quality not in [
+            "P",
+            "d",
+            "A",
+        ]:
             # unisons, fourths, fifths, and their compounds
             # can only be perfect, augmented, or diminished
             raise InvalidIntervalError
@@ -71,7 +67,7 @@ class Interval:
 
     @property
     def direction_as_int(self):
-        return -1 if self._direction == 'd' else 1
+        return -1 if self._direction == "d" else 1
 
     @property
     def quality(self):
@@ -105,7 +101,7 @@ class Interval:
         >>> Interval('dP8').staff_distance
         -3.5
         """
-        return (((self.distance - 1) * self.direction_as_int) / 2)
+        return ((self.distance - 1) * self.direction_as_int) / 2
 
     @property
     def simple_distance(self):
@@ -128,17 +124,17 @@ class Interval:
         octave_pc_dist = octave * 12
         simple_pc_dist = Interval._base_pc_deltas[self.simple_distance]
         if self.simple_distance in Interval._perfectable_distances:
-            if self.quality == 'd':
+            if self.quality == "d":
                 simple_pc_dist -= 1
-            elif self.quality == 'A':
+            elif self.quality == "A":
                 simple_pc_dist += 1
             # Otherwise perfect - no modification needed
         else:
-            if self.quality == 'd':
+            if self.quality == "d":
                 simple_pc_dist -= 2
-            elif self.quality == 'm':
+            elif self.quality == "m":
                 simple_pc_dist -= 1
-            elif self.quality == 'A':
+            elif self.quality == "A":
                 simple_pc_dist += 1
             # Otherwise major - no modification needed
         return (octave_pc_dist + simple_pc_dist) * self.direction_as_int

@@ -3,8 +3,17 @@ from PyQt5.QtGui import QBitmap, QRegion
 
 from brown.utils.units import Mm, Inch
 
-supported_formats = {'.bmp', '.jpg', '.jpeg', '.png',
-                     '.pbm', '.pgm', '.ppm', '.xbm', '.xpm'}
+supported_formats = {
+    ".bmp",
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".pbm",
+    ".pgm",
+    ".ppm",
+    ".xbm",
+    ".xpm",
+}
 
 _inches_per_meter = (Inch(1) / Mm(1000)).value
 
@@ -33,8 +42,6 @@ def autocrop(q_image, q_color):
             unmodified.
     """
 
-    mask = q_image.createMaskFromColor(q_color.rgb(),
-                                       Qt.MaskInColor)
+    mask = q_image.createMaskFromColor(q_color.rgb(), Qt.MaskInColor)
     crop_rect = QRegion(QBitmap.fromImage(mask)).boundingRect()
     return q_image.copy(crop_rect)
-

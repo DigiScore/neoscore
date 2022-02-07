@@ -6,7 +6,7 @@ class RhythmDot(MusicText, StaffObject):
 
     """A single rhythmic dot"""
 
-    _glyph_name = 'augmentationDot'
+    _glyph_name = "augmentationDot"
 
     def __init__(self, pos, parent, font=None):
         """

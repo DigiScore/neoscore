@@ -7,7 +7,7 @@ class Point:
     The x-axis grows left-to right, and the y-axis grows top-to-bottom.
     """
 
-    __slots__ = ('_x', '_y')
+    __slots__ = ("_x", "_y")
 
     def __init__(self, x, y):
         """
@@ -80,9 +80,7 @@ class Point:
     ######## SPECIAL METHODS ########
 
     def __repr__(self):
-        return '{}({}, {})'.format(type(self).__name__,
-                                   self.x,
-                                   self.y)
+        return "{}({}, {})".format(type(self).__name__, self.x, self.y)
 
     def __hash__(self):
         return hash(self.__repr__())
@@ -104,8 +102,7 @@ class Point:
         """
         if type(other) != type(self):
             raise TypeError
-        return type(self)(self.x + other.x,
-                          self.y + other.y)
+        return type(self)(self.x + other.x, self.y + other.y)
 
     def __sub__(self, other):
         """`Point`s are subtracted by adding their x and y values in a new `Point`
@@ -114,8 +111,7 @@ class Point:
         """
         if type(other) != type(self):
             raise TypeError
-        return type(self)(self.x - other.x,
-                          self.y - other.y)
+        return type(self)(self.x - other.x, self.y - other.y)
 
     def __mul__(self, other):
         """Points may be multiplied with scalars.
@@ -133,8 +129,7 @@ class Point:
         return type(self)(abs(self.x), abs(self.y))
 
     def __round__(self, ndigits=None):
-        return type(self)(round(self.x, ndigits),
-                          round(self.y, ndigits))
+        return type(self)(round(self.x, ndigits), round(self.y, ndigits))
 
     ######### PRIVATE METHODS ########
 

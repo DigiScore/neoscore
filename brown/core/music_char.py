@@ -37,11 +37,11 @@ class MusicChar:
 
     @property
     def canonical_name(self):
-        return self.glyph_info['canonicalName']
+        return self.glyph_info["canonicalName"]
 
     @property
     def codepoint(self):
-        return self.glyph_info['codepoint']
+        return self.glyph_info["codepoint"]
 
     @property
     def glyph_info(self):
@@ -51,8 +51,8 @@ class MusicChar:
     @property
     def bounding_rect(self):
         """Rect: The glyph bounding box."""
-        x = self.glyph_info['glyphBBox']['bBoxSW'][0]
-        y = self.glyph_info['glyphBBox']['bBoxNE'][1]
-        w = self.glyph_info['glyphBBox']['bBoxNE'][0] - x
-        h = (self.glyph_info['glyphBBox']['bBoxSW'][1] - y) * -1
+        x = self.glyph_info["glyphBBox"]["bBoxSW"][0]
+        y = self.glyph_info["glyphBBox"]["bBoxNE"][1]
+        w = self.glyph_info["glyphBBox"]["bBoxNE"][0] - x
+        h = (self.glyph_info["glyphBBox"]["bBoxSW"][1] - y) * -1
         return Rect(x, y, w, h)

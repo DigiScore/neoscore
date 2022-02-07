@@ -55,6 +55,6 @@ class StaffObject:
 
         Returns: Staff or None
         """
-        if type(graphic_object).__name__ == 'Staff':
+        if type(graphic_object).__name__ == "Staff":
             return graphic_object
-        return graphic_object.first_ancestor_of_exact_class('Staff')
+        return graphic_object.first_ancestor_of_exact_class("Staff")

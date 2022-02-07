@@ -15,12 +15,12 @@ class PlatformType(Enum):
 
 def current_platform():
     """Get the type of the running platform"""
-    if sys.platform.startswith('freebsd'):
+    if sys.platform.startswith("freebsd"):
         return PlatformType.bsd
-    elif sys.platform.startswith('linux'):
+    elif sys.platform.startswith("linux"):
         return PlatformType.linux
-    elif sys.platform == 'darwin':
+    elif sys.platform == "darwin":
         return PlatformType.mac
-    elif sys.platform == 'win32' or sys.platform == 'cygwin':
+    elif sys.platform == "win32" or sys.platform == "cygwin":
         return PlatformType.windows
     return PlatformType.unkown

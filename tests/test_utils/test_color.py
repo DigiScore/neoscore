@@ -6,41 +6,40 @@ from brown.utils.color import Color, ColorBoundsError
 
 
 class TestColor(unittest.TestCase):
-
     def test_init_with_hex_string(self):
-        color = Color('eeddcc')
-        assert(color.red == 238)
-        assert(color.green == 221)
-        assert(color.blue == 204)
-        assert(color.alpha == 255)
+        color = Color("eeddcc")
+        assert color.red == 238
+        assert color.green == 221
+        assert color.blue == 204
+        assert color.alpha == 255
 
     def test_init_with_hex_string_with_leading_pound(self):
-        color = Color('#eeddcc')
-        assert(color.red == 238)
-        assert(color.green == 221)
-        assert(color.blue == 204)
-        assert(color.alpha == 255)
+        color = Color("#eeddcc")
+        assert color.red == 238
+        assert color.green == 221
+        assert color.blue == 204
+        assert color.alpha == 255
 
     def test_init_with_hex_string_and_alpha(self):
-        color = Color('eeddcc', 200)
-        assert(color.red == 238)
-        assert(color.green == 221)
-        assert(color.blue == 204)
-        assert(color.alpha == 200)
+        color = Color("eeddcc", 200)
+        assert color.red == 238
+        assert color.green == 221
+        assert color.blue == 204
+        assert color.alpha == 200
 
     def test_init_with_rgb(self):
         color = Color(0, 100, 200)
-        assert(color.red == 0)
-        assert(color.green == 100)
-        assert(color.blue == 200)
-        assert(color.alpha == 255)
+        assert color.red == 0
+        assert color.green == 100
+        assert color.blue == 200
+        assert color.alpha == 255
 
     def test_init_with_rgba(self):
         color = Color(0, 100, 200, 250)
-        assert(color.red == 0)
-        assert(color.green == 100)
-        assert(color.blue == 200)
-        assert(color.alpha == 250)
+        assert color.red == 0
+        assert color.green == 100
+        assert color.blue == 200
+        assert color.alpha == 250
 
     def test_bad_red_color_value(self):
         with pytest.raises(ColorBoundsError):
@@ -68,21 +67,21 @@ class TestColor(unittest.TestCase):
 
     def test__repr__(self):
         color = Color(0, 100, 200, 250)
-        assert(color.__repr__() == "Color(0, 100, 200, 250)")
+        assert color.__repr__() == "Color(0, 100, 200, 250)"
 
     def test__eq__(self):
-        assert(Color(0, 100, 200, 250) == Color(0, 100, 200, 250))
+        assert Color(0, 100, 200, 250) == Color(0, 100, 200, 250)
 
     def test__ne__(self):
-        assert(Color(1, 100, 200, 250) != Color(0, 100, 200, 250))
-        assert(Color(0, 101, 200, 250) != Color(0, 100, 200, 250))
-        assert(Color(0, 100, 201, 250) != Color(0, 100, 200, 250))
-        assert(Color(0, 100, 200, 251) != Color(0, 100, 200, 250))
-        assert(Color(0, 100, 200, 250) != 'nonsense')
+        assert Color(1, 100, 200, 250) != Color(0, 100, 200, 250)
+        assert Color(0, 101, 200, 250) != Color(0, 100, 200, 250)
+        assert Color(0, 100, 201, 250) != Color(0, 100, 200, 250)
+        assert Color(0, 100, 200, 251) != Color(0, 100, 200, 250)
+        assert Color(0, 100, 200, 250) != "nonsense"
 
     def test__hash__(self):
-        assert({Color(0, 100, 200, 250),
-                Color(0, 100, 200, 250),
-                Color(0, 0, 0, 0)} ==
-               {Color(0, 100, 200, 250),
-                Color(0, 0, 0, 0)})
+        assert {
+            Color(0, 100, 200, 250),
+            Color(0, 100, 200, 250),
+            Color(0, 0, 0, 0),
+        } == {Color(0, 100, 200, 250), Color(0, 0, 0, 0)}

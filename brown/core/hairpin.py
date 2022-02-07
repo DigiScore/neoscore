@@ -27,19 +27,14 @@ class Hairpin(Path, StaffObject, Spanner):
             width (Unit): The width of the wide hairpin part.
                 Defaults to `self.staff.unit(1)`
         """
-        start = (start if isinstance(start, ParentPoint)
-                 else ParentPoint(*start))
-        stop = (stop if isinstance(stop, ParentPoint)
-                else ParentPoint(*stop))
-        Path.__init__(self,
-                      start,
-                      parent=start.parent)
+        start = start if isinstance(start, ParentPoint) else ParentPoint(*start)
+        stop = stop if isinstance(stop, ParentPoint) else ParentPoint(*stop)
+        Path.__init__(self, start, parent=start.parent)
         StaffObject.__init__(self, start.parent)
         Spanner.__init__(self, stop, stop.parent)
         self.direction = direction
         self.width = width if width is not None else self.staff.unit(1)
-        self.thickness = self.staff.music_font.engraving_defaults[
-            'hairpinThickness']
+        self.thickness = self.staff.music_font.engraving_defaults["hairpinThickness"]
         self._draw_path()
 
     ######## PUBLIC PROPERTIES ########
@@ -55,7 +50,7 @@ class Hairpin(Path, StaffObject, Spanner):
     @direction.setter
     def direction(self, value):
         if value != 1 and value != -1:
-            raise ValueError('Hairpin.direction must be -1 or 1')
+            raise ValueError("Hairpin.direction must be -1 or 1")
         else:
             self._direction = value
 
@@ -72,41 +67,50 @@ class Hairpin(Path, StaffObject, Spanner):
                 end of the shape.
         """
         if self.direction == -1:
-            joint = ParentPoint(
-                self.end_pos.x, self.end_pos.y, parent=self.end_parent)
-            end_center = ParentPoint(
-                self.x, self.y, parent=self.parent)
+            joint = ParentPoint(self.end_pos.x, self.end_pos.y, parent=self.end_parent)
+            end_center = ParentPoint(self.x, self.y, parent=self.parent)
         else:
-            joint = ParentPoint(
-                self.x, self.y, parent=self.parent)
+            joint = ParentPoint(self.x, self.y, parent=self.parent)
             end_center = ParentPoint(
-                self.end_pos.x, self.end_pos.y, parent=self.end_parent)
+                self.end_pos.x, self.end_pos.y, parent=self.end_parent
+            )
         dist = self.width / 2
         # Find relative distance from joint to end_center
         parent_distance = GraphicObject.map_between_items(
-            joint.parent, end_center.parent)
-        relative_stop = (parent_distance
-                         + Point(end_center.x, end_center.y)
-                         - Point(joint.x, joint.y))
+            joint.parent, end_center.parent
+        )
+        relative_stop = (
+            parent_distance
+            + Point(end_center.x, end_center.y)
+            - Point(joint.x, joint.y)
+        )
         if relative_stop.y == Unit(0):
-            return(
-                (ParentPoint(end_center.x,
-                               end_center.y + dist,
-                               parent=end_center.parent)),
+            return (
+                (
+                    ParentPoint(
+                        end_center.x, end_center.y + dist, parent=end_center.parent
+                    )
+                ),
                 joint,
-                (ParentPoint(end_center.x,
-                               end_center.y - dist,
-                               parent=end_center.parent))
+                (
+                    ParentPoint(
+                        end_center.x, end_center.y - dist, parent=end_center.parent
+                    )
+                ),
             )
         elif relative_stop.x == Unit(0):
-            return(
-                (ParentPoint(end_center.x + dist,
-                               end_center.y,
-                               parent=end_center.parent)),
+            return (
+                (
+                    ParentPoint(
+                        end_center.x + dist, end_center.y, parent=end_center.parent
+                    )
+                ),
                 joint,
-                (ParentPoint(end_center.x - dist,
-                               end_center.y,
-                               parent=end_center.parent))
+                (
+                    ParentPoint(
+                        end_center.x - dist, end_center.y, parent=end_center.parent
+                    )
+                ),
             )
         # else ...
 
@@ -120,17 +124,19 @@ class Hairpin(Path, StaffObject, Spanner):
         opening_y_intercept = (opening_slope * end_center.x) - end_center.y
         # Find needed x coordinates of outer points
         #     x = dist / sqrt(1 + slope^2)
-        first_x = end_center.x + (dist / math.sqrt(type(opening_slope)(1)
-                                                   + (opening_slope ** 2)))
-        last_x = end_center.x - (dist / math.sqrt(type(opening_slope)(1)
-                                                  + (opening_slope ** 2)))
+        first_x = end_center.x + (
+            dist / math.sqrt(type(opening_slope)(1) + (opening_slope**2))
+        )
+        last_x = end_center.x - (
+            dist / math.sqrt(type(opening_slope)(1) + (opening_slope**2))
+        )
         # Calculate matching y coordinates from opening line function
         first_y = (opening_slope * first_x) - opening_y_intercept
         last_y = (opening_slope * last_x) - opening_y_intercept
-        return(
-                (ParentPoint(first_x, first_y, parent=end_center.parent)),
-                joint,
-                (ParentPoint(last_x, last_y, parent=end_center.parent))
+        return (
+            (ParentPoint(first_x, first_y, parent=end_center.parent)),
+            joint,
+            (ParentPoint(last_x, last_y, parent=end_center.parent)),
         )
 
     def _draw_path(self):

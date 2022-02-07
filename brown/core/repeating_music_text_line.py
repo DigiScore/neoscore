@@ -8,8 +8,9 @@ class RepeatingMusicTextLine(MusicText, StaffObject, HorizontalSpanner):
 
     """A spanner of repeating music text over its length."""
 
-    def __init__(self, start, parent, end_x, text, end_parent=None,
-                 font=None, scale_factor=1):
+    def __init__(
+        self, start, parent, end_x, text, end_parent=None, font=None, scale_factor=1
+    ):
         """
         Args:
             start (Point or init tuple): The starting point.
@@ -54,6 +55,5 @@ class RepeatingMusicTextLine(MusicText, StaffObject, HorizontalSpanner):
         This value rounds down, such that the real length of the drawn
         text will always be <= self.length.
         """
-        base_width = self._char_list_bounding_rect(
-            self.repeating_music_chars).width
+        base_width = self._char_list_bounding_rect(self.repeating_music_chars).width
         return int((self.length / base_width).value)

@@ -39,26 +39,18 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
           offsets for paths.
     """
 
-    intervals = {
-        '15ma': 'aP15',
-        '8va': 'aP8',
-        '8vb': 'dP8',
-        '15mb': 'dP15'
-    }
+    intervals = {"15ma": "aP15", "8va": "aP8", "8vb": "dP8", "15mb": "dP15"}
 
     glyphs = {
-        '15ma': 'quindicesimaAlta',
-        '8va': 'ottavaAlta',
-        '8vb': 'ottavaBassaVb',
-        '15mb': 'quindicesimaBassaMb',
-        '(': 'octaveParensLeft',
-        ')': 'octaveParensRight'
+        "15ma": "quindicesimaAlta",
+        "8va": "ottavaAlta",
+        "8vb": "ottavaBassaVb",
+        "15mb": "quindicesimaBassaMb",
+        "(": "octaveParensLeft",
+        ")": "octaveParensRight",
     }
 
-    def __init__(self,
-                 start, start_parent,
-                 end_x, end_parent=None,
-                 indication='8va'):
+    def __init__(self, start, start_parent, end_x, end_parent=None, indication="8va"):
         """
         Args:
             start (Point or tuple init args):
@@ -87,7 +79,8 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
             pos=Point(GraphicUnit(0), GraphicUnit(0)),
             parent=self,
             length=self.length,
-            indication=indication)
+            indication=indication,
+        )
 
         # Vertically center the path relative to the text
         path_y = self.line_text.bounding_rect.height / -2
@@ -95,21 +88,22 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
             pos=(GraphicUnit(0), path_y),
             pen=Pen(
                 thickness=self.staff.music_font.engraving_defaults[
-                    'octaveLineThickness'],
-                pattern=PenPattern.DASH
+                    "octaveLineThickness"
+                ],
+                pattern=PenPattern.DASH,
             ),
-            parent=self
+            parent=self,
         )
         # Drawn main line part
         self.line_path.line_to(self.end_pos.x, path_y, self.end_parent)
-        pos_relative_to_staff = self.flowable.map_between_locally(
-            self.staff, self)
+        pos_relative_to_staff = self.flowable.map_between_locally(self.staff, self)
         # Draw end hook pointing toward the staff
         hook_direction = 1 if pos_relative_to_staff.y <= GraphicUnit(0) else -1
-        self.line_path.line_to(self.end_pos.x,
-                               (path_y
-                                + self.staff.unit(0.75 * hook_direction)),
-                               self.end_parent)
+        self.line_path.line_to(
+            self.end_pos.x,
+            (path_y + self.staff.unit(0.75 * hook_direction)),
+            self.end_parent,
+        )
 
     @property
     def length(self):
@@ -132,16 +126,13 @@ class _OctaveLineText(MusicText, StaffObject):
             indication (str): A valid octave indication.
                 Should be a valid entry in `OctaveLine.glyphs`.
         """
-        MusicText.__init__(self,
-                           pos,
-                           OctaveLine.glyphs[indication],
-                           parent)
+        MusicText.__init__(self, pos, OctaveLine.glyphs[indication], parent)
         StaffObject.__init__(self, parent)
-        open_paren_char = MusicChar(self.font, OctaveLine.glyphs['('])
-        close_paren_char = MusicChar(self.font, OctaveLine.glyphs[')'])
-        self.parenthesized_text = (open_paren_char.codepoint
-                                   + self.text
-                                   + close_paren_char.codepoint)
+        open_paren_char = MusicChar(self.font, OctaveLine.glyphs["("])
+        close_paren_char = MusicChar(self.font, OctaveLine.glyphs[")"])
+        self.parenthesized_text = (
+            open_paren_char.codepoint + self.text + close_paren_char.codepoint
+        )
         self._length = length
 
     ######## PUBLIC PROPERTIES ########
@@ -159,7 +150,8 @@ class _OctaveLineText(MusicText, StaffObject):
             self.text,
             self.font._interface,
             self.brush._interface,
-            origin_offset=self._origin_offset)
+            origin_offset=self._origin_offset,
+        )
         interface.render()
         self.interfaces.add(interface)
 
@@ -170,7 +162,8 @@ class _OctaveLineText(MusicText, StaffObject):
             self.parenthesized_text,
             self.font._interface,
             self.brush._interface,
-            origin_offset=self._origin_offset)
+            origin_offset=self._origin_offset,
+        )
         interface.render()
         self.interfaces.add(interface)
 
@@ -181,6 +174,7 @@ class _OctaveLineText(MusicText, StaffObject):
             self.parenthesized_text,
             self.font._interface,
             self.brush._interface,
-            origin_offset=self._origin_offset)
+            origin_offset=self._origin_offset,
+        )
         interface.render()
         self.interfaces.add(interface)

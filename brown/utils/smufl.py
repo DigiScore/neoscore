@@ -5,15 +5,15 @@ from brown import constants
 
 # Load metadata into dictionaries
 
-smufl_dir = os.path.join(constants.RESOURCES_DIR, 'smufl')
+smufl_dir = os.path.join(constants.RESOURCES_DIR, "smufl")
 
-with open(os.path.join(smufl_dir, 'classes.json'), 'r') as classes_file:
+with open(os.path.join(smufl_dir, "classes.json"), "r") as classes_file:
     classes = json.load(classes_file)
 
-with open(os.path.join(smufl_dir, 'glyphnames.json'), 'r') as glyphnames_file:
+with open(os.path.join(smufl_dir, "glyphnames.json"), "r") as glyphnames_file:
     glyph_names = json.load(glyphnames_file)
 
-with open(os.path.join(smufl_dir, 'ranges.json'), 'r') as ranges_file:
+with open(os.path.join(smufl_dir, "ranges.json"), "r") as ranges_file:
     ranges = json.load(ranges_file)
 
 
@@ -49,7 +49,7 @@ def char_from_glyph_name(name):
         KeyError: If no glyph with `name` can be found
     """
     try:
-        return get_basic_glyph_info(name)['codepoint']
+        return get_basic_glyph_info(name)["codepoint"]
     except KeyError:
         raise KeyError
 
@@ -67,7 +67,7 @@ def description_from_glyph_name(name):
         KeyError: If no glyph with `name` can be found
     """
     try:
-        return get_basic_glyph_info(name)['description']
+        return get_basic_glyph_info(name)["description"]
     except KeyError:
         raise KeyError
 
@@ -85,7 +85,7 @@ def get_glyph_range_key(name):
         KeyError: If no glyph with `name` can be found in `ranges`
     """
     for range_name, value in ranges.items():
-        if name in value['glyphs']:
+        if name in value["glyphs"]:
             return range_name
     else:
         raise KeyError('Could not find glyph name "{}".')

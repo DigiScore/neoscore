@@ -33,8 +33,7 @@ class Spanner:
             in the same one. Likewise, if the spanner is not in a
             `Flowable`, this must not be either.
         """
-        self._end_pos = (end_pos if isinstance(end_pos, Point)
-                         else Point(*end_pos))
+        self._end_pos = end_pos if isinstance(end_pos, Point) else Point(*end_pos)
         self._end_parent = end_parent if end_parent else self
 
     ######## PUBLIC PROPERTIES ########
@@ -90,8 +89,10 @@ class Spanner:
         if self.end_parent == self:
             return Unit.from_existing(self.end_pos.x)
         else:
-            return (GraphicObject.map_between_items(self, self.end_parent).x
-                    + self.end_pos.x)
+            return (
+                GraphicObject.map_between_items(self, self.end_parent).x
+                + self.end_pos.x
+            )
 
     @property
     def spanner_length(self):
@@ -104,11 +105,10 @@ class Spanner:
             relative_stop = Point.from_existing(self.end_pos)
         else:
             relative_stop = (
-                GraphicObject.map_between_items(
-                    self,
-                    self.end_parent)
-                + self.end_pos)
+                GraphicObject.map_between_items(self, self.end_parent) + self.end_pos
+            )
         relative_stop.to_unit(type(self.pos.x))
-        distance = math.sqrt((relative_stop.x.value ** 2)
-                             + (relative_stop.y.value ** 2))
+        distance = math.sqrt(
+            (relative_stop.x.value**2) + (relative_stop.y.value**2)
+        )
         return type(self.pos.x)(distance)

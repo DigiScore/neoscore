@@ -15,24 +15,24 @@ class PackageDoc:
         self.parent_package = None
         self.global_index = global_index
         self.global_index.add(self)
-        self.details = ''
+        self.details = ""
         self.subpackages = set()
         self.modules = set()
 
     @property
     def url(self):
-        return doc_config.API + '/' + self.name.replace('.', '/') + '.html'
+        return doc_config.API + "/" + self.name.replace(".", "/") + ".html"
 
     @property
     def unqualified_name(self):
-        if '.' in self.name:
-            return self.name.rsplit('.', 1)[1]
+        if "." in self.name:
+            return self.name.rsplit(".", 1)[1]
         return self.name
 
     def resolve_names_and_parse_html(self):
-        readme_path = os.path.join(self.path, 'README.md')
+        readme_path = os.path.join(self.path, "README.md")
         if os.path.exists(readme_path):
-            with open(readme_path, 'r') as file:
+            with open(readme_path, "r") as file:
                 file_contents = file.read()
                 html_contents = markdown(file_contents)
                 self.details = resolve_markdown_code_names(html_contents, self)

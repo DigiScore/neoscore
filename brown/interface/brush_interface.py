@@ -19,7 +19,7 @@ class BrushInterface(Interface):
         # Initialize color to bright red to signal this not being
         # set correctly by color setter
         super().__init__(brown_object)
-        self.qt_object = QtGui.QBrush(QtGui.QColor('#ff0000'))
+        self.qt_object = QtGui.QBrush(QtGui.QColor("#ff0000"))
         self.color = color
         self.pattern = pattern
 
@@ -37,10 +37,9 @@ class BrushInterface(Interface):
     @color.setter
     def color(self, color):
         self._color = color
-        self.qt_object.setColor(QtGui.QColor(color.red,
-                                             color.green,
-                                             color.blue,
-                                             color.alpha))
+        self.qt_object.setColor(
+            QtGui.QColor(color.red, color.green, color.blue, color.alpha)
+        )
 
     @property
     def pattern(self):

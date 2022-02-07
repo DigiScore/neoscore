@@ -15,11 +15,11 @@ class Clef(MusicText, StaffObject):
     """
 
     _canonical_names = {
-        ClefType.treble: 'gClef',
-        ClefType.bass: 'fClef',
-        ClefType.bass_8vb: 'fClef8vb',
-        ClefType.tenor: 'cClef',
-        ClefType.alto: 'cClef',
+        ClefType.treble: "gClef",
+        ClefType.bass: "fClef",
+        ClefType.bass_8vb: "fClef8vb",
+        ClefType.tenor: "cClef",
+        ClefType.alto: "cClef",
     }
     _baseline_staff_positions = {
         ClefType.treble: 3,
@@ -53,9 +53,9 @@ class Clef(MusicText, StaffObject):
             self._clef_type = clef_type
         else:
             self._clef_type = ClefType[clef_type]
-        MusicText.__init__(self, (pos_x, 0),
-                           self._canonical_names[self._clef_type],
-                           staff)
+        MusicText.__init__(
+            self, (pos_x, 0), self._canonical_names[self._clef_type], staff
+        )
         StaffObject.__init__(self, staff)
         self.y = self.staff_position
 

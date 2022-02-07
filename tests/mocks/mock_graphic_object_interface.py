@@ -18,17 +18,20 @@ class MockGraphicObjectInterface(GraphicObjectInterface):
 
     def __init__(self, brown_object, pos, pen=None, brush=None):
         super().__init__(brown_object)
-        self.qt_object = QtWidgets.QGraphicsRectItem(
-            0, 0, 10, 10)
+        self.qt_object = QtWidgets.QGraphicsRectItem(0, 0, 10, 10)
         self.pos = pos
         if pen:
             self.pen = pen
         else:
             self.pen = PenInterface(
-                None, Color('#000000'), 0,
-                PenPattern.SOLID, PenJoinStyle.BEVEL, PenCapStyle.SQUARE)
+                None,
+                Color("#000000"),
+                0,
+                PenPattern.SOLID,
+                PenJoinStyle.BEVEL,
+                PenCapStyle.SQUARE,
+            )
         if brush:
             self.brush = brush
         else:
-            self.brush = BrushInterface(
-                None, Color('#000000'), BrushPattern.SOLID)
+            self.brush = BrushInterface(None, Color("#000000"), BrushPattern.SOLID)

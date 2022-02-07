@@ -9,9 +9,18 @@ class TextInterface(GraphicObjectInterface):
 
     """An interface for graphical text objects."""
 
-    def __init__(self, brown_object, pos, text, font, brush,
-                 origin_offset=None, scale_factor=1, clip_start_x=None,
-                 clip_width=None):
+    def __init__(
+        self,
+        brown_object,
+        pos,
+        text,
+        font,
+        brush,
+        origin_offset=None,
+        scale_factor=1,
+        clip_start_x=None,
+        clip_width=None,
+    ):
         """
         Args:
             brown_object (Text): The brown object this belongs to
@@ -40,7 +49,8 @@ class TextInterface(GraphicObjectInterface):
             origin_offset=point_to_qt_point_f(self.origin_offset),
             scale_factor=self.scale_factor,
             clip_start_x=self.clip_start_x,
-            clip_width=self.clip_width)
+            clip_width=self.clip_width,
+        )
         # Let setters trigger Qt setters for attributes not in constructor
         self.font = font
         self.pos = pos
@@ -61,7 +71,7 @@ class TextInterface(GraphicObjectInterface):
 
     @property
     def font(self):
-        """FontInterface: The font object for the text """
+        """FontInterface: The font object for the text"""
         return self._font
 
     @font.setter

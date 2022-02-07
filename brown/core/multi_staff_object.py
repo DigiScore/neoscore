@@ -26,8 +26,7 @@ class MultiStaffObject:
     @property
     def visually_sorted_staves(self):
         """list[Staff]: self.staves as a list in visually descending order"""
-        return sorted(list(self.staves),
-                      key=lambda s: s.y)
+        return sorted(list(self.staves), key=lambda s: s.y)
 
     @property
     def highest_staff(self):
@@ -46,7 +45,7 @@ class MultiStaffObject:
         The distance from the top of `self.highest_staff` to the bottom
         of `self.lowest_staff`, in `self.highest_staff.unit` StaffUnits.
         """
-        return self.highest_staff.unit(GraphicObject.map_between_items(
-                                           self.highest_staff,
-                                           self.lowest_staff).y
-                                       + self.lowest_staff.height)
+        return self.highest_staff.unit(
+            GraphicObject.map_between_items(self.highest_staff, self.lowest_staff).y
+            + self.lowest_staff.height
+        )

@@ -10,7 +10,7 @@ class ParentPoint(Point):
     relative to the parent.
     """
 
-    __slots__ = ('_x', '_y', '_parent')
+    __slots__ = ("_x", "_y", "_parent")
 
     def __init__(self, x, y, parent=None):
         """
@@ -49,11 +49,7 @@ class ParentPoint(Point):
     ######## SPECIAL METHODS ########
 
     def __repr__(self):
-        return '{}({}, {}, {})'.format(
-            type(self).__name__,
-            self.x,
-            self.y,
-            self.parent)
+        return "{}({}, {}, {})".format(type(self).__name__, self.x, self.y, self.parent)
 
     def __hash__(self):
         return hash(self.__repr__())
@@ -64,9 +60,9 @@ class ParentPoint(Point):
         Return: Bool
         """
         if isinstance(other, type(self)):
-            return (self.x == other.x and
-                    self.y == other.y and
-                    self.parent == other.parent)
+            return (
+                self.x == other.x and self.y == other.y and self.parent == other.parent
+            )
         else:
             return False
 
@@ -78,11 +74,8 @@ class ParentPoint(Point):
         if type(other) != type(self):
             raise TypeError
         elif self.parent != other.parent:
-            raise AttributeError(
-                'Cannot add ParentPoints with different parents')
-        return type(self)(self.x + other.x,
-                          self.y + other.y,
-                          self.parent)
+            raise AttributeError("Cannot add ParentPoints with different parents")
+        return type(self)(self.x + other.x, self.y + other.y, self.parent)
 
     def __sub__(self, other):
         """`ParentPoint`s may be subtracted with each other if they share a parent
@@ -92,11 +85,8 @@ class ParentPoint(Point):
         if type(other) != type(self):
             raise TypeError
         elif self.parent != other.parent:
-            raise AttributeError(
-                'Cannot subtract ParentPoints with different parents')
-        return type(self)(self.x - other.x,
-                          self.y - other.y,
-                          self.parent)
+            raise AttributeError("Cannot subtract ParentPoints with different parents")
+        return type(self)(self.x - other.x, self.y - other.y, self.parent)
 
     def __mul__(self, other):
         """`ParentPoint`s may be multiplied with scalars.
@@ -105,9 +95,7 @@ class ParentPoint(Point):
         """
         if not isinstance(other, (Unit, int, float)):
             raise TypeError
-        return type(self)(self.x * other,
-                          self.y * other,
-                          self.parent)
+        return type(self)(self.x * other, self.y * other, self.parent)
 
     ######## PUBLIC PROPERTIES ########
 

@@ -14,24 +14,24 @@ class Flag(MusicText, StaffObject):
     """
 
     _up_glyphnames = {
-        1024: 'flag1024thUp',
-        512: 'flag512thUp',
-        256: 'flag256thUp',
-        128: 'flag128thUp',
-        64: 'flag64thUp',
-        32: 'flag32ndUp',
-        16: 'flag16thUp',
-        8: 'flag8thUp',
+        1024: "flag1024thUp",
+        512: "flag512thUp",
+        256: "flag256thUp",
+        128: "flag128thUp",
+        64: "flag64thUp",
+        32: "flag32ndUp",
+        16: "flag16thUp",
+        8: "flag8thUp",
     }
     _down_glyphnames = {
-        1024: 'flag1024thDown',
-        512: 'flag512thDown',
-        256: 'flag256thDown',
-        128: 'flag128thDown',
-        64: 'flag64thDown',
-        32: 'flag32ndDown',
-        16: 'flag16thDown',
-        8: 'flag8thDown',
+        1024: "flag1024thDown",
+        512: "flag512thDown",
+        256: "flag256thDown",
+        128: "flag128thDown",
+        64: "flag64thDown",
+        32: "flag32ndDown",
+        16: "flag16thDown",
+        8: "flag8thDown",
     }
 
     def __init__(self, duration, direction, parent):
@@ -48,10 +48,7 @@ class Flag(MusicText, StaffObject):
             glyph_name = self._down_glyphnames[self.duration.base_division]
         else:
             glyph_name = self._up_glyphnames[self.duration.base_division]
-        MusicText.__init__(self,
-                           Point(Unit(0), Unit(0)),
-                           [glyph_name],
-                           parent)
+        MusicText.__init__(self, Point(Unit(0), Unit(0)), [glyph_name], parent)
         StaffObject.__init__(self, parent)
 
     ######## PUBLIC PROPERTIES ########
@@ -78,7 +75,7 @@ class Flag(MusicText, StaffObject):
     @direction.setter
     def direction(self, value):
         if not (value == 1 or value == -1):
-            raise ValueError('Flag.direction must be 1 or -1')
+            raise ValueError("Flag.direction must be 1 or -1")
         else:
             self._direction = value
 
@@ -93,7 +90,7 @@ class Flag(MusicText, StaffObject):
 
         Returns: bool
         """
-        return (duration.base_division in cls._up_glyphnames)
+        return duration.base_division in cls._up_glyphnames
 
     @classmethod
     def vertical_offset_needed(cls, duration, staff_unit):

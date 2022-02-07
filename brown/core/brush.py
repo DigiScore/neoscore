@@ -11,7 +11,7 @@ class Brush:
     while `Brush`es are responsible for filling in shapes.
     """
 
-    def __init__(self, color='#000000', pattern=BrushPattern.SOLID):
+    def __init__(self, color="#000000", pattern=BrushPattern.SOLID):
         """
         Args:
             color (Color or args for Color): The brush color

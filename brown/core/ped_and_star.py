@@ -9,9 +9,7 @@ class PedAndStar(ObjectGroup, Spanner, StaffObject):
 
     """Pedal notation in the ornate 'Ped' and release star style."""
 
-    def __init__(self,
-                 start, start_parent,
-                 end, end_parent=None):
+    def __init__(self, start, start_parent, end, end_parent=None):
         """
         Args:
             start (Point or tuple init args): The position of the start-pedal
@@ -31,9 +29,9 @@ class PedAndStar(ObjectGroup, Spanner, StaffObject):
 
         # Add opening pedal mark
         # (GraphicObject init handles registration with ObjectGroup)
-        self.depress_mark = MusicText((GraphicUnit(0), GraphicUnit(0)),
-                                      'keyboardPedalPed',
-                                      parent=self)
-        self.lift_mark = MusicText(self.end_pos,
-                                   'keyboardPedalUp',
-                                   parent=self.end_parent)
+        self.depress_mark = MusicText(
+            (GraphicUnit(0), GraphicUnit(0)), "keyboardPedalPed", parent=self
+        )
+        self.lift_mark = MusicText(
+            self.end_pos, "keyboardPedalUp", parent=self.end_parent
+        )

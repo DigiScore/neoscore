@@ -42,22 +42,24 @@ class Instrument:
 
 
 class Flute(Instrument):
-    name = 'Flute'
-    short_name = 'Fl'
+    name = "Flute"
+    short_name = "Fl"
     staves = [(ClefType.treble, None)]
     family = InstrumentFamily.wind
 
 
 class Trumpet(Instrument):
     """A trumpet written in sounding pitch"""
-    name = 'Trumpet'
-    short_name = 'Tpt'
+
+    name = "Trumpet"
+    short_name = "Tpt"
     staves = [(ClefType.treble, None)]
     family = InstrumentFamily.brass
 
 
 class Piano(Instrument):
     """A two-staff piano"""
+
     name = "Piano"
     short_name = "Pno"
     staves = [(ClefType.treble, None), (ClefType.bass, None)]
@@ -66,53 +68,61 @@ class Piano(Instrument):
 
 class Violin(Instrument):
     """A general purpose violin"""
-    name = 'Violin'
-    short_name = 'Vln'
+
+    name = "Violin"
+    short_name = "Vln"
     staves = [(ClefType.treble, None)]
     family = InstrumentFamily.string
 
 
 class ViolinI(Violin):
     """A `Violin` with different naming for first violin."""
-    name = 'Violin I'
-    short_name = 'Vln I'
+
+    name = "Violin I"
+    short_name = "Vln I"
 
 
 class ViolinII(Violin):
     """A `Violin` with different naming for second violin."""
-    name = 'Violin II'
-    short_name = 'Vln II'
+
+    name = "Violin II"
+    short_name = "Vln II"
 
 
 class Viola(Instrument):
     """A general purpose viola."""
-    name = 'Viola'
-    short_name = 'Vla'
+
+    name = "Viola"
+    short_name = "Vla"
     staves = [(ClefType.alto, None)]
     family = InstrumentFamily.string
 
 
 class Cello(Instrument):
     """A general purpose cello."""
-    name = 'Cello'
-    short_name = 'Vc'
+
+    name = "Cello"
+    short_name = "Vc"
     staves = [(ClefType.bass, None)]
     family = InstrumentFamily.string
 
 
 class Violoncello(Cello):
     """A general purpose cello, with its more traditional name."""
-    name = 'Violoncello'
+
+    name = "Violoncello"
 
 
 class Bass(Instrument):
     """A general purpose bass."""
-    name = 'Bass'
-    short_name = 'Cb'
+
+    name = "Bass"
+    short_name = "Cb"
     staves = [(ClefType.bass_8vb, None)]
     family = InstrumentFamily.string
 
 
 class Contrabass(Bass):
     """A general purpose bass, with its more traditional name."""
-    name = 'Contrabass'
+
+    name = "Contrabass"

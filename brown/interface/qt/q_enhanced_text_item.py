@@ -18,13 +18,15 @@ class QEnhancedTextItem(QtWidgets.QGraphicsSimpleTextItem):
     * It can be clipped to render any horizontal slice of its image.
     """
 
-    def __init__(self,
-                 *args,
-                 origin_offset=None,
-                 scale_factor=1,
-                 clip_start_x=None,
-                 clip_width=None,
-                 **kwargs):
+    def __init__(
+        self,
+        *args,
+        origin_offset=None,
+        scale_factor=1,
+        clip_start_x=None,
+        clip_width=None,
+        **kwargs
+    ):
         """
         Args:
             origin_offset (QPointF): The offset of the glyph's origin from (0, 0)
@@ -46,27 +48,36 @@ class QEnhancedTextItem(QtWidgets.QGraphicsSimpleTextItem):
     def calculate_bounding_rect(self):
         rect = super().boundingRect()
         rect.translate(self.origin_offset * -1)
-        scaled_rect = QtCore.QRectF(rect.x() * self.scale_factor,
-                                    rect.y() * self.scale_factor,
-                                    rect.width() * self.scale_factor,
-                                    rect.height() * self.scale_factor)
+        scaled_rect = QtCore.QRectF(
+            rect.x() * self.scale_factor,
+            rect.y() * self.scale_factor,
+            rect.width() * self.scale_factor,
+            rect.height() * self.scale_factor,
+        )
         return scaled_rect
 
     def calculate_clip_rect(self):
         # Get clip area in logical (not scaled or offset) space
         return QClippingPath.calculate_clipping_area(
             super().boundingRect(),
-            (self.clip_start_x / self.scale_factor
-             if self.clip_start_x is not None else None),
-            (self.clip_width / self.scale_factor
-             if self.clip_width is not None else None),
-            self.pen().width() / self.scale_factor)
+            (
+                self.clip_start_x / self.scale_factor
+                if self.clip_start_x is not None
+                else None
+            ),
+            (
+                self.clip_width / self.scale_factor
+                if self.clip_width is not None
+                else None
+            ),
+            self.pen().width() / self.scale_factor,
+        )
 
     def calculate_clip_offset(self):
         if self.clip_start_x is not None:
             main_offset = QtCore.QPointF(
-                -1 * unit_to_qt_float(self.clip_start_x / self.scale_factor),
-                0)
+                -1 * unit_to_qt_float(self.clip_start_x / self.scale_factor), 0
+            )
         else:
             main_offset = QtCore.QPointF(0, 0)
         return (self.origin_offset * -1) + main_offset

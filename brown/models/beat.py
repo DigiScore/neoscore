@@ -60,7 +60,7 @@ class Beat:
                 fraction = float_to_rounded_fraction_tuple(args[0])
                 self._numerator, self._denominator = fraction
         else:
-            raise TypeError('Invalid Beat init signature')
+            raise TypeError("Invalid Beat init signature")
 
         self._collapsed_fraction = self.to_fraction()
 
@@ -110,9 +110,8 @@ class Beat:
             Beat(2, 4)
         """
         fraction_tuple = float_to_rounded_fraction_tuple(
-            value,
-            round_to,
-            limit_denominator)
+            value, round_to, limit_denominator
+        )
         return cls(*fraction_tuple)
 
     ######## PUBLIC PROPERTIES ########
@@ -158,9 +157,8 @@ class Beat:
 
     def __repr__(self):
         return "{}({}, {})".format(
-            type(self).__name__,
-            self.numerator,
-            self.denominator)
+            type(self).__name__, self.numerator, self.denominator
+        )
 
     def __hash__(self):
         """`Beat`s equal to each other share the same hash."""
@@ -174,8 +172,9 @@ class Beat:
         """Beats are equal if their numerators and denominators are."""
         if not isinstance(other, type(self)):
             return False
-        return (self.numerator == other.numerator and
-                self.denominator == other.denominator)
+        return (
+            self.numerator == other.numerator and self.denominator == other.denominator
+        )
 
     def __add__(self, other):
         """Durations are added by adding their reduced fractions.
@@ -219,8 +218,7 @@ class Beat:
             False
 
         """
-        return (self > other
-                or self.collapsed_fraction == other.collapsed_fraction)
+        return self > other or self.collapsed_fraction == other.collapsed_fraction
 
     def __lt__(self, other):
         """Beats are ordered by their reduced fraction representations."""
@@ -242,8 +240,7 @@ class Beat:
             False
 
         """
-        return (self < other
-                or self.collapsed_fraction == other.collapsed_fraction)
+        return self < other or self.collapsed_fraction == other.collapsed_fraction
 
     ######## PUBLIC METHODS ########
 

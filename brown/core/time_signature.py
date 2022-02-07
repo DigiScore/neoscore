@@ -45,11 +45,13 @@ class TimeSignature(ObjectGroup, StaffObject):
         self._numerator_glyph = MusicText(
             (staff.unit(0), staff.unit(1)),
             TimeSignature._glyphs_for_number(self.meter.numerator),
-            self)
+            self,
+        )
         self._denominator_glyph = MusicText(
             (staff.unit(0), staff.unit(3)),
             TimeSignature._glyphs_for_number(self.meter.denominator),
-            self)
+            self,
+        )
 
     ######## PUBLIC PROPERTIES ########
 

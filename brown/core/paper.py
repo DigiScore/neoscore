@@ -6,10 +6,16 @@ class Paper:
 
     """A description of a type of paper to base `Page`s on."""
 
-    def __init__(self, width, height,
-                 margin_top, margin_right,
-                 margin_bottom, margin_left,
-                 gutter=None):
+    def __init__(
+        self,
+        width,
+        height,
+        margin_top,
+        margin_right,
+        margin_bottom,
+        margin_left,
+        gutter=None,
+    ):
         """
         Args:
             width (Unit): The paper width.
@@ -42,7 +48,7 @@ class Paper:
         try:
             return cls(*paper_templates[template])
         except KeyError:
-            raise KeyError('Paper template {} not supported'.format(template))
+            raise KeyError("Paper template {} not supported".format(template))
 
     ######## PUBLIC PROPERTIES ########
 
@@ -115,8 +121,7 @@ class Paper:
     @property
     def live_width(self):
         """The printable width of the page"""
-        return (self.width - self.gutter -
-                self.margin_left - self.margin_right)
+        return self.width - self.gutter - self.margin_left - self.margin_right
 
     @property
     def live_height(self):
@@ -126,30 +131,42 @@ class Paper:
     ######## SPECIAL METHODS ########
 
     def __repr__(self):
-        return '{}({}, {}, {}, {}, {}, {}, {})'.format(
+        return "{}({}, {}, {}, {}, {}, {}, {})".format(
             type(self).__name__,
-            self.width, self.height,
-            self.margin_top, self.margin_right,
-            self.margin_bottom, self.margin_left,
-            self.gutter)
+            self.width,
+            self.height,
+            self.margin_top,
+            self.margin_right,
+            self.margin_bottom,
+            self.margin_left,
+            self.gutter,
+        )
 
     def __hash__(self):
-        return hash((
-            self.__class__,
-            self.width, self.height,
-            self.margin_top, self.margin_right,
-            self.margin_bottom, self.margin_left,
-            self.gutter))
+        return hash(
+            (
+                self.__class__,
+                self.width,
+                self.height,
+                self.margin_top,
+                self.margin_right,
+                self.margin_bottom,
+                self.margin_left,
+                self.gutter,
+            )
+        )
 
     def __eq__(self, other):
-        return (isinstance(other, self.__class__)
-                and self.width == other.width
-                and self.height == other.height
-                and self.margin_top == other.margin_top
-                and self.margin_right == other.margin_right
-                and self.margin_bottom == other.margin_bottom
-                and self.margin_left == other.margin_left
-                and self.gutter == other.gutter)
+        return (
+            isinstance(other, self.__class__)
+            and self.width == other.width
+            and self.height == other.height
+            and self.margin_top == other.margin_top
+            and self.margin_right == other.margin_right
+            and self.margin_bottom == other.margin_bottom
+            and self.margin_left == other.margin_left
+            and self.gutter == other.gutter
+        )
 
     ######## PUBLIC METHODS ########
 
@@ -167,7 +184,8 @@ class Paper:
             self.margin_top,
             self.margin_right,
             self.margin_bottom,
-            self.gutter)
+            self.gutter,
+        )
 
     ######## PRIVATE METHODS ########
 

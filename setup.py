@@ -11,9 +11,8 @@ setup(
     license="GPL-3",
     keywords="music graphics",
     url="https://github.com/ajyoon/brown",
-    packages=['brown', 'tests'],
-    long_description=open(os.path.join(os.path.dirname(__file__),
-                                       'README.md')).read(),
-    classifiers=[
-    ], install_requires=['PyQt5']
+    packages=["brown", "tests"],
+    long_description=open(os.path.join(os.path.dirname(__file__), "README.md")).read(),
+    classifiers=[],
+    install_requires=["PyQt5"],
 )

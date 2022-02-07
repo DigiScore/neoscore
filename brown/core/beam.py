@@ -26,12 +26,9 @@ class Beam(Path, StaffObject):
             start = ParentPoint(*start)
         if not isinstance(stop, ParentPoint):
             stop = ParentPoint(*stop)
-        Path.__init__(self,
-                      Point.from_parent_point(start),
-                      parent=start.parent)
+        Path.__init__(self, Point.from_parent_point(start), parent=start.parent)
         StaffObject.__init__(self, start.parent)
-        self.beam_thickness = self.staff.music_font.engraving_defaults[
-            'beamThickness']
+        self.beam_thickness = self.staff.music_font.engraving_defaults["beamThickness"]
         # Draw beam
         self.line_to(stop.x, stop.y, stop.parent)
         self.line_to(stop.x, stop.y + self.beam_thickness, stop.parent)

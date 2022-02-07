@@ -7,7 +7,6 @@ from brown.utils.units import Unit
 
 
 class TestMove(unittest.TestCase):
-
     def setUp(self):
         brown.setup()
         self.grob_1 = InvisibleObject((Unit(0), Unit(0)))

@@ -8,8 +8,7 @@ from brown.earle.ui.main_window import MainWindow
 from brown.interface import images
 from brown.interface.interface import Interface
 from brown.interface.qt.converters import rect_to_qt_rect_f, color_to_q_color
-from brown.utils.exceptions import (FontRegistrationError,
-                                    ImageExportError)
+from brown.utils.exceptions import FontRegistrationError, ImageExportError
 from brown.utils.units import Unit, Meter
 
 
@@ -29,7 +28,7 @@ class AppInterface(Interface):
             document (Document):
         """
         super().__init__(None)  # no brown object exists for this
-                                # TODO: make one
+        # TODO: make one
         self.document = document
         self.app = QtWidgets.QApplication([])
         self.main_window = MainWindow()
@@ -45,7 +44,7 @@ class AppInterface(Interface):
         """Open a window showing a preview of the document."""
         self.main_window.show()
         self.app.exec_()
-    
+
     def _clear_scene(self):
         """Clear the QT Scene. This should be called before each render."""
         self.scene.clear()
@@ -67,7 +66,7 @@ class AppInterface(Interface):
         painter = QtGui.QPainter()
         painter.begin(printer)
         # Scaling ratio for Qt point 72dpi -> constants.PRINT_DPI
-        ratio = (constants.PRINT_DPI / 72)
+        ratio = constants.PRINT_DPI / 72
         target_rect_unscaled = printer.paperRect(QPrinter.Point)
         target_rect_scaled = QtCore.QRectF(
             target_rect_unscaled.x() * ratio,
@@ -77,9 +76,9 @@ class AppInterface(Interface):
         )
         for page_number in pages:
             source_rect = rect_to_qt_rect_f(
-                self.document.paper_bounding_rect(page_number))
-            self.scene.render(painter,
-                              target=target_rect_scaled, source=source_rect)
+                self.document.paper_bounding_rect(page_number)
+            )
+            self.scene.render(painter, target=target_rect_scaled, source=source_rect)
             printer.newPage()
         painter.end()
 
@@ -113,8 +112,7 @@ class AppInterface(Interface):
         pix_width = Unit(rect.width).value * scale_factor
         pix_height = Unit(rect.height).value * scale_factor
 
-        q_image = QtGui.QImage(pix_width, pix_height,
-                               QtGui.QImage.Format_ARGB32)
+        q_image = QtGui.QImage(pix_width, pix_height, QtGui.QImage.Format_ARGB32)
         q_image.setDotsPerMeterX(dpm)
         q_image.setDotsPerMeterY(dpm)
         q_color = color_to_q_color(bg_color)
@@ -136,11 +134,12 @@ class AppInterface(Interface):
 
         if not success:
             raise ImageExportError(
-                'Unknown error occurred when exporting image to ' + image_path)
+                "Unknown error occurred when exporting image to " + image_path
+            )
 
     def destroy(self):
         """Destroy the window and all global interface-level data."""
-        print('Tearing down Qt Application instance')
+        print("Tearing down Qt Application instance")
         self.app.exit()
         self.app = None
         self.scene = None
@@ -168,4 +167,4 @@ class AppInterface(Interface):
         """
         success = self.font_database.removeAllApplicationFonts()
         if not success:
-            raise RuntimeError('Failed to remove application fonts.')
+            raise RuntimeError("Failed to remove application fonts.")

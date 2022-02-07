@@ -50,8 +50,10 @@ which the brown API translates to: `[control_point, control_point, curve_to]`
 
 class PathInterface(GraphicObjectInterface):
     """Interface for a generic graphic path object."""
-    def __init__(self, brown_object, pos, pen, brush,
-                 clip_start_x=None, clip_width=None):
+
+    def __init__(
+        self, brown_object, pos, pen, brush, clip_start_x=None, clip_width=None
+    ):
         """
         Args:
             brown_object (Path): The path this interface belongs to
@@ -66,8 +68,7 @@ class PathInterface(GraphicObjectInterface):
         """
         super().__init__(brown_object)
         self.qt_path = QtGui.QPainterPath()
-        self.qt_object = QClippingPath(self.qt_path,
-                                        clip_start_x, clip_width)
+        self.qt_object = QClippingPath(self.qt_path, clip_start_x, clip_width)
         self.pos = pos
         self.pen = pen
         self.brush = brush
@@ -119,10 +120,7 @@ class PathInterface(GraphicObjectInterface):
         self.qt_path.lineTo(target.x.value, target.y.value)
         self.update_qt_path()
 
-    def cubic_to(self,
-                 control_1,
-                 control_2,
-                 end):
+    def cubic_to(self, control_1, control_2, end):
         """Draw a cubic spline from the current position to a new point.
 
         Moves `self.current_draw_pos` to the new end point.
@@ -143,7 +141,8 @@ class PathInterface(GraphicObjectInterface):
             control_2_point.x.value,
             control_2_point.y.value,
             end_point.x.value,
-            end_point.y.value)
+            end_point.y.value,
+        )
         self.update_qt_path()
 
     def move_to(self, pos):
@@ -196,8 +195,10 @@ class PathInterface(GraphicObjectInterface):
             # Otherwise to distinguish control point from curve,
             # look right and find if this is the last element before
             # something other than 3. See module note for more detail.
-            if (qt_index == self.element_count or
-                    self.qt_path.elementAt(qt_index + 1).type != 3):
+            if (
+                qt_index == self.element_count
+                or self.qt_path.elementAt(qt_index + 1).type != 3
+            ):
                 element_type = PathElementType.curve_to
             else:
                 element_type = PathElementType.control_point
@@ -214,11 +215,13 @@ class PathInterface(GraphicObjectInterface):
         """
         if index > self.qt_path.elementCount():
             raise IndexError(
-                'Element index {} out of bounds (max is {})'.format(
-                    index, self.qt_path.elementCount()))
-        self.qt_path.setElementPositionAt(index,
-                                           GraphicUnit(pos.x).value,
-                                           GraphicUnit(pos.y).value)
+                "Element index {} out of bounds (max is {})".format(
+                    index, self.qt_path.elementCount()
+                )
+            )
+        self.qt_path.setElementPositionAt(
+            index, GraphicUnit(pos.x).value, GraphicUnit(pos.y).value
+        )
         self.update_qt_path()
 
     def render(self):

@@ -17,17 +17,17 @@ class Rest(MusicText, StaffObject):
     """
 
     _glyphnames = {
-        1024: 'rest1024th',
-        512: 'rest512th',
-        256: 'rest256th',
-        128: 'rest128th',
-        64: 'rest64th',
-        32: 'rest32nd',
-        16: 'rest16th',
-        8: 'rest8th',
-        4: 'restQuarter',
-        2: 'restHalf',
-        1: 'restWhole',
+        1024: "rest1024th",
+        512: "rest512th",
+        256: "rest256th",
+        128: "rest128th",
+        64: "rest64th",
+        32: "rest32nd",
+        16: "rest16th",
+        8: "rest8th",
+        4: "restQuarter",
+        2: "restHalf",
+        1: "restWhole",
     }
 
     def __init__(self, pos, parent, duration):
@@ -41,12 +41,10 @@ class Rest(MusicText, StaffObject):
             parent (StaffObject or Staff):
         """
         pos = pos if isinstance(pos, Point) else Point(pos, Unit(0))
-        self._duration = (duration if isinstance(duration, Beat)
-                          else Beat(*duration))
-        MusicText.__init__(self,
-                           pos,
-                           [self._glyphnames[self.duration.base_division]],
-                           parent)
+        self._duration = duration if isinstance(duration, Beat) else Beat(*duration)
+        MusicText.__init__(
+            self, pos, [self._glyphnames[self.duration.base_division]], parent
+        )
         StaffObject.__init__(self, parent)
         # Currently use a fixed vertical position for rests
         self.pos.y = self.staff.unit(2)

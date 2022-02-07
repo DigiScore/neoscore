@@ -10,6 +10,7 @@ class PenPattern(Enum):
     patterns. See the following page from the relevant Qt docs:
         http://doc.qt.io/qt-5.7/qt.html#PenStyle-enum
     """
+
     SOLID = 1
     """A solid line"""
 

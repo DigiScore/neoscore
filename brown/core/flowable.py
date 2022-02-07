@@ -23,8 +23,7 @@ class Flowable(InvisibleObject):
     majority of objects will be placed inside it.
     """
 
-    def __init__(self, pos, width, height,
-                 y_padding=Mm(5), break_threshold=Mm(5)):
+    def __init__(self, pos, width, height, y_padding=Mm(5), break_threshold=Mm(5)):
         """
         Args:
             pos (Point or tuple): Starting position in relative to
@@ -118,8 +117,8 @@ class Flowable(InvisibleObject):
         current_page = 0
         # Attach initial line controller
         self.layout_controllers.append(
-            AutoNewLine(pos, brown.document.pages[current_page],
-                        self, x_progress))
+            AutoNewLine(pos, brown.document.pages[current_page], self, x_progress)
+        )
         while True:
             x_progress += live_page_width - pos.x
             pos.y = pos.y + self.height + self.y_padding
@@ -131,14 +130,22 @@ class Flowable(InvisibleObject):
                 pos = Point(Mm(0), Mm(0))
                 current_page += 1
                 self.layout_controllers.append(
-                    AutoNewLine(pos, brown.document.pages[current_page],
-                                self, x_progress))
+                    AutoNewLine(
+                        pos, brown.document.pages[current_page], self, x_progress
+                    )
+                )
             else:
                 # Line break - self.y_padding as y offset
                 pos.x = Mm(0)
                 self.layout_controllers.append(
-                    AutoNewLine(pos, brown.document.pages[current_page],
-                                self, x_progress, self.y_padding))
+                    AutoNewLine(
+                        pos,
+                        brown.document.pages[current_page],
+                        self,
+                        x_progress,
+                        self.y_padding,
+                    )
+                )
 
     def _last_break_opportunity(self, local_x):
         """Find the `BreakOpporunity` closest to the left a local x position.
@@ -152,10 +159,10 @@ class Flowable(InvisibleObject):
         """
         # Lots of room for optimization here if needed
         opportunities = self.descendants_of_class_or_subclass(BreakOpportunity)
-        opportunities_before = (o for o in opportunities
-                                if self.pos_in_flowable_of(o) < local_x)
-        return max(opportunities_before,
-                   key=lambda o: self.pos_in_flowable_of(o).x)
+        opportunities_before = (
+            o for o in opportunities if self.pos_in_flowable_of(o) < local_x
+        )
+        return max(opportunities_before, key=lambda o: self.pos_in_flowable_of(o).x)
 
     def map_to_canvas(self, local_point):
         """Convert a local point to its position in the canvas.
@@ -168,8 +175,7 @@ class Flowable(InvisibleObject):
         """
         line = self.last_break_at(local_point.x)
         line_canvas_pos = brown.document.canvas_pos_of(line)
-        return (line_canvas_pos
-                + Point(local_point.x - line.local_x, local_point.y))
+        return line_canvas_pos + Point(local_point.x - line.local_x, local_point.y)
 
     def dist_to_line_start(self, local_x):
         """Find the distance of an x-pos to the left edge of its laid-out line.
@@ -190,8 +196,7 @@ class Flowable(InvisibleObject):
 
         Returns: Unit
         """
-        return (self.dist_to_line_start(local_x) -
-                brown.document.paper.live_width)
+        return self.dist_to_line_start(local_x) - brown.document.paper.live_width
 
     def last_break_at(self, local_x):
         """Find the last `NewLine` that occurred before a given local local_x-pos
@@ -225,7 +230,8 @@ class Flowable(InvisibleObject):
                 return i
         else:
             raise OutOfBoundsError(
-                'local_x={} lies outside of this Flowable'.format(local_x))
+                "local_x={} lies outside of this Flowable".format(local_x)
+            )
 
     def pos_in_flowable_of(self, graphic_object):
         """Find the position of an object in (unwrapped) flowable space.
@@ -247,7 +253,7 @@ class Flowable(InvisibleObject):
                 current = current.parent
             return pos
         except AttributeError:
-            raise ValueError('object is not in this Flowable')
+            raise ValueError("object is not in this Flowable")
 
     def map_between_locally(self, source, destination):
         """Find the relative position between two objects in this flowable.
@@ -264,5 +270,4 @@ class Flowable(InvisibleObject):
             ValueError: If either `source` or `destination` are not
                 in the flowable.
         """
-        return (self.pos_in_flowable_of(destination)
-                - self.pos_in_flowable_of(source))
+        return self.pos_in_flowable_of(destination) - self.pos_in_flowable_of(source)

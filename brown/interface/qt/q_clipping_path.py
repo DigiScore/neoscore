@@ -46,24 +46,24 @@ class QClippingPath(QtWidgets.QGraphicsPathItem):
             self.path().boundingRect(),
             self.clip_start_x,
             self.clip_width,
-            self.pen().width())
+            self.pen().width(),
+        )
         self.bounding_rect = QClippingPath.calculate_bounding_rect(
             self.path().boundingRect(),
             self.clip_start_x,
             self.clip_width,
-            self.pen().width())
+            self.pen().width(),
+        )
         if self.clip_start_x is not None:
             self.painter_offset = QtCore.QPointF(
-                -1 * GraphicUnit(self.clip_start_x).value, 0)
+                -1 * GraphicUnit(self.clip_start_x).value, 0
+            )
         else:
             self.painter_offset = None
         self.prepareGeometryChange()
 
     @staticmethod
-    def calculate_clipping_area(bounding_rect,
-                                clip_start_x,
-                                clip_width,
-                                extra_padding):
+    def calculate_clipping_area(bounding_rect, clip_start_x, clip_width, extra_padding):
         """Create a QRectF giving the painting area for the object.
 
         Args:
@@ -78,23 +78,26 @@ class QClippingPath(QtWidgets.QGraphicsPathItem):
 
         Returns: QRectF
         """
-        clip_start_x = (bounding_rect.x() if clip_start_x is None
-                        else GraphicUnit(clip_start_x).value)
+        clip_start_x = (
+            bounding_rect.x()
+            if clip_start_x is None
+            else GraphicUnit(clip_start_x).value
+        )
         clip_width = (
             bounding_rect.width() - (clip_start_x - bounding_rect.x())
             if clip_width is None
-            else GraphicUnit(clip_width).value)
+            else GraphicUnit(clip_width).value
+        )
         padding = GraphicUnit(extra_padding).value
-        return QtCore.QRectF(clip_start_x - padding,
-                             bounding_rect.y() - padding,
-                             clip_width + (padding * 2),
-                             bounding_rect.height() + (padding * 2))
+        return QtCore.QRectF(
+            clip_start_x - padding,
+            bounding_rect.y() - padding,
+            clip_width + (padding * 2),
+            bounding_rect.height() + (padding * 2),
+        )
 
     @staticmethod
-    def calculate_bounding_rect(bounding_rect,
-                             clip_start_x,
-                             clip_width,
-                             extra_padding):
+    def calculate_bounding_rect(bounding_rect, clip_start_x, clip_width, extra_padding):
         """Create a QRectF giving the bounding rect for the path.
 
         Args:
@@ -109,12 +112,20 @@ class QClippingPath(QtWidgets.QGraphicsPathItem):
 
         Returns: QRectF
         """
-        clip_start_x = (bounding_rect.x() if clip_start_x is None
-                        else GraphicUnit(clip_start_x).value)
-        clip_width = (bounding_rect.width() - clip_start_x if clip_width is None
-                      else GraphicUnit(clip_width).value)
+        clip_start_x = (
+            bounding_rect.x()
+            if clip_start_x is None
+            else GraphicUnit(clip_start_x).value
+        )
+        clip_width = (
+            bounding_rect.width() - clip_start_x
+            if clip_width is None
+            else GraphicUnit(clip_width).value
+        )
         padding = GraphicUnit(extra_padding).value
-        return QtCore.QRectF(-padding,
-                             -padding,
-                             clip_width + (padding * 2),
-                             bounding_rect.height() + (padding * 2))
+        return QtCore.QRectF(
+            -padding,
+            -padding,
+            clip_width + (padding * 2),
+            bounding_rect.height() + (padding * 2),
+        )

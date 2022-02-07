@@ -19,21 +19,16 @@ class Font:
         self.size = size
         self.weight = weight
         self.italic = italic
-        self._interface = FontInterface(self,
-                                        self.family_name,
-                                        self.size,
-                                        self.weight,
-                                        self.italic)
+        self._interface = FontInterface(
+            self, self.family_name, self.size, self.weight, self.italic
+        )
 
     ######## CONSTRUCTORS ########
 
     @classmethod
-    def deriving(cls,
-                 existing_font,
-                 family_name=None,
-                 size=None,
-                 weight=None,
-                 italic=None):
+    def deriving(
+        cls, existing_font, family_name=None, size=None, weight=None, italic=None
+    ):
         """Derive a Font from an existing one, overriding the given properties.
 
         All properties not passed in args/kwargs will be copied
@@ -47,14 +42,10 @@ class Font:
             italic (bool):
         """
         return cls(
-            family_name if family_name is not None
-                else existing_font.family_name,
-            size if size is not None
-                else existing_font.size,
-            weight if weight is not None
-                else existing_font.weight,
-            italic if italic is not None
-                else existing_font.italic
+            family_name if family_name is not None else existing_font.family_name,
+            size if size is not None else existing_font.size,
+            weight if weight is not None else existing_font.weight,
+            italic if italic is not None else existing_font.italic,
         )
 
     ######## PUBLIC PROPERTIES ########

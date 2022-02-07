@@ -8,6 +8,7 @@ class PathElement(InvisibleObject):
     Although this is a GraphicObject, typically in practice they will be
     invisible.
     """
+
     def __init__(self, pos, element_type, path, parent=None):
         """
         Args:
@@ -19,9 +20,11 @@ class PathElement(InvisibleObject):
         """
         super().__init__(pos, parent=parent)
         self.parent_path = path
-        self._element_type = (element_type
-                              if isinstance(element_type, PathElementType)
-                              else PathElementType(element_type))
+        self._element_type = (
+            element_type
+            if isinstance(element_type, PathElementType)
+            else PathElementType(element_type)
+        )
 
     ######## PUBLIC PROPERTIES ########
 
@@ -53,7 +56,7 @@ class PathElement(InvisibleObject):
 
         Raises: AssertionError
         """
-        assert(type(first) == type(second) == PathElement)
-        assert(first.pos == second.pos)
-        assert(first.parent == second.parent)
-        assert(first.element_type == second.element_type)
+        assert type(first) == type(second) == PathElement
+        assert first.pos == second.pos
+        assert first.parent == second.parent
+        assert first.element_type == second.element_type

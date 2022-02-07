@@ -5,7 +5,6 @@ from examples.feldman_projections_2.grid_unit import GridUnit
 
 
 class TextEvent(Event):
-
     def __init__(self, pos, parent, length, text, font):
         Event.__init__(self, pos, parent, length)
         text_pos = TextEvent._calculate_text_pos(text, font)

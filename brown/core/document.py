@@ -28,8 +28,10 @@ class Document:
                 self._paper = Paper.from_template(constants.DEFAULT_PAPER_TYPE)
             except KeyError:
                 raise ValueError(
-                    'DEFAULT_PAPER_TYPE of {} is not supported.'.format(
-                        constants.DEFAULT_PAPER_TYPE))
+                    "DEFAULT_PAPER_TYPE of {} is not supported.".format(
+                        constants.DEFAULT_PAPER_TYPE
+                    )
+                )
         else:
             self._paper = paper
         self._pages = PageSupplier(self)
@@ -116,19 +118,16 @@ class Document:
                 In order to be consistent with python's `range` semantics,
                 the range goes 1 past the maximum page objects appear on.
         """
-        min_page = float('inf')
-        max_page = -float('inf')
+        min_page = float("inf")
+        max_page = -float("inf")
         for current in graphic_objects:
             current_page_num = current.page_index
             if current.children:
                 child_min_max = self.page_range_of(current.children)
-                min_page = min(min_page,
-                               current_page_num,
-                               child_min_max[0])
+                min_page = min(min_page, current_page_num, child_min_max[0])
                 max_page = max(max_page, current_page_num, child_min_max[1])
             else:
-                min_page = min(min_page,
-                               current_page_num)
+                min_page = min(min_page, current_page_num)
                 max_page = max(max_page, current_page_num)
         return range(min_page, max_page + 1)
 
@@ -148,8 +147,7 @@ class Document:
                 is considered relative to the document's origin.
         """
         # Left edge of paper (not including margin/gutter)
-        x_page_left = ((self.paper.width + self._page_display_gap)
-                       * page_number)
+        x_page_left = (self.paper.width + self._page_display_gap) * page_number
         x_page_origin = x_page_left + self.paper.margin_left
         y_page_origin = self.paper.margin_top
         return Point(x_page_origin, y_page_origin)
@@ -170,8 +168,7 @@ class Document:
                 is considered relative to the document's origin.
         """
         return Point(
-            (self.paper.width + self._page_display_gap) * page_number,
-            GraphicUnit(0)
+            (self.paper.width + self._page_display_gap) * page_number, GraphicUnit(0)
         )
 
     def canvas_pos_of(self, graphic_object):
@@ -187,7 +184,7 @@ class Document:
         while current != self:
             pos += current.pos
             current = current.parent
-            if type(current).__name__ == 'Flowable':
+            if type(current).__name__ == "Flowable":
                 # If the parent is a flowable,
                 # let it decide where this point goes.
                 return current.map_to_canvas(pos)
@@ -206,10 +203,7 @@ class Document:
         """
         page_origin = self.page_origin(page_number)
         return Rect(
-            page_origin.x,
-            page_origin.y,
-            self.paper.live_width,
-            self.paper.live_height
+            page_origin.x, page_origin.y, self.paper.live_width, self.paper.live_height
         )
 
     def paper_bounding_rect(self, page_number):
@@ -224,9 +218,4 @@ class Document:
         Returns: Rect
         """
         paper_origin = self.paper_origin(page_number)
-        return Rect(
-            paper_origin.x,
-            paper_origin.y,
-            self.paper.width,
-            self.paper.height
-        )
+        return Rect(paper_origin.x, paper_origin.y, self.paper.width, self.paper.height)

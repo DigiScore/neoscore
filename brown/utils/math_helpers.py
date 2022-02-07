@@ -88,9 +88,9 @@ def sign(value):
         return 1
 
 
-def float_to_rounded_fraction_tuple(value,
-                                    target_denominator=None,
-                                    limit_denominator=1024):
+def float_to_rounded_fraction_tuple(
+    value, target_denominator=None, limit_denominator=1024
+):
     """Make a rounded fraction tuple from a float.
 
     Args:
@@ -116,7 +116,4 @@ def float_to_rounded_fraction_tuple(value,
         return fraction.numerator, fraction.denominator
 
     multiplier = target_denominator / fraction.denominator
-    return (
-        int(round(multiplier * fraction.numerator)),
-        target_denominator
-    )
+    return (int(round(multiplier * fraction.numerator)), target_denominator)

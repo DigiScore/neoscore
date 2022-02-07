@@ -13,12 +13,14 @@ class Pen:
     Currently only solid colors are supported.
     """
 
-    def __init__(self,
-                 color='#000000',
-                 thickness=None,
-                 pattern=PenPattern.SOLID,
-                 join_style=PenJoinStyle.BEVEL,
-                 cap_style=PenCapStyle.SQUARE):
+    def __init__(
+        self,
+        color="#000000",
+        thickness=None,
+        pattern=PenPattern.SOLID,
+        join_style=PenJoinStyle.BEVEL,
+        cap_style=PenCapStyle.SQUARE,
+    ):
         """
         Args:
             color (Color or init tuple): The stroke color
@@ -37,17 +39,22 @@ class Pen:
             self._color = Color(*color)
         else:
             self._color = Color(color)
-        self._thickness = (thickness if thickness is not None
-                           else GraphicUnit(constants.DEFAULT_PEN_THICKNESS))
+        self._thickness = (
+            thickness
+            if thickness is not None
+            else GraphicUnit(constants.DEFAULT_PEN_THICKNESS)
+        )
         self._pattern = pattern
         self._join_style = join_style
         self._cap_style = cap_style
-        self._interface = PenInterface(self,
-                                       self.color,
-                                       self.thickness,
-                                       self.pattern,
-                                       self.join_style,
-                                       self.cap_style)
+        self._interface = PenInterface(
+            self,
+            self.color,
+            self.thickness,
+            self.pattern,
+            self.join_style,
+            self.cap_style,
+        )
 
     ######## CONSTRUCOTRS ########
 
@@ -58,8 +65,7 @@ class Pen:
         Args:
             pen (Pen): An existing pen.
         """
-        return cls(pen.color, pen.thickness, pen.pattern,
-                   pen.join_style, pen.cap_style)
+        return cls(pen.color, pen.thickness, pen.pattern, pen.join_style, pen.cap_style)
 
     ######## PUBLIC PROPERTIES ########
 
@@ -112,4 +118,3 @@ class Pen:
     @cap_style.setter
     def cap_style(self, value):
         self._cap_style = value
-

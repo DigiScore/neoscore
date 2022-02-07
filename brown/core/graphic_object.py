@@ -32,14 +32,16 @@ class GraphicObject(ABC):
     global document with `brown.document.pages[n]`
     """
 
-    default_pen = Pen(constants.DEFAULT_PEN_COLOR,
-                      constants.DEFAULT_PEN_THICKNESS,
-                      constants.DEFAULT_PEN_PATTERN)
-    _default_brush = Brush(constants.DEFAULT_BRUSH_COLOR,
-                           constants.DEFAULT_BRUSH_PATTERN)
+    default_pen = Pen(
+        constants.DEFAULT_PEN_COLOR,
+        constants.DEFAULT_PEN_THICKNESS,
+        constants.DEFAULT_PEN_PATTERN,
+    )
+    _default_brush = Brush(
+        constants.DEFAULT_BRUSH_COLOR, constants.DEFAULT_BRUSH_PATTERN
+    )
 
-    def __init__(self, pos, length=None,
-                 pen=None, brush=None, parent=None):
+    def __init__(self, pos, length=None, pen=None, brush=None, parent=None):
         """
         Args:
             pos (Point[Unit] or tuple): The position of the object
@@ -168,7 +170,7 @@ class GraphicObject(ABC):
 
     @parent.setter
     def parent(self, value):
-        if hasattr(self, '_parent') and self._parent is not None:
+        if hasattr(self, "_parent") and self._parent is not None:
             self._parent._unregister_child(self)
         if value is None:
             value = brown.document.pages[0]
@@ -216,19 +218,19 @@ class GraphicObject(ABC):
     @property
     def flowable(self):
         """Flowable or None: The flowable this object belongs in."""
-        return self.first_ancestor_of_exact_class('Flowable')
+        return self.first_ancestor_of_exact_class("Flowable")
 
     @property
     def page_index(self):
         """The index of the page this object appears on.
 
-            >>> from brown.core import brown; brown.setup()
-            >>> some_object = GraphicObject((Mm(20), Mm(50)),
-            ...                             parent=brown.document.pages[5])
-            >>> some_object.page_index
-            5
-            >>> some_object in brown.document.pages[5].descendants
-            True
+        >>> from brown.core import brown; brown.setup()
+        >>> some_object = GraphicObject((Mm(20), Mm(50)),
+        ...                             parent=brown.document.pages[5])
+        >>> some_object.page_index
+        5
+        >>> some_object in brown.document.pages[5].descendants
+        True
 
         """
         # The page will be the parent of the final ancestor
@@ -255,8 +257,9 @@ class GraphicObject(ABC):
         """
         # inefficient for now - find position relative to doc root of both
         # and find delta between the two.
-        return (brown.document.canvas_pos_of(destination) -
-                brown.document.canvas_pos_of(source))
+        return brown.document.canvas_pos_of(destination) - brown.document.canvas_pos_of(
+            source
+        )
 
     ######## PUBLIC METHODS ########
 
@@ -295,9 +298,10 @@ class GraphicObject(ABC):
 
         Returns: GraphicObject or None
         """
-        return next((item for item in self.ancestors
-                     if isinstance(item, graphic_object_class)),
-                    None)
+        return next(
+            (item for item in self.ancestors if isinstance(item, graphic_object_class)),
+            None,
+        )
 
     def first_ancestor_of_exact_class(self, graphic_object_class):
         """Get the closest ancestor with a class.
@@ -312,16 +316,22 @@ class GraphicObject(ABC):
         Returns: GraphicObject or None
         """
         if isinstance(graphic_object_class, str):
-            return next((item for item in self.ancestors
-                         if type(item).__name__ == graphic_object_class),
-                        None)
-        return next((item for item in self.ancestors
-                     if type(item) == graphic_object_class),
-                    None)
-    
+            return next(
+                (
+                    item
+                    for item in self.ancestors
+                    if type(item).__name__ == graphic_object_class
+                ),
+                None,
+            )
+        return next(
+            (item for item in self.ancestors if type(item) == graphic_object_class),
+            None,
+        )
+
     def remove(self):
         """Remove this object from the document."""
-        if (self.parent):
+        if self.parent:
             self.parent.children.remove(self)
 
     ######## PRIVATE METHODS ########
@@ -367,12 +377,13 @@ class GraphicObject(ABC):
         # Calculate position within flowable
         pos_in_flowable = self.flowable.pos_in_flowable_of(self)
 
-        remaining_x = (self.length +
-                       self.flowable.dist_to_line_end(pos_in_flowable.x))
+        remaining_x = self.length + self.flowable.dist_to_line_end(pos_in_flowable.x)
         if remaining_x < Unit(0):
-            self._render_complete(brown.document.canvas_pos_of(self),
-                                  self.flowable.dist_to_line_start(pos_in_flowable.x),
-                                  pos_in_flowable.x)
+            self._render_complete(
+                brown.document.canvas_pos_of(self),
+                self.flowable.dist_to_line_start(pos_in_flowable.x),
+                pos_in_flowable.x,
+            )
             return
 
         # Render before break
@@ -380,38 +391,39 @@ class GraphicObject(ABC):
         current_line = self.flowable.layout_controllers[first_line_i]
         render_start_pos = brown.document.canvas_pos_of(self)
         first_line_length = self.flowable.dist_to_line_end(pos_in_flowable.x) * -1
-        render_end_pos = (render_start_pos + Point(first_line_length, 0))
-        self._render_before_break(pos_in_flowable.x,
-                                  render_start_pos,
-                                  render_end_pos,
-                                  self.flowable.dist_to_line_start(
-                                      pos_in_flowable.x))
+        render_end_pos = render_start_pos + Point(first_line_length, 0)
+        self._render_before_break(
+            pos_in_flowable.x,
+            render_start_pos,
+            render_end_pos,
+            self.flowable.dist_to_line_start(pos_in_flowable.x),
+        )
 
         # Iterate through remaining length
-        for current_line_i in range(first_line_i + 1,
-                                    len(self.flowable.layout_controllers)):
+        for current_line_i in range(
+            first_line_i + 1, len(self.flowable.layout_controllers)
+        ):
             current_line = self.flowable.layout_controllers[current_line_i]
             if remaining_x > current_line.length:
                 # Render spanning continuation
                 line_pos = brown.document.canvas_pos_of(current_line)
-                render_start_pos = Point(line_pos.x,
-                                         line_pos.y + pos_in_flowable.y)
+                render_start_pos = Point(line_pos.x, line_pos.y + pos_in_flowable.y)
                 render_end_pos = render_start_pos + Point(current_line.length, 0)
                 self._render_spanning_continuation(
-                    self.length - remaining_x,
-                    render_start_pos,
-                    render_end_pos)
+                    self.length - remaining_x, render_start_pos, render_end_pos
+                )
                 remaining_x -= current_line.length
             else:
                 break
 
         # Render end
         render_start_pos = self.flowable.map_to_canvas(
-            Point(current_line.local_x, pos_in_flowable.y))
+            Point(current_line.local_x, pos_in_flowable.y)
+        )
         render_end_pos = render_start_pos + Point(remaining_x, 0)
-        self._render_after_break(self.length - remaining_x,
-                                 render_start_pos,
-                                 render_end_pos)
+        self._render_after_break(
+            self.length - remaining_x, render_start_pos, render_end_pos
+        )
 
     def _render_complete(self, pos, dist_to_line_start=None, local_start_x=None):
         """Render the entire object.

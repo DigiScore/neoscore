@@ -31,24 +31,8 @@ class Pitch:
     """
 
     _pitch_regex = re.compile("^([a-g])([snf])?('*|,*)$")
-    natural_pitch_classes = {
-        'c': 0,
-        'd': 2,
-        'e': 4,
-        'f': 5,
-        'g': 7,
-        'a': 9,
-        'b': 11
-    }
-    _diatonic_degrees_in_c = {
-        'c': 1,
-        'd': 2,
-        'e': 3,
-        'f': 4,
-        'g': 5,
-        'a': 6,
-        'b': 7
-    }
+    natural_pitch_classes = {"c": 0, "d": 2, "e": 4, "f": 5, "g": 7, "a": 9, "b": 11}
+    _diatonic_degrees_in_c = {"c": 1, "d": 2, "e": 3, "f": 4, "g": 5, "a": 6, "b": 7}
     _middle_c_octave = 4
 
     def __init__(self, pitch):
@@ -70,10 +54,12 @@ class Pitch:
 
     def __eq__(self, other):
         """Two Pitches are equal if all of their attributes are equal."""
-        return (isinstance(other, type(self)) and
-                self.letter == other.letter and
-                self.accidental_type == other.accidental_type and
-                self.octave == other.octave)
+        return (
+            isinstance(other, type(self))
+            and self.letter == other.letter
+            and self.accidental_type == other.accidental_type
+            and self.octave == other.octave
+        )
 
     def __hash__(self):
         """Hash based on the __repr__() of the Pitch.
@@ -104,7 +90,7 @@ class Pitch:
         if not ticks:
             self._octave = 3
         else:
-            self._octave = 3 + (len(ticks) * (-1 if ticks[0] == ',' else 1))
+            self._octave = 3 + (len(ticks) * (-1 if ticks[0] == "," else 1))
         self._pitch = value
 
     @property

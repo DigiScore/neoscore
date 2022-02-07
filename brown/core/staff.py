@@ -13,9 +13,16 @@ class Staff(Path):
 
     _whole_note_size = 8  # StaffUnits
 
-    def __init__(self, pos, length, flowable,
-                 staff_unit=None, line_count=5, music_font=None,
-                 default_time_signature_duration=None):
+    def __init__(
+        self,
+        pos,
+        length,
+        flowable,
+        staff_unit=None,
+        line_count=5,
+        music_font=None,
+        default_time_signature_duration=None,
+    ):
         """
         Args:
             pos (Point): The position of the top-left corner of the staff
@@ -30,11 +37,11 @@ class Staff(Path):
         """
         super().__init__(pos, parent=flowable)
         self._line_count = line_count
-        self._unit = self._make_unit_class(staff_unit if staff_unit
-                                           else constants.DEFAULT_STAFF_UNIT)
+        self._unit = self._make_unit_class(
+            staff_unit if staff_unit else constants.DEFAULT_STAFF_UNIT
+        )
         if music_font is None:
-            self.music_font = MusicFont(constants.DEFAULT_MUSIC_FONT_NAME,
-                                        self.unit)
+            self.music_font = MusicFont(constants.DEFAULT_MUSIC_FONT_NAME, self.unit)
         # Construct the staff path
         for i in range(self.line_count):
             y_offset = self.unit(i)
@@ -43,8 +50,7 @@ class Staff(Path):
 
         # Create first measure with given time signature duration
         if default_time_signature_duration:
-            self.default_time_signature_duration = Beat(
-                default_time_signature_duration)
+            self.default_time_signature_duration = Beat(default_time_signature_duration)
         else:
             self.default_time_signature_duration = Beat(4, 4)
 
@@ -113,15 +119,16 @@ class Staff(Path):
         """
         start_x = self.flowable.map_between_locally(self, staff_object).x
         all_others_of_class = (
-            item for item in self.descendants_of_exact_class(
-                type(staff_object))
-            if item != staff_object)
-        closest_x = Unit(float('inf'))
+            item
+            for item in self.descendants_of_exact_class(type(staff_object))
+            if item != staff_object
+        )
+        closest_x = Unit(float("inf"))
         for item in all_others_of_class:
             relative_x = self.flowable.map_between_locally(self, item).x
             if start_x < relative_x < closest_x:
                 closest_x = relative_x
-        if closest_x == Unit(float('inf')):
+        if closest_x == Unit(float("inf")):
             return self.length - start_x
         return closest_x - start_x
 
@@ -136,10 +143,13 @@ class Staff(Path):
             None: If no clef is active at `pos_x`
         """
         return max(
-            (clef for clef in self.descendants_of_class_or_subclass(Clef)
-             if clef.pos_in_staff.x <= pos_x),
+            (
+                clef
+                for clef in self.descendants_of_class_or_subclass(Clef)
+                if clef.pos_in_staff.x <= pos_x
+            ),
             key=lambda clef: clef.pos_in_staff.x,
-            default=None
+            default=None,
         )
 
     def active_transposition_at(self, pos_x):
@@ -180,8 +190,9 @@ class Staff(Path):
             raise NoClefError
         else:
             if transposition:
-                return (clef.middle_c_staff_position
-                        + self.unit(transposition.interval.staff_distance))
+                return clef.middle_c_staff_position + self.unit(
+                    transposition.interval.staff_distance
+                )
             else:
                 return clef.middle_c_staff_position
 
@@ -219,8 +230,7 @@ class Staff(Path):
 
         Returns: bool
         """
-        return (self.y_outside_staff(pos_y) and
-                self.unit(pos_y).value % 1 == 0)
+        return self.y_outside_staff(pos_y) and self.unit(pos_y).value % 1 == 0
 
     def ledgers_needed_for_y(self, position):
         """Find the y positions of all ledgers needed for a given y position
@@ -233,12 +243,9 @@ class Staff(Path):
         # Work on positions as integers for simplicity
         start = int(self.unit(position).value)
         if start < 0:
-            return set(self.unit(pos)
-                       for pos in range(start, 0, 1))
+            return set(self.unit(pos) for pos in range(start, 0, 1))
         elif start > self.line_count - 1:
-            return set(self.unit(pos)
-                       for pos in
-                       range(start, self.line_count - 1, -1))
+            return set(self.unit(pos) for pos in range(start, self.line_count - 1, -1))
         else:
             return set()
 
@@ -254,7 +261,9 @@ class Staff(Path):
         Returns:
             type: A new StaffUnit class specifically for use in this staff.
         """
+
         class StaffUnit(Unit):
             CONVERSION_RATE = Unit(staff_unit_size).value
             # (all other functionality implemented in Unit)
+
         return StaffUnit

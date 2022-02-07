@@ -8,8 +8,7 @@ from brown.utils.units import GraphicUnit
 class PenInterface(Interface):
     """Interface for a pen controlling path outline appearance."""
 
-    def __init__(self, brown_object, color, thickness, pattern,
-                 join_style, cap_style):
+    def __init__(self, brown_object, color, thickness, pattern, join_style, cap_style):
         """
         Args:
             brown_object (Pen): The object this interface belongs to.
@@ -40,10 +39,9 @@ class PenInterface(Interface):
     @color.setter
     def color(self, color):
         self._color = color
-        self.qt_object.setColor(QtGui.QColor(color.red,
-                                             color.green,
-                                             color.blue,
-                                             color.alpha))
+        self.qt_object.setColor(
+            QtGui.QColor(color.red, color.green, color.blue, color.alpha)
+        )
 
     @property
     def thickness(self):
@@ -72,7 +70,6 @@ class PenInterface(Interface):
     def pattern(self, new_value):
         self._pattern = new_value
         self.qt_object.setStyle(new_value.value)
-
 
     @property
     def join_style(self):

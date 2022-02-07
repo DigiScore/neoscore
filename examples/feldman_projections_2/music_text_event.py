@@ -16,7 +16,6 @@ class MusicTextEvent(Event):
     @staticmethod
     def _center_music_text(music_text):
         text_rect = music_text.bounding_rect
-        x = (GridUnit(1 - MusicTextEvent._STEM_OFFSET_GRID_UNITS)
-             - text_rect.width) / 2
+        x = (GridUnit(1 - MusicTextEvent._STEM_OFFSET_GRID_UNITS) - text_rect.width) / 2
         y = GridUnit(0.5)
         music_text.pos = Point(x, y)

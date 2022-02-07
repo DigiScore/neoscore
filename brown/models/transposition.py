@@ -10,5 +10,6 @@ class Transposition:
         Args:
             interval (Interval or str representation):
         """
-        self.interval = (interval if isinstance(interval, Interval)
-                         else Interval(interval))
+        self.interval = (
+            interval if isinstance(interval, Interval) else Interval(interval)
+        )

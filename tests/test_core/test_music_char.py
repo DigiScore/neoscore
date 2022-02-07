@@ -7,15 +7,17 @@ from brown.utils.units import Unit
 
 
 class TestMusicChar(unittest.TestCase):
-
     def setUp(self):
         brown.setup()
-        self.font = MusicFont('Bravura', Unit)
+        self.font = MusicFont("Bravura", Unit)
 
     def test_glyph_info_calculation(self):
-        self.assertEqual(MusicChar(self.font, 'brace').glyph_info,
-                         self.font.glyph_info('brace'))
+        self.assertEqual(
+            MusicChar(self.font, "brace").glyph_info, self.font.glyph_info("brace")
+        )
 
     def test_glyph_info_calculation_with_alternate(self):
-        self.assertEqual(MusicChar(self.font, 'brace', 1).glyph_info,
-                         self.font.glyph_info('brace', 1))
+        self.assertEqual(
+            MusicChar(self.font, "brace", 1).glyph_info,
+            self.font.glyph_info("brace", 1),
+        )

@@ -51,8 +51,7 @@ class Chordrest(ObjectGroup, StaffObject):
         self._stem_direction_override = stem_direction
         if pitches:
             for pitch in pitches:
-                self._noteheads.add(
-                    Notehead(staff.unit(0), pitch, self.duration, self))
+                self._noteheads.add(Notehead(staff.unit(0), pitch, self.duration, self))
             self.rest = None
         else:
             self.rest = Rest(staff.unit(0), self, duration)
@@ -123,8 +122,9 @@ class Chordrest(ObjectGroup, StaffObject):
         highest = self.highest_notehead.staff_pos
         lowest = self.lowest_notehead.staff_pos
         # Join sets of needed ledgers above and below with union operator
-        return (self.staff.ledgers_needed_for_y(lowest) |
-                self.staff.ledgers_needed_for_y(highest))
+        return self.staff.ledgers_needed_for_y(
+            lowest
+        ) | self.staff.ledgers_needed_for_y(highest)
 
     @property
     def rhythm_dot_positions(self):
@@ -142,49 +142,45 @@ class Chordrest(ObjectGroup, StaffObject):
                     y_offset = self.staff.unit(-0.5)
                 else:
                     y_offset = self.staff.unit(0)
-                yield(Point(dot_start_x + (self.staff.unit(0.5) * i),
-                            dottable.y + y_offset))
+                yield (
+                    Point(
+                        dot_start_x + (self.staff.unit(0.5) * i), dottable.y + y_offset
+                    )
+                )
+
     @property
     def furthest_notehead(self):
         """Notehead or None: The `Notehead` furthest from the staff center"""
-        return max(self.noteheads,
-                   key=lambda n: abs(n.staff_pos - self.staff.center_pos_y),
-                   default=None)
+        return max(
+            self.noteheads,
+            key=lambda n: abs(n.staff_pos - self.staff.center_pos_y),
+            default=None,
+        )
 
     @property
     def highest_notehead(self):
         """Notehead or None: The highest `Notehead` in the chord."""
-        return min(self.noteheads,
-                   key=lambda n: n.staff_pos,
-                   default=None)
+        return min(self.noteheads, key=lambda n: n.staff_pos, default=None)
 
     @property
     def lowest_notehead(self):
         """Notehead or None: The lowest `Notehead` in the chord."""
-        return max(self.noteheads,
-                   key=lambda n: n.staff_pos,
-                   default=None)
+        return max(self.noteheads, key=lambda n: n.staff_pos, default=None)
 
     @property
     def leftmost_notehead(self):
         """Notehead or None: the `Notehead` furthest to the left in the chord"""
-        return min(self.noteheads,
-                   key=lambda n: n.x,
-                   default=None)
+        return min(self.noteheads, key=lambda n: n.x, default=None)
 
     @property
     def rightmost_notehead(self):
         """Notehead or None: the `Notehead` furthest to the right in the chord"""
-        return max(self.noteheads,
-                   key=lambda n: n.x,
-                   default=None)
+        return max(self.noteheads, key=lambda n: n.x, default=None)
 
     @property
     def widest_notehead(self):
         """Notehead or None: the `Notehead` with the greatest `visual_width`"""
-        return max(self.noteheads,
-                   key=lambda n: n.visual_width,
-                   default=None)
+        return max(self.noteheads, key=lambda n: n.visual_width, default=None)
 
     @property
     def notehead_column_width(self):
@@ -193,29 +189,27 @@ class Chordrest(ObjectGroup, StaffObject):
         if not leftmost_notehead:
             return self.staff.unit(0)
         else:
-            extent = max((n.x + n.visual_width
-                          for n in self.noteheads))
+            extent = max((n.x + n.visual_width for n in self.noteheads))
             return extent - leftmost_notehead.x
 
     @property
     def noteheads_outside_staff(self):
         """set(Notehead): All noteheads which are above or below the staff"""
-        return set(note for note in self.noteheads
-                   if self.staff.y_outside_staff(note.staff_pos))
+        return set(
+            note
+            for note in self.noteheads
+            if self.staff.y_outside_staff(note.staff_pos)
+        )
 
     @property
     def leftmost_notehead_outside_staff(self):
         """Notehead or None: the `Notehead` furthest to the left outside the staff"""
-        return min(self.noteheads_outside_staff,
-                   key=lambda n: n.x,
-                   default=None)
+        return min(self.noteheads_outside_staff, key=lambda n: n.x, default=None)
 
     @property
     def rightmost_notehead_outside_staff(self):
         """Notehead or None: the `Notehead` furthest to the right outside the staff"""
-        return max(self.noteheads_outside_staff,
-                   key=lambda n: n.x,
-                   default=None)
+        return max(self.noteheads_outside_staff, key=lambda n: n.x, default=None)
 
     @property
     def notehead_column_outside_staff_width(self):
@@ -224,8 +218,7 @@ class Chordrest(ObjectGroup, StaffObject):
         if not left_bounding_note:
             return self.staff.unit(0)
         else:
-            extent = max((n.x + n.visual_width
-                          for n in self.noteheads_outside_staff))
+            extent = max((n.x + n.visual_width for n in self.noteheads_outside_staff))
             return extent - left_bounding_note.x
 
     @property
@@ -246,8 +239,7 @@ class Chordrest(ObjectGroup, StaffObject):
             return self._stem_direction_override
         furthest = self.furthest_notehead
         if furthest:
-            return (1 if furthest.staff_pos <= self.staff.center_pos_y
-                    else -1)
+            return 1 if furthest.staff_pos <= self.staff.center_pos_y else -1
         else:
             return None
 
@@ -258,13 +250,13 @@ class Chordrest(ObjectGroup, StaffObject):
     @property
     def stem_height(self):
         """Unit: The height of the stem"""
-        flag_offset = Flag.vertical_offset_needed(self.duration,
-                                                  self.staff.unit)
+        flag_offset = Flag.vertical_offset_needed(self.duration, self.staff.unit)
         min_abs_height = self.staff.unit(5) + flag_offset
-        fitted_abs_height = (abs(self.lowest_notehead.y -
-                                 self.highest_notehead.y) +
-                             self.staff.unit(2) +
-                             flag_offset)
+        fitted_abs_height = (
+            abs(self.lowest_notehead.y - self.highest_notehead.y)
+            + self.staff.unit(2)
+            + flag_offset
+        )
         abs_height = max(min_abs_height, fitted_abs_height)
         return abs_height * self.stem_direction
 
@@ -311,9 +303,13 @@ class Chordrest(ObjectGroup, StaffObject):
         for notehead in self.noteheads:
             if notehead.pitch.accidental_type is None:
                 continue
-            self.accidentals.add(Accidental((padding, self.staff.unit(0)),
-                                            notehead.pitch.accidental_type,
-                                            notehead))
+            self.accidentals.add(
+                Accidental(
+                    (padding, self.staff.unit(0)),
+                    notehead.pitch.accidental_type,
+                    notehead,
+                )
+            )
 
     def _create_dots(self):
         """Create all the RhythmDots needed by this Chordrest."""
@@ -325,9 +321,11 @@ class Chordrest(ObjectGroup, StaffObject):
 
         Returns: None
         """
-        self._stem = Stem(Point(self.staff.unit(0),
-                                self.furthest_notehead.staff_pos),
-                          self.stem_height, self)
+        self._stem = Stem(
+            Point(self.staff.unit(0), self.furthest_notehead.staff_pos),
+            self.stem_height,
+            self,
+        )
 
     def _create_flag(self):
         """Create a Flag attached to self.stem and store it in self.flag
@@ -335,9 +333,7 @@ class Chordrest(ObjectGroup, StaffObject):
         Returns: None
         """
         if Flag.needs_flag(self.duration):
-            self._flag = Flag(self.duration,
-                              self.stem.direction,
-                              self.stem.end_point)
+            self._flag = Flag(self.duration, self.stem.direction, self.stem.end_point)
 
     def _position_noteheads_horizontally(self):
         """Reposition noteheads so that they are laid out correctly
@@ -354,9 +350,11 @@ class Chordrest(ObjectGroup, StaffObject):
         prev_staff_pos = self.staff.unit(float("inf"))
         # Start prev_side at wrong side so first note goes on the default side
         prev_side = -1 * default_side
-        for note in sorted(self.noteheads,
-                           key=lambda n: n.staff_pos,
-                           reverse=(self.stem_direction == -1)):
+        for note in sorted(
+            self.noteheads,
+            key=lambda n: n.staff_pos,
+            reverse=(self.stem_direction == -1),
+        ):
             if abs(prev_staff_pos - note.staff_pos) < 1:
                 # This note collides with previous, use switch sides
                 prev_side = -1 * prev_side

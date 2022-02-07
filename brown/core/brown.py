@@ -27,9 +27,9 @@ registered_music_fonts = {}
 registered_text_fonts = {}
 
 # Color of background between and around pages. (Not yet implemented)
-_display_background_color = '#dddddd'
+_display_background_color = "#dddddd"
 # Background color of pages themselves. (Not yet implemented)
-_display_paper_color = '#ffffff'
+_display_paper_color = "#ffffff"
 
 
 def setup(initial_paper=None):
@@ -54,9 +54,9 @@ def setup(initial_paper=None):
     document = Document(initial_paper)
     _app_interface = AppInterface(document)
     _register_default_fonts()
-    default_font = Font(constants.DEFAULT_TEXT_FONT_NAME,
-                        constants.DEFAULT_TEXT_FONT_SIZE,
-                        1, False)
+    default_font = Font(
+        constants.DEFAULT_TEXT_FONT_NAME, constants.DEFAULT_TEXT_FONT_SIZE, 1, False
+    )
 
 
 def register_font(font_file_path):
@@ -101,15 +101,16 @@ def register_music_font(font_name, font_file_path, metadata_path):
     global registered_music_fonts
     register_font(font_file_path)
     try:
-        with open(metadata_path, 'r') as metadata_file:
+        with open(metadata_path, "r") as metadata_file:
             metadata = json.load(metadata_file)
     except FileNotFoundError:
         raise FileNotFoundError(
-            'Music font metadata file {} could not be found'.format(
-                metadata_path))
+            "Music font metadata file {} could not be found".format(metadata_path)
+        )
     except json.JSONDecodeError as e:
-        e.msg = ('Invalid JSON metadata in music font '
-                 'metadata file {}'.format(metadata_path))
+        e.msg = "Invalid JSON metadata in music font " "metadata file {}".format(
+            metadata_path
+        )
         raise e
     registered_music_fonts[font_name] = metadata
     return metadata
@@ -152,12 +153,10 @@ def render_pdf(path):
     global _app_interface
     _clear_interfaces()
     document._render()
-    _app_interface.render_pdf((page.page_index for page in document.pages),
-                              path)
+    _app_interface.render_pdf((page.page_index for page in document.pages), path)
 
 
-def render_image(rect, image_path, dpi=600, quality=-1, bg_color=None,
-                 autocrop=False):
+def render_image(rect, image_path, dpi=600, quality=-1, bg_color=None, autocrop=False):
     """Render a section of the document to an image.
 
     The following file extensions are supported:
@@ -203,16 +202,16 @@ def render_image(rect, image_path, dpi=600, quality=-1, bg_color=None,
     _clear_interfaces()
 
     if not ((0 <= quality <= 100) or quality == -1):
-        warn('render_image quality {} invalid; using default.'.format(quality))
+        warn("render_image quality {} invalid; using default.".format(quality))
         quality = -1
 
     if not file_system.is_valid_file_path(image_path):
-        raise FileNotFoundError('Invalid image_path: ' + image_path)
+        raise FileNotFoundError("Invalid image_path: " + image_path)
 
     if not os.path.splitext(image_path)[1] in images.supported_formats:
         raise InvalidImageFormatError(
-            'image_path {} is not in a supported format.'.format(
-                image_path))
+            "image_path {} is not in a supported format.".format(image_path)
+        )
 
     if not isinstance(rect, Rect):
         rect = Rect(*rect)
@@ -224,14 +223,15 @@ def render_image(rect, image_path, dpi=600, quality=-1, bg_color=None,
 
     document._render()
 
-    _app_interface.render_image(rect, image_path, dpm, quality, bg_color,
-                                autocrop)
+    _app_interface.render_image(rect, image_path, dpm, quality, bg_color, autocrop)
 
 
 def _register_default_fonts():
-    register_music_font(constants.DEFAULT_MUSIC_FONT_NAME,
-                        constants.DEFAULT_MUSIC_FONT_PATH,
-                        constants.DEFAULT_MUSIC_FONT_METADATA_PATH)
+    register_music_font(
+        constants.DEFAULT_MUSIC_FONT_NAME,
+        constants.DEFAULT_MUSIC_FONT_PATH,
+        constants.DEFAULT_MUSIC_FONT_METADATA_PATH,
+    )
     register_font(constants.DEFAULT_TEXT_FONT_REGULAR_PATH)
     register_font(constants.DEFAULT_TEXT_FONT_BOLD_PATH)
     register_font(constants.DEFAULT_TEXT_FONT_ITALIC_PATH)

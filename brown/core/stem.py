@@ -18,8 +18,7 @@ class Stem(Path, StaffObject):
         """
         Path.__init__(self, start, parent=parent)
         StaffObject.__init__(self, parent=parent)
-        thickness = (
-            self.staff.music_font.engraving_defaults['stemThickness'])
+        thickness = self.staff.music_font.engraving_defaults["stemThickness"]
         self.pen = Pen(thickness=thickness)
 
         self._height = height

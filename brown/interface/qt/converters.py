@@ -82,11 +82,11 @@ def qt_rect_to_rect(qt_rect, unit=None):
     Returns: Rect
     """
     if unit:
-        return Rect(qt_rect.x(), qt_rect.y(),
-                    qt_rect.width(), qt_rect.height()).to_unit(unit)
+        return Rect(
+            qt_rect.x(), qt_rect.y(), qt_rect.width(), qt_rect.height()
+        ).to_unit(unit)
     else:
-        return Rect(qt_rect.x(), qt_rect.y(),
-                    qt_rect.width(), qt_rect.height())
+        return Rect(qt_rect.x(), qt_rect.y(), qt_rect.width(), qt_rect.height())
 
 
 def rect_to_qt_rect(rect):
@@ -97,8 +97,12 @@ def rect_to_qt_rect(rect):
 
     Returns: QRect
     """
-    return QRect(unit_to_qt_int(rect.x), unit_to_qt_int(rect.y),
-                 unit_to_qt_int(rect.width), unit_to_qt_int(rect.height))
+    return QRect(
+        unit_to_qt_int(rect.x),
+        unit_to_qt_int(rect.y),
+        unit_to_qt_int(rect.width),
+        unit_to_qt_int(rect.height),
+    )
 
 
 def rect_to_qt_rect_f(rect):
@@ -109,8 +113,12 @@ def rect_to_qt_rect_f(rect):
 
     Returns: QRectF
     """
-    return QRectF(unit_to_qt_float(rect.x), unit_to_qt_float(rect.y),
-                  unit_to_qt_float(rect.width), unit_to_qt_float(rect.height))
+    return QRectF(
+        unit_to_qt_float(rect.x),
+        unit_to_qt_float(rect.y),
+        unit_to_qt_float(rect.width),
+        unit_to_qt_float(rect.height),
+    )
 
 
 def color_to_q_color(color):

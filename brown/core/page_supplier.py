@@ -20,6 +20,7 @@ class PageSupplier:
     This is an internal class meant to be created by the global Document
     for its `pages` property.
     """
+
     def __init__(self, document):
         """
         Args:
@@ -32,10 +33,13 @@ class PageSupplier:
         if index >= len(self._page_list):
             for new_index in range(len(self._page_list), index + 1):
                 self._page_list.append(
-                    Page(self.document.page_origin(new_index),
-                         self.document,
-                         new_index,
-                         self.document.paper))
+                    Page(
+                        self.document.page_origin(new_index),
+                        self.document,
+                        new_index,
+                        self.document.paper,
+                    )
+                )
         return self._page_list[index]
 
     def __iter__(self):

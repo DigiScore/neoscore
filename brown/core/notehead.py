@@ -13,17 +13,17 @@ class Notehead(MusicText, StaffObject):
     """
 
     _glyphnames = {
-        1024: 'noteheadBlack',
-        512: 'noteheadBlack',
-        256: 'noteheadBlack',
-        128: 'noteheadBlack',
-        64: 'noteheadBlack',
-        32: 'noteheadBlack',
-        16: 'noteheadBlack',
-        8: 'noteheadBlack',
-        4: 'noteheadBlack',
-        2: 'noteheadHalf',
-        1: 'noteheadWhole',
+        1024: "noteheadBlack",
+        512: "noteheadBlack",
+        256: "noteheadBlack",
+        128: "noteheadBlack",
+        64: "noteheadBlack",
+        32: "noteheadBlack",
+        16: "noteheadBlack",
+        8: "noteheadBlack",
+        4: "noteheadBlack",
+        2: "noteheadHalf",
+        1: "noteheadWhole",
     }
 
     def __init__(self, pos_x, pitch, duration, parent):
@@ -39,19 +39,20 @@ class Notehead(MusicText, StaffObject):
             parent (GraphicObject): Must either be a `Staff` or an object
                 with an ancestor `Staff`.
         """
-        self._pitch = (pitch if isinstance(pitch, Pitch)
-                       else Pitch(pitch))
-        self._duration = (duration if isinstance(duration, Beat)
-                          else Beat(*duration))
+        self._pitch = pitch if isinstance(pitch, Pitch) else Pitch(pitch)
+        self._duration = duration if isinstance(duration, Beat) else Beat(*duration)
         # Use a temporary y-axis position before calculating it for real
-        MusicText.__init__(self,
-                           (pos_x, Mm(0)),
-                           [self._glyphnames[self.duration.base_division]],
-                           parent)
+        MusicText.__init__(
+            self,
+            (pos_x, Mm(0)),
+            [self._glyphnames[self.duration.base_division]],
+            parent,
+        )
         StaffObject.__init__(self, parent)
         self.y = self.staff.unit(
             self.staff_pos
-            - self.flowable.map_between_locally(self.staff, self.parent).y)
+            - self.flowable.map_between_locally(self.staff, self.parent).y
+        )
 
     ######## PUBLIC PROPERTIES ########
 
@@ -89,5 +90,6 @@ class Notehead(MusicText, StaffObject):
         `StaffUnit(0)` means the top staff line, higher values
         mean lower pitches, and vice versa.
         """
-        return (self.staff.middle_c_at(self.pos_in_staff.x) +
-                self.staff.unit(self.pitch.staff_pos_from_middle_c))
+        return self.staff.middle_c_at(self.pos_in_staff.x) + self.staff.unit(
+            self.pitch.staff_pos_from_middle_c
+        )

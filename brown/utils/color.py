@@ -24,25 +24,26 @@ class Color:
         elif len(args) == 4:
             self._set_with_rgba(*args)
         else:
-            raise TypeError('Expected between 1 and 4 arguments, '
-                            'got {}'.format(len(args)))
+            raise TypeError(
+                "Expected between 1 and 4 arguments, " "got {}".format(len(args))
+            )
 
     ######## SPECIAL METHODS ########
 
     def __repr__(self):
-        return "{}({}, {}, {}, {})".format(type(self).__name__,
-                                           self.red,
-                                           self.green,
-                                           self.blue,
-                                           self.alpha)
+        return "{}({}, {}, {}, {})".format(
+            type(self).__name__, self.red, self.green, self.blue, self.alpha
+        )
 
     def __eq__(self, other):
         """Two Colors are considered equal if all of their properties are."""
-        return (type(other) == type(self) and
-                self.red == other.red and
-                self.green == other.green and
-                self.blue == other.blue and
-                self.alpha == other.alpha)
+        return (
+            type(other) == type(self)
+            and self.red == other.red
+            and self.green == other.green
+            and self.blue == other.blue
+            and self.alpha == other.alpha
+        )
 
     def __hash__(self):
         """A Color's hash is a hash of its __repr__().
@@ -61,7 +62,7 @@ class Color:
     @red.setter
     def red(self, value):
         if not (0 <= value <= 255):
-            raise ColorBoundsError('red', value)
+            raise ColorBoundsError("red", value)
         self._red = int(value)
 
     @property
@@ -72,7 +73,7 @@ class Color:
     @green.setter
     def green(self, value):
         if not (0 <= value <= 255):
-            raise ColorBoundsError('green', value)
+            raise ColorBoundsError("green", value)
         self._green = int(value)
 
     @property
@@ -83,7 +84,7 @@ class Color:
     @blue.setter
     def blue(self, value):
         if not (0 <= value <= 255):
-            raise ColorBoundsError('blue', value)
+            raise ColorBoundsError("blue", value)
         self._blue = int(value)
 
     @property
@@ -94,7 +95,7 @@ class Color:
     @alpha.setter
     def alpha(self, value):
         if not (0 <= value <= 255):
-            raise ColorBoundsError('alpha', value)
+            raise ColorBoundsError("alpha", value)
         self._alpha = int(value)
 
     ######## PRIVATE METHODS ########
@@ -108,7 +109,7 @@ class Color:
 
         Returns: None
         """
-        if hex_value.startswith('#'):
+        if hex_value.startswith("#"):
             hex_value = hex_value[1:]
         self.red = int(hex_value[0:2], 16)
         self.green = int(hex_value[2:4], 16)

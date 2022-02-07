@@ -29,11 +29,12 @@ class FontInterface(Interface):
             self.family_name,
             int(GraphicUnit(self.size).value),
             self.weight if self.weight is not None else -1,
-            self.italic)
+            self.italic,
+        )
         self._qt_font_info_object = QtGui.QFontInfo(self.qt_object)
         self._qt_font_metrics_object = QtGui.QFontMetricsF(
-            self.qt_object,
-            brown._app_interface.view)
+            self.qt_object, brown._app_interface.view
+        )
 
     ######## PUBLIC PROPERTIES ########
 
@@ -76,5 +77,5 @@ class FontInterface(Interface):
             Rect[GraphicUnit]
         """
         return qt_rect_to_rect(
-            self._qt_font_metrics_object.tightBoundingRect(text),
-            GraphicUnit)
+            self._qt_font_metrics_object.tightBoundingRect(text), GraphicUnit
+        )

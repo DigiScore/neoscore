@@ -33,29 +33,33 @@ class Brace(MultiStaffObject, StaffObject, MusicText):
         # Calculate the height of the brace in highest_staff staff units
         scale = self.vertical_span / self.highest_staff.unit(4)
         if self.vertical_span > self.highest_staff.unit(50):
-            text = ('brace', 4)
+            text = ("brace", 4)
         elif self.vertical_span > self.highest_staff.unit(30):
-            text = ('brace', 3)
+            text = ("brace", 3)
         elif self.vertical_span > self.highest_staff.unit(15):
-            text = ('brace', 2)
+            text = ("brace", 2)
         elif self.vertical_span > self.highest_staff.unit(4):
-            text = 'brace'
+            text = "brace"
         else:
-            text = ('brace', 1)
+            text = ("brace", 1)
         try:
             # Attempt to use size-specific optional glyph
-            MusicText.__init__(self,
-                               (pos_x, self.vertical_span),
-                               text,
-                               self.highest_staff,
-                               scale_factor=scale)
+            MusicText.__init__(
+                self,
+                (pos_x, self.vertical_span),
+                text,
+                self.highest_staff,
+                scale_factor=scale,
+            )
         except MusicFontGlyphNotFoundError:
             # Default to non-optional glyph
-            MusicText.__init__(self,
-                               (pos_x, self.vertical_span),
-                                     'brace',
-                               self.highest_staff,
-                               scale_factor=scale)
+            MusicText.__init__(
+                self,
+                (pos_x, self.vertical_span),
+                "brace",
+                self.highest_staff,
+                scale_factor=scale,
+            )
 
     ######## PUBLIC PROPERTIES ########
 
@@ -65,8 +69,7 @@ class Brace(MultiStaffObject, StaffObject, MusicText):
 
         This is used to determine how and where rendering cuts should be made.
         """
-        return (self.staff.length
-                - self.flowable.map_between_locally(self.staff, self).x)
+        return self.staff.length - self.flowable.map_between_locally(self.staff, self).x
 
     ######## PRIVATE METHODS ########
 

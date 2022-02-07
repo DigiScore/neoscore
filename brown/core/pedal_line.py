@@ -32,10 +32,9 @@ class PedalLine(HorizontalSpanner, Path, StaffObject):
 
     """
 
-    def __init__(self,
-                 start, start_parent,
-                 end_x, end_parent=None,
-                 half_lift_positions=None):
+    def __init__(
+        self, start, start_parent, end_x, end_parent=None, half_lift_positions=None
+    ):
         """
         Args:
             start (Point or init tuple): The starting position of the
@@ -45,8 +44,9 @@ class PedalLine(HorizontalSpanner, Path, StaffObject):
             end_x (Unit): The
         """
         StaffObject.__init__(self, start_parent)
-        pen = Pen(thickness=self.staff.music_font.engraving_defaults[
-            'pedalLineThickness'])
+        pen = Pen(
+            thickness=self.staff.music_font.engraving_defaults["pedalLineThickness"]
+        )
         Path.__init__(self, start, pen, parent=start_parent)
         HorizontalSpanner.__init__(self, end_x, end_parent)
         self.half_lift_positions = half_lift_positions
@@ -74,15 +74,15 @@ class PedalLine(HorizontalSpanner, Path, StaffObject):
                 lift_parent = pos[1]
                 lift_center_x = pos[0]
                 if self.flowable is not None:
-                    lift_center_y = self.flowable.map_between_locally(
-                        lift_parent, self).y + descent
+                    lift_center_y = (
+                        self.flowable.map_between_locally(lift_parent, self).y + descent
+                    )
             elif isinstance(pos, Unit):
                 lift_parent = self
                 lift_center_x = pos
                 lift_center_y = descent
             else:
-                raise AttributeError(
-                    'Invalid half lift position: {}'.format(pos))
+                raise AttributeError("Invalid half lift position: {}".format(pos))
             lift_left_x = lift_center_x - half_lift_x_extent
             lift_right_x = lift_center_x + half_lift_x_extent
             self.line_to(lift_left_x, lift_center_y, lift_parent)

@@ -30,13 +30,13 @@ class KeySignature(ObjectGroup, StaffObject):
                 key signature. Any KeySignatureType may be used, or a str
                 of one's name.
         """
-        ObjectGroup.__init__(self, Point(pos_x, staff.unit(0)),
-                             staff)
+        ObjectGroup.__init__(self, Point(pos_x, staff.unit(0)), staff)
         StaffObject.__init__(self, staff)
         self._key_signature_type = (
             key_signature_type
             if isinstance(key_signature_type, KeySignatureType)
-            else KeySignatureType[key_signature_type])
+            else KeySignatureType[key_signature_type]
+        )
         self._create_pseudo_accidentals()
 
     ######## PUBLIC PROPERTIES ########
@@ -57,13 +57,8 @@ class KeySignature(ObjectGroup, StaffObject):
         for key, value in self.key_signature_type.value.items():
             if value is not None:
                 _KeySignatureAccidental(
-                    self.pos,
-                    key,
-                    value,
-                    self,
-                    self.staff.music_font,
-                    1,
-                    self.length)
+                    self.pos, key, value, self, self.staff.music_font, 1, self.length
+                )
 
 
 class _KeySignatureAccidental(MusicText, StaffObject):
@@ -73,48 +68,73 @@ class _KeySignatureAccidental(MusicText, StaffObject):
     """
 
     __sharp_positions = {
-        'f': (0, 0),
-        'c': (1, 1.5),
-        'g': (2, -0.5),
-        'd': (3, 1),
-        'a': (4, 2.5),
-        'e': (5, 0.5),
-        'b': (6, 2),
+        "f": (0, 0),
+        "c": (1, 1.5),
+        "g": (2, -0.5),
+        "d": (3, 1),
+        "a": (4, 2.5),
+        "e": (5, 0.5),
+        "b": (6, 2),
     }
     __flat_positions = {
-        'b': (0, 2),
-        'e': (1, 0.5),
-        'a': (2, 2.5),
-        'd': (3, 1),
-        'g': (4, 3),
-        'c': (5, 1.5),
-        'f': (6, 3.5),
+        "b": (0, 2),
+        "e": (1, 0.5),
+        "a": (2, 2.5),
+        "d": (3, 1),
+        "g": (4, 3),
+        "c": (5, 1.5),
+        "f": (6, 3.5),
     }
     positions = {
         AccidentalType.flat: {
             ClefType.treble: __flat_positions,
-            ClefType.bass: {key: (value[0], value[1] + 1)
-                            for key, value in __flat_positions.items()},
-            ClefType.alto: {key: (value[0], value[1] + 0.5)
-                            for key, value in __flat_positions.items()},
-            ClefType.tenor: {key: (value[0], value[1] - 0.5)
-                             for key, value in __flat_positions.items()}
+            ClefType.bass: {
+                key: (value[0], value[1] + 1) for key, value in __flat_positions.items()
+            },
+            ClefType.alto: {
+                key: (value[0], value[1] + 0.5)
+                for key, value in __flat_positions.items()
+            },
+            ClefType.tenor: {
+                key: (value[0], value[1] - 0.5)
+                for key, value in __flat_positions.items()
+            },
         },
         AccidentalType.sharp: {
             ClefType.treble: __sharp_positions,
-            ClefType.bass: {key: (value[0], value[1] + 1)
-                            for key, value in __sharp_positions.items()},
-            ClefType.alto: {key: (value[0], value[1] + 0.5)
-                            for key, value in __sharp_positions.items()},
-            ClefType.tenor: {key: (value[0], value[1] - 0.5)
-                             for key, value in __sharp_positions.items()}
-        }
+            ClefType.bass: {
+                key: (value[0], value[1] + 1)
+                for key, value in __sharp_positions.items()
+            },
+            ClefType.alto: {
+                key: (value[0], value[1] + 0.5)
+                for key, value in __sharp_positions.items()
+            },
+            ClefType.tenor: {
+                key: (value[0], value[1] - 0.5)
+                for key, value in __sharp_positions.items()
+            },
+        },
     }
 
-    def __init__(self, pos, pitch_letter, accidental_type, key_signature,
-                 music_font, scale_factor, length):
-        MusicText.__init__(self, pos, Accidental._canonical_names[accidental_type],
-                           key_signature, music_font, scale_factor)
+    def __init__(
+        self,
+        pos,
+        pitch_letter,
+        accidental_type,
+        key_signature,
+        music_font,
+        scale_factor,
+        length,
+    ):
+        MusicText.__init__(
+            self,
+            pos,
+            Accidental._canonical_names[accidental_type],
+            key_signature,
+            music_font,
+            scale_factor,
+        )
         StaffObject.__init__(self, key_signature)
         self._length = length
         self.pitch_letter = pitch_letter
@@ -125,8 +145,7 @@ class _KeySignatureAccidental(MusicText, StaffObject):
         return self._length
 
     def _overlaps_with_clef(self, clef, padded_clef_width):
-        return (self.flowable.map_between_locally(clef, self).x
-                < padded_clef_width)
+        return self.flowable.map_between_locally(clef, self).x < padded_clef_width
 
     def _render_occurrence(self, pos, local_start_x):
         """Render one appearance of one key signature accidental.
@@ -145,10 +164,12 @@ class _KeySignatureAccidental(MusicText, StaffObject):
             return
         clef_type = clef.clef_type
         padded_clef_width = clef.bounding_rect.width + self.staff.unit(0.5)
-        pos_tuple = _KeySignatureAccidental.positions[
-            self.accidental_type][clef_type][self.pitch_letter]
-        visual_pos = Point(self.staff.unit(pos_tuple[0]),
-                           self.staff.unit(pos_tuple[1])) + pos
+        pos_tuple = _KeySignatureAccidental.positions[self.accidental_type][clef_type][
+            self.pitch_letter
+        ]
+        visual_pos = (
+            Point(self.staff.unit(pos_tuple[0]), self.staff.unit(pos_tuple[1])) + pos
+        )
         if self._overlaps_with_clef(clef, padded_clef_width):
             visual_pos.x += padded_clef_width
         self._render_slice(visual_pos, None)

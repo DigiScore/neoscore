@@ -36,7 +36,7 @@ class Unit:
         in place will result in much sadness.
     """
 
-    __slots__ = ('value',)
+    __slots__ = ("value",)
 
     CONVERSION_RATE = 1
     """float: the ratio of this class to `Unit`s.
@@ -59,14 +59,15 @@ class Unit:
             self.value = value.value
         elif isinstance(value, Unit):
             # Convertible type, so convert value
-            self.value = (value._to_base_unit_float()
-                          / self.CONVERSION_RATE)
+            self.value = value._to_base_unit_float() / self.CONVERSION_RATE
             if isinstance(self.value, float) and self.value.is_integer():
                 self.value = int(self.value)
         else:
             raise TypeError(
-                'Cannot create {} from {}'.format(type(self).__name__,
-                                                  type(value).__name__))
+                "Cannot create {} from {}".format(
+                    type(self).__name__, type(value).__name__
+                )
+            )
 
     ######## CONSTRUCTORS ########
 
@@ -110,25 +111,31 @@ class Unit:
         Raises:
             AssertionError: If failed.
         """
-        if round(self._to_base_unit_float()
-                 - other._to_base_unit_float(),
-                 places) != 0:
+        if round(self._to_base_unit_float() - other._to_base_unit_float(), places) != 0:
             self_type = type(self)
             other_type = type(other)
             raise AssertionError(
-                '{} and {} not equal within {} Unit decimal places.\n'
-                'Both as {}: {} vs {}\n'
-                'Both as {}: {} vs {}'.format(
-                    self, other, places,
-                    self_type.__name__, self, self_type(other),
-                    other_type.__name__, other_type(self), other))
+                "{} and {} not equal within {} Unit decimal places.\n"
+                "Both as {}: {} vs {}\n"
+                "Both as {}: {} vs {}".format(
+                    self,
+                    other,
+                    places,
+                    self_type.__name__,
+                    self,
+                    self_type(other),
+                    other_type.__name__,
+                    other_type(self),
+                    other,
+                )
+            )
 
     ######## SPECIAL METHODS ########
 
     # Representations ---------------------------------------------------------
 
     def __repr__(self):
-        return '{}({})'.format(type(self).__name__, self.value)
+        return "{}({})".format(type(self).__name__, self.value)
 
     def __hash__(self):
         return hash(self.__repr__())
@@ -142,8 +149,10 @@ class Unit:
         return self.value <= type(self)(other).value
 
     def __eq__(self, other):
-        return (isinstance(other, (Unit, int, float))
-                and self.value == type(self)(other).value)
+        return (
+            isinstance(other, (Unit, int, float))
+            and self.value == type(self)(other).value
+        )
 
     def __gt__(self, other):
         return self.value > type(self)(other).value
@@ -172,8 +181,7 @@ class Unit:
         if modulo is None:
             return type(self)(self.value ** type(self)(other).value)
         else:
-            return type(self)(
-                pow(self.value, type(self)(other).value, modulo))
+            return type(self)(pow(self.value, type(self)(other).value, modulo))
 
     def __neg__(self):
         return type(self)(-self.value)
@@ -212,21 +220,25 @@ class GraphicUnit(Unit):
 
     In most cases, you probably want to use a more descriptive unit type.
     """
+
     CONVERSION_RATE = 1
 
 
 class Inch(Unit):
     """An inch."""
+
     CONVERSION_RATE = 300
 
 
 class Mm(Unit):
     """A millimeter."""
+
     CONVERSION_RATE = Inch.CONVERSION_RATE * 0.0393701
 
 
 class Meter(Unit):
     """A meter."""
+
     CONVERSION_RATE = Mm.CONVERSION_RATE * 1000
 
 
@@ -273,8 +285,7 @@ def convert_all_to_unit(iterable, unit):
             elif isinstance(value, (list, dict)):
                 convert_all_to_unit(iterable[key], unit)
             elif isinstance(value, (tuple, set)):
-                iterable[key] = _convert_all_to_unit_in_immutable(
-                    iterable[key], unit)
+                iterable[key] = _convert_all_to_unit_in_immutable(iterable[key], unit)
             # (else: continue --- nothing to do here)
     elif isinstance(iterable, list):
         for i in range(len(iterable)):
@@ -283,8 +294,7 @@ def convert_all_to_unit(iterable, unit):
             elif isinstance(iterable[i], (list, dict)):
                 convert_all_to_unit(iterable[i], unit)
             elif isinstance(iterable[i], (tuple, set)):
-                iterable[i] = _convert_all_to_unit_in_immutable(
-                    iterable[i], unit)
+                iterable[i] = _convert_all_to_unit_in_immutable(iterable[i], unit)
             # (else: continue --- nothing to do here)
     else:
         raise TypeError

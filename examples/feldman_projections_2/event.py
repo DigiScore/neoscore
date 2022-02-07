@@ -21,8 +21,9 @@ class _EventBox(Path, HorizontalSpanner):
     box_pen = Pen(thickness=GridUnit(0.07), join_style=PenJoinStyle.MITER)
 
     def __init__(self, parent, length):
-        Path.__init__(self, (GridUnit(0), GridUnit(0)),
-                      pen=_EventBox.box_pen, parent=parent)
+        Path.__init__(
+            self, (GridUnit(0), GridUnit(0)), pen=_EventBox.box_pen, parent=parent
+        )
         HorizontalSpanner.__init__(self, length)
         self._construct_path()
 
