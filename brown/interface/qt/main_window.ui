@@ -54,7 +54,7 @@
   <customwidget>
    <class>Viewport</class>
    <extends>QGraphicsView</extends>
-   <header>brown.earle.ui.viewport</header>
+   <header>brown.interface.qt.viewport</header>
   </customwidget>
  </customwidgets>
  <resources/>

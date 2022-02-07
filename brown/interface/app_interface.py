@@ -4,7 +4,7 @@ from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtPrintSupport import QPrinter
 
 from brown import constants
-from brown.earle.ui.main_window import MainWindow
+from brown.interface.qt.main_window import MainWindow
 from brown.interface import images
 from brown.interface.interface import Interface
 from brown.interface.qt.converters import rect_to_qt_rect_f, color_to_q_color
