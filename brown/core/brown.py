@@ -219,7 +219,7 @@ def render_image(rect, image_path, dpi=600, quality=-1, bg_color=None, autocrop=
         bg_color = Color(255, 255, 255, 255)
     elif not isinstance(bg_color, Color):
         bg_color = Color(bg_color)
-    dpm = images.dpi_to_dpm(dpi)
+    dpm = int(images.dpi_to_dpm(dpi))
 
     document._render()
 

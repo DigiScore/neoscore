@@ -2,12 +2,9 @@ import unittest
 
 import pytest
 
-from brown.utils.units import GraphicUnit, Inch, Mm, Unit
+from brown.utils.units import GraphicUnit, Inch, Mm, Unit, make_unit_class
 
-
-class MockUnit(Unit):
-    CONVERSION_RATE = 2
-    pass
+MockUnit = make_unit_class("MockUnit", 2)
 
 
 class TestUnit(unittest.TestCase):
@@ -26,10 +23,6 @@ class TestUnit(unittest.TestCase):
 
     def test_init_from_other_compatible_type(self):
         assert Unit(MockUnit(1)).value == 2
-
-    def test_init_from_incompatible_type_fails(self):
-        with pytest.raises(TypeError):
-            Unit("nonsense type")
 
     def test__repr__(self):
         assert repr(Unit(1)) == "Unit(1)"

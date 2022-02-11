@@ -1,3 +1,5 @@
+import copy
+
 from brown.core import brown
 from brown.core.font import Font
 from brown.utils import smufl
@@ -23,11 +25,12 @@ class MusicFont(Font):
         self.unit = staff_unit
         try:
             self.metadata = brown.registered_music_fonts[family_name]
-            # Convert all metadata values to staff units
-            convert_all_to_unit(self.metadata, self.unit)
         except KeyError:
             raise MusicFontMetadataNotFoundError
-        self._engraving_defaults = self.metadata["engravingDefaults"]
+
+        self._engraving_defaults = copy.deepcopy(self.metadata["engravingDefaults"])
+
+        convert_all_to_unit(self._engraving_defaults, self.unit)
         self._em_size = self.unit(self.__magic_em_scale_factor)
         super().__init__(family_name, self._em_size, 1, False)
 
@@ -120,4 +123,5 @@ class MusicFont(Font):
             raise MusicFontGlyphNotFoundError
         info["is_optional"] = real_name in self.metadata["optionalGlyphs"]
         info["canonicalName"] = real_name
+        convert_all_to_unit(info, self.unit)
         return info

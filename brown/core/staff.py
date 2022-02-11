@@ -5,7 +5,7 @@ from brown.core.octave_line import OctaveLine
 from brown.core.path import Path
 from brown.models.beat import Beat
 from brown.utils.exceptions import NoClefError
-from brown.utils.units import GraphicUnit, Unit
+from brown.utils.units import GraphicUnit, Unit, make_unit_class
 
 
 class Staff(Path):
@@ -261,9 +261,4 @@ class Staff(Path):
         Returns:
             type: A new StaffUnit class specifically for use in this staff.
         """
-
-        class StaffUnit(Unit):
-            CONVERSION_RATE = Unit(staff_unit_size).value
-            # (all other functionality implemented in Unit)
-
-        return StaffUnit
+        return make_unit_class("StaffUnit", staff_unit_size)
