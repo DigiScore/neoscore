@@ -98,45 +98,6 @@ class Unit:
         """
         return self.value * self.CONVERSION_RATE
 
-    def _assert_almost_equal(self, other, places=7):
-        """Assert the near-equality of two units.
-
-        **For testing purposes only.**
-
-        Almost-equality is determined according to the base unit float
-        representations of both units, within the accuracy of `places`.
-
-        A helpful failure message is given in the event of failure.
-
-        This is primarily for testing purposes, as the stdlib
-        `assertAlmostEqual` doesn't play nice with custom numeric types.
-
-        Args:
-            other (Unit): The unit to compare against
-            places (int): The number of decimal places of accuracy required.
-
-        Raises:
-            AssertionError: If failed.
-        """
-        if round(self._in_base_unit_float - other._in_base_unit_float, places) != 0:
-            self_type = type(self)
-            other_type = type(other)
-            raise AssertionError(
-                "{} and {} not equal within {} Unit decimal places.\n"
-                "Both as {}: {} vs {}\n"
-                "Both as {}: {} vs {}".format(
-                    self,
-                    other,
-                    places,
-                    self_type.__name__,
-                    self,
-                    self_type(other),
-                    other_type.__name__,
-                    other_type(self),
-                    other,
-                )
-            )
-
     ######## SPECIAL METHODS ########
 
     # Representations ---------------------------------------------------------

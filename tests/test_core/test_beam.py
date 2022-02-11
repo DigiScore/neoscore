@@ -40,30 +40,21 @@ class TestBeam(unittest.TestCase):
         )
         thickness = beam.beam_thickness
         assert len(beam.elements) == 5
-        PathElement._assert_soft_equal(
-            beam.elements[0],
-            PathElement(Point(Mm(0), Mm(0)), PathElementType.move_to, beam, beam),
+        assert beam.elements[0] == PathElement(
+            Point(Mm(0), Mm(0)), PathElementType.move_to, beam, beam
         )
-        PathElement._assert_soft_equal(
-            beam.elements[1],
-            PathElement(
-                Point(Mm(3), Mm(4)), PathElementType.line_to, beam, self.right_parent
-            ),
+        assert beam.elements[1] == PathElement(
+            Point(Mm(3), Mm(4)), PathElementType.line_to, beam, self.right_parent
         )
-        PathElement._assert_soft_equal(
-            beam.elements[2],
-            PathElement(
-                Point(Mm(3), Mm(4) + thickness),
-                PathElementType.line_to,
-                beam,
-                self.right_parent,
-            ),
+        assert beam.elements[2] == PathElement(
+            Point(Mm(3), Mm(4) + thickness),
+            PathElementType.line_to,
+            beam,
+            self.right_parent,
         )
-        PathElement._assert_soft_equal(
-            beam.elements[3],
-            PathElement(Point(Mm(0), thickness), PathElementType.line_to, beam, beam),
+        assert beam.elements[3] == PathElement(
+            Point(Mm(0), thickness), PathElementType.line_to, beam, beam
         )
-        PathElement._assert_soft_equal(
-            beam.elements[4],
-            PathElement(Point(Mm(0), Mm(0)), PathElementType.move_to, beam, beam),
+        assert beam.elements[4] == PathElement(
+            Point(Mm(0), Mm(0)), PathElementType.move_to, beam, beam
         )

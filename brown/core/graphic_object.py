@@ -58,7 +58,7 @@ class GraphicObject(ABC):
         self._length = length if length else Unit(0)
         self.pen = pen
         self.brush = brush
-        self._children = set()
+        self._children = []
         self.parent = parent
         self._interfaces = set()
 
@@ -356,7 +356,7 @@ class GraphicObject(ABC):
 
         Returns: None
         """
-        self.children.add(child)
+        self.children.append(child)
 
     def _unregister_child(self, child):
         """Remove an object from `self.children`.

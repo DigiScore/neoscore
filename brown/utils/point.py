@@ -130,15 +130,3 @@ class Point:
 
     def __round__(self, ndigits=None):
         return type(self)(round(self.x, ndigits), round(self.y, ndigits))
-
-    ######### PRIVATE METHODS ########
-
-    def _assert_almost_equal(self, other, places=7):
-        """Assert the near-equality of two points.
-
-        **For testing purposes only.**
-
-        Both `self.x` and `self.y` must be `Unit`types.
-        """
-        self.x._assert_almost_equal(other.x)
-        self.y._assert_almost_equal(other.y)

@@ -33,7 +33,7 @@ class Page:
         self._document = document
         self._page_index = page_index
         self.paper = paper
-        self.children = set()
+        self.children = []
 
     @property
     def parent(self):
@@ -68,7 +68,7 @@ class Page:
 
         Returns: None
         """
-        self.children.add(child)
+        self.children.append(child)
 
     def _unregister_child(self, child):
         """Remove an object from `self.children`.

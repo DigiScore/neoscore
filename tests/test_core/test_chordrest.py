@@ -10,6 +10,8 @@ from brown.models.pitch import Pitch
 from brown.utils.point import Point
 from brown.utils.units import Mm
 
+from ..helpers import assert_almost_equal
+
 
 class TestChordrest(unittest.TestCase):
     def setUp(self):
@@ -42,11 +44,11 @@ class TestChordrest(unittest.TestCase):
         chord = Chordrest(Mm(1), self.staff, None, Beat(7, 16))
         dots = list(chord.rhythm_dot_positions)
         dots.sort(key=lambda d: d.x)
-        dots[0]._assert_almost_equal(
-            Point(self.staff.unit(1.076), self.staff.unit(1.5))
+        assert_almost_equal(
+            dots[0], Point(self.staff.unit(1.076), self.staff.unit(1.5))
         )
-        dots[1]._assert_almost_equal(
-            Point(self.staff.unit(1.576), self.staff.unit(1.5))
+        assert_almost_equal(
+            dots[1], Point(self.staff.unit(1.576), self.staff.unit(1.5))
         )
 
     def test_rhythm_dot_positions_with_noteheads(self):
@@ -55,19 +57,19 @@ class TestChordrest(unittest.TestCase):
         dots = list(chord.rhythm_dot_positions)
         dots.sort(key=lambda d: d.x)
         dots.sort(key=lambda d: d.y)
-        dots[0]._assert_almost_equal(
-            Point(self.staff.unit(1.18), self.staff.unit(-3.5))
+        assert_almost_equal(
+            dots[0], Point(self.staff.unit(1.18), self.staff.unit(-3.5))
         )
-        dots[1]._assert_almost_equal(
-            Point(self.staff.unit(1.68), self.staff.unit(-3.5))
+        assert_almost_equal(
+            dots[1], Point(self.staff.unit(1.68), self.staff.unit(-3.5))
         )
-        dots[2]._assert_almost_equal(Point(self.staff.unit(1.18), self.staff.unit(7.5)))
-        dots[3]._assert_almost_equal(Point(self.staff.unit(1.68), self.staff.unit(7.5)))
-        dots[4]._assert_almost_equal(
-            Point(self.staff.unit(1.18), self.staff.unit(10.5))
+        assert_almost_equal(dots[2], Point(self.staff.unit(1.18), self.staff.unit(7.5)))
+        assert_almost_equal(dots[3], Point(self.staff.unit(1.68), self.staff.unit(7.5)))
+        assert_almost_equal(
+            dots[4], Point(self.staff.unit(1.18), self.staff.unit(10.5))
         )
-        dots[5]._assert_almost_equal(
-            Point(self.staff.unit(1.68), self.staff.unit(10.5))
+        assert_almost_equal(
+            dots[5], Point(self.staff.unit(1.68), self.staff.unit(10.5))
         )
 
     def test_furthest_notehead_with_one_note(self):

@@ -12,6 +12,8 @@ from brown.models.clef_type import ClefType
 from brown.utils.point import Point
 from brown.utils.units import Mm
 
+from ..helpers import assert_almost_equal
+
 
 class TestStaff(unittest.TestCase):
     def setUp(self):
@@ -50,8 +52,8 @@ class TestStaff(unittest.TestCase):
         staff = Staff((Mm(10), Mm(0)), Mm(100), self.flowable)
         treble = Clef(staff, Mm(11), "treble")
         bass = Clef(staff, Mm(31), "bass")
-        staff.distance_to_next_of_type(treble)._assert_almost_equal(Mm(20))
-        staff.distance_to_next_of_type(bass)._assert_almost_equal(Mm(100 - 31))
+        assert_almost_equal(staff.distance_to_next_of_type(treble), Mm(20))
+        assert_almost_equal(staff.distance_to_next_of_type(bass), Mm(100 - 31))
 
     def test_active_clef_at_with_explicit_clefs(self):
         staff = Staff((Mm(0), Mm(0)), Mm(100), self.flowable)
