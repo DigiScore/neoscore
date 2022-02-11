@@ -1,5 +1,13 @@
 """Various interoperable units classes and some related helper functions."""
 
+_LAST_TYPE_ID = -1
+
+
+def _next_type_id():
+    global _LAST_TYPE_ID
+    _LAST_TYPE_ID += 1
+    return _LAST_TYPE_ID
+
 
 class Unit:
     """An immutable graphical distance with a unit.
@@ -44,6 +52,13 @@ class Unit:
     Subclasses should override this.
     """
 
+    _TYPE_ID = _next_type_id()
+    """int: a unique ID number for this Unit type.
+
+    This is used to optimize type comparisons. Each Unit class must
+    fetch a unique value using `_next_type_id()`.
+    """
+
     def __init__(self, value):
         """
         Args:
@@ -52,22 +67,13 @@ class Unit:
                 into `self.value`. Any value which is a unit subclass of
                 `Unit` will be converted to that value in this unit.
         """
-        if isinstance(value, (int, float)):
-            self.value = value
-        elif type(value) == type(self):
-            # Same type as self, just duplicate value
-            self.value = value.value
-        elif isinstance(value, Unit):
-            # Convertible type, so convert value
-            self.value = value._to_base_unit_float() / self.CONVERSION_RATE
-            if isinstance(self.value, float) and self.value.is_integer():
-                self.value = int(self.value)
+        if hasattr(value, "_TYPE_ID"):
+            if value._TYPE_ID == self._TYPE_ID:
+                self.value = value.value
+            else:
+                self.value = value._in_base_unit_float / self.CONVERSION_RATE
         else:
-            raise TypeError(
-                "Cannot create {} from {}".format(
-                    type(self).__name__, type(value).__name__
-                )
-            )
+            self.value = value
 
     ######## CONSTRUCTORS ########
 
@@ -84,7 +90,8 @@ class Unit:
 
     ######## PRIVATE METHODS ########
 
-    def _to_base_unit_float(self):
+    @property
+    def _in_base_unit_float(self):
         """Return this value as a float in base unit values.
 
         Returns: float
@@ -111,7 +118,7 @@ class Unit:
         Raises:
             AssertionError: If failed.
         """
-        if round(self._to_base_unit_float() - other._to_base_unit_float(), places) != 0:
+        if round(self._in_base_unit_float - other._in_base_unit_float, places) != 0:
             self_type = type(self)
             other_type = type(other)
             raise AssertionError(
@@ -177,11 +184,22 @@ class Unit:
     def __floordiv__(self, other):
         return type(self)(self.value // type(self)(other).value)
 
+    @staticmethod
+    def _to_int_safe(val):
+        if isinstance(val, int):
+            return val
+        if val.is_integer():
+            return int(val)
+        else:
+            raise ValueError(f"Cannot safely convert {float_val} to integer")
+
     def __pow__(self, other, modulo=None):
         if modulo is None:
             return type(self)(self.value ** type(self)(other).value)
         else:
-            return type(self)(pow(self.value, type(self)(other).value, modulo))
+            base = self.value
+            exp = Unit._to_int_safe(type(self)(other).value)
+            return type(self)(pow(base, exp, modulo))
 
     def __neg__(self):
         return type(self)(-self.value)
@@ -222,24 +240,36 @@ class GraphicUnit(Unit):
     """
 
     CONVERSION_RATE = 1
+    _TYPE_ID = _next_type_id()
 
 
 class Inch(Unit):
     """An inch."""
 
     CONVERSION_RATE = 300
+    _TYPE_ID = _next_type_id()
 
 
 class Mm(Unit):
     """A millimeter."""
 
     CONVERSION_RATE = Inch.CONVERSION_RATE * 0.0393701
+    _TYPE_ID = _next_type_id()
 
 
 class Meter(Unit):
     """A meter."""
 
     CONVERSION_RATE = Mm.CONVERSION_RATE * 1000
+    _TYPE_ID = _next_type_id()
+
+
+def make_unit_class(name, unit_size):
+    return type(
+        name,
+        (Unit,),
+        {"CONVERSION_RATE": Unit(unit_size).value, "_TYPE_ID": _next_type_id()},
+    )
 
 
 def _convert_all_to_unit_in_immutable(iterable, unit):
@@ -260,6 +290,8 @@ def _convert_all_to_unit_in_immutable(iterable, unit):
     return type(iterable)(mutable_iterable)
 
 
+# TODO This should be refactored to be out-of-place to prevent
+# dangerous antipatterns as discovered in MusicFont
 def convert_all_to_unit(iterable, unit):
     """Recursively convert all numbers found in an iterable to a unit in place.
 
