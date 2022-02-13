@@ -4,7 +4,7 @@ import pytest
 
 from brown.utils.parent_point import ParentPoint
 from brown.utils.point import Point
-from brown.utils.units import GraphicUnit, Mm, Unit
+from brown.utils.units import GraphicUnit, Meter, Mm, Unit
 
 
 class TestPoint(unittest.TestCase):
@@ -53,10 +53,14 @@ class TestPoint(unittest.TestCase):
 
     def test__hash__(self):
         assert {Point(1, 2), Point(1, 2), Point(3, 4)} == {Point(1, 2), Point(3, 4)}
+        assert {Point(1, 2), Point(1, 2), Point(3, 4)} == {Point(1, 2), Point(3, 4)}
+        assert {Point(Mm(1000), GraphicUnit(0)), Point(Meter(1), GraphicUnit(0))} == {
+            Point(Mm(1000), GraphicUnit(0))
+        }
 
     def test__eq__(self):
         p1 = Point(5, 6)
-        p2 = Point(5, 6)
+        p2 = Point(Unit(5), Unit(6))
         p3 = Point(5, 1234)
         p4 = Point(1234, 6)
         assert p1 == p2

@@ -85,7 +85,7 @@ class Point:
         return "{}({}, {})".format(type(self).__name__, self.x, self.y)
 
     def __hash__(self):
-        return hash(self.__repr__())
+        return 23984743 ^ hash(self.x) ^ hash(self.y)
 
     def __eq__(self, other):
         """Two Points are equal if their attributes are all equal.
