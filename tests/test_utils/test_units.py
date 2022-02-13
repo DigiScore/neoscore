@@ -30,58 +30,46 @@ class TestUnit(unittest.TestCase):
     def test__lt__(self):
         assert Unit(1) < Unit(2)
         assert not Unit(1) < Unit(0)
-        assert Unit(1) < 5
         assert Unit(1) < MockUnit(1)
         assert not Unit(1) < MockUnit(0.5)
+        with pytest.raises(AttributeError):
+            Unit(1) < 5
 
     def test__le__(self):
         assert Unit(1) <= Unit(2)
         assert Unit(1) <= Unit(1)
         assert not Unit(1) <= Unit(0)
-        assert Unit(1) <= 5
-        assert Unit(1) <= 1
         assert Unit(1) <= MockUnit(1)
         assert Unit(1) <= MockUnit(0.5)
         assert not Unit(1) <= MockUnit(0.4)
+        with pytest.raises(AttributeError):
+            Unit(1) <= 1
 
     def test__eq__(self):
         assert Unit(1) == Unit(1)
         assert not Unit(1) == Unit(0)
-        assert Unit(1) == 1
-        assert not Unit(1) == 2
+        assert not Unit(1) == 1
         assert Unit(1) == MockUnit(0.5)
         assert not Unit(1) == MockUnit(1)
-
-    def test__eq__safe_on_incompatible_type(self):
-        assert not Unit(1) == "not a unit"
-
-    def test__ne__(self):
-        assert Unit(1) != Unit(2)
-        assert not Unit(1) != Unit(1)
-        assert Unit(1) != MockUnit(1)
-        assert not Unit(1) != MockUnit(0.5)
-        assert Unit(1) != 2
-        assert not Unit(1) != 1
 
     def test__gt__(self):
         assert Unit(1) > Unit(0)
         assert not Unit(1) > Unit(2)
         assert not Unit(1) > Unit(1)
-        assert Unit(1) > 0
-        assert not Unit(1) > 2
         assert Unit(1) > MockUnit(0.4)
         assert not Unit(1) > MockUnit(0.6)
+        with pytest.raises(AttributeError):
+            Unit(1) > 1
 
     def test__ge__(self):
         assert Unit(1) >= Unit(0)
         assert Unit(1) >= Unit(1)
         assert not Unit(1) >= Unit(2)
-        assert Unit(1) >= 0
-        assert Unit(1) >= 1
-        assert not Unit(1) >= 2
         assert Unit(1) >= MockUnit(0.4)
         assert Unit(1) >= MockUnit(0.5)
         assert not Unit(1) >= MockUnit(0.6)
+        with pytest.raises(AttributeError):
+            Unit(1) >= 1
 
     def test__add__(self):
         assert isinstance(Unit(1) + Unit(2), Unit)
@@ -137,34 +125,6 @@ class TestUnit(unittest.TestCase):
 
     def test__pos__(self):
         assert +Unit(-2) == Unit(+(-2))
-
-    def test__int__(self):
-        assert isinstance(int(Unit(2.0)), int)
-        assert int(Unit(2.0)) == 2
-
-    def test__float__(self):
-        assert isinstance(float(Unit(2.0)), float)
-        assert float(Unit(2.0)) == 2.0
-
-    def test__round__(self):
-        assert isinstance(round(Unit(2.21999)), Unit)
-        assert round(Unit(2.21999)).value == 2
-        assert round(Unit(2.21999), 1).value == 2.2
-
-    def test__rmul__(self):
-        assert isinstance(1 * Unit(2), Unit)
-        assert isinstance(Unit(2) * MockUnit(2), Unit)
-        assert (1 * Unit(2)).value == Unit(2)
-
-    def test__rtruediv__(self):
-        assert isinstance(1 / Unit(2), Unit)
-        assert isinstance(Unit(1) / MockUnit(2), Unit)
-        assert (1 / Unit(2)).value == Unit(0.5)
-
-    def test__rfloordiv__(self):
-        assert isinstance(1 // Unit(2), Unit)
-        assert isinstance(Unit(1) // MockUnit(2), Unit)
-        assert (1 // Unit(2)).value == 0
 
 
 class TestMm(unittest.TestCase):

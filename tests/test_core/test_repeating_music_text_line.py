@@ -30,5 +30,5 @@ class TestRepeatingMusicTextLine(unittest.TestCase):
             self.right_parent,
             scale_factor=2,
         )
-        expected = int(Mm(12) / self.single_repetition_width)
+        expected = int((Mm(12) / self.single_repetition_width).value)
         assert line._repetitions_needed == expected

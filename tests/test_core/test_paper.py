@@ -7,13 +7,13 @@ from brown.utils.units import Inch, Mm
 class TestPaper(unittest.TestCase):
     def test_init(self):
         test_paper = Paper(*[Mm(val) for val in [1, 2, 3, 4, 5, 6, 7]])
-        assert test_paper.width == 1
-        assert test_paper.height == 2
-        assert test_paper.margin_top == 3
-        assert test_paper.margin_right == 4
-        assert test_paper.margin_bottom == 5
-        assert test_paper.margin_left == 6
-        assert test_paper.gutter == 7
+        assert test_paper.width == Mm(1)
+        assert test_paper.height == Mm(2)
+        assert test_paper.margin_top == Mm(3)
+        assert test_paper.margin_right == Mm(4)
+        assert test_paper.margin_bottom == Mm(5)
+        assert test_paper.margin_left == Mm(6)
+        assert test_paper.gutter == Mm(7)
 
     def test_from_template(self):
         test_paper = Paper.from_template("Letter")
@@ -28,11 +28,11 @@ class TestPaper(unittest.TestCase):
 
     def test_live_width(self):
         test_paper = Paper(*[Mm(val) for val in [210, 297, 20, 30, 20, 30, 15]])
-        assert test_paper.live_width == 210 - 30 - 30 - 15
+        assert test_paper.live_width == Mm(210 - 30 - 30 - 15)
 
     def test_live_height(self):
         test_paper = Paper(*[Mm(val) for val in [210, 297, 20, 30, 20, 30, 15]])
-        assert test_paper.live_height == 297 - 20 - 20
+        assert test_paper.live_height == Mm(297 - 20 - 20)
 
     def test_make_rotation(self):
         original = Paper(*[Mm(val) for val in [100, 101, 1, 2, 3, 4, 5]])

@@ -125,10 +125,10 @@ class Hairpin(Path, StaffObject, Spanner):
         # Find needed x coordinates of outer points
         #     x = dist / sqrt(1 + slope^2)
         first_x = end_center.x + (
-            dist / math.sqrt(type(opening_slope)(1) + (opening_slope**2))
+            dist / math.sqrt((type(opening_slope)(1) + (opening_slope**2)).value)
         )
         last_x = end_center.x - (
-            dist / math.sqrt(type(opening_slope)(1) + (opening_slope**2))
+            dist / math.sqrt((type(opening_slope)(1) + (opening_slope**2)).value)
         )
         # Calculate matching y coordinates from opening line function
         first_y = (opening_slope * first_x) - opening_y_intercept

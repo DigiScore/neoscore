@@ -22,26 +22,26 @@ class TestStaff(unittest.TestCase):
 
     def test_height(self):
         # 5 lines
-        self.assertAlmostEqual(
+        assert_almost_equal(
             Staff(
                 (Mm(0), Mm(0)), Mm(100), self.flowable, staff_unit=Mm(1.5), line_count=5
             ).height,
             Mm(6),
         )
-        self.assertAlmostEqual(
+        assert_almost_equal(
             Staff(
                 (Mm(0), Mm(0)), Mm(100), self.flowable, staff_unit=Mm(1), line_count=5
             ).height,
             Mm(4),
         )
         # 4 lines
-        self.assertAlmostEqual(
+        assert_almost_equal(
             Staff(
                 (Mm(0), Mm(0)), Mm(100), self.flowable, staff_unit=Mm(1.5), line_count=4
             ).height,
             Mm(4.5),
         )
-        self.assertAlmostEqual(
+        assert_almost_equal(
             Staff(
                 (Mm(0), Mm(0)), Mm(100), self.flowable, staff_unit=Mm(1), line_count=4
             ).height,

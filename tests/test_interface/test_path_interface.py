@@ -11,6 +11,7 @@ from brown.interface.path_interface import PathInterface
 from brown.interface.pen_interface import PenInterface
 from brown.utils.color import Color
 from brown.utils.point import Point
+from brown.utils.units import GraphicUnit
 
 
 class TestPathInterface(unittest.TestCase):
@@ -42,8 +43,7 @@ class TestPathInterface(unittest.TestCase):
     def test_line_to(self):
         test_path = PathInterface(None, Point(5, 6), self.pen, self.brush)
         test_path.line_to(Point(10, 12))
-        assert test_path.current_draw_pos.x == 10
-        assert test_path.current_draw_pos.y == 12
+        assert test_path.current_draw_pos == Point(GraphicUnit(10), GraphicUnit(12))
         assert test_path.qt_path == test_path.qt_object.path()
         assert test_path.qt_path.currentPosition().x() == 10
         assert test_path.qt_path.currentPosition().y() == 12
@@ -52,8 +52,7 @@ class TestPathInterface(unittest.TestCase):
     def test_cubic_to(self):
         test_path = PathInterface(None, Point(5, 6), self.pen, self.brush)
         test_path.cubic_to(Point(10, 11), Point(0, 1), Point(5, 6))
-        assert test_path.current_draw_pos.x == 5
-        assert test_path.current_draw_pos.y == 6
+        assert test_path.current_draw_pos == Point(GraphicUnit(5), GraphicUnit(6))
         assert test_path.qt_path.currentPosition().x() == 5
         assert test_path.qt_path.currentPosition().y() == 6
 
@@ -62,16 +61,15 @@ class TestPathInterface(unittest.TestCase):
         test_path.move_to(Point(10, 11))
         move_to_el = test_path.element_at(0)
         assert test_path.qt_path.elementCount() == 1
-        assert float(move_to_el.pos.x) == 10
-        assert float(move_to_el.pos.y) == 11
+        assert move_to_el.pos.x.value == 10
+        assert move_to_el.pos.y.value == 11
         assert move_to_el.path_interface == test_path
         assert move_to_el.element_type == PathElementType.move_to
 
     def test_close_subpath(self):
         test_path = PathInterface(None, Point(5, 6), self.pen, self.brush)
         test_path.close_subpath()
-        assert test_path.current_draw_pos.x == 0
-        assert test_path.current_draw_pos.y == 0
+        assert test_path.current_draw_pos == Point(0, 0)
         assert test_path.qt_path.currentPosition().x() == 0
         assert test_path.qt_path.currentPosition().y() == 0
 
@@ -79,8 +77,8 @@ class TestPathInterface(unittest.TestCase):
         test_path = PathInterface(None, Point(5, 6), self.pen, self.brush)
         test_path.line_to(Point(10, 11))
         line_to_el = test_path.element_at(1)
-        assert float(line_to_el.pos.x) == 10
-        assert float(line_to_el.pos.y) == 11
+        assert line_to_el.pos.x.value == 10
+        assert line_to_el.pos.y.value == 11
         assert line_to_el.path_interface == test_path
         assert line_to_el.element_type == PathElementType.line_to
 

@@ -1,5 +1,13 @@
 """Various interoperable units classes and some related helper functions."""
 
+# This is needed to support function argument annotations referencing
+# the containing class. (This is not supposed to be needed in Python
+# 3.10, but for some reason in my 3.10.2 environment it's still
+# needed)
+from __future__ import annotations
+
+from typing import Any
+
 _LAST_TYPE_ID = -1
 
 
@@ -30,18 +38,13 @@ class Unit:
         >>> print(Inch(1) + 1)
         Inch(2)
 
-    If an `int` or `float` are on the left hand side of any operator
-    except `*`, `/`, or `//`, a TypeError will be raised.
+    If an `int` or `float` are on the left hand side of any operator,
+    a TypeError will be raised.
 
-        >>> print(2 * Inch(1))
-        Inch(2)
         >>> print(1 + Inch(1))
         Traceback (most recent call last):
          ...
         TypeError: unsupported operand type(s) for +: 'int' and 'Inch'
-
-    Warning: `Unit` objects are immutable. Any attempts to modify them
-        in place will result in much sadness.
     """
 
     __slots__ = ("value",)
@@ -106,27 +109,33 @@ class Unit:
         return "{}({})".format(type(self).__name__, self.value)
 
     def __hash__(self):
-        return hash(self.__repr__())
+        # Add a random constant to prevent collisions with simple numbers
+        return 8726347 ^ hash(self._TYPE_ID) ^ hash(self.value)
 
     # Comparisons -------------------------------------------------------------
 
-    def __lt__(self, other):
-        return self.value < type(self)(other).value
+    def __lt__(self, other: Unit):
+        if self._TYPE_ID == other._TYPE_ID:
+            return self.value < other.value
+        return self._in_base_unit_float < other._in_base_unit_float
 
-    def __le__(self, other):
-        return self.value <= type(self)(other).value
+    def __le__(self, other: Unit):
+        if self._TYPE_ID == other._TYPE_ID:
+            return self.value <= other.value
+        return self._in_base_unit_float <= other._in_base_unit_float
 
-    def __eq__(self, other):
-        return (
-            isinstance(other, (Unit, int, float))
-            and self.value == type(self)(other).value
-        )
+    def __eq__(self, other: Any):
+        return hasattr(other, "_TYPE_ID") and self.value == type(self)(other).value
 
-    def __gt__(self, other):
-        return self.value > type(self)(other).value
+    def __gt__(self, other: Unit):
+        if self._TYPE_ID == other._TYPE_ID:
+            return self.value > other.value
+        return self._in_base_unit_float > other._in_base_unit_float
 
-    def __ge__(self, other):
-        return self.value >= type(self)(other).value
+    def __ge__(self, other: Unit):
+        if self._TYPE_ID == other._TYPE_ID:
+            return self.value >= other.value
+        return self._in_base_unit_float >= other._in_base_unit_float
 
     # Operators ---------------------------------------------------------------
 
@@ -170,26 +179,6 @@ class Unit:
 
     def __abs__(self):
         return type(self)(abs(self.value))
-
-    def __int__(self):
-        return int(self.value)
-
-    def __float__(self):
-        return float(self.value)
-
-    def __round__(self, ndigits=None):
-        return type(self)(round(self.value, ndigits))
-
-    # Reverse Operators -------------------------------------------------------
-
-    def __rmul__(self, other):
-        return type(self)(other * self.value)
-
-    def __rtruediv__(self, other):
-        return type(self)(other / self.value)
-
-    def __rfloordiv__(self, other):
-        return type(self)(other // self.value)
 
 
 class GraphicUnit(Unit):

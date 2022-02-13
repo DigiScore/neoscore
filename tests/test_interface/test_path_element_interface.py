@@ -32,8 +32,8 @@ class TestPathElementInterface(unittest.TestCase):
         test_path.line_to(Point(10, 11))
         qt_element = test_path.qt_path.elementAt(1)
         test_element = PathElementInterface(qt_element, test_path, 1, 1)
-        assert float(test_element.pos.x) == 10
-        assert float(test_element.pos.y) == 11
+        assert test_element.pos.x.value == 10
+        assert test_element.pos.y.value == 11
         assert test_element.path_interface == test_path
         assert test_element.element_type == PathElementType.line_to
         assert test_element.index == 1

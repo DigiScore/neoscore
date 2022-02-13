@@ -9,6 +9,12 @@ from brown.core.path import Path
 from brown.core.path_element_type import PathElementType
 from brown.core.pen import Pen
 from brown.utils.point import Point
+from brown.utils.units import GraphicUnit
+
+# TODO These tests reveal there is inconsistent handling of point
+# positions. Sometimes Point(int, int) is coerced to
+# Point(GraphicUnit, GraphicUnit), and sometimes it isn't. This should
+# be made consistent.
 
 
 class TestPath(unittest.TestCase):
@@ -24,7 +30,7 @@ class TestPath(unittest.TestCase):
         assert path.x == 5
         assert path.y == 6
         assert isinstance(path.current_draw_pos, Point)
-        assert path.current_draw_pos == Point(0, 0)
+        assert path.current_draw_pos == Point(GraphicUnit(0), GraphicUnit(0))
         assert path.pen == test_pen
         assert path.brush == test_brush
 
@@ -33,7 +39,7 @@ class TestPath(unittest.TestCase):
         assert isinstance(test_line.pos, Point)
         assert test_line.x == 5
         assert test_line.y == 6
-        assert test_line.current_draw_pos == Point(10, 11)
+        assert test_line.current_draw_pos == Point(GraphicUnit(10), GraphicUnit(11))
 
     # noinspection PyPropertyAccess
     def test_current_path_pos_has_no_setter(self):
@@ -46,7 +52,7 @@ class TestPath(unittest.TestCase):
         path.line_to(10, 12)
         assert len(path.elements) == 2
         assert path.elements[-1].pos.x == 10
-        assert path.current_draw_pos == Point(10, 12)
+        assert path.current_draw_pos == Point(GraphicUnit(10), GraphicUnit(12))
 
     def test_line_to_with_parent(self):
         path = Path((5, 6))
@@ -59,15 +65,14 @@ class TestPath(unittest.TestCase):
         path.cubic_to(10, 11, 0, 1, 5, 6)
         assert len(path.elements) == 4
         assert path.elements[0].element_type == PathElementType.move_to
-        assert path.elements[0].pos == Point(0, 0)
+        assert path.elements[0].pos == Point(GraphicUnit(0), GraphicUnit(0))
         assert path.elements[1].element_type == PathElementType.control_point
         assert path.elements[1].pos == Point(10, 11)
         assert path.elements[2].element_type == PathElementType.control_point
         assert path.elements[2].pos == Point(0, 1)
         assert path.elements[3].element_type == PathElementType.curve_to
         assert path.elements[3].pos == Point(5, 6)
-        assert path.current_draw_pos.x == 5
-        assert path.current_draw_pos.y == 6
+        assert path.current_draw_pos == Point(GraphicUnit(5), GraphicUnit(6))
 
     def test_cubic_to_with_parents(self):
         path = Path((0, 0))
@@ -77,7 +82,7 @@ class TestPath(unittest.TestCase):
         path.cubic_to(10, 11, 0, 1, 5, 6, parent_1, parent_2, parent_3)
         assert len(path.elements) == 4
         assert path.elements[0].element_type == PathElementType.move_to
-        assert path.elements[0].pos == Point(0, 0)
+        assert path.elements[0].pos == Point(GraphicUnit(0), GraphicUnit(0))
         assert path.elements[1].element_type == PathElementType.control_point
         assert path.elements[1].pos == Point(10, 11)
         assert path.elements[1].parent == parent_1
@@ -87,8 +92,7 @@ class TestPath(unittest.TestCase):
         assert path.elements[3].element_type == PathElementType.curve_to
         assert path.elements[3].pos == Point(5, 6)
         assert path.elements[3].parent == parent_3
-        assert path.current_draw_pos.x == 105
-        assert path.current_draw_pos.y == 56
+        assert path.current_draw_pos == Point(GraphicUnit(105), GraphicUnit(56))
 
     def test_move_to_with_no_parent(self):
         path = Path((5, 6))
@@ -96,8 +100,7 @@ class TestPath(unittest.TestCase):
         assert len(path.elements) == 1
         assert path.elements[0].element_type == PathElementType.move_to
         assert path.elements[0].pos == Point(10, 11)
-        assert path.current_draw_pos.x == 10
-        assert path.current_draw_pos.y == 11
+        assert path.current_draw_pos == Point(GraphicUnit(10), GraphicUnit(11))
 
     def test_move_to_with_parent(self):
         path = Path((0, 0))
@@ -107,8 +110,7 @@ class TestPath(unittest.TestCase):
         assert path.elements[0].element_type == PathElementType.move_to
         assert path.elements[0].pos == Point(10, 11)
         assert path.elements[0].parent == parent
-        assert path.current_draw_pos.x == 110
-        assert path.current_draw_pos.y == 61
+        assert path.current_draw_pos == Point(GraphicUnit(110), GraphicUnit(61))
 
     def test_close_subpath(self):
         path = Path((5, 6))
@@ -117,6 +119,5 @@ class TestPath(unittest.TestCase):
         path.close_subpath()
         assert len(path.elements) == 4
         assert path.elements[3].element_type == PathElementType.move_to
-        assert path.elements[3].pos == Point(0, 0)
-        assert path.current_draw_pos.x == 0
-        assert path.current_draw_pos.y == 0
+        assert path.elements[3].pos == Point(GraphicUnit(0), GraphicUnit(0))
+        assert path.current_draw_pos == Point(GraphicUnit(0), GraphicUnit(0))

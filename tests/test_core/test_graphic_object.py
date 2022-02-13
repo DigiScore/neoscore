@@ -16,8 +16,10 @@ class TestGraphicObject(unittest.TestCase):
     def test_pos_setter_changes_x(self):
         grob = InvisibleObject((5, 6))
         grob.pos = Point(7, 8)
-        assert grob.pos.x == GraphicUnit(7)
-        assert grob.pos.y == GraphicUnit(8)
+        # TODO should it be expected that the pos setter converts to
+        # Point[GraphicUnit]? Should non-unit values be allowed at
+        # all?
+        assert grob.pos == Point(7, 8)
 
     def test_map_between_items(self):
         source = InvisibleObject((5, 6), brown.document.pages[1])
