@@ -7,7 +7,7 @@ from brown.core.music_char import MusicChar
 from brown.core.music_font import MusicFont
 from brown.core.music_text import MusicText
 from brown.core.staff import Staff
-from brown.utils.units import Mm
+from brown.utils.units import GraphicUnit, Mm
 
 
 class TestMusicText(unittest.TestCase):
@@ -19,8 +19,8 @@ class TestMusicText(unittest.TestCase):
     def test_init(self):
         mock_parent = InvisibleObject((10, 11), parent=self.staff)
         test_object = MusicText((5, 6), "accidentalFlat", mock_parent, self.font)
-        assert test_object.x == 5
-        assert test_object.y == 6
+        assert test_object.x == GraphicUnit(5)
+        assert test_object.y == GraphicUnit(6)
         assert test_object.text == "\ue260"
         assert test_object.font == self.font
         assert test_object.parent == mock_parent

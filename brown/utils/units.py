@@ -6,7 +6,7 @@
 # needed)
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, TypeVar, Union
 
 _LAST_TYPE_ID = -1
 
@@ -15,6 +15,9 @@ def _next_type_id():
     global _LAST_TYPE_ID
     _LAST_TYPE_ID += 1
     return _LAST_TYPE_ID
+
+
+TUnit = TypeVar("TUnit", bound="Unit")
 
 
 class Unit:
@@ -29,22 +32,6 @@ class Unit:
         >>> from brown.utils.units import Inch, Mm
         >>> print(Inch(1) + Mm(1))
         Inch(1.0393701)
-
-    If a `Unit` (or subclass) is to the left of an `int` or `float`,
-    the value on the right will be converted to the left object's type
-    before performing the operation. The resulting value will be a new
-    object of the left-side object's type.
-
-        >>> print(Inch(1) + 1)
-        Inch(2)
-
-    If an `int` or `float` are on the left hand side of any operator,
-    a TypeError will be raised.
-
-        >>> print(1 + Inch(1))
-        Traceback (most recent call last):
-         ...
-        TypeError: unsupported operand type(s) for +: 'int' and 'Inch'
     """
 
     __slots__ = ("value",)
@@ -139,45 +126,39 @@ class Unit:
 
     # Operators ---------------------------------------------------------------
 
-    def __add__(self, other):
-        return type(self)(self.value + type(self)(other).value)
+    def __add__(self, other: Unit) -> TUnit:
+        if self._TYPE_ID == other._TYPE_ID:
+            return type(self)(self.value + other.value)
+        return type(self)(
+            self.value + (other._in_base_unit_float / self.CONVERSION_RATE)
+        )
 
-    def __sub__(self, other):
-        return type(self)(self.value - type(self)(other).value)
+    def __sub__(self, other: Unit) -> TUnit:
+        if self._TYPE_ID == other._TYPE_ID:
+            return type(self)(self.value - other.value)
+        return type(self)(
+            self.value - (other._in_base_unit_float / self.CONVERSION_RATE)
+        )
 
-    def __mul__(self, other):
+    def __mul__(self, other: Union[Unit, float]) -> TUnit:
         return type(self)(self.value * type(self)(other).value)
 
-    def __truediv__(self, other):
+    def __truediv__(self, other: Union[Unit, float]) -> TUnit:
         return type(self)(self.value / type(self)(other).value)
 
-    def __floordiv__(self, other):
+    def __floordiv__(self, other: Union[Unit, float]) -> TUnit:
         return type(self)(self.value // type(self)(other).value)
 
-    @staticmethod
-    def _to_int_safe(val):
-        if isinstance(val, int):
-            return val
-        if val.is_integer():
-            return int(val)
-        else:
-            raise ValueError(f"Cannot safely convert {float_val} to integer")
+    def __pow__(self, other: float, modulo: Optional[int] = None) -> TUnit:
+        return type(self)(pow(self.value, other, modulo))
 
-    def __pow__(self, other, modulo=None):
-        if modulo is None:
-            return type(self)(self.value ** type(self)(other).value)
-        else:
-            base = self.value
-            exp = Unit._to_int_safe(type(self)(other).value)
-            return type(self)(pow(base, exp, modulo))
-
-    def __neg__(self):
+    def __neg__(self) -> TUnit:
         return type(self)(-self.value)
 
-    def __pos__(self):
+    def __pos__(self) -> TUnit:
         return type(self)(+self.value)
 
-    def __abs__(self):
+    def __abs__(self) -> TUnit:
         return type(self)(abs(self.value))
 
 

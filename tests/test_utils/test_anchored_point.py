@@ -4,7 +4,7 @@ import pytest
 
 from brown.utils.parent_point import ParentPoint
 from brown.utils.point import Point
-from brown.utils.units import Unit
+from brown.utils.units import GraphicUnit, Unit
 
 
 class TestParentPoint(unittest.TestCase):
@@ -14,8 +14,8 @@ class TestParentPoint(unittest.TestCase):
 
     def test_init(self):
         test_point = ParentPoint(5, 6, self.test_parent)
-        assert test_point.x == 5
-        assert test_point.y == 6
+        assert test_point.x == GraphicUnit(5)
+        assert test_point.y == GraphicUnit(6)
         assert test_point.parent == self.test_parent
 
     def test_from_existing(self):

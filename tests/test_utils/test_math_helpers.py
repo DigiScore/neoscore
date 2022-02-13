@@ -6,17 +6,17 @@ from brown.utils.math_helpers import (
     sign,
 )
 from brown.utils.point import Point
-from brown.utils.units import Unit
+from brown.utils.units import GraphicUnit, Unit
 
 
 def test_linear_interp():
-    assert interpolate((0, 0), (1, 1), 2) == 2
-    assert interpolate((1, 1), (0, 0), -1) == -1
-    assert interpolate((0, 0), (2, 1), 3) == 1.5
+    assert interpolate((0, 0), (1, 1), 2) == GraphicUnit(2)
+    assert interpolate((1, 1), (0, 0), -1) == GraphicUnit(-1)
+    assert interpolate((0, 0), (2, 1), 3) == GraphicUnit(1.5)
 
 
 def test_linear_interp_with_points():
-    assert interpolate(Point(0, 0), Point(1, 1), 2) == 2
+    assert interpolate(Point(0, 0), Point(1, 1), 2) == GraphicUnit(2)
 
 
 def test_linear_interp_with_units_preserves_units():

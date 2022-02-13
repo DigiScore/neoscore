@@ -33,8 +33,8 @@ class TestPathInterface(unittest.TestCase):
         assert test_path.qt_object.brush() == self.brush.qt_object
         assert test_path.pen == self.pen
         assert test_path.qt_object.pen() == self.pen.qt_object
-        assert test_path.current_draw_pos.x == 0
-        assert test_path.current_draw_pos.y == 0
+        assert test_path.current_draw_pos.x == GraphicUnit(0)
+        assert test_path.current_draw_pos.y == GraphicUnit(0)
 
     def test_initial_element_count_is_0(self):
         test_path = PathInterface(None, Point(5, 6), self.pen, self.brush)

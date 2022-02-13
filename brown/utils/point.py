@@ -1,4 +1,6 @@
-from brown.utils.units import Unit
+from typing import Union
+
+from brown.utils.units import GraphicUnit, Unit
 
 
 class Point:
@@ -9,14 +11,14 @@ class Point:
 
     __slots__ = ("_x", "_y")
 
-    def __init__(self, x, y):
+    def __init__(self, x: Union[Unit, float], y: Union[Unit, float]):
         """
         Args:
             x (float or Unit): The x axis position
             y (float or Unit): The y axis position
         """
-        self._x = x
-        self._y = y
+        self._x = x if isinstance(x, Unit) else GraphicUnit(x)
+        self._y = y if isinstance(y, Unit) else GraphicUnit(y)
 
     ######## PUBLIC CLASS METHODS ########
 
@@ -45,22 +47,22 @@ class Point:
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def x(self):
+    def x(self) -> Unit:
         """Unit, int, or float: The x coordinate of the point."""
         return self._x
 
     @x.setter
     def x(self, value):
-        self._x = value
+        self._x = value if isinstance(value, Unit) else GraphicUnit(value)
 
     @property
-    def y(self):
+    def y(self) -> Unit:
         """Unit, int, or float: The y coordinate of the point."""
         return self._y
 
     @y.setter
     def y(self, value):
-        self._y = value
+        self._y = value if isinstance(value, Unit) else GraphicUnit(value)
 
     ######## PUBLIC METHODS ########
 
@@ -127,6 +129,3 @@ class Point:
 
     def __abs__(self):
         return type(self)(abs(self.x), abs(self.y))
-
-    def __round__(self, ndigits=None):
-        return type(self)(round(self.x, ndigits), round(self.y, ndigits))

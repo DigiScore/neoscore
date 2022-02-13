@@ -11,11 +11,6 @@ from brown.core.pen import Pen
 from brown.utils.point import Point
 from brown.utils.units import GraphicUnit
 
-# TODO These tests reveal there is inconsistent handling of point
-# positions. Sometimes Point(int, int) is coerced to
-# Point(GraphicUnit, GraphicUnit), and sometimes it isn't. This should
-# be made consistent.
-
 
 class TestPath(unittest.TestCase):
     def setUp(self):
@@ -27,8 +22,8 @@ class TestPath(unittest.TestCase):
         test_brush = Brush("#dddddd")
         path = Path((5, 6), test_pen, test_brush, mock_parent)
         assert isinstance(path.pos, Point)
-        assert path.x == 5
-        assert path.y == 6
+        assert path.x == GraphicUnit(5)
+        assert path.y == GraphicUnit(6)
         assert isinstance(path.current_draw_pos, Point)
         assert path.current_draw_pos == Point(GraphicUnit(0), GraphicUnit(0))
         assert path.pen == test_pen
@@ -37,8 +32,8 @@ class TestPath(unittest.TestCase):
     def test_straight_line(self):
         test_line = Path.straight_line((5, 6), (10, 11))
         assert isinstance(test_line.pos, Point)
-        assert test_line.x == 5
-        assert test_line.y == 6
+        assert test_line.x == GraphicUnit(5)
+        assert test_line.y == GraphicUnit(6)
         assert test_line.current_draw_pos == Point(GraphicUnit(10), GraphicUnit(11))
 
     # noinspection PyPropertyAccess
@@ -51,7 +46,7 @@ class TestPath(unittest.TestCase):
         path = Path((5, 6))
         path.line_to(10, 12)
         assert len(path.elements) == 2
-        assert path.elements[-1].pos.x == 10
+        assert path.elements[-1].pos.x == GraphicUnit(10)
         assert path.current_draw_pos == Point(GraphicUnit(10), GraphicUnit(12))
 
     def test_line_to_with_parent(self):

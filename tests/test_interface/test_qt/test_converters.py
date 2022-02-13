@@ -18,15 +18,15 @@ from brown.utils.units import GraphicUnit
 def test_qt_point_to_point_with_q_point():
     point = qt_point_to_point(QPoint(1, 2))
     assert isinstance(point, Point)
-    assert point.x == 1
-    assert point.y == 2
+    assert point.x == GraphicUnit(1)
+    assert point.y == GraphicUnit(2)
 
 
 def test_qt_point_to_point_with_q_point_f():
     point = qt_point_to_point(QPointF(1.5, 2.5))
     assert isinstance(point, Point)
-    assert point.x == 1.5
-    assert point.y == 2.5
+    assert point.x == GraphicUnit(1.5)
+    assert point.y == GraphicUnit(2.5)
 
 
 def test_qt_point_to_point_with_q_point_and_unit_class():

@@ -74,16 +74,18 @@ class TestUnit(unittest.TestCase):
     def test__add__(self):
         assert isinstance(Unit(1) + Unit(2), Unit)
         assert isinstance(Unit(1) + MockUnit(2), Unit)
-        assert (Unit(1) + Unit(2)).value == 3
-        assert (Unit(1) + 2).value == 3
-        assert (Unit(1) + MockUnit(1)).value == 3
+        assert Unit(1) + Unit(2) == Unit(3)
+        assert Unit(1) + MockUnit(2) == Unit(5)
+        with pytest.raises(AttributeError):
+            Unit(1) + 2
 
     def test__sub__(self):
         assert isinstance(Unit(1) - Unit(2), Unit)
         assert isinstance(Unit(1) - MockUnit(2), Unit)
-        assert (Unit(1) - Unit(2)).value == -1
-        assert (Unit(1) - 2).value == -1
-        assert (Unit(1) - MockUnit(1)).value == -1
+        assert Unit(1) - Unit(2) == Unit(-1)
+        assert Unit(1) - MockUnit(2) == Unit(-3)
+        with pytest.raises(AttributeError):
+            Unit(1) + 2
 
     def test__mul__(self):
         assert isinstance(Unit(1) * Unit(2), Unit)
@@ -107,18 +109,15 @@ class TestUnit(unittest.TestCase):
         assert (Unit(1) // MockUnit(1)).value == 0
 
     def test__pow__no_modulo(self):
-        assert isinstance(Unit(1) ** Unit(2), Unit)
-        assert isinstance(Unit(1) ** MockUnit(2), Unit)
-        assert (Unit(2) ** Unit(2)).value == 4
-        assert (Unit(2) ** 2).value == 4
-        assert (Unit(2) ** MockUnit(1)).value == 4
+        assert (Unit(2) ** 3) == Unit(8)
+        with pytest.raises(TypeError):
+            Unit(2) ** Unit(3)
 
     def test__pow__with_modulo(self):
-        assert isinstance(pow(Unit(2), Unit(2), 3), Unit)
-        assert isinstance(pow(Unit(2), MockUnit(2), 3), Unit)
-        assert (pow(Unit(2), Unit(2), 3)).value == 1
         assert (pow(Unit(2), 2, 3)).value == 1
-        assert (pow(Unit(2), MockUnit(1), 3)).value == 1
+        with pytest.raises(TypeError):
+            # To use modulo, base value must be an int
+            pow(Unit(2.3), 2, 1)
 
     def test__neg__(self):
         assert -Unit(2) == Unit(-(2))

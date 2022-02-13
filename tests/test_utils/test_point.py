@@ -4,14 +4,19 @@ import pytest
 
 from brown.utils.parent_point import ParentPoint
 from brown.utils.point import Point
-from brown.utils.units import Mm, Unit
+from brown.utils.units import GraphicUnit, Mm, Unit
 
 
 class TestPoint(unittest.TestCase):
     def test_init(self):
+        test_point = Point(Mm(5), Mm(6))
+        assert test_point.x == Mm(5)
+        assert test_point.y == Mm(6)
+
+    def test_init_with_numbers_converts_to_graphic_unit(self):
         test_point = Point(5, 6)
-        assert test_point.x == 5
-        assert test_point.y == 6
+        assert test_point.x == GraphicUnit(5)
+        assert test_point.y == GraphicUnit(6)
 
     def test_from_existing(self):
         original = Point(5, 6)
@@ -82,6 +87,3 @@ class TestPoint(unittest.TestCase):
 
     def test__abs__(self):
         assert abs(Point(-2, -3)) == Point(2, 3)
-
-    def test__round__(self):
-        assert round(Point(1.05, -3.03)) == Point(1, -3)
