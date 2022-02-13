@@ -97,7 +97,7 @@ class Unit:
 
     def __hash__(self):
         # Add a random constant to prevent collisions with simple numbers
-        return 8726347 ^ hash(self._TYPE_ID) ^ hash(self.value)
+        return 8726347 ^ hash(self._in_base_unit_float)
 
     # Comparisons -------------------------------------------------------------
 
