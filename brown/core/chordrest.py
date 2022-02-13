@@ -355,7 +355,7 @@ class Chordrest(ObjectGroup, StaffObject):
             key=lambda n: n.staff_pos,
             reverse=(self.stem_direction == -1),
         ):
-            if abs(prev_staff_pos - note.staff_pos) < 1:
+            if abs(prev_staff_pos - note.staff_pos) < self.staff.unit(1):
                 # This note collides with previous, use switch sides
                 prev_side = -1 * prev_side
             else:

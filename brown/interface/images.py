@@ -15,7 +15,7 @@ supported_formats = {
     ".xpm",
 }
 
-_inches_per_meter = (Inch(1) / Mm(1000)).value
+_inches_per_meter = Inch(1) / Mm(1000)
 
 
 def dpi_to_dpm(dpi):

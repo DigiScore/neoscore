@@ -3,6 +3,7 @@
 from fractions import Fraction
 
 from brown.utils.point import Point
+from brown.utils.units import GraphicUnit, Unit
 
 
 # TODO because Point now converts its args to Units, this now
@@ -19,13 +20,15 @@ def interpolate(line_start, line_end, x):
 
     Returns: Unit
     """
+    if not isinstance(x, Unit):
+        x = GraphicUnit(x)
     if not isinstance(line_start, Point):
         line_start = Point(*line_start)
     if not isinstance(line_end, Point):
         line_end = Point(*line_end)
     slope = (line_end.y - line_start.y) / (line_end.x - line_start.x)
-    y_intercept = line_start.y - (slope * line_start.x)
-    return (slope * x) + y_intercept
+    y_intercept = line_start.y - (line_start.x * slope)
+    return (x * slope) + y_intercept
 
 
 def clamp_value(value, minimum, maximum):

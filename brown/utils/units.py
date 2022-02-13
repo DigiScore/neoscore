@@ -143,11 +143,14 @@ class Unit:
     def __mul__(self, other: Union[Unit, float]) -> TUnit:
         return type(self)(self.value * type(self)(other).value)
 
-    def __truediv__(self, other: Union[Unit, float]) -> TUnit:
-        return type(self)(self.value / type(self)(other).value)
-
-    def __floordiv__(self, other: Union[Unit, float]) -> TUnit:
-        return type(self)(self.value // type(self)(other).value)
+    def __truediv__(self, other: Union[Unit, float]) -> Union[TUnit, float]:
+        if hasattr(other, "_TYPE_ID"):
+            # Unit / Unit -> Float
+            if self._TYPE_ID == other._TYPE_ID:
+                return self.value / other.value
+            return self._in_base_unit_float / other._in_base_unit_float
+        # Unit / Float -> Unit
+        return type(self)(self.value / other)
 
     def __pow__(self, other: float, modulo: Optional[int] = None) -> TUnit:
         return type(self)(pow(self.value, other, modulo))
@@ -160,6 +163,8 @@ class Unit:
 
     def __abs__(self) -> TUnit:
         return type(self)(abs(self.value))
+
+    # TODO maybe restore support for __rmul__
 
 
 class GraphicUnit(Unit):

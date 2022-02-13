@@ -121,18 +121,14 @@ class Hairpin(Path, StaffObject, Spanner):
         #   previous if / elif statements catch those possibilities
         center_slope = relative_stop.y / relative_stop.x
         opening_slope = (center_slope * -1) ** -1
-        opening_y_intercept = (opening_slope * end_center.x) - end_center.y
+        opening_y_intercept = (end_center.x * opening_slope) - end_center.y
         # Find needed x coordinates of outer points
         #     x = dist / sqrt(1 + slope^2)
-        first_x = end_center.x + (
-            dist / math.sqrt((type(opening_slope)(1) + (opening_slope**2)).value)
-        )
-        last_x = end_center.x - (
-            dist / math.sqrt((type(opening_slope)(1) + (opening_slope**2)).value)
-        )
+        first_x = end_center.x + (dist / math.sqrt(1 + (opening_slope**2)))
+        last_x = end_center.x - (dist / math.sqrt(1 + (opening_slope**2)))
         # Calculate matching y coordinates from opening line function
-        first_y = (opening_slope * first_x) - opening_y_intercept
-        last_y = (opening_slope * last_x) - opening_y_intercept
+        first_y = (first_x * opening_slope) - opening_y_intercept
+        last_y = (last_x * opening_slope) - opening_y_intercept
         return (
             (ParentPoint(first_x, first_y, parent=end_center.parent)),
             joint,

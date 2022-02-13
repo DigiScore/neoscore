@@ -99,18 +99,8 @@ class TestUnit(unittest.TestCase):
         assert (Unit(1) * MockUnit(1)).value == 2
 
     def test__truediv__(self):
-        assert isinstance(Unit(1) / Unit(2), Unit)
-        assert isinstance(Unit(1) / MockUnit(2), Unit)
-        assert (Unit(1) / Unit(2)).value == 0.5
-        assert (Unit(1) / 2).value == 0.5
-        assert (Unit(1) / MockUnit(1)).value == 0.5
-
-    def test__floordiv__(self):
-        assert isinstance(Unit(1) // Unit(2), Unit)
-        assert isinstance(Unit(1) // MockUnit(2), Unit)
-        assert (Unit(1) // Unit(2)).value == 0
-        assert (Unit(1) // 2).value == 0
-        assert (Unit(1) // MockUnit(1)).value == 0
+        assert Unit(1) / 2 == Unit(0.5)
+        assert Unit(1) / MockUnit(1) == 0.5
 
     def test__pow__no_modulo(self):
         assert (Unit(2) ** 3) == Unit(8)

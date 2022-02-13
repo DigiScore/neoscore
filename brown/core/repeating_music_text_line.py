@@ -56,4 +56,4 @@ class RepeatingMusicTextLine(MusicText, StaffObject, HorizontalSpanner):
         text will always be <= self.length.
         """
         base_width = self._char_list_bounding_rect(self.repeating_music_chars).width
-        return int((self.length / base_width).value)
+        return int(self.length / base_width)
