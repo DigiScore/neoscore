@@ -1,4 +1,7 @@
+from typing import Dict
+
 from brown.core.accidental import Accidental
+from brown.core.clef import Clef
 from brown.core.music_text import MusicText
 from brown.core.object_group import ObjectGroup
 from brown.core.staff_object import StaffObject
@@ -145,7 +148,13 @@ class _KeySignatureAccidental(MusicText, StaffObject):
         return self._length
 
     def _overlaps_with_clef(self, clef, padded_clef_width):
+        cached_overlaps = getattr(self, "_clef_overlaps", None)
+        if cached_overlaps:
+            return cached_overlaps[clef]
         return self.flowable.map_between_locally(clef, self).x < padded_clef_width
+
+    def _padded_clef_width(self, clef):
+        return clef.bounding_rect.width + self.staff.unit(0.5)
 
     def _render_occurrence(self, pos, local_start_x):
         """Render one appearance of one key signature accidental.
@@ -163,16 +172,28 @@ class _KeySignatureAccidental(MusicText, StaffObject):
         if clef is None:
             return
         clef_type = clef.clef_type
-        padded_clef_width = clef.bounding_rect.width + self.staff.unit(0.5)
         pos_tuple = _KeySignatureAccidental.positions[self.accidental_type][clef_type][
             self.pitch_letter
         ]
         visual_pos = (
             Point(self.staff.unit(pos_tuple[0]), self.staff.unit(pos_tuple[1])) + pos
         )
+        padded_clef_width = self._padded_clef_width(clef)
         if self._overlaps_with_clef(clef, padded_clef_width):
             visual_pos.x += padded_clef_width
         self._render_slice(visual_pos, None)
+
+    def _compute_clef_overlaps(self) -> Dict[Clef, bool]:
+        return {
+            clef: self._overlaps_with_clef(clef, self._padded_clef_width(clef))
+            for (_, clef) in self.staff.clefs()
+        }
+
+    def _pre_render_hook(self):
+        self._clef_overlaps = self._compute_clef_overlaps()
+
+    def _post_render_hook(self):
+        self._clef_overlaps = None
 
     def _render_complete(self, pos, dist_to_line_start=None, local_start_x=None):
         self._render_occurrence(pos, local_start_x)

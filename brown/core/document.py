@@ -88,13 +88,20 @@ class Document:
 
     ######## PRIVATE METHODS ########
 
+    def _run_on_all_grobs(self, func):
+        for page in self.pages:
+            for grob in page.descendants:
+                func(grob)
+
     def _render(self):
         """Render all items in the document.
 
         Returns: None
         """
+        self._run_on_all_grobs(lambda g: g._pre_render_hook())
         for page in self.pages:
             page._render()
+        self._run_on_all_grobs(lambda g: g._post_render_hook())
 
     ######## PUBLIC METHODS ########
 

@@ -1,3 +1,5 @@
+from typing import Iterator, List
+
 from brown import constants
 from brown.core.clef import Clef
 from brown.core.music_font import MusicFont
@@ -132,6 +134,19 @@ class Staff(Path):
             return self.length - start_x
         return closest_x - start_x
 
+    def clefs(self) -> Iterator[tuple[Unit, Clef]]:
+        """All the clefs in this staff, ordered by their relative x pos."""
+        cached_clef_positions = getattr(self, "_clef_x_positions", None)
+        if cached_clef_positions:
+            return cached_clef_positions
+        return sorted(
+            (
+                (clef.pos_in_staff.x, clef)
+                for clef in self.descendants_of_class_or_subclass(Clef)
+            ),
+            key=lambda tup: tup[0],
+        )
+
     def active_clef_at(self, pos_x):
         """Find and return the active clef at a given x position.
 
@@ -142,14 +157,10 @@ class Staff(Path):
             Clef: The active clef at `pos_x`
             None: If no clef is active at `pos_x`
         """
-        return max(
-            (
-                clef
-                for clef in self.descendants_of_class_or_subclass(Clef)
-                if clef.pos_in_staff.x <= pos_x
-            ),
-            key=lambda clef: clef.pos_in_staff.x,
-            default=None,
+        clefs = self.clefs()
+        return next(
+            (clef for (clef_x, clef) in reversed(clefs) if clef_x <= pos_x),
+            None,
         )
 
     def active_transposition_at(self, pos_x):
@@ -262,3 +273,17 @@ class Staff(Path):
             type: A new StaffUnit class specifically for use in this staff.
         """
         return make_unit_class("StaffUnit", staff_unit_size)
+
+    def _compute_clef_x_positions(self) -> list[tuple[Unit, Clef]]:
+        result = [
+            (clef.pos_in_staff.x, clef)
+            for clef in self.descendants_of_class_or_subclass(Clef)
+        ]
+        result.sort(key=lambda tup: tup[0])
+        return result
+
+    def _pre_render_hook(self):
+        self._clef_x_positions = self._compute_clef_x_positions()
+
+    def _post_render_hook(self):
+        self._clef_x_positions = None

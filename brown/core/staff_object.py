@@ -32,13 +32,16 @@ class StaffObject:
         """Staff: The staff associated with this object"""
         return self._staff
 
+    # TODO this is very slow. one simple optimization would be
+    # specializing the subroutines to compute X positions only, since
+    # they're all that's needed for this. it would be noisy, but it
+    # could improve speed by nearly half. Alternatively this could be
+    # cached, but invalidation is tricky.
     @property
     def pos_in_staff(self):
         """Point: The position of this object relative to the staff.
 
         This position is in non-flowed space.
-
-        # TODO: Definitely cache me when property caching is implemented
         """
         if self.flowable:
             return self.flowable.map_between_locally(self.staff, self)
