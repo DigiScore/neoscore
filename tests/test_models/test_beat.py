@@ -12,12 +12,6 @@ class TestBeat(unittest.TestCase):
         assert dur.numerator == 1
         assert dur.denominator == 4
 
-    def test_init_from_existing_beat(self):
-        original_dur = Beat(1, 4)
-        dur = Beat(original_dur)
-        assert dur.numerator == 1
-        assert dur.denominator == 4
-
     def test_nested_is_not_reduced(self):
         dur = Beat(Beat(1, 2), 4)
         assert isinstance(dur.numerator, Beat)

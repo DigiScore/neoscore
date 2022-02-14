@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 from fractions import Fraction
+from typing import Optional, Union
 
 from brown.utils.math_helpers import float_to_rounded_fraction_tuple
 
@@ -39,7 +42,7 @@ class Beat:
     # TODO: How to handle things like duplet over dotted quarter?
     """
 
-    def __init__(self, *args):
+    def __init__(self, numerator: Union[int, Beat], denominator: int):
         """
         *args:
             numerator (int or Beat):
@@ -50,18 +53,11 @@ class Beat:
         OR:
             beat (Beat): An existing Beat
         """
-        if len(args) == 2:
-            self._numerator, self._denominator = args
-        elif len(args) == 1:
-            if isinstance(args[0], type(self)):
-                self._numerator = args[0].numerator
-                self._denominator = args[0].denominator
-            else:
-                fraction = float_to_rounded_fraction_tuple(args[0])
-                self._numerator, self._denominator = fraction
-        else:
-            raise TypeError("Invalid Beat init signature")
-
+        # TODO maybe remove the float value argument form, since this
+        # adds a lot of complexity and it's a pretty uncommon
+        # use-case. Otherwise move it to a constructor classmethod.
+        self._numerator = numerator
+        self._denominator = denominator
         self._collapsed_fraction = self.to_fraction()
 
         # Calculate base division and dot count
@@ -90,7 +86,9 @@ class Beat:
     ######## CONSTRUCTORS ########
 
     @classmethod
-    def from_float(cls, value, round_to=None, limit_denominator=1024):
+    def from_float(
+        cls, value: float, round_to: Optional[int] = None, limit_denominator: int = 1024
+    ) -> Beat:
         """Initialize from a float with an optional denominator to round toward.
 
         Args:
@@ -117,39 +115,36 @@ class Beat:
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def value(self):
-        return float(self.collapsed_fraction)
-
-    @property
-    def requires_tie(self):
-        """bool: If this Beat requires a tie to be written."""
+    def requires_tie(self) -> bool:
+        """If this Beat requires a tie to be written."""
         return self._requires_tie
 
     @property
-    def numerator(self):
-        """int or Beat: The numerator component of the beat fraction.
+    def numerator(self) -> Union[int, Beat]:
+        """The numerator component of the beat fraction.
 
-        If this is a `Beat`, `self` will represent a tuplet.
+        This may itself be a `Beat` if the outer beat represents a tuplet.
         """
         return self._numerator
 
     @property
-    def denominator(self):
-        """int: The denominator component of the beat fraction."""
+    def denominator(self) -> int:
+        """The denominator component of the beat fraction."""
         return self._denominator
 
     @property
-    def dot_count(self):
-        """int: The number of dots this beat has."""
+    def dot_count(self) -> int:
+        """The number of dots this beat has."""
         return self._dot_count
 
     @property
-    def base_division(self):
-        """int: The basic division of the beat."""
+    def base_division(self) -> int:
+        """The basic division of the beat."""
+        # TODO Explain mor what this means
         return self._base_division
 
     @property
-    def collapsed_fraction(self):
+    def collapsed_fraction(self) -> Fraction:
         """Fraction: The collapsed `int / int` `Fraction` of this beat."""
         return self._collapsed_fraction
 
@@ -244,7 +239,7 @@ class Beat:
 
     ######## PUBLIC METHODS ########
 
-    def to_fraction(self):
+    def to_fraction(self) -> Fraction:
         """Collapse this `Beat` into a single `Fraction` and return it.
 
         This recursively collapses any nested `Beat`s and simplifies
