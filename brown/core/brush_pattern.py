@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import Enum, auto
 
 
 class BrushPattern(Enum):
@@ -10,6 +10,8 @@ class BrushPattern(Enum):
     and arbitrary custom patterns. See the following page from
     the relevant Qt docs:
         https://doc.qt.io/qt-5/qt.html#BrushStyle-enum
+
+    The corresponding integer values must align with Qt's enum values.
     """
 
     NO_BRUSH = 0

@@ -9,6 +9,8 @@ class PenPattern(Enum):
     but if needed it is possible to implement arbitrary custom
     patterns. See the following page from the relevant Qt docs:
         http://doc.qt.io/qt-5.7/qt.html#PenStyle-enum
+
+    The corresponding integer values must align with Qt's enum values.
     """
 
     SOLID = 1

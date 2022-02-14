@@ -1,30 +1,30 @@
-from enum import Enum
+from enum import Enum, auto
 
 
 class InstrumentFamily(Enum):
 
     """Common instrument categories."""
 
-    string = 0
+    string = auto()
     """String instruments"""
 
-    wind = 1
+    wind = auto()
     """Woodwind instruments"""
 
-    brass = 2
+    brass = auto()
     """Brass instruments"""
 
-    percussion = 3
+    percussion = auto()
     """Percussion instruments"""
 
-    keyboard = 4
+    keyboard = auto()
     """Keyboard instruments"""
 
-    electronic = 5
+    electronic = auto()
     """Primarily electronic instruments"""
 
-    voice = 6
+    voice = auto()
     """Singing or speaking instruments"""
 
-    other = 7
+    other = auto()
     """Catch-all for everything else"""
