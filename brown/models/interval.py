@@ -59,6 +59,23 @@ class Interval:
             # can only be perfect, augmented, or diminished
             raise InvalidIntervalError
 
+    ######## SPECIAL METHODS ########
+
+    def __repr__(self):
+        return "Interval('{}{}{}')".format(self.direction, self.quality, self.distance)
+
+    def __hash__(self):
+        """`Beat`s equal to each other share the same hash."""
+        return hash(self.direction) ^ hash(self.quality) ^ hash(self.distance)
+
+    def __eq__(self, other):
+        return (
+            isinstance(other, Interval)
+            and self.direction == other.direction
+            and self.quality == other.quality
+            and self.distance == other.distance
+        )
+
     ######## PUBLIC PROPERTIES ########
 
     @property

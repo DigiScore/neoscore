@@ -3,6 +3,24 @@ import pytest
 from brown.models.interval import Interval, InvalidIntervalError
 
 
+def test__repr__():
+    assert str(Interval("am2")) == "Interval('am2')"
+
+
+def test__eq__():
+    assert Interval("am2") == Interval("am2")
+    assert Interval("am2") != Interval("dm2")
+    assert Interval("am2") != Interval("aM2")
+    assert Interval("am2") != Interval("am3")
+
+
+def test__hash__():
+    assert hash(Interval("am2")) == hash(Interval("am2"))
+    assert hash(Interval("am2")) != hash(Interval("dm2"))
+    assert hash(Interval("am2")) != hash(Interval("aM2"))
+    assert hash(Interval("am2")) != hash(Interval("am3"))
+
+
 def test_interval_direction():
     assert Interval("am2").direction == "a"
     assert Interval("dm2").direction == "d"
