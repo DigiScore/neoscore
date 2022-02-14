@@ -62,10 +62,8 @@ class Pitch:
         )
 
     def __hash__(self):
-        """Hash based on the __repr__() of the Pitch.
-
-        Pitches with different attributes will have different hashes"""
-        return hash(self.__repr__())
+        """Pitches with different attributes will have different hashes"""
+        return hash(self.letter) ^ hash(self.accidental_type) ^ self.octave
 
     ######## PUBLIC PROPERTIES ########
 

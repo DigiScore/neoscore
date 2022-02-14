@@ -52,7 +52,7 @@ class ParentPoint(Point):
         return "{}({}, {}, {})".format(type(self).__name__, self.x, self.y, self.parent)
 
     def __hash__(self):
-        return hash(self.__repr__())
+        return hash(self.x) ^ hash(self.y) ^ hash(self.parent)
 
     def __eq__(self, other):
         """Two ParentPoints are equal if their attributes are all equal.

@@ -145,7 +145,6 @@ class Paper:
     def __hash__(self):
         return hash(
             (
-                self.__class__,
                 self.width,
                 self.height,
                 self.margin_top,

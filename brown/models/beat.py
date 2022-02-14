@@ -162,7 +162,7 @@ class Beat:
 
     def __hash__(self):
         """`Beat`s equal to each other share the same hash."""
-        return hash(self.__repr__())
+        return 2387591 ^ hash(self.numerator) ^ hash(self.denominator)
 
     def __float__(self):
         """Reduce the fractional representation to a `float` and return it."""

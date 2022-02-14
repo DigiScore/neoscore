@@ -46,11 +46,8 @@ class Color:
         )
 
     def __hash__(self):
-        """A Color's hash is a hash of its __repr__().
-
-        Colors with equal properties will have the same hash.
-        """
-        return hash(self.__repr__())
+        """Colors with equal properties will have the same hash."""
+        return 23467817 ^ self.red ^ self.green ^ self.blue ^ self.alpha
 
     ######## PUBLIC PROPERTIES ########
 
