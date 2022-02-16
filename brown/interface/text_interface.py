@@ -1,8 +1,30 @@
+from typing import Dict, NamedTuple, Optional
+
+from PyQt5.QtGui import QFont, QPainterPath
+
 from brown.core import brown
+from brown.interface.font_interface import FontInterface
 from brown.interface.graphic_object_interface import GraphicObjectInterface
 from brown.interface.qt.converters import point_to_qt_point_f
+from brown.interface.qt.q_clipping_path import QClippingPath
 from brown.interface.qt.q_enhanced_text_item import QEnhancedTextItem
 from brown.utils.point import Point
+from brown.utils.units import GraphicUnit
+
+
+class _CachedTextKey(NamedTuple):
+    text: str
+    family_name: str
+    weight: Optional[int]
+    italic: bool
+
+
+class _CachedTextPath(NamedTuple):
+    path: QPainterPath
+    generation_font_size: float
+
+
+_PATH_CACHE: Dict[_CachedTextKey, _CachedTextPath] = {}
 
 
 class TextInterface(GraphicObjectInterface):
@@ -36,26 +58,19 @@ class TextInterface(GraphicObjectInterface):
                 Use `None` to render to the end
         """
         super().__init__(brown_object)
-        if origin_offset:
-            self._origin_offset = origin_offset
-        else:
-            self._origin_offset = Point(0, 0)
-        self._scale_factor = scale_factor
+        # if origin_offset:
+        #     self._origin_offset = origin_offset
+        # else:
+        #     self._origin_offset = Point(0, 0)
+        # self._scale_factor = scale_factor
         self._text = text
         self.clip_start_x = clip_start_x
         self.clip_width = clip_width
-        self.qt_object = QEnhancedTextItem(
-            self.text,
-            origin_offset=point_to_qt_point_f(self.origin_offset),
-            scale_factor=self.scale_factor,
-            clip_start_x=self.clip_start_x,
-            clip_width=self.clip_width,
-        )
+        self.qt_object = self._get_path(text, font)
         # Let setters trigger Qt setters for attributes not in constructor
-        self.font = font
         self.pos = pos
         self.brush = brush
-        self.update_geometry()
+        # self.update_geometry()
 
     ######## PUBLIC PROPERTIES ########
 
@@ -68,16 +83,6 @@ class TextInterface(GraphicObjectInterface):
     def text(self, value):
         self._text = value
         self.qt_object.setText(value)
-
-    @property
-    def font(self):
-        """FontInterface: The font object for the text"""
-        return self._font
-
-    @font.setter
-    def font(self, value):
-        self._font = value
-        self.qt_object.setFont(value.qt_object)
 
     @property
     def origin_offset(self):
@@ -101,8 +106,8 @@ class TextInterface(GraphicObjectInterface):
 
     ######## PUBLIC METHODS ########
 
-    def update_geometry(self):
-        self.qt_object.update_geometry()
+    # def update_geometry(self):
+    #     self.qt_object.update_geometry()
 
     def render(self):
         """Render the line to the scene.
@@ -110,3 +115,25 @@ class TextInterface(GraphicObjectInterface):
         Returns: None
         """
         brown._app_interface.scene.addItem(self.qt_object)
+
+    ######## PRIVATE METHODS ########
+
+    def _get_path(self, text: str, font: FontInterface):
+        qt_font = font.qt_object
+        needed_font_size = qt_font.pointSizeF()
+        key = _CachedTextKey(text, font.family_name, font.weight, font.italic)
+        cached_result = _PATH_CACHE.get(key)
+        if cached_result:
+            scale = needed_font_size / cached_result.generation_font_size
+            return QClippingPath(
+                cached_result.path, self.clip_start_x, self.clip_width, scale
+            )
+        path = TextInterface._create_qt_path(text, qt_font)
+        _PATH_CACHE[key] = _CachedTextPath(path, needed_font_size)
+        return QClippingPath(path, self.clip_start_x, self.clip_width, 1)
+
+    @staticmethod
+    def _create_qt_path(text: str, font: QFont) -> QPainterPath:
+        qt_path = QPainterPath()
+        qt_path.addText(0, 0, font, text)
+        return qt_path

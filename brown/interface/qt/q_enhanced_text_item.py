@@ -3,6 +3,13 @@ from PyQt5 import QtCore, QtWidgets
 from brown.interface.qt.converters import unit_to_qt_float
 from brown.interface.qt.q_clipping_path import QClippingPath
 
+""" NOTE: I think the origin offset stuff is only needed because QT's
+QGraphicsSimpleTextItem sets its original from the top left corner of
+text, and we need to position them from their baseline. By using raw
+paths for all text items, then using QPainterPath.addText --- which
+positions from baseline --- I think we can avoid this complication
+entirely.  """
+
 
 class QEnhancedTextItem(QtWidgets.QGraphicsSimpleTextItem):
 
@@ -60,17 +67,10 @@ class QEnhancedTextItem(QtWidgets.QGraphicsSimpleTextItem):
         # Get clip area in logical (not scaled or offset) space
         return QClippingPath.calculate_clipping_area(
             super().boundingRect(),
-            (
-                self.clip_start_x / self.scale_factor
-                if self.clip_start_x is not None
-                else None
-            ),
-            (
-                self.clip_width / self.scale_factor
-                if self.clip_width is not None
-                else None
-            ),
-            self.pen().width() / self.scale_factor,
+            (self.clip_start_x if self.clip_start_x is not None else None),
+            (self.clip_width if self.clip_width is not None else None),
+            self.pen().width(),
+            self.scale_factor,
         )
 
     def calculate_clip_offset(self):
