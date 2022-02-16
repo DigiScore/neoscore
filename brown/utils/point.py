@@ -2,6 +2,8 @@ from typing import Union
 
 from brown.utils.units import GraphicUnit, Unit
 
+# TODO pretty sure this should be made immutable
+
 
 class Point:
     """A two dimensional point.

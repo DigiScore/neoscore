@@ -1,15 +1,17 @@
 """Helper methods for conversion between `brown.utils` and Qt classes"""
 
+from typing import Optional, Union
+
 from PyQt5.QtCore import QPoint, QPointF, QRect, QRectF
 from PyQt5.QtGui import QColor
 
 from brown.utils.color import Color
 from brown.utils.point import Point
 from brown.utils.rect import Rect
-from brown.utils.units import GraphicUnit
+from brown.utils.units import GraphicUnit, Unit
 
 
-def unit_to_qt_int(unit):
+def unit_to_qt_int(unit: Unit) -> int:
     """Create a Qt integer from a Unit
 
     Args:
@@ -20,7 +22,7 @@ def unit_to_qt_int(unit):
     return int(GraphicUnit(unit).value)
 
 
-def unit_to_qt_float(unit):
+def unit_to_qt_float(unit: Unit) -> float:
     """Create a Qt integer from a Unit
 
     Args:
@@ -31,7 +33,9 @@ def unit_to_qt_float(unit):
     return GraphicUnit(unit).value
 
 
-def qt_point_to_point(qt_point, unit=None):
+def qt_point_to_point(
+    qt_point: Union[QPoint, QPointF], unit: Optional[Unit] = None
+) -> Point:
     """Create a Point from a QPoint or QPointF
 
     Args:
@@ -48,7 +52,7 @@ def qt_point_to_point(qt_point, unit=None):
         return Point(qt_point.x(), qt_point.y())
 
 
-def point_to_qt_point(point):
+def point_to_qt_point(point: Point) -> QPoint:
     """Create a QPoint from a Point
 
     Args:
@@ -59,7 +63,7 @@ def point_to_qt_point(point):
     return QPoint(unit_to_qt_int(point.x), unit_to_qt_int(point.y))
 
 
-def point_to_qt_point_f(point):
+def point_to_qt_point_f(point: Point) -> QPointF:
     """Create a QPointF from a Point
 
     Args:
@@ -70,7 +74,7 @@ def point_to_qt_point_f(point):
     return QPointF(unit_to_qt_float(point.x), unit_to_qt_float(point.y))
 
 
-def qt_rect_to_rect(qt_rect, unit=None):
+def qt_rect_to_rect(qt_rect: Union[QRect, QRectF], unit: Optional[Unit] = None) -> Rect:
     """Create a Rect from a QRect or QRectF
 
     Args:
@@ -84,12 +88,12 @@ def qt_rect_to_rect(qt_rect, unit=None):
     if unit:
         return Rect(
             qt_rect.x(), qt_rect.y(), qt_rect.width(), qt_rect.height()
-        ).to_unit(unit)
+        ).in_unit(unit)
     else:
         return Rect(qt_rect.x(), qt_rect.y(), qt_rect.width(), qt_rect.height())
 
 
-def rect_to_qt_rect(rect):
+def rect_to_qt_rect(rect: Rect) -> QRect:
     """Create a QRect from a Rect
 
     Args:
@@ -105,7 +109,7 @@ def rect_to_qt_rect(rect):
     )
 
 
-def rect_to_qt_rect_f(rect):
+def rect_to_qt_rect_f(rect: Rect) -> QRectF:
     """Create a QRectF from a Rect
 
     Args:
@@ -121,7 +125,7 @@ def rect_to_qt_rect_f(rect):
     )
 
 
-def color_to_q_color(color):
+def color_to_q_color(color: Color) -> QColor:
     """Create a `QColor` from a `Color`
 
     Args:
@@ -132,7 +136,7 @@ def color_to_q_color(color):
     return QColor(color.red, color.green, color.blue, color.alpha)
 
 
-def q_color_to_color(q_color):
+def q_color_to_color(q_color: QColor) -> Color:
     """Create a `Color` from a `QColor`
 
     Args:

@@ -1,22 +1,18 @@
 from brown.utils.rect import Rect
-from brown.utils.units import GraphicUnit
+from brown.utils.units import Mm
 
 
-def test_rect_init():
+def test_rect_in_unit():
     rect = Rect(1, 2, 99, 100)
-    assert rect.x == 1
-    assert rect.y == 2
-    assert rect.width == 99
-    assert rect.height == 100
+    converted = rect.in_unit(Mm)
+    assert converted.x == Mm(1)
+    assert converted.y == Mm(2)
+    assert converted.width == Mm(99)
+    assert converted.height == Mm(100)
 
 
-def test_rect_to_unit():
-    rect = Rect(1, 2, 99, 100).to_unit(GraphicUnit)
-    assert isinstance(rect.x, GraphicUnit)
-    assert rect.x == GraphicUnit(1)
-    assert isinstance(rect.y, GraphicUnit)
-    assert rect.y == GraphicUnit(2)
-    assert isinstance(rect.width, GraphicUnit)
-    assert rect.width == GraphicUnit(99)
-    assert isinstance(rect.height, GraphicUnit)
-    assert rect.height == GraphicUnit(100)
+def test_rect_pos():
+    rect = Rect(Mm(1), Mm(2), Mm(99), Mm(100))
+    pos = rect.pos
+    assert pos.x == Mm(1)
+    assert pos.y == Mm(2)
