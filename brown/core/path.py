@@ -239,7 +239,6 @@ class Path(GraphicObject):
         Returns: None
         """
         slice_interface = PathInterface(
-            self,
             pos,
             self.pen._interface,
             self.brush._interface,

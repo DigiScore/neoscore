@@ -11,7 +11,6 @@ from brown.utils.units import GraphicUnit, Mm
 class TestPenInterface(unittest.TestCase):
     def test_color_passed_to_qt(self):
         pen = PenInterface(
-            None,
             Color(0, 100, 200, 250),
             Mm(1),
             PenPattern(1),
@@ -25,7 +24,6 @@ class TestPenInterface(unittest.TestCase):
 
     def test_thickness_converted_to_qt_units(self):
         pen = PenInterface(
-            None,
             Color("#ffffff"),
             Mm(1),
             PenPattern(1),
@@ -36,7 +34,6 @@ class TestPenInterface(unittest.TestCase):
 
     def test_change_color_propagated_to_qt_object(self):
         pen = PenInterface(
-            None,
             Color("#ffffff"),
             Mm(1),
             PenPattern(1),
@@ -51,7 +48,6 @@ class TestPenInterface(unittest.TestCase):
 
     def test_change_thickness_propagated_to_qt_object(self):
         pen = PenInterface(
-            None,
             Color("#ffffff"),
             0,
             PenPattern(1),
@@ -63,7 +59,6 @@ class TestPenInterface(unittest.TestCase):
 
     def test_change_pen_pattern_propagated_to_qt_object(self):
         pen = PenInterface(
-            None,
             Color("#ffffff"),
             0,
             PenPattern(1),
@@ -75,7 +70,6 @@ class TestPenInterface(unittest.TestCase):
 
     def test_change_join_style_propagated_to_qt_object(self):
         pen = PenInterface(
-            None,
             Color("#ffffff"),
             Mm(1),
             PenPattern(1),
@@ -87,7 +81,6 @@ class TestPenInterface(unittest.TestCase):
 
     def test_change_cap_style_propagated_to_qt_object(self):
         pen = PenInterface(
-            None,
             Color("#ffffff"),
             Mm(1),
             PenPattern(1),

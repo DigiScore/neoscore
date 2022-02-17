@@ -48,7 +48,6 @@ class Pen:
         self._join_style = join_style
         self._cap_style = cap_style
         self._interface = PenInterface(
-            self,
             self.color,
             self.thickness,
             self.pattern,

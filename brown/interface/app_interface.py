@@ -5,14 +5,13 @@ from PyQt5.QtPrintSupport import QPrinter
 
 from brown import constants
 from brown.interface import images
-from brown.interface.interface import Interface
 from brown.interface.qt.converters import color_to_q_color, rect_to_qt_rect_f
 from brown.interface.qt.main_window import MainWindow
 from brown.utils.exceptions import FontRegistrationError, ImageExportError
 from brown.utils.units import Meter, Unit
 
 
-class AppInterface(Interface):
+class AppInterface:
     """The primary interface to the application state.
 
     This holds much of the global state for interacting with the API,
@@ -27,8 +26,6 @@ class AppInterface(Interface):
         Args:
             document (Document):
         """
-        super().__init__(None)  # no brown object exists for this
-        # TODO: make one
         self.document = document
         self.app = QtWidgets.QApplication([])
         self.main_window = MainWindow()

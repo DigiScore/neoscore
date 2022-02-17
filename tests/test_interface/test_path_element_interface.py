@@ -18,17 +18,16 @@ class TestPathElementInterface(unittest.TestCase):
     def setUp(self):
         brown.setup()
         self.pen = PenInterface(
-            None,
             Color("#000000"),
             0,
             PenPattern.SOLID,
             PenJoinStyle.BEVEL,
             PenCapStyle.SQUARE,
         )
-        self.brush = BrushInterface(None, Color("#000000"), BrushPattern.SOLID)
+        self.brush = BrushInterface(Color("#000000"), BrushPattern.SOLID)
 
     def test_init(self):
-        test_path = PathInterface(None, Point(5, 6), self.pen, self.brush)
+        test_path = PathInterface(Point(5, 6), self.pen, self.brush)
         test_path.line_to(Point(10, 11))
         qt_element = test_path.qt_path.elementAt(1)
         test_element = PathElementInterface(qt_element, test_path, 1, 1)
@@ -40,21 +39,21 @@ class TestPathElementInterface(unittest.TestCase):
         assert test_element.qt_object == qt_element
 
     def test_is_move_to(self):
-        test_path = PathInterface(None, Point(5, 6), self.pen, self.brush)
+        test_path = PathInterface(Point(5, 6), self.pen, self.brush)
         test_path.move_to(Point(10, 11))
         qt_element = test_path.qt_path.elementAt(0)
         test_element = PathElementInterface(qt_element, test_path, 0, 0)
         assert test_element.element_type == PathElementType.move_to
 
     def test_is_line_to(self):
-        test_path = PathInterface(None, Point(5, 6), self.pen, self.brush)
+        test_path = PathInterface(Point(5, 6), self.pen, self.brush)
         test_path.line_to(Point(10, 11))
         qt_element = test_path.qt_path.elementAt(1)
         test_element = PathElementInterface(qt_element, test_path, 0, 1)
         assert test_element.element_type == PathElementType.line_to
 
     def test_curves_and_control_points(self):
-        test_path = PathInterface(None, Point(5, 6), self.pen, self.brush)
+        test_path = PathInterface(Point(5, 6), self.pen, self.brush)
         test_path.cubic_to(Point(10, 11), Point(20, 0), Point(50, 30))
 
         qt_element_1 = test_path.qt_path.elementAt(1)

@@ -51,12 +51,9 @@ which the brown API translates to: `[control_point, control_point, curve_to]`
 class PathInterface(GraphicObjectInterface):
     """Interface for a generic graphic path object."""
 
-    def __init__(
-        self, brown_object, pos, pen, brush, clip_start_x=None, clip_width=None
-    ):
+    def __init__(self, pos, pen, brush, clip_start_x=None, clip_width=None):
         """
         Args:
-            brown_object (Path): The path this interface belongs to
             pos (Point[GraphicUnit] or tuple): The position of the path root
                 relative to the document.
             pen (PenInterface): The pen to draw outlines with.
@@ -66,7 +63,7 @@ class PathInterface(GraphicObjectInterface):
             clip_width (Unit or None): The width of the path clipping region.
                 Use `None` to render to the end
         """
-        super().__init__(brown_object)
+        super().__init__()
         self.qt_path = QtGui.QPainterPath()
         self.qt_object = QClippingPath(self.qt_path, clip_start_x, clip_width)
         self.pos = pos

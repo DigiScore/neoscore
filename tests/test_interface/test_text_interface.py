@@ -12,13 +12,13 @@ from brown.utils.color import Color
 class TestTextInterface(unittest.TestCase):
     def setUp(self):
         brown.setup()
-        self.brush = BrushInterface(None, Color("#000000"), BrushPattern.SOLID)
+        self.brush = BrushInterface(Color("#000000"), BrushPattern.SOLID)
 
     def test_path_caching(self):
-        test_font_1 = FontInterface(None, "Bravura", 12, 1, False)
-        test_object_1 = TextInterface(None, (5, 6), "testing", test_font_1, self.brush)
-        test_font_2 = FontInterface(None, "Bravura", 24, 1, False)
-        test_object_2 = TextInterface(None, (5, 6), "testing", test_font_2, self.brush)
+        test_font_1 = FontInterface("Bravura", 12, 1, False)
+        test_object_1 = TextInterface((5, 6), "testing", test_font_1, self.brush)
+        test_font_2 = FontInterface("Bravura", 24, 1, False)
+        test_object_2 = TextInterface((5, 6), "testing", test_font_2, self.brush)
         # Since the fonts and texts matched, the underlying paths
         # should be equal by reference.
         assert test_object_1.qt_object.path() == test_object_2.qt_object.path()

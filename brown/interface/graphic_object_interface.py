@@ -1,10 +1,9 @@
-from brown.interface.interface import Interface
 from brown.interface.qt.converters import point_to_qt_point_f
 from brown.utils.point import Point
 from brown.utils.units import GraphicUnit
 
 
-class GraphicObjectInterface(Interface):
+class GraphicObjectInterface:
     """Interface for a generic graphic object.
 
     All graphic interfaces for renderable objects should descend from this.
@@ -22,12 +21,8 @@ class GraphicObjectInterface(Interface):
       translated into Qt-compatible values.
     """
 
-    def __init__(self, brown_object):
-        """
-        Args:
-            brown_object (GraphicObject): the brown object this belongs to
-        """
-        super().__init__(brown_object)
+    def __init__(self):
+        pass
 
     ######## PUBLIC PROPERTIES ########
 

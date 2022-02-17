@@ -28,7 +28,7 @@ class Brush:
             self._pattern = pattern
         else:
             self._pattern = BrushPattern(pattern)
-        self._interface = BrushInterface(self, self.color, self.pattern)
+        self._interface = BrushInterface(self.color, self.pattern)
 
     ######## CONSTRUCOTRS ########
 

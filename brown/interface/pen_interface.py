@@ -1,24 +1,21 @@
 from PyQt5 import QtGui
 
 from brown.core.pen_pattern import PenPattern
-from brown.interface.interface import Interface
 from brown.utils.units import GraphicUnit
 
 
-class PenInterface(Interface):
+class PenInterface:
     """Interface for a pen controlling path outline appearance."""
 
-    def __init__(self, brown_object, color, thickness, pattern, join_style, cap_style):
+    def __init__(self, color, thickness, pattern, join_style, cap_style):
         """
         Args:
-            brown_object (Pen): The object this interface belongs to.
             color (Color):
             thickness (Unit):
             pattern (PenPattern):
             join_style (PenJoinStyle):
             cap_style (PenCapStyle):
         """
-        super().__init__(brown_object)
         self.qt_object = QtGui.QPen()
         self.thickness = thickness
         self.color = color

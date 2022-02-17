@@ -47,7 +47,6 @@ class TextInterface(GraphicObjectInterface):
 
     def __init__(
         self,
-        brown_object,
         pos,
         text,
         font,
@@ -59,7 +58,6 @@ class TextInterface(GraphicObjectInterface):
     ):
         """
         Args:
-            brown_object (Text): The brown object this belongs to
             pos (Point[GraphicUnit] or tuple): The position of the path root
                 relative to the document.
             text (str): The text for the object
@@ -71,7 +69,7 @@ class TextInterface(GraphicObjectInterface):
             clip_width (Unit or None): The width of the clipping region.
                 Use `None` to render to the end
         """
-        super().__init__(brown_object)
+        super().__init__()
         self._text = text
         self.clip_start_x = clip_start_x
         self.clip_width = clip_width

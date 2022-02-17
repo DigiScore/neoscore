@@ -84,7 +84,6 @@ class Text(GraphicObject):
         Returns: None
         """
         slice_interface = TextInterface(
-            self,
             pos,
             self.text,
             self.font._interface,

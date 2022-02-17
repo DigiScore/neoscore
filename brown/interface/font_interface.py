@@ -1,26 +1,23 @@
 from PyQt5 import QtGui
 
 from brown.core import brown
-from brown.interface.interface import Interface
 from brown.interface.qt.converters import qt_rect_to_rect
 from brown.utils.units import GraphicUnit
 
 
-class FontInterface(Interface):
+class FontInterface:
 
     """An interface for fonts, exposing many font metadata properties."""
 
-    def __init__(self, brown_object, family_name, size, weight, italic):
+    def __init__(self, family_name, size, weight, italic):
         """
         Args:
-            brown_object (Brush): The object this interface belongs to
             family_name (str): The name of the font family
             size (Unit): The size of the font
             weight (int or None): The font weight. If `None`,
                 a normal weight will be used.
             italic (bool): Italicized or not
         """
-        super().__init__(brown_object)
         self.family_name = family_name
         self.size = size
         self.weight = weight

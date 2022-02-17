@@ -1,24 +1,20 @@
 from PyQt5 import QtGui
 
-from brown.interface.interface import Interface
 
-
-class BrushInterface(Interface):
+class BrushInterface:
     """Interface for a generic drawing brush controlling fill patterns.
 
     Currently only solid colors are supported.
     """
 
-    def __init__(self, brown_object, color, pattern):
+    def __init__(self, color, pattern):
         """
         Args:
-            brown_object (Brush): The object this interface belongs to
             color (Color): The color of the brush.
             pattern (BrushPattern): The fill pattern of the brush.
         """
         # Initialize color to bright red to signal this not being
         # set correctly by color setter
-        super().__init__(brown_object)
         self.qt_object = QtGui.QBrush(QtGui.QColor("#ff0000"))
         self.color = color
         self.pattern = pattern
