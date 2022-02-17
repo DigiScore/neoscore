@@ -109,15 +109,16 @@ class TextInterface(GraphicObjectInterface):
         cached_result = _PATH_CACHE.get(key)
         if cached_result:
             cache_scale = needed_font_size / cached_result.generation_font_size
-            return QClippingPath(
-                cached_result.path,
-                self.clip_start_x,
-                self.clip_width,
-                cache_scale * additional_scale,
+            clipping_path = QClippingPath(
+                cached_result.path, self.clip_start_x, self.clip_width
             )
+            clipping_path.setScale(cache_scale * additional_scale)
+            return clipping_path
         path = TextInterface._create_qt_path(text, qt_font)
         _PATH_CACHE[key] = _CachedTextPath(path, needed_font_size)
-        return QClippingPath(path, self.clip_start_x, self.clip_width, 1)
+        clipping_path = QClippingPath(path, self.clip_start_x, self.clip_width)
+        clipping_path.setScale(additional_scale)
+        return clipping_path
 
     @staticmethod
     def _create_qt_path(text: str, font: QFont) -> QPainterPath:

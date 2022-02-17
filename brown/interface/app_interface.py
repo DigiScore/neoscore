@@ -42,12 +42,9 @@ class AppInterface(Interface):
 
     def show(self):
         """Open a window showing a preview of the document."""
+        self._optimize_for_interactive_view()
         self.main_window.show()
         self.app.exec_()
-
-    def _clear_scene(self):
-        """Clear the QT Scene. This should be called before each render."""
-        self.scene.clear()
 
     def render_pdf(self, pages, path):
         """Render the document to a pdf file.
@@ -160,6 +157,8 @@ class AppInterface(Interface):
         if font_id == AppInterface._QT_FONT_ERROR_CODE:
             raise FontRegistrationError(font_file_path)
 
+    ######## PRIVATE METHODS ########
+
     def _remove_all_loaded_fonts(self):
         """Remove all fonts registered with `register_font()`.
 
@@ -168,3 +167,10 @@ class AppInterface(Interface):
         success = self.font_database.removeAllApplicationFonts()
         if not success:
             raise RuntimeError("Failed to remove application fonts.")
+
+    def _clear_scene(self):
+        """Clear the QT Scene. This should be called before each render."""
+        self.scene.clear()
+
+    def _optimize_for_interactive_view(self):
+        QtGui.QPixmapCache.setCacheLimit(constants.QT_PIXMAP_CACHE_LIMIT_KB)

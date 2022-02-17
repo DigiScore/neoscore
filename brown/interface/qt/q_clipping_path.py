@@ -1,6 +1,7 @@
 from typing import Optional
 
 from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtCore import QRectF
 from PyQt5.QtGui import QBrush, QColor, QPainterPath, QPen
 from PyQt5.QtWidgets import QGraphicsItem, QGraphicsPathItem
 
@@ -20,29 +21,28 @@ class QClippingPath(QGraphicsPathItem):
 
     """
 
+    # TODO require clip_start_x and clip_width to be in GraphicUnit -
+    # Qt level objects should deal exclusively in GraphicUnits.
+
     def __init__(
         self,
         qt_path: QPainterPath,
         clip_start_x: Optional[Unit],
         clip_width: Optional[Unit],
-        scale: float = 1,
     ):
         """
         Args:
-            qt_path (QPainterPath): The path for the item. This value should
+            qt_path: The path for the item. This value should
                 be the same as in `QGraphicsPathItem.__init__()`
-            clip_start_x (Unit or None): The local starting position for the
+            clip_start_x: The local starting position for the
                 path clipping region. Use `None` to render from the start.
-            clip_width (Unit or None): The width of the path clipping region.
+            clip_width: The width of the path clipping region.
                 Use `None` to render to the end
-            scale (float): An initial Qt scale factor.
         """
         super().__init__(qt_path)
-        self.setScale(scale)
         self.clip_start_x = clip_start_x
         self.clip_width = clip_width
-        # Set cache mode to ItemCoordinateCache
-        self.setCacheMode(QGraphicsItem.CacheMode(2))
+        self.setCacheMode(QGraphicsItem.CacheMode.DeviceCoordinateCache)
         self.update_geometry()
 
     def boundingRect(self):
@@ -71,22 +71,16 @@ class QClippingPath(QGraphicsPathItem):
             self.clip_start_x,
             self.clip_width,
             self.pen().width(),
-            # self.scale(),
-            1,
         )
         self.bounding_rect = QClippingPath.calculate_bounding_rect(
             self.path().boundingRect(),
             self.clip_start_x,
             self.clip_width,
             self.pen().width(),
-            # self.scale(),
-            1,
         )
         if self.clip_start_x is not None:
             self.painter_offset = QtCore.QPointF(
-                # not sure if this is correct
-                # (-1 * GraphicUnit(self.clip_start_x).value) / self.scale(),
-                (-1 * GraphicUnit(self.clip_start_x).value),
+                -1 * GraphicUnit(self.clip_start_x).value,
                 0,
             )
         else:
@@ -94,21 +88,22 @@ class QClippingPath(QGraphicsPathItem):
 
     @staticmethod
     def calculate_clipping_area(
-        bounding_rect, clip_start_x, clip_width, extra_padding, scale
-    ):
+        bounding_rect: QRectF,
+        clip_start_x: Optional[Unit],
+        clip_width: Optional[Unit],
+        extra_padding: float,
+    ) -> QRectF:
         """Create a QRectF giving the painting area for the object.
 
         Args:
-            bounding_rect (QRectF): The full shape's bounding rectangle
-            clip_start_x (Unit or None): The local starting position for the
+            bounding_rect: The full shape's bounding rectangle
+            clip_start_x: The local starting position for the
                 clipping region. Use `None` to render from the start.
-            clip_width (Unit or None): The width of the clipping region.
+            clip_width: The width of the clipping region.
                 Use `None` to render to the end
-            extra_padding (float): Extra area padding to be added to all
+            extra_padding: Extra area padding to be added to all
                 sides of the clipping area. This might be useful, for instance,
                 for making sure thick pen strokes render completely.
-
-        Returns: QRectF
         """
         clip_start_x = (
             bounding_rect.x()
@@ -122,30 +117,33 @@ class QClippingPath(QGraphicsPathItem):
         )
         padding = GraphicUnit(extra_padding).value
         return QtCore.QRectF(
-            (clip_start_x - padding) / scale,
-            (bounding_rect.y() - padding) / scale,
-            (clip_width + (padding * 2)) / scale,
-            (bounding_rect.height() + (padding * 2)) / scale,
+            clip_start_x - padding,
+            bounding_rect.y() - padding,
+            clip_width + (padding * 2),
+            bounding_rect.height() + (padding * 2),
         )
 
     @staticmethod
     def calculate_bounding_rect(
-        bounding_rect, clip_start_x, clip_width, extra_padding, scale
-    ):
+        bounding_rect: QRectF,
+        clip_start_x: Optional[Unit],
+        clip_width: Optional[Unit],
+        extra_padding: float,
+    ) -> QRectF:
         """Create a QRectF giving the bounding rect for the path.
 
         Args:
-            bounding_rect (QRectF): The full shape's bounding rectangle
-            clip_start_x (Unit or None): The local starting position for the
+            bounding_rect: The full shape's bounding rectangle
+            clip_start_x: The local starting position for the
                 clipping region. Use `None` to render from the start.
-            clip_width (Unit or None): The width of the clipping region.
+            clip_width: The width of the clipping region.
                 Use `None` to render to the end
-            extra_padding (float): Extra area padding to be added to all
+            extra_padding: Extra area padding to be added to all
                 sides of the clipping area. This might be useful, for instance,
                 for making sure thick pen strokes render completely.
-
-        Returns: QRectF
         """
+        # TODO strange that extra_padding is given in floats
+        # (implicitly GraphicUnits), but the other two args are in units. refactor.
         clip_start_x = (
             bounding_rect.x()
             if clip_start_x is None
@@ -157,9 +155,9 @@ class QClippingPath(QGraphicsPathItem):
             else GraphicUnit(clip_width).value
         )
         padding = GraphicUnit(extra_padding).value
-        return QtCore.QRectF(
-            (-padding) / scale,
-            (bounding_rect.y() - padding) / scale,
-            (clip_width + (padding * 2)) / scale,
-            (bounding_rect.height() + (padding * 2)) / scale,
+        return QRectF(
+            -padding,
+            bounding_rect.y() - padding,
+            clip_width + (padding * 2),
+            bounding_rect.height() + (padding * 2),
         )
