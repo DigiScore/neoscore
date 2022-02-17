@@ -9,7 +9,7 @@ class RepeatingMusicTextLine(MusicText, StaffObject, HorizontalSpanner):
     """A spanner of repeating music text over its length."""
 
     def __init__(
-        self, start, parent, end_x, text, end_parent=None, font=None, scale_factor=1
+        self, start, parent, end_x, text, end_parent=None, font=None, scale=1
     ):
         """
         Args:
@@ -24,14 +24,14 @@ class RepeatingMusicTextLine(MusicText, StaffObject, HorizontalSpanner):
                 If omitted, the end position is relative to the main object.
             font (MusicFont): The music font to be used. If not specified,
                 the font is taken from the ancestor staff.
-            scale_factor (float): A hard scaling factor to be applied
+            scale (float): A hard scaling factor to be applied
                 in addition to the size of the music font.
         """
         start = start if isinstance(start, Point) else Point(*start)
         # init the MusicText to ask it how wide a single
         # repetition of `text` is in order to calculate how many
         # repetitions are needed to cover the spanner.
-        MusicText.__init__(self, start, text, parent, font, scale_factor)
+        MusicText.__init__(self, start, text, parent, font, scale)
         StaffObject.__init__(self, parent)
         HorizontalSpanner.__init__(self, end_x, end_parent)
         self.repeating_music_chars = self.music_chars

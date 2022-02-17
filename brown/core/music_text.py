@@ -11,7 +11,7 @@ class MusicText(Text):
     A glyph with a MusicFont and convenient access to relevant SMuFL metadata.
     """
 
-    def __init__(self, pos, text, parent, font=None, scale_factor=1):
+    def __init__(self, pos, text, parent, font=None, scale=1):
         """
         Args:
             pos (Point or init tuple): The position of the text.
@@ -24,7 +24,7 @@ class MusicText(Text):
                 a `Staff` as an ancestor.
             font (MusicFont): The music font to be used. If not specified,
                 `parent` must be or have a `Staff` ancestor.
-            scale_factor (float): A hard scaling factor to be applied
+            scale (float): A hard scaling factor to be applied
                 in addition to the size of the music font.
         """
         if font is None:
@@ -36,7 +36,7 @@ class MusicText(Text):
             font = ancestor_staff.music_font
         self.music_chars = MusicText._resolve_music_chars(text, font)
         text = "".join(char.codepoint for char in self.music_chars)
-        Text.__init__(self, pos, text, font, parent, scale_factor=scale_factor)
+        Text.__init__(self, pos, text, font, parent, scale=scale)
 
     ######## PUBLIC PROPERTIES ########
 
@@ -93,10 +93,10 @@ class MusicText(Text):
             w += char.glyph_info["glyphBBox"]["bBoxNE"][0] - char_x
             h += (char.glyph_info["glyphBBox"]["bBoxSW"][1] - char_y) * -1
         return Rect(
-            (x + self._origin_offset.x) * self.scale_factor,
-            (y + self._origin_offset.y) * self.scale_factor,
-            w * self.scale_factor,
-            h * self.scale_factor,
+            (x + self._origin_offset.x) * self.scale,
+            (y + self._origin_offset.y) * self.scale,
+            w * self.scale,
+            h * self.scale,
         )
 
     @staticmethod

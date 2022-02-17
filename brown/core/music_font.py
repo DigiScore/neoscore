@@ -17,9 +17,9 @@ class MusicFont(Font):
 
     # Scaling factor which may or may not work for fonts other than Bravura.
     if current_platform() == PlatformType.mac:
-        __magic_em_scale_factor = 4
+        __magic_em_scale = 4
     else:
-        __magic_em_scale_factor = 3
+        __magic_em_scale = 3
 
     def __init__(self, family_name, staff_unit):
         self.unit = staff_unit
@@ -31,7 +31,7 @@ class MusicFont(Font):
         self._engraving_defaults = copy.deepcopy(self.metadata["engravingDefaults"])
 
         convert_all_to_unit(self._engraving_defaults, self.unit)
-        self._em_size = self.unit(self.__magic_em_scale_factor)
+        self._em_size = self.unit(self.__magic_em_scale)
         super().__init__(family_name, self._em_size, 1, False)
 
     ######## PUBLIC PROPERTIES ########

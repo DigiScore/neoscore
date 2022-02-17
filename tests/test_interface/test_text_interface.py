@@ -2,6 +2,7 @@ import unittest
 
 from brown.core import brown
 from brown.core.brush_pattern import BrushPattern
+from brown.interface import text_interface
 from brown.interface.brush_interface import BrushInterface
 from brown.interface.font_interface import FontInterface
 from brown.interface.text_interface import TextInterface
@@ -13,25 +14,13 @@ class TestTextInterface(unittest.TestCase):
         brown.setup()
         self.brush = BrushInterface(None, Color("#000000"), BrushPattern.SOLID)
 
-    def test_init(self):
-        test_font = FontInterface(None, "Bravura", 12, 1, False)
-        test_object = TextInterface(None, (5, 6), "testing", test_font, self.brush)
-        assert test_object.text == "testing"
-        assert test_object.qt_object.text() == test_object.text
-        assert test_object.font == test_font
-        assert test_object.qt_object.font() == test_object.font.qt_object
-
-    def test_text_setter_changesqt_object(self):
-        test_font = FontInterface(None, "Bravura", 12, 1, False)
-        test_object = TextInterface(None, (5, 6), "testing", test_font, self.brush)
-        test_object.text = "new value"
-        assert test_object.text == "new value"
-        assert test_object.qt_object.text() == "new value"
-
-    def test_font_setter_changesqt_object(self):
-        test_font = FontInterface(None, "Bravura", 12, 1, False)
-        test_object = TextInterface(None, (5, 6), "testing", test_font, self.brush)
-        new_test_font = FontInterface(None, "Bravura", 16, 1, False)
-        test_object.font = new_test_font
-        assert test_object.font == new_test_font
-        assert test_object.qt_object.font() == new_test_font.qt_object
+    def test_path_caching(self):
+        test_font_1 = FontInterface(None, "Bravura", 12, 1, False)
+        test_object_1 = TextInterface(None, (5, 6), "testing", test_font_1, self.brush)
+        test_font_2 = FontInterface(None, "Bravura", 24, 1, False)
+        test_object_2 = TextInterface(None, (5, 6), "testing", test_font_2, self.brush)
+        # Since the fonts and texts matched, the underlying paths
+        # should be equal by reference.
+        assert test_object_1.qt_object.path() == test_object_2.qt_object.path()
+        assert test_object_1.qt_object.scale() == 1
+        assert test_object_2.qt_object.scale() == 2

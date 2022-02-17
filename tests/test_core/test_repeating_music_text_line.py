@@ -18,7 +18,7 @@ class TestRepeatingMusicTextLine(unittest.TestCase):
         self.right_parent = MockStaffObject((Mm(10), Mm(2)), self.staff)
         self.char = "gClef"
         self.single_repetition_width = MusicText(
-            (Mm(0), Mm(0)), self.char, self.staff, scale_factor=2
+            (Mm(0), Mm(0)), self.char, self.staff, scale=2
         ).bounding_rect.width
 
     def test_repetition_count(self):
@@ -28,7 +28,7 @@ class TestRepeatingMusicTextLine(unittest.TestCase):
             Mm(3),
             self.char,
             self.right_parent,
-            scale_factor=2,
+            scale=2,
         )
         expected = int(Mm(12) / self.single_repetition_width)
         assert line._repetitions_needed == expected

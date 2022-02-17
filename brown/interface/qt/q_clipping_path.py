@@ -1,12 +1,16 @@
 from typing import Optional
 
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtGui import QPainterPath
+from PyQt5.QtGui import QBrush, QColor, QPainterPath, QPen
+from PyQt5.QtWidgets import QGraphicsItem, QGraphicsPathItem
 
 from brown.utils.units import GraphicUnit, Unit
 
+# TODO find a way to set a global debug switch and expose to users too.
+_DEBUG = True
 
-class QClippingPath(QtWidgets.QGraphicsPathItem):
+
+class QClippingPath(QGraphicsPathItem):
 
     """A QGraphicsPathItem extension supporting horizontal path clipping.
 
@@ -37,6 +41,8 @@ class QClippingPath(QtWidgets.QGraphicsPathItem):
         self.setScale(scale)
         self.clip_start_x = clip_start_x
         self.clip_width = clip_width
+        # Set cache mode to ItemCoordinateCache
+        self.setCacheMode(QGraphicsItem.CacheMode(2))
         self.update_geometry()
 
     def boundingRect(self):
@@ -52,32 +58,39 @@ class QClippingPath(QtWidgets.QGraphicsPathItem):
             painter.translate(self.painter_offset)
         painter.setClipRect(self.clip_rect)
         super().paint(painter, *args, **kwargs)
+        if _DEBUG:
+            painter.setBrush(QBrush())
+            painter.setPen(QPen(QColor("#ff0000")))
+            painter.drawRect(self.bounding_rect)
         painter.restore()
 
     def update_geometry(self):
+        self.prepareGeometryChange()
         self.clip_rect = QClippingPath.calculate_clipping_area(
             self.path().boundingRect(),
             self.clip_start_x,
             self.clip_width,
             self.pen().width(),
-            self.scale(),
+            # self.scale(),
+            1,
         )
         self.bounding_rect = QClippingPath.calculate_bounding_rect(
             self.path().boundingRect(),
             self.clip_start_x,
             self.clip_width,
             self.pen().width(),
-            self.scale(),
+            # self.scale(),
+            1,
         )
         if self.clip_start_x is not None:
             self.painter_offset = QtCore.QPointF(
-                (-1 * self.scale() * GraphicUnit(self.clip_start_x).value)
-                / self.scale(),
+                # not sure if this is correct
+                # (-1 * GraphicUnit(self.clip_start_x).value) / self.scale(),
+                (-1 * GraphicUnit(self.clip_start_x).value),
                 0,
             )
         else:
             self.painter_offset = None
-        self.prepareGeometryChange()
 
     @staticmethod
     def calculate_clipping_area(
@@ -146,7 +159,7 @@ class QClippingPath(QtWidgets.QGraphicsPathItem):
         padding = GraphicUnit(extra_padding).value
         return QtCore.QRectF(
             (-padding) / scale,
-            (-padding) / scale,
+            (bounding_rect.y() - padding) / scale,
             (clip_width + (padding * 2)) / scale,
             (bounding_rect.height() + (padding * 2)) / scale,
         )

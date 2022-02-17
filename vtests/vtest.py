@@ -9,6 +9,7 @@ from brown.common import *
 
 brown.setup()
 
+
 flow = Flowable((Mm(0), Mm(0)), Mm(35000), Mm(30), Mm(10))
 
 counting_string = "    ".join(str(x) for x in range(600))
@@ -63,18 +64,18 @@ MusicText((Mm(25), staff.unit(2)), random_wiggles, staff)
 
 scaling_texts = []
 for i in range(0, 50, 2):
-    factor = 1 + (i / 10)
+    scale = 1 + (i / 10)
     scaling_texts.append(
         MusicText(
             (Mm(290 + i), lowest_staff.unit(4)),
             ["brace", ("gClef", 1)],
             lowest_staff,
-            scale_factor=factor,
+            scale=scale,
         )
     )
 
 flowing_text = MusicText(
-    (Mm(155), lower_staff.unit(3)), ["gClef"] * 130, lower_staff, scale_factor=1
+    (Mm(155), lower_staff.unit(3)), ["gClef"] * 130, lower_staff, scale=1
 )
 
 pen = Pen(thickness=Mm(0.2), pattern=PenPattern.DASHDOTDOT)
@@ -105,10 +106,10 @@ pedal_line = PedalLine(
     half_lift_positions=[Mm(30), Mm(60), Mm(100)],
 )
 
-# brown.show()
+brown.show()
 
-image_path = os.path.join(os.path.dirname(__file__), "output", "vtest_image.png")
-brown.render_image((Mm(0), Mm(0), Inch(2), Inch(2)), image_path, autocrop=True)
+# image_path = os.path.join(os.path.dirname(__file__), "output", "vtest_image.png")
+# brown.render_image((Mm(0), Mm(0), Inch(2), Inch(2)), image_path, autocrop=True)
 #
 # pdf_path = os.path.join(os.path.dirname(__file__), 'output',
 #                         'vtest_pdf.pdf')

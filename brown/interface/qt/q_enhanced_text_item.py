@@ -29,7 +29,7 @@ class QEnhancedTextItem(QtWidgets.QGraphicsSimpleTextItem):
         self,
         *args,
         origin_offset=None,
-        scale_factor=1,
+        scale=1,
         clip_start_x=None,
         clip_width=None,
         **kwargs
@@ -37,7 +37,7 @@ class QEnhancedTextItem(QtWidgets.QGraphicsSimpleTextItem):
         """
         Args:
             origin_offset (QPointF): The offset of the glyph's origin from (0, 0)
-            scale_factor (float): A hard scaling factor.
+            scale (float): A hard scaling factor.
             clip_start_x (Unit or None): The local starting position for the
                 clipping region. Use `None` to render from the start.
             clip_width (Unit or None): The width of the clipping region.
@@ -47,7 +47,7 @@ class QEnhancedTextItem(QtWidgets.QGraphicsSimpleTextItem):
         """
         super().__init__(*args, **kwargs)
         self.origin_offset = origin_offset
-        self.scale_factor = scale_factor
+        self.scale = scale
         self.clip_start_x = clip_start_x
         self.clip_width = clip_width
         self.update_geometry()
@@ -56,10 +56,10 @@ class QEnhancedTextItem(QtWidgets.QGraphicsSimpleTextItem):
         rect = super().boundingRect()
         rect.translate(self.origin_offset * -1)
         scaled_rect = QtCore.QRectF(
-            rect.x() * self.scale_factor,
-            rect.y() * self.scale_factor,
-            rect.width() * self.scale_factor,
-            rect.height() * self.scale_factor,
+            rect.x() * self.scale,
+            rect.y() * self.scale,
+            rect.width() * self.scale,
+            rect.height() * self.scale,
         )
         return scaled_rect
 
@@ -70,13 +70,13 @@ class QEnhancedTextItem(QtWidgets.QGraphicsSimpleTextItem):
             (self.clip_start_x if self.clip_start_x is not None else None),
             (self.clip_width if self.clip_width is not None else None),
             self.pen().width(),
-            self.scale_factor,
+            self.scale,
         )
 
     def calculate_clip_offset(self):
         if self.clip_start_x is not None:
             main_offset = QtCore.QPointF(
-                -1 * unit_to_qt_float(self.clip_start_x / self.scale_factor), 0
+                -1 * unit_to_qt_float(self.clip_start_x / self.scale), 0
             )
         else:
             main_offset = QtCore.QPointF(0, 0)
@@ -96,7 +96,7 @@ class QEnhancedTextItem(QtWidgets.QGraphicsSimpleTextItem):
         # translating, while the boundingRect needs to be translated
         # before scaling...
         painter.save()
-        painter.scale(self.scale_factor, self.scale_factor)
+        painter.scale(self.scale, self.scale_factor)
         painter.translate(self.painter_offset)
         painter.setClipRect(self.clip_rect)
         super().paint(painter, option, widget)

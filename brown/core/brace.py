@@ -49,7 +49,7 @@ class Brace(MultiStaffObject, StaffObject, MusicText):
                 (pos_x, self.vertical_span),
                 text,
                 self.highest_staff,
-                scale_factor=scale,
+                scale=scale,
             )
         except MusicFontGlyphNotFoundError:
             # Default to non-optional glyph
@@ -58,7 +58,7 @@ class Brace(MultiStaffObject, StaffObject, MusicText):
                 (pos_x, self.vertical_span),
                 "brace",
                 self.highest_staff,
-                scale_factor=scale,
+                scale=scale,
             )
 
     ######## PUBLIC PROPERTIES ########

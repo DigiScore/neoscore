@@ -127,7 +127,7 @@ class _KeySignatureAccidental(MusicText, StaffObject):
         accidental_type,
         key_signature,
         music_font,
-        scale_factor,
+        scale,
         length,
     ):
         MusicText.__init__(
@@ -136,7 +136,7 @@ class _KeySignatureAccidental(MusicText, StaffObject):
             Accidental._canonical_names[accidental_type],
             key_signature,
             music_font,
-            scale_factor,
+            scale,
         )
         StaffObject.__init__(self, key_signature)
         self._length = length

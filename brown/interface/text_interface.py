@@ -1,6 +1,6 @@
 from typing import Dict, NamedTuple, Optional
 
-from PyQt5.QtGui import QFont, QPainterPath
+from PyQt5.QtGui import QFont, QPainterPath, QPen
 
 from brown.core import brown
 from brown.interface.font_interface import FontInterface
@@ -39,7 +39,7 @@ class TextInterface(GraphicObjectInterface):
         font,
         brush,
         origin_offset=None,
-        scale_factor=1,
+        scale=1,
         clip_start_x=None,
         clip_width=None,
     ):
@@ -51,26 +51,23 @@ class TextInterface(GraphicObjectInterface):
             text (str): The text for the object
             font (FontInterface): The font object for the text
             brush (BrushInterface): The brush for the object.
-            scale_factor (float): A hard scaling factor.
+            scale (float): A hard scaling factor.
             clip_start_x (Unit or None): The local starting position for the
                 clipping region. Use `None` to render from the start.
             clip_width (Unit or None): The width of the clipping region.
                 Use `None` to render to the end
         """
         super().__init__(brown_object)
-        # if origin_offset:
-        #     self._origin_offset = origin_offset
-        # else:
-        #     self._origin_offset = Point(0, 0)
-        # self._scale_factor = scale_factor
         self._text = text
         self.clip_start_x = clip_start_x
         self.clip_width = clip_width
-        self.qt_object = self._get_path(text, font)
+        self._scale = scale
+        self.qt_object = self._get_path(text, font, scale)
         # Let setters trigger Qt setters for attributes not in constructor
         self.pos = pos
         self.brush = brush
-        # self.update_geometry()
+        # TODO support setting pen on text objects
+        self.qt_object.setPen(QPen(0))  # No pen
 
     ######## PUBLIC PROPERTIES ########
 
@@ -79,35 +76,22 @@ class TextInterface(GraphicObjectInterface):
         """str: The text for the object"""
         return self._text
 
-    @text.setter
-    def text(self, value):
-        self._text = value
-        self.qt_object.setText(value)
-
     @property
     def origin_offset(self):
         """Point: A hard offset to be applied to the rendered text"""
         return self._origin_offset
 
-    @origin_offset.setter
-    def origin_offset(self, value):
-        self._origin_offset = value
-        self.qt_object._origin_offset = self._origin_offset
+    # @origin_offset.setter
+    # def origin_offset(self, value):
+    #     self._origin_offset = value
+    #     self.qt_object._origin_offset = self._origin_offset
 
     @property
-    def scale_factor(self):
+    def scale(self):
         """float: A hard scale factor to be applied to the rendered text"""
-        return self._scale_factor
-
-    @scale_factor.setter
-    def scale_factor(self, value):
-        self._scale_factor = value
-        self.qt_object._scale_factor = self._scale_factor
+        return self._scale
 
     ######## PUBLIC METHODS ########
-
-    # def update_geometry(self):
-    #     self.qt_object.update_geometry()
 
     def render(self):
         """Render the line to the scene.
@@ -118,15 +102,18 @@ class TextInterface(GraphicObjectInterface):
 
     ######## PRIVATE METHODS ########
 
-    def _get_path(self, text: str, font: FontInterface):
+    def _get_path(self, text: str, font: FontInterface, additional_scale: float):
         qt_font = font.qt_object
         needed_font_size = qt_font.pointSizeF()
         key = _CachedTextKey(text, font.family_name, font.weight, font.italic)
         cached_result = _PATH_CACHE.get(key)
         if cached_result:
-            scale = needed_font_size / cached_result.generation_font_size
+            cache_scale = needed_font_size / cached_result.generation_font_size
             return QClippingPath(
-                cached_result.path, self.clip_start_x, self.clip_width, scale
+                cached_result.path,
+                self.clip_start_x,
+                self.clip_width,
+                cache_scale * additional_scale,
             )
         path = TextInterface._create_qt_path(text, qt_font)
         _PATH_CACHE[key] = _CachedTextPath(path, needed_font_size)

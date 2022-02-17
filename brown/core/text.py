@@ -9,7 +9,7 @@ class Text(GraphicObject):
 
     """A graphical text object."""
 
-    def __init__(self, pos, text, font=None, parent=None, scale_factor=1):
+    def __init__(self, pos, text, font=None, parent=None, scale=1):
         """
         Args:
             pos (Point or init tuple): The position of the path root
@@ -17,14 +17,14 @@ class Text(GraphicObject):
             text (str): The text to be displayed
             font (Font): The font for the object.
             parent (GraphicObject): The parent (core-level) object or None
-            scale_factor (float): A hard scaling factor.
+            scale (float): A hard scaling factor.
         """
         if font:
             self._font = font
         else:
             self._font = brown.default_font
         self._text = text
-        self._scale_factor = scale_factor
+        self._scale = scale
         super().__init__(pos, parent=parent)
 
     ######## PUBLIC PROPERTIES ########
@@ -49,13 +49,13 @@ class Text(GraphicObject):
         return self.y + self.font.ascent
 
     @property
-    def scale_factor(self):
+    def scale(self):
         """float: A hard scale factor to be applied to the rendered text"""
-        return self._scale_factor
+        return self._scale
 
-    @scale_factor.setter
-    def scale_factor(self, value):
-        self._scale_factor = value
+    @scale.setter
+    def scale(self, value):
+        self._scale = value
 
     ######## PRIVATE PROPERTIES ########
 
@@ -90,7 +90,7 @@ class Text(GraphicObject):
             self.font._interface,
             self.brush._interface,
             origin_offset=self._origin_offset,
-            scale_factor=self.scale_factor,
+            scale=self.scale,
             clip_start_x=clip_start_x,
             clip_width=clip_width,
         )
