@@ -26,6 +26,20 @@ class _CachedTextPath(NamedTuple):
 
 _PATH_CACHE: Dict[_CachedTextKey, _CachedTextPath] = {}
 
+"""TODO We can actually optimize this even further. We can modify
+q_clipping_path so it explicitly stores paint results in the global
+QPixmapCache. If this were specialized to just text items, the cache
+key would be like _CachedTextKey, except it also includes font size
+and scale. This would allow us to not only cache the paths being sent
+to Qt objects, but the rendered pixmaps themselves. This would be very
+efficient for us because so many constructed path objects are
+identical. Furthermore, if I manage to move the runtime to the OpenGL
+system, I believe these rendered pixmaps would reside directly in GPU
+memory.
+
+see https://doc.qt.io/qt-5/qgraphicsitem.html#setCacheMode
+"""
+
 
 class TextInterface(GraphicObjectInterface):
 
