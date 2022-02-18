@@ -7,7 +7,6 @@ from brown.interface.font_interface import FontInterface
 from brown.interface.graphic_object_interface import GraphicObjectInterface
 from brown.interface.qt.converters import point_to_qt_point_f
 from brown.interface.qt.q_clipping_path import QClippingPath
-from brown.interface.qt.q_enhanced_text_item import QEnhancedTextItem
 from brown.utils.point import Point
 from brown.utils.units import GraphicUnit
 
