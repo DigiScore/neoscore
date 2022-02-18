@@ -33,22 +33,27 @@ class Unit:
     Subclasses should override this.
     """
 
-    def __init__(self, value):
-        base_value = getattr(value, "base_value", None)
-        if base_value is not None:
-            self.base_value = base_value
+    def __init__(self, value, _raw_base_value=None):
+        if _raw_base_value is not None:
+            # Short circuiting constructor for internal use
+            self.base_value = _raw_base_value
             self._display_value = None
         else:
-            # TODO document this base_value rounding behavior - it's
-            # needed to allow ergonomic comparisons between units
-            # without floating point errors getting in the way.
-            #
-            # Also need to determine if this is the best approach -
-            # might be better to defer rounding to comparison
-            # operators to minimize error accumulation and avoid
-            # unecessary computation.
-            self.base_value = value * self.CONVERSION_RATE
-            self._display_value = value
+            base_value = getattr(value, "base_value", None)
+            if base_value is not None:
+                self.base_value = base_value
+                self._display_value = None
+            else:
+                # TODO document this base_value rounding behavior - it's
+                # needed to allow ergonomic comparisons between units
+                # without floating point errors getting in the way.
+                #
+                # Also need to determine if this is the best approach -
+                # might be better to defer rounding to comparison
+                # operators to minimize error accumulation and avoid
+                # unecessary computation.
+                self.base_value = value * self.CONVERSION_RATE
+                self._display_value = value
 
     @property
     def display_value(self) -> float:
@@ -72,6 +77,7 @@ class Unit:
         return "{}({})".format(type(self).__name__, self.display_value)
 
     def __hash__(self):
+        # TODO is this still correct with the new eq implementation?
         return hash(self.base_value)
 
     # Comparisons -------------------------------------------------------------
@@ -106,32 +112,32 @@ class Unit:
     # Operators ---------------------------------------------------------------
 
     def __add__(self, other: Unit) -> TUnit:
-        return type(self)(Unit(self.base_value + other.base_value))
+        return type(self)(None, _raw_base_value=self.base_value + other.base_value)
 
     def __sub__(self, other: Unit) -> TUnit:
-        return type(self)(Unit(self.base_value - other.base_value))
+        return type(self)(None, _raw_base_value=self.base_value - other.base_value)
 
     def __mul__(self, other: float) -> TUnit:
-        return type(self)(Unit(self.base_value * other))
+        return type(self)(None, _raw_base_value=self.base_value * other)
 
     def __truediv__(self, other: Union[Unit, float]) -> Union[TUnit, float]:
         if hasattr(other, "base_value"):
             # Unit / Unit -> Float
             return self.base_value / other.base_value
         # Unit / Float -> Unit
-        return type(self)(Unit(self.base_value / other))
+        return type(self)(None, _raw_base_value=self.base_value / other)
 
     def __pow__(self, other: float, modulo: Optional[int] = None) -> TUnit:
         return type(self)(Unit(pow(self.base_value, other, modulo)))
 
     def __neg__(self) -> TUnit:
-        return type(self)(Unit(-self.base_value))
+        return type(self)(None, _raw_base_value=-self.base_value)
 
     def __pos__(self) -> TUnit:
-        return type(self)(Unit(+self.base_value))
+        return type(self)(None, _raw_base_value=+self.base_value)
 
     def __abs__(self) -> TUnit:
-        return type(self)(Unit(abs(self.base_value)))
+        return type(self)(None, _raw_base_value=abs(self.base_value))
 
     # TODO maybe restore support for __rmul__
 
