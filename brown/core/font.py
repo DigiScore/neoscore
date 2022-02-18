@@ -3,6 +3,9 @@ from typing import Optional, Union
 from brown.interface.font_interface import FontInterface
 from brown.utils.units import GraphicUnit, Unit
 
+# TODO note that this and any subclasses should be immutable. If you
+# want a modified version of this font, use `Font.deriving`
+
 
 class Font:
 

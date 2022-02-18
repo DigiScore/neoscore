@@ -10,6 +10,8 @@ from brown.utils.exceptions import (
 from brown.utils.platforms import PlatformType, current_platform
 from brown.utils.units import convert_all_to_unit
 
+# TODO test me
+
 
 class MusicFont(Font):
 
@@ -32,6 +34,7 @@ class MusicFont(Font):
 
         convert_all_to_unit(self._engraving_defaults, self.unit)
         self._em_size = self.unit(self.__magic_em_scale)
+        self._glyph_info_cache = {}
         super().__init__(family_name, self._em_size, 1, False)
 
     ######## PUBLIC PROPERTIES ########
@@ -49,6 +52,17 @@ class MusicFont(Font):
     ######## PUBLIC METHODS ########
 
     def glyph_info(self, glyph_name, alternate_number=None):
+        key = (glyph_name, alternate_number)
+        cached_result = self._glyph_info_cache.get(key, None)
+        if cached_result:
+            return cached_result
+        computed_result = self._glyph_info(glyph_name, alternate_number)
+        self._glyph_info_cache[key] = computed_result
+        return computed_result
+
+    ######## PRIVATE METHODS ########
+
+    def _glyph_info(self, glyph_name, alternate_number=None):
         """Collect and return all known metadata about a glyph.
 
         Args:
