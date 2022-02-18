@@ -15,5 +15,5 @@ class RhythmDot(MusicText, StaffObject):
             parent (StaffObject):
             font (MusicFont):
         """
-        MusicText.__init__(self, pos, [self._glyph_name], font, parent)
+        MusicText.__init__(self, pos, [self._glyph_name], parent, font)
         StaffObject.__init__(self, parent)

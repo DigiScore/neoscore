@@ -48,13 +48,16 @@ class Chordrest(ObjectGroup, StaffObject):
         self._noteheads = set()
         self._accidentals = set()
         self._ledgers = set()
+        self._dots = set()
+        self._noteheads = set()
         self._stem_direction_override = stem_direction
         if pitches:
             for pitch in pitches:
                 self._noteheads.add(Notehead(staff.unit(0), pitch, self.duration, self))
             self.rest = None
         else:
-            self.rest = Rest(staff.unit(0), self, duration)
+            # TODO support explicit rest Y positioning
+            self.rest = Rest(Point(staff.unit(0), staff.unit(2)), self, duration)
         self._stem = None
         self._flag = None
 
@@ -86,6 +89,11 @@ class Chordrest(ObjectGroup, StaffObject):
         An empty set means no ledgers.
         """
         return self._ledgers
+
+    @property
+    def dots(self):
+        """set[RhythmDot]"""
+        return self._dots
 
     @property
     def stem(self):
@@ -129,11 +137,14 @@ class Chordrest(ObjectGroup, StaffObject):
     @property
     def rhythm_dot_positions(self):
         """iter(Point): The positions of all rhythm dots needed."""
+        start_padding = self.staff.unit(0.25)
         if self.rest:
-            dot_start_x = self.rest.x + self.rest.bounding_rect.width
+            dot_start_x = self.rest.x + self.rest.bounding_rect.width + start_padding
             dottables = {self.rest}
         else:
-            dot_start_x = self.leftmost_notehead.x + self.notehead_column_width
+            dot_start_x = (
+                self.leftmost_notehead.x + self.notehead_column_width + start_padding
+            )
             dottables = self.noteheads
         for i in range(self.duration.dot_count):
             for dottable in dottables:
@@ -251,7 +262,7 @@ class Chordrest(ObjectGroup, StaffObject):
     def stem_height(self):
         """Unit: The height of the stem"""
         flag_offset = Flag.vertical_offset_needed(self.duration, self.staff.unit)
-        min_abs_height = self.staff.unit(5) + flag_offset
+        min_abs_height = self.staff.unit(3) + flag_offset
         fitted_abs_height = (
             abs(self.lowest_notehead.y - self.highest_notehead.y)
             + self.staff.unit(2)

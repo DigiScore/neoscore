@@ -40,14 +40,14 @@ class Rest(MusicText, StaffObject):
             duration (Beat or init tuple):
             parent (StaffObject or Staff):
         """
+        # TODO I was surprised while using this that `pos` is either
+        # 1D or 2D. I think it should always be 2D.
         pos = pos if isinstance(pos, Point) else Point(pos, Unit(0))
         self._duration = duration if isinstance(duration, Beat) else Beat(*duration)
         MusicText.__init__(
             self, pos, [self._glyphnames[self.duration.base_division]], parent
         )
         StaffObject.__init__(self, parent)
-        # Currently use a fixed vertical position for rests
-        self.pos.y = self.staff.unit(2)
 
     ######## PUBLIC PROPERTIES ########
 

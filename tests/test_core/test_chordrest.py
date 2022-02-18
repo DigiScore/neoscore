@@ -12,6 +12,10 @@ from brown.utils.units import Mm
 
 from ..helpers import assert_almost_equal
 
+# TODO test that glyphs are actually created successfully - this
+# failed to catch bugs in creating rhythm dots and flags, and probably
+# fails to catch other similar ones too.
+
 
 class TestChordrest(unittest.TestCase):
     def setUp(self):
@@ -58,18 +62,18 @@ class TestChordrest(unittest.TestCase):
         dots.sort(key=lambda d: d.x)
         dots.sort(key=lambda d: d.y)
         assert_almost_equal(
-            dots[0], Point(self.staff.unit(1.18), self.staff.unit(-3.5))
+            dots[0], Point(self.staff.unit(1.43), self.staff.unit(-3.5))
         )
         assert_almost_equal(
-            dots[1], Point(self.staff.unit(1.68), self.staff.unit(-3.5))
+            dots[1], Point(self.staff.unit(1.93), self.staff.unit(-3.5))
         )
-        assert_almost_equal(dots[2], Point(self.staff.unit(1.18), self.staff.unit(7.5)))
-        assert_almost_equal(dots[3], Point(self.staff.unit(1.68), self.staff.unit(7.5)))
+        assert_almost_equal(dots[2], Point(self.staff.unit(1.43), self.staff.unit(7.5)))
+        assert_almost_equal(dots[3], Point(self.staff.unit(1.93), self.staff.unit(7.5)))
         assert_almost_equal(
-            dots[4], Point(self.staff.unit(1.18), self.staff.unit(10.5))
+            dots[4], Point(self.staff.unit(1.43), self.staff.unit(10.5))
         )
         assert_almost_equal(
-            dots[5], Point(self.staff.unit(1.68), self.staff.unit(10.5))
+            dots[5], Point(self.staff.unit(1.93), self.staff.unit(10.5))
         )
 
     def test_furthest_notehead_with_one_note(self):

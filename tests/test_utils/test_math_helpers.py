@@ -36,9 +36,9 @@ def test_min_and_max():
 
 
 def test_sign():
-    assert sign(1) == 1
-    assert sign(0) == 1
-    assert sign(-1) == -1
+    assert sign(Unit(1)) == 1
+    assert sign(Unit(0)) == 1
+    assert sign(Unit(-1)) == -1
 
 
 def test_float_to_rounded_fraction():
