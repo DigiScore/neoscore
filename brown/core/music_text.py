@@ -55,11 +55,6 @@ class MusicText(Text):
         """Rect: The bounding rect for this text when rendered."""
         return self._char_list_bounding_rect(self.music_chars)
 
-    @property
-    def _origin_offset(self):
-        """Point: The origin offset override for this glyph."""
-        return Point(GraphicUnit(0), self.font.ascent)
-
     ######## PRIVATE METHODS ########
 
     def _char_list_bounding_rect(self, music_chars):
@@ -93,8 +88,8 @@ class MusicText(Text):
             w += char.glyph_info["glyphBBox"]["bBoxNE"][0] - char_x
             h += (char.glyph_info["glyphBBox"]["bBoxSW"][1] - char_y) * -1
         return Rect(
-            (x + self._origin_offset.x) * self.scale,
-            (y + self._origin_offset.y) * self.scale,
+            x * self.scale,
+            y * self.scale,
             w * self.scale,
             h * self.scale,
         )

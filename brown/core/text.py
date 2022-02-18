@@ -64,11 +64,6 @@ class Text(GraphicObject):
         """The bounding rect override for this text."""
         return self.font.bounding_rect_of(self.text)
 
-    @property
-    def _origin_offset(self):
-        """Point: The origin offset override for this glyph."""
-        return Point(GraphicUnit(0), GraphicUnit(self.font.ascent))
-
     ######## PRIVATE METHODS ########
 
     def _render_slice(self, pos, clip_start_x=None, clip_width=None):
@@ -88,7 +83,6 @@ class Text(GraphicObject):
             self.text,
             self.font._interface,
             self.brush._interface,
-            origin_offset=self._origin_offset,
             scale=self.scale,
             clip_start_x=clip_start_x,
             clip_width=clip_width,

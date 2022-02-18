@@ -149,7 +149,6 @@ class _OctaveLineText(MusicText, StaffObject):
             self.text,
             self.font._interface,
             self.brush._interface,
-            origin_offset=self._origin_offset,
         )
         interface.render()
         self.interfaces.add(interface)
@@ -160,7 +159,6 @@ class _OctaveLineText(MusicText, StaffObject):
             self.parenthesized_text,
             self.font._interface,
             self.brush._interface,
-            origin_offset=self._origin_offset,
         )
         interface.render()
         self.interfaces.add(interface)
@@ -171,7 +169,6 @@ class _OctaveLineText(MusicText, StaffObject):
             self.parenthesized_text,
             self.font._interface,
             self.brush._interface,
-            origin_offset=self._origin_offset,
         )
         interface.render()
         self.interfaces.add(interface)

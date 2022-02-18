@@ -51,7 +51,6 @@ class TextInterface(GraphicObjectInterface):
         text,
         font,
         brush,
-        origin_offset=None,
         scale=1,
         clip_start_x=None,
         clip_width=None,
@@ -87,16 +86,6 @@ class TextInterface(GraphicObjectInterface):
     def text(self):
         """str: The text for the object"""
         return self._text
-
-    @property
-    def origin_offset(self):
-        """Point: A hard offset to be applied to the rendered text"""
-        return self._origin_offset
-
-    # @origin_offset.setter
-    # def origin_offset(self, value):
-    #     self._origin_offset = value
-    #     self.qt_object._origin_offset = self._origin_offset
 
     @property
     def scale(self):
