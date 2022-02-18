@@ -138,6 +138,11 @@ class Pitch:
         return Pitch._diatonic_degrees_in_c[self.letter]
 
     @property
+    def midi_number(self):
+        # todo
+        pass
+
+    @property
     def staff_pos_from_middle_c(self):
         """float: The pitch's staff position relative to middle C.
 
