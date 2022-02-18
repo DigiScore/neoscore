@@ -87,7 +87,7 @@ class Spanner:
         `GraphicObject.length` to return this.
         """
         if self.end_parent == self:
-            return Unit.from_existing(self.end_pos.x)
+            return self.end_pos.x
         else:
             return (
                 GraphicObject.map_between_items(self, self.end_parent).x
@@ -107,8 +107,9 @@ class Spanner:
             relative_stop = (
                 GraphicObject.map_between_items(self, self.end_parent) + self.end_pos
             )
-        relative_stop.to_unit(type(self.pos.x))
-        distance = math.sqrt(
-            (relative_stop.x.value**2) + (relative_stop.y.value**2)
+        distance = Unit(
+            math.sqrt(
+                (relative_stop.x.base_value**2) + (relative_stop.y.base_value**2)
+            )
         )
         return type(self.pos.x)(distance)

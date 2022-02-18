@@ -20,7 +20,7 @@ from examples.feldman_projections_2.text_event import TextEvent
 
 class Score(ObjectGroup):
 
-    _TEXT_FONT_SIZE = GraphicUnit(GridUnit(0.6)).value
+    _TEXT_FONT_SIZE = GridUnit(0.6).base_value
     _MUSIC_FONT_SIZE = Staff._make_unit_class(GridUnit(0.5))
 
     _bar_line_pen = Pen(thickness=GridUnit(0.05), pattern=PenPattern.DOT)
@@ -78,7 +78,7 @@ class Score(ObjectGroup):
     def measure_count(self):
         return (
             max(
-                max(int(Measure(e.pos_x).value) for e in i.event_data)
+                max(int(Measure(e.pos_x).display_value) for e in i.event_data)
                 for i in self.instruments
             )
             + 1

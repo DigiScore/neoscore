@@ -16,7 +16,8 @@ counting_string = "    ".join(str(x) for x in range(600))
 counting_text = Text((Mm(0), Mm(0)), counting_string, parent=flow)
 counting_text._length = Mm(10000)
 
-staff = Staff((Mm(0), Mm(0)), Mm(10000), flow, Mm(1))
+staff_pen = Pen(thickness=Mm(0.2), pattern=PenPattern.DASHDOTDOT)
+staff = Staff((Mm(0), Mm(0)), Mm(10000), flow, Mm(1), pen=staff_pen)
 
 lower_staff = Staff((Mm(0), Mm(9)), Mm(7000), flow, Mm(1))
 

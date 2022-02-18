@@ -66,21 +66,6 @@ class Point:
     def y(self, value):
         self._y = value if isinstance(value, Unit) else GraphicUnit(value)
 
-    ######## PUBLIC METHODS ########
-
-    def to_unit(self, unit):
-        """Translate coordinates to be of a certain unit type.
-
-        Args:
-            unit (type): A Unit class.
-
-        Returns:
-            Point: the modified self point.
-        """
-        self.x = unit(self.x)
-        self.y = unit(self.y)
-        return self
-
     ######## SPECIAL METHODS ########
 
     def __repr__(self):

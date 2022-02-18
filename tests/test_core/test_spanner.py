@@ -6,6 +6,8 @@ from brown.core.spanner import Spanner
 from brown.utils.point import Point
 from brown.utils.units import Unit
 
+from ..helpers import assert_almost_equal
+
 
 class MockSpanner(GraphicObject, Spanner):
 
@@ -40,13 +42,13 @@ class TestSpanner(unittest.TestCase):
             brown.document.pages[0],
         )
         # math.sqrt(((5-1)**2) + ((7-2)**2))
-        self.assertAlmostEqual(Unit(spanner.spanner_length).value, 6.4031242374328485)
+        assert_almost_equal(spanner.spanner_length, Unit(6.4031242374328485))
 
     def test_length_with_self_parent(self):
         parent = MockSpanner((Unit(1), Unit(2)), None, (Unit(0), Unit(0)), None)
         spanner = MockSpanner((Unit(3), Unit(7)), parent, (Unit(4), Unit(5)), None)
         # math.sqrt((4**2) + (5**2))
-        self.assertAlmostEqual(Unit(spanner.spanner_length).value, 6.4031242374328485)
+        assert_almost_equal(spanner.spanner_length, Unit(6.4031242374328485))
 
     def test_length_with_parents(self):
         parent_1 = MockSpanner((Unit(1), Unit(2)), None, (Unit(0), Unit(0)), None)
@@ -55,4 +57,4 @@ class TestSpanner(unittest.TestCase):
             (Unit(1), Unit(2)), parent_1, (Unit(4), Unit(5)), parent_2
         )
         # math.sqrt(((15-2)**2) + ((17-4)**2))
-        self.assertAlmostEqual(Unit(spanner.spanner_length).value, 18.384776310850235)
+        assert_almost_equal(spanner.spanner_length, Unit(18.384776310850235))

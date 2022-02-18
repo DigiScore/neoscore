@@ -53,7 +53,7 @@ class PenInterface:
     @thickness.setter
     def thickness(self, new_value):
         self._thickness = new_value
-        self.qt_object.setWidthF(GraphicUnit(new_value).value)
+        self.qt_object.setWidthF(new_value.base_value)
 
     @property
     def pattern(self):

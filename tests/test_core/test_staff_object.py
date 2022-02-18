@@ -35,6 +35,6 @@ class TestStaffObject(unittest.TestCase):
     def test_pos_in_staff_with_indirect_ancestor_staff(self):
         parent_object = MockStaffObject((Mm(1), Mm(2)), self.staff)
         test_object = MockStaffObject((Mm(10), Mm(1)), parent_object)
-        pos_in_staff = test_object.pos_in_staff.to_unit(Mm)
-        self.assertAlmostEqual(pos_in_staff.x.value, 11)
-        self.assertAlmostEqual(pos_in_staff.y.value, 3)
+        pos_in_staff = test_object.pos_in_staff
+        self.assertAlmostEqual(Mm(pos_in_staff.x).display_value, 11)
+        self.assertAlmostEqual(Mm(pos_in_staff.y).display_value, 3)

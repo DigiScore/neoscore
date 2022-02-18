@@ -6,6 +6,8 @@ from brown.core.multi_staff_object import MultiStaffObject
 from brown.core.staff import Staff
 from brown.utils.units import Mm
 
+from ..helpers import assert_almost_equal
+
 
 class TestMultiStaffObject(unittest.TestCase):
     def setUp(self):
@@ -33,6 +35,4 @@ class TestMultiStaffObject(unittest.TestCase):
 
     def test_vertical_span(self):
         multi_object = MultiStaffObject({self.staff_1, self.staff_2, self.staff_3})
-        self.assertAlmostEqual(
-            multi_object.vertical_span.value, (self.staff_3.unit(4) + Mm(50)).value
-        )
+        assert_almost_equal(multi_object.vertical_span, self.staff_3.unit(4) + Mm(50))

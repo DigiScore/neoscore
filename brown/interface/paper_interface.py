@@ -2,7 +2,6 @@ from PyQt5.QtCore import QMarginsF, QSize
 from PyQt5.QtGui import QPageLayout, QPageSize
 
 from brown import constants
-from brown.interface.qt.converters import unit_to_qt_float
 
 
 class PaperInterface(QPageLayout):
@@ -29,8 +28,8 @@ class PaperInterface(QPageLayout):
             self,
             QPageSize(
                 QSize(
-                    unit_to_qt_float(paper.width) * ratio,
-                    unit_to_qt_float(paper.height) * ratio,
+                    paper.width.base_value * ratio,
+                    paper.height.base_value * ratio,
                 ),
             ),
             QPageLayout.Portrait,

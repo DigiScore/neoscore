@@ -34,23 +34,6 @@ class TestPoint(unittest.TestCase):
         assert original.x == clone.x
         assert original.y == clone.y
 
-    def test_to_unit_from_int(self):
-        test_point = Point(5, 6)
-        returned_value = test_point.to_unit(Unit)
-        assert test_point == returned_value
-        assert isinstance(test_point.x, Unit)
-        assert isinstance(test_point.y, Unit)
-        assert test_point.x == Unit(5)
-        assert test_point.y == Unit(6)
-
-    def test_to_unit_from_other_unit(self):
-        test_point = Point(Unit(1), Unit(2))
-        test_point.to_unit(Mm)
-        assert isinstance(test_point.x, Mm)
-        assert isinstance(test_point.y, Mm)
-        self.assertAlmostEqual(test_point.x, Mm(Unit(1)))
-        self.assertAlmostEqual(test_point.y, Mm(Unit(2)))
-
     def test__hash__(self):
         assert {Point(1, 2), Point(1, 2), Point(3, 4)} == {Point(1, 2), Point(3, 4)}
         assert {Point(1, 2), Point(1, 2), Point(3, 4)} == {Point(1, 2), Point(3, 4)}
@@ -84,10 +67,8 @@ class TestPoint(unittest.TestCase):
             p1 - ParentPoint(0, 0, "mock parent")
 
     def test__mul__(self):
-        p1 = Point(1, 2)
-        assert (p1 * -1) == Point(-1, -2)
-        p2 = Point(Unit(2), Unit(3))
-        assert p2 * Unit(-1) == Point(Unit(-2), Unit(-3))
+        p = Point(1, 2)
+        assert p * -1 == Point(-1, -2)
 
     def test__abs__(self):
         assert abs(Point(-2, -3)) == Point(2, 3)

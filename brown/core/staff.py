@@ -24,6 +24,7 @@ class Staff(Path):
         line_count=5,
         music_font=None,
         default_time_signature_duration=None,
+        pen=None,
     ):
         """
         Args:
@@ -36,8 +37,10 @@ class Staff(Path):
                 MusicTextObjects unless otherwise specified.
             default_time_signature_duration (tuple or None): The duration tuple
                 of the initial time signature. If none, (4, 4) will be used.
+            pen: The pen used to draw the staff lines. If none, a default solid
+                black line is used.
         """
-        super().__init__(pos, parent=flowable)
+        super().__init__(pos, parent=flowable, pen=pen)
         self._line_count = line_count
         self._unit = self._make_unit_class(
             staff_unit if staff_unit else constants.DEFAULT_STAFF_UNIT
@@ -241,7 +244,7 @@ class Staff(Path):
 
         Returns: bool
         """
-        return self.y_outside_staff(pos_y) and self.unit(pos_y).value % 1 == 0
+        return self.y_outside_staff(pos_y) and self.unit(pos_y).display_value % 1 == 0
 
     def ledgers_needed_for_y(self, position):
         """Find the y positions of all ledgers needed for a given y position
@@ -252,7 +255,7 @@ class Staff(Path):
         Returns: set[StaffUnit]
         """
         # Work on positions as integers for simplicity
-        start = int(self.unit(position).value)
+        start = int(self.unit(position).display_value)
         if start < 0:
             return set(self.unit(pos) for pos in range(start, 0, 1))
         elif start > self.line_count - 1:
@@ -272,7 +275,8 @@ class Staff(Path):
         Returns:
             type: A new StaffUnit class specifically for use in this staff.
         """
-        return make_unit_class("StaffUnit", staff_unit_size)
+
+        return make_unit_class("StaffUnit", staff_unit_size.base_value)
 
     def _compute_clef_x_positions(self) -> list[tuple[Unit, Clef]]:
         result = [

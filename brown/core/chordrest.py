@@ -137,7 +137,7 @@ class Chordrest(ObjectGroup, StaffObject):
             dottables = self.noteheads
         for i in range(self.duration.dot_count):
             for dottable in dottables:
-                if dottable.y.value % 1 == 0:
+                if dottable.y.display_value % 1 == 0:
                     # Dottable is on a line, add dot offset to space below
                     y_offset = self.staff.unit(-0.5)
                 else:

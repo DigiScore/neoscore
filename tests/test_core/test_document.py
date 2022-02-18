@@ -4,7 +4,10 @@ from brown.core import brown
 from brown.core.document import Document
 from brown.core.invisible_object import InvisibleObject
 from brown.core.paper import Paper
+from brown.utils.point import Point
 from brown.utils.units import Mm
+
+from ..helpers import assert_almost_equal
 
 
 class TestDocument(unittest.TestCase):
@@ -19,10 +22,7 @@ class TestDocument(unittest.TestCase):
         test_paper = Paper(Mm(200), Mm(250), top_margin, Mm(10), Mm(20), left_margin, 0)
         test_doc = Document(test_paper)
         found = test_doc.page_origin(0)
-        expected_x = left_margin
-        expected_y = top_margin
-        self.assertAlmostEqual(found.x, expected_x)
-        self.assertAlmostEqual(found.y, expected_y)
+        assert_almost_equal(found, Point(left_margin, top_margin))
 
     def test_page_origin_at_second_page(self):
         width = Mm(200)
@@ -34,8 +34,7 @@ class TestDocument(unittest.TestCase):
         page_width = width
         expected_x = left_margin + page_width + test_doc._page_display_gap
         expected_y = top_margin
-        self.assertAlmostEqual(found.x, expected_x)
-        self.assertAlmostEqual(found.y, expected_y)
+        assert_almost_equal(found, Point(expected_x, expected_y))
 
     def test_page_origin_at_third_page(self):
         width = Mm(200)
@@ -47,8 +46,7 @@ class TestDocument(unittest.TestCase):
         page_width = width
         expected_x = left_margin + ((page_width + test_doc._page_display_gap) * 2)
         expected_y = top_margin
-        self.assertAlmostEqual(found.x, expected_x)
-        self.assertAlmostEqual(found.y, expected_y)
+        assert_almost_equal(found, Point(expected_x, expected_y))
 
     def test_canvas_pos_of(self):
         brown.setup()
@@ -56,5 +54,4 @@ class TestDocument(unittest.TestCase):
         canvas_pos = brown.document.canvas_pos_of(item)
         page_pos = brown.document.canvas_pos_of(brown.document.pages[2])
         relative_pos = canvas_pos - page_pos
-        self.assertAlmostEqual(Mm(relative_pos.x).value, Mm(5).value)
-        self.assertAlmostEqual(Mm(relative_pos.y).value, Mm(6).value)
+        assert_almost_equal(relative_pos, Point(Mm(5), Mm(6)))

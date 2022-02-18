@@ -1,22 +1,31 @@
+from typing import Optional, Union
+
 from brown.interface.font_interface import FontInterface
+from brown.utils.units import GraphicUnit, Unit
 
 
 class Font:
 
     """A text font."""
 
-    def __init__(self, family_name, size, weight=None, italic=False):
+    def __init__(
+        self,
+        family_name: str,
+        size: Union[Unit, float],
+        weight: Optional[int] = None,
+        italic: bool = False,
+    ):
         """
         Args:
-            family_name (str): The font family name
-            size (Unit): The size (height) of the font
-            weight (int): The font weight on a 0-100 scale, where 50 is normal,
+            family_name: The font family name
+            size: The size (height) of the font
+            weight: The font weight on a 0-100 scale, where 50 is normal,
                 lower numbers are lighter, and higher are darker.
                 If `None` (the default), a normal weight will be used.
-            italic (bool): Whether or not the font is italicized
+            italic: Whether or not the font is italicized
         """
         self.family_name = family_name
-        self.size = size
+        self.size = size if isinstance(size, Unit) else GraphicUnit(size)
         self.weight = weight
         self.italic = italic
         self._interface = FontInterface(

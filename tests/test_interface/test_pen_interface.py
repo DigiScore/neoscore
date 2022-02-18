@@ -30,7 +30,7 @@ class TestPenInterface(unittest.TestCase):
             PenJoinStyle.BEVEL,
             PenCapStyle.SQUARE,
         )
-        self.assertAlmostEqual(pen.qt_object.widthF(), GraphicUnit(Mm(1)).value)
+        self.assertAlmostEqual(pen.qt_object.widthF(), Mm(1).base_value)
 
     def test_change_color_propagated_to_qt_object(self):
         pen = PenInterface(
@@ -49,18 +49,18 @@ class TestPenInterface(unittest.TestCase):
     def test_change_thickness_propagated_to_qt_object(self):
         pen = PenInterface(
             Color("#ffffff"),
-            0,
+            Mm(0),
             PenPattern(1),
             PenJoinStyle.BEVEL,
             PenCapStyle.SQUARE,
         )
         pen.thickness = Mm(1)
-        self.assertAlmostEqual(pen.qt_object.widthF(), GraphicUnit(Mm(1)).value)
+        self.assertAlmostEqual(pen.qt_object.widthF(), Mm(1).base_value)
 
     def test_change_pen_pattern_propagated_to_qt_object(self):
         pen = PenInterface(
             Color("#ffffff"),
-            0,
+            GraphicUnit(0),
             PenPattern(1),
             PenJoinStyle.BEVEL,
             PenCapStyle.SQUARE,

@@ -4,31 +4,32 @@ import pytest
 
 from brown.utils.units import GraphicUnit, Inch, Mm, Unit, make_unit_class
 
+from ..helpers import assert_almost_equal
+
 MockUnit = make_unit_class("MockUnit", 2)
 
 
 class TestUnit(unittest.TestCase):
     def test_init_from_int(self):
         unit = Unit(5)
-        assert isinstance(unit.value, int)
-        assert unit.value == 5
-
-    def test_init_from_float(self):
-        unit = Unit(5.0)
-        assert isinstance(unit.value, float)
-        assert unit.value == 5.0
+        assert unit.base_value == 5
 
     def test_init_from_self_type(self):
-        assert Unit(Unit(5)).value == 5
+        assert Unit(Unit(5)).base_value == 5
 
     def test_init_from_other_compatible_type(self):
-        assert Unit(MockUnit(1)).value == 2
+        assert Unit(MockUnit(1)).base_value == 2
+
+    def test_display_value(self):
+        assert Unit(123.456).display_value == 123.456
+        assert MockUnit(5).display_value == 5
+        assert MockUnit(5).base_value == 10
 
     def test__repr__(self):
         assert repr(Unit(1)) == "Unit(1)"
 
     def test__hash__(self):
-        assert hash(Unit(1)) == hash(MockUnit(0.5)) == 8726346
+        assert hash(Unit(1)) == hash(MockUnit(0.5))
         assert len(set([Unit(1), MockUnit(0.5)])) == 1
 
     def test__lt__(self):
@@ -92,11 +93,9 @@ class TestUnit(unittest.TestCase):
             Unit(1) + 2
 
     def test__mul__(self):
-        assert isinstance(Unit(1) * Unit(2), Unit)
-        assert isinstance(Unit(1) * MockUnit(2), Unit)
-        assert (Unit(1) * Unit(2)).value == 2
-        assert (Unit(1) * 2).value == 2
-        assert (Unit(1) * MockUnit(1)).value == 2
+        assert Unit(1) * 2 == Unit(2)
+        with pytest.raises(TypeError):
+            Unit(1) * Unit(1)
 
     def test__truediv__(self):
         assert Unit(1) / 2 == Unit(0.5)
@@ -108,7 +107,7 @@ class TestUnit(unittest.TestCase):
             Unit(2) ** Unit(3)
 
     def test__pow__with_modulo(self):
-        assert (pow(Unit(2), 2, 3)).value == 1
+        assert (pow(Unit(2), 2, 3)).base_value == 1
         with pytest.raises(TypeError):
             # To use modulo, base value must be an int
             pow(Unit(2.3), 2, 1)
@@ -122,17 +121,17 @@ class TestUnit(unittest.TestCase):
 
 class TestMm(unittest.TestCase):
     def test_mm_unit_conversion(self):
-        self.assertAlmostEqual(Unit(Mm(1)), Unit(11.811029999999999))
-        self.assertAlmostEqual(Unit(Mm(2)), Unit(23.622059999999998))
+        assert_almost_equal(Mm(1), Unit(11.811029999999999))
+        assert_almost_equal(Mm(2), Unit(23.622059999999998))
 
 
 class TestInch(unittest.TestCase):
     def test_inch_unit_conversion(self):
-        self.assertAlmostEqual(Unit(Inch(1)), Unit(300))
-        self.assertAlmostEqual(Unit(Inch(2)), Unit(600))
+        assert_almost_equal(Inch(1), Unit(300))
+        assert_almost_equal(Inch(2), Unit(600))
 
 
 class TestGraphicUnit(unittest.TestCase):
     def test_graphic_unit_unit_conversion(self):
-        self.assertAlmostEqual(Unit(GraphicUnit(1)), Unit(1))
-        self.assertAlmostEqual(Unit(GraphicUnit(2)), Unit(2))
+        assert_almost_equal(GraphicUnit(1), Unit(1))
+        assert_almost_equal(GraphicUnit(2), Unit(2))

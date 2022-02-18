@@ -8,6 +8,7 @@ from brown.interface.brush_interface import BrushInterface
 from brown.interface.graphic_object_interface import GraphicObjectInterface
 from brown.interface.pen_interface import PenInterface
 from brown.utils.color import Color
+from brown.utils.units import GraphicUnit
 
 """A mock concrete GraphicObjectInterface subclass for testing"""
 
@@ -25,7 +26,7 @@ class MockGraphicObjectInterface(GraphicObjectInterface):
         else:
             self.pen = PenInterface(
                 Color("#000000"),
-                0,
+                GraphicUnit(0),
                 PenPattern.SOLID,
                 PenJoinStyle.BEVEL,
                 PenCapStyle.SQUARE,

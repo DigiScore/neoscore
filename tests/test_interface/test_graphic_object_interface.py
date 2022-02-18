@@ -55,7 +55,7 @@ class TestGraphicObjectInterface(unittest.TestCase):
     def test_pen_after_init(self):
         pen = PenInterface(
             Color("#eeeeee"),
-            0,
+            GraphicUnit(0),
             PenPattern(1),
             PenJoinStyle.BEVEL,
             PenCapStyle.SQUARE,
@@ -69,7 +69,7 @@ class TestGraphicObjectInterface(unittest.TestCase):
         grob = MockGraphicObjectInterface((5, 6), pen=None)
         pen = PenInterface(
             Color("#eeeeee"),
-            0,
+            GraphicUnit(0),
             PenPattern(1),
             PenJoinStyle.BEVEL,
             PenCapStyle.SQUARE,

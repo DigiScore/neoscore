@@ -14,7 +14,7 @@ def assert_almost_equal(left, right, places=7):
 
 
 def _assert_units_almost_equal(left, right, places):
-    if round(left._in_base_unit_float - right._in_base_unit_float, places) != 0:
+    if round(left.base_value - right.base_value, places) != 0:
         left_type = type(left)
         right_type = type(right)
         raise AssertionError(

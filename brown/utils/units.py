@@ -8,15 +8,6 @@ from __future__ import annotations
 
 from typing import Any, TypeVar, Union
 
-_LAST_TYPE_ID = -1
-
-
-def _next_type_id():
-    global _LAST_TYPE_ID
-    _LAST_TYPE_ID += 1
-    return _LAST_TYPE_ID
-
-
 TUnit = TypeVar("TUnit", bound="Unit")
 
 
@@ -31,10 +22,10 @@ class Unit:
 
         >>> from brown.utils.units import Inch, Mm
         >>> print(Inch(1) + Mm(1))
-        Inch(1.0393701)
+        Inch(1.039)
     """
 
-    __slots__ = ("value",)
+    __slots__ = ("base_value", "_display_value")
 
     CONVERSION_RATE = 1
     """float: the ratio of this class to `Unit`s.
@@ -42,127 +33,96 @@ class Unit:
     Subclasses should override this.
     """
 
-    _TYPE_ID = _next_type_id()
-    """int: a unique ID number for this Unit type.
-
-    This is used to optimize type comparisons. Each Unit class must
-    fetch a unique value using `_next_type_id()`.
-    """
-
     def __init__(self, value):
-        """
-        Args:
-            value (int, float, or Unit): The value of the unit.
-                `int` and `float` literals will be stored directly
-                into `self.value`. Any value which is a unit subclass of
-                `Unit` will be converted to that value in this unit.
-        """
-        if hasattr(value, "_TYPE_ID"):
-            if value._TYPE_ID == self._TYPE_ID:
-                self.value = value.value
-            else:
-                self.value = value._in_base_unit_float / self.CONVERSION_RATE
+        base_value = getattr(value, "base_value", None)
+        if base_value is not None:
+            self.base_value = base_value
+            self._display_value = None
         else:
-            self.value = value
-
-    ######## CONSTRUCTORS ########
-
-    @classmethod
-    def from_existing(cls, existing):
-        """Clone any Unit object.
-
-        Args:
-            existing (Unit): An existing unit
-
-        Returns: Unit
-        """
-        return type(existing)(existing.value)
-
-    ######## PRIVATE METHODS ########
+            # TODO document this base_value rounding behavior - it's
+            # needed to allow ergonomic comparisons between units
+            # without floating point errors getting in the way.
+            #
+            # Also need to determine if this is the best approach -
+            # might be better to defer rounding to comparison
+            # operators to minimize error accumulation and avoid
+            # unecessary computation.
+            self.base_value = round(value * self.CONVERSION_RATE, 6)
+            self._display_value = value
 
     @property
-    def _in_base_unit_float(self):
-        """Return this value as a float in base unit values.
+    def display_value(self) -> float:
+        """The readable given value in the unit.
 
-        Returns: float
+        If the unit was constructed with a simple number (e.g. Mm(1))
+        this will return the exact given argument value. If the unit
+        was constructed from another unit (e.g. Mm(Inch(1))) this will
+        return the converted value rounded to 3 decimal places. This
+        is helpful for correcting floating point math errors.
         """
-        return self.value * self.CONVERSION_RATE
+        if self._display_value:
+            return self._display_value
+        return round(self.base_value / self.CONVERSION_RATE, 3)
 
     ######## SPECIAL METHODS ########
 
     # Representations ---------------------------------------------------------
 
     def __repr__(self):
-        return "{}({})".format(type(self).__name__, self.value)
+        return "{}({})".format(type(self).__name__, self.display_value)
 
     def __hash__(self):
-        # Add a random constant to prevent collisions with simple numbers
-        return 8726347 ^ hash(self._in_base_unit_float)
+        return hash(self.base_value)
 
     # Comparisons -------------------------------------------------------------
 
+    _CMP_POS_EPSILON = 0.001
+    _CMP_NEG_EPSILON = -0.001
+
     def __lt__(self, other: Unit):
-        if self._TYPE_ID == other._TYPE_ID:
-            return self.value < other.value
-        return self._in_base_unit_float < other._in_base_unit_float
+        return self.base_value < other.base_value
 
     def __le__(self, other: Unit):
-        if self._TYPE_ID == other._TYPE_ID:
-            return self.value <= other.value
-        return self._in_base_unit_float <= other._in_base_unit_float
+        return self.base_value <= other.base_value
 
     def __eq__(self, other: Any):
-        return hasattr(other, "_TYPE_ID") and self.value == type(self)(other).value
+        return hasattr(other, "base_value") and self.base_value == other.base_value
 
     def __gt__(self, other: Unit):
-        if self._TYPE_ID == other._TYPE_ID:
-            return self.value > other.value
-        return self._in_base_unit_float > other._in_base_unit_float
+        return self.base_value > other.base_value
 
     def __ge__(self, other: Unit):
-        if self._TYPE_ID == other._TYPE_ID:
-            return self.value >= other.value
-        return self._in_base_unit_float >= other._in_base_unit_float
+        return self.base_value >= other.base_value
 
     # Operators ---------------------------------------------------------------
 
     def __add__(self, other: Unit) -> TUnit:
-        if self._TYPE_ID == other._TYPE_ID:
-            return type(self)(self.value + other.value)
-        return type(self)(
-            self.value + (other._in_base_unit_float / self.CONVERSION_RATE)
-        )
+        return type(self)(Unit(self.base_value + other.base_value))
 
     def __sub__(self, other: Unit) -> TUnit:
-        if self._TYPE_ID == other._TYPE_ID:
-            return type(self)(self.value - other.value)
-        return type(self)(
-            self.value - (other._in_base_unit_float / self.CONVERSION_RATE)
-        )
+        return type(self)(Unit(self.base_value - other.base_value))
 
-    def __mul__(self, other: Union[Unit, float]) -> TUnit:
-        return type(self)(self.value * type(self)(other).value)
+    def __mul__(self, other: float) -> TUnit:
+        return type(self)(Unit(self.base_value * other))
 
     def __truediv__(self, other: Union[Unit, float]) -> Union[TUnit, float]:
-        if hasattr(other, "_TYPE_ID"):
+        if hasattr(other, "base_value"):
             # Unit / Unit -> Float
-            if self._TYPE_ID == other._TYPE_ID:
-                return self.value / other.value
-            return self._in_base_unit_float / other._in_base_unit_float
+            return self.base_value / other.base_value
         # Unit / Float -> Unit
-        return type(self)(self.value / other)
+        return type(self)(Unit(self.base_value / other))
 
     def __pow__(self, other: float, modulo: Optional[int] = None) -> TUnit:
-        return type(self)(pow(self.value, other, modulo))
+        return type(self)(Unit(pow(self.base_value, other, modulo)))
 
     def __neg__(self) -> TUnit:
-        return type(self)(-self.value)
+        return type(self)(Unit(-self.base_value))
 
     def __pos__(self) -> TUnit:
-        return type(self)(+self.value)
+        return type(self)(Unit(+self.base_value))
 
     def __abs__(self) -> TUnit:
-        return type(self)(abs(self.value))
+        return type(self)(Unit(abs(self.base_value)))
 
     # TODO maybe restore support for __rmul__
 
@@ -176,35 +136,31 @@ class GraphicUnit(Unit):
     """
 
     CONVERSION_RATE = 1
-    _TYPE_ID = _next_type_id()
 
 
 class Inch(Unit):
     """An inch."""
 
     CONVERSION_RATE = 300
-    _TYPE_ID = _next_type_id()
 
 
 class Mm(Unit):
     """A millimeter."""
 
     CONVERSION_RATE = Inch.CONVERSION_RATE * 0.0393701
-    _TYPE_ID = _next_type_id()
 
 
 class Meter(Unit):
     """A meter."""
 
     CONVERSION_RATE = Mm.CONVERSION_RATE * 1000
-    _TYPE_ID = _next_type_id()
 
 
 def make_unit_class(name, unit_size):
     return type(
         name,
         (Unit,),
-        {"CONVERSION_RATE": Unit(unit_size).value, "_TYPE_ID": _next_type_id()},
+        {"CONVERSION_RATE": unit_size},
     )
 
 

@@ -8,6 +8,8 @@ from brown.utils.parent_point import ParentPoint
 from brown.utils.units import Mm, Unit
 from tests.mocks.mock_staff_object import MockStaffObject
 
+from ..helpers import assert_almost_equal
+
 
 class TestHairpin(unittest.TestCase):
     def setUp(self):
@@ -124,8 +126,8 @@ class TestHairpin(unittest.TestCase):
         )
         # Spanner line slope should be Unit(1)
         points = cresc._find_hairpin_points()
-        self.assertAlmostEqual(Unit(points[0].x).value, Unit(points[2].y).value)
-        self.assertAlmostEqual(Unit(points[0].y).value, Unit(points[2].x).value)
+        assert_almost_equal(points[0].x, points[2].y)
+        assert_almost_equal(points[0].y, points[2].x)
         assert points[1] == ParentPoint(Unit(0), Unit(0), parent=self.left_parent)
 
         dim = Hairpin(
@@ -136,8 +138,8 @@ class TestHairpin(unittest.TestCase):
         )
         # Spanner line slope should be Unit(1)
         points = dim._find_hairpin_points()
-        self.assertAlmostEqual(Unit(points[0].x).value, Unit(points[2].y).value)
-        self.assertAlmostEqual(Unit(points[0].y).value, Unit(points[2].x).value)
+        assert_almost_equal(points[0].x, points[2].y)
+        assert_almost_equal(points[0].y, points[2].x)
         assert points[1] == ParentPoint(Unit(4), Unit(4), parent=self.left_parent)
 
     def test_hairpin_points_diagonal_different_parents(self):
@@ -152,8 +154,8 @@ class TestHairpin(unittest.TestCase):
         )
         # Spanner line slope should be Unit(1)
         points = cresc._find_hairpin_points()
-        self.assertAlmostEqual(Unit(points[0].x).value, Unit(points[2].y).value)
-        self.assertAlmostEqual(Unit(points[0].y).value, Unit(points[2].x).value)
+        assert_almost_equal(points[0].x, points[2].y)
+        assert_almost_equal(points[0].y, points[2].x)
         assert points[1] == ParentPoint(Unit(10), Unit(2), parent=self.left_parent)
 
         dim = Hairpin(
@@ -164,6 +166,6 @@ class TestHairpin(unittest.TestCase):
         )
         # Spanner line slope should be Unit(1)
         points = dim._find_hairpin_points()
-        self.assertAlmostEqual(Unit(points[0].x).value, Unit(points[2].y).value)
-        self.assertAlmostEqual(Unit(points[0].y).value, Unit(points[2].x).value)
+        assert_almost_equal(points[0].x, points[2].y)
+        assert_almost_equal(points[0].y, points[2].x)
         assert points[1] == ParentPoint(Unit(-6), Unit(2), parent=self.right_parent)

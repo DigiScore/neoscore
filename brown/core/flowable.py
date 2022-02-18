@@ -226,7 +226,7 @@ class Flowable(InvisibleObject):
             remaining_x -= controller.length
             # Allow error of Unit(1) to compensate for repeated subtraction
             # rounding errors.
-            if Unit(remaining_x).value < -1:
+            if remaining_x.base_value < -1:
                 return i
         else:
             raise OutOfBoundsError(

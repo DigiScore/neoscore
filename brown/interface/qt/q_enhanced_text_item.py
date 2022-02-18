@@ -1,6 +1,5 @@
 from PyQt5 import QtCore, QtWidgets
 
-from brown.interface.qt.converters import unit_to_qt_float
 from brown.interface.qt.q_clipping_path import QClippingPath
 
 """ NOTE: I think the origin offset stuff is only needed because QT's
@@ -76,7 +75,7 @@ class QEnhancedTextItem(QtWidgets.QGraphicsSimpleTextItem):
     def calculate_clip_offset(self):
         if self.clip_start_x is not None:
             main_offset = QtCore.QPointF(
-                -1 * unit_to_qt_float(self.clip_start_x / self.scale), 0
+                -1 * self.clip_start_x.base_value / self.scale, 0
             )
         else:
             main_offset = QtCore.QPointF(0, 0)

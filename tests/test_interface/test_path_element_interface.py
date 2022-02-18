@@ -12,6 +12,9 @@ from brown.interface.path_interface import PathInterface
 from brown.interface.pen_interface import PenInterface
 from brown.utils.color import Color
 from brown.utils.point import Point
+from brown.utils.units import Unit
+
+from ..helpers import assert_almost_equal
 
 
 class TestPathElementInterface(unittest.TestCase):
@@ -19,7 +22,7 @@ class TestPathElementInterface(unittest.TestCase):
         brown.setup()
         self.pen = PenInterface(
             Color("#000000"),
-            0,
+            Unit(0),
             PenPattern.SOLID,
             PenJoinStyle.BEVEL,
             PenCapStyle.SQUARE,
@@ -31,8 +34,9 @@ class TestPathElementInterface(unittest.TestCase):
         test_path.line_to(Point(10, 11))
         qt_element = test_path.qt_path.elementAt(1)
         test_element = PathElementInterface(qt_element, test_path, 1, 1)
-        assert test_element.pos.x.value == 10
-        assert test_element.pos.y.value == 11
+
+        assert test_element.pos.x == Unit(10)
+        assert test_element.pos.y == Unit(11)
         assert test_element.path_interface == test_path
         assert test_element.element_type == PathElementType.line_to
         assert test_element.index == 1

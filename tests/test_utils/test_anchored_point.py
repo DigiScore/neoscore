@@ -36,14 +36,6 @@ class TestParentPoint(unittest.TestCase):
         assert original.y == clone.y
         assert clone.parent == self.test_parent
 
-    def test_to_unit(self):
-        test_point = ParentPoint(5, 6, self.test_parent).to_unit(Unit)
-        assert isinstance(test_point.x, Unit)
-        assert isinstance(test_point.y, Unit)
-        assert test_point.x == Unit(5)
-        assert test_point.y == Unit(6)
-        assert test_point.parent == self.test_parent
-
     def test__eq__(self):
         test_point = ParentPoint(5, 6, self.test_parent)
         test_point_eq = ParentPoint(5, 6, self.test_parent)
@@ -84,7 +76,5 @@ class TestParentPoint(unittest.TestCase):
             p1 - Point(0, 0)
 
     def test__mult__(self):
-        p1 = ParentPoint(1, 2, None)
-        assert (p1 * -1) == ParentPoint(-1, -2, None)
-        p2 = ParentPoint(Unit(2), Unit(3), None)
-        assert p2 * Unit(-1) == ParentPoint(Unit(-2), Unit(-3), None)
+        p = ParentPoint(1, 2, None)
+        assert p * -1 == ParentPoint(-1, -2, None)

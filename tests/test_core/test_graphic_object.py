@@ -7,6 +7,8 @@ from brown.core.paper import Paper
 from brown.utils.point import Point
 from brown.utils.units import GraphicUnit, Mm
 
+from ..helpers import assert_almost_equal
+
 
 class TestGraphicObject(unittest.TestCase):
     def setUp(self):
@@ -30,8 +32,7 @@ class TestGraphicObject(unittest.TestCase):
         page_4_pos = brown.document.canvas_pos_of(brown.document.pages[4])
 
         expected = (page_4_pos + Point(99, 90)) - (page_1_pos + Point(5, 6))
-        self.assertAlmostEqual(Mm(expected.x).value, Mm(relative_pos.x).value)
-        self.assertAlmostEqual(Mm(expected.y).value, Mm(relative_pos.y).value)
+        assert_almost_equal(relative_pos, expected)
 
     def test_register_child(self):
         parent = InvisibleObject((0, 0))

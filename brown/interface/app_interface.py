@@ -102,9 +102,9 @@ class AppInterface:
         Raises:
             ImageExportError: If Qt image export fails for unknown reasons.
         """
-        scale = dpm / Unit(Meter(1)).value
-        pix_width = int(Unit(rect.width).value * scale)
-        pix_height = int(Unit(rect.height).value * scale)
+        scale = dpm / Meter(1).base_value
+        pix_width = int(rect.width.base_value * scale)
+        pix_height = int(rect.height.base_value * scale)
 
         q_image = QtGui.QImage(pix_width, pix_height, QtGui.QImage.Format_ARGB32)
         q_image.setDotsPerMeterX(dpm)

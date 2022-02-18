@@ -9,6 +9,8 @@ from brown.core.pen_pattern import PenPattern
 from brown.utils.color import Color
 from brown.utils.units import Unit
 
+from ..helpers import assert_almost_equal
+
 
 class TestPen(unittest.TestCase):
     def test_init_with_hex_color(self):
@@ -21,9 +23,7 @@ class TestPen(unittest.TestCase):
 
     def test_init_default_thicknes(self):
         test_pen = Pen(("#eeddcc", 200))
-        self.assertAlmostEqual(
-            Unit(test_pen.thickness).value, Unit(constants.DEFAULT_PEN_THICKNESS).value
-        )
+        assert_almost_equal(test_pen.thickness, constants.DEFAULT_PEN_THICKNESS)
 
     def test_init_default_pattern(self):
         test_pen = Pen()

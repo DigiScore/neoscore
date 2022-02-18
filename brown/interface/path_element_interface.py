@@ -31,7 +31,7 @@ class PathElementInterface:
         self.qt_object = qt_object
         self._parent_path = parent_path
         self._index = index
-        self._pos = Point(qt_object.x, qt_object.y).to_unit(GraphicUnit)
+        self._pos = Point(GraphicUnit(qt_object.x), GraphicUnit(qt_object.y))
         self._element_type = (
             element_type
             if isinstance(element_type, PathElementType)

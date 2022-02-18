@@ -13,13 +13,15 @@ from brown.utils.color import Color
 from brown.utils.point import Point
 from brown.utils.units import GraphicUnit
 
+from ..helpers import assert_almost_equal
+
 
 class TestPathInterface(unittest.TestCase):
     def setUp(self):
         brown.setup()
         self.pen = PenInterface(
             Color("#000000"),
-            0,
+            GraphicUnit(0),
             PenPattern.SOLID,
             PenJoinStyle.BEVEL,
             PenCapStyle.SQUARE,
@@ -60,8 +62,7 @@ class TestPathInterface(unittest.TestCase):
         test_path.move_to(Point(10, 11))
         move_to_el = test_path.element_at(0)
         assert test_path.qt_path.elementCount() == 1
-        assert move_to_el.pos.x.value == 10
-        assert move_to_el.pos.y.value == 11
+        assert_almost_equal(move_to_el.pos, Point(10, 11))
         assert move_to_el.path_interface == test_path
         assert move_to_el.element_type == PathElementType.move_to
 
@@ -76,8 +77,7 @@ class TestPathInterface(unittest.TestCase):
         test_path = PathInterface(Point(5, 6), self.pen, self.brush)
         test_path.line_to(Point(10, 11))
         line_to_el = test_path.element_at(1)
-        assert line_to_el.pos.x.value == 10
-        assert line_to_el.pos.y.value == 11
+        assert_almost_equal(line_to_el.pos, Point(10, 11))
         assert line_to_el.path_interface == test_path
         assert line_to_el.element_type == PathElementType.line_to
 

@@ -113,8 +113,8 @@ class PathInterface(GraphicObjectInterface):
 
         Returns: None
         """
-        target = Point(pos.x, pos.y).to_unit(GraphicUnit)
-        self.qt_path.lineTo(target.x.value, target.y.value)
+        target = Point(pos.x, pos.y)
+        self.qt_path.lineTo(target.x.base_value, target.y.base_value)
         self.update_qt_path()
 
     def cubic_to(self, control_1, control_2, end):
@@ -129,16 +129,16 @@ class PathInterface(GraphicObjectInterface):
 
         Returns: None
         """
-        control_1_point = Point(control_1.x, control_1.y).to_unit(GraphicUnit)
-        control_2_point = Point(control_2.x, control_2.y).to_unit(GraphicUnit)
-        end_point = Point(end.x, end.y).to_unit(GraphicUnit)
+        control_1_point = Point(control_1.x, control_1.y)
+        control_2_point = Point(control_2.x, control_2.y)
+        end_point = Point(end.x, end.y)
         self.qt_path.cubicTo(
-            control_1_point.x.value,
-            control_1_point.y.value,
-            control_2_point.x.value,
-            control_2_point.y.value,
-            end_point.x.value,
-            end_point.y.value,
+            control_1_point.x.base_value,
+            control_1_point.y.base_value,
+            control_2_point.x.base_value,
+            control_2_point.y.base_value,
+            end_point.x.base_value,
+            end_point.y.base_value,
         )
         self.update_qt_path()
 
@@ -150,8 +150,8 @@ class PathInterface(GraphicObjectInterface):
 
         Returns: None
         """
-        target = Point(pos.x, pos.y).to_unit(GraphicUnit)
-        self.qt_path.moveTo(target.x.value, target.y.value)
+        target = Point(pos.x, pos.y)
+        self.qt_path.moveTo(target.x.base_value, target.y.base_value)
         self.update_qt_path()
 
     def close_subpath(self):
@@ -216,9 +216,7 @@ class PathInterface(GraphicObjectInterface):
                     index, self.qt_path.elementCount()
                 )
             )
-        self.qt_path.setElementPositionAt(
-            index, GraphicUnit(pos.x).value, GraphicUnit(pos.y).value
-        )
+        self.qt_path.setElementPositionAt(index, pos.x.base_value, pos.y.base_value)
         self.update_qt_path()
 
     def render(self):

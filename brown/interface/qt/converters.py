@@ -11,28 +11,6 @@ from brown.utils.rect import Rect
 from brown.utils.units import GraphicUnit, Unit
 
 
-def unit_to_qt_int(unit: Unit) -> int:
-    """Create a Qt integer from a Unit
-
-    Args:
-        unit (Unit): The source unit
-
-    Returns: int
-    """
-    return int(GraphicUnit(unit).value)
-
-
-def unit_to_qt_float(unit: Unit) -> float:
-    """Create a Qt integer from a Unit
-
-    Args:
-        unit (Unit): The source unit
-
-    Returns: float
-    """
-    return GraphicUnit(unit).value
-
-
 def qt_point_to_point(
     qt_point: Union[QPoint, QPointF], unit: Optional[Unit] = None
 ) -> Point:
@@ -47,7 +25,7 @@ def qt_point_to_point(
     Returns: Point
     """
     if unit:
-        return Point(qt_point.x(), qt_point.y()).to_unit(unit)
+        return Point(Unit(qt_point.x()), Unit(qt_point.y()))
     else:
         return Point(qt_point.x(), qt_point.y())
 
@@ -60,7 +38,7 @@ def point_to_qt_point(point: Point) -> QPoint:
 
     Returns: QPoint
     """
-    return QPoint(unit_to_qt_int(point.x), unit_to_qt_int(point.y))
+    return QPoint(int(point.x.base_value), int(point.y.base_value))
 
 
 def point_to_qt_point_f(point: Point) -> QPointF:
@@ -71,7 +49,7 @@ def point_to_qt_point_f(point: Point) -> QPointF:
 
     Returns: QPointF
     """
-    return QPointF(unit_to_qt_float(point.x), unit_to_qt_float(point.y))
+    return QPointF(point.x.base_value, point.y.base_value)
 
 
 def qt_rect_to_rect(qt_rect: Union[QRect, QRectF], unit: Optional[Unit] = None) -> Rect:
@@ -102,10 +80,10 @@ def rect_to_qt_rect(rect: Rect) -> QRect:
     Returns: QRect
     """
     return QRect(
-        unit_to_qt_int(rect.x),
-        unit_to_qt_int(rect.y),
-        unit_to_qt_int(rect.width),
-        unit_to_qt_int(rect.height),
+        int(rect.x.base_value),
+        int(rect.y.base_value),
+        int(rect.width.base_value),
+        int(rect.height.base_value),
     )
 
 
@@ -118,10 +96,10 @@ def rect_to_qt_rect_f(rect: Rect) -> QRectF:
     Returns: QRectF
     """
     return QRectF(
-        unit_to_qt_float(rect.x),
-        unit_to_qt_float(rect.y),
-        unit_to_qt_float(rect.width),
-        unit_to_qt_float(rect.height),
+        rect.x.base_value,
+        rect.y.base_value,
+        rect.width.base_value,
+        rect.height.base_value,
     )
 
 

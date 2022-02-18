@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import QGraphicsItem, QGraphicsPathItem
 from brown.utils.units import GraphicUnit, Unit
 
 # TODO find a way to set a global debug switch and expose to users too.
-_DEBUG = True
+_DEBUG = False
 
 
 class QClippingPath(QGraphicsPathItem):
@@ -80,7 +80,7 @@ class QClippingPath(QGraphicsPathItem):
         )
         if self.clip_start_x is not None:
             self.painter_offset = QtCore.QPointF(
-                -1 * GraphicUnit(self.clip_start_x).value,
+                -1 * self.clip_start_x.base_value,
                 0,
             )
         else:
@@ -106,16 +106,14 @@ class QClippingPath(QGraphicsPathItem):
                 for making sure thick pen strokes render completely.
         """
         clip_start_x = (
-            bounding_rect.x()
-            if clip_start_x is None
-            else GraphicUnit(clip_start_x).value
+            bounding_rect.x() if clip_start_x is None else clip_start_x.base_value
         )
         clip_width = (
             bounding_rect.width() - (clip_start_x - bounding_rect.x())
             if clip_width is None
-            else GraphicUnit(clip_width).value
+            else clip_width.base_value
         )
-        padding = GraphicUnit(extra_padding).value
+        padding = extra_padding
         return QtCore.QRectF(
             clip_start_x - padding,
             bounding_rect.y() - padding,
@@ -128,7 +126,7 @@ class QClippingPath(QGraphicsPathItem):
         bounding_rect: QRectF,
         clip_start_x: Optional[Unit],
         clip_width: Optional[Unit],
-        extra_padding: float,
+        padding: float,
     ) -> QRectF:
         """Create a QRectF giving the bounding rect for the path.
 
@@ -145,16 +143,13 @@ class QClippingPath(QGraphicsPathItem):
         # TODO strange that extra_padding is given in floats
         # (implicitly GraphicUnits), but the other two args are in units. refactor.
         clip_start_x = (
-            bounding_rect.x()
-            if clip_start_x is None
-            else GraphicUnit(clip_start_x).value
+            bounding_rect.x() if clip_start_x is None else clip_start_x.base_value
         )
         clip_width = (
             bounding_rect.width() - clip_start_x
             if clip_width is None
-            else GraphicUnit(clip_width).value
+            else clip_width.base_value
         )
-        padding = GraphicUnit(extra_padding).value
         return QRectF(
             -padding,
             bounding_rect.y() - padding,
