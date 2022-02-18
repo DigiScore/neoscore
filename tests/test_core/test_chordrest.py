@@ -49,10 +49,10 @@ class TestChordrest(unittest.TestCase):
         dots = list(chord.rhythm_dot_positions)
         dots.sort(key=lambda d: d.x)
         assert_almost_equal(
-            dots[0], Point(self.staff.unit(1.076), self.staff.unit(1.5))
+            dots[0], Point(self.staff.unit(1.326), self.staff.unit(1.5))
         )
         assert_almost_equal(
-            dots[1], Point(self.staff.unit(1.576), self.staff.unit(1.5))
+            dots[1], Point(self.staff.unit(1.826), self.staff.unit(1.5))
         )
 
     def test_rhythm_dot_positions_with_noteheads(self):
@@ -142,7 +142,7 @@ class TestChordrest(unittest.TestCase):
     def test_stem_height_min(self):
         pitches = ["b'"]
         chord = Chordrest(Mm(1), self.staff, pitches, Beat(1, 4))
-        assert_almost_equal(chord.stem_height, self.staff.unit(5))
+        assert_almost_equal(chord.stem_height, self.staff.unit(3))
 
     def test_stem_height_fitted(self):
         pitches = ["c'''", "g"]

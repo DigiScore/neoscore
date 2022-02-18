@@ -47,7 +47,7 @@ class Unit:
             # might be better to defer rounding to comparison
             # operators to minimize error accumulation and avoid
             # unecessary computation.
-            self.base_value = round(value * self.CONVERSION_RATE, 6)
+            self.base_value = value * self.CONVERSION_RATE
             self._display_value = value
 
     @property
@@ -79,20 +79,29 @@ class Unit:
     _CMP_POS_EPSILON = 0.001
     _CMP_NEG_EPSILON = -0.001
 
+    # TODO document unit comparison behavior and subtleties
+
     def __lt__(self, other: Unit):
-        return self.base_value < other.base_value
+        return self.base_value - other.base_value < Unit._CMP_NEG_EPSILON
 
     def __le__(self, other: Unit):
-        return self.base_value <= other.base_value
+        return self.base_value - other.base_value < Unit._CMP_POS_EPSILON
 
     def __eq__(self, other: Any):
-        return hasattr(other, "base_value") and self.base_value == other.base_value
+        """Two units are equal if the difference between their base
+        values is less than 0.001, or if both are infinite.
+        """
+        return hasattr(other, "base_value") and (
+            abs(self.base_value - other.base_value) < Unit._CMP_POS_EPSILON
+            # Do strict equality check to cover inf == inf
+            or self.base_value == other.base_value
+        )
 
     def __gt__(self, other: Unit):
-        return self.base_value > other.base_value
+        return self.base_value - other.base_value > Unit._CMP_POS_EPSILON
 
     def __ge__(self, other: Unit):
-        return self.base_value >= other.base_value
+        return self.base_value - other.base_value > Unit._CMP_NEG_EPSILON
 
     # Operators ---------------------------------------------------------------
 
