@@ -16,6 +16,7 @@ class Viewport(QtWidgets.QGraphicsView):
         """
         super().__init__(scene)
         # Default configs
+        self.setViewport(QtWidgets.QOpenGLWidget())
         self.setRenderHint(QtGui.QPainter.Antialiasing)
         self.setDragMode(1)  # ScrollHandDrag
 
