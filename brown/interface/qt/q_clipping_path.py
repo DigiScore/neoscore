@@ -56,6 +56,12 @@ class QClippingPath(QGraphicsPathItem):
     # world matrix enabled: True
     # view transform enabled: False
 
+    # TODO it is unclear how to paint the path to a pixmap while
+    # preserving the painter's transform settings and respecting
+    # things like viewport scale. I think it may be best to not go
+    # down this approach unless further work shows it is really
+    # necessary.
+
     def paint(self, painter, *args, **kwargs):
         """Paint with automatic clipping.
 
