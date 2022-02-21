@@ -35,17 +35,6 @@ class Point:
         """
         return cls(point.x, point.y)
 
-    @classmethod
-    def from_parent_point(cls, parent_point):
-        """Create a Point from an ParentPoint, discarding its parent.
-
-        Args:
-            parent_point (ParentPoint):
-
-        Returns: Point
-        """
-        return cls(parent_point.x, parent_point.y)
-
     ######## PUBLIC PROPERTIES ########
 
     @property

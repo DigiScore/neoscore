@@ -26,14 +26,6 @@ class TestPoint(unittest.TestCase):
         assert original.x == clone.x
         assert original.y == clone.y
 
-    def test_from_parent_point(self):
-        original = ParentPoint(5, 6, "mock parent")
-        clone = Point.from_existing(original)
-        # NOTE: id() check may fail on non-CPython interpreters
-        assert id(original) != id(clone)
-        assert original.x == clone.x
-        assert original.y == clone.y
-
     def test__hash__(self):
         assert {Point(1, 2), Point(1, 2), Point(3, 4)} == {Point(1, 2), Point(3, 4)}
         assert {Point(1, 2), Point(1, 2), Point(3, 4)} == {Point(1, 2), Point(3, 4)}
