@@ -2,7 +2,7 @@ from typing import Optional
 
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import QRectF
-from PyQt5.QtGui import QBrush, QColor, QPainterPath, QPen
+from PyQt5.QtGui import QBrush, QColor, QPainterPath, QPen, QPixmap, QTransform
 from PyQt5.QtWidgets import QGraphicsItem, QGraphicsPathItem
 
 from brown.utils.units import GraphicUnit, Unit
@@ -48,6 +48,14 @@ class QClippingPath(QGraphicsPathItem):
     def boundingRect(self):
         return self.bounding_rect
 
+    def generate_full_pixmap(self) -> QPixmap:
+        full_rect = self.path().boundingRect()
+        pixmap = QPixmap(int(full_rect.width()), int(full_rect.height()))
+        pass
+
+    # world matrix enabled: True
+    # view transform enabled: False
+
     def paint(self, painter, *args, **kwargs):
         """Paint with automatic clipping.
 
@@ -55,6 +63,7 @@ class QClippingPath(QGraphicsPathItem):
         """
         painter.save()
         if self.painter_offset:
+            # Offset drawing for clip_start_x
             painter.translate(self.painter_offset)
         painter.setClipRect(self.clip_rect)
         super().paint(painter, *args, **kwargs)
@@ -85,6 +94,39 @@ class QClippingPath(QGraphicsPathItem):
             )
         else:
             self.painter_offset = None
+
+    @staticmethod
+    def hash_transformed_path(path: QPainterPath, transform: QTransform) -> int:
+        path_hash = QClippingPath.hash_path(path)
+        transform_hash = QClippingPath.hash_transform(transform)
+        return path_hash ^ transform_hash
+
+    # For some reason QTransform's qHash method seems to be ommited from PyQt5, so
+    # we implement our own based on the fields used in Qt's implementation here:
+    # github.com/qt/qtbase/blob/e05e3c776/src/gui/painting/qtransform.cpp#L778-L791
+    @staticmethod
+    def hash_transform(t: QTransform) -> int:
+        return hash(
+            (
+                t.m11(),
+                t.m12(),
+                t.m21(),
+                t.m22(),
+                t.dx(),
+                t.dy(),
+                t.m13(),
+                t.m23(),
+                t.m33(),
+            )
+        )
+
+    @staticmethod
+    def hash_path(path: QPainterPath) -> int:
+        h = 35891237 ^ path.fillRule()
+        for i in range(path.elementCount()):
+            el = path.elementAt(i)
+            h ^= hash((el.type, el.x, el.y))
+        return h
 
     @staticmethod
     def calculate_clipping_area(
