@@ -53,7 +53,6 @@ class QClippingPath(QGraphicsPathItem):
 
         This is overridden from `QGraphicsPathItem.paint()`
         """
-        painter.save()
         if self.painter_offset:
             painter.translate(self.painter_offset)
         painter.setClipRect(self.clip_rect)
@@ -62,7 +61,6 @@ class QClippingPath(QGraphicsPathItem):
             painter.setBrush(QBrush())
             painter.setPen(QPen(QColor("#ff0000")))
             painter.drawRect(self.bounding_rect)
-        painter.restore()
 
     def update_geometry(self):
         self.prepareGeometryChange()

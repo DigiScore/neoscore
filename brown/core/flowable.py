@@ -113,19 +113,20 @@ class Flowable(InvisibleObject):
         x_progress = Mm(0)
         # Current position on the page relative to the top left corner
         # of the live page area
-        pos = Point(self.pos.x, self.pos.y)
+        pos_x = self.pos.x
+        pos_y = self.pos.y
         current_page = 0
         # Attach initial line controller
         self.layout_controllers.append(
-            AutoNewLine(pos, brown.document.pages[current_page], self, x_progress)
+            AutoNewLine(self.pos, brown.document.pages[current_page], self, x_progress)
         )
         while True:
-            x_progress += live_page_width - pos.x
-            pos.y = pos.y + self.height + self.y_padding
+            x_progress += live_page_width - pos_x
+            pos_y = pos_y + self.height + self.y_padding
             if x_progress >= self.length:
                 # End of breakable width - Done.
                 break
-            if pos.y > live_page_height:
+            if pos_y > live_page_height:
                 # Page break - No y offset
                 pos = Point(Mm(0), Mm(0))
                 current_page += 1
@@ -136,10 +137,10 @@ class Flowable(InvisibleObject):
                 )
             else:
                 # Line break - self.y_padding as y offset
-                pos.x = Mm(0)
+                pos_x = Mm(0)
                 self.layout_controllers.append(
                     AutoNewLine(
-                        pos,
+                        Point(pos_x, pos_y),
                         brown.document.pages[current_page],
                         self,
                         x_progress,

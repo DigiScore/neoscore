@@ -99,7 +99,7 @@ class GraphicObject(ABC):
 
     @x.setter
     def x(self, value):
-        self.pos.x = value
+        self.pos = Point(value, self.y)
 
     @property
     def y(self):
@@ -108,7 +108,7 @@ class GraphicObject(ABC):
 
     @y.setter
     def y(self, value):
-        self.pos.y = value
+        self.pos = Point(self.x, value)
 
     @property
     def length(self):

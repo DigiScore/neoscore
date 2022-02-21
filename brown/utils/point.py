@@ -42,18 +42,10 @@ class Point:
         """Unit, int, or float: The x coordinate of the point."""
         return self._x
 
-    @x.setter
-    def x(self, value):
-        self._x = value if isinstance(value, Unit) else GraphicUnit(value)
-
     @property
     def y(self) -> Unit:
         """Unit, int, or float: The y coordinate of the point."""
         return self._y
-
-    @y.setter
-    def y(self, value):
-        self._y = value if isinstance(value, Unit) else GraphicUnit(value)
 
     ######## SPECIAL METHODS ########
 

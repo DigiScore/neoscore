@@ -55,7 +55,7 @@ class GraphicObjectInterface:
 
     @x.setter
     def x(self, value):
-        self.pos.x = value
+        self.pos = Point(value, self.pos.y)
         self.qt_object.setPos(point_to_qt_point_f(self.pos))
 
     @property
@@ -69,7 +69,7 @@ class GraphicObjectInterface:
 
     @y.setter
     def y(self, value):
-        self.pos.y = GraphicUnit(value)
+        self.pos = Point(self.pos.x, value)
         self.qt_object.setPos(point_to_qt_point_f(self.pos))
 
     @property

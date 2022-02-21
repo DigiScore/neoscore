@@ -175,13 +175,12 @@ class _KeySignatureAccidental(MusicText, StaffObject):
         pos_tuple = _KeySignatureAccidental.positions[self.accidental_type][clef_type][
             self.pitch_letter
         ]
-        visual_pos = (
-            Point(self.staff.unit(pos_tuple[0]), self.staff.unit(pos_tuple[1])) + pos
-        )
+        visual_pos_x = self.staff.unit(pos_tuple[0]) + pos.x
+        visual_pos_y = self.staff.unit(pos_tuple[1]) + pos.y
         padded_clef_width = self._padded_clef_width(clef)
         if self._overlaps_with_clef(clef, padded_clef_width):
-            visual_pos.x += padded_clef_width
-        self._render_slice(visual_pos, None)
+            visual_pos_x += padded_clef_width
+        self._render_slice(Point(visual_pos_x, visual_pos_y), None)
 
     def _compute_clef_overlaps(self) -> Dict[Clef, bool]:
         return {
