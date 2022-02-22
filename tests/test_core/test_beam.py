@@ -43,20 +43,23 @@ class TestBeam(unittest.TestCase):
         thickness = beam.beam_thickness
         assert len(beam.elements) == 5
         assert beam.elements[0] == PathElement(
-            Point(Mm(0), Mm(0)), PathElementType.move_to, beam, beam
+            Point(Mm(0), Mm(0)), PathElementType.move_to, beam
         )
         assert beam.elements[1] == PathElement(
-            Point(Mm(3), Mm(4)), PathElementType.line_to, beam, self.right_parent
+            Point(Mm(3), Mm(4)), PathElementType.line_to, self.right_parent
         )
         assert beam.elements[2] == PathElement(
             Point(Mm(3), Mm(4) + thickness),
             PathElementType.line_to,
-            beam,
             self.right_parent,
         )
         assert beam.elements[3] == PathElement(
-            Point(Mm(0), thickness), PathElementType.line_to, beam, beam
+            Point(Mm(0), thickness),
+            PathElementType.line_to,
+            beam,
         )
         assert beam.elements[4] == PathElement(
-            Point(Mm(0), Mm(0)), PathElementType.move_to, beam, beam
+            Point(Mm(0), Mm(0)),
+            PathElementType.move_to,
+            beam,
         )

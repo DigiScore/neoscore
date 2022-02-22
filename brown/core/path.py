@@ -61,6 +61,8 @@ class Path(GraphicObject):
 
     ######## PUBLIC PROPERTIES ########
 
+    # TODO optimize me next! Fully 15% of benchmark time is spent in this function.
+
     @property
     def length(self):
         """Unit: The breakable length of the path.
@@ -128,7 +130,7 @@ class Path(GraphicObject):
             self.move_to(GraphicUnit(0), GraphicUnit(0))
         self.elements.append(
             PathElement(
-                Point(x, y), PathElementType.line_to, self, parent if parent else self
+                Point(x, y), PathElementType.line_to, parent if parent else self
             )
         )
 
@@ -149,7 +151,7 @@ class Path(GraphicObject):
         """
         self.elements.append(
             PathElement(
-                Point(x, y), PathElementType.move_to, self, parent if parent else self
+                Point(x, y), PathElementType.move_to, parent if parent else self
             )
         )
 
@@ -203,7 +205,6 @@ class Path(GraphicObject):
             PathElement(
                 Point(control_1_x, control_1_y),
                 PathElementType.control_point,
-                self,
                 (control_1_parent if control_1_parent else self),
             )
         )
@@ -211,7 +212,6 @@ class Path(GraphicObject):
             PathElement(
                 Point(control_2_x, control_2_y),
                 PathElementType.control_point,
-                self,
                 (control_2_parent if control_2_parent else self),
             )
         )
@@ -219,7 +219,6 @@ class Path(GraphicObject):
             PathElement(
                 Point(end_x, end_y),
                 PathElementType.curve_to,
-                self,
                 (end_parent if end_parent else self),
             )
         )
