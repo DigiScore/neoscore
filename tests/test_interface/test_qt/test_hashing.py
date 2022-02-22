@@ -1,4 +1,3 @@
-from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPainterPath, QTransform
 
 from brown.interface.qt import hashing
@@ -15,7 +14,7 @@ def test_hash_path():
     assert hash_1 == hash_2
     # Paths with different fill rules hash differently
     path_3 = QPainterPath()
-    path_3.setFillRule(Qt.FillRule.WindingFill)
+    path_3.setFillRule(1)  # WindingFill
     path_3.lineTo(100, 200)
     hash_3 = hashing.hash_path(path_3)
     assert hash_1 != hash_3

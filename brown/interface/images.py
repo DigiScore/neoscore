@@ -1,4 +1,3 @@
-from PyQt5.Qt import Qt
 from PyQt5.QtGui import QBitmap, QRegion
 
 from brown.utils.units import Inch, Mm
@@ -30,6 +29,9 @@ def dpi_to_dpm(dpi):
     return dpi / _inches_per_meter
 
 
+_QT_MASK_IN_COLOR = 0
+
+
 def autocrop(q_image, q_color):
     """Automatically crop a qt image around the pixels not of a given color.
 
@@ -42,6 +44,6 @@ def autocrop(q_image, q_color):
             unmodified.
     """
 
-    mask = q_image.createMaskFromColor(q_color.rgb(), Qt.MaskInColor)
+    mask = q_image.createMaskFromColor(q_color.rgb(), _QT_MASK_IN_COLOR)
     crop_rect = QRegion(QBitmap.fromImage(mask)).boundingRect()
     return q_image.copy(crop_rect)
