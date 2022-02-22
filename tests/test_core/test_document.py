@@ -19,7 +19,9 @@ class TestDocument(unittest.TestCase):
     def test_page_origin_at_first_page(self):
         left_margin = Mm(13)
         top_margin = Mm(21)
-        test_paper = Paper(Mm(200), Mm(250), top_margin, Mm(10), Mm(20), left_margin, 0)
+        test_paper = Paper(
+            Mm(200), Mm(250), top_margin, Mm(10), Mm(20), left_margin, Mm(0)
+        )
         test_doc = Document(test_paper)
         found = test_doc.page_origin(0)
         assert_almost_equal(found, Point(left_margin, top_margin))
@@ -28,7 +30,9 @@ class TestDocument(unittest.TestCase):
         width = Mm(200)
         left_margin = Mm(13)
         top_margin = Mm(21)
-        test_paper = Paper(width, Mm(250), top_margin, Mm(10), Mm(20), left_margin, 0)
+        test_paper = Paper(
+            width, Mm(250), top_margin, Mm(10), Mm(20), left_margin, Mm(0)
+        )
         test_doc = Document(test_paper)
         found = test_doc.page_origin(1)
         page_width = width
@@ -40,7 +44,9 @@ class TestDocument(unittest.TestCase):
         width = Mm(200)
         left_margin = Mm(13)
         top_margin = Mm(21)
-        test_paper = Paper(width, Mm(250), top_margin, Mm(10), Mm(20), left_margin, 0)
+        test_paper = Paper(
+            width, Mm(250), top_margin, Mm(10), Mm(20), left_margin, Mm(0)
+        )
         test_doc = Document(test_paper)
         found = test_doc.page_origin(2)
         page_width = width

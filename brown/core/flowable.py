@@ -256,19 +256,19 @@ class Flowable(InvisibleObject):
         except AttributeError:
             raise ValueError("object is not in this Flowable")
 
-    def map_between_locally(self, source, destination):
+    def map_between_locally(self, src, dst):
         """Find the relative position between two objects in this flowable.
 
         Args:
-            source (GraphicObject): The object to map from
-            destination (GraphicObject): The object to map to
+            src (GraphicObject): The object to map from
+            dst (GraphicObject): The object to map to
 
         Returns:
-            Point: The relative position of `destination`,
-                relative to `source` within the local flowable space.
+            Point: The relative position of `dst`,
+                relative to `src` within the local flowable space.
 
         Raises:
-            ValueError: If either `source` or `destination` are not
+            ValueError: If either `src` or `dst` are not
                 in the flowable.
         """
-        return self.pos_in_flowable_of(destination) - self.pos_in_flowable_of(source)
+        return self.pos_in_flowable_of(dst) - self.pos_in_flowable_of(src)

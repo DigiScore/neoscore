@@ -147,6 +147,9 @@ class _KeySignatureAccidental(MusicText, StaffObject):
     def length(self):
         return self._length
 
+    # TODO this caching mechanism doesn't work - callgraph shows it's
+    # still called several hundred times in vtest
+
     def _overlaps_with_clef(self, clef, padded_clef_width):
         cached_overlaps = getattr(self, "_clef_overlaps", None)
         if cached_overlaps:

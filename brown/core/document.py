@@ -1,6 +1,8 @@
+from typing import Optional
+
 from brown import constants
 from brown.core.page_supplier import PageSupplier
-from brown.core.paper import Paper
+from brown.core.paper import Paper, PaperTemplate
 from brown.utils.point import Point
 from brown.utils.rect import Rect
 from brown.utils.units import GraphicUnit
@@ -17,23 +19,13 @@ class Document:
     NOTE: Paper gutters are not yet implemented
     """
 
-    def __init__(self, paper=None):
+    def __init__(self, paper: Optional[Paper] = None):
         """
         Args:
             paper (Paper): The paper to use in the document. If None,
-                this defaults to `constants.DEFAULT_PAPER_TYPE`
+                this defaults to A4.
         """
-        if paper is None:
-            try:
-                self._paper = Paper.from_template(constants.DEFAULT_PAPER_TYPE)
-            except KeyError:
-                raise ValueError(
-                    "DEFAULT_PAPER_TYPE of {} is not supported.".format(
-                        constants.DEFAULT_PAPER_TYPE
-                    )
-                )
-        else:
-            self._paper = paper
+        self._paper = paper if paper else PaperTemplate.A4.value
         self._pages = PageSupplier(self)
 
     ######## PUBLIC PROPERTIES ########

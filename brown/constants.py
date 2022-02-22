@@ -21,9 +21,6 @@ DEFAULT_BRUSH_COLOR = Color(0, 0, 0, 255)
 DEFAULT_PATH_BRUSH_COLOR = Color(0, 0, 0, 0)
 DEFAULT_BRUSH_PATTERN = BrushPattern.SOLID
 
-# Paper type
-DEFAULT_PAPER_TYPE = "Letter"
-
 # Visual gap between pages on the canvas
 # (This has no effect on exported documents)
 PAGE_DISPLAY_GAP = Mm(150)

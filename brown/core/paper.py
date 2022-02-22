@@ -1,170 +1,38 @@
+from dataclasses import dataclass, field
+from enum import Enum
+from typing import Optional
+
 from brown.interface.paper_interface import PaperInterface
-from brown.utils.paper_templates import paper_templates
+from brown.utils.units import Inch, Mm, Unit
+
+# TODO make immutable and precompute all derived fields.
+# Profiling shows this will save up to 4% of benchmark time.
 
 
+@dataclass(frozen=True)
 class Paper:
 
-    """A description of a type of paper to base `Page`s on."""
+    """A specification for a paper geometry used to lay out pages"""
 
-    def __init__(
-        self,
-        width,
-        height,
-        margin_top,
-        margin_right,
-        margin_bottom,
-        margin_left,
-        gutter=None,
-    ):
-        """
-        Args:
-            width (Unit): The paper width.
-            height (Unit): The paper height.
-            margin_top (Unit): The paper top margin.
-            margin_right (Unit): The paper right margin.
-            margin_bottom (Unit): The paper bottom margin.
-            margin_left (Unit): The paper left margin.
-            gutter (Unit): The paper gutter.
-        """
-        self._width = width
-        self._height = height
-        self._margin_top = margin_top
-        self._margin_right = margin_right
-        self._margin_bottom = margin_bottom
-        self._margin_left = margin_left
-        self._gutter = gutter
+    width: Unit
+    height: Unit
+    margin_top: Unit
+    margin_right: Unit
+    margin_bottom: Unit
+    margin_left: Unit
+    gutter: Unit
+    live_width: Unit = field(init=False)
+    live_height: Unit = field(init=False)
 
-    ######## CLASS METHODS ########
-
-    @classmethod
-    def from_template(cls, template):
-        """Construct a Paper object from a set of pre-configured paper types.
-
-        Args:
-            template (str): Name of the Paper template (case-sensitive)
-
-        Returns: Paper
-        """
-        try:
-            return cls(*paper_templates[template])
-        except KeyError:
-            raise KeyError("Paper template {} not supported".format(template))
-
-    ######## PUBLIC PROPERTIES ########
-
-    @property
-    def width(self):
-        """Unit: The page width"""
-        return self._width
-
-    @width.setter
-    def width(self, value):
-        self._width = value
-
-    @property
-    def height(self):
-        """Unit: The page height"""
-        return self._height
-
-    @height.setter
-    def height(self, value):
-        self._height = value
-
-    @property
-    def margin_top(self):
-        """Unit: The top margin"""
-        return self._margin_top
-
-    @margin_top.setter
-    def margin_top(self, value):
-        self._margin_top = value
-
-    @property
-    def margin_right(self):
-        """Unit: The right margin"""
-        return self._margin_right
-
-    @margin_right.setter
-    def margin_right(self, value):
-        self._margin_right = value
-
-    @property
-    def margin_bottom(self):
-        """Unit: The bottom margin"""
-        return self._margin_bottom
-
-    @margin_bottom.setter
-    def margin_bottom(self, value):
-        self._margin_bottom = value
-
-    @property
-    def margin_left(self):
-        """Unit: The left margin"""
-        return self._margin_left
-
-    @margin_left.setter
-    def margin_left(self, value):
-        self._margin_left = value
-
-    @property
-    def gutter(self):
-        """Unit: The page gutter.
-
-        TODO: Gutter support is not fully implemented.
-        """
-        return self._gutter
-
-    @gutter.setter
-    def gutter(self, value):
-        self._gutter = value
-
-    @property
-    def live_width(self):
-        """The printable width of the page"""
-        return self.width - self.gutter - self.margin_left - self.margin_right
-
-    @property
-    def live_height(self):
-        """The printable height of the page"""
-        return self.height - self.margin_bottom - self.margin_top
-
-    ######## SPECIAL METHODS ########
-
-    def __repr__(self):
-        return "{}({}, {}, {}, {}, {}, {}, {})".format(
-            type(self).__name__,
-            self.width,
-            self.height,
-            self.margin_top,
-            self.margin_right,
-            self.margin_bottom,
-            self.margin_left,
-            self.gutter,
+    def __post_init__(self):
+        # This hack is needed to assign derived fields on frozen dataclasses
+        # See https://stackoverflow.com/a/54119384/5615927
+        super().__setattr__(
+            "live_width",
+            self.width - self.gutter - self.margin_left - self.margin_right,
         )
-
-    def __hash__(self):
-        return hash(
-            (
-                self.width,
-                self.height,
-                self.margin_top,
-                self.margin_right,
-                self.margin_bottom,
-                self.margin_left,
-                self.gutter,
-            )
-        )
-
-    def __eq__(self, other):
-        return (
-            isinstance(other, self.__class__)
-            and self.width == other.width
-            and self.height == other.height
-            and self.margin_top == other.margin_top
-            and self.margin_right == other.margin_right
-            and self.margin_bottom == other.margin_bottom
-            and self.margin_left == other.margin_left
-            and self.gutter == other.gutter
+        super().__setattr__(
+            "live_height", self.height - self.margin_bottom - self.margin_top
         )
 
     ######## PUBLIC METHODS ########
@@ -194,3 +62,9 @@ class Paper:
         Returns: PaperInterface
         """
         return PaperInterface(self)
+
+
+# Common Paper template instances are provided
+class PaperTemplate(Enum):
+    A4 = Paper(Mm(210), Mm(297), Mm(20), Mm(20), Mm(20), Mm(20), Mm(0))
+    Letter = Paper(Inch(8.5), Inch(11), Inch(1), Inch(1), Inch(1), Inch(1), Inch(0.3))
