@@ -4,6 +4,8 @@ from brown.core.graphic_object import GraphicObject
 from brown.utils.point import Point
 from brown.utils.units import Unit
 
+# TODO Change this to take a ParentPoint instead?
+
 
 class Spanner:
     """A Mixin class for `GraphicObject`s with starting and ending anchors.
