@@ -10,22 +10,16 @@ from brown.utils.units import GraphicUnit, Unit
 # implicitly converts any input tuples into unit-points, and returns a
 # GraphicUnit even if only bare numbers are given. This is fine for
 # many cases, but does it make sense for all?
-def interpolate(line_start, line_end, x):
+def interpolate(line_start: Point, line_end: Point, x: Unit) -> Unit:
     """Calculate the value of a line defined by two points at a given x pos
 
     Args:
-        line_start (Point or tuple): The start of the line
-        line_end (Point or tuple): The end of the line
-        x (Unit): The position to interpolate from
+        line_start: The start of the line
+        line_end: The end of the line
+        x: The position to interpolate from
 
     Returns: Unit
     """
-    if not isinstance(x, Unit):
-        x = GraphicUnit(x)
-    if not isinstance(line_start, Point):
-        line_start = Point(*line_start)
-    if not isinstance(line_end, Point):
-        line_end = Point(*line_end)
     slope = (line_end.y - line_start.y) / (line_end.x - line_start.x)
     y_intercept = line_start.y - (line_start.x * slope)
     return (x * slope) + y_intercept

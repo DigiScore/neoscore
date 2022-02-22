@@ -88,8 +88,6 @@ class GraphicObject(ABC):
     def pos(self, value):
         if not isinstance(value, Point):
             value = Point(*value)
-        else:
-            value = Point.from_existing(value)
         self._pos = value
 
     @property
@@ -410,7 +408,9 @@ class GraphicObject(ABC):
         current_line = self.flowable.layout_controllers[first_line_i]
         render_start_pos = brown.document.canvas_pos_of(self)
         first_line_length = self.flowable.dist_to_line_end(pos_in_flowable.x) * -1
-        render_end_pos = render_start_pos + Point(first_line_length, 0)
+        render_end_pos = Point(
+            render_start_pos.x + first_line_length, render_start_pos.y
+        )
         self._render_before_break(
             pos_in_flowable.x,
             render_start_pos,
@@ -427,7 +427,9 @@ class GraphicObject(ABC):
                 # Render spanning continuation
                 line_pos = brown.document.canvas_pos_of(current_line)
                 render_start_pos = Point(line_pos.x, line_pos.y + pos_in_flowable.y)
-                render_end_pos = render_start_pos + Point(current_line.length, 0)
+                render_end_pos = Point(
+                    render_start_pos.x + current_line.length, render_start_pos.y
+                )
                 self._render_spanning_continuation(
                     self.length - remaining_x, render_start_pos, render_end_pos
                 )
@@ -439,7 +441,7 @@ class GraphicObject(ABC):
         render_start_pos = self.flowable.map_to_canvas(
             Point(current_line.local_x, pos_in_flowable.y)
         )
-        render_end_pos = render_start_pos + Point(remaining_x, 0)
+        render_end_pos = Point(render_start_pos.x + remaining_x, render_start_pos.y)
         self._render_after_break(
             self.length - remaining_x, render_start_pos, render_end_pos
         )

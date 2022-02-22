@@ -11,23 +11,15 @@ from brown.utils.rect import Rect
 from brown.utils.units import GraphicUnit, Unit
 
 
-def qt_point_to_point(
-    qt_point: Union[QPoint, QPointF], unit: Optional[Unit] = None
-) -> Point:
+def qt_point_to_point(qt_point: Union[QPoint, QPointF]) -> Point:
     """Create a Point from a QPoint or QPointF
 
     Args:
-        qt_point (QPoint or QPointF): The source point
-        unit (Unit): An optional unit to convert
-            values to in the output `Point`. If omitted, values
-            in the output `Point` will be plain `int` or `float` values.
+        qt_point: The source point
 
     Returns: Point
     """
-    if unit:
-        return Point(Unit(qt_point.x()), Unit(qt_point.y()))
-    else:
-        return Point(qt_point.x(), qt_point.y())
+    return Point(GraphicUnit(qt_point.x()), GraphicUnit(qt_point.y()))
 
 
 def point_to_qt_point(point: Point) -> QPoint:
@@ -52,23 +44,20 @@ def point_to_qt_point_f(point: Point) -> QPointF:
     return QPointF(point.x.base_value, point.y.base_value)
 
 
-def qt_rect_to_rect(qt_rect: Union[QRect, QRectF], unit: Optional[Unit] = None) -> Rect:
+def qt_rect_to_rect(qt_rect: Union[QRect, QRectF]) -> Rect:
     """Create a Rect from a QRect or QRectF
 
     Args:
         qt_rect (QRect or QRectF): The source rect
-        unit (Unit): An optional unit to convert
-            values to in the output `Rect`. If omitted, values
-            in the output `Rect` will be plain `int` or `float` values.
 
     Returns: Rect
     """
-    if unit:
-        return Rect(
-            qt_rect.x(), qt_rect.y(), qt_rect.width(), qt_rect.height()
-        ).in_unit(unit)
-    else:
-        return Rect(qt_rect.x(), qt_rect.y(), qt_rect.width(), qt_rect.height())
+    return Rect(
+        GraphicUnit(qt_rect.x()),
+        GraphicUnit(qt_rect.y()),
+        GraphicUnit(qt_rect.width()),
+        GraphicUnit(qt_rect.height()),
+    )
 
 
 def rect_to_qt_rect(rect: Rect) -> QRect:

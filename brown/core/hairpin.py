@@ -29,7 +29,7 @@ class Hairpin(Path, StaffObject, Spanner):
         """
         start = start if isinstance(start, ParentPoint) else ParentPoint(*start)
         stop = stop if isinstance(stop, ParentPoint) else ParentPoint(*stop)
-        Path.__init__(self, start, parent=start.parent)
+        Path.__init__(self, Point(start.x, start.y), parent=start.parent)
         StaffObject.__init__(self, start.parent)
         Spanner.__init__(self, stop, stop.parent)
         self.direction = direction

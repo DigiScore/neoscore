@@ -26,17 +26,6 @@ class ParentPoint(Point):
     ######## PUBLIC CLASS METHODS ########
 
     @classmethod
-    def from_existing(cls, parent_point):
-        """Clone an ParentPoint.
-
-        Args:
-            parent_point (ParentPoint): The anchored point to clone
-
-        Returns: ParentPoint
-        """
-        return cls(parent_point.x, parent_point.y, parent_point.parent)
-
-    @classmethod
     def from_point(cls, point, parent):
         """Create an ParentPoint from an existing Point and a parent.
 

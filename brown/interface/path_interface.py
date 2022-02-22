@@ -6,7 +6,7 @@ from brown.interface.graphic_object_interface import GraphicObjectInterface
 from brown.interface.path_element_interface import PathElementInterface
 from brown.interface.qt.q_clipping_path import QClippingPath
 from brown.utils.point import Point
-from brown.utils.units import GraphicUnit
+from brown.utils.units import GraphicUnit, Unit
 
 """
 Qt paths have a few quirks which are good to know about if you're
@@ -88,7 +88,7 @@ class PathInterface(GraphicObjectInterface):
         if self.element_count:
             return self.element_at(-1).pos
         else:
-            return Point(0, 0)
+            return Point(Unit(0), Unit(0))
 
     @property
     def element_count(self):

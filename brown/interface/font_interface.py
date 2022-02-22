@@ -74,6 +74,4 @@ class FontInterface:
         Returns:
             Rect[GraphicUnit]
         """
-        return qt_rect_to_rect(
-            self._qt_font_metrics_object.tightBoundingRect(text), GraphicUnit
-        )
+        return qt_rect_to_rect(self._qt_font_metrics_object.tightBoundingRect(text))

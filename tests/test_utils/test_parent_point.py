@@ -13,22 +13,13 @@ class TestParentPoint(unittest.TestCase):
         self.test_parent = "mock parent"
 
     def test_init(self):
-        test_point = ParentPoint(5, 6, self.test_parent)
+        test_point = ParentPoint(Unit(5), Unit(6), self.test_parent)
         assert test_point.x == GraphicUnit(5)
         assert test_point.y == GraphicUnit(6)
         assert test_point.parent == self.test_parent
 
-    def test_from_existing(self):
-        original = ParentPoint(5, 6, self.test_parent)
-        clone = ParentPoint.from_existing(original)
-        # id() check may fail on non-CPython interpreters
-        assert id(original) != id(clone)
-        assert original.x == clone.x
-        assert original.y == clone.y
-        assert original.parent == clone.parent
-
     def test_from_point(self):
-        original = Point(5, 6)
+        original = Point(Unit(5), Unit(6))
         clone = ParentPoint.from_point(original, self.test_parent)
         # id() check may fail on non-CPython interpreters
         assert id(original) != id(clone)
@@ -37,44 +28,44 @@ class TestParentPoint(unittest.TestCase):
         assert clone.parent == self.test_parent
 
     def test__eq__(self):
-        test_point = ParentPoint(5, 6, self.test_parent)
-        test_point_eq = ParentPoint(5, 6, self.test_parent)
-        test_point_ne_1 = ParentPoint(1234, 6, self.test_parent)
-        test_point_ne_2 = ParentPoint(5, 1234, self.test_parent)
-        test_point_ne_3 = ParentPoint(5, 6, None)
+        test_point = ParentPoint(Unit(5), Unit(6), self.test_parent)
+        test_point_eq = ParentPoint(Unit(5), Unit(6), self.test_parent)
+        test_point_ne_1 = ParentPoint(Unit(1234), Unit(6), self.test_parent)
+        test_point_ne_2 = ParentPoint(Unit(5), Unit(1234), self.test_parent)
+        test_point_ne_3 = ParentPoint(Unit(5), Unit(6), None)
         assert test_point == test_point_eq
         assert test_point != test_point_ne_1
         assert test_point != test_point_ne_2
         assert test_point != test_point_ne_3
 
     def test__add__(self):
-        p1 = ParentPoint(1, 2, None)
-        p2 = ParentPoint(3, 4, None)
-        p3 = ParentPoint(5, 6, self.test_parent)
-        p4 = ParentPoint(7, 8, self.test_parent)
-        assert p1 + p2 == ParentPoint(4, 6, None)
-        assert p3 + p4 == ParentPoint(12, 14, self.test_parent)
+        p1 = ParentPoint(Unit(1), Unit(2), None)
+        p2 = ParentPoint(Unit(3), Unit(4), None)
+        p3 = ParentPoint(Unit(5), Unit(6), self.test_parent)
+        p4 = ParentPoint(Unit(7), Unit(8), self.test_parent)
+        assert p1 + p2 == ParentPoint(Unit(4), Unit(6), None)
+        assert p3 + p4 == ParentPoint(Unit(12), Unit(14), self.test_parent)
         with pytest.raises(AttributeError):
             p2 + p3
         with pytest.raises(TypeError):
             p2 + 5
         with pytest.raises(TypeError):
-            p1 + Point(0, 0)
+            p1 + Point(Unit(0), Unit(0))
 
     def test__sub__(self):
-        p1 = ParentPoint(1, 2, None)
-        p2 = ParentPoint(3, 4, None)
-        p3 = ParentPoint(5, 6, self.test_parent)
-        p4 = ParentPoint(7, 8, self.test_parent)
-        assert p1 - p2 == ParentPoint(-2, -2, None)
-        assert p3 - p4 == ParentPoint(-2, -2, self.test_parent)
+        p1 = ParentPoint(Unit(1), Unit(2), None)
+        p2 = ParentPoint(Unit(3), Unit(4), None)
+        p3 = ParentPoint(Unit(5), Unit(6), self.test_parent)
+        p4 = ParentPoint(Unit(7), Unit(8), self.test_parent)
+        assert p1 - p2 == ParentPoint(Unit(-2), Unit(-2), None)
+        assert p3 - p4 == ParentPoint(Unit(-2), Unit(-2), self.test_parent)
         with pytest.raises(AttributeError):
             p2 - p3
         with pytest.raises(TypeError):
             p2 - 5
         with pytest.raises(TypeError):
-            p1 - Point(0, 0)
+            p1 - Point(Unit(0), Unit(0))
 
     def test__mult__(self):
-        p = ParentPoint(1, 2, None)
-        assert p * -1 == ParentPoint(-1, -2, None)
+        p = ParentPoint(Unit(1), Unit(2), None)
+        assert p * -1 == ParentPoint(Unit(-1), Unit(-2), None)

@@ -54,7 +54,7 @@ class Clef(MusicText, StaffObject):
         else:
             self._clef_type = ClefType[clef_type]
         MusicText.__init__(
-            self, (pos_x, 0), self._canonical_names[self._clef_type], staff
+            self, (pos_x, staff.unit(0)), self._canonical_names[self._clef_type], staff
         )
         StaffObject.__init__(self, staff)
         self.y = self.staff_position

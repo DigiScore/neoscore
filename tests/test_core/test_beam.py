@@ -26,12 +26,14 @@ class TestBeam(unittest.TestCase):
             ParentPoint(Mm(3), Mm(4), self.right_parent),
         )
         assert beam.parent == self.left_parent
-        assert beam.pos == Point(Mm(1), Mm(2))
+        assert beam.pos.x == Mm(1)
+        assert beam.pos.y == Mm(2)
 
     def test_init_with_tuple_args(self):
         beam = Beam((Mm(1), Mm(2), self.left_parent), (Mm(3), Mm(4), self.right_parent))
         assert beam.parent == self.left_parent
-        assert beam.pos == Point(Mm(1), Mm(2))
+        assert beam.pos.x == Mm(1)
+        assert beam.pos.y == Mm(2)
 
     def test_shape(self):
         beam = Beam(

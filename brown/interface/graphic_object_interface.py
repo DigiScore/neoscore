@@ -39,8 +39,6 @@ class GraphicObjectInterface:
     def pos(self, value):
         if not isinstance(value, Point):
             value = Point(*value)
-        else:
-            value = Point.from_existing(value)
         self._pos = value
         self.qt_object.setPos(point_to_qt_point_f(self.pos))
 

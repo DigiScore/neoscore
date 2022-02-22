@@ -111,8 +111,8 @@ class Document:
             >>> from brown.common import *
             >>> brown.setup()
             >>> graphic_objects = [
-            ...     InvisibleObject((0, 0), brown.document.pages[1]),
-            ...     InvisibleObject((0, 0), brown.document.pages[5]),
+            ...     InvisibleObject((Mm(0), Mm(0)), brown.document.pages[1]),
+            ...     InvisibleObject((Mm(0), Mm(0)), brown.document.pages[5]),
             ... ]
             >>> brown.document.page_range_of(graphic_objects)
             range(1, 6)

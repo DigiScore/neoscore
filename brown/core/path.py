@@ -1,12 +1,15 @@
+from typing import Optional, Union
+
 from brown import constants
 from brown.core.brush import Brush
 from brown.core.graphic_object import GraphicObject
 from brown.core.path_element import PathElement
 from brown.core.path_element_type import PathElementType
+from brown.core.types import Parent
 from brown.interface.path_interface import PathInterface
 from brown.utils.exceptions import IllegalNumberOfControlPointsError
 from brown.utils.point import Point
-from brown.utils.units import GraphicUnit
+from brown.utils.units import GraphicUnit, Unit
 
 
 class Path(GraphicObject):
@@ -103,7 +106,7 @@ class Path(GraphicObject):
 
     ######## Public Methods ########
 
-    def line_to(self, x, y, parent=None):
+    def line_to(self, x: Unit, y: Unit, parent: Optional[Parent] = None):
         """Draw a path from the current position to a new point.
 
         Connect a path from the current position to a new position specified
@@ -114,9 +117,9 @@ class Path(GraphicObject):
         considered relative to the parent.
 
         Args:
-            x (Unit): The end x position
-            y (Unit): The end y position
-            parent (GraphicObject or Page): An optional parent, whose position
+            x: The end x position
+            y: The end y position
+            parent: An optional parent, whose position
                 the target coordinate will be relative to.
 
         Returns: None
@@ -129,7 +132,7 @@ class Path(GraphicObject):
             )
         )
 
-    def move_to(self, x, y, parent=None):
+    def move_to(self, x: Unit, y: Unit, parent: Optional[Parent] = None):
         """Close the current sub-path and start a new one.
 
         A point parent may be passed as well, anchored the target point to
@@ -137,10 +140,10 @@ class Path(GraphicObject):
         considered relative to the parent.
 
         Args:
-            x (Unit): The end x position
-            y (Unit): The end y position
-            parent (GraphicObject or Page): An optional parent, whose position
-                the target coordinate will be relative to.
+            x: The end x position
+            y: The end y position
+            parent: An optional parent, whose position the target coordinate will
+                be relative to.
 
         Returns: None
         """
@@ -166,30 +169,30 @@ class Path(GraphicObject):
 
     def cubic_to(
         self,
-        control_1_x,
-        control_1_y,
-        control_2_x,
-        control_2_y,
-        end_x,
-        end_y,
-        control_1_parent=None,
-        control_2_parent=None,
-        end_parent=None,
+        control_1_x: Unit,
+        control_1_y: Unit,
+        control_2_x: Unit,
+        control_2_y: Unit,
+        end_x: Unit,
+        end_y: Unit,
+        control_1_parent: Optional[Parent] = None,
+        control_2_parent: Optional[Parent] = None,
+        end_parent: Optional[Parent] = None,
     ):
         """Draw a cubic bezier curve from the current position to a new point.
 
         Args:
-            control_1_x (Unit): The x coordinate of the first control point.
-            control_1_y (Unit): The y coordinate of the first control point.
-            control_2_x (Unit): The x coordinate of the second control point.
-            control_2_y (Unit): The y coordinate of the second control point.
-            end_x (Unit): The x coordinate of the curve target.
-            end_y (Unit): The y coordinate of the curve target.
-            control_1_parent (GraphicObject or Page): An optional parent for
+            control_1_x: The x coordinate of the first control point.
+            control_1_y: The y coordinate of the first control point.
+            control_2_x: The x coordinate of the second control point.
+            control_2_y: The y coordinate of the second control point.
+            end_x: The x coordinate of the curve target.
+            end_y: The y coordinate of the curve target.
+            control_1_parent: An optional parent for
                 the first control point. Defaults to `self`.
-            control_2_parent (GraphicObject or Page): An optional parent for
+            control_2_parent: An optional parent for
                 the second control point. Defaults to `self`.
-            end_parent (GraphicObject or Page): An optional parent for the
+            end_parent: An optional parent for the
                 curve target. Defaults to `self`.
 
         Returns: None

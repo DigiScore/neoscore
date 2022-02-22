@@ -17,9 +17,13 @@ class TestTextInterface(unittest.TestCase):
 
     def test_path_caching(self):
         test_font_1 = FontInterface("Bravura", Unit(12), 1, False)
-        test_object_1 = TextInterface((5, 6), "testing", test_font_1, self.brush)
+        test_object_1 = TextInterface(
+            (Unit(5), Unit(6)), "testing", test_font_1, self.brush
+        )
         test_font_2 = FontInterface("Bravura", Unit(24), 1, False)
-        test_object_2 = TextInterface((5, 6), "testing", test_font_2, self.brush)
+        test_object_2 = TextInterface(
+            (Unit(5), Unit(6)), "testing", test_font_2, self.brush
+        )
         # Since the fonts and texts matched, the underlying paths
         # should be equal by reference.
         assert test_object_1.qt_object.path() == test_object_2.qt_object.path()

@@ -10,17 +10,21 @@ from brown.utils.units import GraphicUnit, Unit
 
 
 def test_linear_interp():
-    assert interpolate((0, 0), (1, 1), 2) == GraphicUnit(2)
-    assert interpolate((1, 1), (0, 0), -1) == GraphicUnit(-1)
-    assert interpolate((0, 0), (2, 1), 3) == GraphicUnit(1.5)
-
-
-def test_linear_interp_with_points():
-    assert interpolate(Point(0, 0), Point(1, 1), 2) == GraphicUnit(2)
+    assert interpolate(
+        Point(Unit(0), Unit(0)), Point(Unit(1), Unit(1)), Unit(2)
+    ) == Unit(2)
+    assert interpolate(
+        Point(Unit(1), Unit(1)), Point(Unit(0), Unit(0)), Unit(-1)
+    ) == Unit(-1)
+    assert interpolate(
+        Point(Unit(0), Unit(0)), Point(Unit(2), Unit(1)), Unit(3)
+    ) == Unit(1.5)
 
 
 def test_linear_interp_with_units_preserves_units():
-    assert interpolate((Unit(0), Unit(0)), (Unit(2), Unit(1)), Unit(3)) == Unit(1.5)
+    assert interpolate(
+        Point(Unit(0), Unit(0)), Point(Unit(2), Unit(1)), Unit(3)
+    ) == Unit(1.5)
 
 
 def test_clamp_value():

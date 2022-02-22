@@ -2,8 +2,6 @@ from typing import Union
 
 from brown.utils.units import GraphicUnit, Unit
 
-# TODO pretty sure this should be made immutable
-
 
 class Point:
     """A two dimensional point.
@@ -13,27 +11,14 @@ class Point:
 
     __slots__ = ("_x", "_y")
 
-    def __init__(self, x: Union[Unit, float], y: Union[Unit, float]):
+    def __init__(self, x: Unit, y: Unit):
         """
         Args:
-            x (float or Unit): The x axis position
-            y (float or Unit): The y axis position
+            x: The x axis position
+            y: The y axis position
         """
-        self._x = x if isinstance(x, Unit) else GraphicUnit(x)
-        self._y = y if isinstance(y, Unit) else GraphicUnit(y)
-
-    ######## PUBLIC CLASS METHODS ########
-
-    @classmethod
-    def from_existing(cls, point):
-        """Clone a Point
-
-        Args:
-            point (Point): The point to clone
-
-        Returns: Point
-        """
-        return cls(point.x, point.y)
+        self._x = x
+        self._y = y
 
     ######## PUBLIC PROPERTIES ########
 

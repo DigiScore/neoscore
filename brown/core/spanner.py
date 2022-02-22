@@ -102,7 +102,7 @@ class Spanner:
             the horizontal length, use `spanner_x_length`.
         """
         if self.end_parent == self:
-            relative_stop = Point.from_existing(self.end_pos)
+            relative_stop = self.end_pos
         else:
             relative_stop = (
                 GraphicObject.map_between_items(self, self.end_parent) + self.end_pos
