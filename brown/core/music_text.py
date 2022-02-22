@@ -76,7 +76,7 @@ class MusicText(Text):
         """
         if not music_chars:
             raise ValueError(
-                "Cannot find the bounding rect of an " "empty character sequence."
+                "Cannot find the bounding rect of an empty character sequence."
             )
         x = music_chars[0].glyph_info["glyphBBox"]["bBoxSW"][0]
         y = music_chars[0].glyph_info["glyphBBox"]["bBoxNE"][1]

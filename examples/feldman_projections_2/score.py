@@ -29,8 +29,8 @@ class Score(ObjectGroup):
     def __init__(self, pos, instruments, parent):
         super().__init__(pos, parent)
         self.events = []
-        self.text_font = Font.deriving(
-            brown.default_font, size=Score._TEXT_FONT_SIZE, weight=60
+        self.text_font = brown.default_font.modified(
+            size=Score._TEXT_FONT_SIZE, weight=60
         )
         self.music_font = MusicFont(
             constants.DEFAULT_MUSIC_FONT_NAME, Score._MUSIC_FONT_SIZE

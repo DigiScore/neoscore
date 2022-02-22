@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 import copy
+from typing import Dict, Optional, Type
 
 from brown.core import brown
 from brown.core.font import Font
@@ -8,9 +11,7 @@ from brown.utils.exceptions import (
     MusicFontMetadataNotFoundError,
 )
 from brown.utils.platforms import PlatformType, current_platform
-from brown.utils.units import convert_all_to_unit
-
-# TODO test me
+from brown.utils.units import Unit, convert_all_to_unit
 
 
 class MusicFont(Font):
@@ -23,35 +24,54 @@ class MusicFont(Font):
     else:
         __magic_em_scale = 3
 
-    def __init__(self, family_name, staff_unit):
-        self.unit = staff_unit
+    def __init__(self, family_name: str, unit: Type[Unit]):
+        """
+        Args:
+            family_name: The font name
+            unit: A sizing unit, where `unit(1)` is the distance
+                between two staff lines.
+        """
+        self._unit = unit
         try:
             self.metadata = brown.registered_music_fonts[family_name]
         except KeyError:
             raise MusicFontMetadataNotFoundError
-
         self._engraving_defaults = copy.deepcopy(self.metadata["engravingDefaults"])
-
-        convert_all_to_unit(self._engraving_defaults, self.unit)
         self._em_size = self.unit(self.__magic_em_scale)
         self._glyph_info_cache = {}
+        # engraving_defaults is small, so eagerly converting it to self.unit is ok
+        convert_all_to_unit(self._engraving_defaults, self.unit)
         super().__init__(family_name, self._em_size, 1, False)
 
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def em_size(self):
+    def unit(self) -> Unit:
+        return self._unit
+
+    @property
+    def em_size(self) -> Unit:
         """Unit: The em size for the font."""
         return self._em_size
 
     @property
-    def engraving_defaults(self):
+    def engraving_defaults(self) -> Dict:
         """dict: The SMuFL engraving defaults information for this font"""
         return self._engraving_defaults
 
     ######## PUBLIC METHODS ########
 
-    def glyph_info(self, glyph_name, alternate_number=None):
+    def modified(
+        self, family_name: Optional[str] = None, unit: Optiona[Type[Unit]] = None
+    ) -> MusicFont:
+        return MusicFont(
+            family_name if family_name is not None else self.family_name,
+            unit if unit is not None else self.unit,
+        )
+
+    def glyph_info(
+        self, glyph_name: str, alternate_number: Optional[int] = None
+    ) -> Dict:
         key = (glyph_name, alternate_number)
         cached_result = self._glyph_info_cache.get(key, None)
         if cached_result:
@@ -62,7 +82,9 @@ class MusicFont(Font):
 
     ######## PRIVATE METHODS ########
 
-    def _glyph_info(self, glyph_name, alternate_number=None):
+    def _glyph_info(
+        self, glyph_name: str, alternate_number: Optional[int] = None
+    ) -> Dict:
         """Collect and return all known metadata about a glyph.
 
         Args:

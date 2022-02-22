@@ -26,34 +26,34 @@ class TestFont(unittest.TestCase):
         assert test_font.weight is None
         assert test_font.italic is False
 
-    def test_deriving(self):
+    def test_modified(self):
         test_font = Font("Bravura", 12, 2, False)
-        deriving_family_name = Font.deriving(test_font, size=14, weight=1, italic=True)
-        assert deriving_family_name.family_name == "Bravura"
-        assert deriving_family_name.size == GraphicUnit(14)
-        assert deriving_family_name.weight == 1
-        assert deriving_family_name.italic is True
+        modifying_family_name = test_font.modified(size=14, weight=1, italic=True)
+        assert modifying_family_name.family_name == "Bravura"
+        assert modifying_family_name.size == GraphicUnit(14)
+        assert modifying_family_name.weight == 1
+        assert modifying_family_name.italic is True
 
-        deriving_size = Font.deriving(
-            test_font, family_name="Cormorant Garamond", weight=1, italic=True
+        modifying_size = test_font.modified(
+            family_name="Cormorant Garamond", weight=1, italic=True
         )
-        assert deriving_size.family_name == "Cormorant Garamond"
-        assert deriving_size.size == GraphicUnit(12)
-        assert deriving_size.weight == 1
-        assert deriving_size.italic is True
+        assert modifying_size.family_name == "Cormorant Garamond"
+        assert modifying_size.size == GraphicUnit(12)
+        assert modifying_size.weight == 1
+        assert modifying_size.italic is True
 
-        deriving_weight = Font.deriving(
-            test_font, family_name="Cormorant Garamond", size=14, italic=True
+        modifying_weight = test_font.modified(
+            family_name="Cormorant Garamond", size=14, italic=True
         )
-        assert deriving_weight.family_name == "Cormorant Garamond"
-        assert deriving_weight.size == GraphicUnit(14)
-        assert deriving_weight.weight == 2
-        assert deriving_weight.italic is True
+        assert modifying_weight.family_name == "Cormorant Garamond"
+        assert modifying_weight.size == GraphicUnit(14)
+        assert modifying_weight.weight == 2
+        assert modifying_weight.italic is True
 
-        deriving_italic = Font.deriving(
-            test_font, family_name="Cormorant Garamond", size=14, weight=2
+        modifying_italic = test_font.modified(
+            family_name="Cormorant Garamond", size=14, weight=2
         )
-        assert deriving_italic.family_name == "Cormorant Garamond"
-        assert deriving_italic.size == GraphicUnit(14)
-        assert deriving_italic.weight == 2
-        assert deriving_italic.italic is False
+        assert modifying_italic.family_name == "Cormorant Garamond"
+        assert modifying_italic.size == GraphicUnit(14)
+        assert modifying_italic.weight == 2
+        assert modifying_italic.italic is False

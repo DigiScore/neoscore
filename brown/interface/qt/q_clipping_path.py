@@ -64,14 +64,15 @@ class QClippingPath(QGraphicsPathItem):
 
     def update_geometry(self):
         self.prepareGeometryChange()
+        path_bounding_rect = self.path().boundingRect()
         self.clip_rect = QClippingPath.calculate_clipping_area(
-            self.path().boundingRect(),
+            path_bounding_rect,
             self.clip_start_x,
             self.clip_width,
             self.pen().width(),
         )
         self.bounding_rect = QClippingPath.calculate_bounding_rect(
-            self.path().boundingRect(),
+            path_bounding_rect,
             self.clip_start_x,
             self.clip_width,
             self.pen().width(),

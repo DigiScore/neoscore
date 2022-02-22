@@ -3,13 +3,13 @@ from typing import Optional, Union
 from brown.interface.font_interface import FontInterface
 from brown.utils.units import GraphicUnit, Unit
 
-# TODO note that this and any subclasses should be immutable. If you
-# want a modified version of this font, use `Font.deriving`
-
 
 class Font:
 
-    """A text font."""
+    """A text font.
+
+    All fonts are immutable. To get a modified version of a font, use
+    `Font.modified`."""
 
     def __init__(
         self,
@@ -27,38 +27,31 @@ class Font:
                 If `None` (the default), a normal weight will be used.
             italic: Whether or not the font is italicized
         """
-        self.family_name = family_name
-        self.size = size if isinstance(size, Unit) else GraphicUnit(size)
-        self.weight = weight
-        self.italic = italic
+        self._family_name = family_name
+        self._size = size if isinstance(size, Unit) else GraphicUnit(size)
+        self._weight = weight
+        self._italic = italic
         self._interface = FontInterface(
             self.family_name, self.size, self.weight, self.italic
         )
 
-    ######## CONSTRUCTORS ########
+    ######## PUBLIC PROPERTIES ########
 
-    @classmethod
-    def deriving(
-        cls, existing_font, family_name=None, size=None, weight=None, italic=None
-    ):
-        """Derive a Font from an existing one, overriding the given properties.
+    @property
+    def family_name(self):
+        return self._family_name
 
-        All properties not passed in args/kwargs will be copied
-        from the existing Font.
+    @property
+    def size(self):
+        return self._size
 
-        Args:
-            existing_font (Font): An existing font.
-            family_name (str):
-            size (int):
-            weight (int):
-            italic (bool):
-        """
-        return cls(
-            family_name if family_name is not None else existing_font.family_name,
-            size if size is not None else existing_font.size,
-            weight if weight is not None else existing_font.weight,
-            italic if italic is not None else existing_font.italic,
-        )
+    @property
+    def weight(self):
+        return self._weight
+
+    @property
+    def italic(self):
+        return self._italic
 
     ######## PUBLIC PROPERTIES ########
 
@@ -86,6 +79,14 @@ class Font:
         return self._interface.em_size
 
     ######## PUBLIC METHODS ########
+
+    def modified(self, family_name=None, size=None, weight=None, italic=None):
+        return Font(
+            family_name if family_name is not None else self.family_name,
+            size if size is not None else self.size,
+            weight if weight is not None else self.weight,
+            italic if italic is not None else self.italic,
+        )
 
     def bounding_rect_of(self, string):
         """Approximate the bounding rect of a string in this font.
