@@ -43,3 +43,7 @@ class Point(NamedTuple):
     def __abs__(self) -> Point:
         """Get a Point whose x and y values are the absolute values of this point's."""
         return Point(abs(self.x), abs(self.y))
+
+    def __neg__(self) -> Point:
+        """Get a Point whose x and y values are the negation of this point's."""
+        return Point(-self.x, -self.y)

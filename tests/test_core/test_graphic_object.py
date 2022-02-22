@@ -2,6 +2,7 @@ import unittest
 
 from brown.core import brown
 from brown.core.flowable import Flowable
+from brown.core.graphic_object import GraphicObject
 from brown.core.invisible_object import InvisibleObject
 from brown.core.paper import Paper
 from brown.utils.point import Point
@@ -26,7 +27,7 @@ class TestGraphicObject(unittest.TestCase):
     def test_map_between_items(self):
         source = InvisibleObject((Unit(5), Unit(6)), brown.document.pages[1])
         destination = InvisibleObject((Unit(99), Unit(90)), brown.document.pages[4])
-        relative_pos = InvisibleObject.map_between_items(source, destination)
+        relative_pos = GraphicObject.map_between_items(source, destination)
 
         page_1_pos = brown.document.canvas_pos_of(brown.document.pages[1])
         page_4_pos = brown.document.canvas_pos_of(brown.document.pages[4])
@@ -34,6 +35,34 @@ class TestGraphicObject(unittest.TestCase):
         expected = (page_4_pos + Point(Unit(99), Unit(90))) - (
             page_1_pos + Point(Unit(5), Unit(6))
         )
+        assert_almost_equal(relative_pos, expected)
+
+    def test_map_between_items_with_same_source_and_dest(self):
+        obj = InvisibleObject((Unit(5), Unit(6)), brown.document.pages[0])
+        assert_almost_equal(
+            GraphicObject.map_between_items(obj, obj), Point(Unit(0), Unit(0))
+        )
+
+    def test_map_between_items_with_common_parent(self):
+        parent = InvisibleObject((Unit(5), Unit(6)), brown.document.pages[0])
+        source = InvisibleObject((Unit(1), Unit(2)), parent)
+        destination = InvisibleObject((Unit(3), Unit(10)), parent)
+        relative_pos = GraphicObject.map_between_items(source, destination)
+        expected = Point(Unit(2), Unit(8))
+        assert_almost_equal(relative_pos, expected)
+
+    def test_map_between_items_where_dest_parent_is_src(self):
+        source = InvisibleObject((Unit(1), Unit(2)), brown.document.pages[0])
+        destination = InvisibleObject((Unit(3), Unit(10)), source)
+        relative_pos = GraphicObject.map_between_items(source, destination)
+        expected = Point(Unit(3), Unit(10))
+        assert_almost_equal(relative_pos, expected)
+
+    def test_map_between_items_where_src_parent_is_dest(self):
+        destination = InvisibleObject((Unit(3), Unit(10)), brown.document.pages[0])
+        source = InvisibleObject((Unit(1), Unit(2)), destination)
+        relative_pos = GraphicObject.map_between_items(source, destination)
+        expected = Point(Unit(-1), Unit(-2))
         assert_almost_equal(relative_pos, expected)
 
     def test_register_child(self):

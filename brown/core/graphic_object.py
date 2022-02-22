@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from abc import ABC
 
 from brown import constants
@@ -243,21 +245,27 @@ class GraphicObject(ABC):
     ######## CLASS METHODS ########
 
     @classmethod
-    def map_between_items(cls, source, destination):
-        """Find a GraphicObject's position relative to another GraphicObject
+    def map_between_items(cls, source: GraphicObject, dest: GraphicObject) -> Point:
+        """Find a GraphicObject's position relative to another
 
         Args:
-            source (GraphicObject): The object to map from
-            destination (GraphicObject): The object to map to
+            source: The object to map from
+            dest: The object to map to
 
         Returns:
-            Point: The canvas position of `destination` relative to `source`
+            The canvas position of `dest` relative to `source`
         """
-        # inefficient for now - find position relative to doc root of both
-        # and find delta between the two.
-        return brown.document.canvas_pos_of(destination) - brown.document.canvas_pos_of(
-            source
-        )
+        # Handle easy cases
+        if source == dest:
+            return Point(Unit(0), Unit(0))
+        if source.parent == dest.parent:
+            return dest.pos - source.pos
+        if dest.parent == source:
+            return dest.pos
+        if source.parent == dest:
+            return -source.pos
+        # Otherwise, inefficiently compare the canvas positions of the two objects
+        return brown.document.canvas_pos_of(dest) - brown.document.canvas_pos_of(source)
 
     ######## PUBLIC METHODS ########
 

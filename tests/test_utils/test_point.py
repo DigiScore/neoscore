@@ -65,3 +65,6 @@ class TestPoint(unittest.TestCase):
 
     def test__abs__(self):
         assert abs(Point(Unit(-2), Unit(-3))) == Point(Unit(2), Unit(3))
+
+    def test__neg__(self):
+        assert -Point(Unit(1), Unit(-2)) == Point(Unit(-1), Unit(2))

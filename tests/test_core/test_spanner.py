@@ -14,13 +14,6 @@ class MockSpanner(GraphicObject, Spanner):
     """A mock spanner for testing."""
 
     def __init__(self, pos, parent, end_pos, end_parent):
-        """
-        Args:
-            pos (Point or tuple init args):
-            parent (GraphicObject or None):
-            end_pos (Point or tuple init args):
-            end_parent (GraphicObject or None):
-        """
         GraphicObject.__init__(self, pos, parent=parent)
         Spanner.__init__(self, end_pos, end_parent)
 

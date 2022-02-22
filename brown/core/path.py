@@ -75,14 +75,21 @@ class Path(GraphicObject):
         min_x = GraphicUnit(float("inf"))
         max_x = GraphicUnit(-float("inf"))
         in_flowable = self.flowable is not None
+        self_flowable_pos = (
+            self.flowable.pos_in_flowable_of(self) if in_flowable else None
+        )
         for element in self.elements:
-            if in_flowable:
+            # Determine element X relative to self
+            if element.parent is self:
+                # Specialize simple case
+                relative_x = element.x
+            elif in_flowable:
                 relative_x = (
-                    self.flowable.pos_in_flowable_of(element)
-                    - self.flowable.pos_in_flowable_of(self)
+                    self.flowable.pos_in_flowable_of(element) - self_flowable_pos
                 ).x
             else:
                 relative_x = GraphicObject.map_between_items(self, element).x
+            # Now update min/max accordingly
             if relative_x > max_x:
                 max_x = relative_x
             if relative_x < min_x:
