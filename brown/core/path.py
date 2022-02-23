@@ -61,7 +61,7 @@ class Path(GraphicObject):
 
     ######## PUBLIC PROPERTIES ########
 
-    # TODO optimize me next! Fully 15% of benchmark time is spent in this function.
+    # TODO optimize / cache?
 
     @property
     def length(self):

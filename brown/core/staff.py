@@ -47,6 +47,7 @@ class Staff(Path):
         )
         if music_font is None:
             self.music_font = MusicFont(constants.DEFAULT_MUSIC_FONT_NAME, self.unit)
+        self._length = length
         # Construct the staff path
         for i in range(self.line_count):
             y_offset = self.unit(i)
@@ -104,6 +105,12 @@ class Staff(Path):
     def bottom_line_y(self):
         """StaffUnit: The position of the bottom staff line"""
         return self.unit((self.line_count - 1))
+
+    @property
+    def length(self) -> Unit:
+        # Override expensive `Path.length` since the staff length here
+        # is already known.
+        return self._length
 
     ######## PUBLIC METHODS ########
 
@@ -279,6 +286,7 @@ class Staff(Path):
         return make_unit_class("StaffUnit", staff_unit_size.base_value)
 
     def _compute_clef_x_positions(self) -> list[tuple[Unit, Clef]]:
+        # TODO this is duplicated with the on-demand version in `clefs()`
         result = [
             (clef.pos_x_in_staff, clef)
             for clef in self.descendants_of_class_or_subclass(Clef)

@@ -68,7 +68,24 @@ class Clef(MusicText, StaffObject):
 
     @property
     def length(self):
-        return self.staff.distance_to_next_of_type(self)
+        """Find the length in the staff during which this clef is active.
+
+        This is defined as the distance relative to the staff until
+        the next clef is encountered. If no further clefs are found,
+        this is the remaining length of the staff.
+        """
+        # Iterate through the (typically cached) staff clef list
+        # The list is sorted by x position relative to the staff,
+        # which means the first loop pass in which self_staff_x
+        # has been assigned must be the next clef in the staff.
+        self_staff_x = None
+        for (staff_x, clef) in self.staff.clefs():
+            if self_staff_x is not None:
+                return staff_x - self_staff_x
+            if clef is self:
+                self_staff_x = staff_x
+        # No later clefs exist; return the remaining staff length
+        return self.staff.length - self_staff_x
 
     @property
     def staff_position(self):
