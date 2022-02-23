@@ -5,7 +5,7 @@ from brown.core.page_supplier import PageSupplier
 from brown.core.paper import Paper, PaperTemplate
 from brown.utils.point import Point
 from brown.utils.rect import Rect
-from brown.utils.units import GraphicUnit
+from brown.utils.units import GraphicUnit, Unit
 
 
 class Document:
@@ -170,16 +170,19 @@ class Document:
             (self.paper.width + self._page_display_gap) * page_number, GraphicUnit(0)
         )
 
-    def canvas_pos_of(self, graphic_object):
+    # TODO type annotating this requires a circular import, which
+    # suggests this functionality belongs elsewhere.
+
+    def canvas_pos_of(self, grob) -> Point:
         """Find the paged document position of a GraphicObject.
 
         Args:
-            graphic_object (GraphicObject): Any object in the document.
+            grob: Any object in the document.
 
         Returns: Point: The object's paged position relative to the document.
         """
         pos = Point(GraphicUnit(0), GraphicUnit(0))
-        current = graphic_object
+        current = grob
         while current != self:
             pos += current.pos
             current = current.parent

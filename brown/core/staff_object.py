@@ -1,5 +1,7 @@
 from brown.core.graphic_object import GraphicObject
 from brown.utils.exceptions import NoAncestorStaffError
+from brown.utils.point import Point
+from brown.utils.units import Unit
 
 
 class StaffObject:
@@ -32,20 +34,18 @@ class StaffObject:
         """Staff: The staff associated with this object"""
         return self._staff
 
-    # TODO this is very slow. one simple optimization would be
-    # specializing the subroutines to compute X positions only, since
-    # they're all that's needed for this. it would be noisy, but it
-    # could improve speed by nearly half. Alternatively this could be
-    # cached, but invalidation is tricky.
     @property
-    def pos_in_staff(self):
-        """Point: The position of this object relative to the staff.
+    def pos_in_staff(self) -> Point:
+        """The position of this object relative to the staff.
 
         This position is in non-flowed space.
         """
-        if self.flowable:
-            return self.flowable.map_between_locally(self.staff, self)
-        return GraphicObject.map_between_items(self.staff, self)
+        return self.flowable.map_between_locally(self.staff, self)
+
+    @property
+    def pos_x_in_staff(self) -> Unit:
+        """A specialized version of `pos_in_staff` which only finds the x pos"""
+        return self.flowable.map_x_between_locally(self.staff, self)
 
     ######## PRIVATE METHODS ########
 

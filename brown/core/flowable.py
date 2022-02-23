@@ -1,6 +1,7 @@
 from brown.core import brown
 from brown.core.auto_new_line import AutoNewLine
 from brown.core.break_opportunity import BreakOpportunity
+from brown.core.graphic_object import GraphicObject
 from brown.core.invisible_object import InvisibleObject
 from brown.utils.exceptions import OutOfBoundsError
 from brown.utils.point import Point
@@ -234,20 +235,20 @@ class Flowable(InvisibleObject):
                 "local_x={} lies outside of this Flowable".format(local_x)
             )
 
-    def pos_in_flowable_of(self, graphic_object):
+    def pos_in_flowable_of(self, grob: GraphicObject) -> Point:
         """Find the position of an object in (unwrapped) flowable space.
 
         Args:
-            graphic_object (GraphicObject): An object in the flowable.
+            grob: An object in the flowable.
 
         Returns:
-            Point: A non-paged point relative to the flowable.
+            A non-paged point relative to the flowable.
 
         Raises:
-            ValueError: If `graphic_object` is not in the flowable.
+            ValueError: If `grob` is not in the flowable.
         """
         pos = Point(Unit(0), Unit(0))
-        current = graphic_object
+        current = grob
         try:
             while current != self:
                 pos += current.pos
@@ -256,19 +257,41 @@ class Flowable(InvisibleObject):
         except AttributeError:
             raise ValueError("object is not in this Flowable")
 
-    def map_between_locally(self, src, dst):
+    def pos_x_in_flowable_of(self, grob: GraphicObject) -> Unit:
+        """A specialized version of `pos_in_flowable_of` which only finds the X pos
+
+        See `pos_in_flowable_of` for more.
+        """
+        pos_x = Unit(0)
+        current = grob
+        try:
+            while current != self:
+                pos_x += current.x
+                current = current.parent
+            return pos_x
+        except AttributeError:
+            raise ValueError("object is not in this Flowable")
+
+    def map_between_locally(self, src: GraphicObject, dst: GraphicObject) -> Point:
         """Find the relative position between two objects in this flowable.
 
         Args:
-            src (GraphicObject): The object to map from
-            dst (GraphicObject): The object to map to
+            src: The object to map from
+            dst: The object to map to
 
         Returns:
-            Point: The relative position of `dst`,
-                relative to `src` within the local flowable space.
+            The relative position of `dst`, relative to `src` within the
+                local flowable space.
 
         Raises:
             ValueError: If either `src` or `dst` are not
                 in the flowable.
         """
         return self.pos_in_flowable_of(dst) - self.pos_in_flowable_of(src)
+
+    def map_x_between_locally(self, src: GraphicObject, dst: GraphicObject) -> Unit:
+        """A specialized version of `map_between_locally` which only maps the X delta.
+
+        See `map_between_locally` for more.
+        """
+        return self.pos_x_in_flowable_of(dst) - self.pos_x_in_flowable_of(src)

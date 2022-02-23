@@ -267,6 +267,22 @@ class GraphicObject(ABC):
         # Otherwise, inefficiently compare the canvas positions of the two objects
         return brown.document.canvas_pos_of(dest) - brown.document.canvas_pos_of(source)
 
+    # TODO can't implement this until document methods are made too
+    # @classmethod
+    # def map_x_between_items(cls, source: GraphicObject, dest: GraphicObject) -> Unit:
+    #     """Specialized version of `map_between_items` which only finds the x delta"""
+    #     # Handle easy cases
+    #     if source == dest:
+    #         return Unit(0)
+    #     if source.parent == dest.parent:
+    #         return dest.x - source.x
+    #     if dest.parent == source:
+    #         return dest.x
+    #     if source.parent == dest:
+    #         return -source.x
+    #     # Otherwise, inefficiently compare the canvas positions of the two objects
+    #     return brown.document.canvas_pos_of(dest) - brown.document.canvas_pos_of(source)
+
     ######## PUBLIC METHODS ########
 
     def descendants_of_class_or_subclass(self, graphic_object_class):

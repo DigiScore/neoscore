@@ -154,7 +154,7 @@ class _KeySignatureAccidental(MusicText, StaffObject):
         cached_overlaps = getattr(self, "_clef_overlaps", None)
         if cached_overlaps:
             return cached_overlaps[clef]
-        return self.flowable.map_between_locally(clef, self).x < padded_clef_width
+        return self.flowable.map_x_between_locally(clef, self) < padded_clef_width
 
     def _padded_clef_width(self, clef):
         return clef.bounding_rect.width + self.staff.unit(0.5)

@@ -32,6 +32,10 @@ class TestStaffObject(unittest.TestCase):
         test_object = MockStaffObject((Mm(5000), Mm(0)), self.staff)
         assert test_object.pos_in_staff == test_object.pos
 
+    def test_pos_x_in_staff(self):
+        test_object = MockStaffObject((Mm(5000), Mm(0)), self.staff)
+        assert test_object.pos_x_in_staff == test_object.x
+
     def test_pos_in_staff_with_indirect_ancestor_staff(self):
         parent_object = MockStaffObject((Mm(1), Mm(2)), self.staff)
         test_object = MockStaffObject((Mm(10), Mm(1)), parent_object)

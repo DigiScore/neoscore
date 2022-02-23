@@ -90,6 +90,6 @@ class Notehead(MusicText, StaffObject):
         `StaffUnit(0)` means the top staff line, higher values
         mean lower pitches, and vice versa.
         """
-        return self.staff.middle_c_at(self.pos_in_staff.x) + self.staff.unit(
+        return self.staff.middle_c_at(self.pos_x_in_staff) + self.staff.unit(
             self.pitch.staff_pos_from_middle_c
         )

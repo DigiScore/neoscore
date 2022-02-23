@@ -122,7 +122,7 @@ class Staff(Path):
 
         Returns: Unit
         """
-        start_x = self.flowable.map_between_locally(self, staff_object).x
+        start_x = self.flowable.map_x_between_locally(self, staff_object)
         all_others_of_class = (
             item
             for item in self.descendants_of_exact_class(type(staff_object))
@@ -130,7 +130,7 @@ class Staff(Path):
         )
         closest_x = Unit(float("inf"))
         for item in all_others_of_class:
-            relative_x = self.flowable.map_between_locally(self, item).x
+            relative_x = self.flowable.map_x_between_locally(self, item)
             if start_x < relative_x < closest_x:
                 closest_x = relative_x
         if closest_x == Unit(float("inf")):
@@ -144,7 +144,7 @@ class Staff(Path):
             return cached_clef_positions
         return sorted(
             (
-                (clef.pos_in_staff.x, clef)
+                (clef.pos_x_in_staff, clef)
                 for clef in self.descendants_of_class_or_subclass(Clef)
             ),
             key=lambda tup: tup[0],
@@ -182,7 +182,7 @@ class Staff(Path):
             None: If no transposition was found.
         """
         for item in self.descendants_of_class_or_subclass(OctaveLine):
-            line_pos = self.flowable.map_between_locally(self, item).x
+            line_pos = self.flowable.map_x_between_locally(self, item)
             if line_pos <= pos_x <= line_pos + item.length:
                 return item.transposition
         return None
@@ -280,7 +280,7 @@ class Staff(Path):
 
     def _compute_clef_x_positions(self) -> list[tuple[Unit, Clef]]:
         result = [
-            (clef.pos_in_staff.x, clef)
+            (clef.pos_x_in_staff, clef)
             for clef in self.descendants_of_class_or_subclass(Clef)
         ]
         result.sort(key=lambda tup: tup[0])
