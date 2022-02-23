@@ -7,6 +7,12 @@ from brown.core.pen_pattern import PenPattern
 from brown.utils.color import Color
 from brown.utils.units import GraphicUnit, Inch, Mm
 
+
+def _resolve_bool_env_variable(var):
+    value = os.environ.get(var)
+    return not (value is None or value == "0" or value.lower() == "false")
+
+
 # Directories
 BROWN_ROOT_DIR = os.path.join(os.path.dirname(__file__))
 RESOURCES_DIR = os.path.join(BROWN_ROOT_DIR, "resources")
@@ -53,6 +59,9 @@ PRINT_DPI = Inch.CONVERSION_RATE
 
 # Staff Height
 DEFAULT_STAFF_UNIT = Mm(1)
+
+# Debug Mode
+DEBUG = _resolve_bool_env_variable("NEOSCORE_DEBUG")
 
 # QT Runtime
 QT_PIXMAP_CACHE_LIMIT_KB = 200_000

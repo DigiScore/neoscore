@@ -5,10 +5,8 @@ from PyQt5.QtCore import QRectF
 from PyQt5.QtGui import QBrush, QColor, QPainterPath, QPen
 from PyQt5.QtWidgets import QGraphicsItem, QGraphicsPathItem
 
+from brown.constants import DEBUG
 from brown.utils.units import GraphicUnit, Unit
-
-# TODO find a way to set a global debug switch and expose to users too.
-_DEBUG = False
 
 
 class QClippingPath(QGraphicsPathItem):
@@ -57,7 +55,7 @@ class QClippingPath(QGraphicsPathItem):
             painter.translate(self.painter_offset)
         painter.setClipRect(self.clip_rect)
         super().paint(painter, *args, **kwargs)
-        if _DEBUG:
+        if DEBUG:
             painter.setBrush(QBrush())
             painter.setPen(QPen(QColor("#ff0000")))
             painter.drawRect(self.bounding_rect)
