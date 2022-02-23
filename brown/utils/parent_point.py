@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import NamedTuple, Optional
+from typing import NamedTuple, Optional, Type
 
 from brown.core.types import Parent
 from brown.utils.point import Point
@@ -51,3 +51,8 @@ class ParentPoint(NamedTuple):
             return ParentPoint(self.x * other, self.y * other, self.parent)
         except AttributeError:
             raise TypeError
+
+    ######## PUBLIC METHODS ########
+
+    def in_unit(self, unit: Type[Unit]) -> ParentPoint:
+        return ParentPoint(unit(self.x), unit(self.y), self.parent)

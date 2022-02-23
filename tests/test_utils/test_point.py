@@ -68,3 +68,10 @@ class TestPoint(unittest.TestCase):
 
     def test__neg__(self):
         assert -Point(Unit(1), Unit(-2)) == Point(Unit(-1), Unit(2))
+
+    def test_in_unit(self):
+        original = Point(Unit(1), Unit(2))
+        converted = original.in_unit(Mm)
+        assert isinstance(converted.x, Mm)
+        assert isinstance(converted.y, Mm)
+        assert original == converted

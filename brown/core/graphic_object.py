@@ -7,7 +7,7 @@ from brown.core import brown
 from brown.core.brush import Brush
 from brown.core.page import Page
 from brown.core.pen import Pen
-from brown.utils.point import Point
+from brown.utils.point import ORIGIN, Point
 from brown.utils.units import Mm, Unit
 
 
@@ -257,7 +257,7 @@ class GraphicObject(ABC):
         """
         # Handle easy cases
         if source == dest:
-            return Point(Unit(0), Unit(0))
+            return ORIGIN
         if source.parent == dest.parent:
             return dest.pos - source.pos
         if dest.parent == source:

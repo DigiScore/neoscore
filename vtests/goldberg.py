@@ -14,11 +14,13 @@ Brace(Mm(0), {upper_staff, lower_staff})
 # are the same size
 unit = upper_staff.unit
 
-Clef(upper_staff, unit(0), "treble")
-Clef(lower_staff, unit(0), "bass")
+upper_clef = Clef(upper_staff, unit(0), "treble")
+lower_clef = Clef(lower_staff, unit(0), "bass")
 
-KeySignature(unit(0), upper_staff, "g_major")
-KeySignature(unit(0), lower_staff, "g_major")
+# Once flowable gutters are implemented, this explicit offsets for
+# key/time sigs will not be needed
+KeySignature(upper_clef.bounding_rect.width + unit(0.5), upper_staff, "g_major")
+KeySignature(lower_clef.bounding_rect.width + unit(0.5), lower_staff, "g_major")
 
 TimeSignature(unit(5), Beat(3, 4), upper_staff)
 TimeSignature(unit(5), Beat(3, 4), lower_staff)

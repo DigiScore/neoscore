@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from typing import NamedTuple
+from typing import NamedTuple, Type
 
-from brown.utils.units import GraphicUnit, Unit
+from brown.utils.units import ZERO, GraphicUnit, Unit
 
 
 class Point(NamedTuple):
@@ -47,3 +47,11 @@ class Point(NamedTuple):
     def __neg__(self) -> Point:
         """Get a Point whose x and y values are the negation of this point's."""
         return Point(-self.x, -self.y)
+
+    ######## PUBLIC METHODS ########
+
+    def in_unit(self, unit: Type[Unit]) -> Point:
+        return Point(unit(self.x), unit(self.y))
+
+
+ORIGIN = Point(ZERO, ZERO)

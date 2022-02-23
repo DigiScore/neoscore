@@ -8,7 +8,8 @@ from brown.core.staff_object import StaffObject
 from brown.models.accidental_type import AccidentalType
 from brown.models.clef_type import ClefType
 from brown.models.key_signature_type import KeySignatureType
-from brown.utils.point import Point
+from brown.utils.point import ORIGIN, Point
+from brown.utils.units import Mm, Unit
 
 
 class KeySignature(ObjectGroup, StaffObject):
@@ -57,10 +58,11 @@ class KeySignature(ObjectGroup, StaffObject):
     ######## PRIVATE METHODS ########
 
     def _create_pseudo_accidentals(self):
+        length = self.length
         for key, value in self.key_signature_type.value.items():
             if value is not None:
                 _KeySignatureAccidental(
-                    self.pos, key, value, self, self.staff.music_font, 1, self.length
+                    ORIGIN, key, value, self, self.staff.music_font, 1, length
                 )
 
 
@@ -147,28 +149,20 @@ class _KeySignatureAccidental(MusicText, StaffObject):
     def length(self):
         return self._length
 
-    # TODO this caching mechanism doesn't work - callgraph shows it's
-    # still called several hundred times in vtest
-
-    def _overlaps_with_clef(self, clef, padded_clef_width):
-        cached_overlaps = getattr(self, "_clef_overlaps", None)
-        if cached_overlaps:
-            return cached_overlaps[clef]
-        return self.flowable.map_x_between_locally(clef, self) < padded_clef_width
-
     def _padded_clef_width(self, clef):
         return clef.bounding_rect.width + self.staff.unit(0.5)
 
-    def _render_occurrence(self, pos, local_start_x):
+    def _render_occurrence(self, pos: Point, local_start_x: Unit, shift_for_clef: bool):
         """Render one appearance of one key signature accidental.
 
-        Because this performs a lot of nontrivial computation for each
-        occurrence of each accidental, this is very inefficient.
+        Much of the positioning code needs to be performed
+        per-occurrence because key signatures can have different
+        appearances when clefs change.
 
-        If this proves to be a performance bottleneck in the future,
-        there's lots of room for optimization here.
+        Ideally there should be a way to cache/centralize much of this
+        work.
+
         """
-
         staff_pos_in_flowable = self.flowable.pos_in_flowable_of(self.staff)
         pos_x_in_staff = local_start_x - staff_pos_in_flowable.x
         clef = self.staff.active_clef_at(pos_x_in_staff)
@@ -180,31 +174,18 @@ class _KeySignatureAccidental(MusicText, StaffObject):
         ]
         visual_pos_x = self.staff.unit(pos_tuple[0]) + pos.x
         visual_pos_y = self.staff.unit(pos_tuple[1]) + pos.y
-        padded_clef_width = self._padded_clef_width(clef)
-        if self._overlaps_with_clef(clef, padded_clef_width):
-            visual_pos_x += padded_clef_width
-        self._render_slice(Point(visual_pos_x, visual_pos_y), None)
-
-    def _compute_clef_overlaps(self) -> Dict[Clef, bool]:
-        return {
-            clef: self._overlaps_with_clef(clef, self._padded_clef_width(clef))
-            for (_, clef) in self.staff.clefs()
-        }
-
-    def _pre_render_hook(self):
-        self._clef_overlaps = self._compute_clef_overlaps()
-
-    def _post_render_hook(self):
-        self._clef_overlaps = None
+        if shift_for_clef:
+            visual_pos_x += self._padded_clef_width(clef)
+        self._render_slice(Point(visual_pos_x, visual_pos_y))
 
     def _render_complete(self, pos, dist_to_line_start=None, local_start_x=None):
-        self._render_occurrence(pos, local_start_x)
+        self._render_occurrence(pos, local_start_x, False)
 
     def _render_before_break(self, local_start_x, start, stop, dist_to_line_start):
-        self._render_occurrence(start, local_start_x)
+        self._render_occurrence(start, local_start_x, False)
 
     def _render_after_break(self, local_start_x, start, stop):
-        self._render_occurrence(start, local_start_x)
+        self._render_occurrence(start, local_start_x, True)
 
     def _render_spanning_continuation(self, local_start_x, start, stop):
-        self._render_occurrence(start, local_start_x)
+        self._render_occurrence(start, local_start_x, True)

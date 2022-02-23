@@ -4,7 +4,7 @@ import pytest
 
 from brown.utils.parent_point import ParentPoint
 from brown.utils.point import Point
-from brown.utils.units import GraphicUnit, Unit
+from brown.utils.units import GraphicUnit, Mm, Unit
 
 
 class TestParentPoint(unittest.TestCase):
@@ -69,3 +69,10 @@ class TestParentPoint(unittest.TestCase):
     def test__mult__(self):
         p = ParentPoint(Unit(1), Unit(2), None)
         assert p * -1 == ParentPoint(Unit(-1), Unit(-2), None)
+
+    def test_in_unit(self):
+        original = ParentPoint(Unit(1), Unit(2), self.test_parent)
+        converted = original.in_unit(Mm)
+        assert isinstance(converted.x, Mm)
+        assert isinstance(converted.y, Mm)
+        assert original == converted

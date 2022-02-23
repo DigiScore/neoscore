@@ -171,6 +171,13 @@ class Meter(Unit):
     CONVERSION_RATE = Mm.CONVERSION_RATE * 1000
 
 
+# Constants
+
+ZERO = Unit(0)
+
+# Utilities
+
+
 def make_unit_class(name, unit_size):
     return type(
         name,

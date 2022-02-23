@@ -5,11 +5,13 @@
 import os
 import random
 import sys
+import time
 
 from brown.common import *
 
-brown.setup()
+start_time = time.time()
 
+brown.setup()
 
 flow = Flowable((Mm(0), Mm(0)), Mm(35000), Mm(30), Mm(10))
 
@@ -32,9 +34,21 @@ lower_staff_clef = Clef(lower_staff, Mm(0), "alto")
 lowest_staff_clef = Clef(lowest_staff, Mm(0), "bass")
 later_lowest_staff_clef = Clef(lowest_staff, Mm(100), "treble")
 
-upper_staff_key_signature = KeySignature(Mm(0), staff, "af_major")
-lower_staff_key_signature = KeySignature(Mm(0), lower_staff, "cs_major")
-lowest_staff_key_signature = KeySignature(Mm(0), lowest_staff, "d_minor")
+# Once flowable gutters are implemented, this explicit offsets for
+# key/time sigs will not be needed
+upper_staff_key_signature = KeySignature(
+    upper_staff_clef.bounding_rect.width + staff.unit(0.5), staff, "af_major"
+)
+lower_staff_key_signature = KeySignature(
+    lower_staff_clef.bounding_rect.width + lower_staff.unit(0.5),
+    lower_staff,
+    "cs_major",
+)
+lowest_staff_key_signature = KeySignature(
+    lowest_staff_clef.bounding_rect.width + lowest_staff.unit(0.5),
+    lowest_staff,
+    "d_minor",
+)
 
 octave_line = OctaveLine((Mm(20), staff.unit(-2)), staff, Mm(1000), indication="8vb")
 
@@ -110,6 +124,7 @@ pedal_line = PedalLine(
 if "--image" in sys.argv:
     image_path = os.path.join(os.path.dirname(__file__), "output", "vtest_image.png")
     brown.render_image((Mm(0), Mm(0), Inch(2), Inch(2)), image_path, autocrop=True)
+    print(f"Non-setup code took {time.time() - start_time}")
 elif "--pdf" in sys.argv:
     # PDF export is currently broken
     pdf_path = os.path.join(os.path.dirname(__file__), "output", "vtest_pdf.pdf")
