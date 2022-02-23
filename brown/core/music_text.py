@@ -1,9 +1,25 @@
+from typing import Dict, List, NamedTuple
+
 from brown.core.music_char import MusicChar
+from brown.core.music_font import MusicFont
 from brown.core.staff_object import StaffObject
 from brown.core.text import Text
 from brown.utils.point import Point
 from brown.utils.rect import Rect
 from brown.utils.units import GraphicUnit
+
+
+class _CachedTextGeometryKey(NamedTuple):
+    text: str  # The key is the plain unicode text, not rich MusicChar list
+    font: MusicFont
+    scale: float
+
+
+class _CachedTextGeometry(NamedTuple):
+    bounding_rect: Rect
+
+
+_GEOMETRY_CACHE: Dict[_CachedTextGeometryKey, _CachedTextGeometry] = {}
 
 
 class MusicText(Text):
@@ -53,7 +69,13 @@ class MusicText(Text):
     @property
     def bounding_rect(self):
         """Rect: The bounding rect for this text when rendered."""
-        return self._char_list_bounding_rect(self.music_chars)
+        key = _CachedTextGeometryKey(self.text, self.font, self.scale)
+        cached_result = _GEOMETRY_CACHE.get(key)
+        if cached_result:
+            return cached_result.bounding_rect
+        bounding_rect = self._char_list_bounding_rect(self.music_chars)
+        _GEOMETRY_CACHE[key] = _CachedTextGeometry(bounding_rect)
+        return bounding_rect
 
     ######## PRIVATE METHODS ########
 
