@@ -57,3 +57,19 @@ class TestFont(unittest.TestCase):
         assert modifying_italic.size == GraphicUnit(14)
         assert modifying_italic.weight == 2
         assert modifying_italic.italic is False
+
+    def test__eq__(self):
+        font = Font("Bravura", 12, 1, False)
+        assert font == Font("Bravura", 12, 1, False)
+        assert font != Font("Cormorant Garamond", 12, 1, False)
+        assert font != Font("Bravura", 13, 1, False)
+        assert font != Font("Bravura", 12, 2, False)
+        assert font != Font("Bravura", 12, 1, True)
+
+    def test__hash__(self):
+        font = Font("Bravura", 12, 1, False)
+        assert hash(font) == hash(Font("Bravura", 12, 1, False))
+        assert hash(font) != hash(Font("Cormorant Garamond", 12, 1, False))
+        assert hash(font) != hash(Font("Bravura", 13, 1, False))
+        assert hash(font) != hash(Font("Bravura", 12, 2, False))
+        assert hash(font) != hash(Font("Bravura", 12, 1, True))

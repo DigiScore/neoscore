@@ -1,6 +1,9 @@
+from __future__ import annotations
+
 from typing import Optional, Union
 
 from brown.interface.font_interface import FontInterface
+from brown.utils.rect import Rect
 from brown.utils.units import GraphicUnit, Unit
 
 
@@ -38,26 +41,24 @@ class Font:
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def family_name(self):
+    def family_name(self) -> str:
         return self._family_name
 
     @property
-    def size(self):
+    def size(self) -> Unit:
         return self._size
 
     @property
-    def weight(self):
+    def weight(self) -> int:
         return self._weight
 
     @property
-    def italic(self):
+    def italic(self) -> bool:
         return self._italic
 
-    ######## PUBLIC PROPERTIES ########
-
     @property
-    def ascent(self):
-        """GraphicUnit: The ascent of the font.
+    def ascent(self) -> Unit:
+        """The ascent of the font.
 
         The ascent is the vertical distance between the font baseline and
         the highest any font characters reach.
@@ -65,8 +66,8 @@ class Font:
         return self._interface.ascent
 
     @property
-    def descent(self):
-        """GraphicUnit: The descent of the font.
+    def descent(self) -> Unit:
+        """The descent of the font.
 
         The ascent is the vertical distance between the font baseline and
         the lowest any font characters reach.
@@ -74,13 +75,33 @@ class Font:
         return self._interface.descent
 
     @property
-    def em_size(self):
-        """GraphicUnit: The em size for the font."""
+    def em_size(self) -> Unit:
+        """The em size for the font."""
         return self._interface.em_size
+
+    ######## SPECIAL METHODS ########
+
+    def __eq__(self, other):
+        return (
+            isinstance(other, Font)
+            and self.family_name == other.family_name
+            and self.size == other.size
+            and self.weight == other.weight
+            and self.italic == other.italic
+        )
+
+    def __hash__(self):
+        return hash((self.family_name, self.size, self.weight, self.italic))
 
     ######## PUBLIC METHODS ########
 
-    def modified(self, family_name=None, size=None, weight=None, italic=None):
+    def modified(
+        self,
+        family_name: Optional[str] = None,
+        size: Optional[Union[Unit, float]] = None,
+        weight: Optional[int] = None,
+        italic: Optional[bool] = None,
+    ) -> Font:
         return Font(
             family_name if family_name is not None else self.family_name,
             size if size is not None else self.size,
@@ -88,7 +109,7 @@ class Font:
             italic if italic is not None else self.italic,
         )
 
-    def bounding_rect_of(self, string):
+    def bounding_rect_of(self, string: str) -> Rect:
         """Approximate the bounding rect of a string in this font.
 
         Args:

@@ -59,6 +59,21 @@ class MusicFont(Font):
         """dict: The SMuFL engraving defaults information for this font"""
         return self._engraving_defaults
 
+    ######## SPECIAL METHODS ########
+
+    def __eq__(self, other):
+        return (
+            isinstance(other, MusicFont)
+            # Compare only based on name and concrete point size,
+            # allowing fonts with different but equivalent `unit`
+            # types to be equal.
+            and self.family_name == other.family_name
+            and self.size == other.size
+        )
+
+    def __hash__(self):
+        return hash((self.family_name, self.size))
+
     ######## PUBLIC METHODS ########
 
     def modified(

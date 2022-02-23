@@ -8,6 +8,10 @@ from brown.utils.exceptions import MusicFontMetadataNotFoundError
 from brown.utils.units import Mm, Unit
 
 
+class EquivalentUnit(Unit):
+    pass
+
+
 class TestMusicFont(unittest.TestCase):
     def setUp(self):
         brown.setup()
@@ -23,3 +27,19 @@ class TestMusicFont(unittest.TestCase):
         modifying_unit = font.modified(unit=Mm)
         assert modifying_unit.family_name == "Bravura"
         assert modifying_unit.unit == Mm
+
+    def test__eq__(self):
+        font = MusicFont("Bravura", Unit)
+        assert font == MusicFont("Bravura", Unit)
+        assert font == MusicFont("Bravura", EquivalentUnit)
+        # (Can't test case of different family name since only Bravura exists)
+        # assert font != MusicFont("Foo", Unit)
+        assert font != MusicFont("Bravura", Mm)
+
+    def test__hash__(self):
+        font = MusicFont("Bravura", Unit)
+        assert hash(font) == hash(MusicFont("Bravura", Unit))
+        assert hash(font) == hash(MusicFont("Bravura", EquivalentUnit))
+        # (Can't test case of different family name since only Bravura exists)
+        # assert hash(font) != MusicFont("Foo", Unit)
+        assert hash(font) != hash(MusicFont("Bravura", Mm))
