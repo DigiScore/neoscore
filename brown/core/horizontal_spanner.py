@@ -1,7 +1,9 @@
+from typing import Optional
+
 from brown.core.graphic_object import GraphicObject
 from brown.core.spanner import Spanner
 from brown.utils.point import Point
-from brown.utils.units import GraphicUnit
+from brown.utils.units import ZERO, Unit
 
 
 class HorizontalSpanner(Spanner):
@@ -26,7 +28,7 @@ class HorizontalSpanner(Spanner):
     be modified.
     """
 
-    def __init__(self, end_x, end_parent=None):
+    def __init__(self, end_x: Unit, end_parent: Optional[GraphicObject] = None):
         """
         Args:
             end_x (Unit): The x-axis position of the endpoint
@@ -40,29 +42,29 @@ class HorizontalSpanner(Spanner):
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def end_x(self):
+    def end_x(self) -> Unit:
         """Unit: The x position of the endpoint"""
         return self._end_x
 
     @end_x.setter
-    def end_x(self, value):
+    def end_x(self, value: Unit):
         self._end_pos.x = value
 
     @property
-    def end_y(self):
-        """Unit: The y position of the endpoint.
+    def end_y(self) -> Unit:
+        """The y position of the endpoint.
 
         Unlike that in `Spanner`, this property is read-only in order
         to maintain its horizontal guarantees.
         """
         if self.end_parent == self:
-            return GraphicUnit(0)
+            return ZERO
         elif self.flowable is not None:
             return self.flowable.map_between_locally(self.end_parent, self).y
         else:
             return GraphicObject.map_between_items(self.end_parent, self).y
 
     @property
-    def end_pos(self):
+    def end_pos(self) -> Point:
         """Point: The position of the endpoint"""
         return Point(self.end_x, self.end_y)

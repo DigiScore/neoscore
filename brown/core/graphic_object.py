@@ -8,7 +8,7 @@ from brown.core.brush import Brush
 from brown.core.page import Page
 from brown.core.pen import Pen
 from brown.utils.point import ORIGIN, Point
-from brown.utils.units import Mm, Unit
+from brown.utils.units import ZERO, Mm, Unit
 
 
 class GraphicObject(ABC):
@@ -57,7 +57,7 @@ class GraphicObject(ABC):
             parent (GraphicObject): The parent object or None
         """
         self.pos = pos
-        self._length = length if length else Unit(0)
+        self._length = length if length else ZERO
         self.pen = pen
         self.brush = brush
         self._children = []
@@ -273,7 +273,7 @@ class GraphicObject(ABC):
     #     """Specialized version of `map_between_items` which only finds the x delta"""
     #     # Handle easy cases
     #     if source == dest:
-    #         return Unit(0)
+    #         return ZERO
     #     if source.parent == dest.parent:
     #         return dest.x - source.x
     #     if dest.parent == source:
@@ -419,7 +419,7 @@ class GraphicObject(ABC):
         pos_in_flowable = self.flowable.pos_in_flowable_of(self)
 
         remaining_x = self.length + self.flowable.dist_to_line_end(pos_in_flowable.x)
-        if remaining_x < Unit(0):
+        if remaining_x < ZERO:
             self._render_complete(
                 brown.document.canvas_pos_of(self),
                 self.flowable.dist_to_line_start(pos_in_flowable.x),

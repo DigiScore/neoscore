@@ -1,9 +1,10 @@
 from brown.core.multi_staff_object import MultiStaffObject
 from brown.core.music_font import MusicFontGlyphNotFoundError
 from brown.core.music_text import MusicText
+from brown.core.staff import Staff
 from brown.core.staff_object import StaffObject
 from brown.utils.point import Point
-from brown.utils.units import GraphicUnit
+from brown.utils.units import ZERO, Unit
 
 
 class Brace(MultiStaffObject, StaffObject, MusicText):
@@ -22,7 +23,7 @@ class Brace(MultiStaffObject, StaffObject, MusicText):
     until the second line.
     """
 
-    def __init__(self, pos_x, staves):
+    def __init__(self, pos_x: Unit, staves: set[Staff]):
         """
         Args:
             pos_x (Unit): Where this brace goes into effect
@@ -74,7 +75,7 @@ class Brace(MultiStaffObject, StaffObject, MusicText):
     ######## PRIVATE METHODS ########
 
     def _render_before_break(self, local_start_x, start, stop, dist_to_line_start):
-        if start.x == GraphicUnit(0):
+        if start.x == ZERO:
             self._render_complete(Point(start.x - self.bounding_rect.width, start.y))
 
     def _render_after_break(self, local_start_x, start, stop):

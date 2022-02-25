@@ -8,8 +8,8 @@ from brown.core.path_element_type import PathElementType
 from brown.core.types import Parent
 from brown.interface.path_interface import PathInterface
 from brown.utils.exceptions import IllegalNumberOfControlPointsError
-from brown.utils.point import Point
-from brown.utils.units import GraphicUnit, Unit
+from brown.utils.point import ORIGIN, Point
+from brown.utils.units import ZERO, Unit
 
 
 class Path(GraphicObject):
@@ -34,8 +34,8 @@ class Path(GraphicObject):
             brush (Brush): The brush to draw outlines with.
             parent (GraphicObject): The parent object or None
         """
-        super().__init__(pos, GraphicUnit(0), pen, brush, parent)
-        self._current_draw_pos = Point(GraphicUnit(0), GraphicUnit(0))
+        super().__init__(pos, ZERO, pen, brush, parent)
+        self._current_draw_pos = ORIGIN
         self.elements = []
 
     ######## CLASSMETHODS ########
@@ -72,8 +72,8 @@ class Path(GraphicObject):
         wrap in `Flowable`s.
         """
         # Find the positions of every path element relative to the path
-        min_x = GraphicUnit(float("inf"))
-        max_x = GraphicUnit(-float("inf"))
+        min_x = Unit(float("inf"))
+        max_x = Unit(-float("inf"))
         in_flowable = self.flowable is not None
         self_flowable_pos = (
             self.flowable.pos_in_flowable_of(self) if in_flowable else None
@@ -111,7 +111,7 @@ class Path(GraphicObject):
             else:
                 return GraphicObject.map_between_items(self, self.elements[-1])
         else:
-            return Point(GraphicUnit(0), GraphicUnit(0))
+            return ORIGIN
 
     ######## Public Methods ########
 
@@ -134,7 +134,7 @@ class Path(GraphicObject):
         Returns: None
         """
         if len(self.elements) == 0:
-            self.move_to(GraphicUnit(0), GraphicUnit(0))
+            self.move_to(ZERO, ZERO)
         self.elements.append(
             PathElement(
                 Point(x, y), PathElementType.line_to, parent if parent else self
@@ -165,16 +165,16 @@ class Path(GraphicObject):
     def close_subpath(self):
         """Close the current sub-path and start a new one at the local origin.
 
-        This is equivalent to `move_to((Unit(0), Unit(0)))`
+        This is equivalent to `move_to(Unit(0), Unit(0))`
 
         Returns: None
 
         Note:
             This convenience method does not support point parentage.
             If you need to anchor the new point, use an explicit
-            `move_to((Unit(0), Unit(0)), parent)` instead.
+            `move_to(Unit(0), Unit(0), parent)` instead.
         """
-        self.move_to(GraphicUnit(0), GraphicUnit(0))
+        self.move_to(ZERO, ZERO)
 
     def cubic_to(
         self,
@@ -207,7 +207,7 @@ class Path(GraphicObject):
         Returns: None
         """
         if len(self.elements) == 0:
-            self.move_to(GraphicUnit(0), GraphicUnit(0))
+            self.move_to(ZERO, ZERO)
         self.elements.append(
             PathElement(
                 Point(control_1_x, control_1_y),
@@ -288,7 +288,7 @@ class Path(GraphicObject):
         self._render_slice(pos, None, None)
 
     def _render_before_break(self, local_start_x, start, stop, dist_to_line_start):
-        self._render_slice(start, GraphicUnit(0), stop.x - start.x)
+        self._render_slice(start, ZERO, stop.x - start.x)
 
     def _render_after_break(self, local_start_x, start, stop):
         self._render_slice(start, local_start_x, stop.x - start.x)

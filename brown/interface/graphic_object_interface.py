@@ -35,6 +35,9 @@ class GraphicObjectInterface:
         """
         return self._pos
 
+    # TODO require pos to be set to point - generally should not be
+    # using convenience signatures on internal classes
+
     @pos.setter
     def pos(self, value):
         if not isinstance(value, Point):

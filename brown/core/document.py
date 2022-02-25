@@ -3,9 +3,9 @@ from typing import Optional
 from brown import constants
 from brown.core.page_supplier import PageSupplier
 from brown.core.paper import Paper, PaperTemplate
-from brown.utils.point import Point
+from brown.utils.point import ORIGIN, Point
 from brown.utils.rect import Rect
-from brown.utils.units import GraphicUnit, Unit
+from brown.utils.units import ZERO, Unit
 
 
 class Document:
@@ -166,9 +166,7 @@ class Document:
                 The page number of this Point will be 0, as this
                 is considered relative to the document's origin.
         """
-        return Point(
-            (self.paper.width + self._page_display_gap) * page_number, GraphicUnit(0)
-        )
+        return Point((self.paper.width + self._page_display_gap) * page_number, ZERO)
 
     # TODO type annotating this requires a circular import, which
     # suggests this functionality belongs elsewhere.
@@ -181,7 +179,7 @@ class Document:
 
         Returns: Point: The object's paged position relative to the document.
         """
-        pos = Point(GraphicUnit(0), GraphicUnit(0))
+        pos = ORIGIN
         current = grob
         while current != self:
             pos += current.pos

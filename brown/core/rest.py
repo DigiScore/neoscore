@@ -2,7 +2,7 @@ from brown.core.music_text import MusicText
 from brown.core.staff_object import StaffObject
 from brown.models.beat import Beat
 from brown.utils.point import Point
-from brown.utils.units import Unit
+from brown.utils.units import ZERO, Unit
 
 
 class Rest(MusicText, StaffObject):
@@ -42,7 +42,7 @@ class Rest(MusicText, StaffObject):
         """
         # TODO I was surprised while using this that `pos` is either
         # 1D or 2D. I think it should always be 2D.
-        pos = pos if isinstance(pos, Point) else Point(pos, Unit(0))
+        pos = pos if isinstance(pos, Point) else Point(pos, ZERO)
         self._duration = duration if isinstance(duration, Beat) else Beat(*duration)
         MusicText.__init__(
             self, pos, [self._glyphnames[self.duration.base_division]], parent

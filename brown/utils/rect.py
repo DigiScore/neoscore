@@ -16,6 +16,12 @@ class Rect:
     rightward and downward.
     """
 
+    # TODO Rect should probably be Unit-only, so it aligns with Point
+    # semantics and doesn't cause type collisions in places where Rect
+    # uses Unit. I think the float variant is only used in a few
+    # low-level Qt contexts, where it could probably be replaced with
+    # QRectF anyway.
+
     x: Union[Unit, float]
     y: Union[Unit, float]
     width: Union[Unit, float]

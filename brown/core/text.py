@@ -2,7 +2,7 @@ from brown.core import brown
 from brown.core.graphic_object import GraphicObject
 from brown.interface.text_interface import TextInterface
 from brown.utils.point import Point
-from brown.utils.units import GraphicUnit
+from brown.utils.units import ZERO
 
 
 class Text(GraphicObject):
@@ -94,7 +94,7 @@ class Text(GraphicObject):
         self._render_slice(pos, None, None)
 
     def _render_before_break(self, local_start_x, start, stop, dist_to_line_start):
-        self._render_slice(start, GraphicUnit(0), stop.x - start.x)
+        self._render_slice(start, ZERO, stop.x - start.x)
 
     def _render_after_break(self, local_start_x, start, stop):
         self._render_slice(start, local_start_x, stop.x - start.x)

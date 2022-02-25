@@ -1,12 +1,13 @@
-from typing import Dict, List, NamedTuple
+from typing import Any, Dict, List, NamedTuple, Optional
 
 from brown.core.music_char import MusicChar
 from brown.core.music_font import MusicFont
 from brown.core.staff_object import StaffObject
 from brown.core.text import Text
-from brown.utils.point import Point
+from brown.core.types import Parent
+from brown.utils.point import Point, PointDef
 from brown.utils.rect import Rect
-from brown.utils.units import GraphicUnit
+from brown.utils.units import ZERO, Unit
 
 
 class _CachedTextGeometryKey(NamedTuple):
@@ -27,27 +28,35 @@ class MusicText(Text):
     A glyph with a MusicFont and convenient access to relevant SMuFL metadata.
     """
 
-    def __init__(self, pos, text, parent, font=None, scale=1):
+    # TODO find a way to type this text arg and/or simplify it
+    def __init__(
+        self,
+        pos: PointDef,
+        text: Any,
+        parent: Parent,
+        font: Optional[MusicFont] = None,
+        scale: float = 1,
+    ):
         """
         Args:
-            pos (Point or init tuple): The position of the text.
+            pos: The position of the text.
             text (str, tuple, MusicChar, or list of these):
                 The text to be used, represented as a either a `str`
                 (glyph name), `tuple` (glyph name, alternate number),
                 `MusicChar`, or a list of these.
-            parent (GraphicObject): The parent of the glyph. If no `font`
+            parent: The parent of the glyph. If no `font`
                 is given, this must either be a `Staff` or an object which has
                 a `Staff` as an ancestor.
-            font (MusicFont): The music font to be used. If not specified,
+            font: The music font to be used. If not specified,
                 `parent` must be or have a `Staff` ancestor.
-            scale (float): A hard scaling factor to be applied
+            scale: A hard scaling factor to be applied
                 in addition to the size of the music font.
         """
         if font is None:
             ancestor_staff = StaffObject.find_staff(parent)
             if ancestor_staff is None:
                 raise ValueError(
-                    "MusicText must be given either a " "MusicFont or an ancestor staff"
+                    "MusicText must be given either a MusicFont or an ancestor staff"
                 )
             font = ancestor_staff.music_font
         self.music_chars = MusicText._resolve_music_chars(text, font)
@@ -57,7 +66,7 @@ class MusicText(Text):
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def length(self):
+    def length(self) -> Unit:
         """Unit: The breakable width of the object.
 
         This is used to determine how and where rendering cuts should be made.
@@ -67,7 +76,7 @@ class MusicText(Text):
     ######## PRIVATE PROPERTIES ########
 
     @property
-    def bounding_rect(self):
+    def bounding_rect(self) -> Rect:
         """Rect: The bounding rect for this text when rendered."""
         key = _CachedTextGeometryKey(self.text, self.font, self.scale)
         cached_result = _GEOMETRY_CACHE.get(key)
@@ -79,7 +88,7 @@ class MusicText(Text):
 
     ######## PRIVATE METHODS ########
 
-    def _char_list_bounding_rect(self, music_chars):
+    def _char_list_bounding_rect(self, music_chars: List[MusicChar]) -> Rect:
         """Find the bounding rect of a given list of music chars.
 
         Takes a list of MusicChars and determined the bounding rect
@@ -102,8 +111,8 @@ class MusicText(Text):
             )
         x = music_chars[0].glyph_info["glyphBBox"]["bBoxSW"][0]
         y = music_chars[0].glyph_info["glyphBBox"]["bBoxNE"][1]
-        w = GraphicUnit(0)
-        h = GraphicUnit(0)
+        w = ZERO
+        h = ZERO
         for char in music_chars:
             char_x = char.glyph_info["glyphBBox"]["bBoxSW"][0]
             char_y = char.glyph_info["glyphBBox"]["bBoxNE"][1]
@@ -117,7 +126,7 @@ class MusicText(Text):
         )
 
     @staticmethod
-    def _resolve_music_chars(text, font):
+    def _resolve_music_chars(text: Any, font: MusicFont) -> List[MusicChar]:
         """
         Args:
             text (str, tuple, MusicChar, or list of these):

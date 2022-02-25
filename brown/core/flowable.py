@@ -4,8 +4,8 @@ from brown.core.break_opportunity import BreakOpportunity
 from brown.core.graphic_object import GraphicObject
 from brown.core.invisible_object import InvisibleObject
 from brown.utils.exceptions import OutOfBoundsError
-from brown.utils.point import Point
-from brown.utils.units import Mm, Unit
+from brown.utils.point import ORIGIN, Point
+from brown.utils.units import ZERO, Mm, Unit
 
 
 class Flowable(InvisibleObject):
@@ -111,7 +111,7 @@ class Flowable(InvisibleObject):
         live_page_height = brown.document.paper.live_height
         # local progress of layout generation; when the entire flowable has
         # been covered, this will be equal to `self.width`
-        x_progress = Mm(0)
+        x_progress = ZERO
         # Current position on the page relative to the top left corner
         # of the live page area
         pos_x = self.pos.x
@@ -129,7 +129,7 @@ class Flowable(InvisibleObject):
                 break
             if pos_y > live_page_height:
                 # Page break - No y offset
-                pos = Point(Mm(0), Mm(0))
+                pos = ORIGIN
                 current_page += 1
                 self.layout_controllers.append(
                     AutoNewLine(
@@ -138,7 +138,7 @@ class Flowable(InvisibleObject):
                 )
             else:
                 # Line break - self.y_padding as y offset
-                pos_x = Mm(0)
+                pos_x = ZERO
                 self.layout_controllers.append(
                     AutoNewLine(
                         Point(pos_x, pos_y),
@@ -247,7 +247,7 @@ class Flowable(InvisibleObject):
         Raises:
             ValueError: If `grob` is not in the flowable.
         """
-        pos = Point(Unit(0), Unit(0))
+        pos = ORIGIN
         current = grob
         try:
             while current != self:
@@ -262,7 +262,7 @@ class Flowable(InvisibleObject):
 
         See `pos_in_flowable_of` for more.
         """
-        pos_x = Unit(0)
+        pos_x = ZERO
         current = grob
         try:
             while current != self:

@@ -2,6 +2,6 @@
 
 set -o xtrace
 mkdir tmp
-python -m cProfile -o tmp/out.prof vtests/vtest.py --image
+python -m cProfile -o tmp/out.prof vtests/goldberg.py --image
 snakeviz tmp/out.prof
 rm -r tmp

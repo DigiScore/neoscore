@@ -7,7 +7,7 @@ from brown.core.octave_line import OctaveLine
 from brown.core.path import Path
 from brown.models.beat import Beat
 from brown.utils.exceptions import NoClefError
-from brown.utils.units import GraphicUnit, Unit, make_unit_class
+from brown.utils.units import ZERO, Unit, make_unit_class
 
 
 class Staff(Path):
@@ -51,7 +51,7 @@ class Staff(Path):
         # Construct the staff path
         for i in range(self.line_count):
             y_offset = self.unit(i)
-            self.move_to(GraphicUnit(0), y_offset)
+            self.move_to(ZERO, y_offset)
             self.line_to(length, y_offset)
 
         # Create first measure with given time signature duration

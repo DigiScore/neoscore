@@ -8,8 +8,8 @@ from brown.core.pen_pattern import PenPattern
 from brown.core.staff_object import StaffObject
 from brown.interface.text_interface import TextInterface
 from brown.models.transposition import Transposition
-from brown.utils.point import Point
-from brown.utils.units import GraphicUnit
+from brown.utils.point import ORIGIN, Point
+from brown.utils.units import ZERO
 
 
 class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
@@ -76,7 +76,7 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
         self.transposition = Transposition(OctaveLine.intervals[indication])
         self.line_text = _OctaveLineText(
             # No offset relative to ObjectGroup
-            pos=Point(GraphicUnit(0), GraphicUnit(0)),
+            pos=ORIGIN,
             parent=self,
             length=self.length,
             indication=indication,
@@ -85,7 +85,7 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
         # Vertically center the path relative to the text
         path_y = self.line_text.bounding_rect.height / -2
         self.line_path = Path(
-            pos=(GraphicUnit(0), path_y),
+            pos=Point(ZERO, path_y),
             pen=Pen(
                 thickness=self.staff.music_font.engraving_defaults[
                     "octaveLineThickness"
@@ -98,7 +98,7 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
         self.line_path.line_to(self.end_pos.x, path_y, self.end_parent)
         pos_relative_to_staff = self.flowable.map_between_locally(self.staff, self)
         # Draw end hook pointing toward the staff
-        hook_direction = 1 if pos_relative_to_staff.y <= GraphicUnit(0) else -1
+        hook_direction = 1 if pos_relative_to_staff.y <= ZERO else -1
         self.line_path.line_to(
             self.end_pos.x,
             (path_y + self.staff.unit(0.75 * hook_direction)),

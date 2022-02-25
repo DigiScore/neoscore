@@ -2,7 +2,7 @@ from brown.core.path import Path
 from brown.core.staff_object import StaffObject
 from brown.utils.parent_point import ParentPoint
 from brown.utils.point import Point
-from brown.utils.units import GraphicUnit
+from brown.utils.units import ZERO
 
 
 class Beam(Path, StaffObject):
@@ -32,5 +32,5 @@ class Beam(Path, StaffObject):
         # Draw beam
         self.line_to(stop.x, stop.y, stop.parent)
         self.line_to(stop.x, stop.y + self.beam_thickness, stop.parent)
-        self.line_to(GraphicUnit(0), self.beam_thickness, self)
+        self.line_to(ZERO, self.beam_thickness, self)
         self.close_subpath()

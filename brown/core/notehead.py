@@ -2,7 +2,7 @@ from brown.core.music_text import MusicText
 from brown.core.staff_object import StaffObject
 from brown.models.beat import Beat
 from brown.models.pitch import Pitch
-from brown.utils.units import Mm
+from brown.utils.units import ZERO
 
 
 class Notehead(MusicText, StaffObject):
@@ -44,7 +44,7 @@ class Notehead(MusicText, StaffObject):
         # Use a temporary y-axis position before calculating it for real
         MusicText.__init__(
             self,
-            (pos_x, Mm(0)),
+            (pos_x, ZERO),
             [self._glyphnames[self.duration.base_division]],
             parent,
         )

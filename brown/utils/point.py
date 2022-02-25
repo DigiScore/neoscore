@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import NamedTuple, Type
+from typing import NamedTuple, Type, Union
 
 from brown.utils.units import ZERO, GraphicUnit, Unit
 
@@ -55,3 +55,5 @@ class Point(NamedTuple):
 
 
 ORIGIN = Point(ZERO, ZERO)
+
+PointDef = Union[Point, tuple[Unit, Unit]]

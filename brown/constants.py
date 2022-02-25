@@ -5,7 +5,7 @@ import os
 from brown.core.brush_pattern import BrushPattern
 from brown.core.pen_pattern import PenPattern
 from brown.utils.color import Color
-from brown.utils.units import GraphicUnit, Inch, Mm
+from brown.utils.units import ZERO, Inch, Mm
 
 
 def _resolve_bool_env_variable(var):
@@ -19,7 +19,7 @@ RESOURCES_DIR = os.path.join(BROWN_ROOT_DIR, "resources")
 
 # Default pen properties
 DEFAULT_PEN_COLOR = Color(0, 0, 0)
-DEFAULT_PEN_THICKNESS = GraphicUnit(0)  # GraphicUnits
+DEFAULT_PEN_THICKNESS = ZERO
 DEFAULT_PEN_PATTERN = PenPattern.SOLID
 
 # Default brush properties

@@ -6,7 +6,7 @@ from brown.core.spanner import Spanner
 from brown.core.staff_object import StaffObject
 from brown.utils.parent_point import ParentPoint
 from brown.utils.point import Point
-from brown.utils.units import Unit
+from brown.utils.units import ZERO, Unit
 
 
 class Hairpin(Path, StaffObject, Spanner):
@@ -84,7 +84,7 @@ class Hairpin(Path, StaffObject, Spanner):
             + Point(end_center.x, end_center.y)
             - Point(joint.x, joint.y)
         )
-        if relative_stop.y == Unit(0):
+        if relative_stop.y == ZERO:
             return (
                 (
                     ParentPoint(
@@ -98,7 +98,7 @@ class Hairpin(Path, StaffObject, Spanner):
                     )
                 ),
             )
-        elif relative_stop.x == Unit(0):
+        elif relative_stop.x == ZERO:
             return (
                 (
                     ParentPoint(

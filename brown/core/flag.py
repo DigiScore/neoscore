@@ -1,8 +1,8 @@
 from brown.core.music_text import MusicText
 from brown.core.staff_object import StaffObject
 from brown.utils.exceptions import NoFlagNeededError
-from brown.utils.point import Point
-from brown.utils.units import Unit
+from brown.utils.point import ORIGIN, Point
+from brown.utils.units import ZERO, Unit
 
 
 class Flag(MusicText, StaffObject):
@@ -48,7 +48,7 @@ class Flag(MusicText, StaffObject):
             glyph_name = self._down_glyphnames[self.duration.base_division]
         else:
             glyph_name = self._up_glyphnames[self.duration.base_division]
-        MusicText.__init__(self, Point(Unit(0), Unit(0)), [glyph_name], parent)
+        MusicText.__init__(self, ORIGIN, [glyph_name], parent)
         StaffObject.__init__(self, parent)
 
     ######## PUBLIC PROPERTIES ########

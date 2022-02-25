@@ -5,8 +5,8 @@ from brown.core.path_element_type import PathElementType
 from brown.interface.graphic_object_interface import GraphicObjectInterface
 from brown.interface.path_element_interface import PathElementInterface
 from brown.interface.qt.q_clipping_path import QClippingPath
-from brown.utils.point import Point
-from brown.utils.units import GraphicUnit, Unit
+from brown.utils.point import ORIGIN, Point
+from brown.utils.units import Unit
 
 """
 Qt paths have a few quirks which are good to know about if you're
@@ -54,7 +54,7 @@ class PathInterface(GraphicObjectInterface):
     def __init__(self, pos, pen, brush, clip_start_x=None, clip_width=None):
         """
         Args:
-            pos (Point[GraphicUnit] or tuple): The position of the path root
+            pos (Point or tuple): The position of the path root
                 relative to the document.
             pen (PenInterface): The pen to draw outlines with.
             brush (BrushInterface): The brush to draw outlines with.
@@ -88,7 +88,7 @@ class PathInterface(GraphicObjectInterface):
         if self.element_count:
             return self.element_at(-1).pos
         else:
-            return Point(Unit(0), Unit(0))
+            return ORIGIN
 
     @property
     def element_count(self):

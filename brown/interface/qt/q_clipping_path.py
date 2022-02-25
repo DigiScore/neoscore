@@ -88,7 +88,7 @@ class QClippingPath(QGraphicsPathItem):
         bounding_rect: QRectF,
         clip_start_x: Optional[Unit],
         clip_width: Optional[Unit],
-        extra_padding: float,
+        padding: float,
     ) -> QRectF:
         """Create a QRectF giving the painting area for the object.
 
@@ -98,8 +98,8 @@ class QClippingPath(QGraphicsPathItem):
                 clipping region. Use `None` to render from the start.
             clip_width: The width of the clipping region.
                 Use `None` to render to the end
-            extra_padding: Extra area padding to be added to all
-                sides of the clipping area. This might be useful, for instance,
+            padding: Extra area padding to be added to all sides of the
+                clipping area. This might be useful, for instance,
                 for making sure thick pen strokes render completely.
         """
         clip_start_x = (
@@ -110,7 +110,6 @@ class QClippingPath(QGraphicsPathItem):
             if clip_width is None
             else clip_width.base_value
         )
-        padding = extra_padding
         return QtCore.QRectF(
             clip_start_x - padding,
             bounding_rect.y() - padding,
