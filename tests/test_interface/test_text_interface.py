@@ -7,6 +7,7 @@ from brown.interface.brush_interface import BrushInterface
 from brown.interface.font_interface import FontInterface
 from brown.interface.text_interface import TextInterface
 from brown.utils.color import Color
+from brown.utils.point import Point
 from brown.utils.units import Unit
 
 
@@ -18,11 +19,11 @@ class TestTextInterface(unittest.TestCase):
     def test_path_caching(self):
         test_font_1 = FontInterface("Bravura", Unit(12), 1, False)
         test_object_1 = TextInterface(
-            (Unit(5), Unit(6)), "testing", test_font_1, self.brush
+            Point(Unit(5), Unit(6)), "testing", test_font_1, self.brush
         )
         test_font_2 = FontInterface("Bravura", Unit(24), 1, False)
         test_object_2 = TextInterface(
-            (Unit(5), Unit(6)), "testing", test_font_2, self.brush
+            Point(Unit(5), Unit(6)), "testing", test_font_2, self.brush
         )
         # Since the fonts and texts matched, the underlying paths
         # should be equal by reference.

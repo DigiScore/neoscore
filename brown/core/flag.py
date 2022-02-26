@@ -1,5 +1,9 @@
+from typing import Union
+
 from brown.core.music_text import MusicText
+from brown.core.staff import Staff
 from brown.core.staff_object import StaffObject
+from brown.models.beat import Beat
 from brown.utils.exceptions import NoFlagNeededError
 from brown.utils.point import ORIGIN, Point
 from brown.utils.units import ZERO, Unit
@@ -34,7 +38,9 @@ class Flag(MusicText, StaffObject):
         8: "flag8thDown",
     }
 
-    def __init__(self, duration, direction, parent):
+    def __init__(
+        self, duration: Beat, direction: int, parent: Union[Staff, StaffObject]
+    ):
         """
         Args:
             duration (Beat):
