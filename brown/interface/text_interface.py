@@ -1,4 +1,4 @@
-from typing import Dict, NamedTuple, Optional
+from typing import NamedTuple, Optional
 
 from PyQt5.QtGui import QFont, QPainterPath, QPen
 
@@ -23,7 +23,7 @@ class _CachedTextPath(NamedTuple):
     generation_font_size: float
 
 
-_PATH_CACHE: Dict[_CachedTextKey, _CachedTextPath] = {}
+_PATH_CACHE: dict[_CachedTextKey, _CachedTextPath] = {}
 
 """TODO We can actually optimize this even further. We can modify
 q_clipping_path so it explicitly stores paint results in the global

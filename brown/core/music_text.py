@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, NamedTuple, Optional
+from typing import Any, NamedTuple, Optional
 
 from brown.core.music_char import MusicChar
 from brown.core.music_font import MusicFont
@@ -20,7 +20,7 @@ class _CachedTextGeometry(NamedTuple):
     bounding_rect: Rect
 
 
-_GEOMETRY_CACHE: Dict[_CachedTextGeometryKey, _CachedTextGeometry] = {}
+_GEOMETRY_CACHE: dict[_CachedTextGeometryKey, _CachedTextGeometry] = {}
 
 
 class MusicText(Text):
@@ -67,7 +67,7 @@ class MusicText(Text):
 
     @property
     def length(self) -> Unit:
-        """Unit: The breakable width of the object.
+        """The breakable width of the object.
 
         This is used to determine how and where rendering cuts should be made.
         """
@@ -77,7 +77,7 @@ class MusicText(Text):
 
     @property
     def bounding_rect(self) -> Rect:
-        """Rect: The bounding rect for this text when rendered."""
+        """The bounding rect for this text when rendered."""
         key = _CachedTextGeometryKey(self.text, self.font, self.scale)
         cached_result = _GEOMETRY_CACHE.get(key)
         if cached_result:
@@ -88,7 +88,7 @@ class MusicText(Text):
 
     ######## PRIVATE METHODS ########
 
-    def _char_list_bounding_rect(self, music_chars: List[MusicChar]) -> Rect:
+    def _char_list_bounding_rect(self, music_chars: list[MusicChar]) -> Rect:
         """Find the bounding rect of a given list of music chars.
 
         Takes a list of MusicChars and determined the bounding rect
@@ -97,10 +97,10 @@ class MusicText(Text):
         The fonts of every music character should the the same as self.font.
 
         Args:
-            music_chars (list[MusicChar]): The string to represent
+            music_chars: The string to represent
 
         Returns:
-            Rect: The bounding rect of the specified text if drawn.
+            The bounding rect of the specified text if drawn.
 
         Raises:
             ValueError: if `music_chars` is empty.
@@ -126,14 +126,14 @@ class MusicText(Text):
         )
 
     @staticmethod
-    def _resolve_music_chars(text: Any, font: MusicFont) -> List[MusicChar]:
+    def _resolve_music_chars(text: Any, font: MusicFont) -> list[MusicChar]:
         """
         Args:
             text (str, tuple, MusicChar, or list of these):
                 The text to be used, represented as a either a `str`
                 (glyph name), `tuple` (glyph name, alternate number),
                 `MusicChar`, or a list of these.
-            font (MusicFont): The font to be applied to the text
+            font: The font to be applied to the text
         """
         if isinstance(text, str):
             return [MusicChar(font, text)]

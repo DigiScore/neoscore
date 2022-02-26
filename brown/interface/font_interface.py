@@ -1,15 +1,20 @@
+from typing import Optional
+
 from PyQt5 import QtGui
 
 from brown.core import brown
 from brown.interface.qt.converters import qt_rect_to_rect
-from brown.utils.units import GraphicUnit
+from brown.utils.rect import Rect
+from brown.utils.units import GraphicUnit, Unit
 
 
 class FontInterface:
 
     """An interface for fonts, exposing many font metadata properties."""
 
-    def __init__(self, family_name, size, weight, italic):
+    def __init__(
+        self, family_name: str, size: Unit, weight: Optional[int], italic: bool
+    ):
         """
         Args:
             family_name (str): The name of the font family
@@ -37,8 +42,8 @@ class FontInterface:
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def ascent(self):
-        """GraphicUnit: The ascent of the font.
+    def ascent(self) -> Unit:
+        """The ascent of the font.
 
         The ascent is the vertical distance between the font baseline and
         the highest any font characters reach.
@@ -46,8 +51,8 @@ class FontInterface:
         return GraphicUnit(self._qt_font_metrics_object.ascent())
 
     @property
-    def descent(self):
-        """GraphicUnit: The descent of the font.
+    def descent(self) -> Unit:
+        """The descent of the font.
 
         The ascent is the vertical distance between the font baseline and
         the lowest any font characters reach.
@@ -55,8 +60,8 @@ class FontInterface:
         return GraphicUnit(self._qt_font_metrics_object.descent())
 
     @property
-    def em_size(self):
-        """GraphicUnit: The em size for the font.
+    def em_size(self) -> Unit:
+        """The em size for the font.
 
         NOTE: This is actually being calculated from the x-height of the font.
         Depending on the Qt specifics, this may or may not work as expected.
@@ -65,13 +70,10 @@ class FontInterface:
 
     ######## PUBLIC METHODS ########
 
-    def bounding_rect_of(self, text):
+    def bounding_rect_of(self, text: str) -> Rect:
         """Calculate the tight bounding rectangle around a string in this font.
 
         Args:
-            text (str): The text to calculate around.
-
-        Returns:
-            Rect[GraphicUnit]
+            text: The text to calculate around.
         """
         return qt_rect_to_rect(self._qt_font_metrics_object.tightBoundingRect(text))

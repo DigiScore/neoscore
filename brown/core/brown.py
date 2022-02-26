@@ -1,10 +1,12 @@
 import json
 import os
+from typing import Optional
 from warnings import warn
 
 from brown import constants
 from brown.core.document import Document
 from brown.core.font import Font
+from brown.core.paper import Paper
 from brown.interface import images
 from brown.interface.app_interface import AppInterface
 from brown.utils import file_system
@@ -14,17 +16,19 @@ from brown.utils.rect import Rect
 
 """The global state of the application."""
 
-_app_interface = None
+_app_interface: AppInterface
 
-default_font = None
+default_font: Font
 """Font: The default font to be used in `Text` objects."""
 
-document = None
+document: Document
 """Document: The global document root object."""
 
-registered_music_fonts = {}
+registered_music_fonts: dict[str, dict] = {}
 
-registered_text_fonts = {}
+# TODO add system for registering and using text fonts, which seems to
+# be unsupported right now
+registered_text_fonts: dict[str, dict] = {}
 
 # Color of background between and around pages. (Not yet implemented)
 _display_background_color = "#dddddd"
@@ -32,7 +36,7 @@ _display_background_color = "#dddddd"
 _display_paper_color = "#ffffff"
 
 
-def setup(initial_paper=None):
+def setup(initial_paper: Optional[Paper] = None):
     """Initialize the application and set up the global state.
 
     This initializes the global `Document` and a back-end
@@ -59,7 +63,7 @@ def setup(initial_paper=None):
     )
 
 
-def register_font(font_file_path):
+def register_font(font_file_path: str):
     """Register a font file with the application.
 
     If highly consistent typesetting is a concern for your score and
@@ -84,7 +88,7 @@ def register_font(font_file_path):
     _app_interface.register_font(font_file_path)
 
 
-def register_music_font(font_name, font_file_path, metadata_path):
+def register_music_font(font_name: str, font_file_path: str, metadata_path: str):
     """Register a music font with the application.
 
     Args:
@@ -141,7 +145,7 @@ def _clear_interfaces():
             obj.interfaces.clear()
 
 
-def render_pdf(path):
+def render_pdf(path: str):
     """Render the score as a pdf.
 
     Args:

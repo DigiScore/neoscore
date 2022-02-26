@@ -6,10 +6,6 @@ from brown.utils.point import Point
 from brown.utils.units import GraphicUnit, Unit
 
 
-# TODO because Point now converts its args to Units, this now
-# implicitly converts any input tuples into unit-points, and returns a
-# GraphicUnit even if only bare numbers are given. This is fine for
-# many cases, but does it make sense for all?
 def interpolate(line_start: Point, line_end: Point, x: Unit) -> Unit:
     """Calculate the value of a line defined by two points at a given x pos
 
