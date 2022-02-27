@@ -3,7 +3,7 @@ import unittest
 from brown.core import brown
 from brown.core.beam import Beam
 from brown.core.flowable import Flowable
-from brown.core.path_element import PathElement
+from brown.core.path_element import LineTo, MoveTo
 from brown.core.path_element_type import PathElementType
 from brown.core.staff import Staff
 from brown.utils.parent_point import ParentPoint
@@ -42,24 +42,17 @@ class TestBeam(unittest.TestCase):
         )
         thickness = beam.beam_thickness
         assert len(beam.elements) == 5
-        assert beam.elements[0] == PathElement(
-            Point(Mm(0), Mm(0)), PathElementType.move_to, beam
-        )
-        assert beam.elements[1] == PathElement(
-            Point(Mm(3), Mm(4)), PathElementType.line_to, self.right_parent
-        )
-        assert beam.elements[2] == PathElement(
+        assert beam.elements[0] == MoveTo(Point(Mm(0), Mm(0)), beam)
+        assert beam.elements[1] == LineTo(Point(Mm(3), Mm(4)), self.right_parent)
+        assert beam.elements[2] == LineTo(
             Point(Mm(3), Mm(4) + thickness),
-            PathElementType.line_to,
             self.right_parent,
         )
-        assert beam.elements[3] == PathElement(
+        assert beam.elements[3] == LineTo(
             Point(Mm(0), thickness),
-            PathElementType.line_to,
             beam,
         )
-        assert beam.elements[4] == PathElement(
+        assert beam.elements[4] == MoveTo(
             Point(Mm(0), Mm(0)),
-            PathElementType.move_to,
             beam,
         )

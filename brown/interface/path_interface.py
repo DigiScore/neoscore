@@ -76,22 +76,6 @@ class PathInterface(GraphicObjectInterface):
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def current_draw_pos(self):
-        """Point[GraphicUnit]: The current relative drawing position.
-
-        This is the location from which operations like line_to() will draw,
-        relative to the position of the Path (`self.x` and `self.y`).
-
-        This property is read-only. To move the current position, use
-        the move_to() method, implicitly closing the current sub-path and
-        beginning a new one.
-        """
-        if self.element_count:
-            return self.element_at(-1).pos
-        else:
-            return ORIGIN
-
-    @property
     def element_count(self):
         """int: The number of elements in the path."""
         return self.qt_path.elementCount()
@@ -106,9 +90,6 @@ class PathInterface(GraphicObjectInterface):
     def line_to(self, pos):
         """Draw a path from the current position to a new point.
 
-        Connect a path from the current position to a new position specified
-        by `pos`, and move `self.current_draw_pos` to the new point.
-
         Args:
             pos (Point or tuple): The target position
 
@@ -120,8 +101,6 @@ class PathInterface(GraphicObjectInterface):
 
     def cubic_to(self, control_1, control_2, end):
         """Draw a cubic spline from the current position to a new point.
-
-        Moves `self.current_draw_pos` to the new end point.
 
         Args:
             control_1 (Point): The local position of the 1st control point
@@ -164,43 +143,6 @@ class PathInterface(GraphicObjectInterface):
         """
         self.qt_path.closeSubpath()
         self.update_qt_path()
-
-    def element_at(self, index):
-        """Find the element at a given index and return it.
-
-        Args:
-            index (int): The element index. Use -1 for the last index.
-
-        Returns: PathElementInterface
-
-        # TODO: Implement a list-like iterable wrapper around path elements?
-        """
-        if index < 0:
-            # Allow pythonic negative indexing
-            qt_index = self.element_count + index
-        else:
-            qt_index = index
-        qt_element = self.qt_path.elementAt(qt_index)
-        # Determine the element type
-        if qt_element.type == 0:
-            element_type = PathElementType.move_to
-        elif qt_element.type == 1:
-            element_type = PathElementType.line_to
-        elif qt_element.type == 2:
-            # First element in curve sequence is always a control point
-            element_type = PathElementType.control_point
-        else:
-            # Otherwise to distinguish control point from curve,
-            # look right and find if this is the last element before
-            # something other than 3. See module note for more detail.
-            if (
-                qt_index == self.element_count
-                or self.qt_path.elementAt(qt_index + 1).type != 3
-            ):
-                element_type = PathElementType.curve_to
-            else:
-                element_type = PathElementType.control_point
-        return PathElementInterface(qt_element, self, qt_index, element_type)
 
     def set_element_position_at(self, index, pos):
         """Set the element at an index to a given position.

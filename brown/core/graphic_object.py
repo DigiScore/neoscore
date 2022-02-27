@@ -245,7 +245,7 @@ class GraphicObject(ABC):
     ######## CLASS METHODS ########
 
     @classmethod
-    def map_between_items(cls, source: GraphicObject, dest: GraphicObject) -> Point:
+    def map_between_items(cls, source: Positioned, dest: Positioned) -> Point:
         """Find a GraphicObject's position relative to another
 
         Args:

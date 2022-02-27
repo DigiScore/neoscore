@@ -1,13 +1,11 @@
-from typing import Optional, Union
+from typing import Optional, Union, cast
 
 from brown import constants
 from brown.core.brush import Brush
 from brown.core.graphic_object import GraphicObject
-from brown.core.path_element import PathElement
-from brown.core.path_element_type import PathElementType
-from brown.core.types import Parent
+from brown.core.path_element import ControlPoint, CurveTo, LineTo, MoveTo, PathElement
+from brown.core.types import Positioned
 from brown.interface.path_interface import PathInterface
-from brown.utils.exceptions import IllegalNumberOfControlPointsError
 from brown.utils.point import ORIGIN, Point
 from brown.utils.units import ZERO, Unit
 
@@ -35,8 +33,7 @@ class Path(GraphicObject):
             parent (GraphicObject): The parent object or None
         """
         super().__init__(pos, ZERO, pen, brush, parent)
-        self._current_draw_pos = ORIGIN
-        self.elements = []
+        self.elements: list[PathElement] = []
 
     ######## CLASSMETHODS ########
 
@@ -60,8 +57,6 @@ class Path(GraphicObject):
         return line
 
     ######## PUBLIC PROPERTIES ########
-
-    # TODO optimize / cache?
 
     @property
     def length(self):
@@ -96,30 +91,10 @@ class Path(GraphicObject):
                 min_x = relative_x
         return max_x - min_x
 
-    @property
-    def current_draw_pos(self):
-        """Point: The current drawing position relative to `self.pos`.
-
-        This is the location from which operations like `line_to()` will draw.
-
-        To change this without connecting the path to the new position,
-        use `move_to()`.
-        """
-        if self.elements:
-            if self.flowable is not None:
-                return self.flowable.map_between_locally(self, self.elements[-1])
-            else:
-                return GraphicObject.map_between_items(self, self.elements[-1])
-        else:
-            return ORIGIN
-
     ######## Public Methods ########
 
-    def line_to(self, x: Unit, y: Unit, parent: Optional[Parent] = None):
+    def line_to(self, x: Unit, y: Unit, parent: Optional[Positioned] = None):
         """Draw a path from the current position to a new point.
-
-        Connect a path from the current position to a new position specified
-        by `x` and `y`, and move `self.current_draw_pos` to the new point.
 
         A point parent may be passed as well, anchored the target point to
         a separate GraphicObject. In this case, the coordinates passed will be
@@ -135,13 +110,9 @@ class Path(GraphicObject):
         """
         if len(self.elements) == 0:
             self.move_to(ZERO, ZERO)
-        self.elements.append(
-            PathElement(
-                Point(x, y), PathElementType.line_to, parent if parent else self
-            )
-        )
+        self.elements.append(LineTo(Point(x, y), parent if parent else self))
 
-    def move_to(self, x: Unit, y: Unit, parent: Optional[Parent] = None):
+    def move_to(self, x: Unit, y: Unit, parent: Optional[Positioned] = None):
         """Close the current sub-path and start a new one.
 
         A point parent may be passed as well, anchored the target point to
@@ -156,11 +127,7 @@ class Path(GraphicObject):
 
         Returns: None
         """
-        self.elements.append(
-            PathElement(
-                Point(x, y), PathElementType.move_to, parent if parent else self
-            )
-        )
+        self.elements.append(MoveTo(Point(x, y), parent if parent else self))
 
     def close_subpath(self):
         """Close the current sub-path and start a new one at the local origin.
@@ -184,9 +151,9 @@ class Path(GraphicObject):
         control_2_y: Unit,
         end_x: Unit,
         end_y: Unit,
-        control_1_parent: Optional[Parent] = None,
-        control_2_parent: Optional[Parent] = None,
-        end_parent: Optional[Parent] = None,
+        control_1_parent: Optional[Positioned] = None,
+        control_2_parent: Optional[Positioned] = None,
+        end_parent: Optional[Positioned] = None,
     ):
         """Draw a cubic bezier curve from the current position to a new point.
 
@@ -208,27 +175,25 @@ class Path(GraphicObject):
         """
         if len(self.elements) == 0:
             self.move_to(ZERO, ZERO)
-        self.elements.append(
-            PathElement(
-                Point(control_1_x, control_1_y),
-                PathElementType.control_point,
-                (control_1_parent if control_1_parent else self),
-            )
+        c1 = ControlPoint(
+            Point(control_1_x, control_1_y),
+            control_1_parent or self,
         )
-        self.elements.append(
-            PathElement(
-                Point(control_2_x, control_2_y),
-                PathElementType.control_point,
-                (control_2_parent if control_2_parent else self),
-            )
+        c2 = ControlPoint(
+            Point(control_2_x, control_2_y),
+            control_2_parent or self,
         )
-        self.elements.append(
-            PathElement(
-                Point(end_x, end_y),
-                PathElementType.curve_to,
-                (end_parent if end_parent else self),
-            )
-        )
+        self.elements.append(CurveTo(Point(end_x, end_y), end_parent or self, c1, c2))
+
+    def _relative_element_pos(self, element: Positioned) -> Point:
+        if element.parent != self:
+            if self.flowable is not None:
+                relative_pos = self.flowable.map_between_locally(self, element)
+            else:
+                relative_pos = GraphicObject.map_between_items(self, element)
+        else:
+            relative_pos = element.pos
+        return relative_pos
 
     def _render_slice(self, pos, clip_start_x=None, clip_width=None):
         """Render a horizontal slice of a path.
@@ -254,32 +219,21 @@ class Path(GraphicObject):
             clip_start_x=clip_start_x,
             clip_width=clip_width,
         )
-        # Maintain a buffer of control points to be sent to the PathInterface
-        control_point_buffer = []
         for element in self.elements:
             # Interface drawing methods expect coordinates
             # relative to PathInterface root
-            if element.parent != self:
-                if self.flowable is not None:
-                    relative_pos = self.flowable.map_between_locally(self, element)
-                else:
-                    relative_pos = GraphicObject.map_between_items(self, element)
-            else:
-                relative_pos = element.pos
-            if element.element_type == PathElementType.move_to:
+            relative_pos = self._relative_element_pos(element)
+            if isinstance(element, MoveTo):
                 slice_interface.move_to(relative_pos)
-            elif element.element_type == PathElementType.line_to:
+            elif isinstance(element, LineTo):
                 slice_interface.line_to(relative_pos)
-            elif element.element_type == PathElementType.curve_to:
-                if len(control_point_buffer) == 2:
-                    slice_interface.cubic_to(*control_point_buffer, relative_pos)
-                else:
-                    raise IllegalNumberOfControlPointsError(len(control_point_buffer))
-                control_point_buffer = []
-            elif element.element_type == PathElementType.control_point:
-                control_point_buffer.append(relative_pos)
+            elif isinstance(element, CurveTo):
+                element = cast(CurveTo, element)
+                c1_pos = self._relative_element_pos(element.control_1)
+                c2_pos = self._relative_element_pos(element.control_2)
+                slice_interface.cubic_to(c1_pos, c2_pos, relative_pos)
             else:
-                raise AssertionError("Unknown element_type in Path")
+                raise TypeError("Unknown PathElement type")
         slice_interface.update_geometry()
         slice_interface.render()
         self.interfaces.add(slice_interface)

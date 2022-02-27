@@ -105,19 +105,6 @@ class InvalidPitchDescriptionError(Exception):
     pass
 
 
-class IllegalNumberOfControlPointsError(Exception):
-    """Raised when a curve is drawn with more than 2 control points"""
-
-    def __init__(self, attempted_number=None):
-        if attempted_number is not None:
-            self.message = "Cannot draw a curve with {} control points."
-        else:
-            self.message = (
-                "Attempted to draw a curve with an illegal " "number of control points."
-            )
-        super().__init__(self.message)
-
-
 class InvalidImageFormatError(Exception):
     """Raised when an image format cannot be determined."""
 

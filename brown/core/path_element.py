@@ -1,8 +1,6 @@
 from dataclasses import dataclass
 
-from brown.core.invisible_object import InvisibleObject
-from brown.core.path_element_type import PathElementType
-from brown.core.types import Parent
+from brown.core.types import Positioned
 from brown.utils.point import Point
 
 
@@ -10,8 +8,7 @@ from brown.utils.point import Point
 class PathElement:
 
     pos: Point
-    element_type: PathElementType
-    parent: Parent
+    parent: Positioned
 
     @property
     def x(self):
@@ -20,3 +17,25 @@ class PathElement:
     @property
     def y(self):
         return self.pos.y
+
+
+@dataclass(frozen=True)
+class MoveTo(PathElement):
+    pass
+
+
+@dataclass(frozen=True)
+class LineTo(PathElement):
+    pass
+
+
+@dataclass(frozen=True)
+class ControlPoint:
+    pos: Point
+    parent: Positioned
+
+
+@dataclass(frozen=True)
+class CurveTo(PathElement):
+    control_1: ControlPoint
+    control_2: ControlPoint

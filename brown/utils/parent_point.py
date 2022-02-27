@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import NamedTuple, Optional, Type, Union
 
-from brown.core.types import Parent
+from brown.core.types import Positioned
 from brown.utils.point import Point
 from brown.utils.units import Unit
 
@@ -21,12 +21,12 @@ class ParentPoint(NamedTuple):
 
     x: Unit
     y: Unit
-    parent: Optional[Parent] = None
+    parent: Optional[Positioned] = None
 
     ######## PUBLIC CLASS METHODS ########
 
     @classmethod
-    def from_point(cls, point: Point, parent: Optional[Parent]):
+    def from_point(cls, point: Point, parent: Optional[Positioned]):
         """Create a `ParentPoint` from an existing `Point` and a parent."""
         return cls(point.x, point.y, parent)
 

@@ -272,6 +272,14 @@ class Flowable(InvisibleObject):
         except AttributeError:
             raise ValueError("object is not in this Flowable")
 
+    # TODO MEDIUM: I believe these flowable mapping functions can be made
+    # obsolete by making the GraphicObject mapping functions more
+    # robust. If they actually climbed up the object tree and found
+    # their common ancestor to map between, this would automatically
+    # find the flowable position. Today this doesn't work because the
+    # mappers hackily compare canvas positions, necessitating these
+    # flowable-specific functions.
+
     def map_between_locally(self, src: GraphicObject, dst: GraphicObject) -> Point:
         """Find the relative position between two objects in this flowable.
 
