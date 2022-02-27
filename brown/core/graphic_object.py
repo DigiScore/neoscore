@@ -1,14 +1,22 @@
 from __future__ import annotations
 
 from abc import ABC
+from collections.abc import Iterator
+from typing import TYPE_CHECKING, Optional, Type, Union
 
 from brown import constants
 from brown.core import brown
 from brown.core.brush import Brush
 from brown.core.page import Page
 from brown.core.pen import Pen
+from brown.core.types import Positioned
+from brown.interface.graphic_object_interface import GraphicObjectInterface
 from brown.utils.point import ORIGIN, Point
 from brown.utils.units import ZERO, Mm, Unit
+
+if TYPE_CHECKING:
+    # Used in type annotations, imported here to avoid cyclic imports
+    from brown.core.flowable import Flowable
 
 
 class GraphicObject(ABC):
@@ -67,8 +75,8 @@ class GraphicObject(ABC):
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def interfaces(self):
-        """set(GraphicObjectInterface): The interfaces for this object
+    def interfaces(self) -> set[GraphicObjectInterface]:
+        """The interfaces for this object
 
         Interface objects are created upon calling `GraphicObject.render()`
 
@@ -82,49 +90,49 @@ class GraphicObject(ABC):
         return self._interfaces
 
     @property
-    def pos(self):
+    def pos(self) -> Point:
         """Point: The position of the object relative to its parent."""
         return self._pos
 
     @pos.setter
-    def pos(self, value):
+    def pos(self, value: Union[Point, tuple[Unit, Unit]]):
         if not isinstance(value, Point):
             value = Point(*value)
         self._pos = value
 
     @property
-    def x(self):
-        """Unit: The x position of the object relative to its parent."""
+    def x(self) -> Unit:
+        """The x position of the object relative to its parent."""
         return self.pos.x
 
     @x.setter
-    def x(self, value):
+    def x(self, value: Unit):
         self.pos = Point(value, self.y)
 
     @property
-    def y(self):
-        """Unit: The x position of the object relative to its parent."""
+    def y(self) -> Unit:
+        """The x position of the object relative to its parent."""
         return self.pos.y
 
     @y.setter
-    def y(self, value):
+    def y(self, value: Unit):
         self.pos = Point(self.x, value)
 
     @property
-    def length(self):
-        """Unit: The breakable length of the object.
+    def length(self) -> Unit:
+        """The breakable length of the object.
 
         This is used to determine how and where rendering cuts should be made.
         """
         return self._length
 
     @property
-    def pen(self):
-        """Pen: The pen to draw outlines with"""
+    def pen(self) -> Pen:
+        """The pen to draw outlines with"""
         return self._pen
 
     @pen.setter
-    def pen(self, value):
+    def pen(self, value: Union[str, Pen]):
         if value:
             if isinstance(value, str):
                 value = Pen(value)
@@ -137,8 +145,8 @@ class GraphicObject(ABC):
         self._pen = value
 
     @property
-    def brush(self):
-        """Brush: The brush to draw outlines with
+    def brush(self) -> Brush:
+        """The brush to draw outlines with
 
         As a convenience, this may be set with a hex color string
         for a solid color brush of that color. For brushes using
@@ -148,7 +156,7 @@ class GraphicObject(ABC):
         return self._brush
 
     @brush.setter
-    def brush(self, value):
+    def brush(self, value: Union[str, Brush]):
         if value:
             if isinstance(value, str):
                 value = Brush(value)
@@ -161,15 +169,15 @@ class GraphicObject(ABC):
         self._brush = value
 
     @property
-    def parent(self):
-        """GraphicObject: The parent object.
+    def parent(self) -> Union[GraphicObject, Page]:
+        """The parent object.
 
         If this is set to None, it defaults to the first page of the document.
         """
         return self._parent
 
     @parent.setter
-    def parent(self, value):
+    def parent(self, value: Optional[Union[GraphicObject, Page]]):
         if hasattr(self, "_parent") and self._parent is not None:
             self._parent._unregister_child(self)
         if value is None:
@@ -178,17 +186,17 @@ class GraphicObject(ABC):
         self._parent._register_child(self)
 
     @property
-    def children(self):
-        """set(GraphicObject): All objects who have self as their parent."""
+    def children(self) -> set[GraphicObject]:
+        """All objects who have self as their parent."""
         return self._children
 
     @children.setter
-    def children(self, value):
+    def children(self, value: set[GraphicObject]):
         self._children = value
 
     @property
-    def descendants(self):
-        """iter[GraphicObject]: All of the objects in the children subtree.
+    def descendants(self) -> Iterator[GraphicObject]:
+        """All of the objects in the children subtree.
 
         This recursively searches all of the object's children
         (and their children, etc.) and provides an iterator over them.
@@ -202,8 +210,8 @@ class GraphicObject(ABC):
             yield child
 
     @property
-    def ancestors(self):
-        """iter[GraphicObject]: All ancestors of this object.
+    def ancestors(self) -> Iterator[GraphicObject]:
+        """All ancestors of this object.
 
         Follows the chain of parents until a document page is reached.
         The iterable will *not* include the document `Page`.
@@ -216,12 +224,12 @@ class GraphicObject(ABC):
             ancestor = ancestor.parent
 
     @property
-    def flowable(self):
+    def flowable(self) -> Optional[Flowable]:
         """Flowable or None: The flowable this object belongs in."""
         return self.first_ancestor_of_exact_class("Flowable")
 
     @property
-    def page_index(self):
+    def page_index(self) -> int:
         """The index of the page this object appears on.
 
         >>> from brown.core import brown; brown.setup()
@@ -233,6 +241,7 @@ class GraphicObject(ABC):
         True
 
         """
+        # TODO MEDIUM: is this really needed?
         # The page will be the parent of the final ancestor
         ancestor = None
         for ancestor in self.ancestors:
@@ -285,7 +294,9 @@ class GraphicObject(ABC):
 
     ######## PUBLIC METHODS ########
 
-    def descendants_of_class_or_subclass(self, graphic_object_class):
+    def descendants_of_class_or_subclass(
+        self, graphic_object_class: Type[GraphicObject]
+    ):
         """Yield all child descendants with a given class or its subclasses.
 
         Args: graphic_object_class (type): The type to search for.
@@ -297,7 +308,7 @@ class GraphicObject(ABC):
             if isinstance(descendant, graphic_object_class):
                 yield descendant
 
-    def descendants_of_exact_class(self, graphic_object_class):
+    def descendants_of_exact_class(self, graphic_object_class: Type[GraphicObject]):
         """Yield all child descendants with a given class.
 
         Args: graphic_object_class (type): The type to search for.
@@ -309,7 +320,9 @@ class GraphicObject(ABC):
             if type(descendant) == graphic_object_class:
                 yield descendant
 
-    def first_ancestor_of_class_or_subclass(self, graphic_object_class):
+    def first_ancestor_of_class_or_subclass(
+        self, graphic_object_class: Type[GraphicObject]
+    ):
         """Get the closest ancestor with a class or its subclasses.
 
         If none can be found, returns `None`.
@@ -325,7 +338,9 @@ class GraphicObject(ABC):
             None,
         )
 
-    def first_ancestor_of_exact_class(self, graphic_object_class):
+    def first_ancestor_of_exact_class(
+        self, graphic_object_class: Union[str, Type[GraphicObject]]
+    ):
         """Get the closest ancestor with a class.
 
         If none can be found, returns `None`.
@@ -389,7 +404,7 @@ class GraphicObject(ABC):
         for child in self.children:
             child._render()
 
-    def _register_child(self, child):
+    def _register_child(self, child: GraphicObject):
         """Add an object to `self.children`.
 
         Args:
@@ -399,7 +414,7 @@ class GraphicObject(ABC):
         """
         self.children.append(child)
 
-    def _unregister_child(self, child):
+    def _unregister_child(self, child: GraphicObject):
         """Remove an object from `self.children`.
 
         Args:
@@ -470,7 +485,12 @@ class GraphicObject(ABC):
             self.length - remaining_x, render_start_pos, render_end_pos
         )
 
-    def _render_complete(self, pos, dist_to_line_start=None, local_start_x=None):
+    def _render_complete(
+        self,
+        pos: Point,
+        dist_to_line_start: Optional[Unit] = None,
+        local_start_x: Optional[Unit] = None,
+    ):
         """Render the entire object.
 
         This is used to render all objects outside of `Flowable`s,
@@ -481,23 +501,23 @@ class GraphicObject(ABC):
         `self.interfaces`.
 
         Args:
-            pos (Point): The rendering position in document space for drawing.
-            dist_to_line_start (Unit): If in a `Flowable`,
+            pos: The rendering position in document space for drawing.
+            dist_to_line_start: If in a `Flowable`,
                 the x-axis distance from the active `NewLine`s beginning.
                 Otherwise, this is always `None`. Subclasses may use this
                 information to perform basic position modifications at
                 render time, though in most cases this field can be ignored.
-            local_start_x (Unit): If this object is in a flowable, the local
+            local_start_x: If this object is in a flowable, the local
                 starting position of this drawing segment.
-
-        Returns: None
 
         Note: All GraphicObject subclasses should implement this
               for correct rendering.
         """
         raise NotImplementedError
 
-    def _render_before_break(self, local_start_x, start, stop, dist_to_line_start):
+    def _render_before_break(
+        self, local_start_x: Unit, start: Point, stop: Point, dist_to_line_start: Unit
+    ):
         """Render the beginning of the object up to a stopping point.
 
         For use in flowable containers when rendering an object that
@@ -508,23 +528,21 @@ class GraphicObject(ABC):
         `self.interfaces`.
 
         Args:
-            local_start_x (Unit): The local starting position of this
+            local_start_x: The local starting position of this
                 drawing segment.
-            start (Point): The starting point in document space for drawing.
-            stop (Point): The stopping point in document space for drawing.
-            dist_to_line_start (Unit): The x-axis distance from the active
+            start: The starting point in document space for drawing.
+            stop: The stopping point in document space for drawing.
+            dist_to_line_start: The x-axis distance from the active
                 `NewLine`s beginning. Subclasses may use this
                 information to perform basic position modifications at
                 render time, though in most cases this field can be ignored.
-
-        Returns: None
 
         Note: All GraphicObject subclasses whose `length` can
               be nonzero must implement this method.
         """
         raise NotImplementedError
 
-    def _render_after_break(self, local_start_x, start, stop):
+    def _render_after_break(self, local_start_x: Unit, start: Point, stop: Point):
         """Render the continuation of an object after a break.
 
         For use in flowable containers when rendering an object that
@@ -535,19 +553,19 @@ class GraphicObject(ABC):
         `self.interfaces`.
 
         Args:
-            local_start_x (Unit): The local starting position of this
+            local_start_x: The local starting position of this
                 drawing segment.
-            start (Point): The starting point in document space for drawing.
-            stop (Point): The stopping point in document space for drawing.
-
-        Returns: None
+            start: The starting point in document space for drawing.
+            stop: The stopping point in document space for drawing.
 
         Note: All GraphicObject subclasses whose `length` can
               be nonzero must implement this method.
         """
         raise NotImplementedError
 
-    def _render_spanning_continuation(self, local_start_x, start, stop):
+    def _render_spanning_continuation(
+        self, local_start_x: Unit, start: Point, stop: Point
+    ):
         """
         Render the continuation of an object after a break and before another.
 
@@ -559,12 +577,10 @@ class GraphicObject(ABC):
         `self.interfaces`.
 
         Args:
-            local_start_x (Unit): The local starting position of this
+            local_start_x: The local starting position of this
                 drawing segment.
-            start (Point): The starting point in document space for drawing.
-            stop (Point): The stopping point in document space for drawing.
-
-        Returns: None
+            start: The starting point in document space for drawing.
+            stop: The stopping point in document space for drawing.
 
         Note: All GraphicObject subclasses whose `length` can
               be nonzero must implement this method.
