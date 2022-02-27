@@ -1,12 +1,7 @@
 """Various interoperable units classes and some related helper functions."""
-
-# This is needed to support function argument annotations referencing
-# the containing class. (This is not supposed to be needed in Python
-# 3.10, but for some reason in my 3.10.2 environment it's still
-# needed)
 from __future__ import annotations
 
-from typing import Any, TypeVar, Union
+from typing import Any, Optional, TypeVar, Union, cast
 
 TUnit = TypeVar("TUnit", bound="Unit")
 
@@ -85,7 +80,7 @@ class Unit:
     _CMP_POS_EPSILON = 0.001
     _CMP_NEG_EPSILON = -0.001
 
-    # TODO document unit comparison behavior and subtleties
+    # TODO LOW: document unit comparison behavior and subtleties
 
     def __lt__(self, other: Unit):
         return self.base_value - other.base_value < Unit._CMP_NEG_EPSILON
@@ -111,32 +106,32 @@ class Unit:
 
     # Operators ---------------------------------------------------------------
 
-    def __add__(self, other: Unit) -> TUnit:
+    def __add__(self: TUnit, other: TUnit) -> TUnit:
         return type(self)(None, _raw_base_value=self.base_value + other.base_value)
 
-    def __sub__(self, other: Unit) -> TUnit:
+    def __sub__(self: TUnit, other: Unit) -> TUnit:
         return type(self)(None, _raw_base_value=self.base_value - other.base_value)
 
-    def __mul__(self, other: float) -> TUnit:
+    def __mul__(self: TUnit, other: float) -> TUnit:
         return type(self)(None, _raw_base_value=self.base_value * other)
 
-    def __truediv__(self, other: Union[Unit, float]) -> Union[TUnit, float]:
+    def __truediv__(self: TUnit, other: Union[Unit, float]) -> Union[TUnit, float]:
         if hasattr(other, "base_value"):
             # Unit / Unit -> Float
-            return self.base_value / other.base_value
+            return self.base_value / (cast(Unit, other)).base_value
         # Unit / Float -> Unit
         return type(self)(None, _raw_base_value=self.base_value / other)
 
-    def __pow__(self, other: float, modulo: Optional[int] = None) -> TUnit:
+    def __pow__(self: TUnit, other: float, modulo: Optional[int] = None) -> TUnit:
         return type(self)(Unit(pow(self.base_value, other, modulo)))
 
-    def __neg__(self) -> TUnit:
+    def __neg__(self: TUnit) -> TUnit:
         return type(self)(None, _raw_base_value=-self.base_value)
 
-    def __pos__(self) -> TUnit:
+    def __pos__(self: TUnit) -> TUnit:
         return type(self)(None, _raw_base_value=+self.base_value)
 
-    def __abs__(self) -> TUnit:
+    def __abs__(self: TUnit) -> TUnit:
         return type(self)(None, _raw_base_value=abs(self.base_value))
 
     # TODO maybe restore support for __rmul__

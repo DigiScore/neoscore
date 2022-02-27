@@ -5,9 +5,6 @@ from typing import Optional
 from brown.interface.paper_interface import PaperInterface
 from brown.utils.units import Inch, Mm, Unit
 
-# TODO make immutable and precompute all derived fields.
-# Profiling shows this will save up to 4% of benchmark time.
-
 
 @dataclass(frozen=True)
 class Paper:

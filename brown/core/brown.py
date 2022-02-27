@@ -6,7 +6,7 @@ from warnings import warn
 from brown import constants
 from brown.core.document import Document
 from brown.core.font import Font
-from brown.core.paper import Paper
+from brown.core.paper import Paper, PaperTemplate
 from brown.interface import images
 from brown.interface.app_interface import AppInterface
 from brown.utils import file_system
@@ -36,7 +36,7 @@ _display_background_color = "#dddddd"
 _display_paper_color = "#ffffff"
 
 
-def setup(initial_paper: Optional[Paper] = None):
+def setup(initial_paper: Paper = PaperTemplate.A4.value):
     """Initialize the application and set up the global state.
 
     This initializes the global `Document` and a back-end
