@@ -1,3 +1,5 @@
+from PyQt5.QtWidgets import QGraphicsItem
+
 from brown.interface.brush_interface import BrushInterface
 from brown.interface.pen_interface import PenInterface
 from brown.interface.qt.converters import point_to_qt_point_f
@@ -30,13 +32,12 @@ class GraphicObjectInterface:
       translated into Qt-compatible values.
     """
 
+    # TODO update above docs on new implementation pattern
+
     def __init__(self):
         self._pos = None
         self._pen = None
         self._brush = None
-        self.qt_object = None
-
-    ######## PUBLIC PROPERTIES ########
 
     @property
     def pos(self) -> Point:
@@ -47,11 +48,6 @@ class GraphicObjectInterface:
         """
         return self._pos
 
-    @pos.setter
-    def pos(self, value: Point):
-        self._pos = value
-        self.qt_object.setPos(point_to_qt_point_f(self.pos))
-
     @property
     def pen(self) -> PenInterface:
         """PenInterface: The pen to draw outlines with.
@@ -60,11 +56,6 @@ class GraphicObjectInterface:
         the underlying Qt object.
         """
         return self._pen
-
-    @pen.setter
-    def pen(self, value: PenInterface):
-        self._pen = value
-        self.qt_object.setPen(self._pen.qt_object)
 
     @property
     def brush(self) -> BrushInterface:
@@ -75,14 +66,13 @@ class GraphicObjectInterface:
         """
         return self._brush
 
-    @brush.setter
-    def brush(self, value: BrushInterface):
-        self._brush = value
-        self.qt_object.setBrush(self._brush.qt_object)
-
     def render(self):
         """Render the object to the scene.
 
         Returns: None
         """
+        raise NotImplementedError
+
+    def _create_qt_object(self) -> QGraphicsItem:
+        """Create and return this interface's underlying Qt object"""
         raise NotImplementedError

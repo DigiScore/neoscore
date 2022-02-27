@@ -19,12 +19,11 @@ class MockGraphicObjectInterface(GraphicObjectInterface):
 
     def __init__(self, pos, pen=None, brush=None):
         super().__init__()
-        self.qt_object = QtWidgets.QGraphicsRectItem(0, 0, 10, 10)
-        self.pos = pos
+        self._pos = pos
         if pen:
-            self.pen = pen
+            self._pen = pen
         else:
-            self.pen = PenInterface(
+            self._pen = PenInterface(
                 Color("#000000"),
                 GraphicUnit(0),
                 PenPattern.SOLID,
@@ -32,6 +31,6 @@ class MockGraphicObjectInterface(GraphicObjectInterface):
                 PenCapStyle.SQUARE,
             )
         if brush:
-            self.brush = brush
+            self._brush = brush
         else:
-            self.brush = BrushInterface(Color("#000000"), BrushPattern.SOLID)
+            self._brush = BrushInterface(Color("#000000"), BrushPattern.SOLID)

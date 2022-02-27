@@ -1,6 +1,7 @@
 from typing import NamedTuple, Optional
 
 from PyQt5.QtGui import QFont, QPainterPath, QPen
+from PyQt5.QtWidgets import QGraphicsItem
 
 from brown.core import brown
 from brown.interface.font_interface import FontInterface
@@ -72,37 +73,46 @@ class TextInterface(GraphicObjectInterface):
         self.clip_start_x = clip_start_x
         self.clip_width = clip_width
         self._scale = scale
-        self.qt_object = self._get_path(text, font, scale)
-        # Let setters trigger Qt setters for attributes not in constructor
-        self.pos = pos
-        self.brush = brush
-        # TODO support setting pen on text objects
-        self.qt_object.setPen(QPen(0))  # No pen
+        self._font = font
+        self._pos = pos
+        self._brush = brush
 
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def text(self):
-        """str: The text for the object"""
+    def text(self) -> str:
+        """The text for the object"""
         return self._text
 
     @property
-    def scale(self):
-        """float: A hard scale factor to be applied to the rendered text"""
+    def scale(self) -> float:
+        """A scale factor to be applied to the rendered text"""
         return self._scale
+
+    @property
+    def font(self) -> FontInterface:
+        return self._font
 
     ######## PUBLIC METHODS ########
 
     def render(self):
-        """Render the line to the scene.
+        """Render the line to the scene."""
+        qt_object = self._create_qt_object()
+        brown._app_interface.scene.addItem(qt_object)
 
-        Returns: None
-        """
-        brown._app_interface.scene.addItem(self.qt_object)
+    def _create_qt_object(self) -> QGraphicsItem:
+        """Create and return this interface's underlying Qt object"""
+        qt_object = self._get_path(self.text, self.font, self.scale)
+        qt_object.setPos(point_to_qt_point_f(self.pos))
+        qt_object.setBrush(self.brush.qt_object)
+        qt_object.setPen(QPen(0))  # No pen
+        return qt_object
 
     ######## PRIVATE METHODS ########
 
-    def _get_path(self, text: str, font: FontInterface, additional_scale: float):
+    def _get_path(
+        self, text: str, font: FontInterface, additional_scale: float
+    ) -> QClippingPath:
         qt_font = font.qt_object
         needed_font_size = qt_font.pointSizeF()
         key = _CachedTextKey(text, font.family_name, font.weight, font.italic)

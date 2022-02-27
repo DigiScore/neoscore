@@ -27,6 +27,8 @@ class TestTextInterface(unittest.TestCase):
         )
         # Since the fonts and texts matched, the underlying paths
         # should be equal by reference.
-        assert test_object_1.qt_object.path() == test_object_2.qt_object.path()
-        assert test_object_1.qt_object.scale() == 1
-        assert test_object_2.qt_object.scale() == 2
+        test_qt_object_1 = test_object_1._create_qt_object()
+        test_qt_object_2 = test_object_2._create_qt_object()
+        assert test_qt_object_1.path() == test_qt_object_2.path()
+        assert test_qt_object_1.scale() == 1
+        assert test_qt_object_2.scale() == 2

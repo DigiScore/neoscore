@@ -4,6 +4,7 @@ from brown.core import brown
 from brown.core.path_element_type import PathElementType
 from brown.interface.graphic_object_interface import GraphicObjectInterface
 from brown.interface.path_element_interface import PathElementInterface
+from brown.interface.qt.converters import point_to_qt_point_f
 from brown.interface.qt.q_clipping_path import QClippingPath
 from brown.utils.point import ORIGIN, Point
 from brown.utils.units import Unit
@@ -65,12 +66,12 @@ class PathInterface(GraphicObjectInterface):
         """
         super().__init__()
         self.qt_path = QtGui.QPainterPath()
-        self.qt_object = QClippingPath(self.qt_path, clip_start_x, clip_width)
-        self.pos = pos
-        self.pen = pen
-        self.brush = brush
+        self._pos = pos
+        self._pen = pen
+        self._brush = brush
         self.clip_start_x = clip_start_x
         self.clip_width = clip_width
+        self.qt_object = self._create_qt_object()
 
     ######## PUBLIC PROPERTIES ########
 
@@ -232,3 +233,12 @@ class PathInterface(GraphicObjectInterface):
         Returns: None
         """
         self.qt_object.setPath(self.qt_path)
+
+    ######## PRIVATE METHODS ########
+
+    def _create_qt_object(self):
+        qt_object = QClippingPath(self.qt_path, self.clip_start_x, self.clip_width)
+        qt_object.setPos(point_to_qt_point_f(self.pos))
+        qt_object.setBrush(self.brush.qt_object)
+        qt_object.setPen(self.pen.qt_object)  # No pen
+        return qt_object
