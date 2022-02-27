@@ -12,7 +12,7 @@ from brown.utils.units import Mm
 
 from ..helpers import assert_almost_equal
 
-# TODO test that glyphs are actually created successfully - this
+# TODO LOW test that glyphs are actually created successfully - this
 # failed to catch bugs in creating rhythm dots and flags, and probably
 # fails to catch other similar ones too.
 

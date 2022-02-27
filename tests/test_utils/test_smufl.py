@@ -15,14 +15,19 @@ def test_get_basic_glyph_info():
         "codepoint": "\uE06D",
         "description": "6-string tab clef",
     }
-    with pytest.raises(KeyError):
-        smufl.get_basic_glyph_info("nonexistent name")
+    with pytest.raises(KeyError) as err:
+        smufl.get_basic_glyph_info("clef")
+    assert (
+        'Could not find glyph name "clef". '
+        + "Maybe you meant one of these? clef8 / cClef / clef15 / gClef / fClef"
+        in str(err.value)
+    )
 
 
 def test_char_from_glyph_name():
     assert smufl.char_from_glyph_name("6stringTabClef") == "\uE06D"
     with pytest.raises(KeyError):
-        smufl.char_from_glyph_name("nonexistent name")
+        smufl.char_from_glyph_name("clef")
 
 
 def test_description_from_glyph_name():

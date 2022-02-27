@@ -1,3 +1,4 @@
+import difflib
 import json
 import os
 
@@ -17,6 +18,10 @@ with open(os.path.join(smufl_dir, "ranges.json"), "r") as ranges_file:
     ranges = json.load(ranges_file)
 
 
+def _get_similar_glyph_names(name):
+    return difflib.get_close_matches(name, glyph_names, 5)
+
+
 def get_basic_glyph_info(name):
     """Find the {"codepoint", "description"} dict for a canonical glyph name.
 
@@ -31,9 +36,11 @@ def get_basic_glyph_info(name):
     """
     try:
         return glyph_names[name]
-    except KeyError:
-        # TODO: Implement a fuzzy look-up for a (Did you mean ... ? response)
-        raise KeyError('Could not find glyph name "{}".')
+    except KeyError as e:
+        similar = " / ".join(_get_similar_glyph_names(name))
+        raise KeyError(
+            f'Could not find glyph name "{name}". Maybe you meant one of these? {similar}'
+        ) from e
 
 
 def char_from_glyph_name(name):
@@ -48,10 +55,7 @@ def char_from_glyph_name(name):
     Raises:
         KeyError: If no glyph with `name` can be found
     """
-    try:
-        return get_basic_glyph_info(name)["codepoint"]
-    except KeyError:
-        raise KeyError
+    return get_basic_glyph_info(name)["codepoint"]
 
 
 def description_from_glyph_name(name):
@@ -66,10 +70,7 @@ def description_from_glyph_name(name):
     Raises:
         KeyError: If no glyph with `name` can be found
     """
-    try:
-        return get_basic_glyph_info(name)["description"]
-    except KeyError:
-        raise KeyError
+    return get_basic_glyph_info(name)["description"]
 
 
 def get_glyph_range_key(name):
@@ -88,7 +89,7 @@ def get_glyph_range_key(name):
         if name in value["glyphs"]:
             return range_name
     else:
-        raise KeyError('Could not find glyph name "{}".')
+        raise KeyError(f'Could not find glyph name "{name}".')
 
 
 def get_glyph_classes(name):

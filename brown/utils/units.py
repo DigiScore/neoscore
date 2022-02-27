@@ -39,7 +39,7 @@ class Unit:
                 self.base_value = base_value
                 self._display_value = None
             else:
-                # TODO document this base_value rounding behavior - it's
+                # TODO MEDIUM document this base_value rounding behavior - it's
                 # needed to allow ergonomic comparisons between units
                 # without floating point errors getting in the way.
                 #
@@ -72,7 +72,7 @@ class Unit:
         return "{}({})".format(type(self).__name__, self.display_value)
 
     def __hash__(self):
-        # TODO is this still correct with the new eq implementation?
+        # TODO HIGH is this still correct with the new eq implementation?
         return hash(self.base_value)
 
     # Comparisons -------------------------------------------------------------
@@ -80,7 +80,7 @@ class Unit:
     _CMP_POS_EPSILON = 0.001
     _CMP_NEG_EPSILON = -0.001
 
-    # TODO LOW: document unit comparison behavior and subtleties
+    # TODO MEDIUM: document unit comparison behavior and subtleties
 
     def __lt__(self, other: Unit):
         return self.base_value - other.base_value < Unit._CMP_NEG_EPSILON
@@ -113,6 +113,14 @@ class Unit:
         return type(self)(None, _raw_base_value=self.base_value - other.base_value)
 
     def __mul__(self: TUnit, other: float) -> TUnit:
+        if hasattr(other, "base_value"):
+            raise TypeError
+        return type(self)(None, _raw_base_value=self.base_value * other)
+
+    def __rmul__(self: TUnit, other: float) -> TUnit:
+        # __rmul__ behaves identically to __mul__
+        if hasattr(other, "base_value"):
+            raise TypeError
         return type(self)(None, _raw_base_value=self.base_value * other)
 
     def __truediv__(self: TUnit, other: Union[Unit, float]) -> Union[TUnit, float]:
@@ -133,8 +141,6 @@ class Unit:
 
     def __abs__(self: TUnit) -> TUnit:
         return type(self)(None, _raw_base_value=abs(self.base_value))
-
-    # TODO maybe restore support for __rmul__
 
 
 class GraphicUnit(Unit):

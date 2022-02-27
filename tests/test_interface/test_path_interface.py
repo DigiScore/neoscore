@@ -15,8 +15,8 @@ from brown.utils.units import GraphicUnit, Unit
 
 from ..helpers import assert_almost_equal
 
-# TODO when path+interface rework gets to interface, need to redo a
-# lot of these tests which now don't do much..
+# TODO MEDIUM when path+interface rework gets to interface, need to redo
+# a lot of these tests which now don't do much..
 
 
 class TestPathInterface(unittest.TestCase):

@@ -19,6 +19,6 @@ class TestSlur(unittest.TestCase):
     def testDrawingDoesntCrash(self):
         """A woefully inadequate test to just see if slurs can be drawn at all.
 
-        TODO: Replace this with real tests
+        TODO LOW: Replace this with real tests
         """
         slur = Slur((Mm(1), Mm(2), self.left_parent), (Mm(3), Mm(4), self.right_parent))

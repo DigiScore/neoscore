@@ -97,6 +97,9 @@ class TestUnit(unittest.TestCase):
         with pytest.raises(TypeError):
             Unit(1) * Unit(1)
 
+    def test__rmul__(self):
+        assert 2 * Unit(1) == Unit(2)
+
     def test__truediv__(self):
         assert Unit(1) / 2 == Unit(0.5)
         assert Unit(1) / MockUnit(1) == 0.5

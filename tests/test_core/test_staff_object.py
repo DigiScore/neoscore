@@ -25,7 +25,7 @@ class TestStaffObject(unittest.TestCase):
 
     @unittest.skip
     def test_find_staff_with_no_staff_raises_error(self):
-        # TODO: Implement this test once this functionality is locked down
+        # TODO LOW: Implement this test once this functionality is locked down
         pass
 
     def test_pos_in_staff(self):

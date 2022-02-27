@@ -16,8 +16,5 @@ class Measure(Container):
 
     @property
     def has_time_signature_change(self):
-        """Whether or not a time signature change exists in this measure.
-
-        TODO: Optimize
-        """
+        """Whether or not a time signature change exists in this measure."""
         return any(isinstance(item, TimeSignature) for item in self)
