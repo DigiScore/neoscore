@@ -1,3 +1,5 @@
+from typing import Any
+
 from brown.utils.point import Point
 
 
@@ -37,7 +39,15 @@ class Page:
 
     @property
     def parent(self):
-        """Document: The document this page belongs in."""
+        """Document: The document this page belongs in.
+
+        NOTE: This type annotation is deliberately omitted. For
+        ergonomic reasons, `Page` somewhat fakes an implementation of
+        the `Positioned` protocol, which expects `parent` to itself be
+        a `Positioned`, which `Document` is not. Code which traverses
+        the object tree should take care to handle this base case
+        around the document root.
+        """
         return self._document
 
     @property
