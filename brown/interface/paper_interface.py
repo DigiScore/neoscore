@@ -3,14 +3,14 @@ from PyQt5.QtGui import QPageLayout, QPageSize
 
 from brown import constants
 
+# TODO MEDIUM Refactor to use the main interface pattern by making
+# this have the ability to create a qt QPageLayout object, but not
+# itself be one.
+
 
 class PaperInterface(QPageLayout):
 
-    """A thin conversion layer between `Paper` and `QPageLayout`.
-
-    TODO: The pattern used here goes against the interface layer's
-    general contract, and should be refactored.
-    """
+    """A thin conversion layer between `Paper` and `QPageLayout`."""
 
     def __init__(self, paper):
         """Initialize a QPageLayout from a Paper object
@@ -33,6 +33,6 @@ class PaperInterface(QPageLayout):
                 ),
             ),
             QPageLayout.Portrait,
-            # Ignore margins - see class docstring
+            # Margins are implemented at a higher level
             QMarginsF(0, 0, 0, 0),
         )

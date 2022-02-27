@@ -18,7 +18,7 @@ but after a line is created, `elementCount() == 2`. The first element
 is a `moveTo` to the origin; second is the `lineTo` you asked for.
 `brown` paths maintain this behavior.
 
-TODO: This is out of date and may not be true.
+TODO LOW: This is out of date and may not be true.
 
 If a `lineTo(0, 0)`, a `moveTo(0, 0)` is performed instead:
 
@@ -81,8 +81,6 @@ class PathInterface(GraphicObjectInterface):
         return self.qt_path.elementCount()
 
     ######## Public Methods ########
-
-    # TODO: Update signatures to reflect new Path API
 
     def update_geometry(self):
         self.qt_object.update_geometry()

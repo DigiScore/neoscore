@@ -40,7 +40,7 @@ class Rest(MusicText, StaffObject):
             duration (Beat or init tuple):
             parent (StaffObject or Staff):
         """
-        # TODO I was surprised while using this that `pos` is either
+        # TODO MEDIUM I was surprised while using this that `pos` is either
         # 1D or 2D. I think it should always be 2D.
         pos = pos if isinstance(pos, Point) else Point(pos, ZERO)
         self._duration = duration if isinstance(duration, Beat) else Beat(*duration)

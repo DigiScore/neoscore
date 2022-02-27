@@ -28,7 +28,7 @@ class MusicText(Text):
     A glyph with a MusicFont and convenient access to relevant SMuFL metadata.
     """
 
-    # TODO find a way to type this text arg and/or simplify it
+    # TODO MEDIUM find a way to type this text arg and/or simplify it
     def __init__(
         self,
         pos: PointDef,

@@ -96,7 +96,7 @@ class Interval:
 
     @property
     def distance(self):
-        # TODO: Roll distance and direction together into a pos/neg int?
+        # TODO LOW: Roll distance and direction together into a pos/neg int?
         return self._distance
 
     @property

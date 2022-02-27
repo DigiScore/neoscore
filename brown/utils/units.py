@@ -205,7 +205,7 @@ def _convert_all_to_unit_in_immutable(iterable, unit):
     return type(iterable)(mutable_iterable)
 
 
-# TODO This should be refactored to be out-of-place to prevent
+# TODO MEDIUM This should be refactored to be out-of-place to prevent
 # dangerous antipatterns as discovered in MusicFont
 def convert_all_to_unit(iterable, unit):
     """Recursively convert all numbers found in an iterable to a unit in place.

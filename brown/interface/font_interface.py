@@ -29,7 +29,7 @@ class FontInterface:
         self.italic = italic
         self.qt_object = QtGui.QFont(
             self.family_name,
-            # TODO I think this doesn't support float font sizes
+            # TODO MEDIUM I think this doesn't support float font sizes
             int(self.size.base_value),
             self.weight if self.weight is not None else -1,
             self.italic,

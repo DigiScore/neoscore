@@ -286,7 +286,7 @@ class Staff(Path):
         return make_unit_class("StaffUnit", staff_unit_size.base_value)
 
     def _compute_clef_x_positions(self) -> list[tuple[Unit, Clef]]:
-        # TODO this is duplicated with the on-demand version in `clefs()`
+        # TODO HIGH this is duplicated with the on-demand version in `clefs()`
         result = [
             (clef.pos_x_in_staff, clef)
             for clef in self.descendants_of_class_or_subclass(Clef)

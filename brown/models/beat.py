@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from fractions import Fraction
-from typing import Optional, Union
+from typing import Optional, Union, cast
 
 from brown.utils.math_helpers import float_to_rounded_fraction_tuple
 
@@ -39,23 +39,10 @@ class Beat:
     Beats should be treated as immutable, and will not work correctly
     if their properties are changed after initialization.
 
-    # TODO: How to handle things like duplet over dotted quarter?
+    # TODO LOW: How to handle things like duplet over dotted quarter?
     """
 
     def __init__(self, numerator: Union[int, Beat], denominator: int):
-        """
-        *args:
-            numerator (int or Beat):
-            denominator (int):
-        OR:
-            float_value (float): A floating point number to be
-                approximated into a quantized beat.
-        OR:
-            beat (Beat): An existing Beat
-        """
-        # TODO maybe remove the float value argument form, since this
-        # adds a lot of complexity and it's a pretty uncommon
-        # use-case. Otherwise move it to a constructor classmethod.
         self._numerator = numerator
         self._denominator = denominator
         self._collapsed_fraction = self.to_fraction()
@@ -63,7 +50,7 @@ class Beat:
         # Calculate base division and dot count
         if isinstance(self.numerator, type(self)):
             self._dot_count = self.numerator.dot_count
-            # FIXME: This is wrong !!!
+            # TODO LOW: This is wrong !!!
             # Beat(Beat(1, 3), 4) base division should be 8
             # for triplet eighth!
             self._base_division = self.denominator
@@ -92,12 +79,10 @@ class Beat:
         """Initialize from a float with an optional denominator to round toward.
 
         Args:
-            value (float):
-            round_to (int): A denominator to round toward.
-            limit_denominator (int): The maximum denominator value.
+            value:
+            round_to: A denominator to round toward.
+            limit_denominator: The maximum denominator value.
                 If `round_to` is specified, this does nothing.
-
-        Returns: Beat
 
         Examples:
             >>> Beat.from_float(0.4)
@@ -140,7 +125,7 @@ class Beat:
     @property
     def base_division(self) -> int:
         """The basic division of the beat."""
-        # TODO Explain mor what this means
+        # TODO LOW Explain more what this means
         return self._base_division
 
     @property
@@ -249,4 +234,4 @@ class Beat:
         """
         if isinstance(self.numerator, type(self)):
             return Fraction(self.numerator.collapsed_fraction, self.denominator)
-        return Fraction(self.numerator, self.denominator)
+        return Fraction(cast(int, self.numerator), self.denominator)

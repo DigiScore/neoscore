@@ -56,7 +56,7 @@ class Chordrest(ObjectGroup, StaffObject):
                 self._noteheads.add(Notehead(staff.unit(0), pitch, self.duration, self))
             self.rest = None
         else:
-            # TODO support explicit rest Y positioning
+            # TODO LOW support explicit rest Y positioning
             self.rest = Rest(Point(staff.unit(0), staff.unit(2)), self, duration)
         self._stem = None
         self._flag = None
@@ -380,7 +380,7 @@ class Chordrest(ObjectGroup, StaffObject):
     def _position_accidentals_horizontally(self):
         """Reposition accidentals so that they are laid out correctly
 
-        TODO: Implement me
+        TODO LOW: Implement me
 
         Returns: None
         """

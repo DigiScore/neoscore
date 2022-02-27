@@ -3,7 +3,7 @@ from typing import Optional
 from brown.models.key_signature_type import KeySignatureType
 from brown.models.pitch import Pitch
 
-# TODO this takes a KeySignatureType, but that's just an enum of
+# TODO LOW this takes a KeySignatureType, but that's just an enum of
 # conventional signatures in dicts. We could support custom key
 # signatures here if we made a new type, say KeySignatureSpec, which
 # is those dicts.
@@ -33,5 +33,4 @@ def midi_to_pitch(midi: int, key_signature: Optional[KeySignatureType] = None) -
     3. In flat keys, avoid sharps; and vice-versa in sharp keys.
     4. In conventional key signatures, spell leading tones as such
     """
-    # TODO
     pass

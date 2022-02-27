@@ -6,7 +6,7 @@ from PyQt5.QtGui import QBrush, QColor, QPainterPath, QPen
 from PyQt5.QtWidgets import QGraphicsItem, QGraphicsPathItem
 
 from brown.constants import DEBUG
-from brown.utils.units import GraphicUnit, Unit
+from brown.utils.units import Unit
 
 
 class QClippingPath(QGraphicsPathItem):
@@ -18,9 +18,6 @@ class QClippingPath(QGraphicsPathItem):
     scaling.
 
     """
-
-    # TODO require clip_start_x and clip_width to be in GraphicUnit -
-    # Qt level objects should deal exclusively in GraphicUnits.
 
     def __init__(
         self,
@@ -136,7 +133,7 @@ class QClippingPath(QGraphicsPathItem):
                 sides of the clipping area. This might be useful, for instance,
                 for making sure thick pen strokes render completely.
         """
-        # TODO strange that extra_padding is given in floats
+        # TODO MEDIUM strange that extra_padding is given in floats
         # (implicitly GraphicUnits), but the other two args are in units. refactor.
         clip_start_x = (
             bounding_rect.x() if clip_start_x is None else clip_start_x.base_value

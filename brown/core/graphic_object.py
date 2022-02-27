@@ -261,7 +261,7 @@ class GraphicObject(ABC):
         # Otherwise, inefficiently compare the canvas positions of the two objects
         return brown.document.canvas_pos_of(dest) - brown.document.canvas_pos_of(source)
 
-    # TODO can't implement this until document methods are made too
+    # TODO MEDIUM can't implement this until document methods are made too
     # @classmethod
     # def map_x_between_items(cls, source: GraphicObject, dest: GraphicObject) -> Unit:
     #     """Specialized version of `map_between_items` which only finds the x delta"""

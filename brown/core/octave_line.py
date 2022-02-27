@@ -33,10 +33,10 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
     If the spanner goes across line breaks, the octave text is repeated
     in parenthesis at the line beginning.
 
-    TODO: The dashed line portion of this spanner overlaps with the '8va' text.
-          This is a nontrivial fix that may require implementing text
-          background masking or a way to easily inject line continuation
-          offsets for paths.
+    TODO LOW: The dashed line portion of this spanner overlaps with
+    the '8va' text. This is an involved fix that may require
+    implementing text background masking or a way to easily inject
+    line continuation offsets for paths.
     """
 
     intervals = {"15ma": "aP15", "8va": "aP8", "8vb": "dP8", "15mb": "dP15"}

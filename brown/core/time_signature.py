@@ -8,7 +8,7 @@ class TimeSignature(ObjectGroup, StaffObject):
 
     """A logical and graphical time signature
 
-    TODO: Time signatures with differing character-length numerators and
+    TODO LOW: Time signatures with differing character-length numerators and
     denominators (e.g. 12/8) currently display incorrectly as left-justified.
     """
 

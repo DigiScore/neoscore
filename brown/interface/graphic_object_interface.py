@@ -32,7 +32,7 @@ class GraphicObjectInterface:
       translated into Qt-compatible values.
     """
 
-    # TODO update above docs on new implementation pattern
+    # TODO MEDIUM update above docs on new implementation pattern
 
     def __init__(self):
         self._pos = None

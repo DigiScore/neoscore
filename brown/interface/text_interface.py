@@ -26,7 +26,7 @@ class _CachedTextPath(NamedTuple):
 
 _PATH_CACHE: dict[_CachedTextKey, _CachedTextPath] = {}
 
-"""TODO We can actually optimize this even further. We can modify
+"""TODO LOW We can actually optimize this even further. We can modify
 q_clipping_path so it explicitly stores paint results in the global
 QPixmapCache. If this were specialized to just text items, the cache
 key would be like _CachedTextKey, except it also includes font size

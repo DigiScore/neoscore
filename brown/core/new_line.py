@@ -6,7 +6,7 @@ from brown.utils.units import ZERO, Unit
 class NewLine(LayoutController):
     """A line break controller."""
 
-    # TODO update docs and typeify signature. not doing signature
+    # TODO MEDIUM update docs and typeify signature. not doing signature
     # types now because it seems like there might be a circular import
     # concern (flowable import AutoNewLine)
 

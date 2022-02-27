@@ -11,9 +11,6 @@ class PathElementInterface:
     to instantiate an instance of this class you should query the parent
     PathInterface.elements[-1] after creating an element, and pass its
     result to the constructor here.
-
-    TODO: Figure out how to elegantly bind these with
-          their PathElement counterparts
     """
 
     def __init__(self, qt_object, parent_path, index, element_type):
@@ -65,12 +62,11 @@ class PathElementInterface:
 
         This has a 1:1 correspondence with `PathElement.element_type`.
         """
-        # TODO: This is not accurate.
-        #       When creating a curve, Qt marks the first control point
-        #       as being a CurveToElement, and all following as
-        #       CurveToDataElement's--- need to work around this so that
-        #       the control points are clearly marked differently from the
-        #       end point.
+        # TODO LOW: This is not accurate. When creating a curve, Qt
+        # marks the first control point as being a CurveToElement, and
+        # all following as CurveToDataElement's--- need to work around
+        # this so that the control points are clearly marked
+        # differently from the end point.
         return self._element_type
 
     ######## PUBLIC METHODS ########

@@ -26,7 +26,7 @@ document: Document
 
 registered_music_fonts: dict[str, dict] = {}
 
-# TODO add system for registering and using text fonts, which seems to
+# TODO MEDIUM add system for registering and using text fonts, which seems to
 # be unsupported right now
 registered_text_fonts: dict[str, dict] = {}
 
