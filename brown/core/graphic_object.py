@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import ABC
 from collections.abc import Iterator
-from typing import TYPE_CHECKING, Optional, Type, Union
+from typing import TYPE_CHECKING, Optional, Type, Union, cast
 
 from brown import constants
 from brown.core import brown
@@ -51,7 +51,15 @@ class GraphicObject(ABC):
         constants.DEFAULT_BRUSH_COLOR, constants.DEFAULT_BRUSH_PATTERN
     )
 
-    def __init__(self, pos, length=None, pen=None, brush=None, parent=None):
+    # TODO MEDIUM: work out signatures for convenience args
+    def __init__(
+        self,
+        pos,
+        length=None,
+        pen=None,
+        brush=None,
+        parent: Optional[Union[GraphicObject, Page]] = None,
+    ):
         """
         Args:
             pos (Point[Unit] or tuple): The position of the object
@@ -220,36 +228,13 @@ class GraphicObject(ABC):
         """
         ancestor = self.parent
         while type(ancestor) != Page:
-            yield ancestor
+            yield cast(GraphicObject, ancestor)
             ancestor = ancestor.parent
 
     @property
     def flowable(self) -> Optional[Flowable]:
         """Flowable or None: The flowable this object belongs in."""
         return self.first_ancestor_of_exact_class("Flowable")
-
-    @property
-    def page_index(self) -> int:
-        """The index of the page this object appears on.
-
-        >>> from brown.core import brown; brown.setup()
-        >>> some_object = GraphicObject((Mm(20), Mm(50)),
-        ...                             parent=brown.document.pages[5])
-        >>> some_object.page_index
-        5
-        >>> some_object in brown.document.pages[5].descendants
-        True
-
-        """
-        # TODO MEDIUM: is this really needed?
-        # The page will be the parent of the final ancestor
-        ancestor = None
-        for ancestor in self.ancestors:
-            pass
-        if ancestor is None:
-            # self.parent is a page
-            return self.parent.page_index
-        return ancestor.parent.page_index
 
     ######## CLASS METHODS ########
 

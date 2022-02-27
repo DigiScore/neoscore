@@ -97,39 +97,6 @@ class Document:
 
     ######## PUBLIC METHODS ########
 
-    def page_range_of(self, graphic_objects):
-        """Find the page indices an iter of `GraphicObject`s appears on.
-
-            >>> from brown.common import *
-            >>> brown.setup()
-            >>> graphic_objects = [
-            ...     InvisibleObject((Mm(0), Mm(0)), brown.document.pages[1]),
-            ...     InvisibleObject((Mm(0), Mm(0)), brown.document.pages[5]),
-            ... ]
-            >>> brown.document.page_range_of(graphic_objects)
-            range(1, 6)
-
-        Args:
-            graphic_objects (iter[GraphicObject]):
-
-        Returns:
-            range: The range from the first page index to one after the last.
-                In order to be consistent with python's `range` semantics,
-                the range goes 1 past the maximum page objects appear on.
-        """
-        min_page = float("inf")
-        max_page = -float("inf")
-        for current in graphic_objects:
-            current_page_num = current.page_index
-            if current.children:
-                child_min_max = self.page_range_of(current.children)
-                min_page = min(min_page, current_page_num, child_min_max[0])
-                max_page = max(max_page, current_page_num, child_min_max[1])
-            else:
-                min_page = min(min_page, current_page_num)
-                max_page = max(max_page, current_page_num)
-        return range(min_page, max_page + 1)
-
     def page_origin(self, page_number):
         """Find the origin point of a given page number.
 
