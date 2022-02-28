@@ -3,7 +3,7 @@ from typing import Any, Optional, cast
 
 from brown import constants
 from brown.core.page_supplier import PageSupplier
-from brown.core.paper import Paper, PaperTemplate
+from brown.core.paper import Paper
 from brown.core.types import Positioned
 from brown.utils.point import ORIGIN, Point
 from brown.utils.rect import Rect

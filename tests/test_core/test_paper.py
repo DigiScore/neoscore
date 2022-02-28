@@ -1,6 +1,7 @@
 import unittest
 
-from brown.core.paper import Paper, PaperTemplate
+from brown.core import paper
+from brown.core.paper import Paper
 from brown.utils.units import Inch, Mm
 
 
@@ -34,8 +35,12 @@ class TestPaper(unittest.TestCase):
         assert rotated.margin_left == original.margin_bottom
         assert rotated.gutter == original.gutter
 
+    def test_templates(self):
+        assert paper.A4
+        assert paper.LETTER
+
     def test_make_rotation_four_times_no_change(self):
-        test_paper = PaperTemplate.Letter.value
+        test_paper = paper.LETTER
         assert (
             test_paper.make_rotation().make_rotation().make_rotation().make_rotation()
             == test_paper

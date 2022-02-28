@@ -61,7 +61,10 @@ class Paper:
         return PaperInterface(self)
 
 
-# Common Paper template instances are provided
-class PaperTemplate(Enum):
-    A4 = Paper(Mm(210), Mm(297), Mm(20), Mm(20), Mm(20), Mm(20), Mm(0))
-    Letter = Paper(Inch(8.5), Inch(11), Inch(1), Inch(1), Inch(1), Inch(1), Inch(0.3))
+# Templates for common paper types are declared below
+
+A4 = Paper(Mm(210), Mm(297), Mm(20), Mm(20), Mm(20), Mm(20), Mm(0))
+"""Template for A4-sized portrait paper"""
+
+LETTER = Paper(Inch(8.5), Inch(11), Inch(1), Inch(1), Inch(1), Inch(1), Inch(0.3))
+"""Template for letter-sized portrait paper"""
