@@ -64,6 +64,10 @@ class Unit:
             return self._display_value
         return round(self.base_value / self.CONVERSION_RATE, 3)
 
+    @property
+    def quantized_hash_key(self) -> int:
+        pass
+
     ######## SPECIAL METHODS ########
 
     # Representations ---------------------------------------------------------
@@ -71,8 +75,14 @@ class Unit:
     def __repr__(self):
         return "{}({})".format(type(self).__name__, self.display_value)
 
+    # TODO HIGH I'm increasingly thinking hash and eq should be
+    # dropped entirely from Unit and Point etc. as it's nigh
+    # impossible to implement in a totally reliable way. Quantized
+    # values could be used where necessary for hashing (like in
+    # MusicText's geometry cache), and approximate comparison code
+    # already exists for tests.
+
     def __hash__(self):
-        # TODO HIGH is this still correct with the new eq implementation?
         return hash(self.base_value)
 
     # Comparisons -------------------------------------------------------------

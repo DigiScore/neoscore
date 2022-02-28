@@ -129,7 +129,14 @@ class Chordrest(ObjectGroup, StaffObject):
         """
         highest = self.highest_notehead.staff_pos
         lowest = self.lowest_notehead.staff_pos
-        # Join sets of needed ledgers above and below with union operator
+        # Join sets of needed ledgers above and below with union
+        # operator
+        #
+        # TODO MEDIUM if/when Unit is updated to not be hashable, this
+        # will need to be updated. Probably a better solution is to
+        # make `staff.ledgers_needed_for_y` return a list, then have
+        # the code here only combine ledgers if `highest` and `lowst`
+        # are on opposite sides of the staff.
         return self.staff.ledgers_needed_for_y(
             lowest
         ) | self.staff.ledgers_needed_for_y(highest)
@@ -209,7 +216,7 @@ class Chordrest(ObjectGroup, StaffObject):
         return set(
             note
             for note in self.noteheads
-            if self.staff.y_outside_staff(note.staff_pos)
+            if not self.staff.y_inside_staff(note.staff_pos)
         )
 
     @property

@@ -102,15 +102,6 @@ class TestStaff(unittest.TestCase):
         # After octave_line ends
         assert staff.middle_c_at(Mm(101)) == staff.unit(5)
 
-    def test_position_outside_staff_is_inverse_of_inside(self):
-        staff = Staff((Mm(0), Mm(0)), Mm(100), self.flowable, line_count=4)
-        i = -1
-        while i < 5:
-            assert staff.y_outside_staff(staff.unit(i)) != staff.y_inside_staff(
-                staff.unit(i)
-            )
-            i += 1
-
     def test_position_inside_staff_with_odd_line_count(self):
         staff = Staff((Mm(0), Mm(0)), Mm(100), self.flowable, line_count=5)
         assert staff.y_inside_staff(staff.unit(0)) is True

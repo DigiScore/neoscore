@@ -1,4 +1,6 @@
-from typing import Iterator, List
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Optional, Type
 
 from brown import constants
 from brown.core.clef import Clef
@@ -6,8 +8,12 @@ from brown.core.music_font import MusicFont
 from brown.core.octave_line import OctaveLine
 from brown.core.path import Path
 from brown.models.beat import Beat
+from brown.models.transposition import Transposition
 from brown.utils.exceptions import NoClefError
 from brown.utils.units import ZERO, Unit, make_unit_class
+
+if TYPE_CHECKING:
+    from brown.core.staff_object import StaffObject
 
 
 class Staff(Path):
@@ -63,8 +69,8 @@ class Staff(Path):
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def unit(self):
-        """type(Unit): The standard distance between two lines in this staff.
+    def unit(self) -> Type[Unit]:
+        """A unit type where 1 is the distance between two staff lines.
 
         This is a generated class with the name `StaffUnit`. All `Staff`
         objects have a unique `StaffUnit` class such that different sized
@@ -79,31 +85,31 @@ class Staff(Path):
         return self._unit
 
     @property
-    def height(self):
-        """Unit: The height of the staff from top to bottom line.
+    def height(self) -> Unit:
+        """The height of the staff from top to bottom line.
 
         If the staff only has one line, its height is defined as 0.
         """
         return self.unit(self.line_count - 1)
 
     @property
-    def line_count(self):
-        """int: The number of lines in the staff"""
+    def line_count(self) -> int:
+        """The number of lines in the staff"""
         return self._line_count
 
     @property
-    def top_line_y(self):
-        """StaffUnit: The position of the top staff line"""
+    def top_line_y(self) -> Unit:
+        """The position of the top staff line"""
         return self.unit(0)
 
     @property
-    def center_pos_y(self):
-        """StaffUnit: The position of the center staff position"""
+    def center_pos_y(self) -> Unit:
+        """The position of the center staff position"""
         return self.unit((self.line_count - 1) / 2)
 
     @property
-    def bottom_line_y(self):
-        """StaffUnit: The position of the bottom staff line"""
+    def bottom_line_y(self) -> Unit:
+        """The position of the bottom staff line"""
         return self.unit((self.line_count - 1))
 
     @property
@@ -114,7 +120,7 @@ class Staff(Path):
 
     ######## PUBLIC METHODS ########
 
-    def distance_to_next_of_type(self, staff_object):
+    def distance_to_next_of_type(self, staff_object: StaffObject) -> Unit:
         """Find the x distance until the next occurrence of an object's type.
 
         If the object is the last of its type, this gives the remaining length
@@ -123,11 +129,6 @@ class Staff(Path):
         This is useful for determining rendering behavior of `StaffObject`s
         who are active until another of their type occurs,
         such as `KeySignature`s, or `Clef`s.
-
-        Args:
-            staff_object (StaffObject):
-
-        Returns: Unit
         """
         start_x = self.flowable.map_x_between_locally(self, staff_object)
         all_others_of_class = (
@@ -144,123 +145,66 @@ class Staff(Path):
             return self.length - start_x
         return closest_x - start_x
 
-    def clefs(self) -> Iterator[tuple[Unit, Clef]]:
+    def clefs(self) -> list[tuple[Unit, Clef]]:
         """All the clefs in this staff, ordered by their relative x pos."""
         cached_clef_positions = getattr(self, "_clef_x_positions", None)
         if cached_clef_positions:
             return cached_clef_positions
-        return sorted(
-            (
-                (clef.pos_x_in_staff, clef)
-                for clef in self.descendants_of_class_or_subclass(Clef)
-            ),
-            key=lambda tup: tup[0],
-        )
+        return self._compute_clef_x_positions()
 
-    def active_clef_at(self, pos_x):
-        """Find and return the active clef at a given x position.
-
-        Args:
-            pos_x (Unit): An x-axis position on the staff
-
-        Returns:
-            Clef: The active clef at `pos_x`
-            None: If no clef is active at `pos_x`
-        """
+    def active_clef_at(self, pos_x: Unit) -> Optional[Clef]:
+        """Return the active clef at a given x position, if any."""
         clefs = self.clefs()
         return next(
             (clef for (clef_x, clef) in reversed(clefs) if clef_x <= pos_x),
             None,
         )
 
-    def active_transposition_at(self, pos_x):
-        """Find and return the active transposition at a given x position.
-
-        The current implementation simply searches through the staff
-        descendants for any OctaveLines which overlap with pos_x,
-        and returns the transposition of the first found,
-        and None if none are.
-
-        Args:
-            pos_x (Unit): An x-axis position on the staff
-
-        Returns:
-            Transposition: The active transposition at `pos_x`
-            None: If no transposition was found.
-        """
+    def active_transposition_at(self, pos_x: Unit) -> Optional[Transposition]:
+        """Return the active transposition at a given x position, if any."""
         for item in self.descendants_of_class_or_subclass(OctaveLine):
             line_pos = self.flowable.map_x_between_locally(self, item)
             if line_pos <= pos_x <= line_pos + item.length:
                 return item.transposition
         return None
 
-    def middle_c_at(self, pos_x):
-        """Find the vertical staff position of middle-c at a given point.
+    def middle_c_at(self, pos_x: Unit) -> Unit:
+        """Find the y-axis staff position of middle-c at a given point.
 
         Looks for clefs and other transposing modifiers to determine
         the position of middle-c.
 
         If no clef is present, a `NoClefError` is raised.
-
-        Returns:
-            StaffUnit: A vertical staff position
         """
         clef = self.active_clef_at(pos_x)
-        transposition = self.active_transposition_at(pos_x)
         if clef is None:
             raise NoClefError
+        transposition = self.active_transposition_at(pos_x)
+        if transposition:
+            return clef.middle_c_staff_position + self.unit(
+                transposition.interval.staff_distance
+            )
         else:
-            if transposition:
-                return clef.middle_c_staff_position + self.unit(
-                    transposition.interval.staff_distance
-                )
-            else:
-                return clef.middle_c_staff_position
+            return clef.middle_c_staff_position
 
-    def y_inside_staff(self, pos_y):
+    def y_inside_staff(self, pos_y: Unit) -> bool:
         """Determine if a y-axis position is inside the staff.
 
         This is true for any position within or on the outer lines.
-
-        Args:
-            pos_y (StaffUnit): A vertical staff position
-
-        Returns: bool
         """
         return self.top_line_y <= pos_y <= self.bottom_line_y
 
-    def y_outside_staff(self, pos_y):
-        """Determine if a y-axis position is outside of the staff.
+    def y_on_ledger(self, pos_y: Unit) -> bool:
+        """Determine if a y-axis position is approximately at a ledger line position
 
-        This is true for any position not on or between the outer staff lines.
-
-        Args:
-            pos_y (StaffUnit): A vertical staff position
-
-        Returns: bool
+        This is true for any whole-number staff position outside of the staff
         """
-        return not self.y_inside_staff(pos_y)
+        return (not self.y_inside_staff(pos_y)) and self.unit(
+            pos_y
+        ).display_value % 1 == 0
 
-    def y_on_ledger(self, pos_y):
-        """Determine if a y-axis position is on a ledger line position
-
-        This is true for any whole-number position outside of the staff
-
-        Args:
-            pos_y (StaffUnit): A vertical staff position
-
-        Returns: bool
-        """
-        return self.y_outside_staff(pos_y) and self.unit(pos_y).display_value % 1 == 0
-
-    def ledgers_needed_for_y(self, position):
-        """Find the y positions of all ledgers needed for a given y position
-
-        Args:
-            position (StaffUnit): Any y-axis position
-
-        Returns: set[StaffUnit]
-        """
+    def ledgers_needed_for_y(self, position: Unit) -> set[Unit]:
+        """Find the y positions of all ledgers needed for a given y position"""
         # Work on positions as integers for simplicity
         start = int(self.unit(position).display_value)
         if start < 0:
@@ -273,7 +217,7 @@ class Staff(Path):
     ######## PRIVATE METHODS ########
 
     @staticmethod
-    def _make_unit_class(staff_unit_size):
+    def _make_unit_class(staff_unit_size: Unit) -> Type[Unit]:
         """Create a Unit class with a ratio of 1 to a staff unit size
 
         Args:
@@ -286,7 +230,6 @@ class Staff(Path):
         return make_unit_class("StaffUnit", staff_unit_size.base_value)
 
     def _compute_clef_x_positions(self) -> list[tuple[Unit, Clef]]:
-        # TODO HIGH this is duplicated with the on-demand version in `clefs()`
         result = [
             (clef.pos_x_in_staff, clef)
             for clef in self.descendants_of_class_or_subclass(Clef)

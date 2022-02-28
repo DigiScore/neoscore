@@ -7,6 +7,7 @@ from brown.core.pen import Pen
 from brown.core.pen_pattern import PenPattern
 from brown.core.staff_object import StaffObject
 from brown.interface.text_interface import TextInterface
+from brown.models.interval import Interval
 from brown.models.transposition import Transposition
 from brown.utils.point import ORIGIN, Point
 from brown.utils.units import ZERO
@@ -39,7 +40,12 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
     line continuation offsets for paths.
     """
 
-    intervals = {"15ma": "aP15", "8va": "aP8", "8vb": "dP8", "15mb": "dP15"}
+    intervals = {
+        "15ma": Interval("aP15"),
+        "8va": Interval("aP8"),
+        "8vb": Interval("dP8"),
+        "15mb": Interval("dP15"),
+    }
 
     glyphs = {
         "15ma": "quindicesimaAlta",
