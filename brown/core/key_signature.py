@@ -2,6 +2,7 @@ from typing import Dict
 
 from brown.core.accidental import Accidental
 from brown.core.clef import Clef
+from brown.core.mapping import map_between
 from brown.core.music_text import MusicText
 from brown.core.object_group import ObjectGroup
 from brown.core.staff_object import StaffObject
@@ -163,7 +164,7 @@ class _KeySignatureAccidental(MusicText, StaffObject):
         work.
 
         """
-        staff_pos_in_flowable = self.flowable.pos_in_flowable_of(self.staff)
+        staff_pos_in_flowable = map_between(self.flowable, self.staff)
         pos_x_in_staff = local_start_x - staff_pos_in_flowable.x
         clef = self.staff.active_clef_at(pos_x_in_staff)
         if clef is None:

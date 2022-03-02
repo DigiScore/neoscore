@@ -1,4 +1,5 @@
 from brown.core.graphic_object import GraphicObject
+from brown.core.mapping import map_between
 from brown.core.multi_staff_object import MultiStaffObject
 from brown.core.path import Path
 from brown.core.pen import Pen
@@ -30,6 +31,6 @@ class BarLine(Path, MultiStaffObject):
         thickness = engraving_defaults["thinBarlineThickness"]
         self.pen = Pen(thickness=thickness)
         # Draw path
-        offset = GraphicObject.map_between_items(self.lowest_staff, self.highest_staff)
+        offset = map_between(self.lowest_staff, self.highest_staff)
         bottom_x = pos_x + offset.x
         self.line_to(bottom_x, self.lowest_staff.height, parent=self.lowest_staff)

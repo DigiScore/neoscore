@@ -1,3 +1,4 @@
+from brown.core import mapping
 from brown.core.graphic_object import GraphicObject
 
 
@@ -46,6 +47,6 @@ class MultiStaffObject:
         of `self.lowest_staff`, in `self.highest_staff.unit` StaffUnits.
         """
         return self.highest_staff.unit(
-            GraphicObject.map_between_items(self.highest_staff, self.lowest_staff).y
+            mapping.map_between(self.highest_staff, self.lowest_staff).y
             + self.lowest_staff.height
         )

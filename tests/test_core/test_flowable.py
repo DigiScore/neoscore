@@ -138,33 +138,3 @@ class TestFlowable(unittest.TestCase):
         test_flowable = Flowable((Mm(10), Mm(0)), Mm(10000), Mm(90), Mm(5))
         with pytest.raises(OutOfBoundsError):
             test_flowable.last_break_at(Mm(10000000))
-
-    def test_pos_in_flowable_of(self):
-        flowable = Flowable((Mm(10), Mm(0)), Mm(10000), Mm(90), Mm(5))
-        grob_1 = InvisibleObject((Mm(1), Mm(2)), flowable)
-        grob_2 = InvisibleObject((Mm(7), Mm(13)), grob_1)
-        assert flowable.pos_in_flowable_of(grob_1) == Point(Mm(1), Mm(2))
-        assert flowable.pos_in_flowable_of(grob_2) == Point(Mm(8), Mm(15))
-
-    def test_pos_x_in_flowable_of(self):
-        flowable = Flowable((Mm(10), Mm(0)), Mm(10000), Mm(90), Mm(5))
-        grob_1 = InvisibleObject((Mm(1), Mm(2)), flowable)
-        grob_2 = InvisibleObject((Mm(7), Mm(13)), grob_1)
-        assert flowable.pos_x_in_flowable_of(grob_1) == Mm(1)
-        assert flowable.pos_x_in_flowable_of(grob_2) == Mm(8)
-
-    def test_map_between_locally(self):
-        flowable = Flowable((Mm(10), Mm(0)), Mm(10000), Mm(90), Mm(5))
-        grob_1 = InvisibleObject((Mm(1), Mm(2)), flowable)
-        grob_2 = InvisibleObject((Mm(7), Mm(13)), flowable)
-        grob_3 = InvisibleObject((Mm(100), Mm(200)), grob_2)
-        assert flowable.map_between_locally(grob_1, grob_2) == Point(Mm(6), Mm(11))
-        assert flowable.map_between_locally(grob_1, grob_3) == Point(Mm(106), Mm(211))
-
-    def test_map_x_between_locally(self):
-        flowable = Flowable((Mm(10), Mm(0)), Mm(10000), Mm(90), Mm(5))
-        grob_1 = InvisibleObject((Mm(1), Mm(2)), flowable)
-        grob_2 = InvisibleObject((Mm(7), Mm(13)), flowable)
-        grob_3 = InvisibleObject((Mm(100), Mm(200)), grob_2)
-        assert flowable.map_x_between_locally(grob_1, grob_2) == Mm(6)
-        assert flowable.map_x_between_locally(grob_1, grob_3) == Mm(106)

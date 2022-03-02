@@ -1,3 +1,4 @@
+from brown.core.mapping import map_between
 from brown.core.music_text import MusicText
 from brown.core.staff_object import StaffObject
 from brown.models.beat import Beat
@@ -50,8 +51,7 @@ class Notehead(MusicText, StaffObject):
         )
         StaffObject.__init__(self, parent)
         self.y = self.staff.unit(
-            self.staff_pos
-            - self.flowable.map_between_locally(self.staff, self.parent).y
+            self.staff_pos - map_between(self.staff, self.parent).y
         )
 
     ######## PUBLIC PROPERTIES ########

@@ -1,8 +1,9 @@
-from brown.core import brown
+from brown.core import brown, mapping
 from brown.core.auto_new_line import AutoNewLine
 from brown.core.break_opportunity import BreakOpportunity
 from brown.core.graphic_object import GraphicObject
 from brown.core.invisible_object import InvisibleObject
+from brown.core.mapping import Positioned
 from brown.utils.exceptions import OutOfBoundsError
 from brown.utils.point import ORIGIN, Point
 from brown.utils.units import ZERO, Mm, Unit
@@ -149,23 +150,6 @@ class Flowable(InvisibleObject):
                     )
                 )
 
-    def _last_break_opportunity(self, local_x):
-        """Find the `BreakOpporunity` closest to the left a local x position.
-
-        Args:
-            local_x(Unit): an x-axis position in the flowable space.
-
-        Returns:
-            BreakOpportunity or None: the closest `BreakOpporunity` to the left
-                of the given point, or `None` if none exists.
-        """
-        # Lots of room for optimization here if needed
-        opportunities = self.descendants_of_class_or_subclass(BreakOpportunity)
-        opportunities_before = (
-            o for o in opportunities if self.pos_in_flowable_of(o) < local_x
-        )
-        return max(opportunities_before, key=lambda o: self.pos_in_flowable_of(o).x)
-
     def map_to_canvas(self, local_point):
         """Convert a local point to its position in the canvas.
 
@@ -234,72 +218,3 @@ class Flowable(InvisibleObject):
             raise OutOfBoundsError(
                 "local_x={} lies outside of this Flowable".format(local_x)
             )
-
-    def pos_in_flowable_of(self, grob: GraphicObject) -> Point:
-        """Find the position of an object in (unwrapped) flowable space.
-
-        Args:
-            grob: An object in the flowable.
-
-        Returns:
-            A non-paged point relative to the flowable.
-
-        Raises:
-            ValueError: If `grob` is not in the flowable.
-        """
-        pos = ORIGIN
-        current = grob
-        try:
-            while current != self:
-                pos += current.pos
-                current = current.parent
-            return pos
-        except AttributeError:
-            raise ValueError("object is not in this Flowable")
-
-    def pos_x_in_flowable_of(self, grob: GraphicObject) -> Unit:
-        """A specialized version of `pos_in_flowable_of` which only finds the X pos
-
-        See `pos_in_flowable_of` for more.
-        """
-        pos_x = ZERO
-        current = grob
-        try:
-            while current != self:
-                pos_x += current.x
-                current = current.parent
-            return pos_x
-        except AttributeError:
-            raise ValueError("object is not in this Flowable")
-
-    # TODO MEDIUM: I believe these flowable mapping functions can be made
-    # obsolete by making the GraphicObject mapping functions more
-    # robust. If they actually climbed up the object tree and found
-    # their common ancestor to map between, this would automatically
-    # find the flowable position. Today this doesn't work because the
-    # mappers hackily compare canvas positions, necessitating these
-    # flowable-specific functions.
-
-    def map_between_locally(self, src: GraphicObject, dst: GraphicObject) -> Point:
-        """Find the relative position between two objects in this flowable.
-
-        Args:
-            src: The object to map from
-            dst: The object to map to
-
-        Returns:
-            The relative position of `dst`, relative to `src` within the
-                local flowable space.
-
-        Raises:
-            ValueError: If either `src` or `dst` are not
-                in the flowable.
-        """
-        return self.pos_in_flowable_of(dst) - self.pos_in_flowable_of(src)
-
-    def map_x_between_locally(self, src: GraphicObject, dst: GraphicObject) -> Unit:
-        """A specialized version of `map_between_locally` which only maps the X delta.
-
-        See `map_between_locally` for more.
-        """
-        return self.pos_x_in_flowable_of(dst) - self.pos_x_in_flowable_of(src)

@@ -9,17 +9,7 @@ from brown.utils.units import Unit
 
 
 class MockHorizontalSpanner(GraphicObject, HorizontalSpanner):
-
-    """A mock horizontal spanner for testing."""
-
     def __init__(self, pos, parent, end_x, end_parent):
-        """
-        Args:
-            pos (Point or tuple init args):
-            parent (GraphicObject or None):
-            end_x (Unit):
-            end_parent (GraphicObject or None):
-        """
         GraphicObject.__init__(self, pos, parent=parent)
         HorizontalSpanner.__init__(self, end_x, end_parent)
 
@@ -51,6 +41,10 @@ class TestHorizontalSpanner(unittest.TestCase):
         spanner = MockHorizontalSpanner(
             Point(Unit(20), Unit(5)), start_parent, Unit(30), end_parent
         )
+        from brown.core.mapping import ancestors
+
+        print(list(ancestors(start_parent)))
+        print(list(ancestors(end_parent)))
         assert spanner.end_parent == end_parent
         assert spanner.end_x == Unit(30)
         assert spanner.end_y == Unit(35)

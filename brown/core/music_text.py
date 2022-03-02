@@ -1,10 +1,10 @@
 from typing import Any, NamedTuple, Optional
 
+from brown.core.mapping import Positioned
 from brown.core.music_char import MusicChar
 from brown.core.music_font import MusicFont
 from brown.core.staff_object import StaffObject
 from brown.core.text import Text
-from brown.core.types import Positioned
 from brown.utils.point import Point, PointDef
 from brown.utils.rect import Rect
 from brown.utils.units import ZERO, Unit

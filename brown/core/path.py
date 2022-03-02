@@ -3,8 +3,8 @@ from typing import Optional, Union, cast
 from brown import constants
 from brown.core.brush import Brush
 from brown.core.graphic_object import GraphicObject
+from brown.core.mapping import Positioned, descendant_pos, map_between, map_between_x
 from brown.core.path_element import ControlPoint, CurveTo, LineTo, MoveTo, PathElement
-from brown.core.types import Positioned
 from brown.interface.path_interface import PathInterface
 from brown.utils.point import ORIGIN, Point
 from brown.utils.units import ZERO, Unit
@@ -69,21 +69,9 @@ class Path(GraphicObject):
         # Find the positions of every path element relative to the path
         min_x = Unit(float("inf"))
         max_x = Unit(-float("inf"))
-        in_flowable = self.flowable is not None
-        self_flowable_pos = (
-            self.flowable.pos_in_flowable_of(self) if in_flowable else None
-        )
         for element in self.elements:
             # Determine element X relative to self
-            if element.parent is self:
-                # Specialize simple case
-                relative_x = element.x
-            elif in_flowable:
-                relative_x = (
-                    self.flowable.pos_in_flowable_of(element) - self_flowable_pos
-                ).x
-            else:
-                relative_x = GraphicObject.map_between_items(self, element).x
+            relative_x = map_between_x(self, element)
             # Now update min/max accordingly
             if relative_x > max_x:
                 max_x = relative_x
@@ -186,14 +174,7 @@ class Path(GraphicObject):
         self.elements.append(CurveTo(Point(end_x, end_y), end_parent or self, c1, c2))
 
     def _relative_element_pos(self, element: Positioned) -> Point:
-        if element.parent != self:
-            if self.flowable is not None:
-                relative_pos = self.flowable.map_between_locally(self, element)
-            else:
-                relative_pos = GraphicObject.map_between_items(self, element)
-        else:
-            relative_pos = element.pos
-        return relative_pos
+        return map_between(self, element)
 
     def _render_slice(self, pos, clip_start_x=None, clip_width=None):
         """Render a horizontal slice of a path.

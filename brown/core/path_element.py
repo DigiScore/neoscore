@@ -1,7 +1,13 @@
 from dataclasses import dataclass
 
-from brown.core.types import Positioned
+from brown.core.mapping import Positioned
 from brown.utils.point import Point
+
+# TODO HIGH Some real headaches coming up in ChordRest flags suggest
+# these might need to be InvisibleObjects after all.. Otherwise some
+# detailed work will be needed to ensure GraphicObjects really can
+# have a bare `Positioned` like these as a parent and everything will
+# work seamlessly.
 
 
 @dataclass(frozen=True)

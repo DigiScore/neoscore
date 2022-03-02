@@ -7,9 +7,14 @@ from typing import TYPE_CHECKING, Optional, Type, Union, cast
 from brown import constants
 from brown.core import brown
 from brown.core.brush import Brush
+from brown.core.mapping import (
+    Positioned,
+    ancestors,
+    descendant_pos,
+    first_ancestor_of_exact_class,
+)
 from brown.core.page import Page
 from brown.core.pen import Pen
-from brown.core.types import Positioned
 from brown.interface.graphic_object_interface import GraphicObjectInterface
 from brown.utils.point import ORIGIN, Point
 from brown.utils.units import ZERO, Mm, Unit
@@ -194,12 +199,12 @@ class GraphicObject(ABC):
         self._parent._register_child(self)
 
     @property
-    def children(self) -> set[GraphicObject]:
+    def children(self) -> list[GraphicObject]:
         """All objects who have self as their parent."""
         return self._children
 
     @children.setter
-    def children(self, value: set[GraphicObject]):
+    def children(self, value: list[GraphicObject]):
         self._children = value
 
     @property
@@ -218,64 +223,9 @@ class GraphicObject(ABC):
             yield child
 
     @property
-    def ancestors(self) -> Iterator[GraphicObject]:
-        """All ancestors of this object.
-
-        Follows the chain of parents until a document page is reached.
-        The iterable will *not* include the document `Page`.
-
-        The order begins with `self.parent` and traverses upward in the tree.
-        """
-        ancestor = self.parent
-        while type(ancestor) != Page:
-            yield cast(GraphicObject, ancestor)
-            ancestor = ancestor.parent
-
-    @property
     def flowable(self) -> Optional[Flowable]:
         """Flowable or None: The flowable this object belongs in."""
-        return self.first_ancestor_of_exact_class("Flowable")
-
-    ######## CLASS METHODS ########
-
-    @classmethod
-    def map_between_items(cls, source: Positioned, dest: Positioned) -> Point:
-        """Find a GraphicObject's position relative to another
-
-        Args:
-            source: The object to map from
-            dest: The object to map to
-
-        Returns:
-            The canvas position of `dest` relative to `source`
-        """
-        # Handle easy cases
-        if source == dest:
-            return ORIGIN
-        if source.parent == dest.parent:
-            return dest.pos - source.pos
-        if dest.parent == source:
-            return dest.pos
-        if source.parent == dest:
-            return -source.pos
-        # Otherwise, inefficiently compare the canvas positions of the two objects
-        return brown.document.canvas_pos_of(dest) - brown.document.canvas_pos_of(source)
-
-    # TODO MEDIUM can't implement this until document methods are made too
-    # @classmethod
-    # def map_x_between_items(cls, source: GraphicObject, dest: GraphicObject) -> Unit:
-    #     """Specialized version of `map_between_items` which only finds the x delta"""
-    #     # Handle easy cases
-    #     if source == dest:
-    #         return ZERO
-    #     if source.parent == dest.parent:
-    #         return dest.x - source.x
-    #     if dest.parent == source:
-    #         return dest.x
-    #     if source.parent == dest:
-    #         return -source.x
-    #     # Otherwise, inefficiently compare the canvas positions of the two objects
-    #     return brown.document.canvas_pos_of(dest) - brown.document.canvas_pos_of(source)
+        return first_ancestor_of_exact_class(self, "Flowable")
 
     ######## PUBLIC METHODS ########
 
@@ -304,52 +254,6 @@ class GraphicObject(ABC):
         for descendant in self.descendants:
             if type(descendant) == graphic_object_class:
                 yield descendant
-
-    def first_ancestor_of_class_or_subclass(
-        self, graphic_object_class: Type[GraphicObject]
-    ):
-        """Get the closest ancestor with a class or its subclasses.
-
-        If none can be found, returns `None`.
-
-        Args:
-            graphic_object_class (type): The type to search for.
-                This should be a subclass of GraphicObject.
-
-        Returns: GraphicObject or None
-        """
-        return next(
-            (item for item in self.ancestors if isinstance(item, graphic_object_class)),
-            None,
-        )
-
-    def first_ancestor_of_exact_class(
-        self, graphic_object_class: Union[str, Type[GraphicObject]]
-    ):
-        """Get the closest ancestor with a class.
-
-        If none can be found, returns `None`.
-
-        Args:
-            graphic_object_class (type or str): The type to search for.
-                This should be a subclass of GraphicObject.
-                A str of a class name may also be used.
-
-        Returns: GraphicObject or None
-        """
-        if isinstance(graphic_object_class, str):
-            return next(
-                (
-                    item
-                    for item in self.ancestors
-                    if type(item).__name__ == graphic_object_class
-                ),
-                None,
-            )
-        return next(
-            (item for item in self.ancestors if type(item) == graphic_object_class),
-            None,
-        )
 
     def remove(self):
         """Remove this object from the document."""
@@ -416,7 +320,7 @@ class GraphicObject(ABC):
         Returns: None
         """
         # Calculate position within flowable
-        pos_in_flowable = self.flowable.pos_in_flowable_of(self)
+        pos_in_flowable = descendant_pos(self, self.flowable)
 
         remaining_x = self.length + self.flowable.dist_to_line_end(pos_in_flowable.x)
         if remaining_x < ZERO:

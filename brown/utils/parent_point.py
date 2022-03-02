@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import NamedTuple, Optional, Type, Union
 
-from brown.core.types import Positioned
+from brown.core.mapping import Positioned
 from brown.utils.point import Point
 from brown.utils.units import Unit
 

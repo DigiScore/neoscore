@@ -1,9 +1,10 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional, Type
+from typing import TYPE_CHECKING, Optional, Type, cast
 
 from brown import constants
 from brown.core.clef import Clef
+from brown.core.mapping import Positioned, map_between, map_between_x
 from brown.core.music_font import MusicFont
 from brown.core.octave_line import OctaveLine
 from brown.core.path import Path
@@ -130,7 +131,7 @@ class Staff(Path):
         who are active until another of their type occurs,
         such as `KeySignature`s, or `Clef`s.
         """
-        start_x = self.flowable.map_x_between_locally(self, staff_object)
+        start_x = map_between_x(self, cast(Positioned, staff_object))
         all_others_of_class = (
             item
             for item in self.descendants_of_exact_class(type(staff_object))
@@ -138,7 +139,7 @@ class Staff(Path):
         )
         closest_x = Unit(float("inf"))
         for item in all_others_of_class:
-            relative_x = self.flowable.map_x_between_locally(self, item)
+            relative_x = map_between_x(self, item)
             if start_x < relative_x < closest_x:
                 closest_x = relative_x
         if closest_x == Unit(float("inf")):
@@ -163,7 +164,7 @@ class Staff(Path):
     def active_transposition_at(self, pos_x: Unit) -> Optional[Transposition]:
         """Return the active transposition at a given x position, if any."""
         for item in self.descendants_of_class_or_subclass(OctaveLine):
-            line_pos = self.flowable.map_x_between_locally(self, item)
+            line_pos = map_between_x(self, item)
             if line_pos <= pos_x <= line_pos + item.length:
                 return item.transposition
         return None

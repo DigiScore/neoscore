@@ -1,6 +1,7 @@
 import math
 
 from brown.core.graphic_object import GraphicObject
+from brown.core.mapping import map_between
 from brown.core.path import Path
 from brown.core.spanner import Spanner
 from brown.core.staff_object import StaffObject
@@ -76,9 +77,7 @@ class Hairpin(Path, StaffObject, Spanner):
             )
         dist = self.width / 2
         # Find relative distance from joint to end_center
-        parent_distance = GraphicObject.map_between_items(
-            joint.parent, end_center.parent
-        )
+        parent_distance = map_between(joint.parent, end_center.parent)
         relative_stop = (
             parent_distance
             + Point(end_center.x, end_center.y)

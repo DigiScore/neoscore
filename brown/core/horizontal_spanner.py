@@ -1,6 +1,7 @@
-from typing import Optional
+from typing import Optional, cast
 
 from brown.core.graphic_object import GraphicObject
+from brown.core.mapping import Positioned, map_between
 from brown.core.spanner import Spanner
 from brown.utils.point import Point
 from brown.utils.units import ZERO, Unit
@@ -59,10 +60,7 @@ class HorizontalSpanner(Spanner):
         """
         if self.end_parent == self:
             return ZERO
-        elif self.flowable is not None:
-            return self.flowable.map_between_locally(self.end_parent, self).y
-        else:
-            return GraphicObject.map_between_items(self.end_parent, self).y
+        return map_between(self.end_parent, cast(Positioned, self)).y
 
     @property
     def end_pos(self) -> Point:

@@ -1,7 +1,16 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any, Optional, Union, cast
+
+from brown.core import mapping
 from brown.core.graphic_object import GraphicObject
+from brown.core.mapping import Positioned, first_ancestor_of_exact_class
 from brown.utils.exceptions import NoAncestorStaffError
 from brown.utils.point import Point
 from brown.utils.units import Unit
+
+if TYPE_CHECKING:
+    from brown.core.staff import Staff
 
 
 class StaffObject:
@@ -23,7 +32,7 @@ class StaffObject:
         Args:
             parent (Staff or StaffObject):
         """
-        self._staff = self.find_staff(parent)
+        self._staff = StaffObject.find_staff(parent)
         if not self._staff:
             raise NoAncestorStaffError
 
@@ -36,28 +45,19 @@ class StaffObject:
 
     @property
     def pos_in_staff(self) -> Point:
-        """The position of this object relative to the staff.
-
-        This position is in non-flowed space.
-        """
-        return self.flowable.map_between_locally(self.staff, self)
+        """The logical position of this object relative to the staff."""
+        return mapping.map_between(self.staff, cast(mapping.Positioned, self))
 
     @property
     def pos_x_in_staff(self) -> Unit:
         """A specialized version of `pos_in_staff` which only finds the x pos"""
-        return self.flowable.map_x_between_locally(self.staff, self)
+        return mapping.map_between_x(self.staff, cast(mapping.Positioned, self))
 
     ######## PRIVATE METHODS ########
 
     @staticmethod
-    def find_staff(graphic_object):
-        """Find the first staff which is `graphic_object` or an ancestor of it.
-
-        Args:
-            graphic_object (GraphicObject):
-
-        Returns: Staff or None
-        """
-        if type(graphic_object).__name__ == "Staff":
-            return graphic_object
-        return graphic_object.first_ancestor_of_exact_class("Staff")
+    def find_staff(obj: Positioned) -> Optional[Staff]:
+        """Find the first staff which is an ancestor of `obj` or `obj` itself"""
+        if type(obj).__name__ == "Staff":
+            return cast(Any, obj)
+        return first_ancestor_of_exact_class(obj, "Staff")

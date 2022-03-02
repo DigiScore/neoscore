@@ -1,3 +1,4 @@
+from brown.core.mapping import map_between_x
 from brown.core.multi_staff_object import MultiStaffObject
 from brown.core.music_font import MusicFontGlyphNotFoundError
 from brown.core.music_text import MusicText
@@ -70,7 +71,7 @@ class Brace(MultiStaffObject, StaffObject, MusicText):
 
         This is used to determine how and where rendering cuts should be made.
         """
-        return self.staff.length - self.flowable.map_x_between_locally(self.staff, self)
+        return self.staff.length - map_between_x(self.staff, self)
 
     ######## PRIVATE METHODS ########
 

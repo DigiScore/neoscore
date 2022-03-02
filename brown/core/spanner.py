@@ -1,6 +1,7 @@
 import math
 
 from brown.core.graphic_object import GraphicObject
+from brown.core.mapping import map_between, map_between_x
 from brown.utils.point import Point
 from brown.utils.units import Unit
 
@@ -91,10 +92,7 @@ class Spanner:
         if self.end_parent == self:
             return self.end_pos.x
         else:
-            return (
-                GraphicObject.map_between_items(self, self.end_parent).x
-                + self.end_pos.x
-            )
+            return map_between_x(self, self.end_parent) + self.end_pos.x
 
     @property
     def spanner_length(self):
@@ -106,9 +104,7 @@ class Spanner:
         if self.end_parent == self:
             relative_stop = self.end_pos
         else:
-            relative_stop = (
-                GraphicObject.map_between_items(self, self.end_parent) + self.end_pos
-            )
+            relative_stop = map_between(self, self.end_parent) + self.end_pos
         distance = Unit(
             math.sqrt(
                 (relative_stop.x.base_value**2) + (relative_stop.y.base_value**2)
