@@ -1,7 +1,8 @@
 """Various interoperable units classes and some related helper functions."""
 from __future__ import annotations
 
-from typing import Any, Optional, TypeVar, Union, cast
+from collections.abc import Iterable
+from typing import Any, Optional, Type, TypeVar, Union, cast
 
 TUnit = TypeVar("TUnit", bound="Unit")
 
@@ -22,8 +23,8 @@ class Unit:
 
     __slots__ = ("base_value", "_display_value")
 
-    CONVERSION_RATE = 1
-    """float: the ratio of this class to `Unit`s.
+    CONVERSION_RATE: float = 1
+    """The ratio of this class to `Unit`s.
 
     Subclasses should override this.
     """
@@ -78,13 +79,6 @@ class Unit:
 
     def __repr__(self):
         return "{}({})".format(type(self).__name__, self.display_value)
-
-    # TODO HIGH I'm increasingly thinking hash and eq should be
-    # dropped entirely from Unit and Point etc. as it's nigh
-    # impossible to implement in a totally reliable way. Quantized
-    # values could be used where necessary for hashing (like in
-    # MusicText's geometry cache), and approximate comparison code
-    # already exists for tests.
 
     # Comparisons -------------------------------------------------------------
 
@@ -198,61 +192,41 @@ def make_unit_class(name, unit_size):
     )
 
 
-def _convert_all_to_unit_in_immutable(iterable, unit):
-    """Recursively convert all numbers in an immutable iterable.
-
-    This is a helper function for convert_all_to_unit
-
-    Args:
-        iterable (Iterable): The immutable iterable to recursively convert
-        unit (type): The unit to convert numerical elements to
-
-    Returns:
-        iter(any): An iterable the same type of the input.
-            (set --> set, tuple --> tuple, etc.)
-    """
-    mutable_iterable = list(iterable)
+def _convert_all_to_unit_out_of_place(
+    collection: Union[tuple, set], unit: Type[Unit]
+) -> Union[tuple, set]:
+    mutable_iterable: list[Any] = list(collection)
     convert_all_to_unit(mutable_iterable, unit)
-    return type(iterable)(mutable_iterable)
+    return type(collection)(mutable_iterable)
 
 
-# TODO MEDIUM This should be refactored to be out-of-place to prevent
-# dangerous antipatterns as discovered in MusicFont
-def convert_all_to_unit(iterable, unit):
-    """Recursively convert all numbers found in an iterable to a unit in place.
+def convert_all_to_unit(collection: Union[list, dict], unit: Type[Unit]):
+    """Recursively convert all numbers found in a list or dict to a unit in place.
 
-    This function works in place. Immutable structures (namely tuples) found
-    within `iterable` will be replaced. `iterable` itself may not be immutable.
+    This function works in place. Tuples and sets found
+    within `collection` will be replaced.
 
-    In dictionaries, *only values* will be converted. Keys will be left as-is.
-
-    Args:
-        iterable (Iterable): The iterable to recursively convert
-        unit (type): The unit to convert numerical elements to
-
-    Returns:
-        None
-
-    Raises:
-        TypeError: If `iterable` is not an iterable or is immutable
+    In dictionaries, only values are converted.
     """
-    if isinstance(iterable, dict):
-        for key, value in iterable.items():
+    if isinstance(collection, dict):
+        for key, value in collection.items():
             if isinstance(value, (int, float, Unit)):
-                iterable[key] = unit(value)
+                collection[key] = unit(value)
             elif isinstance(value, (list, dict)):
-                convert_all_to_unit(iterable[key], unit)
+                convert_all_to_unit(collection[key], unit)
             elif isinstance(value, (tuple, set)):
-                iterable[key] = _convert_all_to_unit_in_immutable(iterable[key], unit)
+                collection[key] = _convert_all_to_unit_out_of_place(
+                    collection[key], unit
+                )
             # (else: continue --- nothing to do here)
-    elif isinstance(iterable, list):
-        for i in range(len(iterable)):
-            if isinstance(iterable[i], (int, float, Unit)):
-                iterable[i] = unit(iterable[i])
-            elif isinstance(iterable[i], (list, dict)):
-                convert_all_to_unit(iterable[i], unit)
-            elif isinstance(iterable[i], (tuple, set)):
-                iterable[i] = _convert_all_to_unit_in_immutable(iterable[i], unit)
+    elif isinstance(collection, list):
+        for i in range(len(collection)):
+            if isinstance(collection[i], (int, float, Unit)):
+                collection[i] = unit(collection[i])
+            elif isinstance(collection[i], (list, dict)):
+                convert_all_to_unit(collection[i], unit)
+            elif isinstance(collection[i], (tuple, set)):
+                collection[i] = _convert_all_to_unit_out_of_place(collection[i], unit)
             # (else: continue --- nothing to do here)
     else:
         raise TypeError
