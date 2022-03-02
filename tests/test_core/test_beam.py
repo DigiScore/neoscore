@@ -11,6 +11,8 @@ from brown.utils.point import Point
 from brown.utils.units import Mm, Unit
 from tests.mocks.mock_staff_object import MockStaffObject
 
+from ..helpers import assert_path_els_equal
+
 
 class TestBeam(unittest.TestCase):
     def setUp(self):
@@ -42,17 +44,28 @@ class TestBeam(unittest.TestCase):
         )
         thickness = beam.beam_thickness
         assert len(beam.elements) == 5
-        assert beam.elements[0] == MoveTo(Point(Mm(0), Mm(0)), beam)
-        assert beam.elements[1] == LineTo(Point(Mm(3), Mm(4)), self.right_parent)
-        assert beam.elements[2] == LineTo(
-            Point(Mm(3), Mm(4) + thickness),
-            self.right_parent,
+        assert_path_els_equal(beam.elements[0], MoveTo(Point(Mm(0), Mm(0)), beam))
+        assert_path_els_equal(
+            beam.elements[1], LineTo(Point(Mm(3), Mm(4)), self.right_parent)
         )
-        assert beam.elements[3] == LineTo(
-            Point(Mm(0), thickness),
-            beam,
+        assert_path_els_equal(
+            beam.elements[2],
+            LineTo(
+                Point(Mm(3), Mm(4) + thickness),
+                self.right_parent,
+            ),
         )
-        assert beam.elements[4] == MoveTo(
-            Point(Mm(0), Mm(0)),
-            beam,
+        assert_path_els_equal(
+            beam.elements[3],
+            LineTo(
+                Point(Mm(0), thickness),
+                beam,
+            ),
+        )
+        assert_path_els_equal(
+            beam.elements[4],
+            MoveTo(
+                Point(Mm(0), Mm(0)),
+                beam,
+            ),
         )

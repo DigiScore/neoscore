@@ -1,5 +1,6 @@
 import unittest
 
+from brown.core.path_element import CurveTo, PathElement
 from brown.utils.point import Point
 from brown.utils.units import Unit
 
@@ -37,3 +38,18 @@ def _assert_units_almost_equal(left, right, places):
 def _assert_points_almost_equal(left, right, places):
     _assert_units_almost_equal(left.x, right.x, places)
     _assert_units_almost_equal(left.y, right.y, places)
+
+
+def assert_path_els_equal(left, right):
+    """Assert equality of the basic attributes of two PathElements
+
+    This only checks position and parents, skipping their incidental
+    attributes inherited from GraphicObject like `children`, `brush`,
+    etc
+    """
+    assert type(left) == type(right)
+    assert_almost_equal(left.pos, right.pos)
+    assert left.parent == right.parent
+    if isinstance(left, CurveTo):
+        assert_path_els_equal(left.control_1, right.control_1)
+        assert_path_els_equal(left.control_2, right.control_2)

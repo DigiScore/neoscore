@@ -11,6 +11,8 @@ from brown.core.pen import Pen
 from brown.utils.point import ORIGIN, Point
 from brown.utils.units import ZERO, Unit
 
+from ..helpers import assert_path_els_equal
+
 
 class TestPath(unittest.TestCase):
     def setUp(self):
@@ -29,15 +31,17 @@ class TestPath(unittest.TestCase):
         test_line = Path.straight_line((Unit(5), Unit(6)), (Unit(10), Unit(11)))
         assert test_line.pos == Point(Unit(5), Unit(6))
         assert len(test_line.elements) == 2
-        assert test_line.elements[0] == MoveTo(ORIGIN, test_line)
-        assert test_line.elements[1] == LineTo(Point(Unit(10), Unit(11)), test_line)
+        assert_path_els_equal(test_line.elements[0], MoveTo(ORIGIN, test_line))
+        assert_path_els_equal(
+            test_line.elements[1], LineTo(Point(Unit(10), Unit(11)), test_line)
+        )
 
     def test_line_to(self):
         path = Path((Unit(5), Unit(6)))
         path.line_to(Unit(10), Unit(12))
         assert len(path.elements) == 2
-        assert path.elements[0] == MoveTo(ORIGIN, path)
-        assert path.elements[1].pos == Point(Unit(10), Unit(12))
+        assert_path_els_equal(path.elements[0], MoveTo(ORIGIN, path))
+        assert_path_els_equal(path.elements[1], LineTo(Point(Unit(10), Unit(12)), path))
 
     def test_line_to_with_parent(self):
         path = Path((Unit(5), Unit(6)))
@@ -49,12 +53,15 @@ class TestPath(unittest.TestCase):
         path = Path((Unit(5), Unit(6)))
         path.cubic_to(Unit(10), Unit(11), Unit(0), Unit(1), Unit(5), Unit(6))
         assert len(path.elements) == 2
-        assert path.elements[0] == MoveTo(ORIGIN, path)
-        assert path.elements[1] == CurveTo(
-            Point(Unit(5), Unit(6)),
-            path,
-            ControlPoint(Point(Unit(10), Unit(11)), path),
-            ControlPoint(Point(Unit(0), Unit(1)), path),
+        assert_path_els_equal(path.elements[0], MoveTo(ORIGIN, path))
+        assert_path_els_equal(
+            path.elements[1],
+            CurveTo(
+                Point(Unit(5), Unit(6)),
+                path,
+                ControlPoint(Point(Unit(10), Unit(11)), path),
+                ControlPoint(Point(Unit(0), Unit(1)), path),
+            ),
         )
 
     def test_cubic_to_with_parents(self):
@@ -74,26 +81,31 @@ class TestPath(unittest.TestCase):
             parent_3,
         )
         assert len(path.elements) == 2
-        assert path.elements[0] == MoveTo(ORIGIN, path)
-        assert path.elements[1] == CurveTo(
-            Point(Unit(5), Unit(6)),
-            parent_3,
-            ControlPoint(Point(Unit(10), Unit(11)), parent_1),
-            ControlPoint(Point(Unit(0), Unit(1)), parent_2),
+        assert_path_els_equal(path.elements[0], MoveTo(ORIGIN, path))
+        assert_path_els_equal(
+            path.elements[1],
+            CurveTo(
+                Point(Unit(5), Unit(6)),
+                parent_3,
+                ControlPoint(Point(Unit(10), Unit(11)), parent_1),
+                ControlPoint(Point(Unit(0), Unit(1)), parent_2),
+            ),
         )
 
     def test_move_to_with_no_parent(self):
         path = Path((Unit(5), Unit(6)))
         path.move_to(Unit(10), Unit(11))
         assert len(path.elements) == 1
-        assert path.elements[0] == MoveTo(Point(Unit(10), Unit(11)), path)
+        assert_path_els_equal(path.elements[0], MoveTo(Point(Unit(10), Unit(11)), path))
 
     def test_move_to_with_parent(self):
         path = Path((Unit(0), Unit(0)))
         parent = InvisibleObject((Unit(100), Unit(50)))
         path.move_to(Unit(10), Unit(11), parent)
         assert len(path.elements) == 1
-        assert path.elements[0] == MoveTo(Point(Unit(10), Unit(11)), parent)
+        assert_path_els_equal(
+            path.elements[0], MoveTo(Point(Unit(10), Unit(11)), parent)
+        )
 
     def test_close_subpath(self):
         path = Path((Unit(5), Unit(6)))
@@ -101,4 +113,4 @@ class TestPath(unittest.TestCase):
         path.line_to(Unit(10), Unit(100))
         path.close_subpath()
         assert len(path.elements) == 4
-        assert path.elements[3] == MoveTo(ORIGIN, path)
+        assert_path_els_equal(path.elements[3], MoveTo(ORIGIN, path))

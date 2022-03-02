@@ -1,47 +1,39 @@
 from dataclasses import dataclass
 
-from brown.core.mapping import Positioned
+from brown.core.graphic_object import GraphicObject
+from brown.core.invisible_object import InvisibleObject
+from brown.utils.parent_point import ParentPoint
 from brown.utils.point import Point
 
-# TODO HIGH Some real headaches coming up in ChordRest flags suggest
-# these might need to be InvisibleObjects after all.. Otherwise some
-# detailed work will be needed to ensure GraphicObjects really can
-# have a bare `Positioned` like these as a parent and everything will
-# work seamlessly.
+
+class PathElement(InvisibleObject):
+    def __init__(self, pos: Point, parent: GraphicObject):
+        super().__init__(pos, parent)
+
+    def as_parent_point(self) -> ParentPoint:
+        return ParentPoint.from_point(self.pos, self.parent)
 
 
-@dataclass(frozen=True)
-class PathElement:
-
-    pos: Point
-    parent: Positioned
-
-    @property
-    def x(self):
-        return self.pos.x
-
-    @property
-    def y(self):
-        return self.pos.y
-
-
-@dataclass(frozen=True)
 class MoveTo(PathElement):
     pass
 
 
-@dataclass(frozen=True)
 class LineTo(PathElement):
     pass
 
 
-@dataclass(frozen=True)
-class ControlPoint:
-    pos: Point
-    parent: Positioned
+class ControlPoint(PathElement):
+    pass
 
 
-@dataclass(frozen=True)
 class CurveTo(PathElement):
-    control_1: ControlPoint
-    control_2: ControlPoint
+    def __init__(
+        self,
+        pos: Point,
+        parent: GraphicObject,
+        control_1: ControlPoint,
+        control_2: ControlPoint,
+    ):
+        super().__init__(pos, parent)
+        self.control_1 = control_1
+        self.control_2 = control_2
