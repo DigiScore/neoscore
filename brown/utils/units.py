@@ -65,8 +65,12 @@ class Unit:
         return round(self.base_value / self.CONVERSION_RATE, 3)
 
     @property
-    def quantized_hash_key(self) -> int:
-        pass
+    def rounded_base_value(self) -> float:
+        """The base value rounded to 2 decimal places.
+
+        This is useful for things like hash keys for caching purposes
+        """
+        return round(self.base_value, 2)
 
     ######## SPECIAL METHODS ########
 
@@ -81,9 +85,6 @@ class Unit:
     # values could be used where necessary for hashing (like in
     # MusicText's geometry cache), and approximate comparison code
     # already exists for tests.
-
-    def __hash__(self):
-        return hash(self.base_value)
 
     # Comparisons -------------------------------------------------------------
 

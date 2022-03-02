@@ -27,22 +27,22 @@ class TestChordrest(unittest.TestCase):
     def test_ledger_line_positions(self):
         pitches = ["c'", "b'", "f'''"]
         chord = Chordrest(Mm(1), self.staff, pitches, Beat(1, 4))
-        assert chord.ledger_line_positions == {
+        assert chord.ledger_line_positions == [
             self.staff.unit(5),
-            self.staff.unit(-1),
-            self.staff.unit(-2),
             self.staff.unit(-3),
-        }
+            self.staff.unit(-2),
+            self.staff.unit(-1),
+        ]
 
     def test_ledger_line_positions_with_different_clef(self):
         Clef(self.staff, Mm(10), "bass")
         pitches = ["e,", "d", "e'"]
         chord = Chordrest(Mm(15), self.staff, pitches, Beat(1, 4))
-        assert chord.ledger_line_positions == {
+        assert chord.ledger_line_positions == [
             self.staff.unit(5),
-            self.staff.unit(-1),
             self.staff.unit(-2),
-        }
+            self.staff.unit(-1),
+        ]
 
     def test_rhythm_dot_positions_with_rest(self):
         chord = Chordrest(Mm(1), self.staff, None, Beat(7, 16))

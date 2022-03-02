@@ -8,6 +8,7 @@ from brown.core.rhythm_dot import RhythmDot
 from brown.core.staff_object import StaffObject
 from brown.core.stem import Stem
 from brown.utils.point import Point
+from brown.utils.units import Unit
 
 
 class Chordrest(ObjectGroup, StaffObject):
@@ -120,8 +121,8 @@ class Chordrest(ObjectGroup, StaffObject):
         self._duration = value
 
     @property
-    def ledger_line_positions(self):
-        """set(int): A set of staff positions of needed ledger lines.
+    def ledger_line_positions(self) -> list[Unit]:
+        """A set of staff positions of needed ledger lines.
 
         Positions are in centered staff positions.
 
@@ -129,17 +130,15 @@ class Chordrest(ObjectGroup, StaffObject):
         """
         highest = self.highest_notehead.staff_pos
         lowest = self.lowest_notehead.staff_pos
-        # Join sets of needed ledgers above and below with union
-        # operator
-        #
-        # TODO MEDIUM if/when Unit is updated to not be hashable, this
-        # will need to be updated. Probably a better solution is to
-        # make `staff.ledgers_needed_for_y` return a list, then have
-        # the code here only combine ledgers if `highest` and `lowst`
-        # are on opposite sides of the staff.
-        return self.staff.ledgers_needed_for_y(
-            lowest
-        ) | self.staff.ledgers_needed_for_y(highest)
+        # This could be optimized by only doing both ledger lookups if
+        # `highest` and `lowest` are on opposite sides of the staff,
+        # in which case the check-then-append step can be done
+        # unconditionally.
+        ledgers = self.staff.ledgers_needed_for_y(lowest)
+        for ledger_pos in self.staff.ledgers_needed_for_y(highest):
+            if ledger_pos not in ledgers:
+                ledgers.append(ledger_pos)
+        return ledgers
 
     @property
     def rhythm_dot_positions(self):

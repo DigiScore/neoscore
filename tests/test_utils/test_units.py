@@ -28,10 +28,6 @@ class TestUnit(unittest.TestCase):
     def test__repr__(self):
         assert repr(Unit(1)) == "Unit(1)"
 
-    def test__hash__(self):
-        assert hash(Unit(1)) == hash(MockUnit(0.5))
-        assert len(set([Unit(1), MockUnit(0.5)])) == 1
-
     def test__lt__(self):
         assert Unit(1) < Unit(2)
         assert not Unit(1) < Unit(0)

@@ -128,32 +128,32 @@ class TestStaff(unittest.TestCase):
     def test_ledgers_needed_from_position_with_odd_line_count(self):
         staff = Staff((Mm(0), Mm(0)), Mm(100), self.flowable, line_count=5)
         # Inside the staff, no ledgers
-        assert staff.ledgers_needed_for_y(staff.unit(0)) == set()
-        assert staff.ledgers_needed_for_y(staff.unit(4)) == set()
+        assert staff.ledgers_needed_for_y(staff.unit(0)) == []
+        assert staff.ledgers_needed_for_y(staff.unit(4)) == []
         # Just outside the staff, no ledgers
-        assert staff.ledgers_needed_for_y(staff.unit(-0.5)) == set()
-        assert staff.ledgers_needed_for_y(staff.unit(4.5)) == set()
+        assert staff.ledgers_needed_for_y(staff.unit(-0.5)) == []
+        assert staff.ledgers_needed_for_y(staff.unit(4.5)) == []
         # Right on the first ledger
-        assert staff.ledgers_needed_for_y(staff.unit(-1)) == {staff.unit(-1)}
-        assert staff.ledgers_needed_for_y(staff.unit(5)) == {staff.unit(5)}
+        assert staff.ledgers_needed_for_y(staff.unit(-1)) == [staff.unit(-1)]
+        assert staff.ledgers_needed_for_y(staff.unit(5)) == [staff.unit(5)]
         # Further outside with multiple ledgers, directly on lines
-        assert staff.ledgers_needed_for_y(staff.unit(6)) == {
+        assert staff.ledgers_needed_for_y(staff.unit(6)) == [
             staff.unit(6),
             staff.unit(5),
-        }
-        assert staff.ledgers_needed_for_y(staff.unit(-2)) == {
+        ]
+        assert staff.ledgers_needed_for_y(staff.unit(-2)) == [
             staff.unit(-2),
             staff.unit(-1),
-        }
+        ]
         # Further outside with multiple ledgers, between lines
-        assert staff.ledgers_needed_for_y(staff.unit(6.5)) == {
+        assert staff.ledgers_needed_for_y(staff.unit(6.5)) == [
             staff.unit(6),
             staff.unit(5),
-        }
-        assert staff.ledgers_needed_for_y(staff.unit(-2.5)) == {
+        ]
+        assert staff.ledgers_needed_for_y(staff.unit(-2.5)) == [
             staff.unit(-2),
             staff.unit(-1),
-        }
+        ]
 
     def test_elements_when_not_located_at_origin(self):
         """Regression test

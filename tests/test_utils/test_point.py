@@ -13,21 +13,6 @@ class TestPoint(unittest.TestCase):
         assert test_point.x == Mm(5)
         assert test_point.y == Mm(6)
 
-    def test__hash__(self):
-        assert {
-            Point(Unit(1), Unit(2)),
-            Point(Unit(1), Unit(2)),
-            Point(Unit(3), Unit(4)),
-        } == {Point(Unit(1), Unit(2)), Point(Unit(3), Unit(4))}
-        assert {
-            Point(Unit(1), Unit(2)),
-            Point(Unit(1), Unit(2)),
-            Point(Unit(3), Unit(4)),
-        } == {Point(Unit(1), Unit(2)), Point(Unit(3), Unit(4))}
-        assert {Point(Mm(1000), GraphicUnit(0)), Point(Meter(1), GraphicUnit(0))} == {
-            Point(Mm(1000), GraphicUnit(0))
-        }
-
     def test__eq__(self):
         p1 = Point(Unit(5), Unit(6))
         p2 = Point(Unit(5), Unit(6))

@@ -91,7 +91,9 @@ class Font:
         )
 
     def __hash__(self):
-        return hash((self.family_name, self.size, self.weight, self.italic))
+        return hash(
+            (self.family_name, self.size.rounded_base_value, self.weight, self.italic)
+        )
 
     ######## PUBLIC METHODS ########
 

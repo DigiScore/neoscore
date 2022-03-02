@@ -204,16 +204,16 @@ class Staff(Path):
             pos_y
         ).display_value % 1 == 0
 
-    def ledgers_needed_for_y(self, position: Unit) -> set[Unit]:
+    def ledgers_needed_for_y(self, position: Unit) -> list[Unit]:
         """Find the y positions of all ledgers needed for a given y position"""
         # Work on positions as integers for simplicity
         start = int(self.unit(position).display_value)
         if start < 0:
-            return set(self.unit(pos) for pos in range(start, 0, 1))
+            return [self.unit(pos) for pos in range(start, 0, 1)]
         elif start > self.line_count - 1:
-            return set(self.unit(pos) for pos in range(start, self.line_count - 1, -1))
+            return [self.unit(pos) for pos in range(start, self.line_count - 1, -1)]
         else:
-            return set()
+            return []
 
     ######## PRIVATE METHODS ########
 
