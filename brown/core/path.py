@@ -5,8 +5,14 @@ from brown.core.brush import Brush
 from brown.core.graphic_object import GraphicObject
 from brown.core.mapping import Positioned, descendant_pos, map_between, map_between_x
 from brown.core.path_element import ControlPoint, CurveTo, LineTo, MoveTo, PathElement
-from brown.interface.path_interface import PathInterface
-from brown.utils.point import ORIGIN, Point
+from brown.interface.path_interface import (
+    PathInterface,
+    ResolvedCurveTo,
+    ResolvedLineTo,
+    ResolvedMoveTo,
+    ResolvedPathElement,
+)
+from brown.utils.point import Point
 from brown.utils.units import ZERO, Unit
 
 
@@ -96,9 +102,7 @@ class Path(GraphicObject):
 
         Returns: None
         """
-        if len(self.elements) == 0:
-            self.move_to(ZERO, ZERO)
-        self.elements.append(LineTo(Point(x, y), parent if parent else self))
+        self.elements.append(LineTo(Point(x, y), parent or self))
 
     def move_to(self, x: Unit, y: Unit, parent: Optional[Positioned] = None):
         """Close the current sub-path and start a new one.
@@ -115,7 +119,7 @@ class Path(GraphicObject):
 
         Returns: None
         """
-        self.elements.append(MoveTo(Point(x, y), parent if parent else self))
+        self.elements.append(MoveTo(Point(x, y), parent or self))
 
     def close_subpath(self):
         """Close the current sub-path and start a new one at the local origin.
@@ -161,8 +165,6 @@ class Path(GraphicObject):
 
         Returns: None
         """
-        if len(self.elements) == 0:
-            self.move_to(ZERO, ZERO)
         c1 = ControlPoint(
             Point(control_1_x, control_1_y),
             control_1_parent or self,
@@ -171,10 +173,38 @@ class Path(GraphicObject):
             Point(control_2_x, control_2_y),
             control_2_parent or self,
         )
-        self.elements.append(CurveTo(Point(end_x, end_y), end_parent or self, c1, c2))
+        self.elements.append(CurveTo(c1, c2, Point(end_x, end_y), end_parent or self))
 
     def _relative_element_pos(self, element: Positioned) -> Point:
         return map_between(self, element)
+
+    def _resolve_path_elements(self) -> list[ResolvedPathElement]:
+        resolved: list[ResolvedPathElement] = []
+        for element in self.elements:
+            # Interface drawing methods expect coordinates
+            # relative to PathInterface root
+            pos = self._relative_element_pos(element)
+            if isinstance(element, LineTo):
+                resolved.append(ResolvedLineTo(pos.x, pos.y))
+            elif isinstance(element, MoveTo):
+                resolved.append(ResolvedMoveTo(pos.x, pos.y))
+            elif isinstance(element, CurveTo):
+                element = cast(CurveTo, element)
+                resolved_c1_pos = self._relative_element_pos(element.control_1)
+                resolved_c2_pos = self._relative_element_pos(element.control_2)
+                resolved.append(
+                    ResolvedCurveTo(
+                        resolved_c1_pos.x,
+                        resolved_c1_pos.y,
+                        resolved_c2_pos.x,
+                        resolved_c2_pos.y,
+                        pos.x,
+                        pos.y,
+                    )
+                )
+            else:
+                raise TypeError("Unknown PathElement type")
+        return resolved
 
     def _render_slice(self, pos, clip_start_x=None, clip_width=None):
         """Render a horizontal slice of a path.
@@ -193,29 +223,15 @@ class Path(GraphicObject):
 
         Returns: None
         """
+        resolved_path_elements = self._resolve_path_elements()
         slice_interface = PathInterface(
             pos,
+            resolved_path_elements,
             self.pen._interface,
             self.brush._interface,
             clip_start_x=clip_start_x,
             clip_width=clip_width,
         )
-        for element in self.elements:
-            # Interface drawing methods expect coordinates
-            # relative to PathInterface root
-            relative_pos = self._relative_element_pos(element)
-            if isinstance(element, MoveTo):
-                slice_interface.move_to(relative_pos)
-            elif isinstance(element, LineTo):
-                slice_interface.line_to(relative_pos)
-            elif isinstance(element, CurveTo):
-                element = cast(CurveTo, element)
-                c1_pos = self._relative_element_pos(element.control_1)
-                c2_pos = self._relative_element_pos(element.control_2)
-                slice_interface.cubic_to(c1_pos, c2_pos, relative_pos)
-            else:
-                raise TypeError("Unknown PathElement type")
-        slice_interface.update_geometry()
         slice_interface.render()
         self.interfaces.add(slice_interface)
 

@@ -1,89 +1,52 @@
 from enum import Enum, auto
-from typing import NamedTuple, NewType, Type, Union
+from typing import NamedTuple, NewType, Optional, Type, Union
 
-from PyQt5 import QtGui
+from PyQt5.QtGui import QPainterPath
 
 from brown.core import brown
-from brown.core.path_element_type import PathElementType
+from brown.interface.brush_interface import BrushInterface
 from brown.interface.graphic_object_interface import GraphicObjectInterface
-from brown.interface.path_element_interface import PathElementInterface
+from brown.interface.pen_interface import PenInterface
 from brown.interface.qt.converters import point_to_qt_point_f
 from brown.interface.qt.q_clipping_path import QClippingPath
 from brown.utils.point import ORIGIN, Point
 from brown.utils.units import Unit
 
-"""
-Qt paths have a few quirks which are good to know about if you're
-working with them at a lower level.
-
-At creation time, paths have `elementCount() == 0`,
-but after a line is created, `elementCount() == 2`. The first element
-is a `moveTo` to the origin; second is the `lineTo` you asked for.
-`brown` paths maintain this behavior.
-
-TODO LOW: This is out of date and may not be true.
-
-If a `lineTo(0, 0)`, a `moveTo(0, 0)` is performed instead:
-
-    >>> from brown.core import brown; brown.setup()
-    >>> line_to_origin = PathInterface((5, 6))
-    >>> line_to_origin.line_to((0, 0))
-    >>> assert(line_to_origin._qt_path == line_to_origin.qt_object.path())
-    >>> assert(line_to_origin._qt_path.elementCount() == 1)
-    >>> assert(line_to_origin._qt_path.elementAt(0).isMoveTo() == True)
-    >>> line_to_elsewhere = PathInterface((5, 6))
-    >>> line_to_elsewhere.line_to((1, 0))
-    >>> assert(line_to_elsewhere._qt_path == line_to_elsewhere.qt_object.path())
-    >>> assert(line_to_elsewhere._qt_path.elementCount() == 2)
-    >>> assert(line_to_elsewhere._qt_path.elementAt(0).isMoveTo() == True)
-    >>> assert(line_to_elsewhere._qt_path.elementAt(1).isLineTo() == True)
-
-`QPainterPath::ElementType` is ambiguous in differentiating between
-curve control points and curve end points. They are stored sequentially
-in the path element list; the first element in the sequence is a
-`CurveToElement` (enum 2), all following elements in the curve are
-`CurveToDataElement` (enum 3). Despite this, all elements until the last
-in the sequence are control points; the final element is the curve end point.
-
-For instance, if a cubic line is drawn with two control points -
-`cubic_to((0, 5), (10, 5), (10, 0))` - they are stored in the Qt
-element list as `[CurveToElement, CurveToDataElement, CurveToDataElement]`,
-which the brown API translates to: `[control_point, control_point, curve_to]`
-"""
-
 
 class ResolvedMoveTo(NamedTuple):
-    x: float
-    y: float
+    x: Unit
+    y: Unit
 
 
 class ResolvedLineTo(NamedTuple):
-    x: float
-    y: float
+    x: Unit
+    y: Unit
 
 
 class ResolvedCurveTo(NamedTuple):
-    c1_x: float
-    c1_y: float
-    c2_x: float
-    c2_y: float
-    end_x: float
-    end_y: float
+    c1_x: Unit
+    c1_y: Unit
+    c2_x: Unit
+    c2_y: Unit
+    end_x: Unit
+    end_y: Unit
 
 
 ResolvedPathElement = Union[ResolvedMoveTo, ResolvedLineTo, ResolvedCurveTo]
-
-"""
-TODO HIGH: Path's rendering methods should translate its elements to these lower-level elements, and pass them to `PathInterface()` in a `list[ResolvedPathElement]`
-
-Then PathInterface should take that argument and directly use it to construct the Qt path. the mutating interface path-drawing functions should be removed, allowing PathInterface to be immutable.
-"""
 
 
 class PathInterface(GraphicObjectInterface):
     """Interface for a generic graphic path object."""
 
-    def __init__(self, pos, pen, brush, clip_start_x=None, clip_width=None):
+    def __init__(
+        self,
+        pos: Point,
+        elements: list[ResolvedPathElement],
+        pen: PenInterface,
+        brush: BrushInterface,
+        clip_start_x: Optional[Unit] = None,
+        clip_width: Optional[Unit] = None,
+    ):
         """
         Args:
             pos (Point or tuple): The position of the path root
@@ -96,119 +59,49 @@ class PathInterface(GraphicObjectInterface):
                 Use `None` to render to the end
         """
         super().__init__()
-        self.qt_path = QtGui.QPainterPath()
         self._pos = pos
         self._pen = pen
         self._brush = brush
         self.clip_start_x = clip_start_x
         self.clip_width = clip_width
-        self.qt_object = self._create_qt_object()
-
-    ######## PUBLIC PROPERTIES ########
-
-    @property
-    def element_count(self):
-        """int: The number of elements in the path."""
-        return self.qt_path.elementCount()
+        self.elements = elements
 
     ######## Public Methods ########
 
-    def update_geometry(self):
-        self.qt_object.update_geometry()
-
-    def line_to(self, pos):
-        """Draw a path from the current position to a new point.
-
-        Args:
-            pos (Point or tuple): The target position
-
-        Returns: None
-        """
-        target = Point(pos.x, pos.y)
-        self.qt_path.lineTo(target.x.base_value, target.y.base_value)
-        self.update_qt_path()
-
-    def cubic_to(self, control_1, control_2, end):
-        """Draw a cubic spline from the current position to a new point.
-
-        Args:
-            control_1 (Point): The local position of the 1st control point
-            control_2 (Point): The local position of the 2nd control point
-            end (Point): The local position of the end point
-
-        Returns: None
-        """
-        control_1_point = Point(control_1.x, control_1.y)
-        control_2_point = Point(control_2.x, control_2.y)
-        end_point = Point(end.x, end.y)
-        self.qt_path.cubicTo(
-            control_1_point.x.base_value,
-            control_1_point.y.base_value,
-            control_2_point.x.base_value,
-            control_2_point.y.base_value,
-            end_point.x.base_value,
-            end_point.y.base_value,
-        )
-        self.update_qt_path()
-
-    def move_to(self, pos):
-        """Close the current sub-path and start a new one.
-
-        Args:
-            pos (Point or tuple): The target position
-
-        Returns: None
-        """
-        target = Point(pos.x, pos.y)
-        self.qt_path.moveTo(target.x.base_value, target.y.base_value)
-        self.update_qt_path()
-
-    def close_subpath(self):
-        """Close the current sub-path and start a new one at (0, 0).
-
-        This is equivalent to `move_to(0, 0)`
-
-        Returns: None
-        """
-        self.qt_path.closeSubpath()
-        self.update_qt_path()
-
-    def set_element_position_at(self, index, pos):
-        """Set the element at an index to a given position.
-
-        Args:
-            index (int): The element index to modify
-            pos (Point[Unit]): The new position for the element.
-
-        Returns: None
-        """
-        if index > self.qt_path.elementCount():
-            raise IndexError(
-                "Element index {} out of bounds (max is {})".format(
-                    index, self.qt_path.elementCount()
+    @staticmethod
+    def create_qt_path(elements: list[ResolvedPathElement]) -> QPainterPath:
+        path = QPainterPath()
+        for el in elements:
+            if isinstance(el, ResolvedLineTo):
+                path.lineTo(el.x.base_value, el.y.base_value)
+            elif isinstance(el, ResolvedMoveTo):
+                path.moveTo(el.x.base_value, el.y.base_value)
+            elif isinstance(el, ResolvedCurveTo):
+                path.cubicTo(
+                    el.c1_x.base_value,
+                    el.c1_y.base_value,
+                    el.c2_x.base_value,
+                    el.c2_y.base_value,
+                    el.end_x.base_value,
+                    el.end_y.base_value,
                 )
-            )
-        self.qt_path.setElementPositionAt(index, pos.x.base_value, pos.y.base_value)
-        self.update_qt_path()
+            else:
+                raise TypeError("Unknown ResolvedPathElement type")
+        return path
 
     def render(self):
         """Render the line to the scene.
 
         Returns: None
         """
-        brown._app_interface.scene.addItem(self.qt_object)
-
-    def update_qt_path(self):
-        """Synchronize the contents of self.qt_path to self.qt_object
-
-        Returns: None
-        """
-        self.qt_object.setPath(self.qt_path)
+        qt_object = self._create_qt_object()
+        brown._app_interface.scene.addItem(qt_object)
 
     ######## PRIVATE METHODS ########
 
     def _create_qt_object(self):
-        qt_object = QClippingPath(self.qt_path, self.clip_start_x, self.clip_width)
+        painter_path = PathInterface.create_qt_path(self.elements)
+        qt_object = QClippingPath(painter_path, self.clip_start_x, self.clip_width)
         qt_object.setPos(point_to_qt_point_f(self.pos))
         qt_object.setBrush(self.brush.qt_object)
         qt_object.setPen(self.pen.qt_object)  # No pen

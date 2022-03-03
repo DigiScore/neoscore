@@ -29,10 +29,10 @@ class ControlPoint(PathElement):
 class CurveTo(PathElement):
     def __init__(
         self,
-        pos: Point,
-        parent: GraphicObject,
         control_1: ControlPoint,
         control_2: ControlPoint,
+        pos: Point,
+        parent: GraphicObject,
     ):
         super().__init__(pos, parent)
         self.control_1 = control_1
