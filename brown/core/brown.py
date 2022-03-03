@@ -1,6 +1,6 @@
 import json
 import os
-from typing import Optional
+from typing import Callable, Optional
 from warnings import warn
 
 from brown import constants
@@ -228,6 +228,11 @@ def render_image(rect, image_path, dpi=600, quality=-1, bg_color=None, autocrop=
     document._render()
 
     _app_interface.render_image(rect, image_path, dpm, quality, bg_color, autocrop)
+
+
+def set_refresh_func(refresh_func: Callable[[float], None]):
+    global _app_interface
+    _app_interface.set_refresh_func(refresh_func)
 
 
 def _register_default_fonts():

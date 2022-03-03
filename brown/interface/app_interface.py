@@ -1,9 +1,13 @@
+from __future__ import annotations
+
 import os
+from typing import Callable
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtPrintSupport import QPrinter
 
 from brown import constants
+from brown.core.document import Document
 from brown.interface import images
 from brown.interface.qt.converters import color_to_q_color, rect_to_qt_rect_f
 from brown.interface.qt.main_window import MainWindow
@@ -21,11 +25,7 @@ class AppInterface:
 
     _QT_FONT_ERROR_CODE = -1
 
-    def __init__(self, document):
-        """
-        Args:
-            document (Document):
-        """
+    def __init__(self, document: Document):
         self.document = document
         self.app = QtWidgets.QApplication([])
         self.main_window = MainWindow()
@@ -36,6 +36,9 @@ class AppInterface:
         self.font_database = QtGui.QFontDatabase()
 
     ######## PUBLIC METHODS ########
+
+    def set_refresh_func(self, refresh_func: Callable[[float], None]):
+        self.main_window.refresh_func = refresh_func
 
     def show(self):
         """Open a window showing a preview of the document."""
