@@ -41,11 +41,6 @@ class PathElementInterface:
     def pos(self):
         return self._pos
 
-    @pos.setter
-    def pos(self, value):
-        self._pos = value
-        self.update_element_in_path_interface()
-
     @property
     def path_interface(self):
         """PathInterface: The path interface this element belongs in."""
@@ -68,13 +63,3 @@ class PathElementInterface:
         # this so that the control points are clearly marked
         # differently from the end point.
         return self._element_type
-
-    ######## PUBLIC METHODS ########
-
-    def update_element_in_path_interface(self):
-        """Push element properties to self.qt_object and the parent path
-
-        Returns: None
-        """
-        self.path_interface.set_element_position_at(self.index, self.pos)
-        self.path_interface.update_qt_path()

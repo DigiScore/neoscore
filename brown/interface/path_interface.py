@@ -1,3 +1,6 @@
+from enum import Enum, auto
+from typing import NamedTuple, NewType, Type, Union
+
 from PyQt5 import QtGui
 
 from brown.core import brown
@@ -46,6 +49,34 @@ For instance, if a cubic line is drawn with two control points -
 `cubic_to((0, 5), (10, 5), (10, 0))` - they are stored in the Qt
 element list as `[CurveToElement, CurveToDataElement, CurveToDataElement]`,
 which the brown API translates to: `[control_point, control_point, curve_to]`
+"""
+
+
+class ResolvedMoveTo(NamedTuple):
+    x: float
+    y: float
+
+
+class ResolvedLineTo(NamedTuple):
+    x: float
+    y: float
+
+
+class ResolvedCurveTo(NamedTuple):
+    c1_x: float
+    c1_y: float
+    c2_x: float
+    c2_y: float
+    end_x: float
+    end_y: float
+
+
+ResolvedPathElement = Union[ResolvedMoveTo, ResolvedLineTo, ResolvedCurveTo]
+
+"""
+TODO HIGH: Path's rendering methods should translate its elements to these lower-level elements, and pass them to `PathInterface()` in a `list[ResolvedPathElement]`
+
+Then PathInterface should take that argument and directly use it to construct the Qt path. the mutating interface path-drawing functions should be removed, allowing PathInterface to be immutable.
 """
 
 
