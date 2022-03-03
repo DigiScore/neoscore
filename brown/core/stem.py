@@ -2,6 +2,7 @@ from brown.core.path import Path
 from brown.core.pen import Pen
 from brown.core.staff_object import StaffObject
 from brown.utils.math_helpers import sign
+from brown.utils.point import ORIGIN
 
 
 class Stem(Path, StaffObject):
@@ -41,11 +42,6 @@ class Stem(Path, StaffObject):
         return sign(self.height)
 
     @property
-    def start_point(self):
-        """PathElement: The inner point; attached to a `Notehead`."""
-        return self.elements[0]
-
-    @property
     def end_point(self):
         """PathElement: The outer point; not attached to a `Notehead`."""
-        return self.elements[1]
+        return self.elements[0]

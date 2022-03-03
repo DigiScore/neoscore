@@ -42,26 +42,27 @@ class TestBeam(unittest.TestCase):
             ParentPoint(Mm(3), Mm(4), self.right_parent),
         )
         thickness = beam.beam_thickness
-        assert len(beam.elements) == 4
+        assert len(beam.elements) == 5
+        assert_path_els_equal(beam.elements[0], MoveTo(Point(Mm(0), Mm(0)), beam))
         assert_path_els_equal(
-            beam.elements[0], LineTo(Point(Mm(3), Mm(4)), self.right_parent)
+            beam.elements[1], LineTo(Point(Mm(3), Mm(4)), self.right_parent)
         )
         assert_path_els_equal(
-            beam.elements[1],
+            beam.elements[2],
             LineTo(
                 Point(Mm(3), Mm(4) + thickness),
                 self.right_parent,
             ),
         )
         assert_path_els_equal(
-            beam.elements[2],
+            beam.elements[3],
             LineTo(
                 Point(Mm(0), thickness),
                 beam,
             ),
         )
         assert_path_els_equal(
-            beam.elements[3],
+            beam.elements[4],
             MoveTo(
                 Point(Mm(0), Mm(0)),
                 beam,

@@ -94,14 +94,19 @@ class Path(GraphicObject):
         a separate GraphicObject. In this case, the coordinates passed will be
         considered relative to the parent.
 
+        If the path is empty, this will add two elements, an initial
+        `MoveTo(Point(Unit(0), Unit(0)), self)` and the requested
+        `LineTo`.
+
         Args:
             x: The end x position
             y: The end y position
-            parent: An optional parent, whose position
-                the target coordinate will be relative to.
-
-        Returns: None
+            parent: An optional parent, whose position the target coordinate
+                will be relative to.
         """
+        if not len(self.elements):
+            # Needed to ensure bounding rect / length calculations are correct
+            self.elements.append(MoveTo(Point(Unit(0), Unit(0)), self))
         self.elements.append(LineTo(Point(x, y), parent or self))
 
     def move_to(self, x: Unit, y: Unit, parent: Optional[Positioned] = None):
@@ -126,8 +131,6 @@ class Path(GraphicObject):
 
         This is equivalent to `move_to(Unit(0), Unit(0))`
 
-        Returns: None
-
         Note:
             This convenience method does not support point parentage.
             If you need to anchor the new point, use an explicit
@@ -149,6 +152,10 @@ class Path(GraphicObject):
     ):
         """Draw a cubic bezier curve from the current position to a new point.
 
+        If the path is empty, this will add two elements, an initial
+        `MoveTo(Point(Unit(0), Unit(0)), self)` and the requested
+        `CurveTo`.
+
         Args:
             control_1_x: The x coordinate of the first control point.
             control_1_y: The y coordinate of the first control point.
@@ -162,8 +169,6 @@ class Path(GraphicObject):
                 the second control point. Defaults to `self`.
             end_parent: An optional parent for the
                 curve target. Defaults to `self`.
-
-        Returns: None
         """
         c1 = ControlPoint(
             Point(control_1_x, control_1_y),
@@ -173,6 +178,9 @@ class Path(GraphicObject):
             Point(control_2_x, control_2_y),
             control_2_parent or self,
         )
+        if not len(self.elements):
+            # Needed to ensure bounding rect / length calculations are correct
+            self.elements.append(MoveTo(Point(Unit(0), Unit(0)), self))
         self.elements.append(CurveTo(c1, c2, Point(end_x, end_y), end_parent or self))
 
     def _relative_element_pos(self, element: Positioned) -> Point:

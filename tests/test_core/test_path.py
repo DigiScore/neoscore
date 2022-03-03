@@ -25,7 +25,7 @@ class TestPath(unittest.TestCase):
         brown.setup()
 
     def test_init(self):
-        mock_parent = InvisibleObject((Unit(0), Unit(0)), parent=None)
+        mock_parent = InvisibleObject(ORIGIN, parent=None)
         test_pen = Pen("#eeeeee")
         test_brush = Brush("#dddddd")
         path = Path((Unit(5), Unit(6)), test_pen, test_brush, mock_parent)
@@ -34,20 +34,23 @@ class TestPath(unittest.TestCase):
         assert path.brush == test_brush
 
     def test_straight_line(self):
-        test_line = Path.straight_line((Unit(5), Unit(6)), (Unit(10), Unit(11)))
-        assert test_line.pos == Point(Unit(5), Unit(6))
-        assert len(test_line.elements) == 1
-        assert_path_els_equal(
-            test_line.elements[0], LineTo(Point(Unit(10), Unit(11)), test_line)
-        )
+        path = Path.straight_line((Unit(5), Unit(6)), (Unit(10), Unit(11)))
+        assert path.pos == Point(Unit(5), Unit(6))
+        assert len(path.elements) == 2
+        assert_path_els_equal(path.elements[0], MoveTo(ORIGIN, path))
+        assert_path_els_equal(path.elements[1], LineTo(Point(Unit(10), Unit(11)), path))
 
     def test_line_to(self):
         path = Path((Unit(5), Unit(6)))
         path.line_to(Unit(10), Unit(12))
-        assert len(path.elements) == 1
-        assert_path_els_equal(path.elements[0], LineTo(Point(Unit(10), Unit(12)), path))
+        assert len(path.elements) == 2
+        assert_path_els_equal(path.elements[0], MoveTo(ORIGIN, path))
+        assert_path_els_equal(path.elements[1], LineTo(Point(Unit(10), Unit(12)), path))
         resolved_els = path._resolve_path_elements()
-        assert resolved_els == [ResolvedLineTo(Unit(10), Unit(12))]
+        assert resolved_els == [
+            ResolvedMoveTo(ZERO, ZERO),
+            ResolvedLineTo(Unit(10), Unit(12)),
+        ]
 
     def test_line_to_with_parent(self):
         path = Path((Unit(5), Unit(6)))
@@ -55,24 +58,29 @@ class TestPath(unittest.TestCase):
         path.line_to(Unit(1), Unit(3), parent)
         assert path.elements[-1].parent == parent
         resolved_els = path._resolve_path_elements()
-        assert resolved_els == [ResolvedLineTo(Unit(100 + 1 - 5), Unit(50 + 3 - 6))]
+        assert resolved_els == [
+            ResolvedMoveTo(ZERO, ZERO),
+            ResolvedLineTo(Unit(100 + 1 - 5), Unit(50 + 3 - 6)),
+        ]
 
     def test_cubic_to_with_no_parents(self):
         path = Path((Unit(5), Unit(6)))
-        path.cubic_to(Unit(10), Unit(11), Unit(0), Unit(1), Unit(5), Unit(6))
-        assert len(path.elements) == 1
+        path.cubic_to(Unit(10), Unit(11), ZERO, Unit(1), Unit(5), Unit(6))
+        assert len(path.elements) == 2
+        assert_path_els_equal(path.elements[0], MoveTo(ORIGIN, path))
         assert_path_els_equal(
-            path.elements[0],
+            path.elements[1],
             CurveTo(
                 ControlPoint(Point(Unit(10), Unit(11)), path),
-                ControlPoint(Point(Unit(0), Unit(1)), path),
+                ControlPoint(Point(ZERO, Unit(1)), path),
                 Point(Unit(5), Unit(6)),
                 path,
             ),
         )
         resolved_els = path._resolve_path_elements()
         assert resolved_els == [
-            ResolvedCurveTo(Unit(10), Unit(11), Unit(0), Unit(1), Unit(5), Unit(6))
+            ResolvedMoveTo(ZERO, ZERO),
+            ResolvedCurveTo(Unit(10), Unit(11), ZERO, Unit(1), Unit(5), Unit(6)),
         ]
 
     def test_cubic_to_with_parents(self):
@@ -91,9 +99,10 @@ class TestPath(unittest.TestCase):
             parent_2,
             parent_3,
         )
-        assert len(path.elements) == 1
+        assert len(path.elements) == 2
+        assert_path_els_equal(path.elements[0], MoveTo(ORIGIN, path))
         assert_path_els_equal(
-            path.elements[0],
+            path.elements[1],
             CurveTo(
                 ControlPoint(Point(Unit(1), Unit(2)), parent_1),
                 ControlPoint(Point(Unit(3), Unit(4)), parent_2),
@@ -103,6 +112,7 @@ class TestPath(unittest.TestCase):
         )
         resolved_els = path._resolve_path_elements()
         assert resolved_els == [
+            ResolvedMoveTo(ZERO, ZERO),
             ResolvedCurveTo(
                 Unit(10 + 1 - 100),
                 Unit(20 + 2 - 200),
@@ -110,7 +120,7 @@ class TestPath(unittest.TestCase):
                 Unit(40 + 4 - 200),
                 Unit(50 + 5 - 100),
                 Unit(60 + 6 - 200),
-            )
+            ),
         ]
 
     def test_move_to_with_no_parent(self):
@@ -120,7 +130,7 @@ class TestPath(unittest.TestCase):
         assert_path_els_equal(path.elements[0], MoveTo(Point(Unit(10), Unit(11)), path))
 
     def test_move_to_with_parent(self):
-        path = Path((Unit(0), Unit(0)))
+        path = Path(ORIGIN)
         parent = InvisibleObject((Unit(100), Unit(50)))
         path.move_to(Unit(10), Unit(11), parent)
         assert len(path.elements) == 1
@@ -133,5 +143,5 @@ class TestPath(unittest.TestCase):
         path.line_to(Unit(10), Unit(10))
         path.line_to(Unit(10), Unit(100))
         path.close_subpath()
-        assert len(path.elements) == 3
-        assert_path_els_equal(path.elements[2], MoveTo(ORIGIN, path))
+        assert len(path.elements) == 4
+        assert_path_els_equal(path.elements[3], MoveTo(ORIGIN, path))
