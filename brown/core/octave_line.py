@@ -90,9 +90,12 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
         )
 
         # Vertically center the path relative to the text
-        path_y = self.line_text.bounding_rect.height / -2
+        text_rect = self.line_text.bounding_rect
+        # TODO LOW line needs some padding
+        path_x = text_rect.width
+        path_y = text_rect.height / -2
         self.line_path = Path(
-            pos=Point(ZERO, path_y),
+            pos=Point(path_x, path_y),
             pen=Pen(
                 thickness=self.staff.music_font.engraving_defaults[
                     "octaveLineThickness"

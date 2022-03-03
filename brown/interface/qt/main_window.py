@@ -19,7 +19,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.refresh_func = None
 
     def show(self):
-        self.refresh_timer_id = self.startTimer(33)
+        self.refresh_timer_id = self.startTimer(10)
         super().show()
 
     def timerEvent(self, event):
