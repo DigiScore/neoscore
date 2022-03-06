@@ -3,6 +3,8 @@ from PyQt5 import QtGui
 from brown.core.brush_pattern import BrushPattern
 from brown.utils.color import Color
 
+# TODO HIGH make me immutable dataclass
+
 
 class BrushInterface:
     """Interface for a generic drawing brush controlling fill patterns.
