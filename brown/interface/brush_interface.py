@@ -1,60 +1,25 @@
+from dataclasses import dataclass, field
+
 from PyQt5 import QtGui
 
 from brown.core.brush_pattern import BrushPattern
 from brown.utils.color import Color
 
-# TODO HIGH make me immutable dataclass
 
-
+@dataclass(frozen=True)
 class BrushInterface:
-    """Interface for a generic drawing brush controlling fill patterns.
+    """Interface for a generic drawing brush controlling fill patterns."""
 
-    Currently only solid colors are supported.
-    """
+    color: Color
+    pattern: BrushPattern
+    qt_object: QtGui.QBrush = field(init=False)
 
-    def __init__(self, color, pattern):
-        """
-        Args:
-            color (Color): The color of the brush.
-            pattern (BrushPattern): The fill pattern of the brush.
-        """
-        # Initialize color to bright red to signal this not being
-        # set correctly by color setter
-        self.qt_object = QtGui.QBrush(QtGui.QColor("#ff0000"))
-        self.color = color
-        self.pattern = pattern
-
-    ######## PUBLIC PROPERTIES ########
-
-    @property
-    def color(self):
-        """Color: The color for the brush.
-
-        This setter automatically propagates changes to the
-        underlying Qt object.
-        """
-        return self._colorterm
-
-    @color.setter
-    def color(self, color):
-        self._color = color
-        self.qt_object.setColor(
-            QtGui.QColor(color.red, color.green, color.blue, color.alpha)
+    def __post_init__(self):
+        color = QtGui.QColor(
+            self.color.red, self.color.green, self.color.blue, self.color.alpha
         )
-
-    @property
-    def pattern(self):
-        """BrushPattern: The fill pattern.
-
-        This setter automatically propagates changes to the
-        underlying Qt object.
-        """
-        return self._pattern
-
-    @pattern.setter
-    def pattern(self, value):
-        self._pattern = value
-        self.qt_object.setStyle(self.pattern.value)
+        q_brush = QtGui.QBrush(color, self.pattern.value)
+        super().__setattr__("qt_object", q_brush)
 
 
 NO_BRUSH = BrushInterface(Color("#000000"), BrushPattern.NO_BRUSH)
