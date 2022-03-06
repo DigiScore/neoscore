@@ -14,17 +14,22 @@ unit = staff.unit
 clef = Clef(staff, unit(0), "treble")
 KeySignature(clef.bounding_rect.width + unit(0.5), staff, "g_major")
 
-OctaveLine((unit(20), unit(-4)), staff, unit(40))
+center = unit(20)
 
-note = Chordrest(unit(8), staff, ["e'''"], Beat(1, 4))
+n1 = Notehead(center, "g'", Beat(1, 4), staff)
+n2 = Notehead(center, "b'", Beat(1, 4), staff)
+n3 = Notehead(center, "d''", Beat(1, 4), staff)
+n4 = Notehead(center, "f''", Beat(1, 4), staff)
 
 
 def refresh_func(time):
     brown._clear_interfaces()
-    # Chordrests don't currently support mutability
-    global note
-    note.remove()
-    note = Chordrest(unit(20) + Mm(math.sin(time) * 10), staff, ["e'''"], Beat(1, 4))
+
+    n1.x = center + Mm(math.sin((time / 5)) * 10)
+    n2.x = center + Mm(math.sin((time / 5) + 1) * 12)
+    n3.x = center + Mm(math.sin((time / 5) + 1.7) * 7)
+    n4.x = center + Mm(math.sin((time / 5) + 2.3) * 15)
+
     brown.document._render()
 
 

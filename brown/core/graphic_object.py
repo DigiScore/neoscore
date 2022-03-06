@@ -83,12 +83,12 @@ class GraphicObject(ABC):
         self.brush = brush
         self._children = []
         self.parent = parent
-        self._interfaces = set()
+        self._interfaces = []
 
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def interfaces(self) -> set[GraphicObjectInterface]:
+    def interfaces(self) -> list[GraphicObjectInterface]:
         """The interfaces for this object
 
         Interface objects are created upon calling `GraphicObject.render()`

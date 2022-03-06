@@ -7,6 +7,7 @@ from brown.core.path import Path
 from brown.core.pen import Pen
 from brown.core.pen_pattern import PenPattern
 from brown.core.staff_object import StaffObject
+from brown.interface.pen_interface import NO_PEN
 from brown.interface.text_interface import TextInterface
 from brown.models.interval import Interval
 from brown.models.transposition import Transposition
@@ -156,29 +157,32 @@ class _OctaveLineText(MusicText, StaffObject):
     def _render_before_break(self, local_start_x, start, stop, dist_to_line_start):
         interface = TextInterface(
             start,
+            NO_PEN,
+            self.brush._interface,
             self.text,
             self.font._interface,
-            self.brush._interface,
         )
         interface.render()
-        self.interfaces.add(interface)
+        self.interfaces.append(interface)
 
     def _render_after_break(self, local_start_x, start, stop):
         interface = TextInterface(
             start,
+            NO_PEN,
+            self.brush._interface,
             self.parenthesized_text,
             self.font._interface,
-            self.brush._interface,
         )
         interface.render()
-        self.interfaces.add(interface)
+        self.interfaces.append(interface)
 
     def _render_spanning_continuation(self, local_start_x, start, stop):
         interface = TextInterface(
             start,
+            NO_PEN,
+            self.brush._interface,
             self.parenthesized_text,
             self.font._interface,
-            self.brush._interface,
         )
         interface.render()
-        self.interfaces.add(interface)
+        self.interfaces.append(interface)

@@ -1,15 +1,18 @@
+from dataclasses import dataclass
 from typing import NamedTuple, Optional
 
 from PyQt5.QtGui import QFont, QPainterPath, QPen
 from PyQt5.QtWidgets import QGraphicsItem
 
 from brown.core import brown
+from brown.interface.brush_interface import BrushInterface
 from brown.interface.font_interface import FontInterface
 from brown.interface.graphic_object_interface import GraphicObjectInterface
+from brown.interface.pen_interface import NO_PEN
 from brown.interface.qt.converters import point_to_qt_point_f
 from brown.interface.qt.q_clipping_path import QClippingPath
 from brown.utils.point import Point
-from brown.utils.units import GraphicUnit
+from brown.utils.units import Unit
 
 
 class _CachedTextKey(NamedTuple):
@@ -41,57 +44,28 @@ see https://doc.qt.io/qt-5/qgraphicsitem.html#setCacheMode
 """
 
 
+@dataclass(frozen=True)
 class TextInterface(GraphicObjectInterface):
 
     """An interface for graphical text objects."""
 
-    def __init__(
-        self,
-        pos,
-        text,
-        font,
-        brush,
-        scale=1,
-        clip_start_x=None,
-        clip_width=None,
-    ):
-        """
-        Args:
-            pos (Point[GraphicUnit] or tuple): The position of the path root
-                relative to the document.
-            text (str): The text for the object
-            font (FontInterface): The font object for the text
-            brush (BrushInterface): The brush for the object.
-            scale (float): A hard scaling factor.
-            clip_start_x (Unit or None): The local starting position for the
-                clipping region. Use `None` to render from the start.
-            clip_width (Unit or None): The width of the clipping region.
-                Use `None` to render to the end
-        """
-        super().__init__()
-        self._text = text
-        self.clip_start_x = clip_start_x
-        self.clip_width = clip_width
-        self._scale = scale
-        self._font = font
-        self._pos = pos
-        self._brush = brush
+    text: str
 
-    ######## PUBLIC PROPERTIES ########
+    font: FontInterface
 
-    @property
-    def text(self) -> str:
-        """The text for the object"""
-        return self._text
+    scale: float = 1
 
-    @property
-    def scale(self) -> float:
-        """A scale factor to be applied to the rendered text"""
-        return self._scale
+    clip_start_x: Optional[Unit] = None
+    """The local starting position of the drawn region in the glyph.
 
-    @property
-    def font(self) -> FontInterface:
-        return self._font
+    Use `None` to render from the start
+    """
+
+    clip_width: Optional[Unit] = None
+    """The width of the visible region.
+
+    Use `None` to render to the end.
+    """
 
     ######## PUBLIC METHODS ########
 
@@ -105,7 +79,7 @@ class TextInterface(GraphicObjectInterface):
         qt_object = self._get_path(self.text, self.font, self.scale)
         qt_object.setPos(point_to_qt_point_f(self.pos))
         qt_object.setBrush(self.brush.qt_object)
-        qt_object.setPen(QPen(0))  # No pen
+        qt_object.setPen(self.pen.qt_object)  # No pen
         return qt_object
 
     ######## PRIVATE METHODS ########

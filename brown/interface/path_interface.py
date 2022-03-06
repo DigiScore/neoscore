@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from enum import Enum, auto
 from typing import NamedTuple, NewType, Optional, Type, Union
 
@@ -33,38 +34,26 @@ class ResolvedCurveTo(NamedTuple):
 
 
 ResolvedPathElement = Union[ResolvedMoveTo, ResolvedLineTo, ResolvedCurveTo]
+"""A path element whose position is relative to its path"""
 
 
+@dataclass(frozen=True)
 class PathInterface(GraphicObjectInterface):
     """Interface for a generic graphic path object."""
 
-    def __init__(
-        self,
-        pos: Point,
-        elements: list[ResolvedPathElement],
-        pen: PenInterface,
-        brush: BrushInterface,
-        clip_start_x: Optional[Unit] = None,
-        clip_width: Optional[Unit] = None,
-    ):
-        """
-        Args:
-            pos (Point or tuple): The position of the path root
-                relative to the document.
-            pen (PenInterface): The pen to draw outlines with.
-            brush (BrushInterface): The brush to draw outlines with.
-            clip_start_x (Unit or None): The local starting position for the
-                path clipping region. Use `None` to render from the start.
-            clip_width (Unit or None): The width of the path clipping region.
-                Use `None` to render to the end
-        """
-        super().__init__()
-        self._pos = pos
-        self._pen = pen
-        self._brush = brush
-        self.clip_start_x = clip_start_x
-        self.clip_width = clip_width
-        self.elements = elements
+    elements: list[ResolvedPathElement]
+
+    clip_start_x: Optional[Unit] = None
+    """The local starting position of the drawn region in the glyph.
+
+    Use `None` to render from the start
+    """
+
+    clip_width: Optional[Unit] = None
+    """The width of the visible region.
+
+    Use `None` to render to the end.
+    """
 
     ######## Public Methods ########
 

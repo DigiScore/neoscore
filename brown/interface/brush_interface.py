@@ -1,5 +1,8 @@
 from PyQt5 import QtGui
 
+from brown.core.brush_pattern import BrushPattern
+from brown.utils.color import Color
+
 
 class BrushInterface:
     """Interface for a generic drawing brush controlling fill patterns.
@@ -50,3 +53,6 @@ class BrushInterface:
     def pattern(self, value):
         self._pattern = value
         self.qt_object.setStyle(self.pattern.value)
+
+
+NO_BRUSH = BrushInterface(Color("#000000"), BrushPattern.NO_BRUSH)

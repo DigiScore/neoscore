@@ -1,5 +1,6 @@
 from brown.core import brown
 from brown.core.graphic_object import GraphicObject
+from brown.interface.pen_interface import NO_PEN
 from brown.interface.text_interface import TextInterface
 from brown.utils.point import Point
 from brown.utils.units import ZERO
@@ -80,15 +81,19 @@ class Text(GraphicObject):
         """
         slice_interface = TextInterface(
             pos,
+            # TODO MEDIUM: Pen should know how to create a NO_PEN, and
+            # same with Brush.  This way core-level objects shouldn't
+            # have to deal with interfaces other than their own.
+            NO_PEN,
+            self.brush._interface,
             self.text,
             self.font._interface,
-            self.brush._interface,
-            scale=self.scale,
-            clip_start_x=clip_start_x,
-            clip_width=clip_width,
+            self.scale,
+            clip_start_x,
+            clip_width,
         )
         slice_interface.render()
-        self.interfaces.add(slice_interface)
+        self.interfaces.append(slice_interface)
 
     def _render_complete(self, pos, dist_to_line_start=None, local_start_x=None):
         self._render_slice(pos, None, None)

@@ -1,7 +1,10 @@
 from PyQt5 import QtGui
 
+from brown.core.pen_cap_style import PenCapStyle
+from brown.core.pen_join_style import PenJoinStyle
 from brown.core.pen_pattern import PenPattern
-from brown.utils.units import GraphicUnit
+from brown.utils.color import Color
+from brown.utils.units import ZERO, Unit
 
 
 class PenInterface:
@@ -93,3 +96,8 @@ class PenInterface:
     def cap_style(self, new_value):
         self._cap_style = new_value
         self.qt_object.setCapStyle(new_value.value)
+
+
+NO_PEN = PenInterface(
+    Color("#000000"), ZERO, PenPattern.NO_PEN, PenJoinStyle.BEVEL, PenCapStyle.FLAT
+)

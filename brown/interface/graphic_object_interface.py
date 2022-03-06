@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+
 from PyQt5.QtWidgets import QGraphicsItem
 
 from brown.interface.brush_interface import BrushInterface
@@ -13,6 +15,7 @@ from brown.utils.units import GraphicUnit
 # in one go. that would simplify a lot of code.
 
 
+@dataclass(frozen=True)
 class GraphicObjectInterface:
     """Interface for a generic graphic object.
 
@@ -34,45 +37,17 @@ class GraphicObjectInterface:
 
     # TODO MEDIUM update above docs on new implementation pattern
 
-    def __init__(self):
-        self._pos = None
-        self._pen = None
-        self._brush = None
+    pos: Point
+    """The absolute position of the object in canvas space."""
 
-    @property
-    def pos(self) -> Point:
-        """Point: The absolute position of the object.
+    pen: PenInterface
 
-        This setter automatically propagates changes to
-        the underlying Qt object.
-        """
-        return self._pos
-
-    @property
-    def pen(self) -> PenInterface:
-        """PenInterface: The pen to draw outlines with.
-
-        This setter automatically propagates changes to
-        the underlying Qt object.
-        """
-        return self._pen
-
-    @property
-    def brush(self) -> BrushInterface:
-        """BrushInterface: The brush to fill shapes with.
-
-        This setter automatically propagates changes to
-        the underlying Qt object.
-        """
-        return self._brush
+    brush: BrushInterface
 
     def render(self):
-        """Render the object to the scene.
-
-        Returns: None
-        """
+        """Render the object to the scene."""
         raise NotImplementedError
 
     def _create_qt_object(self) -> QGraphicsItem:
-        """Create and return this interface's underlying Qt object"""
+        """Create a Qt object corresponding to this interface's attributes"""
         raise NotImplementedError

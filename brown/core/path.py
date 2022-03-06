@@ -234,14 +234,14 @@ class Path(GraphicObject):
         resolved_path_elements = self._resolve_path_elements()
         slice_interface = PathInterface(
             pos,
-            resolved_path_elements,
             self.pen._interface,
             self.brush._interface,
-            clip_start_x=clip_start_x,
-            clip_width=clip_width,
+            resolved_path_elements,
+            clip_start_x,
+            clip_width,
         )
         slice_interface.render()
-        self.interfaces.add(slice_interface)
+        self.interfaces.append(slice_interface)
 
     def _render_complete(self, pos, dist_to_line_start=None, local_start_x=None):
         self._render_slice(pos, None, None)
