@@ -3,14 +3,14 @@ import math
 from brown.core.graphic_object import GraphicObject
 from brown.core.mapping import map_between
 from brown.core.path import Path
-from brown.core.spanner import Spanner
+from brown.core.spanner_2d import Spanner2D
 from brown.core.staff_object import StaffObject
 from brown.utils.parent_point import ParentPoint
 from brown.utils.point import Point
 from brown.utils.units import ZERO, Unit
 
 
-class Hairpin(Path, StaffObject, Spanner):
+class Hairpin(Path, StaffObject, Spanner2D):
 
     """A crescendo/diminuendo hairpin spanner."""
 
@@ -32,7 +32,7 @@ class Hairpin(Path, StaffObject, Spanner):
         stop = stop if isinstance(stop, ParentPoint) else ParentPoint(*stop)
         Path.__init__(self, Point(start.x, start.y), parent=start.parent)
         StaffObject.__init__(self, start.parent)
-        Spanner.__init__(self, Point(stop.x, stop.y), stop.parent)
+        Spanner2D.__init__(self, Point(stop.x, stop.y), stop.parent or self)
         self.direction = direction
         self.width = width if width is not None else self.staff.unit(1)
         self.thickness = self.staff.music_font.engraving_defaults["hairpinThickness"]

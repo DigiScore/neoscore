@@ -1,10 +1,9 @@
-import math
-from typing import Optional, cast
+from typing import Optional, Union, cast
 
 from brown.core.graphic_object import GraphicObject
 from brown.core.mapping import Positioned, map_between, map_between_x
 from brown.utils.point import Point
-from brown.utils.units import Unit
+from brown.utils.units import ZERO, Unit
 
 
 class Spanner:
@@ -19,12 +18,17 @@ class Spanner:
     `GraphicObject.pos`, and the starting anchor should be the its
     `GraphicObject.parent`. It is up to the implementing class to
     decide how to use this information.
+
+    Simple `Spanner`s are horizontal relative to their starting
+    anchor. Arbitrary end-y positions can be set with `Spanner2D`.
     """
 
-    def __init__(self, end_pos: Point, end_parent: Optional[Positioned] = None):
+    def __init__(self, end_x: Unit, end_parent: Positioned):
         """
         Args:
-            end_pos: The position of the endpoint
+            end_pos: The position of the endpoint. If a `Unit` is given, it will be
+                treated as the end X position, and the end Y position will be
+                calculated to be horizontal relative to the start.
             end_parent: The parent of the endpoint. `end_pos` will be relative to
                 this object. If None, this defaults to `self`.
 
@@ -32,37 +36,27 @@ class Spanner:
             in the same one. Likewise, if the spanner is not in a
             `Flowable`, this must not be either.
         """
-        self._end_pos = end_pos
-        self._end_parent = end_parent if end_parent else cast(Positioned, self)
-
-    ######## PUBLIC PROPERTIES ########
+        self._end_x = end_x
+        self._end_parent = end_parent
 
     @property
     def end_x(self) -> Unit:
         """The x position of the endpoint"""
-        return self._end_pos.x
+        return self._end_x
 
     @end_x.setter
     def end_x(self, value: Unit):
-        self._end_pos = Point(value, self._end_pos.y)
+        self._end_x = value
 
     @property
     def end_y(self) -> Unit:
         """The y position of the endpoint"""
-        return self._end_pos.y
-
-    @end_y.setter
-    def end_y(self, value: Unit):
-        self._end_pos = Point(self._end_pos.x, value)
+        return map_between(self.end_parent, cast(Positioned, self)).y
 
     @property
     def end_pos(self) -> Point:
         """The position of the endpoint"""
-        return self._end_pos
-
-    @end_pos.setter
-    def end_pos(self, value: Point):
-        self._end_pos = value
+        return Point(self.end_x, self.end_y)
 
     @property
     def end_parent(self) -> Positioned:
@@ -86,23 +80,3 @@ class Spanner:
             return (
                 map_between_x(cast(Positioned, self), self.end_parent) + self.end_pos.x
             )
-
-    @property
-    def spanner_length(self) -> Unit:
-        """The 2d length of the spanner.
-
-        Note: This takes into account both the x and y axis. For only
-            the horizontal length, use `spanner_x_length`.
-        """
-        if self.end_parent == self:
-            relative_stop = self.end_pos
-        else:
-            relative_stop = (
-                map_between(cast(Positioned, self), self.end_parent) + self.end_pos
-            )
-        distance = Unit(
-            math.sqrt(
-                (relative_stop.x.base_value**2) + (relative_stop.y.base_value**2)
-            )
-        )
-        return type(cast(Positioned, self).pos.x)(distance)

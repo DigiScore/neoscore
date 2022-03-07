@@ -1,11 +1,11 @@
-from brown.core.horizontal_spanner import HorizontalSpanner
 from brown.core.path import Path
 from brown.core.pen import Pen
+from brown.core.spanner import Spanner
 from brown.core.staff_object import StaffObject
 from brown.utils.units import Unit
 
 
-class PedalLine(HorizontalSpanner, Path, StaffObject):
+class PedalLine(Spanner, Path, StaffObject):
 
     """A line-style pedal marking with optional half-lift (^) marks.
 
@@ -48,7 +48,7 @@ class PedalLine(HorizontalSpanner, Path, StaffObject):
             thickness=self.staff.music_font.engraving_defaults["pedalLineThickness"]
         )
         Path.__init__(self, start, pen, parent=start_parent)
-        HorizontalSpanner.__init__(self, end_x, end_parent)
+        Spanner.__init__(self, end_x, end_parent or self)
         self.half_lift_positions = half_lift_positions
         self._draw_path()
 

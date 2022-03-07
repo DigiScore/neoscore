@@ -1,16 +1,14 @@
-from brown.core.horizontal_spanner import HorizontalSpanner
 from brown.core.music_text import MusicText
+from brown.core.spanner import Spanner
 from brown.core.staff_object import StaffObject
 from brown.utils.point import Point
 
 
-class RepeatingMusicTextLine(MusicText, StaffObject, HorizontalSpanner):
+class RepeatingMusicTextLine(MusicText, StaffObject, Spanner):
 
     """A spanner of repeating music text over its length."""
 
-    def __init__(
-        self, start, parent, end_x, text, end_parent=None, font=None, scale=1
-    ):
+    def __init__(self, start, parent, end_x, text, end_parent=None, font=None, scale=1):
         """
         Args:
             start (Point or init tuple): The starting point.
@@ -33,7 +31,7 @@ class RepeatingMusicTextLine(MusicText, StaffObject, HorizontalSpanner):
         # repetitions are needed to cover the spanner.
         MusicText.__init__(self, start, text, parent, font, scale)
         StaffObject.__init__(self, parent)
-        HorizontalSpanner.__init__(self, end_x, end_parent)
+        Spanner.__init__(self, end_x, end_parent or self)
         self.repeating_music_chars = self.music_chars
         self.repeating_text = self.text
         repetitions = self._repetitions_needed

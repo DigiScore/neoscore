@@ -1,12 +1,12 @@
 from brown.core.brush import Brush
 from brown.core.path import Path
-from brown.core.spanner import Spanner
+from brown.core.spanner_2d import Spanner2D
 from brown.core.staff_object import StaffObject
 from brown.utils.parent_point import ParentPoint
 from brown.utils.point import Point
 
 
-class Slur(Path, StaffObject, Spanner):
+class Slur(Path, StaffObject, Spanner2D):
 
     """A slur spanning between two StaffObjects.
 
@@ -27,7 +27,7 @@ class Slur(Path, StaffObject, Spanner):
             self, (start.x, start.y), parent=start.parent, brush=Brush((0, 0, 0, 255))
         )
         StaffObject.__init__(self, self.parent)
-        Spanner.__init__(self, Point(stop.x, stop.y), stop.parent)
+        Spanner2D.__init__(self, Point(stop.x, stop.y), stop.parent or self)
         self.direction = direction
         # Load relevant engraving defaults from music font
         engraving_defaults = self.staff.music_font.engraving_defaults

@@ -1,4 +1,3 @@
-from brown.core.horizontal_spanner import HorizontalSpanner
 from brown.core.mapping import map_between
 from brown.core.music_char import MusicChar
 from brown.core.music_text import MusicText
@@ -6,6 +5,7 @@ from brown.core.object_group import ObjectGroup
 from brown.core.path import Path
 from brown.core.pen import Pen
 from brown.core.pen_pattern import PenPattern
+from brown.core.spanner import Spanner
 from brown.core.staff_object import StaffObject
 from brown.interface.pen_interface import NO_PEN
 from brown.interface.text_interface import TextInterface
@@ -15,7 +15,7 @@ from brown.utils.point import ORIGIN, Point
 from brown.utils.units import ZERO
 
 
-class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
+class OctaveLine(ObjectGroup, Spanner, StaffObject):
 
     """An octave indication with a dashed line.
 
@@ -79,7 +79,7 @@ class OctaveLine(ObjectGroup, HorizontalSpanner, StaffObject):
                 The default value is '8va'.
         """
         ObjectGroup.__init__(self, start, start_parent)
-        HorizontalSpanner.__init__(self, end_x, end_parent)
+        Spanner.__init__(self, end_x, end_parent or self)
         StaffObject.__init__(self, self.parent)
         self.transposition = Transposition(OctaveLine.intervals[indication])
         self.line_text = _OctaveLineText(
