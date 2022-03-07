@@ -44,4 +44,4 @@ class Stem(Path, StaffObject):
     @property
     def end_point(self):
         """PathElement: The outer point; not attached to a `Notehead`."""
-        return self.elements[0]
+        return self.elements[1]
