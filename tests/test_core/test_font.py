@@ -2,6 +2,7 @@ import unittest
 
 from brown.core import brown
 from brown.core.font import Font
+from brown.utils.rect import Rect
 from brown.utils.units import GraphicUnit
 
 
@@ -73,3 +74,14 @@ class TestFont(unittest.TestCase):
         assert hash(font) != hash(Font("Bravura", 13, 1, False))
         assert hash(font) != hash(Font("Bravura", 12, 2, False))
         assert hash(font) != hash(Font("Bravura", 12, 1, True))
+
+    def test_bounding_rect_of(self):
+        font = Font("Bravura", 12, 1, False)
+        rect = font.bounding_rect_of("")
+        assert rect == Rect(
+            GraphicUnit(0), GraphicUnit(0), GraphicUnit(0), GraphicUnit(0)
+        )
+        rect = font.bounding_rect_of("abc")
+        assert rect == Rect(
+            GraphicUnit(1), GraphicUnit(-14), GraphicUnit(29), GraphicUnit(14)
+        )

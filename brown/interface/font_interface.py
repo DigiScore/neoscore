@@ -1,3 +1,4 @@
+from dataclasses import dataclass, field
 from typing import Optional
 
 from PyQt5 import QtGui
@@ -8,72 +9,68 @@ from brown.utils.rect import Rect
 from brown.utils.units import GraphicUnit, Unit
 
 
+@dataclass(frozen=True)
 class FontInterface:
 
-    """An interface for fonts, exposing many font metadata properties."""
+    """An interface for fonts, exposing some commonly used metadata."""
 
-    def __init__(
-        self, family_name: str, size: Unit, weight: Optional[int], italic: bool
-    ):
-        """
-        Args:
-            family_name (str): The name of the font family
-            size (Unit): The size of the font
-            weight (int or None): The font weight. If `None`,
-                a normal weight will be used.
-            italic (bool): Italicized or not
-        """
-        self.family_name = family_name
-        self.size = size
-        self.weight = weight
-        self.italic = italic
-        self.qt_object = QtGui.QFont(
-            self.family_name,
-            # TODO MEDIUM I think this doesn't support float font sizes
-            int(self.size.base_value),
-            self.weight if self.weight is not None else -1,
-            self.italic,
+    family_name: str
+    size: Unit
+    weight: Optional[int]
+    italic: bool
+
+    ascent: Unit = field(init=False)
+    """The ascent of the font.
+
+    The ascent is the vertical distance between the font baseline and
+    the highest any font characters reach.
+    """
+
+    descent: Unit = field(init=False)
+    """The descent of the font.
+
+    The ascent is the vertical distance between the font baseline and
+    the lowest any font characters reach.
+    """
+
+    x_height: Unit = field(init=False)
+    """The x-height for the font.
+    
+    This is generally similar, if not identical, to the em size.
+    """
+
+    qt_object: QtGui.QFont = field(init=False)
+
+    _qt_font_info_object: QtGui.QFontInfo = field(init=False)
+    _qt_font_metrics_object: QtGui.QFontMetricsF = field(init=False)
+
+    def __post_init__(self):
+        super().__setattr__(
+            "qt_object",
+            QtGui.QFont(
+                self.family_name,
+                # TODO MEDIUM this doesn't support float font sizes
+                int(self.size.base_value),
+                self.weight if self.weight is not None else -1,
+                self.italic,
+            ),
         )
-        self._qt_font_info_object = QtGui.QFontInfo(self.qt_object)
-        self._qt_font_metrics_object = QtGui.QFontMetricsF(
-            self.qt_object, brown._app_interface.view
+        super().__setattr__("_qt_font_info_object", QtGui.QFontInfo(self.qt_object))
+        super().__setattr__(
+            "_qt_font_metrics_object",
+            QtGui.QFontMetricsF(self.qt_object, brown._app_interface.view),
+        )
+        super().__setattr__(
+            "ascent", GraphicUnit(self._qt_font_metrics_object.ascent())
+        )
+        super().__setattr__(
+            "descent", GraphicUnit(self._qt_font_metrics_object.descent())
         )
 
-    ######## PUBLIC PROPERTIES ########
-
-    @property
-    def ascent(self) -> Unit:
-        """The ascent of the font.
-
-        The ascent is the vertical distance between the font baseline and
-        the highest any font characters reach.
-        """
-        return GraphicUnit(self._qt_font_metrics_object.ascent())
-
-    @property
-    def descent(self) -> Unit:
-        """The descent of the font.
-
-        The ascent is the vertical distance between the font baseline and
-        the lowest any font characters reach.
-        """
-        return GraphicUnit(self._qt_font_metrics_object.descent())
-
-    @property
-    def em_size(self) -> Unit:
-        """The em size for the font.
-
-        NOTE: This is actually being calculated from the x-height of the font.
-        Depending on the Qt specifics, this may or may not work as expected.
-        """
-        return GraphicUnit(self._qt_font_metrics_object.xHeight())
-
-    ######## PUBLIC METHODS ########
+        super().__setattr__(
+            "x_height", GraphicUnit(self._qt_font_metrics_object.xHeight())
+        )
 
     def bounding_rect_of(self, text: str) -> Rect:
-        """Calculate the tight bounding rectangle around a string in this font.
-
-        Args:
-            text: The text to calculate around.
-        """
+        """Calculate the tight bounding rectangle around a string in this font."""
         return qt_rect_to_rect(self._qt_font_metrics_object.tightBoundingRect(text))
