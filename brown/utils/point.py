@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import NamedTuple, Type, Union
+from typing import NamedTuple, Type, Union, cast
 
 from brown.utils.units import ZERO, GraphicUnit, Unit
 
@@ -13,6 +13,12 @@ class Point(NamedTuple):
 
     x: Unit
     y: Unit
+
+    @staticmethod
+    def from_def(point_def: PointDef) -> Point:
+        if hasattr(point_def, "x"):
+            return cast(Point, point_def)
+        return Point(*point_def)
 
     ######## SPECIAL METHODS ########
 

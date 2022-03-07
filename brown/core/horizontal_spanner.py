@@ -42,6 +42,10 @@ class HorizontalSpanner(Spanner):
 
     ######## PUBLIC PROPERTIES ########
 
+    # TODO HIGH: This overriding of property setters to make end_y
+    # read-only is very sus. Maybe HorizontalSpanner isn't really
+    # needed?
+
     @property
     def end_x(self) -> Unit:
         """Unit: The x position of the endpoint"""

@@ -1,8 +1,16 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Union
+
 from brown.core.music_text import MusicText
 from brown.core.staff_object import StaffObject
 from brown.models.beat import Beat
-from brown.utils.point import Point
+from brown.utils import point
+from brown.utils.point import Point, PointDef
 from brown.utils.units import ZERO, Unit
+
+if TYPE_CHECKING:
+    from brown.core.staff import Staff
 
 
 class Rest(MusicText, StaffObject):
@@ -30,19 +38,13 @@ class Rest(MusicText, StaffObject):
         1: "restWhole",
     }
 
-    def __init__(self, pos, parent, duration):
-        """
-        Args:
-            pos (Unit or Point): The position relative to the parent.
-                For convenience, a `Unit` may be passed representing the x-axis
-                position, in which case the y-axis position defaults
-                to `Unit(0)`.
-            duration (Beat or init tuple):
-            parent (StaffObject or Staff):
-        """
-        # TODO MEDIUM I was surprised while using this that `pos` is either
-        # 1D or 2D. I think it should always be 2D.
-        pos = pos if isinstance(pos, Point) else Point(pos, ZERO)
+    def __init__(
+        self,
+        pos: PointDef,
+        parent: Union[StaffObject, Staff],
+        duration: Union[Beat, tuple],
+    ):
+        pos = Point.from_def(pos)
         self._duration = duration if isinstance(duration, Beat) else Beat(*duration)
         MusicText.__init__(
             self, pos, [self._glyphnames[self.duration.base_division]], parent

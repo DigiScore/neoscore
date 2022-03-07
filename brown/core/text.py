@@ -1,8 +1,9 @@
 from brown.core import brown
+from brown.core.font import Font
 from brown.core.graphic_object import GraphicObject
 from brown.interface.pen_interface import NO_PEN
 from brown.interface.text_interface import TextInterface
-from brown.utils.point import Point
+from brown.utils.point import Point, PointDef
 from brown.utils.units import ZERO
 
 
@@ -10,7 +11,9 @@ class Text(GraphicObject):
 
     """A graphical text object."""
 
-    def __init__(self, pos, text, font=None, parent=None, scale=1):
+    def __init__(
+        self, pos: PointDef, text: str, font: Font = None, parent=None, scale=1
+    ):
         """
         Args:
             pos (Point or init tuple): The position of the path root

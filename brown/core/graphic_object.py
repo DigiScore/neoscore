@@ -16,7 +16,7 @@ from brown.core.mapping import (
 from brown.core.page import Page
 from brown.core.pen import Pen
 from brown.interface.graphic_object_interface import GraphicObjectInterface
-from brown.utils.point import ORIGIN, Point
+from brown.utils.point import ORIGIN, Point, PointDef
 from brown.utils.units import ZERO, Mm, Unit
 
 if TYPE_CHECKING:
@@ -59,7 +59,7 @@ class GraphicObject(ABC):
     # TODO MEDIUM: work out signatures for convenience args
     def __init__(
         self,
-        pos,
+        pos: PointDef,
         length=None,
         pen=None,
         brush=None,
@@ -108,10 +108,8 @@ class GraphicObject(ABC):
         return self._pos
 
     @pos.setter
-    def pos(self, value: Union[Point, tuple[Unit, Unit]]):
-        if not isinstance(value, Point):
-            value = Point(*value)
-        self._pos = value
+    def pos(self, value: PointDef):
+        self._pos = Point.from_def(value)
 
     @property
     def x(self) -> Unit:
