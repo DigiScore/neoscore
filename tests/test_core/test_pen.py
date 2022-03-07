@@ -6,6 +6,7 @@ from brown.core.pen import Pen
 from brown.core.pen_cap_style import PenCapStyle
 from brown.core.pen_join_style import PenJoinStyle
 from brown.core.pen_pattern import PenPattern
+from brown.interface.pen_interface import PenInterface
 from brown.utils.color import Color
 from brown.utils.units import Unit
 
@@ -52,3 +53,38 @@ class TestPen(unittest.TestCase):
         assert original.pattern == clone.pattern
         assert original.join_style == clone.join_style
         assert original.cap_style == clone.cap_style
+
+    def test_interface_generation(self):
+        pen = Pen(
+            Color("#eeddcc"),
+            Unit(2),
+            PenPattern.DASH,
+            PenJoinStyle.MITER,
+            PenCapStyle.ROUND,
+        )
+        assert pen.interface == PenInterface(
+            Color("#eeddcc"),
+            Unit(2),
+            PenPattern.DASH,
+            PenJoinStyle.MITER,
+            PenCapStyle.ROUND,
+        )
+
+    def test_setters_update_interface(self):
+        pen = Pen(
+            Color("#eeddcc"),
+            Unit(2),
+            PenPattern.DASH,
+            PenJoinStyle.MITER,
+            PenCapStyle.ROUND,
+        )
+        pen.color = Color("#ffffff")
+        assert pen.interface.color == Color("#ffffff")
+        pen.thickness = Unit(1)
+        assert pen.interface.thickness == Unit(1)
+        pen.pattern = PenPattern.SOLID
+        assert pen.interface.pattern == PenPattern.SOLID
+        pen.join_style = PenJoinStyle.MITER
+        assert pen.interface.join_style == PenJoinStyle.MITER
+        pen.cap_style = PenCapStyle.ROUND
+        assert pen.interface.cap_style == PenCapStyle.ROUND

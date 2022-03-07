@@ -20,6 +20,3 @@ class BrushInterface:
         )
         q_brush = QtGui.QBrush(color, self.pattern.value)
         super().__setattr__("qt_object", q_brush)
-
-
-NO_BRUSH = BrushInterface(Color("#000000"), BrushPattern.NO_BRUSH)

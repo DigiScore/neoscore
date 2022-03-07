@@ -39,8 +39,3 @@ class PenInterface:
             self.join_style.value,
         )
         super().__setattr__("qt_object", q_pen)
-
-
-NO_PEN = PenInterface(
-    Color("#000000"), ZERO, PenPattern.NO_PEN, PenJoinStyle.BEVEL, PenCapStyle.FLAT
-)

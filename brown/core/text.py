@@ -1,7 +1,7 @@
 from brown.core import brown
 from brown.core.font import Font
 from brown.core.graphic_object import GraphicObject
-from brown.interface.pen_interface import NO_PEN
+from brown.core.pen import NO_PEN
 from brown.interface.text_interface import TextInterface
 from brown.utils.point import Point, PointDef
 from brown.utils.units import ZERO
@@ -84,11 +84,8 @@ class Text(GraphicObject):
         """
         slice_interface = TextInterface(
             pos,
-            # TODO MEDIUM: Pen should know how to create a NO_PEN, and
-            # same with Brush.  This way core-level objects shouldn't
-            # have to deal with interfaces other than their own.
-            NO_PEN,
-            self.brush._interface,
+            NO_PEN.interface,
+            self.brush.interface,
             self.text,
             self.font._interface,
             self.scale,
