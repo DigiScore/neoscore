@@ -49,7 +49,7 @@ class Font:
         return self._size
 
     @property
-    def weight(self) -> int:
+    def weight(self) -> Optional[int]:
         return self._weight
 
     @property
@@ -75,9 +75,9 @@ class Font:
         return self._interface.descent
 
     @property
-    def em_size(self) -> Unit:
-        """The em size for the font."""
-        return self._interface.em_size
+    def x_height(self) -> Unit:
+        """The x-height for the font."""
+        return self._interface.x_height
 
     ######## SPECIAL METHODS ########
 

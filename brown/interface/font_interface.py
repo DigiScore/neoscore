@@ -49,12 +49,15 @@ class FontInterface:
             "qt_object",
             QtGui.QFont(
                 self.family_name,
-                # TODO MEDIUM this doesn't support float font sizes
-                int(self.size.base_value),
+                # Float font sizes can't be set in QFont's constructor,
+                # so set it to -1 (system default) here and set actual
+                # size below with setPointSizeF
+                -1,
                 self.weight if self.weight is not None else -1,
                 self.italic,
             ),
         )
+        self.qt_object.setPointSizeF(self.size.base_value)
         super().__setattr__("_qt_font_info_object", QtGui.QFontInfo(self.qt_object))
         super().__setattr__(
             "_qt_font_metrics_object",
