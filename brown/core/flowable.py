@@ -120,7 +120,9 @@ class Flowable(InvisibleObject):
         current_page = 0
         # Attach initial line controller
         self.layout_controllers.append(
-            AutoNewLine(self.pos, brown.document.pages[current_page], self, x_progress)
+            AutoNewLine(
+                self.pos, brown.document.pages[current_page], x_progress, self.height
+            )
         )
         while True:
             x_progress += live_page_width - pos_x
@@ -134,7 +136,7 @@ class Flowable(InvisibleObject):
                 current_page += 1
                 self.layout_controllers.append(
                     AutoNewLine(
-                        pos, brown.document.pages[current_page], self, x_progress
+                        pos, brown.document.pages[current_page], x_progress, self.height
                     )
                 )
             else:
@@ -144,8 +146,8 @@ class Flowable(InvisibleObject):
                     AutoNewLine(
                         Point(pos_x, pos_y),
                         brown.document.pages[current_page],
-                        self,
                         x_progress,
+                        self.height,
                         self.y_padding,
                     )
                 )
@@ -161,53 +163,53 @@ class Flowable(InvisibleObject):
         """
         line = self.last_break_at(local_point.x)
         line_canvas_pos = brown.document.canvas_pos_of(line)
-        return line_canvas_pos + Point(local_point.x - line.local_x, local_point.y)
+        return line_canvas_pos + Point(local_point.x - line.flowable_x, local_point.y)
 
-    def dist_to_line_start(self, local_x):
+    def dist_to_line_start(self, flowable_x):
         """Find the distance of an x-pos to the left edge of its laid-out line.
 
         Args:
-            local_x (Unit): An x-axis location in the virtual flowable space.
+            flowable_x (Unit): An x-axis location in the virtual flowable space.
 
         Returns: Unit
         """
-        line_start = self.last_break_at(local_x)
-        return local_x - line_start.local_x
+        line_start = self.last_break_at(flowable_x)
+        return flowable_x - line_start.flowable_x
 
-    def dist_to_line_end(self, local_x):
+    def dist_to_line_end(self, flowable_x):
         """Find the distance of an x-pos to the right edge of its laid-out line.
 
         Args:
-            local_x (Unit): An x-axis location in the virtual flowable space.
+            flowable_x (Unit): An x-axis location in the virtual flowable space.
 
         Returns: Unit
         """
-        return self.dist_to_line_start(local_x) - brown.document.paper.live_width
+        return self.dist_to_line_start(flowable_x) - brown.document.paper.live_width
 
-    def last_break_at(self, local_x):
-        """Find the last `NewLine` that occurred before a given local local_x-pos
+    def last_break_at(self, flowable_x):
+        """Find the last `NewLine` that occurred before a given local flowable_x-pos
 
         The result of this function will be accurate within Unit(1)
 
         Args:
-            local_x (Unit): An x-axis location in the virtual flowable space.
+            flowable_x (Unit): An x-axis location in the virtual flowable space.
 
         Returns:
             NewLine:
         """
-        return self.layout_controllers[self.last_break_index_at(local_x)]
+        return self.layout_controllers[self.last_break_index_at(flowable_x)]
 
-    def last_break_index_at(self, local_x):
+    def last_break_index_at(self, flowable_x):
         """Like `last_break_at`, but returns an index.
 
         The result of this function will be accurate within Unit(1)
 
         Args:
-            local_x (Unit): An x-axis location in the virtual flowable space.
+            flowable_x (Unit): An x-axis location in the virtual flowable space.
 
         Returns: int
         """
-        remaining_x = local_x
+        remaining_x = flowable_x
         for i, controller in enumerate(self.layout_controllers):
             remaining_x -= controller.length
             # Allow error of Unit(1) to compensate for repeated subtraction
@@ -216,5 +218,5 @@ class Flowable(InvisibleObject):
                 return i
         else:
             raise OutOfBoundsError(
-                "local_x={} lies outside of this Flowable".format(local_x)
+                "flowable_x={} lies outside of this Flowable".format(flowable_x)
             )

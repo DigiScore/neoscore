@@ -365,7 +365,7 @@ class GraphicObject(ABC):
 
         # Render end
         render_start_pos = self.flowable.map_to_canvas(
-            Point(current_line.local_x, pos_in_flowable.y)
+            Point(current_line.flowable_x, pos_in_flowable.y)
         )
         render_end_pos = Point(render_start_pos.x + remaining_x, render_start_pos.y)
         self._render_after_break(

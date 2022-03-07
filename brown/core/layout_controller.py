@@ -9,20 +9,17 @@ class LayoutController(InvisibleObject):
              by its `Flowable`.
     """
 
-    def __init__(self, pos, page, flowable, local_x):
+    def __init__(self, pos, page, flowable_x):
         """
         Args:
             pos (Point): The position of this controller relative to its page.
             page (Page): The page this controller appears on. This is used as
                 the object's parent.
-            flowable (Flowable): The flowable this controller
-                belongs in. Note that this is *not* the object's parent.
-            local_x (Unit): The position of this controller within the
+            flowable_x (Unit): The position of this controller within the
                 `Flowable`s local space.
         """
         super().__init__(pos, page)
-        self._flowable = flowable
-        self._local_x = local_x
+        self._flowable_x = flowable_x
 
     ######## PUBLIC PROPERTIES ########
 
@@ -36,15 +33,10 @@ class LayoutController(InvisibleObject):
         return self.parent
 
     @property
-    def flowable(self):
-        """Flowable: The parent flowable this controller is bound to."""
-        return self._flowable
-
-    @property
-    def local_x(self):
+    def flowable_x(self):
         """Unit: The x position in `self.flowable`s local space."""
-        return self._local_x
+        return self._flowable_x
 
-    @local_x.setter
-    def local_x(self, value):
-        self._local_x = value
+    @flowable_x.setter
+    def flowable_x(self, value):
+        self._flowable_x = value

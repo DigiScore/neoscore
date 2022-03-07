@@ -6,22 +6,21 @@ from brown.utils.units import ZERO, Unit
 class NewLine(LayoutController):
     """A line break controller."""
 
-    # TODO MEDIUM update docs and typeify signature. not doing signature
-    # types now because it seems like there might be a circular import
-    # concern (flowable import AutoNewLine)
+    # TODO Medium rename offset_y to something line padding_below
 
-    def __init__(self, pos, page, flowable, local_x, offset_y=None):
+    def __init__(self, pos, page, flowable_x, height: Unit, offset_y=None):
         """
         Args:
-            flowable (Flowable): The parent flowable.
-            x (Unit): The x position in the flowable's local space where this
+            pos (Point): The position of the top left corner of this line relative
+                to the page.
+            flowable_x (Unit): The x position in the flowable's local space where this
                 line begins.
-            pos (Point): The position of the top left corner of this line.
             offset_y (Unit): The space between the bottom of the
                 current line and the top of the next. Defaults to `Unit(0)`
         """
-        super().__init__(pos, page, flowable, local_x)
+        super().__init__(pos, page, flowable_x)
         self._offset_y = offset_y if offset_y else ZERO
+        self._height = height
 
     ######## PUBLIC PROPERTIES ########
 
@@ -50,4 +49,4 @@ class NewLine(LayoutController):
     @property
     def height(self) -> Unit:
         """The height of the line."""
-        return self.flowable.height
+        return self._height
