@@ -90,7 +90,11 @@ class PathInterface(GraphicObjectInterface):
 
     def _create_qt_object(self):
         painter_path = PathInterface.create_qt_path(self.elements)
-        qt_object = QClippingPath(painter_path, self.clip_start_x, self.clip_width)
+        qt_object = QClippingPath(
+            painter_path,
+            self.clip_start_x.base_value if self.clip_start_x is not None else None,
+            self.clip_width.base_value if self.clip_width is not None else None,
+        )
         qt_object.setPos(point_to_qt_point_f(self.pos))
         qt_object.setBrush(self.brush.qt_object)
         qt_object.setPen(self.pen.qt_object)  # No pen

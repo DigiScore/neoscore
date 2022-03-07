@@ -24,7 +24,7 @@ class TestQClippingPath(unittest.TestCase):
         painter_path = QtGui.QPainterPath()
         painter_path.lineTo(100, 200)
         result_rect = QClippingPath.calculate_clipping_area(
-            painter_path.boundingRect(), Unit(50), None, 0
+            painter_path.boundingRect(), 50, None, 0
         )
         assert result_rect.x() == 50
         assert result_rect.y() == painter_path.boundingRect().y()
@@ -35,7 +35,7 @@ class TestQClippingPath(unittest.TestCase):
         painter_path = QtGui.QPainterPath()
         painter_path.lineTo(100, 200)
         result_rect = QClippingPath.calculate_clipping_area(
-            painter_path.boundingRect(), None, Unit(50), 0
+            painter_path.boundingRect(), None, 50, 0
         )
         assert result_rect.x() == 0
         assert result_rect.y() == painter_path.boundingRect().y()
@@ -46,7 +46,7 @@ class TestQClippingPath(unittest.TestCase):
         painter_path = QtGui.QPainterPath()
         painter_path.lineTo(100, 200)
         result_rect = QClippingPath.calculate_clipping_area(
-            painter_path.boundingRect(), Unit(25), Unit(30), 0
+            painter_path.boundingRect(), 25, 30, 0
         )
         assert result_rect.x() == 25
         assert result_rect.y() == painter_path.boundingRect().y()
