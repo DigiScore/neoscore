@@ -87,7 +87,7 @@ class TestFlowable(unittest.TestCase):
             if current_page != line.page:
                 current_page = line.page
                 continue
-            assert line.offset_y == test_flowable.y_padding
+            assert line.margin_bottom == test_flowable.y_padding
 
     def test_generate_layout_controllers_on_new_pages_have_no_padding(self):
         live_width = brown.document.paper.live_width
@@ -100,7 +100,7 @@ class TestFlowable(unittest.TestCase):
             if current_page == line.page:
                 continue
             current_page = line.page
-            assert line.offset_y == Mm(0)
+            assert line.margin_bottom == Mm(0)
 
     # For reference
     # page live width == Mm(160)

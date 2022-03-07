@@ -1,9 +1,9 @@
 from brown.core import brown, mapping
-from brown.core.auto_new_line import AutoNewLine
 from brown.core.break_opportunity import BreakOpportunity
 from brown.core.graphic_object import GraphicObject
 from brown.core.invisible_object import InvisibleObject
 from brown.core.mapping import Positioned
+from brown.core.new_line import NewLine
 from brown.utils.exceptions import OutOfBoundsError
 from brown.utils.point import ORIGIN, Point
 from brown.utils.units import ZERO, Mm, Unit
@@ -120,7 +120,7 @@ class Flowable(InvisibleObject):
         current_page = 0
         # Attach initial line controller
         self.layout_controllers.append(
-            AutoNewLine(
+            NewLine(
                 self.pos, brown.document.pages[current_page], x_progress, self.height
             )
         )
@@ -135,7 +135,7 @@ class Flowable(InvisibleObject):
                 pos = ORIGIN
                 current_page += 1
                 self.layout_controllers.append(
-                    AutoNewLine(
+                    NewLine(
                         pos, brown.document.pages[current_page], x_progress, self.height
                     )
                 )
@@ -143,7 +143,7 @@ class Flowable(InvisibleObject):
                 # Line break - self.y_padding as y offset
                 pos_x = ZERO
                 self.layout_controllers.append(
-                    AutoNewLine(
+                    NewLine(
                         Point(pos_x, pos_y),
                         brown.document.pages[current_page],
                         x_progress,

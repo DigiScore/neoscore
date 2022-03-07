@@ -1,4 +1,5 @@
 from brown.core.layout_controller import LayoutController
+from brown.core.page import Page
 from brown.utils.point import Point
 from brown.utils.units import ZERO, Unit
 
@@ -6,32 +7,40 @@ from brown.utils.units import ZERO, Unit
 class NewLine(LayoutController):
     """A line break controller."""
 
-    # TODO Medium rename offset_y to something line padding_below
-
-    def __init__(self, pos, page, flowable_x, height: Unit, offset_y=None):
+    def __init__(
+        self,
+        pos: Point,
+        page: Page,
+        flowable_x: Unit,
+        height: Unit,
+        margin_bottom: Unit = ZERO,
+    ):
         """
         Args:
-            pos (Point): The position of the top left corner of this line relative
+            pos: The position of the top left corner of this line relative
                 to the page.
-            flowable_x (Unit): The x position in the flowable's local space where this
+            page: The page this line appears on. This is used as
+                the object's parent.
+            flowable_x: The x position in the flowable's local space where this
                 line begins.
-            offset_y (Unit): The space between the bottom of the
+            height: The height of the line
+            margin_bottom: The space between the bottom of the
                 current line and the top of the next. Defaults to `Unit(0)`
         """
         super().__init__(pos, page, flowable_x)
-        self._offset_y = offset_y if offset_y else ZERO
+        self._margin_bottom = margin_bottom
         self._height = height
 
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def offset_y(self) -> Unit:
+    def margin_bottom(self) -> Unit:
         """The space before the next line."""
-        return self._offset_y
+        return self._margin_bottom
 
-    @offset_y.setter
-    def offset_y(self, value: Unit):
-        self._offset_y = value
+    @margin_bottom.setter
+    def margin_bottom(self, value: Unit):
+        self._margin_bottom = value
 
     @property
     def doc_end_pos(self) -> Point:
