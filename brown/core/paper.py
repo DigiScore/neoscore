@@ -20,6 +20,7 @@ class Paper:
     gutter: Unit
     live_width: Unit = field(init=False)
     live_height: Unit = field(init=False)
+    interface: PaperInterface = field(init=False)
 
     def __post_init__(self):
         # This hack is needed to assign derived fields on frozen dataclasses
@@ -31,6 +32,7 @@ class Paper:
         super().__setattr__(
             "live_height", self.height - self.margin_bottom - self.margin_top
         )
+        super().__setattr__("interface", PaperInterface(self.width, self.height))
 
     ######## PUBLIC METHODS ########
 
@@ -50,15 +52,6 @@ class Paper:
             self.margin_bottom,
             self.gutter,
         )
-
-    ######## PRIVATE METHODS ########
-
-    def _to_interface(self):
-        """Construct and return a PaperInterface based on this Paper.
-
-        Returns: PaperInterface
-        """
-        return PaperInterface(self)
 
 
 # Templates for common paper types are declared below

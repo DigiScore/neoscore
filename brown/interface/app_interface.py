@@ -59,7 +59,7 @@ class AppInterface:
         printer.setOutputFormat(QPrinter.PdfFormat)
         printer.setOutputFileName(os.path.realpath(path))
         printer.setResolution(constants.PRINT_DPI)
-        printer.setPageLayout(self.document.paper._to_interface())
+        printer.setPageLayout(self.document.paper.interface())
         painter = QtGui.QPainter()
         painter.begin(printer)
         # Scaling ratio for Qt point 72dpi -> constants.PRINT_DPI

@@ -12,7 +12,7 @@ from ..helpers import assert_almost_equal
 
 class TestDocument(unittest.TestCase):
     def test_init_with_explicit_paper(self):
-        test_paper = Paper(200, 250, 20, 10, 20, 10, 5)
+        test_paper = Paper(Mm(200), Mm(250), Mm(20), Mm(10), Mm(20), Mm(10), Mm(5))
         test_doc = Document(test_paper)
         assert test_doc.paper == test_paper
 
