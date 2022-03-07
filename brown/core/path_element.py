@@ -10,9 +10,6 @@ class PathElement(InvisibleObject):
     def __init__(self, pos: Point, parent: GraphicObject):
         super().__init__(pos, parent)
 
-    def as_parent_point(self) -> ParentPoint:
-        return ParentPoint.from_point(self.pos, self.parent)
-
 
 class MoveTo(PathElement):
     pass

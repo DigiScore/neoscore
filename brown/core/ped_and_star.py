@@ -2,6 +2,7 @@ from brown.core.music_text import MusicText
 from brown.core.object_group import ObjectGroup
 from brown.core.spanner import Spanner
 from brown.core.staff_object import StaffObject
+from brown.utils.point import Point
 from brown.utils.units import GraphicUnit
 
 
@@ -24,7 +25,9 @@ class PedAndStar(ObjectGroup, Spanner, StaffObject):
                 stop point is relative to the start point.
         """
         ObjectGroup.__init__(self, start, start_parent)
-        Spanner.__init__(self, end, end_parent)
+        Spanner.__init__(
+            self, end if isinstance(end, Point) else Point(*end), end_parent
+        )
         StaffObject.__init__(self, self.parent)
 
         # Add opening pedal mark
