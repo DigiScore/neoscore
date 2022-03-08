@@ -8,7 +8,9 @@ class Brush:
     """A brush describing how shapes are filled in."""
 
     def __init__(
-        self, color: ColorDef = "#000000", pattern: BrushPattern = BrushPattern.SOLID
+        self,
+        color: ColorDef = Color("#000000"),
+        pattern: BrushPattern = BrushPattern.SOLID,
     ):
         """
         Args:

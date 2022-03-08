@@ -2,8 +2,6 @@ from typing import Type, Union
 
 from brown.utils.exceptions import ColorBoundsError
 
-# TODO HIGH make immutable dataclass or namedtuple
-
 
 class Color:
     """A general purpose Color class"""
@@ -55,44 +53,20 @@ class Color:
         """int: The 0-255 value of the red color channel"""
         return self._red
 
-    @red.setter
-    def red(self, value):
-        if not (0 <= value <= 255):
-            raise ColorBoundsError("red", value)
-        self._red = int(value)
-
     @property
     def green(self):
         """int: The 0-255 value of the green color channel"""
         return self._green
-
-    @green.setter
-    def green(self, value):
-        if not (0 <= value <= 255):
-            raise ColorBoundsError("green", value)
-        self._green = int(value)
 
     @property
     def blue(self):
         """int: The 0-255 value of the blue color channel"""
         return self._blue
 
-    @blue.setter
-    def blue(self, value):
-        if not (0 <= value <= 255):
-            raise ColorBoundsError("blue", value)
-        self._blue = int(value)
-
     @property
     def alpha(self):
         """int: The 0-255 value of the alpha color channel"""
         return self._alpha
-
-    @alpha.setter
-    def alpha(self, value):
-        if not (0 <= value <= 255):
-            raise ColorBoundsError("alpha", value)
-        self._alpha = int(value)
 
     ######## PRIVATE METHODS ########
 
@@ -107,10 +81,11 @@ class Color:
         """
         if hex_value.startswith("#"):
             hex_value = hex_value[1:]
-        self.red = int(hex_value[0:2], 16)
-        self.green = int(hex_value[2:4], 16)
-        self.blue = int(hex_value[4:6], 16)
-        self.alpha = 255
+        self._red = int(hex_value[0:2], 16)
+        self._green = int(hex_value[2:4], 16)
+        self._blue = int(hex_value[4:6], 16)
+        self._alpha = 255
+        self._validate_channel_values()
 
     def _set_with_rgb(self, red, green, blue):
         """Set properties from three 0-255 red, green, and blue values
@@ -122,10 +97,11 @@ class Color:
 
         Returns: None
         """
-        self.red = red
-        self.green = green
-        self.blue = blue
-        self.alpha = 255
+        self._red = red
+        self._green = green
+        self._blue = blue
+        self._alpha = 255
+        self._validate_channel_values()
 
     def _set_with_rgba(self, red, green, blue, alpha):
         """Set properties from four 0-255 red, green, blue, and alpha values
@@ -138,10 +114,16 @@ class Color:
 
         Returns: None
         """
-        self.red = red
-        self.green = green
-        self.blue = blue
-        self.alpha = alpha
+        self._red = red
+        self._green = green
+        self._blue = blue
+        self._alpha = alpha
+        self._validate_channel_values()
+
+    def _validate_channel_values(self):
+        for value in [self._red, self._green, self._blue, self._alpha]:
+            if not (0 <= value <= 255):
+                raise ColorBoundsError(value)
 
 
 ColorDef = Union[Color, str, tuple[int, int, int], tuple[int, int, int, int]]

@@ -17,7 +17,7 @@ class Pen:
 
     def __init__(
         self,
-        color: ColorDef = "#000000",
+        color: ColorDef = Color("#000000"),
         thickness: Optional[Unit] = None,
         pattern: PenPattern = PenPattern.SOLID,
         join_style: PenJoinStyle = PenJoinStyle.BEVEL,

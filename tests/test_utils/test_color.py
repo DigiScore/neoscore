@@ -83,3 +83,14 @@ class TestColor(unittest.TestCase):
         assert color_from_def("#ffffff") == Color("#ffffff")
         assert color_from_def(Color("#ffffff")) == Color("#ffffff")
         assert color_from_def((255, 255, 255)) == Color("#ffffff")
+
+    def test_color_is_immutable(self):
+        color = Color("#ffffff")
+        with pytest.raises(AttributeError):
+            color.red = 123
+        with pytest.raises(AttributeError):
+            color.green = 123
+        with pytest.raises(AttributeError):
+            color.blue = 123
+        with pytest.raises(AttributeError):
+            color.alpha = 123
