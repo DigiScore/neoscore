@@ -25,10 +25,10 @@ document: Document
 """Document: The global document root object."""
 
 registered_music_fonts: dict[str, dict] = {}
+"""A map from registered music font names to SMuFL metadata"""
 
-# TODO MEDIUM add system for registering and using text fonts, which seems to
-# be unsupported right now
-registered_text_fonts: dict[str, dict] = {}
+registered_font_family_names: set[str] = set()
+"""A set of family names of all registered fonts, including music fonts"""
 
 # Color of background between and around pages. (Not yet implemented)
 _display_background_color = "#dddddd"
@@ -54,7 +54,6 @@ def setup(initial_paper: Paper = A4):
     global _app_interface
     global default_font
     global document
-    global registered_text_fonts
     document = Document(initial_paper)
     _app_interface = AppInterface(document)
     _register_default_fonts()
@@ -63,47 +62,47 @@ def setup(initial_paper: Paper = A4):
     )
 
 
-def register_font(font_file_path: str):
+def register_font(font_file_path: str) -> list[str]:
     """Register a font file with the application.
-
-    If highly consistent typesetting is a concern for your score and
-    you wish to use non-standard fonts (e.g. Times New Roman), it is
-    recommended that you distribute your fonts with `brown` scripts
-    whenever possible, and call this immediately after `brown.setup()`.
 
     If successful, this makes the font available for use in `Font` objects,
     to be referenced by the family name embedded in the font file.
 
     Args:
-        font_file_path (str): A path to a font file. Currently only
+        font_file_path: A path to a font file. Currently only
             TrueType and OpenType fonts are supported.
 
-    Returns: None
+    Returns: A list of family names registered. Typically this will have length 1.
 
     Raises: FontRegistrationError: If the font could not be loaded.
         Typically, this is because the given path does not lead to
         a valid font file.
     """
+    global registered_font_family_names
     global _app_interface
-    _app_interface.register_font(font_file_path)
+    family_names = _app_interface.register_font(font_file_path)
+    for name in family_names:
+        registered_font_family_names.add(name)
+    return family_names
 
 
-def register_music_font(font_name: str, font_file_path: str, metadata_path: str):
+def register_music_font(font_file_path: str, metadata_path: str):
     """Register a music font with the application.
 
     Args:
-        font_name (str): The canonical name of this font.
-            This is used as a dict key for the font metadata
-            in `brown.registered_music_fonts`.
         font_file_path (str): A path to a font file.
         metadata_path (str): A path to a SMuFL metadata JSON file
             for this font. The standard SMuFL format for this file name
             will be {lowercase_font_name}_metadata.json.
 
-    Returns: None
+    Returns: A list of family names registered. Typically this will have length 1.
+
+    Raises: FontRegistrationError: If the font could not be loaded.
+        Typically, this is because the given path does not lead to
+        a valid font file.
     """
     global registered_music_fonts
-    register_font(font_file_path)
+    family_names = register_font(font_file_path)
     try:
         with open(metadata_path, "r") as metadata_file:
             metadata = json.load(metadata_file)
@@ -116,8 +115,13 @@ def register_music_font(font_name: str, font_file_path: str, metadata_path: str)
             metadata_path
         )
         raise e
-    registered_music_fonts[font_name] = metadata
-    return metadata
+    name = family_names[0]
+    if len(family_names) > 1:
+        print(
+            f"Warning: music font at {font_file_path} contained more than 1 font "
+            + f"family. SMuFL metadata will only be stored for {name}."
+        )
+    registered_music_fonts[name] = metadata
 
 
 def show():
@@ -237,7 +241,6 @@ def set_refresh_func(refresh_func: Callable[[float], None]):
 
 def _register_default_fonts():
     register_music_font(
-        constants.DEFAULT_MUSIC_FONT_NAME,
         constants.DEFAULT_MUSIC_FONT_PATH,
         constants.DEFAULT_MUSIC_FONT_METADATA_PATH,
     )

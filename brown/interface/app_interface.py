@@ -141,21 +141,26 @@ class AppInterface:
         self.app = None
         self.scene = None
 
-    def register_font(self, font_file_path):
+    def register_font(self, font_file_path: str) -> list[str]:
         """Register a font file with the graphics engine.
 
         Args:
-            font_file_path (str): A path to a font file. The path should
+            font_file_path: A path to a font file. The path should
                 be relative to the main `brown` package. Currently only
                 TrueType and OpenType fonts are supported.
 
-        Returns: None
+        Returns: A list of font families found in the font.
 
         Raises: FontRegistrationError: if the registration fails.
         """
         font_id = self.font_database.addApplicationFont(font_file_path)
         if font_id == AppInterface._QT_FONT_ERROR_CODE:
             raise FontRegistrationError(font_file_path)
+        family_names = self.font_database.applicationFontFamilies(font_id)
+        if not len(family_names):
+            # I think this should be impossible, but log a warning just in case
+            print(f"Warning: font at {font_file_path} provided no family names")
+        return self.font_database.applicationFontFamilies(font_id)
 
     ######## PRIVATE METHODS ########
 
