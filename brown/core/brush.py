@@ -1,3 +1,6 @@
+from typing import Union
+
+from brown import constants
 from brown.core.brush_pattern import BrushPattern
 from brown.interface.brush_interface import BrushInterface
 from brown.utils.color import Color, ColorDef, color_from_def
@@ -62,3 +65,13 @@ class Brush:
 
 
 NO_BRUSH = Brush(pattern=BrushPattern.NO_BRUSH)
+DEFAULT_BRUSH = Brush(constants.DEFAULT_BRUSH_COLOR, constants.DEFAULT_BRUSH_PATTERN)
+
+SimpleBrushDef = Union[Brush, str]
+
+
+def brush_from_simple_def(brush_def: SimpleBrushDef) -> Brush:
+    if isinstance(brush_def, Brush):
+        return brush_def
+    else:
+        return Brush(brush_def)

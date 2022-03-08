@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Optional
+from typing import Optional, Union
 
 from brown import constants
 from brown.core.pen_cap_style import PenCapStyle
@@ -121,3 +121,17 @@ class Pen:
 
 
 NO_PEN = Pen(pattern=PenPattern.NO_PEN)
+DEFAULT_PEN = Pen(
+    constants.DEFAULT_PEN_COLOR,
+    constants.DEFAULT_PEN_THICKNESS,
+    constants.DEFAULT_PEN_PATTERN,
+)
+
+SimplePenDef = Union[Pen, str]
+
+
+def pen_from_simple_def(pen_def: SimplePenDef) -> Pen:
+    if isinstance(pen_def, Pen):
+        return pen_def
+    else:
+        return Pen(pen_def)

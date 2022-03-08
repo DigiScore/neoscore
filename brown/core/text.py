@@ -12,16 +12,15 @@ class Text(GraphicObject):
     """A graphical text object."""
 
     def __init__(
-        self, pos: PointDef, text: str, font: Font = None, parent=None, scale=1
+        self, pos: PointDef, text: str, font: Font = None, parent=None, scale: float = 1
     ):
         """
         Args:
-            pos (Point or init tuple): The position of the path root
-                relative to the document.
-            text (str): The text to be displayed
-            font (Font): The font for the object.
-            parent (GraphicObject): The parent (core-level) object or None
-            scale (float): A hard scaling factor.
+            pos: Position relative to the parent
+            text: The text to be displayed
+            font: The font to display the text in.
+            parent: The parent (core-level) object or None
+            scale: A hard scaling factor.
         """
         if font:
             self._font = font

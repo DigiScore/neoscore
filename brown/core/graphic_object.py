@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, Optional, Type, Union, cast
 
 from brown import constants
 from brown.core import brown
-from brown.core.brush import Brush
+from brown.core.brush import DEFAULT_BRUSH, Brush, SimpleBrushDef, brush_from_simple_def
 from brown.core.mapping import (
     Positioned,
     ancestors,
@@ -15,7 +15,7 @@ from brown.core.mapping import (
     first_ancestor_of_exact_class,
 )
 from brown.core.page import Page
-from brown.core.pen import Pen
+from brown.core.pen import DEFAULT_PEN, Pen, SimplePenDef, pen_from_simple_def
 from brown.interface.graphic_object_interface import GraphicObjectInterface
 from brown.utils.point import ORIGIN, Point, PointDef
 from brown.utils.units import ZERO, Mm, Unit
@@ -48,28 +48,18 @@ class GraphicObject(ABC):
     global document with `brown.document.pages[n]`
     """
 
-    default_pen = Pen(
-        constants.DEFAULT_PEN_COLOR,
-        constants.DEFAULT_PEN_THICKNESS,
-        constants.DEFAULT_PEN_PATTERN,
-    )
-    _default_brush = Brush(
-        constants.DEFAULT_BRUSH_COLOR, constants.DEFAULT_BRUSH_PATTERN
-    )
-
     # TODO MEDIUM: work out signatures for convenience args
     def __init__(
         self,
         pos: PointDef,
-        length=None,
-        pen=None,
-        brush=None,
+        length: Unit = ZERO,
+        pen: Optional[SimplePenDef] = None,
+        brush: Optional[SimpleBrushDef] = None,
         parent: Optional[Union[GraphicObject, Page]] = None,
     ):
         """
         Args:
-            pos (Point[Unit] or tuple): The position of the object
-                relative to its parent
+            pos: The position of the object relative to its parent
             length (Unit): The width of the object which can be
                 subject to breaking across lines when in a`Flowable`.
                 If the object is not inside a `Flowable`,
@@ -79,10 +69,10 @@ class GraphicObject(ABC):
             parent (GraphicObject): The parent object or None
         """
         self.pos = pos
-        self._length = length if length else ZERO
+        self._length = length
         self.pen = pen
         self.brush = brush
-        self._children = []
+        self._children: list[GraphicObject] = []
         self.parent = parent
         self._interfaces = []
 
@@ -144,17 +134,11 @@ class GraphicObject(ABC):
         return self._pen
 
     @pen.setter
-    def pen(self, value: Union[str, Pen]):
+    def pen(self, value: SimplePenDef):
         if value:
-            if isinstance(value, str):
-                value = Pen(value)
-            elif isinstance(value, Pen):
-                pass
-            else:
-                raise TypeError
+            self._pen = pen_from_simple_def(value)
         else:
-            value = Pen.from_existing(self.default_pen)
-        self._pen = value
+            self._pen = Pen.from_existing(DEFAULT_PEN)
 
     @property
     def brush(self) -> Brush:
@@ -168,17 +152,17 @@ class GraphicObject(ABC):
         return self._brush
 
     @brush.setter
-    def brush(self, value: Union[str, Brush]):
+    def brush(self, value: SimpleBrushDef):
         if value:
+            self._brush = brush_from_simple_def(value)
             if isinstance(value, str):
-                value = Brush(value)
+                self._brush = Brush(value)
             elif isinstance(value, Brush):
-                pass
+                self._brush = value
             else:
                 raise TypeError
         else:
-            value = Brush.from_existing(self._default_brush)
-        self._brush = value
+            self._brush = Brush.from_existing(DEFAULT_BRUSH)
 
     @property
     def parent(self) -> Union[GraphicObject, Page]:

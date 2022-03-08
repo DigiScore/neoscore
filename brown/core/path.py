@@ -5,6 +5,7 @@ from brown.core.brush import Brush
 from brown.core.graphic_object import GraphicObject
 from brown.core.mapping import Positioned, descendant_pos, map_between, map_between_x
 from brown.core.path_element import ControlPoint, CurveTo, LineTo, MoveTo, PathElement
+from brown.core.pen import Pen
 from brown.interface.path_interface import (
     PathInterface,
     ResolvedCurveTo,
@@ -12,7 +13,7 @@ from brown.interface.path_interface import (
     ResolvedMoveTo,
     ResolvedPathElement,
 )
-from brown.utils.point import Point
+from brown.utils.point import Point, PointDef
 from brown.utils.units import ZERO, Unit
 
 
@@ -30,14 +31,21 @@ class Path(GraphicObject):
         constants.DEFAULT_PATH_BRUSH_COLOR, constants.DEFAULT_BRUSH_PATTERN
     )
 
-    def __init__(self, pos, pen=None, brush=None, parent=None):
+    def __init__(
+        self,
+        pos: PointDef,
+        pen: Optional[Pen] = None,
+        brush: Optional[Brush] = None,
+        parent=None,
+    ):
         """
         Args:
-            pos (Point or init tuple): The position of the path root.
-            pen (Pen): The pen to draw outlines with.
-            brush (Brush): The brush to draw outlines with.
+            pos: The position of the path root.
+            pen: The pen to draw outlines with.
+            brush: The brush to draw outlines with.
             parent (GraphicObject): The parent object or None
         """
+        brush = brush or Brush.from_existing(Path._default_brush)
         super().__init__(pos, ZERO, pen, brush, parent)
         self.elements: list[PathElement] = []
 
