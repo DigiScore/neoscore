@@ -2,6 +2,8 @@ from typing import Type, Union
 
 from brown.utils.exceptions import ColorBoundsError
 
+# TODO HIGH make immutable dataclass or namedtuple
+
 
 class Color:
     """A general purpose Color class"""

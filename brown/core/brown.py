@@ -10,9 +10,9 @@ from brown.core.paper import A4, Paper
 from brown.interface import images
 from brown.interface.app_interface import AppInterface
 from brown.utils import file_system
-from brown.utils.color import Color
+from brown.utils.color import Color, ColorDef, color_from_def
 from brown.utils.exceptions import InvalidImageFormatError
-from brown.utils.rect import Rect
+from brown.utils.rect import Rect, RectDef, rect_from_def
 
 """The global state of the application."""
 
@@ -164,7 +164,14 @@ def render_pdf(path: str):
     _app_interface.render_pdf((page.page_index for page in document.pages), path)
 
 
-def render_image(rect, image_path, dpi=600, quality=-1, bg_color=None, autocrop=False):
+def render_image(
+    rect: RectDef,
+    image_path: str,
+    dpi: int = 600,
+    quality: int = -1,
+    bg_color: Optional[ColorDef] = None,
+    autocrop: bool = False,
+):
     """Render a section of the document to an image.
 
     The following file extensions are supported:
@@ -178,23 +185,19 @@ def render_image(rect, image_path, dpi=600, quality=-1, bg_color=None, autocrop=
         * `.xpm`
 
     Args:
-        rect (Rect or arg tuple): The part of the document to render,
-            in document coordinates.
-        image_path (str): The path to the output image.
-            This must be a valid path relative to the current
-            working directory.
-        dpi (int): The pixels per inch of the rendered image.
-        quality (int): The quality of the output image for compressed
+        rect: The part of the document to render, in document coordinates.
+        image_path: The path to the output image.
+            This must be a valid path relative to the current working directory.
+        dpi: The pixels per inch of the rendered image.
+        quality: The quality of the output image for compressed
             image formats. Must be either `-1` (default compression) or
             between `0` (most compressed) and `100` (least compressed).
-        bg_color (Color or arg tuple): The background color for the image.
+        bg_color: The background color for the image.
             Defaults to solid white. Use a Color with `alpha=0` for a fully
             transparent background.
-        autocrop (bool): Whether or not to crop the output image to tightly
+        autocrop: Whether or not to crop the output image to tightly
             fit the contents of the frame. If true, the image will be cropped
             such that all 4 edges have at least one pixel not of `bg_color`.
-
-    Returns: None
 
     Raises:
         FileNotFoundError: If the given `image_path` does not point to a valid
@@ -221,12 +224,11 @@ def render_image(rect, image_path, dpi=600, quality=-1, bg_color=None, autocrop=
             "image_path {} is not in a supported format.".format(image_path)
         )
 
-    if not isinstance(rect, Rect):
-        rect = Rect(*rect)
+    rect = rect_from_def(rect)
     if bg_color is None:
         bg_color = Color(255, 255, 255, 255)
-    elif not isinstance(bg_color, Color):
-        bg_color = Color(bg_color)
+    else:
+        bg_color = color_from_def(bg_color)
     dpm = int(images.dpi_to_dpm(dpi))
 
     document._render()

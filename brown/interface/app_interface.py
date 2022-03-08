@@ -11,7 +11,9 @@ from brown.core.document import Document
 from brown.interface import images
 from brown.interface.qt.converters import color_to_q_color, rect_to_qt_rect_f
 from brown.interface.qt.main_window import MainWindow
+from brown.utils.color import Color
 from brown.utils.exceptions import FontRegistrationError, ImageExportError
+from brown.utils.rect import Rect
 from brown.utils.units import Meter, Unit
 
 
@@ -79,28 +81,34 @@ class AppInterface:
             printer.newPage()
         painter.end()
 
-    def render_image(self, rect, image_path, dpm, quality, bg_color, autocrop):
+    def render_image(
+        self,
+        rect: Rect,
+        image_path: str,
+        dpm: int,
+        quality: int,
+        bg_color: Color,
+        autocrop: bool,
+    ):
         """Render a section of self.scene to an image.
 
         It is assumed that all input arguments are valid.
 
         Args:
-            rect (Rect): The part of the document to render,
+            rect: The part of the document to render,
                 in document coordinates.
-            image_path (str): The path to the output image.
+            image_path: The path to the output image.
                 This must be a valid path relative to the current
                 working directory.
-            dpm (int): The pixels per meter of the rendered image.
-            quality (int): The quality of the output image for compressed
+            dpm: The pixels per meter of the rendered image.
+            quality: The quality of the output image for compressed
                 image formats. Must be either `-1` (default compression) or
                 between `0` (most compressed) and `100` (least compressed).
-            bg_color (Color): The background color for the image.
-            autocrop (bool): Whether or not to crop the output image to tightly
+            bg_color: The background color for the image.
+            autocrop: Whether or not to crop the output image to tightly
                 fit the contents of the frame. If true, the image will be
                 cropped such that all 4 edges have at least one pixel not of
                 `bg_color`.
-
-        Returns: None
 
         Raises:
             ImageExportError: If Qt image export fails for unknown reasons.

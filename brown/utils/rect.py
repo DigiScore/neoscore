@@ -22,3 +22,9 @@ class Rect:
 
 
 RectDef = Union[Rect, tuple[Unit, Unit, Unit, Unit]]
+
+
+def rect_from_def(rect_def: RectDef) -> Rect:
+    if isinstance(rect_def, Rect):
+        return rect_def
+    return Rect(*rect_def)
