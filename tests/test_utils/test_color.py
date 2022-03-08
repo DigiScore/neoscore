@@ -2,7 +2,7 @@ import unittest
 
 import pytest
 
-from brown.utils.color import Color, ColorBoundsError
+from brown.utils.color import Color, ColorBoundsError, color_from_def
 
 
 class TestColor(unittest.TestCase):
@@ -19,13 +19,6 @@ class TestColor(unittest.TestCase):
         assert color.green == 221
         assert color.blue == 204
         assert color.alpha == 255
-
-    def test_init_with_hex_string_and_alpha(self):
-        color = Color("eeddcc", 200)
-        assert color.red == 238
-        assert color.green == 221
-        assert color.blue == 204
-        assert color.alpha == 200
 
     def test_init_with_rgb(self):
         color = Color(0, 100, 200)
@@ -85,3 +78,8 @@ class TestColor(unittest.TestCase):
             Color(0, 100, 200, 250),
             Color(0, 0, 0, 0),
         } == {Color(0, 100, 200, 250), Color(0, 0, 0, 0)}
+
+    def test_color_from_def(self):
+        assert color_from_def("#ffffff") == Color("#ffffff")
+        assert color_from_def(Color("#ffffff")) == Color("#ffffff")
+        assert color_from_def((255, 255, 255)) == Color("#ffffff")

@@ -1,3 +1,5 @@
+from typing import Type, Union
+
 from brown.utils.exceptions import ColorBoundsError
 
 
@@ -7,26 +9,21 @@ class Color:
     def __init__(self, *args):
         """
         Valid signatures:
+            * Color(hex_string)
             * Color(red, green, blue)
             * Color(red, green, blue, alpha)
-            * Color(hex_string)
-            * Color(hex_string, alpha)
 
         Currently entering these values as keyword arguments
         is not supported.
         """
         if len(args) == 1:
             self._set_with_hex(*args)
-        elif len(args) == 2:
-            self._set_with_hex_alpha(*args)
         elif len(args) == 3:
             self._set_with_rgb(*args)
         elif len(args) == 4:
             self._set_with_rgba(*args)
         else:
-            raise TypeError(
-                "Expected between 1 and 4 arguments, " "got {}".format(len(args))
-            )
+            raise TypeError("Invalid Color init args")
 
     ######## SPECIAL METHODS ########
 
@@ -113,19 +110,6 @@ class Color:
         self.blue = int(hex_value[4:6], 16)
         self.alpha = 255
 
-    def _set_with_hex_alpha(self, hex_value, alpha):
-        """Set properties from an #rrggbb hex string and a 0-255 alpha value
-
-        Args:
-            hex_value (str): A hexadecimal color string with 6 characters
-                (or 7 if including a leading "#")
-            alpha (int): A 0-255 alpha channel value
-
-        Returns: None
-        """
-        self._set_with_hex(hex_value)
-        self.alpha = alpha
-
     def _set_with_rgb(self, red, green, blue):
         """Set properties from three 0-255 red, green, and blue values
 
@@ -156,3 +140,16 @@ class Color:
         self.green = green
         self.blue = blue
         self.alpha = alpha
+
+
+ColorDef = Union[Color, str, tuple[int, int, int], tuple[int, int, int, int]]
+
+
+def color_from_def(color_def: ColorDef) -> Color:
+    if isinstance(color_def, Color):
+        return color_def
+    elif isinstance(color_def, tuple):
+        return Color(*color_def)
+    else:
+        # otherwise color_def must be a str
+        return Color(color_def)

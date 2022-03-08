@@ -1,29 +1,22 @@
 from brown.core.brush_pattern import BrushPattern
 from brown.interface.brush_interface import BrushInterface
-from brown.utils.color import Color
+from brown.utils.color import Color, ColorDef, color_from_def
 
 
 class Brush:
 
-    """A specifier for fill patterns.
+    """A brush describing how shapes are filled in."""
 
-    In general, `Pen`s are responsible for drawing shape outlines
-    while `Brush`es are responsible for filling in shapes.
-    """
-
-    def __init__(self, color="#000000", pattern=BrushPattern.SOLID):
+    def __init__(
+        self, color: ColorDef = "#000000", pattern: BrushPattern = BrushPattern.SOLID
+    ):
         """
         Args:
-            color (Color or args for Color): The brush color
-            pattern (BrushPattern): The brush fill pattern.
+            color: The brush color
+            pattern: The brush fill pattern.
                 Defaults to a solid color.
         """
-        if isinstance(color, Color):
-            self._color = color
-        elif isinstance(color, tuple):
-            self._color = Color(*color)
-        else:
-            self._color = Color(color)
+        self._color = color_from_def(color)
         self._pattern = pattern
         self._regenerate_interface()
 

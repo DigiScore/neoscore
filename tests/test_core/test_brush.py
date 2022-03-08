@@ -15,10 +15,6 @@ class TestBrush(unittest.TestCase):
         brush = Brush("#eeddcc")
         assert brush.color == Color(238, 221, 204, 255)
 
-    def test_init_with_color_args_tuple(self):
-        brush = Brush(("#eeddcc", 200))
-        assert brush.color == Color(238, 221, 204, 200)
-
     def test_pattern_defaults_to_solid_color(self):
         brush = Brush("#ffffff")
         assert brush.pattern == BrushPattern.SOLID

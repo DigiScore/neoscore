@@ -18,12 +18,8 @@ class TestPen(unittest.TestCase):
         test_pen = Pen("#eeddcc")
         assert test_pen.color == Color(238, 221, 204, 255)
 
-    def test_init_with_color_args_tuple(self):
-        test_pen = Pen(("#eeddcc", 200))
-        assert test_pen.color == Color(238, 221, 204, 200)
-
     def test_init_default_thicknes(self):
-        test_pen = Pen(("#eeddcc", 200))
+        test_pen = Pen("#eeddcc")
         assert_almost_equal(test_pen.thickness, constants.DEFAULT_PEN_THICKNESS)
 
     def test_init_default_pattern(self):

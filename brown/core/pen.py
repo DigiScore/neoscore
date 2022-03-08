@@ -1,27 +1,27 @@
 from __future__ import annotations
 
+from typing import Optional
+
 from brown import constants
 from brown.core.pen_cap_style import PenCapStyle
 from brown.core.pen_join_style import PenJoinStyle
 from brown.core.pen_pattern import PenPattern
 from brown.interface.pen_interface import PenInterface
-from brown.utils.color import Color
+from brown.utils.color import Color, ColorDef, color_from_def
 from brown.utils.units import GraphicUnit, Unit
 
 
 class Pen:
-    """Class for a generic drawing pen controlling fill patterns.
 
-    Currently only solid colors are supported.
-    """
+    """A pen describing how shape outlines are drawn."""
 
     def __init__(
         self,
-        color="#000000",
-        thickness=None,
-        pattern=PenPattern.SOLID,
-        join_style=PenJoinStyle.BEVEL,
-        cap_style=PenCapStyle.SQUARE,
+        color: ColorDef = "#000000",
+        thickness: Optional[Unit] = None,
+        pattern: PenPattern = PenPattern.SOLID,
+        join_style: PenJoinStyle = PenJoinStyle.BEVEL,
+        cap_style: PenCapStyle = PenCapStyle.SQUARE,
     ):
         """
         Args:
@@ -35,12 +35,7 @@ class Pen:
             cap_style (PenCapStyle): Defaults to a square cap
 
         """
-        if isinstance(color, Color):
-            self._color = color
-        elif isinstance(color, tuple):
-            self._color = Color(*color)
-        else:
-            self._color = Color(color)
+        self._color = color_from_def(color)
         self._thickness = (
             thickness
             if thickness is not None

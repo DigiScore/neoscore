@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Union
 
 from brown.utils.units import Unit
 
@@ -18,3 +19,6 @@ class Rect:
     y: Unit
     width: Unit
     height: Unit
+
+
+RectDef = Union[Rect, tuple[Unit, Unit, Unit, Unit]]
