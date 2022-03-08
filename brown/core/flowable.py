@@ -3,10 +3,10 @@ from brown.core.break_opportunity import BreakOpportunity
 from brown.core.graphic_object import GraphicObject
 from brown.core.invisible_object import InvisibleObject
 from brown.core.layout_controller import LayoutController
-from brown.core.mapping import Positioned
+from brown.core.mapping import Positioned, canvas_pos_of
 from brown.core.new_line import NewLine
 from brown.utils.exceptions import OutOfBoundsError
-from brown.utils.point import ORIGIN, Point
+from brown.utils.point import ORIGIN, Point, PointDef
 from brown.utils.units import ZERO, Mm, Unit
 
 
@@ -26,17 +26,23 @@ class Flowable(InvisibleObject):
     majority of objects will be placed inside it.
     """
 
-    def __init__(self, pos, width, height, y_padding=Mm(5), break_threshold=Mm(5)):
+    def __init__(
+        self,
+        pos: PointDef,
+        width: Unit,
+        height: Unit,
+        y_padding: Unit = Mm(5),
+        break_threshold: Unit = Mm(5),
+    ):
         """
         Args:
-            pos (Point or tuple): Starting position in relative to
-                the top left corner of the live document area of the first page
-            width (Unit): length of the flowable
-            height (Unit): height of the flowable
-            y_padding (Unit): The vertical gap between flowable sections
-            break_threshold (Unit): The maximum distance the flowable will
-                shorten a line to allow a break to occur on a
-                `BreakOpportunity`
+            pos: Starting position in relative to the top left corner of the
+                live document area of the first page
+            width: length of the flowable
+            height: height of the flowable
+            y_padding: The vertical gap between flowable sections
+            break_threshold: The maximum distance the flowable will shorten a line
+                to allow a break to occur on a `BreakOpportunity`
         """
         super().__init__(pos)
         self._length = width
@@ -48,8 +54,8 @@ class Flowable(InvisibleObject):
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def length(self):
-        """The length (length) of the unwrapped flowable"""
+    def length(self) -> Unit:
+        """The length of the unwrapped flowable"""
         return self._length
 
     @property
@@ -153,7 +159,7 @@ class Flowable(InvisibleObject):
             local_point: A position in the flowable's local space.
         """
         line = self.last_break_at(local_point.x)
-        line_canvas_pos = brown.document.canvas_pos_of(line)
+        line_canvas_pos = canvas_pos_of(line)
         return line_canvas_pos + Point(local_point.x - line.flowable_x, local_point.y)
 
     def dist_to_line_start(self, flowable_x: Unit) -> Unit:

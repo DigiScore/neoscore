@@ -53,11 +53,3 @@ class TestDocument(unittest.TestCase):
         expected_x = left_margin + ((page_width + test_doc._page_display_gap) * 2)
         expected_y = top_margin
         assert_almost_equal(found, Point(expected_x, expected_y))
-
-    def test_canvas_pos_of(self):
-        brown.setup()
-        item = InvisibleObject((Mm(5), Mm(6)), brown.document.pages[2])
-        canvas_pos = brown.document.canvas_pos_of(item)
-        page_pos = brown.document.canvas_pos_of(brown.document.pages[2])
-        relative_pos = canvas_pos - page_pos
-        assert_almost_equal(relative_pos, Point(Mm(5), Mm(6)))

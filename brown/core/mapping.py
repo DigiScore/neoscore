@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Iterator, Optional, Protocol, Type, Union
+from typing import Any, Iterator, Optional, Protocol, Type, Union, cast
 
 from brown.core.page import Page
 from brown.utils.point import ORIGIN, Point
@@ -27,7 +27,8 @@ def ancestors(obj: Positioned) -> Iterator[Positioned]:
     ancestor = obj.parent
     while True:
         yield (ancestor)
-        if type(ancestor).__name__ == "Document":
+        if not hasattr(ancestor, "parent"):
+            # Document root found
             break
         ancestor = ancestor.parent
 
@@ -59,14 +60,13 @@ def map_between(src: Positioned, dst: Positioned) -> Point:
     src_ancestor_ids = set(id(grob) for grob in ancestors(src))
     relative_dst_pos = dst.pos
     for dst_ancestor in ancestors(dst):
-        # TODO MEDIUM find a better way to do these is-root-node checks
-        if type(dst_ancestor).__name__ != "Document":
+        if hasattr(dst_ancestor, "parent"):
             relative_dst_pos += dst_ancestor.pos
         if id(dst_ancestor) in src_ancestor_ids:
             # Now find relative_src_pos and return relative_dst_pos - relative_src_pos
             relative_src_pos = src.pos
             for src_ancestor in ancestors(src):
-                if type(src_ancestor).__name__ != "Document":
+                if hasattr(src_ancestor, "parent"):
                     relative_src_pos += src_ancestor.pos
                 if src_ancestor == dst_ancestor:
                     return relative_dst_pos - relative_src_pos
@@ -109,6 +109,26 @@ def descendant_pos_x(descendant: Positioned, ancestor: Positioned) -> Unit:
             return pos_x
         pos_x += parent.pos.x
     raise ValueError(f"{ancestor} is not an ancestor of {descendant}")
+
+
+def canvas_pos_of(grob: Positioned) -> Point:
+    """Find the paged document position of a GraphicObject.
+
+    Args:
+        grob: Any object in the document.
+
+    Returns: The object's paged position relative to the document.
+    """
+    pos = ORIGIN
+    current = grob
+    while hasattr(current, "parent"):
+        pos += current.pos
+        current = current.parent
+        if hasattr(current, "map_to_canvas"):
+            # Parent appears to be a flowable,
+            # so let it decide where the point goes.
+            return cast(Any, current).map_to_canvas(pos)
+    return pos
 
 
 # this doesn't really belong here...

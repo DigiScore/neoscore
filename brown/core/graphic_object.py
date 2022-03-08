@@ -10,6 +10,7 @@ from brown.core.brush import Brush
 from brown.core.mapping import (
     Positioned,
     ancestors,
+    canvas_pos_of,
     descendant_pos,
     first_ancestor_of_exact_class,
 )
@@ -287,7 +288,7 @@ class GraphicObject(ABC):
         if self.flowable is not None:
             self._render_in_flowable()
         else:
-            self._render_complete(brown.document.canvas_pos_of(self))
+            self._render_complete(canvas_pos_of(self))
         for child in self.children:
             child._render()
 
@@ -323,7 +324,7 @@ class GraphicObject(ABC):
         remaining_x = self.length + self.flowable.dist_to_line_end(pos_in_flowable.x)
         if remaining_x < ZERO:
             self._render_complete(
-                brown.document.canvas_pos_of(self),
+                canvas_pos_of(self),
                 self.flowable.dist_to_line_start(pos_in_flowable.x),
                 pos_in_flowable.x,
             )
@@ -332,7 +333,7 @@ class GraphicObject(ABC):
         # Render before break
         first_line_i = self.flowable.last_break_index_at(pos_in_flowable.x)
         current_line = self.flowable.layout_controllers[first_line_i]
-        render_start_pos = brown.document.canvas_pos_of(self)
+        render_start_pos = canvas_pos_of(self)
         first_line_length = self.flowable.dist_to_line_end(pos_in_flowable.x) * -1
         render_end_pos = Point(
             render_start_pos.x + first_line_length, render_start_pos.y
@@ -351,7 +352,7 @@ class GraphicObject(ABC):
             current_line = self.flowable.layout_controllers[current_line_i]
             if remaining_x > current_line.length:
                 # Render spanning continuation
-                line_pos = brown.document.canvas_pos_of(current_line)
+                line_pos = canvas_pos_of(current_line)
                 render_start_pos = Point(line_pos.x, line_pos.y + pos_in_flowable.y)
                 render_end_pos = Point(
                     render_start_pos.x + current_line.length, render_start_pos.y

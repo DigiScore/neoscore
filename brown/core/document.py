@@ -2,9 +2,9 @@ from collections.abc import Callable
 from typing import Any, Optional, cast
 
 from brown import constants
+from brown.core.mapping import Positioned
 from brown.core.page_supplier import PageSupplier
 from brown.core.paper import Paper
-from brown.core.mapping import Positioned
 from brown.utils.point import ORIGIN, Point
 from brown.utils.rect import Rect
 from brown.utils.units import ZERO, Unit
@@ -131,27 +131,6 @@ class Document:
             considered relative to the document's origin.
         """
         return Point((self.paper.width + self._page_display_gap) * page_number, ZERO)
-
-    def canvas_pos_of(self, grob: Positioned) -> Point:
-        """Find the paged document position of a GraphicObject.
-
-        Args:
-            grob: Any object in the document.
-
-        Returns: The object's paged position relative to the document.
-        """
-        # TODO MEDIUM: as the circular import workarounds suggest,
-        # this probably belongs somewhere else
-        pos = ORIGIN
-        current = grob
-        while current != self:
-            pos += current.pos
-            current = current.parent
-            if type(current).__name__ == "Flowable":
-                # If the parent is a flowable,
-                # let it decide where this point goes.
-                return cast(Any, current).map_to_canvas(pos)
-        return pos
 
     def page_bounding_rect(self, page_number: int) -> Rect:
         """Find the bounding rect of a page in the document.

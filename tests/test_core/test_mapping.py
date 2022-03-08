@@ -4,7 +4,7 @@ from brown.core import brown
 from brown.core.flowable import Flowable
 from brown.core.graphic_object import GraphicObject
 from brown.core.invisible_object import InvisibleObject
-from brown.core.mapping import map_between
+from brown.core.mapping import canvas_pos_of, map_between
 from brown.core.paper import Paper
 from brown.utils.point import Point
 from brown.utils.units import GraphicUnit, Mm, Unit
@@ -22,8 +22,8 @@ class TestMapping(unittest.TestCase):
         destination = InvisibleObject((Unit(99), Unit(90)), brown.document.pages[4])
         relative_pos = map_between(source, destination)
 
-        page_1_pos = brown.document.canvas_pos_of(brown.document.pages[1])
-        page_4_pos = brown.document.canvas_pos_of(brown.document.pages[4])
+        page_1_pos = canvas_pos_of(brown.document.pages[1])
+        page_4_pos = canvas_pos_of(brown.document.pages[4])
 
         expected = (page_4_pos + Point(Unit(99), Unit(90))) - (
             page_1_pos + Point(Unit(5), Unit(6))
@@ -55,3 +55,10 @@ class TestMapping(unittest.TestCase):
         relative_pos = map_between(source, destination)
         expected = Point(Unit(-1), Unit(-2))
         assert_almost_equal(relative_pos, expected)
+
+    def test_canvas_pos_of(self):
+        item = InvisibleObject((Mm(5), Mm(6)), brown.document.pages[2])
+        canvas_pos = canvas_pos_of(item)
+        page_pos = canvas_pos_of(brown.document.pages[2])
+        relative_pos = canvas_pos - page_pos
+        assert_almost_equal(relative_pos, Point(Mm(5), Mm(6)))
