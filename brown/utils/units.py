@@ -19,6 +19,16 @@ class Unit:
         >>> from brown.utils.units import Inch, Mm
         >>> print(Inch(1) + Mm(1))
         Inch(1.039)
+
+    To facilitate easy comparison between equivalent values in
+    different units, equality is checked with a tolerance of
+    `Unit(0.001)`.
+
+        >>> from brown.utils.units import Inch, Mm
+        >>> assert Inch(Mm(1)) == Mm(1)
+        >>> assert Inch(Mm(1)) >= Mm(1)
+        >>> assert Inch(Mm(1)) <= Mm(1)
+
     """
 
     __slots__ = ("base_value", "_display_value")
@@ -40,14 +50,6 @@ class Unit:
                 self.base_value = base_value
                 self._display_value = None
             else:
-                # TODO MEDIUM document this base_value rounding behavior - it's
-                # needed to allow ergonomic comparisons between units
-                # without floating point errors getting in the way.
-                #
-                # Also need to determine if this is the best approach -
-                # might be better to defer rounding to comparison
-                # operators to minimize error accumulation and avoid
-                # unecessary computation.
                 self.base_value = value * self.CONVERSION_RATE
                 self._display_value = value
 
@@ -84,8 +86,6 @@ class Unit:
 
     _CMP_POS_EPSILON = 0.001
     _CMP_NEG_EPSILON = -0.001
-
-    # TODO MEDIUM: document unit comparison behavior and subtleties
 
     def __lt__(self, other: Unit):
         return self.base_value - other.base_value < Unit._CMP_NEG_EPSILON
