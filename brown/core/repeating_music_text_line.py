@@ -5,7 +5,7 @@ from brown.core.music_font import MusicFont
 from brown.core.music_text import MusicText
 from brown.core.spanner import Spanner
 from brown.core.staff_object import StaffObject
-from brown.utils.point import PointDef
+from brown.utils.point import Point, PointDef
 from brown.utils.units import Unit
 
 
