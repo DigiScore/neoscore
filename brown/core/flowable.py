@@ -26,6 +26,8 @@ class Flowable(InvisibleObject):
     majority of objects will be placed inside it.
     """
 
+    # TODO HIGH this only allows parent to be the first page - fix that
+
     def __init__(
         self,
         pos: PointDef,

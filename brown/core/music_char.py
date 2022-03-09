@@ -1,3 +1,6 @@
+from typing import Optional
+
+from brown.core.music_font import MusicFont
 from brown.utils.rect import Rect
 
 
@@ -11,13 +14,15 @@ class MusicChar:
         alternate_number (int or None): An optional alternate glyph code.
     """
 
-    def __init__(self, font, glyph_name, alternate_number=None):
+    def __init__(
+        self, font: MusicFont, glyph_name: str, alternate_number: Optional[int] = None
+    ):
         """
         Args:
-            font (MusicFont): The music font to be used. If not specified,
+            font: The music font to be used. If not specified,
                 the font is taken from the ancestor staff.
-            glyph_name (str): The canonical SMuFL name of the glyph
-            alternate_number (int or None): An optional alternate glyph code.
+            glyph_name: The canonical SMuFL name of the glyph
+            alternate_number: An optional alternate glyph code.
 
         Note:
             If an alternate number is given, `self.canonical_name` will be

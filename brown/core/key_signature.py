@@ -1,16 +1,17 @@
-from typing import Dict
+from typing import Dict, Union
 
 from brown.core.accidental import Accidental
 from brown.core.clef import Clef
 from brown.core.mapping import map_between
 from brown.core.music_text import MusicText
 from brown.core.object_group import ObjectGroup
+from brown.core.staff import Staff
 from brown.core.staff_object import StaffObject
 from brown.models.accidental_type import AccidentalType
 from brown.models.clef_type import ClefType
 from brown.models.key_signature_type import KeySignatureType
 from brown.utils.point import ORIGIN, Point
-from brown.utils.units import Mm, Unit
+from brown.utils.units import Unit
 
 
 class KeySignature(ObjectGroup, StaffObject):
@@ -26,7 +27,12 @@ class KeySignature(ObjectGroup, StaffObject):
     be implemented in a fairly straightforward way in a subclass of this.
     """
 
-    def __init__(self, pos_x, staff, key_signature_type):
+    def __init__(
+        self,
+        pos_x: Unit,
+        staff: Staff,
+        key_signature_type: Union[KeySignatureType, str],
+    ):
         """
         Args:
             pos_x (Unit): The x position relative to the parent staff.
@@ -47,12 +53,12 @@ class KeySignature(ObjectGroup, StaffObject):
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def key_signature_type(self):
+    def key_signature_type(self) -> KeySignatureType:
         """KeySignatureType: A logical description of the key signature."""
         return self._key_signature_type
 
     @property
-    def length(self):
+    def length(self) -> Unit:
         """`KeySignature`s extend until another is found in the staff."""
         return self.staff.distance_to_next_of_type(self)
 

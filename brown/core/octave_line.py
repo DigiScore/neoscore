@@ -1,3 +1,6 @@
+from typing import Optional
+
+from brown.core.graphic_object import GraphicObject
 from brown.core.mapping import map_between
 from brown.core.music_char import MusicChar
 from brown.core.music_text import MusicText
@@ -10,8 +13,8 @@ from brown.core.staff_object import StaffObject
 from brown.interface.text_interface import TextInterface
 from brown.models.interval import Interval
 from brown.models.transposition import Transposition
-from brown.utils.point import ORIGIN, Point
-from brown.utils.units import ZERO
+from brown.utils.point import ORIGIN, Point, PointDef
+from brown.utils.units import ZERO, Unit
 
 
 class OctaveLine(ObjectGroup, Spanner, StaffObject):
@@ -57,7 +60,14 @@ class OctaveLine(ObjectGroup, Spanner, StaffObject):
         ")": "octaveParensRight",
     }
 
-    def __init__(self, start, start_parent, end_x, end_parent=None, indication="8va"):
+    def __init__(
+        self,
+        start: PointDef,
+        start_parent: GraphicObject,
+        end_x: Unit,
+        end_parent: Optional[GraphicObject] = None,
+        indication: str = "8va",
+    ):
         """
         Args:
             start (Point or tuple init args):
@@ -116,7 +126,7 @@ class OctaveLine(ObjectGroup, Spanner, StaffObject):
         )
 
     @property
-    def length(self):
+    def length(self) -> Unit:
         return self.spanner_x_length
 
 
@@ -127,13 +137,15 @@ class _OctaveLineText(MusicText, StaffObject):
     of an OctaveLine
     """
 
-    def __init__(self, pos, parent, length, indication):
+    def __init__(
+        self, pos: PointDef, parent: GraphicObject, length: Unit, indication: str
+    ):
         """
         Args:
-            pos (Point):
-            parent (GraphicObject):
-            length (Unit):
-            indication (str): A valid octave indication.
+            pos:
+            parent:
+            length:
+            indication: A valid octave indication.
                 Should be a valid entry in `OctaveLine.glyphs`.
         """
         MusicText.__init__(self, pos, OctaveLine.glyphs[indication], parent)
@@ -148,12 +160,14 @@ class _OctaveLineText(MusicText, StaffObject):
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def length(self):
+    def length(self) -> Unit:
         return self._length
 
     ######## PRIVATE METHODS ########
 
-    def _render_before_break(self, local_start_x, start, stop, dist_to_line_start):
+    def _render_before_break(
+        self, local_start_x: Unit, start: Point, stop: Point, dist_to_line_start: Unit
+    ):
         interface = TextInterface(
             start,
             NO_PEN.interface,
@@ -164,7 +178,7 @@ class _OctaveLineText(MusicText, StaffObject):
         interface.render()
         self.interfaces.append(interface)
 
-    def _render_after_break(self, local_start_x, start, stop):
+    def _render_after_break(self, local_start_x: Unit, start: Point, stop: Point):
         interface = TextInterface(
             start,
             NO_PEN.interface,
@@ -175,7 +189,9 @@ class _OctaveLineText(MusicText, StaffObject):
         interface.render()
         self.interfaces.append(interface)
 
-    def _render_spanning_continuation(self, local_start_x, start, stop):
+    def _render_spanning_continuation(
+        self, local_start_x: Unit, start: Point, stop: Point
+    ):
         interface = TextInterface(
             start,
             NO_PEN.interface,

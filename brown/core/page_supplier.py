@@ -1,4 +1,11 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from brown.core.page import Page
+
+if TYPE_CHECKING:
+    from brown.core.document import Document
 
 
 class PageSupplier:
@@ -21,13 +28,13 @@ class PageSupplier:
     for its `pages` property.
     """
 
-    def __init__(self, document):
+    def __init__(self, document: Document):
         """
         Args:
-            document (Document): The global document using this object.
+            document: The global document using this object.
         """
         self.document = document
-        self._page_list = []
+        self._page_list: list[Page] = []
 
     def __getitem__(self, index):
         if index >= len(self._page_list):

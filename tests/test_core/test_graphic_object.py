@@ -97,3 +97,19 @@ class TestGraphicObject(unittest.TestCase):
         assert root not in descendants_set
         # Assert descendants content
         assert {child_2} == descendants_set
+
+    def test_descendants_with_attribute(self):
+        class MockDifferentClass(InvisibleObject):
+            test_attr = 1
+
+        root = InvisibleObject((Unit(0), Unit(0)))
+        child_1 = InvisibleObject((Unit(0), Unit(0)), parent=root)
+        child_2 = MockDifferentClass((Unit(0), Unit(0)), parent=root)
+        descendants = list(root.descendants_with_attribute("test_attr"))
+        descendants_set = set(descendants)
+        # Assert no duplicates were yielded
+        assert len(descendants) == len(descendants_set)
+        # Assert root itself was not in the descendants list
+        assert root not in descendants_set
+        # Assert descendants content
+        assert {child_2} == descendants_set

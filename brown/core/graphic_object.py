@@ -244,6 +244,17 @@ class GraphicObject(ABC):
             if type(descendant) == graphic_object_class:
                 yield descendant
 
+    def descendants_with_attribute(self, attribute: str):
+        """Yield all child descendants which has a given attribute.
+
+        This is useful for searching descendants for duck-typing matches.
+
+        Yields: GraphicObject
+        """
+        for descendant in self.descendants:
+            if hasattr(descendant, attribute):
+                yield descendant
+
     def remove(self):
         """Remove this object from the document."""
         if self.parent:

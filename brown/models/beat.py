@@ -235,3 +235,6 @@ class Beat:
         if isinstance(self.numerator, type(self)):
             return Fraction(self.numerator.collapsed_fraction, self.denominator)
         return Fraction(cast(int, self.numerator), self.denominator)
+
+
+# TODO HIGH add BeatDef support and start using it in places like TimeSignature and Chordrest

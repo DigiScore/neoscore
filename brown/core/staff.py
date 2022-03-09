@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Type, cast
 
 from brown import constants
-from brown.core.clef import Clef
 from brown.core.flowable import Flowable
 from brown.core.mapping import Positioned, map_between, map_between_x
 from brown.core.music_font import MusicFont
@@ -17,6 +16,7 @@ from brown.utils.point import PointDef
 from brown.utils.units import ZERO, Unit, make_unit_class
 
 if TYPE_CHECKING:
+    from brown.core.clef import Clef
     from brown.core.staff_object import StaffObject
 
 
@@ -230,7 +230,7 @@ class Staff(Path):
     def _compute_clef_x_positions(self) -> list[tuple[Unit, Clef]]:
         result = [
             (clef.pos_x_in_staff, clef)
-            for clef in self.descendants_of_class_or_subclass(Clef)
+            for clef in self.descendants_with_attribute("middle_c_staff_position")
         ]
         result.sort(key=lambda tup: tup[0])
         return result

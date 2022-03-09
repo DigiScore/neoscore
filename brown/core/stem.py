@@ -1,21 +1,24 @@
+from brown.core.graphic_object import GraphicObject
 from brown.core.path import Path
+from brown.core.path_element import PathElement
 from brown.core.pen import Pen
 from brown.core.staff_object import StaffObject
 from brown.utils.math_helpers import sign
-from brown.utils.point import ORIGIN
+from brown.utils.point import ORIGIN, PointDef
+from brown.utils.units import Unit
 
 
 class Stem(Path, StaffObject):
 
     """A vertical note/chord stem."""
 
-    def __init__(self, start, height, parent):
+    def __init__(self, start: PointDef, height: Unit, parent: GraphicObject):
         """
         Args:
-            start (Point(StaffUnit)): Starting point for the stem
-            height (StaffUnit): The height of the stem,
+            start: Starting point for the stem
+            height: The height of the stem,
                 where positive extend downward.
-            parent (StaffObject or Staff):
+            parent:
         """
         Path.__init__(self, start, parent=parent)
         StaffObject.__init__(self, parent=parent)
@@ -29,19 +32,19 @@ class Stem(Path, StaffObject):
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def height(self):
-        """StaffUnit: The height of the stem from its position.
+    def height(self) -> Unit:
+        """The height of the stem from its position.
 
         Positive values extend downward, and vice versa.
         """
         return self._height
 
     @property
-    def direction(self):
-        """int: The direction the stem points, where -1 is up and 1 is down"""
+    def direction(self) -> int:
+        """The direction the stem points, where -1 is up and 1 is down"""
         return sign(self.height)
 
     @property
-    def end_point(self):
-        """PathElement: The outer point; not attached to a `Notehead`."""
+    def end_point(self) -> PathElement:
+        """The outer point; not attached to a `Notehead`."""
         return self.elements[1]

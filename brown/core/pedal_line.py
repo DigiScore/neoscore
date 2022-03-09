@@ -1,7 +1,11 @@
+from typing import Optional
+
+from brown.core.graphic_object import GraphicObject
 from brown.core.path import Path
 from brown.core.pen import Pen
 from brown.core.spanner import Spanner
 from brown.core.staff_object import StaffObject
+from brown.utils.point import PointDef
 from brown.utils.units import Unit
 
 
@@ -32,8 +36,17 @@ class PedalLine(Spanner, Path, StaffObject):
 
     """
 
+    # TODO LOW this way of setting half-lift positions without parents
+    # won't work for typical cases where lifts should be synced with
+    # other objects
+
     def __init__(
-        self, start, start_parent, end_x, end_parent=None, half_lift_positions=None
+        self,
+        start: PointDef,
+        start_parent: GraphicObject,
+        end_x: Unit,
+        end_parent: Optional[GraphicObject] = None,
+        half_lift_positions: Unit = None,
     ):
         """
         Args:

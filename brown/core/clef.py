@@ -1,6 +1,8 @@
 from brown.core.music_text import MusicText
+from brown.core.staff import Staff
 from brown.core.staff_object import StaffObject
 from brown.models.clef_type import ClefType
+from brown.utils.units import Unit
 
 
 class Clef(MusicText, StaffObject):
@@ -36,7 +38,7 @@ class Clef(MusicText, StaffObject):
         ClefType.alto: 2,
     }
 
-    def __init__(self, staff, pos_x, clef_type):
+    def __init__(self, staff: Staff, pos_x: Unit, clef_type):
         """
         Args:
             staff (Staff):

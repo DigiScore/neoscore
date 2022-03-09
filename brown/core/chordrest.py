@@ -1,3 +1,5 @@
+from typing import Optional
+
 from brown.core.accidental import Accidental
 from brown.core.flag import Flag
 from brown.core.ledger_line import LedgerLine
@@ -5,6 +7,7 @@ from brown.core.notehead import Notehead
 from brown.core.object_group import ObjectGroup
 from brown.core.rest import Rest
 from brown.core.rhythm_dot import RhythmDot
+from brown.core.staff import Staff
 from brown.core.staff_object import StaffObject
 from brown.core.stem import Stem
 from brown.utils.point import Point
@@ -30,7 +33,17 @@ class Chordrest(ObjectGroup, StaffObject):
         * `RhythmDot`s if needed by the given `Duration`
     """
 
-    def __init__(self, pos_x, staff, pitches, duration, stem_direction=None):
+    # TODO HIGH use PitchDef here
+    # TODO MEDIUM stem direction should probably be a bool or enum or
+    # something, int is not expressive
+    def __init__(
+        self,
+        pos_x: Unit,
+        staff: Staff,
+        pitches,
+        duration,
+        stem_direction: Optional[int] = None,
+    ):
         """
         Args:
             pos_x (Unit): The horizontal position

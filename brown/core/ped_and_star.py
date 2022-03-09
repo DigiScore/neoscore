@@ -1,5 +1,6 @@
 from typing import Optional, cast
 
+from brown.core.graphic_object import GraphicObject
 from brown.core.mapping import Positioned
 from brown.core.music_text import MusicText
 from brown.core.object_group import ObjectGroup
@@ -16,14 +17,15 @@ class PedAndStar(ObjectGroup, Spanner2D, StaffObject):
     def __init__(
         self,
         start: PointDef,
-        start_parent: StaffObject,
+        start_parent: GraphicObject,
         end: PointDef,
-        end_parent: Optional[StaffObject] = None,
+        end_parent: Optional[GraphicObject] = None,
     ):
         """
         Args:
             start: The position of the start-pedal mark relative to `start_parent`.
-            start_parent: Anchor for the start-pedal mark
+            start_parent: Anchor for the start-pedal mark, which must be in a staff
+                or a staff itself.
             end: The position of the release-pedal mark relative to `end_parent`.
             end_parent: An optional anchor for the release-pedal mark. If provided,
                 this must be in the same staff as `start_parent`. Otherwise, this

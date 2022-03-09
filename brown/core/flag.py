@@ -1,5 +1,6 @@
 from typing import Union
 
+from brown.core.graphic_object import GraphicObject
 from brown.core.music_text import MusicText
 from brown.core.staff import Staff
 from brown.core.staff_object import StaffObject
@@ -38,9 +39,7 @@ class Flag(MusicText, StaffObject):
         8: "flag8thDown",
     }
 
-    def __init__(
-        self, duration: Beat, direction: int, parent: Union[Staff, StaffObject]
-    ):
+    def __init__(self, duration: Beat, direction: int, parent: GraphicObject):
         """
         Args:
             duration (Beat):

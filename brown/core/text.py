@@ -14,6 +14,11 @@ if TYPE_CHECKING:
     from brown.core.mapping import Parent
 
 
+# TODO HIGH it's unclear why this `scale` arg is given priority over
+# other transforms. I think probably it should be removed so it's not
+# confused with font size. Additional scale can be set with grob->qt transforms
+
+
 class Text(GraphicObject):
 
     """A graphical text object."""

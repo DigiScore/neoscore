@@ -1,6 +1,8 @@
+from brown.core.graphic_object import GraphicObject
 from brown.core.music_text import MusicText
 from brown.core.staff_object import StaffObject
 from brown.utils.exceptions import DynamicStringError
+from brown.utils.point import PointDef
 
 
 class Dynamic(MusicText, StaffObject):
@@ -18,13 +20,13 @@ class Dynamic(MusicText, StaffObject):
         "n": "dynamicNiente",
     }
 
-    def __init__(self, pos, text, parent):
+    def __init__(self, pos: PointDef, text: str, parent: GraphicObject):
         """
         Args:
-            pos (Point): The object position
-            text (str): A valid dynamic indicator string consisting
+            pos: The object position
+            text: A valid dynamic indicator string consisting
                 of the letters: 'p, m, f, r, s, z, n'
-            parent (GraphicObject): The object parent.
+            parent: The object parent.
         """
         parsed_text = self._parse_dynamic_string(text)
         MusicText.__init__(self, pos, parsed_text, parent)

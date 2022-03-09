@@ -1,14 +1,30 @@
+from typing import Optional
+
+from brown.core.graphic_object import GraphicObject
+from brown.core.music_font import MusicFont
 from brown.core.music_text import MusicText
 from brown.core.spanner import Spanner
 from brown.core.staff_object import StaffObject
-from brown.utils.point import Point
+from brown.utils.point import PointDef
+from brown.utils.units import Unit
 
 
 class RepeatingMusicTextLine(MusicText, StaffObject, Spanner):
 
     """A spanner of repeating music text over its length."""
 
-    def __init__(self, start, parent, end_x, text, end_parent=None, font=None, scale=1):
+    # TODO MEDIUM figure out how to type `text` - same problem as in `MusicText`
+
+    def __init__(
+        self,
+        start: PointDef,
+        parent: GraphicObject,
+        end_x: Unit,
+        text,
+        end_parent: Optional[GraphicObject] = None,
+        font: Optional[MusicFont] = None,
+        scale: float = 1,
+    ):
         """
         Args:
             start (Point or init tuple): The starting point.
@@ -41,13 +57,13 @@ class RepeatingMusicTextLine(MusicText, StaffObject, Spanner):
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def length(self):
+    def length(self) -> Unit:
         return self.spanner_x_length
 
     ######## PRIVATE PROPERTIES ########
 
     @property
-    def _repetitions_needed(self):
+    def _repetitions_needed(self) -> int:
         """int: The number of text repetitions needed to cover the line.
 
         This value rounds down, such that the real length of the drawn
