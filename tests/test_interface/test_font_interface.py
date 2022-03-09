@@ -1,8 +1,5 @@
 import unittest
 
-import pytest
-from PyQt5 import QtGui
-
 from brown.core import brown
 from brown.interface.font_interface import FontInterface
 from brown.utils.units import Unit

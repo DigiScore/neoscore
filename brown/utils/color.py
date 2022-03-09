@@ -1,4 +1,4 @@
-from typing import Type, Union
+from typing import Union
 
 from brown.utils.exceptions import ColorBoundsError
 

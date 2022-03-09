@@ -3,7 +3,7 @@ from brown.core.music_text import MusicText
 from brown.core.staff_object import StaffObject
 from brown.models.accidental_type import AccidentalType
 from brown.utils.exceptions import InvalidAccidentalTypeError
-from brown.utils.point import Point, PointDef
+from brown.utils.point import PointDef
 
 
 class Accidental(MusicText, StaffObject):

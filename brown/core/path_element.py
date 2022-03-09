@@ -1,11 +1,8 @@
 from __future__ import annotations
-
-from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 from brown.core.graphic_object import GraphicObject
 from brown.core.invisible_object import InvisibleObject
-from brown.utils.parent_point import ParentPoint
 from brown.utils.point import Point
 
 if TYPE_CHECKING:

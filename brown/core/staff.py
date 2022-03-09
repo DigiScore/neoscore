@@ -4,12 +4,11 @@ from typing import TYPE_CHECKING, Optional, Type, cast
 
 from brown import constants
 from brown.core.flowable import Flowable
-from brown.core.mapping import Positioned, map_between, map_between_x
+from brown.core.mapping import Positioned, map_between_x
 from brown.core.music_font import MusicFont
 from brown.core.octave_line import OctaveLine
 from brown.core.path import Path
 from brown.core.pen import Pen
-from brown.models.beat import Beat
 from brown.models.transposition import Transposition
 from brown.utils.exceptions import NoClefError
 from brown.utils.point import PointDef

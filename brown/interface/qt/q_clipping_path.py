@@ -1,12 +1,11 @@
 from typing import Optional
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore
 from PyQt5.QtCore import QRectF
 from PyQt5.QtGui import QBrush, QColor, QPainterPath, QPen
 from PyQt5.QtWidgets import QGraphicsItem, QGraphicsPathItem
 
 from brown.constants import DEBUG
-from brown.utils.units import Unit
 
 
 class QClippingPath(QGraphicsPathItem):

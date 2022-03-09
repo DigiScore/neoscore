@@ -1,7 +1,6 @@
-from typing import Dict, Union
+from typing import Union
 
 from brown.core.accidental import Accidental
-from brown.core.clef import Clef
 from brown.core.mapping import map_between
 from brown.core.music_text import MusicText
 from brown.core.object_group import ObjectGroup

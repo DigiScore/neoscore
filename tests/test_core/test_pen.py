@@ -1,7 +1,6 @@
 import unittest
 
 from brown import constants
-from brown.core import brown
 from brown.core.pen import Pen
 from brown.core.pen_cap_style import PenCapStyle
 from brown.core.pen_join_style import PenJoinStyle

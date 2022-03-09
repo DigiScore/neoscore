@@ -2,17 +2,13 @@ from __future__ import annotations
 
 from abc import ABC
 from collections.abc import Iterator
-from typing import TYPE_CHECKING, Optional, Type, Union, cast
-
-from brown import constants
+from typing import TYPE_CHECKING, Optional, Type
 from brown.core import brown
 from brown.core.brush import DEFAULT_BRUSH, Brush, SimpleBrushDef, brush_from_simple_def
 from brown.core.mapping import (
-    Positioned,
-    ancestors,
     canvas_pos_of,
     descendant_pos,
-    first_ancestor_of_exact_class,
+    first_ancestor_of_exact_class
 )
 from brown.core.pen import DEFAULT_PEN, Pen, SimplePenDef, pen_from_simple_def
 from brown.interface.graphic_object_interface import GraphicObjectInterface

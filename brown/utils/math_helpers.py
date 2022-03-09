@@ -3,7 +3,7 @@
 from fractions import Fraction
 
 from brown.utils.point import Point
-from brown.utils.units import GraphicUnit, Unit
+from brown.utils.units import Unit
 
 
 def interpolate(line_start: Point, line_end: Point, x: Unit) -> Unit:

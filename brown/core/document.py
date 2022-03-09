@@ -1,11 +1,9 @@
 from collections.abc import Callable
-from typing import Any, Optional, cast
 
 from brown import constants
-from brown.core.mapping import Positioned
 from brown.core.page_supplier import PageSupplier
 from brown.core.paper import Paper
-from brown.utils.point import ORIGIN, Point
+from brown.utils.point import Point
 from brown.utils.rect import Rect
 from brown.utils.units import ZERO, Unit
 

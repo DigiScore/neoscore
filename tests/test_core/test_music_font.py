@@ -1,10 +1,7 @@
 import unittest
 
-import pytest
-
 from brown.core import brown
 from brown.core.music_font import MusicFont
-from brown.utils.exceptions import MusicFontMetadataNotFoundError
 from brown.utils.units import Mm, Unit
 
 

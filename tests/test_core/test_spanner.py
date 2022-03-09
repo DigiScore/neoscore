@@ -4,12 +4,9 @@ import pytest
 
 from brown.core import brown
 from brown.core.graphic_object import GraphicObject
-from brown.core.invisible_object import InvisibleObject
 from brown.core.spanner import Spanner
 from brown.utils.point import Point
 from brown.utils.units import ZERO, Unit
-
-from ..helpers import assert_almost_equal
 
 
 class MockSpanner(GraphicObject, Spanner):

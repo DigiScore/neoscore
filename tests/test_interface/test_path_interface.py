@@ -10,15 +10,12 @@ from brown.interface.path_interface import (
     PathInterface,
     ResolvedCurveTo,
     ResolvedLineTo,
-    ResolvedMoveTo,
-    ResolvedPathElement,
+    ResolvedMoveTo
 )
 from brown.interface.pen_interface import PenInterface
 from brown.utils.color import Color
 from brown.utils.point import Point
 from brown.utils.units import GraphicUnit, Unit
-
-from ..helpers import assert_almost_equal
 
 
 class TestPathInterface(unittest.TestCase):

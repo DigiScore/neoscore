@@ -1,7 +1,5 @@
 """Various interoperable units classes and some related helper functions."""
 from __future__ import annotations
-
-from collections.abc import Iterable
 from typing import Any, Optional, Type, TypeVar, Union, cast
 
 TUnit = TypeVar("TUnit", bound="Unit")

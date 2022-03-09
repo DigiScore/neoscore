@@ -1,16 +1,14 @@
 from dataclasses import dataclass
 from typing import NamedTuple, Optional
 
-from PyQt5.QtGui import QFont, QPainterPath, QPen
+from PyQt5.QtGui import QFont, QPainterPath
 from PyQt5.QtWidgets import QGraphicsItem
 
 from brown.core import brown
-from brown.interface.brush_interface import BrushInterface
 from brown.interface.font_interface import FontInterface
 from brown.interface.graphic_object_interface import GraphicObjectInterface
 from brown.interface.qt.converters import point_to_qt_point_f
 from brown.interface.qt.q_clipping_path import QClippingPath
-from brown.utils.point import Point
 from brown.utils.units import Unit
 
 

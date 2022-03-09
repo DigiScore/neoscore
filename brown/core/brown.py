@@ -13,7 +13,7 @@ from brown.interface.app_interface import AppInterface
 from brown.utils import file_system
 from brown.utils.color import Color, ColorDef, color_from_def
 from brown.utils.exceptions import InvalidImageFormatError
-from brown.utils.rect import Rect, RectDef, rect_from_def
+from brown.utils.rect import RectDef, rect_from_def
 
 if TYPE_CHECKING:
     from brown.core.document import Document

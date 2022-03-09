@@ -5,9 +5,7 @@ from typing import TYPE_CHECKING, Union
 from brown.core.music_text import MusicText
 from brown.core.staff_object import StaffObject
 from brown.models.beat import Beat
-from brown.utils import point
 from brown.utils.point import Point, PointDef
-from brown.utils.units import ZERO, Unit
 
 if TYPE_CHECKING:
     from brown.core.staff import Staff

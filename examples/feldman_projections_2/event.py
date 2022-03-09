@@ -3,7 +3,6 @@ from brown.core.path import Path
 from brown.core.pen import Pen
 from brown.core.pen_join_style import PenJoinStyle
 from brown.core.spanner import Spanner
-from brown.utils.units import Mm
 from examples.feldman_projections_2.grid_unit import GridUnit
 
 

@@ -1,5 +1,4 @@
 from brown.core import mapping
-from brown.core.graphic_object import GraphicObject
 from brown.core.staff import Staff
 from brown.utils.units import Unit
 

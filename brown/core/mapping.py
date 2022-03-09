@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, Iterator, Optional, Protocol, Type, Union, cast
 
 from brown.utils.point import ORIGIN, Point
-from brown.utils.units import ZERO, Unit
+from brown.utils.units import Unit
 
 if TYPE_CHECKING:
     from brown.core.document import Document

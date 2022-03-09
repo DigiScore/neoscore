@@ -4,7 +4,7 @@ from brown.core.path_element import PathElement
 from brown.core.pen import Pen
 from brown.core.staff_object import StaffObject
 from brown.utils.math_helpers import sign
-from brown.utils.point import ORIGIN, PointDef
+from brown.utils.point import PointDef
 from brown.utils.units import Unit
 
 

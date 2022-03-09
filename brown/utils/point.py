@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import NamedTuple, Type, Union, cast
 
-from brown.utils.units import ZERO, GraphicUnit, Unit
+from brown.utils.units import ZERO, Unit
 
 
 class Point(NamedTuple):

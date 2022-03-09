@@ -1,12 +1,8 @@
 from dataclasses import dataclass
 
-from PyQt5.QtWidgets import QGraphicsItem
-
 from brown.interface.brush_interface import BrushInterface
 from brown.interface.pen_interface import PenInterface
-from brown.interface.qt.converters import point_to_qt_point_f
 from brown.utils.point import Point
-from brown.utils.units import GraphicUnit
 
 
 @dataclass(frozen=True)

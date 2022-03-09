@@ -1,9 +1,7 @@
-from brown.core import brown, mapping
-from brown.core.break_opportunity import BreakOpportunity
-from brown.core.graphic_object import GraphicObject
+from brown.core import brown
 from brown.core.invisible_object import InvisibleObject
 from brown.core.layout_controller import LayoutController
-from brown.core.mapping import Positioned, canvas_pos_of
+from brown.core.mapping import canvas_pos_of
 from brown.core.new_line import NewLine
 from brown.utils.exceptions import OutOfBoundsError
 from brown.utils.point import ORIGIN, Point, PointDef

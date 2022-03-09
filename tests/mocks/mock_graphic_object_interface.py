@@ -1,4 +1,3 @@
-from PyQt5 import QtWidgets
 
 from brown.core.brush_pattern import BrushPattern
 from brown.core.pen_cap_style import PenCapStyle

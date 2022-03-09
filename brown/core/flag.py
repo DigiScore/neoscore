@@ -1,13 +1,10 @@
-from typing import Union
 
 from brown.core.graphic_object import GraphicObject
 from brown.core.music_text import MusicText
-from brown.core.staff import Staff
 from brown.core.staff_object import StaffObject
 from brown.models.beat import Beat
 from brown.utils.exceptions import NoFlagNeededError
-from brown.utils.point import ORIGIN, Point
-from brown.utils.units import ZERO, Unit
+from brown.utils.point import ORIGIN
 
 
 class Flag(MusicText, StaffObject):

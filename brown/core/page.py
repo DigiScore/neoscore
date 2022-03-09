@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 from brown.core.invisible_object import InvisibleObject
 from brown.core.paper import Paper
-from brown.utils.point import Point, PointDef
+from brown.utils.point import PointDef
 
 if TYPE_CHECKING:
     from brown.core.document import Document

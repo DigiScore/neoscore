@@ -13,7 +13,7 @@ from brown.interface.qt.main_window import MainWindow
 from brown.utils.color import Color
 from brown.utils.exceptions import FontRegistrationError, ImageExportError
 from brown.utils.rect import Rect
-from brown.utils.units import Meter, Unit
+from brown.utils.units import Meter
 
 if TYPE_CHECKING:
     from brown.core.document import Document

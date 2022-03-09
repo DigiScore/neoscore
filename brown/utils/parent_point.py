@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import NamedTuple, Optional, Type, Union
+from typing import NamedTuple, Optional, Type
 
 from brown.core.mapping import Positioned
 from brown.utils.point import Point

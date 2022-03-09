@@ -6,7 +6,7 @@ from brown.utils.math_helpers import (
     sign,
 )
 from brown.utils.point import Point
-from brown.utils.units import GraphicUnit, Unit
+from brown.utils.units import Unit
 
 
 def test_linear_interp():

@@ -2,14 +2,12 @@ from typing import Union
 
 from brown import constants
 from brown.core import brown
-from brown.core.font import Font
 from brown.core.music_font import MusicFont
 from brown.core.object_group import ObjectGroup
 from brown.core.path import Path
 from brown.core.pen import Pen
 from brown.core.pen_pattern import PenPattern
 from brown.core.staff import Staff
-from brown.utils.units import GraphicUnit
 from examples.feldman_projections_2.glyph_name import GlyphName
 from examples.feldman_projections_2.grid_unit import GridUnit
 from examples.feldman_projections_2.instrument_data import InstrumentData

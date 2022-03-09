@@ -1,6 +1,4 @@
 from collections.abc import Iterable
-
-from brown.core.graphic_object import GraphicObject
 from brown.core.mapping import map_between
 from brown.core.multi_staff_object import MultiStaffObject
 from brown.core.path import Path

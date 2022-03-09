@@ -1,6 +1,6 @@
 """Helper methods for conversion between `brown.utils` and Qt classes"""
 
-from typing import Optional, Union
+from typing import Union
 
 from PyQt5.QtCore import QPoint, QPointF, QRect, QRectF
 from PyQt5.QtGui import QColor
@@ -8,7 +8,7 @@ from PyQt5.QtGui import QColor
 from brown.utils.color import Color
 from brown.utils.point import Point
 from brown.utils.rect import Rect
-from brown.utils.units import GraphicUnit, Unit
+from brown.utils.units import GraphicUnit
 
 
 def qt_point_to_point(qt_point: Union[QPoint, QPointF]) -> Point:

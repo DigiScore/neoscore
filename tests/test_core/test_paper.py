@@ -2,7 +2,7 @@ import unittest
 
 from brown.core import paper
 from brown.core.paper import Paper
-from brown.utils.units import Inch, Mm
+from brown.utils.units import Mm
 
 
 class TestPaper(unittest.TestCase):

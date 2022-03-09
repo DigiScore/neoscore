@@ -1,6 +1,4 @@
 from dataclasses import dataclass, field
-from enum import Enum
-from typing import Optional
 
 from brown.interface.paper_interface import PaperInterface
 from brown.utils.units import Inch, Mm, Unit

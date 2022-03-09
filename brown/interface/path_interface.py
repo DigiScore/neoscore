@@ -1,16 +1,12 @@
 from dataclasses import dataclass
-from enum import Enum, auto
-from typing import NamedTuple, NewType, Optional, Type, Union
+from typing import NamedTuple, Optional, Union
 
 from PyQt5.QtGui import QPainterPath
 
 from brown.core import brown
-from brown.interface.brush_interface import BrushInterface
 from brown.interface.graphic_object_interface import GraphicObjectInterface
-from brown.interface.pen_interface import PenInterface
 from brown.interface.qt.converters import point_to_qt_point_f
 from brown.interface.qt.q_clipping_path import QClippingPath
-from brown.utils.point import ORIGIN, Point
 from brown.utils.units import Unit
 
 

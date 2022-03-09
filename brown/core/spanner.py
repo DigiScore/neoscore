@@ -1,11 +1,9 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional, Union, cast
-
-from brown.core.graphic_object import GraphicObject
+from typing import TYPE_CHECKING, cast
 from brown.core.mapping import Positioned, map_between, map_between_x
 from brown.utils.point import Point
-from brown.utils.units import ZERO, Unit
+from brown.utils.units import Unit
 
 if TYPE_CHECKING:
     from brown.core.mapping import Parent

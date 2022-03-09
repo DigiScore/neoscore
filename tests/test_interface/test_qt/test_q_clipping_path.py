@@ -1,10 +1,7 @@
 import unittest
 
 from PyQt5 import QtGui
-
-from brown.core import brown
 from brown.interface.qt.q_clipping_path import QClippingPath
-from brown.utils.units import Unit
 
 
 class TestQClippingPath(unittest.TestCase):

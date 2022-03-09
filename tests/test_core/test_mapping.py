@@ -2,12 +2,11 @@ import unittest
 
 from brown.core import brown
 from brown.core.flowable import Flowable
-from brown.core.graphic_object import GraphicObject
 from brown.core.invisible_object import InvisibleObject
 from brown.core.mapping import canvas_pos_of, map_between
 from brown.core.paper import Paper
 from brown.utils.point import Point
-from brown.utils.units import GraphicUnit, Mm, Unit
+from brown.utils.units import Mm, Unit
 
 from ..helpers import assert_almost_equal
 

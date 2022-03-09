@@ -1,13 +1,11 @@
 import math
-
-from brown.core.graphic_object import GraphicObject
 from brown.core.mapping import map_between
 from brown.core.path import Path
 from brown.core.spanner_2d import Spanner2D
 from brown.core.staff_object import StaffObject
 from brown.utils.parent_point import ParentPoint
 from brown.utils.point import Point
-from brown.utils.units import ZERO, Unit
+from brown.utils.units import ZERO
 
 
 class Hairpin(Path, StaffObject, Spanner2D):

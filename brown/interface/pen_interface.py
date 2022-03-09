@@ -6,7 +6,7 @@ from brown.core.pen_cap_style import PenCapStyle
 from brown.core.pen_join_style import PenJoinStyle
 from brown.core.pen_pattern import PenPattern
 from brown.utils.color import Color
-from brown.utils.units import ZERO, Unit
+from brown.utils.units import Unit
 
 
 @dataclass(frozen=True)

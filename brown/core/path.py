@@ -1,13 +1,13 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional, Union, cast
+from typing import TYPE_CHECKING, Optional, cast
 
 from brown import constants
 from brown.core.brush import Brush, SimpleBrushDef
 from brown.core.graphic_object import GraphicObject
-from brown.core.mapping import Positioned, descendant_pos, map_between, map_between_x
+from brown.core.mapping import map_between, map_between_x
 from brown.core.path_element import ControlPoint, CurveTo, LineTo, MoveTo, PathElement
-from brown.core.pen import Pen, SimplePenDef
+from brown.core.pen import SimplePenDef
 from brown.interface.path_interface import (
     PathInterface,
     ResolvedCurveTo,
