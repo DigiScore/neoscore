@@ -1,5 +1,7 @@
 from brown.core import mapping
 from brown.core.graphic_object import GraphicObject
+from brown.core.staff import Staff
+from brown.utils.units import Unit
 
 
 class MultiStaffObject:
@@ -15,7 +17,7 @@ class MultiStaffObject:
     `self.staves`.
     """
 
-    def __init__(self, staves):
+    def __init__(self, staves: set[Staff]):
         """
         Args:
             staves (set(Staff)): The set of Staff objects this belongs to.
@@ -25,22 +27,22 @@ class MultiStaffObject:
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def visually_sorted_staves(self):
+    def visually_sorted_staves(self) -> list[Staff]:
         """list[Staff]: self.staves as a list in visually descending order"""
         return sorted(list(self.staves), key=lambda s: s.y)
 
     @property
-    def highest_staff(self):
+    def highest_staff(self) -> Staff:
         """Staff: The visually highest staff in self.staves"""
         return self.visually_sorted_staves[0]
 
     @property
-    def lowest_staff(self):
+    def lowest_staff(self) -> Staff:
         """Staff: The visually lowest staff in self.staves"""
         return self.visually_sorted_staves[-1]
 
     @property
-    def vertical_span(self):
+    def vertical_span(self) -> Unit:
         """StaffUnit: The vertical distance covered by the staves
 
         The distance from the top of `self.highest_staff` to the bottom

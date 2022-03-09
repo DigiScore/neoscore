@@ -1,8 +1,11 @@
+from collections.abc import Iterable
+
 from brown.core.graphic_object import GraphicObject
 from brown.core.mapping import map_between
 from brown.core.multi_staff_object import MultiStaffObject
 from brown.core.path import Path
 from brown.core.pen import Pen
+from brown.core.staff import Staff
 from brown.utils.point import Point
 from brown.utils.units import ZERO, Unit
 
@@ -18,12 +21,12 @@ class BarLine(Path, MultiStaffObject):
     on the top staff.
     """
 
-    def __init__(self, pos_x, staves):
+    def __init__(self, pos_x: Unit, staves: Iterable[Staff]):
         """
         Args:
-            pos_x (StaffUnit): The barline position relative to
+            pos_x: The barline position relative to
                 the top staff.
-            staves (iter[Staff]):
+            staves:
         """
         MultiStaffObject.__init__(self, set(staves))
         Path.__init__(self, Point(pos_x, ZERO), parent=self.highest_staff)

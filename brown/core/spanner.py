@@ -1,9 +1,14 @@
-from typing import Optional, Union, cast
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Optional, Union, cast
 
 from brown.core.graphic_object import GraphicObject
 from brown.core.mapping import Positioned, map_between, map_between_x
 from brown.utils.point import Point
 from brown.utils.units import ZERO, Unit
+
+if TYPE_CHECKING:
+    from brown.core.mapping import Parent
 
 
 class Spanner:
@@ -23,7 +28,7 @@ class Spanner:
     anchor. Arbitrary end-y positions can be set with `Spanner2D`.
     """
 
-    def __init__(self, end_x: Unit, end_parent: Positioned):
+    def __init__(self, end_x: Unit, end_parent: Parent):
         """
         Args:
             end_pos: The position of the endpoint. If a `Unit` is given, it will be
@@ -59,12 +64,12 @@ class Spanner:
         return Point(self.end_x, self.end_y)
 
     @property
-    def end_parent(self) -> Positioned:
+    def end_parent(self) -> Parent:
         """The parent of the endpoint. This may be `self`."""
         return self._end_parent
 
     @end_parent.setter
-    def end_parent(self, value: Positioned):
+    def end_parent(self, value: Parent):
         self._end_parent = value
 
     @property

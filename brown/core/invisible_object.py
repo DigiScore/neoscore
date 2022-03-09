@@ -1,16 +1,23 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from brown.core.graphic_object import GraphicObject
+from brown.utils.point import PointDef
+
+if TYPE_CHECKING:
+    from brown.core.mapping import Parent
 
 
 class InvisibleObject(GraphicObject):
 
     """A non-renderable object."""
 
-    def __init__(self, pos, parent=None):
+    def __init__(self, pos: PointDef, parent: Parent = None):
         """
         Args:
-            pos (Point or init tuple): The position of the path root
-                relative to the document.
-            parent: The parent object or None
+            pos: The position relative to parent
+            parent: The parent object. If None, defaults to the document's first page.
         """
         super().__init__(pos, parent=parent)
 

@@ -6,6 +6,8 @@ from brown.core.mapping import Positioned
 from brown.utils.point import Point
 from brown.utils.units import Unit
 
+# TODO HIGH probably best to remove this class entirely
+
 
 class ParentPoint(NamedTuple):
     """A point with an optional parent.

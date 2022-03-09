@@ -1,10 +1,15 @@
 from __future__ import annotations
 
-from typing import Any, Iterator, Optional, Protocol, Type, Union, cast
+from typing import TYPE_CHECKING, Any, Iterator, Optional, Protocol, Type, Union, cast
 
-from brown.core.page import Page
 from brown.utils.point import ORIGIN, Point
 from brown.utils.units import ZERO, Unit
+
+if TYPE_CHECKING:
+    from brown.core.document import Document
+
+    Parent = Union[Document, Positioned]
+    """Type alias only accessible when `typing.TYPE_CHECKING == True`"""
 
 
 class Positioned(Protocol):
@@ -13,7 +18,7 @@ class Positioned(Protocol):
         ...
 
     @property
-    def parent(self) -> Positioned:
+    def parent(self) -> Parent:
         ...
 
 

@@ -1,10 +1,11 @@
+from __future__ import annotations
+
 import json
 import os
-from typing import Callable, Optional
+from typing import TYPE_CHECKING, Callable, Optional
 from warnings import warn
 
 from brown import constants
-from brown.core.document import Document
 from brown.core.font import Font
 from brown.core.paper import A4, Paper
 from brown.interface import images
@@ -14,6 +15,9 @@ from brown.utils.color import Color, ColorDef, color_from_def
 from brown.utils.exceptions import InvalidImageFormatError
 from brown.utils.rect import Rect, RectDef, rect_from_def
 
+if TYPE_CHECKING:
+    from brown.core.document import Document
+
 """The global state of the application."""
 
 _app_interface: AppInterface
@@ -22,7 +26,6 @@ default_font: Font
 """Font: The default font to be used in `Text` objects."""
 
 document: Document
-"""Document: The global document root object."""
 
 registered_music_fonts: dict[str, dict] = {}
 """A map from registered music font names to SMuFL metadata"""
@@ -54,6 +57,9 @@ def setup(initial_paper: Paper = A4):
     global _app_interface
     global default_font
     global document
+    # Document is imported here to work around cyclic import problems
+    from brown.core.document import Document
+
     document = Document(initial_paper)
     _app_interface = AppInterface(document)
     _register_default_fonts()

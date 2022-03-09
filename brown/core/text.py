@@ -1,10 +1,17 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Optional
+
 from brown.core import brown
 from brown.core.font import Font
 from brown.core.graphic_object import GraphicObject
 from brown.core.pen import NO_PEN
 from brown.interface.text_interface import TextInterface
 from brown.utils.point import Point, PointDef
-from brown.utils.units import ZERO
+from brown.utils.units import ZERO, Unit
+
+if TYPE_CHECKING:
+    from brown.core.mapping import Parent
 
 
 class Text(GraphicObject):
@@ -12,7 +19,12 @@ class Text(GraphicObject):
     """A graphical text object."""
 
     def __init__(
-        self, pos: PointDef, text: str, font: Font = None, parent=None, scale: float = 1
+        self,
+        pos: PointDef,
+        text: str,
+        font: Optional[Font] = None,
+        parent: Optional[Parent] = None,
+        scale: float = 1,
     ):
         """
         Args:
@@ -69,17 +81,20 @@ class Text(GraphicObject):
 
     ######## PRIVATE METHODS ########
 
-    def _render_slice(self, pos, clip_start_x=None, clip_width=None):
+    def _render_slice(
+        self,
+        pos: Point,
+        clip_start_x: Optional[Unit] = None,
+        clip_width: Optional[Unit] = None,
+    ):
         """Render a horizontal slice of a text object.
 
         Args:
-            pos (Point): The doc-space position of the slice beginning
+            pos: The doc-space position of the slice beginning
                 (at the top-left corner of the slice)
-            clip_start_x (Unit): The starting local x position in of the slice
-            clip_width (Unit): The horizontal length of the slice to
+            clip_start_x: The starting local x position in of the slice
+            clip_width: The horizontal length of the slice to
                 be rendered
-
-        Returns: None
         """
         slice_interface = TextInterface(
             pos,
@@ -94,14 +109,23 @@ class Text(GraphicObject):
         slice_interface.render()
         self.interfaces.append(slice_interface)
 
-    def _render_complete(self, pos, dist_to_line_start=None, local_start_x=None):
+    def _render_complete(
+        self,
+        pos: Point,
+        dist_to_line_start: Optional[Unit] = None,
+        local_start_x: Optional[Unit] = None,
+    ):
         self._render_slice(pos, None, None)
 
-    def _render_before_break(self, local_start_x, start, stop, dist_to_line_start):
+    def _render_before_break(
+        self, local_start_x: Unit, start: Point, stop: Point, dist_to_line_start: Unit
+    ):
         self._render_slice(start, ZERO, stop.x - start.x)
 
-    def _render_after_break(self, local_start_x, start, stop):
+    def _render_after_break(self, local_start_x: Unit, start: Point, stop: Point):
         self._render_slice(start, local_start_x, stop.x - start.x)
 
-    def _render_spanning_continuation(self, local_start_x, start, stop):
+    def _render_spanning_continuation(
+        self, local_start_x: Unit, start: Point, stop: Point
+    ):
         self._render_slice(start, local_start_x, stop.x - start.x)

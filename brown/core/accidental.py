@@ -1,7 +1,9 @@
+from brown.core.graphic_object import GraphicObject
 from brown.core.music_text import MusicText
 from brown.core.staff_object import StaffObject
 from brown.models.accidental_type import AccidentalType
 from brown.utils.exceptions import InvalidAccidentalTypeError
+from brown.utils.point import Point, PointDef
 
 
 class Accidental(MusicText, StaffObject):
@@ -14,14 +16,15 @@ class Accidental(MusicText, StaffObject):
         AccidentalType.sharp: "accidentalSharp",
     }
 
-    def __init__(self, pos, accidental_type, parent):
+    # TODO HIGH figure out how to type accidental_type
+    def __init__(self, pos: PointDef, accidental_type, parent: GraphicObject):
         """
         Args:
-            pos (Point): The position of the accidental
+            pos: The position of the accidental
             accidental_type (AccidentalType or str): The type of accidental.
                 For convenience, any `str` of a `AccidentalType`
                 enum name may be passed.
-            parent (StaffObject or Staff):
+            parent:
         """
         if isinstance(accidental_type, AccidentalType):
             self._accidental_type = accidental_type

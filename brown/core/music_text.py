@@ -1,4 +1,6 @@
-from typing import Any, NamedTuple, Optional
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any, NamedTuple, Optional
 
 from brown.core.mapping import Positioned
 from brown.core.music_char import MusicChar
@@ -8,6 +10,9 @@ from brown.core.text import Text
 from brown.utils.point import Point, PointDef
 from brown.utils.rect import Rect
 from brown.utils.units import ZERO, Unit
+
+if TYPE_CHECKING:
+    from brown.core.mapping import Parent
 
 
 class _CachedTextGeometryKey(NamedTuple):
@@ -33,7 +38,7 @@ class MusicText(Text):
         self,
         pos: PointDef,
         text: Any,
-        parent: Positioned,
+        parent: Parent,
         font: Optional[MusicFont] = None,
         scale: float = 1,
     ):

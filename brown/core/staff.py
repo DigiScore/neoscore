@@ -4,13 +4,16 @@ from typing import TYPE_CHECKING, Optional, Type, cast
 
 from brown import constants
 from brown.core.clef import Clef
+from brown.core.flowable import Flowable
 from brown.core.mapping import Positioned, map_between, map_between_x
 from brown.core.music_font import MusicFont
 from brown.core.octave_line import OctaveLine
 from brown.core.path import Path
+from brown.core.pen import Pen
 from brown.models.beat import Beat
 from brown.models.transposition import Transposition
 from brown.utils.exceptions import NoClefError
+from brown.utils.point import PointDef
 from brown.utils.units import ZERO, Unit, make_unit_class
 
 if TYPE_CHECKING:
@@ -24,14 +27,14 @@ class Staff(Path):
 
     def __init__(
         self,
-        pos,
-        length,
-        flowable,
-        staff_unit=None,
-        line_count=5,
-        music_font=None,
-        default_time_signature_duration=None,
-        pen=None,
+        pos: PointDef,
+        length: Unit,
+        flowable: Flowable,
+        # TODO LOW make staff_unit default be encoded in default value
+        staff_unit: Optional[Unit] = None,
+        line_count: int = 5,
+        music_font: Optional[MusicFont] = None,
+        pen: Optional[Pen] = None,
     ):
         """
         Args:
@@ -60,12 +63,6 @@ class Staff(Path):
             y_offset = self.unit(i)
             self.move_to(ZERO, y_offset)
             self.line_to(length, y_offset)
-
-        # Create first measure with given time signature duration
-        if default_time_signature_duration:
-            self.default_time_signature_duration = Beat(default_time_signature_duration)
-        else:
-            self.default_time_signature_duration = Beat(4, 4)
 
     ######## PUBLIC PROPERTIES ########
 

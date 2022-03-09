@@ -1,14 +1,19 @@
+from __future__ import annotations
+
 import math
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 from brown.core.mapping import Positioned, map_between
 from brown.core.spanner import Spanner
 from brown.utils.point import Point
 from brown.utils.units import Unit
 
+if TYPE_CHECKING:
+    from brown.core.mapping import Parent
+
 
 class Spanner2D(Spanner):
-    def __init__(self, end_pos: Point, end_parent: Positioned):
+    def __init__(self, end_pos: Point, end_parent: Parent):
         super().__init__(end_pos.x, end_parent)
         self._end_y = end_pos.y
 

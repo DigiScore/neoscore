@@ -27,12 +27,8 @@ class StaffObject:
     ...         StaffObject.__init__(self, ...)
     """
 
-    def __init__(self, parent):
-        """
-        Args:
-            parent (Staff or StaffObject):
-        """
-        self._staff = StaffObject.find_staff(parent)
+    def __init__(self, parent: GraphicObject):
+        self._staff = StaffObject.find_staff(cast(Positioned, parent))
         if not self._staff:
             raise NoAncestorStaffError
 

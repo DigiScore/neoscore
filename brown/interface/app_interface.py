@@ -1,13 +1,12 @@
 from __future__ import annotations
 
 import os
-from typing import Callable
+from typing import TYPE_CHECKING, Callable
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtPrintSupport import QPrinter
 
 from brown import constants
-from brown.core.document import Document
 from brown.interface import images
 from brown.interface.qt.converters import color_to_q_color, rect_to_qt_rect_f
 from brown.interface.qt.main_window import MainWindow
@@ -15,6 +14,9 @@ from brown.utils.color import Color
 from brown.utils.exceptions import FontRegistrationError, ImageExportError
 from brown.utils.rect import Rect
 from brown.utils.units import Meter, Unit
+
+if TYPE_CHECKING:
+    from brown.core.document import Document
 
 
 class AppInterface:

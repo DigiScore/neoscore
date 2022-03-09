@@ -1,9 +1,10 @@
+from brown.core.graphic_object import GraphicObject
 from brown.core.mapping import map_between
 from brown.core.music_text import MusicText
 from brown.core.staff_object import StaffObject
 from brown.models.beat import Beat
 from brown.models.pitch import Pitch
-from brown.utils.units import ZERO
+from brown.utils.units import ZERO, Unit
 
 
 class Notehead(MusicText, StaffObject):
@@ -27,7 +28,8 @@ class Notehead(MusicText, StaffObject):
         1: "noteheadWhole",
     }
 
-    def __init__(self, pos_x, pitch, duration, parent):
+    # TODO HIGH add PitchDef and use it here
+    def __init__(self, pos_x: Unit, pitch, duration, parent: GraphicObject):
         """
         Args:
             pos_x (Unit): The x-axis position relative to `parent`.

@@ -1,9 +1,10 @@
 from typing import Any
 
+from brown.core.invisible_object import InvisibleObject
 from brown.utils.point import Point
 
 
-class Page:
+class Page(InvisibleObject):
 
     """A document page.
 
@@ -31,93 +32,37 @@ class Page:
                 `PageSupplier`. This should be a positive number.
             paper (Paper): The type of paper this page uses.
         """
-        self.pos = pos if isinstance(pos, Point) else Point(*pos)
+        super().__init__(pos, document)
         self._document = document
         self._page_index = page_index
         self.paper = paper
         self.children = []
 
     @property
-    def parent(self):
-        """Document: The document this page belongs in.
-
-        NOTE: This type annotation is deliberately omitted. For
-        ergonomic reasons, `Page` somewhat fakes an implementation of
-        the `Positioned` protocol, which expects `parent` to itself be
-        a `Positioned`, which `Document` is not. Code which traverses
-        the object tree should take care to handle this base case
-        around the document root.
-        """
-        return self._document
-
-    @property
-    def descendants(self):
-        """iter[GraphicObject]: All of the objects in the children subtree.
-
-        This recursively searches all of the object's children
-        (and their children, etc.) and provides an iterator over them.
-
-        The current implementation performs a simple recursive DFS over
-        the tree, and has the potential to be rather slow.
-        """
-        for child in self.children:
-            for subchild in child.children:
-                yield subchild
-            yield child
-
-    @property
     def page_index(self):
         """The index of this page in its managing `PageSupplier` object."""
         return self._page_index
 
-    def _register_child(self, child):
-        """Add an object to `self.children`.
+    # def descendants_with_class_or_subclass(self, graphic_object_class):
+    #     """Yield all child descendants with a given class or its subclasses.
 
-        Args:
-            child (GraphicObject): The object to add
+    #     Args: graphic_object_class (type): The type to search for.
+    #         This should be a subclass of GraphicObject.
 
-        Returns: None
-        """
-        self.children.append(child)
+    #     Yields: GraphicObject
+    #     """
+    #     for descendant in self.descendants:
+    #         if isinstance(descendant, graphic_object_class):
+    #             yield descendant
 
-    def _unregister_child(self, child):
-        """Remove an object from `self.children`.
+    # def descendants_with_exact_class(self, graphic_object_class):
+    #     """Yield all child descendants with a given class.
 
-        Args:
-            child (GraphicObject): The object to remove
+    #     Args: graphic_object_class (type): The type to search for.
+    #         This should be a subclass of GraphicObject.
 
-        Returns: None
-        """
-        self.children.remove(child)
-
-    def _render(self):
-        """Render every object in the page.
-
-        Returns: None
-        """
-        for child in self.children:
-            child._render()
-
-    def descendants_with_class_or_subclass(self, graphic_object_class):
-        """Yield all child descendants with a given class or its subclasses.
-
-        Args: graphic_object_class (type): The type to search for.
-            This should be a subclass of GraphicObject.
-
-        Yields: GraphicObject
-        """
-        for descendant in self.descendants:
-            if isinstance(descendant, graphic_object_class):
-                yield descendant
-
-    def descendants_with_exact_class(self, graphic_object_class):
-        """Yield all child descendants with a given class.
-
-        Args: graphic_object_class (type): The type to search for.
-            This should be a subclass of GraphicObject.
-
-        Yields: GraphicObject
-        """
-        for descendant in self.descendants:
-            if type(descendant) == graphic_object_class:
-                yield descendant
+    #     Yields: GraphicObject
+    #     """
+    #     for descendant in self.descendants:
+    #         if type(descendant) == graphic_object_class:
+    #             yield descendant

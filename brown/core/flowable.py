@@ -135,7 +135,10 @@ class Flowable(InvisibleObject):
                 current_page += 1
                 layout_controllers.append(
                     NewLine(
-                        pos, brown.document.pages[current_page], x_progress, self.height
+                        pos,
+                        brown.document.pages[current_page],
+                        x_progress,
+                        self.height,
                     )
                 )
             else:

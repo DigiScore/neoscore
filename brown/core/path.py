@@ -1,11 +1,13 @@
-from typing import Optional, Union, cast
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Optional, Union, cast
 
 from brown import constants
-from brown.core.brush import Brush
+from brown.core.brush import Brush, SimpleBrushDef
 from brown.core.graphic_object import GraphicObject
 from brown.core.mapping import Positioned, descendant_pos, map_between, map_between_x
 from brown.core.path_element import ControlPoint, CurveTo, LineTo, MoveTo, PathElement
-from brown.core.pen import Pen
+from brown.core.pen import Pen, SimplePenDef
 from brown.interface.path_interface import (
     PathInterface,
     ResolvedCurveTo,
@@ -15,6 +17,9 @@ from brown.interface.path_interface import (
 )
 from brown.utils.point import Point, PointDef
 from brown.utils.units import ZERO, Unit
+
+if TYPE_CHECKING:
+    from brown.core.mapping import Parent
 
 
 class Path(GraphicObject):
@@ -34,16 +39,16 @@ class Path(GraphicObject):
     def __init__(
         self,
         pos: PointDef,
-        pen: Optional[Pen] = None,
-        brush: Optional[Brush] = None,
-        parent=None,
+        pen: Optional[SimplePenDef] = None,
+        brush: Optional[SimpleBrushDef] = None,
+        parent: Optional[Parent] = None,
     ):
         """
         Args:
             pos: The position of the path root.
             pen: The pen to draw outlines with.
             brush: The brush to draw outlines with.
-            parent (GraphicObject): The parent object or None
+            parent: The parent object or None
         """
         brush = brush or Brush.from_existing(Path._default_brush)
         super().__init__(pos, ZERO, pen, brush, parent)
@@ -52,17 +57,22 @@ class Path(GraphicObject):
     ######## CLASSMETHODS ########
 
     @classmethod
-    def straight_line(cls, start, stop, pen=None, brush=None, parent=None):
+    def straight_line(
+        cls,
+        start: PointDef,
+        stop: PointDef,
+        pen: Optional[SimplePenDef] = None,
+        brush: Optional[SimpleBrushDef] = None,
+        parent: Parent = None,
+    ) -> Path:
         """Path: Constructor for a straight line
 
         Args:
-            start (Point or init tuple): Starting position relative to the parent
-            stop (Point or init tuple): Ending position relative to the parent.
-            pen (Pen): The pen to draw outlines with.
-            brush (Brush): The brush to draw outlines with.
-            parent (GraphicObject): The parent object or None
-
-        Returns: Path
+            start: Starting position relative to the parent
+            stop: Ending position relative to the parent.
+            pen: The pen to draw outlines with.
+            brush: The brush to draw outlines with.
+            parent: The parent object or None
         """
         line = cls(start, pen, brush, parent)
         if isinstance(stop, tuple):
@@ -73,8 +83,8 @@ class Path(GraphicObject):
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def length(self):
-        """Unit: The breakable length of the path.
+    def length(self) -> Unit:
+        """The breakable length of the path.
 
         This is calculated automatically from path contents. By extension,
         this means that by default all `Path` objects will automatically
@@ -95,7 +105,7 @@ class Path(GraphicObject):
 
     ######## Public Methods ########
 
-    def line_to(self, x: Unit, y: Unit, parent: Optional[Positioned] = None):
+    def line_to(self, x: Unit, y: Unit, parent: Optional[Parent] = None):
         """Draw a path from the current position to a new point.
 
         A point parent may be passed as well, anchored the target point to
@@ -117,7 +127,7 @@ class Path(GraphicObject):
             self.elements.append(MoveTo(Point(Unit(0), Unit(0)), self))
         self.elements.append(LineTo(Point(x, y), parent or self))
 
-    def move_to(self, x: Unit, y: Unit, parent: Optional[Positioned] = None):
+    def move_to(self, x: Unit, y: Unit, parent: Optional[Parent] = None):
         """Close the current sub-path and start a new one.
 
         A point parent may be passed as well, anchored the target point to
@@ -129,8 +139,6 @@ class Path(GraphicObject):
             y: The end y position
             parent: An optional parent, whose position the target coordinate will
                 be relative to.
-
-        Returns: None
         """
         self.elements.append(MoveTo(Point(x, y), parent or self))
 
@@ -154,9 +162,9 @@ class Path(GraphicObject):
         control_2_y: Unit,
         end_x: Unit,
         end_y: Unit,
-        control_1_parent: Optional[Positioned] = None,
-        control_2_parent: Optional[Positioned] = None,
-        end_parent: Optional[Positioned] = None,
+        control_1_parent: Optional[Parent] = None,
+        control_2_parent: Optional[Parent] = None,
+        end_parent: Optional[Parent] = None,
     ):
         """Draw a cubic bezier curve from the current position to a new point.
 
@@ -191,7 +199,7 @@ class Path(GraphicObject):
             self.elements.append(MoveTo(Point(Unit(0), Unit(0)), self))
         self.elements.append(CurveTo(c1, c2, Point(end_x, end_y), end_parent or self))
 
-    def _relative_element_pos(self, element: Positioned) -> Point:
+    def _relative_element_pos(self, element: Parent) -> Point:
         return map_between(self, element)
 
     def _resolve_path_elements(self) -> list[ResolvedPathElement]:
@@ -222,23 +230,15 @@ class Path(GraphicObject):
                 raise TypeError("Unknown PathElement type")
         return resolved
 
-    def _render_slice(self, pos, clip_start_x=None, clip_width=None):
-        """Render a horizontal slice of a path.
-
-        If this proves to be a performance bottleneck in the future,
-        it is very possible to optimize this to create `PathInterface`s
-        which reuse `QPainterPath`s.
-
-        Args:
-            pos (Point): The doc-space position of the slice beginning
-                (at the top-left corner of the slice)
-            clip_start_x (Unit): The starting x position in the path
-                of the slice
-            clip_width (Unit): The horizontal length of the slice to
-                be rendered
-
-        Returns: None
-        """
+    def _render_slice(
+        self,
+        pos: Point,
+        clip_start_x: Optional[Unit] = None,
+        clip_width: Optional[Unit] = None,
+    ):
+        # If this proves to be a performance bottleneck in the future,
+        # it is very possible to optimize this to create `PathInterface`s
+        # which reuse `QPainterPath`s.
         resolved_path_elements = self._resolve_path_elements()
         slice_interface = PathInterface(
             pos,
@@ -251,14 +251,23 @@ class Path(GraphicObject):
         slice_interface.render()
         self.interfaces.append(slice_interface)
 
-    def _render_complete(self, pos, dist_to_line_start=None, local_start_x=None):
+    def _render_complete(
+        self,
+        pos: Point,
+        dist_to_line_start: Optional[Unit] = None,
+        local_start_x: Optional[Unit] = None,
+    ):
         self._render_slice(pos, None, None)
 
-    def _render_before_break(self, local_start_x, start, stop, dist_to_line_start):
+    def _render_before_break(
+        self, local_start_x: Unit, start: Point, stop: Point, dist_to_line_start: Unit
+    ):
         self._render_slice(start, ZERO, stop.x - start.x)
 
-    def _render_after_break(self, local_start_x, start, stop):
+    def _render_after_break(self, local_start_x: Unit, start: Point, stop: Point):
         self._render_slice(start, local_start_x, stop.x - start.x)
 
-    def _render_spanning_continuation(self, local_start_x, start, stop):
+    def _render_spanning_continuation(
+        self, local_start_x: Unit, start: Point, stop: Point
+    ):
         self._render_slice(start, local_start_x, stop.x - start.x)

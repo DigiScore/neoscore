@@ -14,15 +14,15 @@ from brown.core.mapping import (
     descendant_pos,
     first_ancestor_of_exact_class,
 )
-from brown.core.page import Page
 from brown.core.pen import DEFAULT_PEN, Pen, SimplePenDef, pen_from_simple_def
 from brown.interface.graphic_object_interface import GraphicObjectInterface
-from brown.utils.point import ORIGIN, Point, PointDef
-from brown.utils.units import ZERO, Mm, Unit
+from brown.utils.point import Point, PointDef
+from brown.utils.units import ZERO,  Unit
 
 if TYPE_CHECKING:
     # Used in type annotations, imported here to avoid cyclic imports
     from brown.core.flowable import Flowable
+    from brown.core.mapping import Parent
 
 
 class GraphicObject(ABC):
@@ -48,25 +48,29 @@ class GraphicObject(ABC):
     global document with `brown.document.pages[n]`
     """
 
-    # TODO MEDIUM: work out signatures for convenience args
+    # TODO high figure out a unified, simple way to type `parent`
+    # fields Maybe Page should be made into an InvisibleObject, then
+    # it can hackily cast its parent (Document) to Any when dealing
+    # with it?
+
     def __init__(
         self,
         pos: PointDef,
         length: Unit = ZERO,
         pen: Optional[SimplePenDef] = None,
         brush: Optional[SimpleBrushDef] = None,
-        parent: Optional[Union[GraphicObject, Page]] = None,
+        parent: Optional[Parent] = None,
     ):
         """
         Args:
             pos: The position of the object relative to its parent
-            length (Unit): The width of the object which can be
+            length: The width of the object which can be
                 subject to breaking across lines when in a`Flowable`.
                 If the object is not inside a `Flowable`,
                 this has no effect
-            pen (Pen): The pen to draw outlines with.
-            brush (Brush): The brush to draw outlines with.
-            parent (GraphicObject): The parent object or None
+            pen: The pen to draw outlines with.
+            brush: The brush to draw outlines with.
+            parent: The parent object or None
         """
         self.pos = pos
         self._length = length
@@ -165,7 +169,7 @@ class GraphicObject(ABC):
             self._brush = Brush.from_existing(DEFAULT_BRUSH)
 
     @property
-    def parent(self) -> Union[GraphicObject, Page]:
+    def parent(self) -> Parent:
         """The parent object.
 
         If this is set to None, it defaults to the first page of the document.
@@ -173,13 +177,15 @@ class GraphicObject(ABC):
         return self._parent
 
     @parent.setter
-    def parent(self, value: Optional[Union[GraphicObject, Page]]):
-        if hasattr(self, "_parent") and self._parent is not None:
+    def parent(self, value: Optional[Parent]):
+        # TODO MEDIUM clean this up, looks way too complicated
+        if hasattr(self, "_parent") and self._parent is not None and isinstance(self._parent, GraphicObject):
             self._parent._unregister_child(self)
         if value is None:
             value = brown.document.pages[0]
         self._parent = value
-        self._parent._register_child(self)
+        if isinstance(self._parent, GraphicObject):
+            self._parent._register_child(self)
 
     @property
     def children(self) -> list[GraphicObject]:
@@ -254,7 +260,6 @@ class GraphicObject(ABC):
         Any data cached in this function must be cleared in a
         corresponding `_post_render_hook`.
         """
-        pass
 
     def _post_render_hook(self):
         """Run code once after document rendering completes.
@@ -262,7 +267,6 @@ class GraphicObject(ABC):
         Any cached data stored in `_pre_render_hook` must be cleared
         in this function.
         """
-        pass
 
     def _render(self):
         """Render the object and all its children.
