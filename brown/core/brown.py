@@ -153,6 +153,8 @@ def show(refresh_func: Optional[RefreshFunc] = None):
     global _app_interface
     _app_interface._clear_scene()
     document._render()
+    if refresh_func:
+        set_refresh_func(refresh_func)
     _app_interface.show()
 
 
