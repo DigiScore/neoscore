@@ -8,12 +8,12 @@ from brown.core.brush import DEFAULT_BRUSH, Brush, SimpleBrushDef, brush_from_si
 from brown.core.mapping import (
     canvas_pos_of,
     descendant_pos,
-    first_ancestor_of_exact_class
+    first_ancestor_of_exact_class,
 )
 from brown.core.pen import DEFAULT_PEN, Pen, SimplePenDef, pen_from_simple_def
 from brown.interface.graphic_object_interface import GraphicObjectInterface
 from brown.utils.point import Point, PointDef
-from brown.utils.units import ZERO,  Unit
+from brown.utils.units import ZERO, Unit
 
 if TYPE_CHECKING:
     # Used in type annotations, imported here to avoid cyclic imports
@@ -175,7 +175,11 @@ class GraphicObject(ABC):
     @parent.setter
     def parent(self, value: Optional[Parent]):
         # TODO MEDIUM clean this up, looks way too complicated
-        if hasattr(self, "_parent") and self._parent is not None and isinstance(self._parent, GraphicObject):
+        if (
+            hasattr(self, "_parent")
+            and self._parent is not None
+            and isinstance(self._parent, GraphicObject)
+        ):
             self._parent._unregister_child(self)
         if value is None:
             value = brown.document.pages[0]

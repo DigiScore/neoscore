@@ -1,4 +1,3 @@
-
 from brown.core.path_element import CurveTo
 from brown.utils.point import Point
 from brown.utils.units import Unit

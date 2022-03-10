@@ -1,4 +1,3 @@
-
 from brown.core.graphic_object import GraphicObject
 from brown.core.music_text import MusicText
 from brown.core.staff_object import StaffObject

@@ -1,4 +1,3 @@
-
 from brown.core.brush_pattern import BrushPattern
 from brown.core.pen_cap_style import PenCapStyle
 from brown.core.pen_join_style import PenJoinStyle

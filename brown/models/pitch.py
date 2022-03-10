@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 import re
+from typing import Union
 
 from brown.models.accidental_type import AccidentalType
 from brown.utils.exceptions import InvalidPitchDescriptionError
@@ -45,6 +48,12 @@ class Pitch:
         self._accidental_type = None
         self._octave = None
         self.pitch = pitch
+
+    @classmethod
+    def from_def(cls, pitch_def: PitchDef) -> Pitch:
+        if isinstance(pitch_def, Pitch):
+            return pitch_def
+        return Pitch(pitch_def)
 
     ######## SPECIAL METHODS ########
 
@@ -180,3 +189,6 @@ class Pitch:
         elif self.octave < 3:
             descriptor += "," * (3 + (self.octave * -1))
         return descriptor
+
+
+PitchDef = Union[Pitch, str]

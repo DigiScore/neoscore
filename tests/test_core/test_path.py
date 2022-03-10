@@ -9,7 +9,7 @@ from brown.core.pen import Pen
 from brown.interface.path_interface import (
     ResolvedCurveTo,
     ResolvedLineTo,
-    ResolvedMoveTo
+    ResolvedMoveTo,
 )
 from brown.utils.point import ORIGIN, Point
 from brown.utils.units import ZERO, Unit

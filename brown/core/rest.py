@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Union
 
 from brown.core.music_text import MusicText
 from brown.core.staff_object import StaffObject
-from brown.models.beat import Beat
+from brown.models.beat import Beat, BeatDef
 from brown.utils.point import Point, PointDef
 
 if TYPE_CHECKING:
@@ -40,10 +40,10 @@ class Rest(MusicText, StaffObject):
         self,
         pos: PointDef,
         parent: Union[StaffObject, Staff],
-        duration: Union[Beat, tuple],
+        duration: BeatDef,
     ):
         pos = Point.from_def(pos)
-        self._duration = duration if isinstance(duration, Beat) else Beat(*duration)
+        self._duration = Beat.from_def(duration)
         MusicText.__init__(
             self, pos, [self._glyphnames[self.duration.base_division]], parent
         )

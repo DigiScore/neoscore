@@ -2,7 +2,7 @@ from brown.core.music_text import MusicText
 from brown.core.object_group import ObjectGroup
 from brown.core.staff import Staff
 from brown.core.staff_object import StaffObject
-from brown.models.beat import Beat
+from brown.models.beat import Beat, BeatDef
 from brown.utils.point import Point
 from brown.utils.units import Unit
 
@@ -27,7 +27,7 @@ class TimeSignature(ObjectGroup, StaffObject):
         9: "timeSig9",
     }
 
-    def __init__(self, pos_x: Unit, meter: Beat, staff: Staff):
+    def __init__(self, pos_x: Unit, meter: BeatDef, staff: Staff):
         """
         Args:
             pos_x: The x position relative to the
@@ -43,7 +43,7 @@ class TimeSignature(ObjectGroup, StaffObject):
         """
         ObjectGroup.__init__(self, Point(pos_x, staff.unit(0)), staff)
         StaffObject.__init__(self, staff)
-        self._meter = meter
+        self._meter = Beat.from_def(meter)
         # Add one glyph for each digit
         self._numerator_glyph = MusicText(
             (staff.unit(0), staff.unit(1)),

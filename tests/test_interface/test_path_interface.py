@@ -10,7 +10,7 @@ from brown.interface.path_interface import (
     PathInterface,
     ResolvedCurveTo,
     ResolvedLineTo,
-    ResolvedMoveTo
+    ResolvedMoveTo,
 )
 from brown.interface.pen_interface import PenInterface
 from brown.utils.color import Color

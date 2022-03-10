@@ -97,6 +97,12 @@ class Beat:
         )
         return cls(*fraction_tuple)
 
+    @classmethod
+    def from_def(cls, beat_def: BeatDef) -> Beat:
+        if isinstance(beat_def, Beat):
+            return beat_def
+        return Beat(*beat_def)
+
     ######## PUBLIC PROPERTIES ########
 
     @property
@@ -237,4 +243,8 @@ class Beat:
         return Fraction(cast(int, self.numerator), self.denominator)
 
 
-# TODO HIGH add BeatDef support and start using it in places like TimeSignature and Chordrest
+BeatDef = Union[Beat, tuple[int, int]]
+"""A Beat or a shorthand tuple for one.
+
+The tuple shorthand does not support nested beats; these should be created explicitly.
+"""

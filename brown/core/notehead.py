@@ -2,8 +2,8 @@ from brown.core.graphic_object import GraphicObject
 from brown.core.mapping import map_between
 from brown.core.music_text import MusicText
 from brown.core.staff_object import StaffObject
-from brown.models.beat import Beat
-from brown.models.pitch import Pitch
+from brown.models.beat import Beat, BeatDef
+from brown.models.pitch import Pitch, PitchDef
 from brown.utils.units import ZERO, Unit
 
 
@@ -28,8 +28,9 @@ class Notehead(MusicText, StaffObject):
         1: "noteheadWhole",
     }
 
-    # TODO HIGH add PitchDef and use it here
-    def __init__(self, pos_x: Unit, pitch, duration, parent: GraphicObject):
+    def __init__(
+        self, pos_x: Unit, pitch: PitchDef, duration: BeatDef, parent: GraphicObject
+    ):
         """
         Args:
             pos_x (Unit): The x-axis position relative to `parent`.
@@ -42,8 +43,8 @@ class Notehead(MusicText, StaffObject):
             parent (GraphicObject): Must either be a `Staff` or an object
                 with an ancestor `Staff`.
         """
-        self._pitch = pitch if isinstance(pitch, Pitch) else Pitch(pitch)
-        self._duration = duration if isinstance(duration, Beat) else Beat(*duration)
+        self._pitch = Pitch.from_def(pitch)
+        self._duration = Beat.from_def(duration)
         # Use a temporary y-axis position before calculating it for real
         MusicText.__init__(
             self,

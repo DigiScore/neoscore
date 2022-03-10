@@ -10,6 +10,8 @@ from brown.core.rhythm_dot import RhythmDot
 from brown.core.staff import Staff
 from brown.core.staff_object import StaffObject
 from brown.core.stem import Stem
+from brown.models.beat import Beat, BeatDef
+from brown.models.pitch import Pitch, PitchDef
 from brown.utils.point import Point
 from brown.utils.units import Unit
 
@@ -33,25 +35,24 @@ class Chordrest(ObjectGroup, StaffObject):
         * `RhythmDot`s if needed by the given `Duration`
     """
 
-    # TODO HIGH use PitchDef here
     # TODO MEDIUM stem direction should probably be a bool or enum or
     # something, int is not expressive
     def __init__(
         self,
         pos_x: Unit,
         staff: Staff,
-        pitches,
-        duration,
+        pitches: Optional[list[PitchDef]],
+        duration: BeatDef,
         stem_direction: Optional[int] = None,
     ):
         """
         Args:
-            pos_x (Unit): The horizontal position
-            staff (Staff): The staff the object is attached to
-            pitches (list[str] or None): A list of pitch strings
-                representing noteheads. An empty list indicates a rest.
-            duration (Beat): The duration of the Chordrest
-            stem_direction (int or None): An optional stem direction override
+            pos_x: The horizontal position
+            staff: The staff the object is attached to
+            pitches: A list of pitch strings representing noteheads.
+                An empty list or `None` indicates a rest.
+            duration: The duration of the Chordrest
+            stem_direction: An optional stem direction override
                 where `1` points down and `-1` points up. If omitted, the
                 direction is automatically calculated to point away from
                 the furthest-out notehead.
