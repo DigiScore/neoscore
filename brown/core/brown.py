@@ -130,14 +130,24 @@ def register_music_font(font_file_path: str, metadata_path: str):
     registered_music_fonts[name] = metadata
 
 
-def show():
+RefreshFunc = Callable[[float], None]
+"""A user-providable function for updating the scene every frame(ish).
+
+The function should accept one argument - the current time in seconds.
+"""
+
+
+def show(refresh_func: Optional[RefreshFunc] = None):
     """Show a preview of the score in a GUI window.
+
+    An update function can be provided (or otherwise set with
+    `set_refresh_func`) which is run on a timer approximating the
+    frame rate.
 
     The current implementation is pretty limited in features,
     but this could/should be extended in the future once
     the API/interface/Qt bindings are more stable.
 
-    Returns: None
     """
     global document
     global _app_interface
@@ -242,9 +252,16 @@ def render_image(
     _app_interface.render_image(rect, image_path, dpm, quality, bg_color, autocrop)
 
 
-def set_refresh_func(refresh_func: Callable[[float], None]):
+def set_refresh_func(refresh_func: RefreshFunc):
     global _app_interface
-    _app_interface.set_refresh_func(refresh_func)
+    global document
+
+    def wrapped_refresh_func(time: float):
+        _clear_interfaces()
+        refresh_func(time)
+        document._render()
+
+    _app_interface.set_refresh_func(wrapped_refresh_func)
 
 
 def _register_default_fonts():

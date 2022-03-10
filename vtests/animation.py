@@ -4,7 +4,6 @@ from brown.common import *
 
 brown.setup()
 
-
 flowable = Flowable((Mm(0), Mm(0)), Mm(500), Mm(30), Mm(10))
 
 staff = Staff((Mm(0), Mm(0)), Mm(500), flowable, Mm(1))
@@ -21,15 +20,10 @@ n4 = Notehead(center, "f''", Beat(1, 4), staff)
 
 
 def refresh_func(time):
-    brown._clear_interfaces()
-
-    n1.x = center + Mm(math.sin((time / 5)) * 10)
-    n2.x = center + Mm(math.sin((time / 5) + 1) * 12)
-    n3.x = center + Mm(math.sin((time / 5) + 1.7) * 7)
-    n4.x = center + Mm(math.sin((time / 5) + 2.3) * 15)
-
-    brown.document._render()
+    n1.x = center + Mm(math.sin((time / 2)) * 10)
+    n2.x = center + Mm(math.sin((time / 2) + 1) * 12)
+    n3.x = center + Mm(math.sin((time / 2) + 1.7) * 7)
+    n4.x = center + Mm(math.sin((time / 2) + 2.3) * 15)
 
 
-brown.set_refresh_func(refresh_func)
-brown.show()
+brown.show(refresh_func)
