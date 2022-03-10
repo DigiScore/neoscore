@@ -44,11 +44,6 @@ class GraphicObject(ABC):
     global document with `brown.document.pages[n]`
     """
 
-    # TODO high figure out a unified, simple way to type `parent`
-    # fields Maybe Page should be made into an InvisibleObject, then
-    # it can hackily cast its parent (Document) to Any when dealing
-    # with it?
-
     def __init__(
         self,
         pos: PointDef,

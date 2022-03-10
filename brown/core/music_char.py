@@ -18,7 +18,7 @@ class MusicChar:
     alternate_number: Optional[int] = None
     """An SMuFL alternate glyph code, if applicable."""
 
-    glyph_info: dict = field(init=False, hash=False, compare=False)
+    glyph_info: dict = field(init=False, hash=False, compare=False, repr=False)
     """SMuFL data on the glyph sized to `self.font`"""
 
     def __post_init__(self):

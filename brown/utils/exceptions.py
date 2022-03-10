@@ -31,12 +31,6 @@ class NoAncestorStaffError(Exception):
     pass
 
 
-class InvalidAccidentalTypeError(Exception):
-    """Raised when a nonexistent `AccidentalType` enum name is requested."""
-
-    pass
-
-
 class DynamicStringError(Exception):
 
     """Exception raised when a dynamic string cannot be parsed."""

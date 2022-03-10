@@ -13,6 +13,8 @@ from brown.utils.exceptions import (
 from brown.utils.platforms import PlatformType, current_platform
 from brown.utils.units import Unit, convert_all_to_unit
 
+# TODO LOW make a nice __repr__
+
 
 class MusicFont(Font):
 

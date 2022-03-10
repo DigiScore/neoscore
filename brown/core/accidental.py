@@ -2,13 +2,12 @@ from brown.core.graphic_object import GraphicObject
 from brown.core.music_text import MusicText
 from brown.core.staff_object import StaffObject
 from brown.models.accidental_type import AccidentalType
-from brown.utils.exceptions import InvalidAccidentalTypeError
 from brown.utils.point import PointDef
 
 
 class Accidental(MusicText, StaffObject):
 
-    """A visible accidental."""
+    """A visual accidental."""
 
     _canonical_names = {
         AccidentalType.flat: "accidentalFlat",
@@ -16,23 +15,10 @@ class Accidental(MusicText, StaffObject):
         AccidentalType.sharp: "accidentalSharp",
     }
 
-    # TODO HIGH figure out how to type accidental_type
-    def __init__(self, pos: PointDef, accidental_type, parent: GraphicObject):
-        """
-        Args:
-            pos: The position of the accidental
-            accidental_type (AccidentalType or str): The type of accidental.
-                For convenience, any `str` of a `AccidentalType`
-                enum name may be passed.
-            parent:
-        """
-        if isinstance(accidental_type, AccidentalType):
-            self._accidental_type = accidental_type
-        else:
-            try:
-                self._accidental_type = AccidentalType[accidental_type]
-            except KeyError:
-                raise InvalidAccidentalTypeError
+    def __init__(
+        self, pos: PointDef, accidental_type: AccidentalType, parent: GraphicObject
+    ):
+        self._accidental_type = accidental_type
         canonical_name = self._canonical_names[self.accidental_type]
         MusicText.__init__(self, pos, [canonical_name], parent)
         StaffObject.__init__(self, parent)
@@ -46,4 +32,7 @@ class Accidental(MusicText, StaffObject):
 
     @accidental_type.setter
     def accidental_type(self, value):
+        # TODO MEDIUM this needs to update the underlying text. This
+        # can't currently be done because MusicText doesn't support
+        # changing the text.
         self._accidental_type = value
