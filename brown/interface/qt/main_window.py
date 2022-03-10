@@ -1,7 +1,10 @@
 import os
 from time import time
 
-from PyQt5 import QtWidgets, uic
+from PyQt5 import QtCore, QtWidgets, uic
+
+QT_PRECISE_TIMER = 0
+REFRESH_DELAY_MS = 15
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -15,13 +18,14 @@ class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi(MainWindow._ui_path, self)
-        self.refresh_timer_id = None
         self.refresh_func = None
 
     def show(self):
-        self.refresh_timer_id = self.startTimer(10)
+        QtCore.QTimer.singleShot(REFRESH_DELAY_MS, QT_PRECISE_TIMER, self.refresh)
         super().show()
 
-    def timerEvent(self, event):
-        if event.timerId() == self.refresh_timer_id and self.refresh_func:
+    @QtCore.pyqtSlot()
+    def refresh(self):
+        QtCore.QTimer.singleShot(REFRESH_DELAY_MS, QT_PRECISE_TIMER, self.refresh)
+        if self.refresh_func:
             self.refresh_func(time())
