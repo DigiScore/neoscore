@@ -1,57 +1,48 @@
+from dataclasses import dataclass, field
 from typing import Optional
 
 from brown.core.music_font import MusicFont
 from brown.utils.rect import Rect
 
 
+@dataclass(frozen=True)
 class MusicChar:
-    """A SMuFL music character.
+    """A SMuFL music character."""
 
-    Attributes:
-        font (MusicFont): The font used to derive SMuFL spec information
-            about this glyph.
-        canonical_name (str): The canonical SMuFL name of this font
-        alternate_number (int or None): An optional alternate glyph code.
-    """
+    font: MusicFont
+    """The font used to derive SMuFL spec information about this glyph."""
 
-    def __init__(
-        self, font: MusicFont, glyph_name: str, alternate_number: Optional[int] = None
-    ):
-        """
-        Args:
-            font: The music font to be used. If not specified,
-                the font is taken from the ancestor staff.
-            glyph_name: The canonical SMuFL name of the glyph
-            alternate_number: An optional alternate glyph code.
+    glyph_name: str
+    """The canonical SMuFL name of the glyph"""
 
-        Note:
-            If an alternate number is given, `self.canonical_name` will be
-            different than the `glyph_name` passed here.
+    alternate_number: Optional[int] = None
+    """An SMuFL alternate glyph code, if applicable."""
 
-            For instance, to access the alternate glyph 'braceSmall', you
-            must go through the parent non-optional glyph 'brace'.
-            Since 'braceSmall' is the first listed alternate glyph given
-            for 'brace', we access it with `alternate_number = 1`:
+    glyph_info: dict = field(init=False, hash=False, compare=False)
+    """SMuFL data on the glyph sized to `self.font`"""
 
-                `MusicChar(some_font, 'brace', 1)`
-        """
-        self.font = font
-        self._glyph_info = self.font.glyph_info(glyph_name, alternate_number)
+    def __post_init__(self):
+        super().__setattr__(
+            "glyph_info", self.font.glyph_info(self.glyph_name, self.alternate_number)
+        )
 
     ######## PUBLIC PROPERTIES ########
 
     @property
     def canonical_name(self):
+        """The canonical SMuFL glyph name.
+
+        This is a convenience property for `glyph_info["canonicalName"]`
+        """
         return self.glyph_info["canonicalName"]
 
     @property
     def codepoint(self):
-        return self.glyph_info["codepoint"]
+        """The glyph's SMuFL codepoint.
 
-    @property
-    def glyph_info(self):
-        """dict: The aggregated SMuFL metadata for this glyph"""
-        return self._glyph_info
+        This is a convenience property for `glyph_info["codepoint"]`
+        """
+        return self.glyph_info["codepoint"]
 
     @property
     def bounding_rect(self):
