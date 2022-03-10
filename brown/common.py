@@ -44,7 +44,6 @@ from brown.models.beat import Beat
 from brown.models.clef_type import ClefType
 from brown.models.key_signature_type import KeySignatureType
 from brown.utils.color import Color
-from brown.utils.parent_point import ParentPoint
 from brown.utils.point import Point
 from brown.utils.rect import Rect
 from brown.utils.units import GraphicUnit, Inch, Mm

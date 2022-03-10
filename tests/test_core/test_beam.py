@@ -5,7 +5,6 @@ from brown.core.beam import Beam
 from brown.core.flowable import Flowable
 from brown.core.path_element import LineTo, MoveTo
 from brown.core.staff import Staff
-from brown.utils.parent_point import ParentPoint
 from brown.utils.point import Point
 from brown.utils.units import Mm, Unit
 from tests.mocks.mock_staff_object import MockStaffObject
@@ -22,24 +21,23 @@ class TestBeam(unittest.TestCase):
         self.right_parent = MockStaffObject((Unit(10), Unit(2)), self.staff)
 
     def test_init_with_parent_point_args(self):
-        beam = Beam(
-            ParentPoint(Mm(1), Mm(2), self.left_parent),
-            ParentPoint(Mm(3), Mm(4), self.right_parent),
-        )
+        beam = Beam((Mm(1), Mm(2)), self.left_parent, (Mm(3), Mm(4)), self.right_parent)
         assert beam.parent == self.left_parent
         assert beam.pos.x == Mm(1)
         assert beam.pos.y == Mm(2)
 
     def test_init_with_tuple_args(self):
-        beam = Beam((Mm(1), Mm(2), self.left_parent), (Mm(3), Mm(4), self.right_parent))
+        beam = Beam((Mm(1), Mm(2)), self.left_parent, (Mm(3), Mm(4)), self.right_parent)
         assert beam.parent == self.left_parent
         assert beam.pos.x == Mm(1)
         assert beam.pos.y == Mm(2)
 
     def test_shape(self):
         beam = Beam(
-            ParentPoint(Mm(1), Mm(2), self.left_parent),
-            ParentPoint(Mm(3), Mm(4), self.right_parent),
+            (Mm(1), Mm(2)),
+            self.left_parent,
+            (Mm(3), Mm(4)),
+            self.right_parent,
         )
         thickness = beam.beam_thickness
         assert len(beam.elements) == 5

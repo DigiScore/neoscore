@@ -1,7 +1,7 @@
+from brown.core.graphic_object import GraphicObject
 from brown.core.path import Path
 from brown.core.staff_object import StaffObject
-from brown.utils.parent_point import ParentPoint
-from brown.utils.point import Point
+from brown.utils.point import Point, PointDef
 from brown.utils.units import ZERO
 
 
@@ -14,23 +14,28 @@ class Beam(Path, StaffObject):
     on top of each other.
     """
 
-    def __init__(self, start, stop):
+    def __init__(
+        self,
+        start: PointDef,
+        start_parent: GraphicObject,
+        stop: PointDef,
+        stop_parent: GraphicObject,
+    ):
         """
         Args:
-            start (ParentPoint or init tuple): The starting (left) position
-                of the beam
-            stop (ParentPoint or init tuple): The ending (right) position
-                of the beam
+            start: The starting (left) position of the beam
+            start_parent: The parent for the starting position.
+                Must be a staff or in one.
+            stop: The ending (right) position of the beam
+            stop_parent: The parent for the ending position.
+                Must be a staff or in one.
         """
-        if not isinstance(start, ParentPoint):
-            start = ParentPoint(*start)
-        if not isinstance(stop, ParentPoint):
-            stop = ParentPoint(*stop)
-        Path.__init__(self, Point(start.x, start.y), parent=start.parent)
-        StaffObject.__init__(self, start.parent)
+        Path.__init__(self, start, parent=start_parent)
+        StaffObject.__init__(self, start_parent)
         self.beam_thickness = self.staff.music_font.engraving_defaults["beamThickness"]
         # Draw beam
-        self.line_to(stop.x, stop.y, stop.parent)
-        self.line_to(stop.x, stop.y + self.beam_thickness, stop.parent)
+        stop = Point.from_def(stop)
+        self.line_to(stop.x, stop.y, stop_parent)
+        self.line_to(stop.x, stop.y + self.beam_thickness, stop_parent)
         self.line_to(ZERO, self.beam_thickness, self)
         self.close_subpath()

@@ -2,7 +2,6 @@ import unittest
 
 import pytest
 
-from brown.utils.parent_point import ParentPoint
 from brown.utils.point import Point
 from brown.utils.units import Mm, Unit
 
@@ -28,10 +27,6 @@ class TestPoint(unittest.TestCase):
         assert p1 + p2 == Point(Unit(4), Unit(6))
         with pytest.raises(TypeError):
             p1 + 1
-        # Ideally these operations between Points and ParentPoints would error,
-        # but for performance reasons type checks are omitted, so duck typing
-        # allows this behavior documented here:
-        assert p1 + ParentPoint(Unit(0), Unit(0), "mock parent") == p1
 
     def test__sub__(self):
         p1 = Point(Unit(1), Unit(2))
@@ -39,10 +34,6 @@ class TestPoint(unittest.TestCase):
         assert p1 - p2 == Point(Unit(-2), Unit(-2))
         with pytest.raises(TypeError):
             p1 - 1
-        # Ideally these operations between Points and ParentPoints would error,
-        # but for performance reasons type checks are omitted, so duck typing
-        # allows this behavior documented here:
-        assert p1 - ParentPoint(Unit(0), Unit(0), "mock parent") == p1
 
     def test__mul__(self):
         p = Point(Unit(1), Unit(2))

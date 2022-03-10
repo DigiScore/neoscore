@@ -4,7 +4,7 @@ from brown.core import brown
 from brown.core.flowable import Flowable
 from brown.core.hairpin import Hairpin
 from brown.core.staff import Staff
-from brown.utils.parent_point import ParentPoint
+from brown.utils.point import Point
 from brown.utils.units import Mm, Unit
 from tests.mocks.mock_staff_object import MockStaffObject
 
@@ -21,151 +21,219 @@ class TestHairpin(unittest.TestCase):
 
     def test_find_hairpin_points_horizontal_same_parent(self):
         cresc = Hairpin(
-            (Unit(0), Unit(0), self.left_parent),
-            (Unit(10), Unit(0), self.left_parent),
+            (Unit(0), Unit(0)),
+            self.left_parent,
+            (Unit(10), Unit(0)),
+            self.left_parent,
             1,
             Unit(2),
         )
         points = cresc._find_hairpin_points()
-        assert points[0] == ParentPoint(Unit(10), Unit(1), parent=self.left_parent)
-        assert points[1] == ParentPoint(Unit(0), Unit(0), parent=self.left_parent)
-        assert points[2] == ParentPoint(Unit(10), Unit(-1), parent=self.left_parent)
+        assert points == (
+            Point(Unit(10), Unit(1)),
+            self.left_parent,
+            Point(Unit(0), Unit(0)),
+            self.left_parent,
+            Point(Unit(10), Unit(-1)),
+            self.left_parent,
+        )
 
         dim = Hairpin(
-            (Unit(0), Unit(0), self.left_parent),
-            (Unit(10), Unit(0), self.left_parent),
+            (Unit(0), Unit(0)),
+            self.left_parent,
+            (Unit(10), Unit(0)),
+            self.left_parent,
             -1,
             Unit(2),
         )
         points = dim._find_hairpin_points()
-        assert points[0] == ParentPoint(Unit(0), Unit(1), parent=self.left_parent)
-        assert points[1] == ParentPoint(Unit(10), Unit(0), parent=self.left_parent)
-        assert points[2] == ParentPoint(Unit(0), Unit(-1), parent=self.left_parent)
+        assert points == (
+            Point(Unit(0), Unit(1)),
+            self.left_parent,
+            Point(Unit(10), Unit(0)),
+            self.left_parent,
+            Point(Unit(0), Unit(-1)),
+            self.left_parent,
+        )
 
     def test_find_hairpin_points_horizontal_different_parent(self):
         cresc = Hairpin(
-            (Unit(0), Unit(2), self.left_parent),
-            (Unit(1), Unit(0), self.right_parent),
+            (Unit(0), Unit(2)),
+            self.left_parent,
+            (Unit(1), Unit(0)),
+            self.right_parent,
             1,
             Unit(2),
         )
         points = cresc._find_hairpin_points()
-        assert points[0] == ParentPoint(Unit(1), Unit(1), parent=self.right_parent)
-        assert points[1] == ParentPoint(Unit(0), Unit(2), parent=self.left_parent)
-        assert points[2] == ParentPoint(Unit(1), Unit(-1), parent=self.right_parent)
+        assert points == (
+            Point(Unit(1), Unit(1)),
+            self.right_parent,
+            Point(Unit(0), Unit(2)),
+            self.left_parent,
+            Point(Unit(1), Unit(-1)),
+            self.right_parent,
+        )
 
         dim = Hairpin(
-            (Unit(0), Unit(2), self.left_parent),
-            (Unit(1), Unit(0), self.right_parent),
+            (Unit(0), Unit(2)),
+            self.left_parent,
+            (Unit(1), Unit(0)),
+            self.right_parent,
             -1,
             Unit(2),
         )
         points = dim._find_hairpin_points()
-        assert points[0] == ParentPoint(Unit(0), Unit(3), parent=self.left_parent)
-        assert points[1] == ParentPoint(Unit(1), Unit(0), parent=self.right_parent)
-        assert points[2] == ParentPoint(Unit(0), Unit(1), parent=self.left_parent)
+        assert points == (
+            Point(Unit(0), Unit(3)),
+            self.left_parent,
+            Point(Unit(1), Unit(0)),
+            self.right_parent,
+            Point(Unit(0), Unit(1)),
+            self.left_parent,
+        )
 
     def test_find_hairpin_points_vertical_same_parent(self):
         cresc = Hairpin(
-            (Unit(0), Unit(0), self.left_parent),
-            (Unit(0), Unit(10), self.left_parent),
+            (Unit(0), Unit(0)),
+            self.left_parent,
+            (Unit(0), Unit(10)),
+            self.left_parent,
             1,
             Unit(2),
         )
         points = cresc._find_hairpin_points()
-        assert points[0] == ParentPoint(Unit(1), Unit(10), parent=self.left_parent)
-        assert points[1] == ParentPoint(Unit(0), Unit(0), parent=self.left_parent)
-        assert points[2] == ParentPoint(Unit(-1), Unit(10), parent=self.left_parent)
+        assert points == (
+            Point(Unit(1), Unit(10)),
+            self.left_parent,
+            Point(Unit(0), Unit(0)),
+            self.left_parent,
+            Point(Unit(-1), Unit(10)),
+            self.left_parent,
+        )
 
         dim = Hairpin(
-            (Unit(0), Unit(0), self.left_parent),
-            (Unit(0), Unit(10), self.left_parent),
+            (Unit(0), Unit(0)),
+            self.left_parent,
+            (Unit(0), Unit(10)),
+            self.left_parent,
             -1,
             Unit(2),
         )
         points = dim._find_hairpin_points()
-        assert points[0] == ParentPoint(Unit(1), Unit(0), parent=self.left_parent)
-        assert points[1] == ParentPoint(Unit(0), Unit(10), parent=self.left_parent)
-        assert points[2] == ParentPoint(Unit(-1), Unit(0), parent=self.left_parent)
+        assert points == (
+            Point(Unit(1), Unit(0)),
+            self.left_parent,
+            Point(Unit(0), Unit(10)),
+            self.left_parent,
+            Point(Unit(-1), Unit(0)),
+            self.left_parent,
+        )
 
     def test_find_hairpin_points_vertical_different_parents(self):
         # For reference...
         # self.left_parent = MockStaffObject((Unit(0), Unit(0)), self.staff)
         # self.right_parent = MockStaffObject((Unit(10), Unit(2)), self.staff)
         cresc = Hairpin(
-            (Unit(0), Unit(0), self.left_parent),
-            (Unit(-10), Unit(1), self.right_parent),
+            (Unit(0), Unit(0)),
+            self.left_parent,
+            (Unit(-10), Unit(1)),
+            self.right_parent,
             1,
             Unit(2),
         )
         points = cresc._find_hairpin_points()
-        assert points[0] == ParentPoint(Unit(-9), Unit(1), parent=self.right_parent)
-        assert points[1] == ParentPoint(Unit(0), Unit(0), parent=self.left_parent)
-        assert points[2] == ParentPoint(Unit(-11), Unit(1), parent=self.right_parent)
+        assert points == (
+            Point(Unit(-9), Unit(1)),
+            self.right_parent,
+            Point(Unit(0), Unit(0)),
+            self.left_parent,
+            Point(Unit(-11), Unit(1)),
+            self.right_parent,
+        )
 
         dim = Hairpin(
-            (Unit(0), Unit(0), self.left_parent),
-            (Unit(-10), Unit(1), self.right_parent),
+            (Unit(0), Unit(0)),
+            self.left_parent,
+            (Unit(-10), Unit(1)),
+            self.right_parent,
             -1,
             Unit(2),
         )
         points = dim._find_hairpin_points()
-        assert points[0] == ParentPoint(Unit(1), Unit(0), parent=self.left_parent)
-        assert points[1] == ParentPoint(Unit(-10), Unit(1), parent=self.right_parent)
-        assert points[2] == ParentPoint(Unit(-1), Unit(0), parent=self.left_parent)
+        assert points == (
+            Point(Unit(1), Unit(0)),
+            self.left_parent,
+            Point(Unit(-10), Unit(1)),
+            self.right_parent,
+            Point(Unit(-1), Unit(0)),
+            self.left_parent,
+        )
 
     def test_hairpin_points_diagonal_same_parent(self):
         # For reference...
         # self.left_parent = MockStaffObject((Unit(0), Unit(0)), self.staff)
         # self.right_parent = MockStaffObject((Unit(10), Unit(2)), self.staff)
         cresc = Hairpin(
-            (Unit(0), Unit(0), self.left_parent),
-            (Unit(4), Unit(4), self.left_parent),
+            (Unit(0), Unit(0)),
+            self.left_parent,
+            (Unit(4), Unit(4)),
+            self.left_parent,
             1,
             Unit(2),
         )
         # Spanner line slope should be Unit(1)
         points = cresc._find_hairpin_points()
-        assert_almost_equal(points[0].x, points[2].y)
-        assert_almost_equal(points[0].y, points[2].x)
-        assert points[1] == ParentPoint(Unit(0), Unit(0), parent=self.left_parent)
+        assert_almost_equal(points[0].x, points[4].y)
+        assert_almost_equal(points[0].y, points[4].x)
+        assert points[2] == Point(Unit(0), Unit(0))
+        assert points[3] == self.left_parent
 
         dim = Hairpin(
-            (Unit(0), Unit(0), self.left_parent),
-            (Unit(4), Unit(4), self.left_parent),
+            (Unit(0), Unit(0)),
+            self.left_parent,
+            (Unit(4), Unit(4)),
+            self.left_parent,
             -1,
             Unit(2),
         )
         # Spanner line slope should be Unit(1)
         points = dim._find_hairpin_points()
-        assert_almost_equal(points[0].x, points[2].y)
-        assert_almost_equal(points[0].y, points[2].x)
-        assert points[1] == ParentPoint(Unit(4), Unit(4), parent=self.left_parent)
+        assert_almost_equal(points[0].x, points[4].y)
+        assert_almost_equal(points[0].y, points[4].x)
+        assert points[2] == Point(Unit(4), Unit(4))
+        assert points[3] == self.left_parent
 
     def test_hairpin_points_diagonal_different_parents(self):
         # For reference...
         # self.left_parent = MockStaffObject((Unit(0), Unit(0)), self.staff)
         # self.right_parent = MockStaffObject((Unit(10), Unit(2)), self.staff)
         cresc = Hairpin(
-            (Unit(10), Unit(2), self.left_parent),
-            (Unit(4), Unit(4), self.right_parent),
+            (Unit(10), Unit(2)),
+            self.left_parent,
+            (Unit(4), Unit(4)),
+            self.right_parent,
             1,
             Unit(2),
         )
         # Spanner line slope should be Unit(1)
         points = cresc._find_hairpin_points()
-        assert_almost_equal(points[0].x, points[2].y)
-        assert_almost_equal(points[0].y, points[2].x)
-        assert points[1] == ParentPoint(Unit(10), Unit(2), parent=self.left_parent)
+        assert_almost_equal(points[0].x, points[4].y)
+        assert_almost_equal(points[0].y, points[4].x)
+        assert points[2] == Point(Unit(10), Unit(2))
+        assert points[3] == self.left_parent
 
         dim = Hairpin(
-            (Unit(0), Unit(0), self.left_parent),
-            (Unit(-6), Unit(2), self.right_parent),
+            (Unit(0), Unit(0)),
+            self.left_parent,
+            (Unit(-6), Unit(2)),
+            self.right_parent,
             -1,
             Unit(2),
         )
         # Spanner line slope should be Unit(1)
         points = dim._find_hairpin_points()
-        assert_almost_equal(points[0].x, points[2].y)
-        assert_almost_equal(points[0].y, points[2].x)
-        assert points[1] == ParentPoint(Unit(-6), Unit(2), parent=self.right_parent)
+        assert_almost_equal(points[0].x, points[4].y)
+        assert_almost_equal(points[0].y, points[4].x)
+        assert points[2] == Point(Unit(-6), Unit(2))
+        assert points[3] == self.right_parent
