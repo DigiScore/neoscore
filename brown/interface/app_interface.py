@@ -189,4 +189,5 @@ class AppInterface:
 
     def _optimize_for_interactive_view(self):
         QtGui.QPixmapCache.setCacheLimit(constants.QT_PIXMAP_CACHE_LIMIT_KB)
+        self.view.setViewportUpdateMode(3)  # NoViewportUpdate
         self.scene.setItemIndexMethod(-1)  # NoIndex

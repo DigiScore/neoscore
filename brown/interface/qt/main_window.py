@@ -41,3 +41,5 @@ class MainWindow(QtWidgets.QMainWindow):
                         f"Scene update took {int(update_time * 1000)} ms ({refresh_fps} / s)"
                     )
                 self._frame += 1
+        # The viewport is unconditionally updated because we disable automatic updates
+        self.graphicsView.viewport().update()

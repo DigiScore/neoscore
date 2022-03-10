@@ -19,6 +19,9 @@ class Viewport(QtWidgets.QGraphicsView):
         self.setViewport(QtWidgets.QOpenGLWidget())
         self.setRenderHint(QtGui.QPainter.Antialiasing)
         self.setDragMode(1)  # ScrollHandDrag
+        # Automatic viewport updates are disabled. Updates are performed
+        # manually in the main window refresh function.
+        self.setViewportUpdateMode(3)  # NoViewportUpdate
 
     def wheelEvent(self, event):
         """Zoom in or out of the view."""
