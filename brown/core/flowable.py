@@ -131,11 +131,12 @@ class Flowable(InvisibleObject):
                 break
             if pos_y > live_page_height:
                 # Page break - No y offset
-                pos = ORIGIN
+                pos_x = ZERO
+                pos_y = ZERO
                 current_page += 1
                 layout_controllers.append(
                     NewLine(
-                        pos,
+                        Point(pos_x, pos_y),
                         brown.document.pages[current_page],
                         x_progress,
                         self.height,
