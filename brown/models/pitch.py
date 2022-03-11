@@ -46,10 +46,22 @@ class Pitch:
             pitch (str): A pitch indicator. (see above class documentation).
         """
         # These three are initialized by the pitch setter
-        self._letter = None
-        self._accidental_type = None
-        self._octave = None
-        self.pitch = pitch
+        match = Pitch._pitch_regex.match(pitch)
+        if match is None:
+            raise InvalidPitchDescriptionError
+        letter = match.group(1)
+        accidental_str = match.group(2)
+        ticks = match.group(3)
+        self._letter = letter
+        if accidental_str:
+            self._accidental_type = AccidentalType[accidental_str.upper()]
+        else:
+            self._accidental_type = None
+        if not ticks:
+            self._octave = 3
+        else:
+            self._octave = 3 + (len(ticks) * (-1 if ticks[0] == "," else 1))
+        self._pitch = pitch
 
     @classmethod
     def from_def(cls, pitch_def: PitchDef) -> Pitch:
@@ -82,25 +94,6 @@ class Pitch:
     def pitch(self):
         """str: A pitch indicator."""
         return self._pitch
-
-    @pitch.setter
-    def pitch(self, value):
-        match = Pitch._pitch_regex.match(value)
-        if match is None:
-            raise InvalidPitchDescriptionError
-        letter = match.group(1)
-        accidental_str = match.group(2)
-        ticks = match.group(3)
-        self._letter = letter
-        if accidental_str:
-            self._accidental_type = AccidentalType[accidental_str.upper()]
-        else:
-            self._accidental_type = None
-        if not ticks:
-            self._octave = 3
-        else:
-            self._octave = 3 + (len(ticks) * (-1 if ticks[0] == "," else 1))
-        self._pitch = value
 
     @property
     def letter(self):
