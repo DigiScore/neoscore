@@ -5,26 +5,26 @@ class InstrumentFamily(Enum):
 
     """Common instrument categories."""
 
-    string = auto()
+    STRING = auto()
     """String instruments"""
 
-    wind = auto()
+    WIND = auto()
     """Woodwind instruments"""
 
-    brass = auto()
+    BRASS = auto()
     """Brass instruments"""
 
-    percussion = auto()
+    PERCUSSION = auto()
     """Percussion instruments"""
 
-    keyboard = auto()
+    KEYBOARD = auto()
     """Keyboard instruments"""
 
-    electronic = auto()
+    ELECTRONIC = auto()
     """Primarily electronic instruments"""
 
-    voice = auto()
+    VOICE = auto()
     """Singing or speaking instruments"""
 
-    other = auto()
+    OTHER = auto()
     """Catch-all for everything else"""

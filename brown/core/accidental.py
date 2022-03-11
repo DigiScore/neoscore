@@ -10,9 +10,9 @@ class Accidental(MusicText, StaffObject):
     """A visual accidental."""
 
     _canonical_names = {
-        AccidentalType.flat: "accidentalFlat",
-        AccidentalType.natural: "accidentalNatural",
-        AccidentalType.sharp: "accidentalSharp",
+        AccidentalType.FLAT: "accidentalFlat",
+        AccidentalType.NATURAL: "accidentalNatural",
+        AccidentalType.SHARP: "accidentalSharp",
     }
 
     def __init__(

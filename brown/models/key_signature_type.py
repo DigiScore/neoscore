@@ -2,9 +2,6 @@ from enum import Enum
 
 from brown.models.accidental_type import AccidentalType
 
-flat = AccidentalType.flat
-sharp = AccidentalType.sharp
-
 
 class KeySignatureType(Enum):
     """Common key signatures.
@@ -21,7 +18,7 @@ class KeySignatureType(Enum):
     and 0 sharps to 7.
     """
 
-    c_major = {
+    C_MAJOR = {
         "a": None,
         "b": None,
         "c": None,
@@ -31,169 +28,168 @@ class KeySignatureType(Enum):
         "g": None,
     }
 
-    a_minor = c_major.copy()
+    A_MINOR = C_MAJOR.copy()
 
-    df_major = {
-        "a": flat,
-        "b": flat,
+    DF_MAJOR = {
+        "a": AccidentalType.FLAT,
+        "b": AccidentalType.FLAT,
         "c": None,
-        "d": flat,
-        "e": flat,
+        "d": AccidentalType.FLAT,
+        "e": AccidentalType.FLAT,
         "f": None,
-        "g": flat,
+        "g": AccidentalType.FLAT,
     }
 
-    bf_minor = df_major.copy()
+    BF_MINOR = DF_MAJOR.copy()
 
-    # Ha
-    cs_major = {
-        "a": sharp,
-        "b": sharp,
-        "c": sharp,
-        "d": sharp,
-        "e": sharp,
-        "f": sharp,
-        "g": sharp,
+    CS_MAJOR = {
+        "a": AccidentalType.SHARP,
+        "b": AccidentalType.SHARP,
+        "c": AccidentalType.SHARP,
+        "d": AccidentalType.SHARP,
+        "e": AccidentalType.SHARP,
+        "f": AccidentalType.SHARP,
+        "g": AccidentalType.SHARP,
     }
 
-    d_major = {
+    D_MAJOR = {
         "a": None,
         "b": None,
-        "c": sharp,
+        "c": AccidentalType.SHARP,
         "d": None,
         "e": None,
-        "f": sharp,
+        "f": AccidentalType.SHARP,
         "g": None,
     }
 
-    b_minor = d_major.copy()
+    B_MINOR = D_MAJOR.copy()
 
-    ef_major = {
-        "a": flat,
-        "b": flat,
+    EF_MAJOR = {
+        "a": AccidentalType.FLAT,
+        "b": AccidentalType.FLAT,
         "c": None,
         "d": None,
-        "e": flat,
-        "f": None,
-        "g": None,
-    }
-
-    c_minor = ef_major.copy()
-
-    e_major = {
-        "a": None,
-        "b": None,
-        "c": sharp,
-        "d": sharp,
-        "e": None,
-        "f": sharp,
-        "g": sharp,
-    }
-
-    cs_minor = e_major.copy()
-
-    f_major = {
-        "a": None,
-        "b": flat,
-        "c": None,
-        "d": None,
-        "e": None,
+        "e": AccidentalType.FLAT,
         "f": None,
         "g": None,
     }
 
-    d_minor = f_major.copy()
+    C_MINOR = EF_MAJOR.copy()
 
-    gf_major = {
-        "a": flat,
-        "b": flat,
-        "c": flat,
-        "d": flat,
-        "e": flat,
-        "f": None,
-        "g": flat,
-    }
-
-    ef_minor = gf_major.copy()
-
-    fs_major = {
-        "a": sharp,
+    E_MAJOR = {
+        "a": None,
         "b": None,
-        "c": sharp,
-        "d": sharp,
-        "e": sharp,
-        "f": sharp,
-        "g": sharp,
+        "c": AccidentalType.SHARP,
+        "d": AccidentalType.SHARP,
+        "e": None,
+        "f": AccidentalType.SHARP,
+        "g": AccidentalType.SHARP,
     }
 
-    ds_minor = fs_major.copy()
+    CS_MINOR = E_MAJOR.copy()
 
-    g_major = {
+    F_MAJOR = {
+        "a": None,
+        "b": AccidentalType.FLAT,
+        "c": None,
+        "d": None,
+        "e": None,
+        "f": None,
+        "g": None,
+    }
+
+    D_MINOR = F_MAJOR.copy()
+
+    GF_MAJOR = {
+        "a": AccidentalType.FLAT,
+        "b": AccidentalType.FLAT,
+        "c": AccidentalType.FLAT,
+        "d": AccidentalType.FLAT,
+        "e": AccidentalType.FLAT,
+        "f": None,
+        "g": AccidentalType.FLAT,
+    }
+
+    EF_MINOR = GF_MAJOR.copy()
+
+    FS_MAJOR = {
+        "a": AccidentalType.SHARP,
+        "b": None,
+        "c": AccidentalType.SHARP,
+        "d": AccidentalType.SHARP,
+        "e": AccidentalType.SHARP,
+        "f": AccidentalType.SHARP,
+        "g": AccidentalType.SHARP,
+    }
+
+    DS_MINOR = FS_MAJOR.copy()
+
+    G_MAJOR = {
         "a": None,
         "b": None,
         "c": None,
         "d": None,
         "e": None,
-        "f": sharp,
+        "f": AccidentalType.SHARP,
         "g": None,
     }
 
-    e_minor = g_major.copy()
+    E_MINOR = G_MAJOR.copy()
 
-    af_major = {
-        "a": flat,
-        "b": flat,
+    AF_MAJOR = {
+        "a": AccidentalType.FLAT,
+        "b": AccidentalType.FLAT,
         "c": None,
-        "d": flat,
-        "e": flat,
+        "d": AccidentalType.FLAT,
+        "e": AccidentalType.FLAT,
         "f": None,
         "g": None,
     }
 
-    f_minor = af_major.copy()
+    F_MINOR = AF_MAJOR.copy()
 
-    a_major = {
+    A_MAJOR = {
         "a": None,
         "b": None,
-        "c": sharp,
+        "c": AccidentalType.SHARP,
         "d": None,
         "e": None,
-        "f": sharp,
-        "g": sharp,
+        "f": AccidentalType.SHARP,
+        "g": AccidentalType.SHARP,
     }
 
-    fs_minor = a_major.copy()
+    FS_MINOR = A_MAJOR.copy()
 
-    bf_major = {
+    BF_MAJOR = {
         "a": None,
-        "b": flat,
+        "b": AccidentalType.FLAT,
         "c": None,
         "d": None,
-        "e": flat,
+        "e": AccidentalType.FLAT,
         "f": None,
         "g": None,
     }
 
-    g_minor = bf_major.copy()
+    G_MINOR = BF_MAJOR.copy()
 
-    b_major = {
-        "a": sharp,
+    B_MAJOR = {
+        "a": AccidentalType.SHARP,
         "b": None,
-        "c": sharp,
-        "d": sharp,
+        "c": AccidentalType.SHARP,
+        "d": AccidentalType.SHARP,
         "e": None,
-        "f": sharp,
-        "g": sharp,
+        "f": AccidentalType.SHARP,
+        "g": AccidentalType.SHARP,
     }
 
-    gs_minor = b_major.copy()
+    GS_MINOR = B_MAJOR.copy()
 
-    cf_major = {
-        "a": flat,
-        "b": flat,
-        "c": flat,
-        "d": flat,
-        "e": flat,
-        "f": flat,
-        "g": flat,
+    CF_MAJOR = {
+        "a": AccidentalType.FLAT,
+        "b": AccidentalType.FLAT,
+        "c": AccidentalType.FLAT,
+        "d": AccidentalType.FLAT,
+        "e": AccidentalType.FLAT,
+        "f": AccidentalType.FLAT,
+        "g": AccidentalType.FLAT,
     }

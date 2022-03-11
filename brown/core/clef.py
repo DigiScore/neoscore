@@ -1,3 +1,5 @@
+from typing import Union
+
 from brown.core.music_text import MusicText
 from brown.core.staff import Staff
 from brown.core.staff_object import StaffObject
@@ -17,28 +19,28 @@ class Clef(MusicText, StaffObject):
     """
 
     _canonical_names = {
-        ClefType.treble: "gClef",
-        ClefType.bass: "fClef",
-        ClefType.bass_8vb: "fClef8vb",
-        ClefType.tenor: "cClef",
-        ClefType.alto: "cClef",
+        ClefType.TREBLE: "gClef",
+        ClefType.BASS: "fClef",
+        ClefType.BASS_8VB: "fClef8vb",
+        ClefType.TENOR: "cClef",
+        ClefType.ALTO: "cClef",
     }
     _baseline_staff_positions = {
-        ClefType.treble: 3,
-        ClefType.bass: 1,
-        ClefType.bass_8vb: 1,
-        ClefType.tenor: 1,
-        ClefType.alto: 2,
+        ClefType.TREBLE: 3,
+        ClefType.BASS: 1,
+        ClefType.BASS_8VB: 1,
+        ClefType.TENOR: 1,
+        ClefType.ALTO: 2,
     }
     _middle_c_staff_positions = {
-        ClefType.treble: 5,
-        ClefType.bass: -1,
-        ClefType.bass_8vb: -6.5,
-        ClefType.tenor: 1,
-        ClefType.alto: 2,
+        ClefType.TREBLE: 5,
+        ClefType.BASS: -1,
+        ClefType.BASS_8VB: -6.5,
+        ClefType.TENOR: 1,
+        ClefType.ALTO: 2,
     }
 
-    def __init__(self, staff: Staff, pos_x: Unit, clef_type):
+    def __init__(self, staff: Staff, pos_x: Unit, clef_type: Union[ClefType, str]):
         """
         Args:
             staff (Staff):
@@ -54,7 +56,7 @@ class Clef(MusicText, StaffObject):
         if isinstance(clef_type, ClefType):
             self._clef_type = clef_type
         else:
-            self._clef_type = ClefType[clef_type]
+            self._clef_type = ClefType[clef_type.upper()]
         MusicText.__init__(
             self, (pos_x, staff.unit(0)), self._canonical_names[self._clef_type], staff
         )

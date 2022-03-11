@@ -21,20 +21,20 @@ class TestAccidental(unittest.TestCase):
         Clef(self.staff, Mm(0), "treble")
 
     def test_canonical_name_mapping(self):
-        acc = Accidental((Mm(0), Mm(0)), AccidentalType.sharp, self.staff)
+        acc = Accidental((Mm(0), Mm(0)), AccidentalType.SHARP, self.staff)
         assert acc.music_chars == [MusicChar(self.staff.music_font, "accidentalSharp")]
 
-        acc = Accidental((Mm(0), Mm(0)), AccidentalType.natural, self.staff)
+        acc = Accidental((Mm(0), Mm(0)), AccidentalType.NATURAL, self.staff)
         assert acc.music_chars == [
             MusicChar(self.staff.music_font, "accidentalNatural")
         ]
 
-        acc = Accidental((Mm(0), Mm(0)), AccidentalType.sharp, self.staff)
+        acc = Accidental((Mm(0), Mm(0)), AccidentalType.SHARP, self.staff)
         assert acc.music_chars == [MusicChar(self.staff.music_font, "accidentalSharp")]
 
     @pytest.mark.xfail
     def test_modifying_accidental_type_changes_music_char(self):
         # This will fail until the causing bug is fixed
-        acc = Accidental((Mm(0), Mm(0)), AccidentalType.sharp, self.staff)
-        acc.accidental_type = AccidentalType.flat
+        acc = Accidental((Mm(0), Mm(0)), AccidentalType.SHARP, self.staff)
+        acc.accidental_type = AccidentalType.FLAT
         assert acc.music_chars == [MusicChar(self.staff.music_font, "accidentalFlat")]

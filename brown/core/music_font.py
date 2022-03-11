@@ -21,7 +21,7 @@ class MusicFont(Font):
     """A SMuFL compliant music font"""
 
     # Scaling factor which may or may not work for fonts other than Bravura.
-    if current_platform() == PlatformType.mac:
+    if current_platform() == PlatformType.MAC:
         __magic_em_scale = 4
     else:
         __magic_em_scale = 3

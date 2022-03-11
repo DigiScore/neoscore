@@ -13,20 +13,20 @@ class AccidentalType(Enum):
     associated with the accidental.
     """
 
-    flat = -1
+    FLAT = -1
     """A flat accidental"""
 
-    natural = 0
+    NATURAL = 0
     """A natural accidental"""
 
-    sharp = 1
+    SHARP = 1
     """A sharp accidental"""
 
-    f = flat
+    F = FLAT
     """Shorthand for `AccidentalType.flat`"""
 
-    n = natural
+    N = NATURAL
     """Shorthand for `AccidentalType.natural`"""
 
-    s = sharp
+    S = SHARP
     """Shorthand for `AccidentalType.sharp`"""

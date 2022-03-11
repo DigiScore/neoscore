@@ -93,7 +93,7 @@ class Pitch:
         ticks = match.group(3)
         self._letter = letter
         if accidental_str:
-            self._accidental_type = AccidentalType[accidental_str]
+            self._accidental_type = AccidentalType[accidental_str.upper()]
         else:
             self._accidental_type = None
         if not ticks:

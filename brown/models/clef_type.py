@@ -8,17 +8,17 @@ class ClefType(Enum):
     The enumeration values are not meaningful.
     """
 
-    treble = auto()
+    TREBLE = auto()
     """A typical treble clef."""
 
-    bass = auto()
+    BASS = auto()
     """A bass clef."""
 
-    bass_8vb = auto()
+    BASS_8VB = auto()
     """An octave-down transposing bass clef."""
 
-    tenor = auto()
+    TENOR = auto()
     """A tenor clef."""
 
-    alto = auto()
+    ALTO = auto()
     """An alto clef."""

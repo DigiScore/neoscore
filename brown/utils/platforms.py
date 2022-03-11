@@ -5,21 +5,21 @@ from enum import Enum, auto
 class PlatformType(Enum):
     """Common operating systems"""
 
-    bsd = auto()
-    linux = auto()
-    mac = auto()
-    windows = auto()
-    unknown = auto()
+    BSD = auto()
+    LINUX = auto()
+    MAC = auto()
+    WINDOWS = auto()
+    UNKNOWN = auto()
 
 
 def current_platform():
     """Get the type of the running platform"""
     if sys.platform.startswith("freebsd"):
-        return PlatformType.bsd
+        return PlatformType.BSD
     elif sys.platform.startswith("linux"):
-        return PlatformType.linux
+        return PlatformType.LINUX
     elif sys.platform == "darwin":
-        return PlatformType.mac
+        return PlatformType.MAC
     elif sys.platform == "win32" or sys.platform == "cygwin":
-        return PlatformType.windows
+        return PlatformType.WINDOWS
     return PlatformType.unkown

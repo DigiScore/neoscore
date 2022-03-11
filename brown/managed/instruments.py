@@ -44,8 +44,8 @@ class Instrument:
 class Flute(Instrument):
     name = "Flute"
     short_name = "Fl"
-    staves = [(ClefType.treble, None)]
-    family = InstrumentFamily.wind
+    staves = [(ClefType.TREBLE, None)]
+    family = InstrumentFamily.WIND
 
 
 class Trumpet(Instrument):
@@ -53,8 +53,8 @@ class Trumpet(Instrument):
 
     name = "Trumpet"
     short_name = "Tpt"
-    staves = [(ClefType.treble, None)]
-    family = InstrumentFamily.brass
+    staves = [(ClefType.TREBLE, None)]
+    family = InstrumentFamily.BRASS
 
 
 class Piano(Instrument):
@@ -62,8 +62,8 @@ class Piano(Instrument):
 
     name = "Piano"
     short_name = "Pno"
-    staves = [(ClefType.treble, None), (ClefType.bass, None)]
-    family = InstrumentFamily.keyboard
+    staves = [(ClefType.TREBLE, None), (ClefType.BASS, None)]
+    family = InstrumentFamily.KEYBOARD
 
 
 class Violin(Instrument):
@@ -71,8 +71,8 @@ class Violin(Instrument):
 
     name = "Violin"
     short_name = "Vln"
-    staves = [(ClefType.treble, None)]
-    family = InstrumentFamily.string
+    staves = [(ClefType.TREBLE, None)]
+    family = InstrumentFamily.STRING
 
 
 class ViolinI(Violin):
@@ -94,8 +94,8 @@ class Viola(Instrument):
 
     name = "Viola"
     short_name = "Vla"
-    staves = [(ClefType.alto, None)]
-    family = InstrumentFamily.string
+    staves = [(ClefType.ALTO, None)]
+    family = InstrumentFamily.STRING
 
 
 class Cello(Instrument):
@@ -103,8 +103,8 @@ class Cello(Instrument):
 
     name = "Cello"
     short_name = "Vc"
-    staves = [(ClefType.bass, None)]
-    family = InstrumentFamily.string
+    staves = [(ClefType.BASS, None)]
+    family = InstrumentFamily.STRING
 
 
 class Violoncello(Cello):
@@ -118,8 +118,8 @@ class Bass(Instrument):
 
     name = "Bass"
     short_name = "Cb"
-    staves = [(ClefType.bass_8vb, None)]
-    family = InstrumentFamily.string
+    staves = [(ClefType.BASS_8VB, None)]
+    family = InstrumentFamily.STRING
 
 
 class Contrabass(Bass):

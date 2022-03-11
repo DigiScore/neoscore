@@ -45,7 +45,7 @@ class KeySignature(ObjectGroup, StaffObject):
         self._key_signature_type = (
             key_signature_type
             if isinstance(key_signature_type, KeySignatureType)
-            else KeySignatureType[key_signature_type]
+            else KeySignatureType[key_signature_type.upper()]
         )
         self._create_pseudo_accidentals()
 
@@ -97,31 +97,31 @@ class _KeySignatureAccidental(MusicText, StaffObject):
         "f": (6, 3.5),
     }
     positions = {
-        AccidentalType.flat: {
-            ClefType.treble: __flat_positions,
-            ClefType.bass: {
+        AccidentalType.FLAT: {
+            ClefType.TREBLE: __flat_positions,
+            ClefType.BASS: {
                 key: (value[0], value[1] + 1) for key, value in __flat_positions.items()
             },
-            ClefType.alto: {
+            ClefType.ALTO: {
                 key: (value[0], value[1] + 0.5)
                 for key, value in __flat_positions.items()
             },
-            ClefType.tenor: {
+            ClefType.TENOR: {
                 key: (value[0], value[1] - 0.5)
                 for key, value in __flat_positions.items()
             },
         },
-        AccidentalType.sharp: {
-            ClefType.treble: __sharp_positions,
-            ClefType.bass: {
+        AccidentalType.SHARP: {
+            ClefType.TREBLE: __sharp_positions,
+            ClefType.BASS: {
                 key: (value[0], value[1] + 1)
                 for key, value in __sharp_positions.items()
             },
-            ClefType.alto: {
+            ClefType.ALTO: {
                 key: (value[0], value[1] + 0.5)
                 for key, value in __sharp_positions.items()
             },
-            ClefType.tenor: {
+            ClefType.TENOR: {
                 key: (value[0], value[1] - 0.5)
                 for key, value in __sharp_positions.items()
             },

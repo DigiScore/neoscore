@@ -60,9 +60,9 @@ class TestStaff(unittest.TestCase):
         Clef(staff, Mm(0), "treble")
         Clef(staff, Mm(10), "bass")
         # Test between two clefs should have treble in effect
-        assert staff.active_clef_at(Mm(1)).clef_type == ClefType.treble
+        assert staff.active_clef_at(Mm(1)).clef_type == ClefType.TREBLE
         # Test after bass clef goes into effect
-        assert staff.active_clef_at(Mm(11)).clef_type == ClefType.bass
+        assert staff.active_clef_at(Mm(11)).clef_type == ClefType.BASS
 
     def test_active_clef_at_with_implicit_default_clef(self):
         staff = Staff((Mm(0), Mm(0)), Mm(100), self.flowable)
