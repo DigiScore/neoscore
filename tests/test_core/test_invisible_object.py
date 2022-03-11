@@ -1,13 +1,13 @@
 import unittest
 
-from brown.core import brown
-from brown.core.invisible_object import InvisibleObject
-from brown.utils.units import GraphicUnit, Unit
+from neoscore.core import neoscore
+from neoscore.core.invisible_object import InvisibleObject
+from neoscore.utils.units import GraphicUnit, Unit
 
 
 class TestInvisibleObject(unittest.TestCase):
     def setUp(self):
-        brown.setup()
+        neoscore.setup()
 
     def test_init(self):
         mock_parent = InvisibleObject((Unit(10), Unit(11)), parent=None)

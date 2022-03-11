@@ -1,16 +1,16 @@
 import unittest
 
-from brown.core import brown
-from brown.core.flowable import Flowable
-from brown.core.invisible_object import InvisibleObject
-from brown.core.paper import Paper
-from brown.utils.point import Point
-from brown.utils.units import Mm, Unit
+from neoscore.core import neoscore
+from neoscore.core.flowable import Flowable
+from neoscore.core.invisible_object import InvisibleObject
+from neoscore.core.paper import Paper
+from neoscore.utils.point import Point
+from neoscore.utils.units import Mm, Unit
 
 
 class TestGraphicObject(unittest.TestCase):
     def setUp(self):
-        brown.setup(Paper(*[Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]))
+        neoscore.setup(Paper(*[Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]))
         self.flowable = Flowable((Mm(0), Mm(0)), Mm(10000), Mm(30), Mm(5))
 
     def test_pos_setter_changes_x(self):

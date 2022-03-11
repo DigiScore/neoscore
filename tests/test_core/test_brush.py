@@ -1,15 +1,15 @@
 import unittest
 
-from brown.core import brown
-from brown.core.brush import Brush
-from brown.core.brush_pattern import BrushPattern
-from brown.interface.brush_interface import BrushInterface
-from brown.utils.color import Color
+from neoscore.core import neoscore
+from neoscore.core.brush import Brush
+from neoscore.core.brush_pattern import BrushPattern
+from neoscore.interface.brush_interface import BrushInterface
+from neoscore.utils.color import Color
 
 
 class TestBrush(unittest.TestCase):
     def setUp(self):
-        brown.setup()
+        neoscore.setup()
 
     def test_init_with_hex_color(self):
         brush = Brush("#eeddcc")

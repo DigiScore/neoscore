@@ -2,8 +2,8 @@ import unittest
 
 import pytest
 
-from brown.utils.point import Point
-from brown.utils.units import Mm, Unit
+from neoscore.utils.point import Point
+from neoscore.utils.units import Mm, Unit
 
 
 class TestPoint(unittest.TestCase):

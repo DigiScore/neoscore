@@ -1,7 +1,7 @@
-from brown.common import *
+from neoscore.common import *
 
-brown.setup()
+neoscore.setup()
 
 text = Text((Mm(0), Mm(0)), "hello, world!")
 
-brown.show()
+neoscore.show()

@@ -1,6 +1,6 @@
 import pytest
 
-from brown.utils import smufl
+from neoscore.utils import smufl
 
 """  glyphnames.json
 "6stringTabClef": {

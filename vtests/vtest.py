@@ -7,11 +7,11 @@ import random
 import sys
 import time
 
-from brown.common import *
+from neoscore.common import *
 
 start_time = time.time()
 
-brown.setup()
+neoscore.setup()
 
 flow = Flowable((Mm(0), Mm(0)), Mm(35000), Mm(30), Mm(10))
 
@@ -104,10 +104,10 @@ fake_trill = RepeatingMusicTextLine(
 text_on_first_page = Text((Mm(0), Mm(0)), "first page!")
 
 text_on_second_page = Text(
-    (Mm(0), Mm(0)), "second page!", parent=brown.document.pages[1]
+    (Mm(0), Mm(0)), "second page!", parent=neoscore.document.pages[1]
 )
 
-text_on_third_page = Text((Mm(0), Mm(0)), "third page!", parent=brown.document.pages[2])
+text_on_third_page = Text((Mm(0), Mm(0)), "third page!", parent=neoscore.document.pages[2])
 
 explicit_path_on_second_page = Path((Mm(0), Mm(0)), parent=text_on_second_page)
 explicit_path_on_second_page.line_to(Mm(100), Mm(60))
@@ -123,11 +123,11 @@ pedal_line = PedalLine(
 
 if "--image" in sys.argv:
     image_path = os.path.join(os.path.dirname(__file__), "output", "vtest_image.png")
-    brown.render_image((Mm(0), Mm(0), Inch(2), Inch(2)), image_path, autocrop=True)
+    neoscore.render_image((Mm(0), Mm(0), Inch(2), Inch(2)), image_path, autocrop=True)
     print(f"Non-setup code took {time.time() - start_time}")
 elif "--pdf" in sys.argv:
     # PDF export is currently broken
     pdf_path = os.path.join(os.path.dirname(__file__), "output", "vtest_pdf.pdf")
-    brown.render_pdf(pdf_path)
+    neoscore.render_pdf(pdf_path)
 else:
-    brown.show()
+    neoscore.show()

@@ -2,22 +2,22 @@ import unittest
 
 import pytest
 
-from brown.core import brown
-from brown.core.clef import Clef
-from brown.core.flowable import Flowable
-from brown.core.octave_line import OctaveLine
-from brown.core.paper import Paper
-from brown.core.staff import NoClefError, Staff
-from brown.models.clef_type import ClefType
-from brown.utils.point import Point
-from brown.utils.units import Mm
+from neoscore.core import neoscore
+from neoscore.core.clef import Clef
+from neoscore.core.flowable import Flowable
+from neoscore.core.octave_line import OctaveLine
+from neoscore.core.paper import Paper
+from neoscore.core.staff import NoClefError, Staff
+from neoscore.models.clef_type import ClefType
+from neoscore.utils.point import Point
+from neoscore.utils.units import Mm
 
 from ..helpers import assert_almost_equal
 
 
 class TestStaff(unittest.TestCase):
     def setUp(self):
-        brown.setup(Paper(*[Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]))
+        neoscore.setup(Paper(*[Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]))
         self.flowable = Flowable((Mm(0), Mm(0)), Mm(10000), Mm(30), Mm(5))
 
     def test_height(self):

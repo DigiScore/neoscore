@@ -1,12 +1,12 @@
-from brown.utils.math_helpers import (
+from neoscore.utils.math_helpers import (
     clamp_value,
     float_to_rounded_fraction_tuple,
     interpolate,
     min_and_max,
     sign,
 )
-from brown.utils.point import Point
-from brown.utils.units import Unit
+from neoscore.utils.point import Point
+from neoscore.utils.units import Unit
 
 
 def test_linear_interp():

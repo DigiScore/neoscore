@@ -1,14 +1,14 @@
 import unittest
 
-from brown.core import brown
-from brown.core.brace import Brace
-from brown.core.staff import Staff
-from brown.utils.units import Mm
+from neoscore.core import neoscore
+from neoscore.core.brace import Brace
+from neoscore.core.staff import Staff
+from neoscore.utils.units import Mm
 
 
 class TestBrace(unittest.TestCase):
     def setUp(self):
-        brown.setup()
+        neoscore.setup()
 
     def test_scaling_alternate_glyphs(self):
         top_staff = Staff((Mm(0), Mm(0)), Mm(100), flowable=None)

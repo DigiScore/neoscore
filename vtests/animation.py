@@ -1,8 +1,8 @@
 import math
 
-from brown.common import *
+from neoscore.common import *
 
-brown.setup()
+neoscore.setup()
 
 flowable = Flowable((Mm(0), Mm(0)), Mm(500), Mm(30), Mm(10))
 
@@ -26,4 +26,4 @@ def refresh_func(time):
     n4.x = center + Mm(math.sin((time / 2) + 2.3) * 15)
 
 
-brown.show(refresh_func)
+neoscore.show(refresh_func)

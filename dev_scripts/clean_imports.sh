@@ -1,2 +1,2 @@
-unimport --check --remove --exclude "brown/common.py"
+unimport --check --remove --exclude "neoscore/common.py"
 black .

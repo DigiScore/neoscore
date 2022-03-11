@@ -2,9 +2,9 @@
 
 ## A WIP Graphic Music Notation API
 
-![Screenshot](/screenshots/brown_screenshot.jpg)
+![Screenshot](/screenshots/neoscore_screenshot.jpg)
 
-[![Build Status](https://travis-ci.org/ajyoon/brown.svg?branch=master)](https://travis-ci.org/ajyoon/brown)
+[![Build Status](https://travis-ci.org/ajyoon/neoscore.svg?branch=master)](https://travis-ci.org/ajyoon/neoscore)
 
 ## NOTE: This project is actively being heavily updated, and the below README is increasingly out of date. Relative stabilization and updated documentation can be expected around May 2022.
 
@@ -27,17 +27,17 @@ at this point.
 
 ### Getting Started
 
-With a working [Python >= 3.5 installation](https://www.python.org/downloads/), all of the dependencies should be obtainable with `pip`. Begin by cloning (or downloading and extracting [here](https://github.com/ajyoon/brown/archive/master.zip)) the repository:
+With a working [Python >= 3.5 installation](https://www.python.org/downloads/), all of the dependencies should be obtainable with `pip`. Begin by cloning (or downloading and extracting [here](https://github.com/ajyoon/neoscore/archive/master.zip)) the repository:
 
 ```sh
-$ git clone git@github.com:ajyoon/brown.git
+$ git clone git@github.com:ajyoon/neoscore.git
 ```
 
 `cd` into the package and install its dependencies with pip (depending on your system configuration, you may need to use `pip3` instead):
 
 ```sh
 # Enter the repository root directory
-$ cd brown
+$ cd neoscore
 
 # Install dependencies
 $ pip install -r requirements.txt
@@ -55,16 +55,16 @@ $ pytest
 
 Let's say hello:
 ```python
-from brown.common import *
+from neoscore.common import *
 
-brown.setup()
+neoscore.setup()
 
 flowable = Flowable((Mm(0), Mm(0)), Mm(2000), Mm(30))
 staff = Staff((Mm(0), Mm(0)), Mm(2000), flowable)
 clef = Clef(staff, Mm(0), 'bass_8vb')
 text = Text((Mm(3), staff.unit(-1)), 'Hello, world!')
 
-brown.show()
+neoscore.show()
 ```
 
 Run this with `python` and you should see something like:
@@ -80,6 +80,6 @@ $ python vtests/vtest.py
 
 ### documentation
 
-The documentation (also a work in progress) is hosted [here](https://brown-notation.github.io/).
+The documentation (also a work in progress) is hosted [here](https://neoscore-notation.github.io/).
 
 Stay tuned for more!

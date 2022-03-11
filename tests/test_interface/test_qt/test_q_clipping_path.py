@@ -1,7 +1,7 @@
 import unittest
 
 from PyQt5 import QtGui
-from brown.interface.qt.q_clipping_path import QClippingPath
+from neoscore.interface.qt.q_clipping_path import QClippingPath
 
 
 class TestQClippingPath(unittest.TestCase):

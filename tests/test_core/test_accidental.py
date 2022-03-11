@@ -2,20 +2,20 @@ import unittest
 
 import pytest
 
-from brown.core import brown
-from brown.core.accidental import Accidental
-from brown.core.clef import Clef
-from brown.core.flowable import Flowable
-from brown.core.music_char import MusicChar
-from brown.core.staff import Staff
-from brown.models.accidental_type import AccidentalType
-from brown.utils.point import Point
-from brown.utils.units import Mm
+from neoscore.core import neoscore
+from neoscore.core.accidental import Accidental
+from neoscore.core.clef import Clef
+from neoscore.core.flowable import Flowable
+from neoscore.core.music_char import MusicChar
+from neoscore.core.staff import Staff
+from neoscore.models.accidental_type import AccidentalType
+from neoscore.utils.point import Point
+from neoscore.utils.units import Mm
 
 
 class TestAccidental(unittest.TestCase):
     def setUp(self):
-        brown.setup()
+        neoscore.setup()
         self.flowable = Flowable(Point(Mm(0), Mm(0)), Mm(10000), Mm(100))
         self.staff = Staff(Point(Mm(0), Mm(0)), Mm(100), self.flowable)
         Clef(self.staff, Mm(0), "treble")

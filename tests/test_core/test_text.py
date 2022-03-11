@@ -1,15 +1,15 @@
 import unittest
 
-from brown.core import brown
-from brown.core.font import Font
-from brown.core.invisible_object import InvisibleObject
-from brown.core.text import Text
-from brown.utils.units import GraphicUnit, Unit
+from neoscore.core import neoscore
+from neoscore.core.font import Font
+from neoscore.core.invisible_object import InvisibleObject
+from neoscore.core.text import Text
+from neoscore.utils.units import GraphicUnit, Unit
 
 
 class TestText(unittest.TestCase):
     def setUp(self):
-        brown.setup()
+        neoscore.setup()
         self.font = Font("Bravura", 12, 1, False)
 
     def test_init(self):
@@ -23,5 +23,5 @@ class TestText(unittest.TestCase):
 
     def test_default_init_values(self):
         test_object = Text((Unit(5), Unit(6)), "testing")
-        assert test_object.font == brown.default_font
-        assert test_object.parent == brown.document.pages[0]
+        assert test_object.font == neoscore.default_font
+        assert test_object.parent == neoscore.document.pages[0]

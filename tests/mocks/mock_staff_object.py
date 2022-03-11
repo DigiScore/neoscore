@@ -1,5 +1,5 @@
-from brown.core.invisible_object import InvisibleObject
-from brown.core.staff_object import StaffObject
+from neoscore.core.invisible_object import InvisibleObject
+from neoscore.core.staff_object import StaffObject
 
 
 class MockStaffObject(InvisibleObject, StaffObject):

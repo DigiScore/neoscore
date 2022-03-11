@@ -1,6 +1,6 @@
-from brown.core.path_element import CurveTo
-from brown.utils.point import Point
-from brown.utils.units import Unit
+from neoscore.core.path_element import CurveTo
+from neoscore.utils.point import Point
+from neoscore.utils.units import Unit
 
 
 def assert_almost_equal(left, right, places=7):

@@ -1,8 +1,8 @@
 import unittest
-from brown.core.document import Document
-from brown.core.paper import Paper
-from brown.utils.point import Point
-from brown.utils.units import Mm
+from neoscore.core.document import Document
+from neoscore.core.paper import Paper
+from neoscore.utils.point import Point
+from neoscore.utils.units import Mm
 
 from ..helpers import assert_almost_equal
 

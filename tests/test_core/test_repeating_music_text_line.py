@@ -1,17 +1,17 @@
 import unittest
 
-from brown.core import brown
-from brown.core.flowable import Flowable
-from brown.core.music_text import MusicText
-from brown.core.repeating_music_text_line import RepeatingMusicTextLine
-from brown.core.staff import Staff
-from brown.utils.units import Mm
+from neoscore.core import neoscore
+from neoscore.core.flowable import Flowable
+from neoscore.core.music_text import MusicText
+from neoscore.core.repeating_music_text_line import RepeatingMusicTextLine
+from neoscore.core.staff import Staff
+from neoscore.utils.units import Mm
 from tests.mocks.mock_staff_object import MockStaffObject
 
 
 class TestRepeatingMusicTextLine(unittest.TestCase):
     def setUp(self):
-        brown.setup()
+        neoscore.setup()
         self.flowable = Flowable((Mm(0), Mm(0)), Mm(10000), Mm(30), Mm(5))
         self.staff = Staff((Mm(0), Mm(0)), Mm(5000), self.flowable)
         self.left_parent = MockStaffObject((Mm(0), Mm(0)), self.staff)

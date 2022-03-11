@@ -1,17 +1,17 @@
 import unittest
 
-from brown.core import brown
-from brown.core.clef import Clef
-from brown.core.flowable import Flowable
-from brown.core.notehead import Notehead
-from brown.core.staff import Staff
-from brown.models.beat import Beat
-from brown.utils.units import Mm
+from neoscore.core import neoscore
+from neoscore.core.clef import Clef
+from neoscore.core.flowable import Flowable
+from neoscore.core.notehead import Notehead
+from neoscore.core.staff import Staff
+from neoscore.models.beat import Beat
+from neoscore.utils.units import Mm
 
 
 class TestNotehead(unittest.TestCase):
     def setUp(self):
-        brown.setup()
+        neoscore.setup()
         self.flowable = Flowable((Mm(0), Mm(0)), Mm(10000), Mm(30), Mm(5))
         self.staff = Staff((Mm(0), Mm(0)), Mm(10000), flowable=self.flowable)
         Clef(self.staff, Mm(0), "treble")

@@ -1,26 +1,26 @@
 import unittest
 
-from brown.core import brown
-from brown.core.brush_pattern import BrushPattern
-from brown.core.pen_cap_style import PenCapStyle
-from brown.core.pen_join_style import PenJoinStyle
-from brown.core.pen_pattern import PenPattern
-from brown.interface.brush_interface import BrushInterface
-from brown.interface.path_interface import (
+from neoscore.core import neoscore
+from neoscore.core.brush_pattern import BrushPattern
+from neoscore.core.pen_cap_style import PenCapStyle
+from neoscore.core.pen_join_style import PenJoinStyle
+from neoscore.core.pen_pattern import PenPattern
+from neoscore.interface.brush_interface import BrushInterface
+from neoscore.interface.path_interface import (
     PathInterface,
     ResolvedCurveTo,
     ResolvedLineTo,
     ResolvedMoveTo,
 )
-from brown.interface.pen_interface import PenInterface
-from brown.utils.color import Color
-from brown.utils.point import Point
-from brown.utils.units import GraphicUnit, Unit
+from neoscore.interface.pen_interface import PenInterface
+from neoscore.utils.color import Color
+from neoscore.utils.point import Point
+from neoscore.utils.units import GraphicUnit, Unit
 
 
 class TestPathInterface(unittest.TestCase):
     def setUp(self):
-        brown.setup()
+        neoscore.setup()
         self.pen = PenInterface(
             Color("#000000"),
             GraphicUnit(0),

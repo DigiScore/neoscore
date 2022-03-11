@@ -2,15 +2,15 @@ import unittest
 
 import pytest
 
-from brown.core import brown
-from brown.core.font import Font
-from brown.utils.rect import Rect
-from brown.utils.units import GraphicUnit
+from neoscore.core import neoscore
+from neoscore.core.font import Font
+from neoscore.utils.rect import Rect
+from neoscore.utils.units import GraphicUnit
 
 
 class TestFont(unittest.TestCase):
     def setUp(self):
-        brown.setup()
+        neoscore.setup()
 
     def test_init(self):
         test_font = Font("Bravura", 12, 2, False)

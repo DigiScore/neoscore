@@ -1,8 +1,8 @@
 import unittest
 
-from brown.core import brown
-from brown.interface.font_interface import FontInterface
-from brown.utils.units import Unit
+from neoscore.core import neoscore
+from neoscore.interface.font_interface import FontInterface
+from neoscore.utils.units import Unit
 
 
 class MockUnit(Unit):
@@ -11,8 +11,8 @@ class MockUnit(Unit):
 
 class TestFontInterface(unittest.TestCase):
     def setUp(self):
-        brown.setup()
-        brown._app_interface._remove_all_loaded_fonts()
+        neoscore.setup()
+        neoscore._app_interface._remove_all_loaded_fonts()
 
     def test_init(self):
         test_font = FontInterface("Bravura", MockUnit(12), 1, False)

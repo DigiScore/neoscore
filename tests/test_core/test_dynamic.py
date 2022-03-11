@@ -2,15 +2,15 @@ import unittest
 
 import pytest
 
-from brown.core import brown
-from brown.core.dynamic import Dynamic, DynamicStringError
-from brown.core.staff import Staff
-from brown.utils.units import Mm
+from neoscore.core import neoscore
+from neoscore.core.dynamic import Dynamic, DynamicStringError
+from neoscore.core.staff import Staff
+from neoscore.utils.units import Mm
 
 
 class TestNotehead(unittest.TestCase):
     def setUp(self):
-        brown.setup()
+        neoscore.setup()
         self.staff = Staff((Mm(0), Mm(0)), Mm(100), flowable=None)
 
     def test_parse_dynamic_string(self):

@@ -1,16 +1,16 @@
 import unittest
 
-from brown.core import brown
-from brown.core.flowable import Flowable
-from brown.core.paper import Paper
-from brown.core.staff import Staff
-from brown.utils.units import Mm
+from neoscore.core import neoscore
+from neoscore.core.flowable import Flowable
+from neoscore.core.paper import Paper
+from neoscore.core.staff import Staff
+from neoscore.utils.units import Mm
 from tests.mocks.mock_staff_object import MockStaffObject
 
 
 class TestStaffObject(unittest.TestCase):
     def setUp(self):
-        brown.setup(Paper(*[Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]))
+        neoscore.setup(Paper(*[Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]))
         self.flowable = Flowable((Mm(0), Mm(0)), Mm(10000), Mm(30), Mm(5))
         self.staff = Staff((Mm(0), Mm(0)), Mm(5000), self.flowable)
 

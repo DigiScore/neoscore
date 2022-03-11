@@ -3,7 +3,7 @@ from fractions import Fraction
 
 import pytest
 
-from brown.models.beat import Beat
+from neoscore.models.beat import Beat
 
 
 class TestBeat(unittest.TestCase):

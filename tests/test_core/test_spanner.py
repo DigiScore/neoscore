@@ -2,11 +2,11 @@ import unittest
 
 import pytest
 
-from brown.core import brown
-from brown.core.graphic_object import GraphicObject
-from brown.core.spanner import Spanner
-from brown.utils.point import Point
-from brown.utils.units import ZERO, Unit
+from neoscore.core import neoscore
+from neoscore.core.graphic_object import GraphicObject
+from neoscore.core.spanner import Spanner
+from neoscore.utils.point import Point
+from neoscore.utils.units import ZERO, Unit
 
 
 class MockSpanner(GraphicObject, Spanner):
@@ -20,7 +20,7 @@ class MockSpanner(GraphicObject, Spanner):
 
 class TestSpanner(unittest.TestCase):
     def setUp(self):
-        brown.setup()
+        neoscore.setup()
 
     def test_end_y_with_end_parent_self(self):
         spanner = MockSpanner(Point(Unit(20), Unit(5)), None, Unit(30), None)

@@ -2,7 +2,7 @@ import unittest
 
 import pytest
 
-from brown.utils.units import GraphicUnit, Inch, Mm, Unit, make_unit_class
+from neoscore.utils.units import GraphicUnit, Inch, Mm, Unit, make_unit_class
 
 from ..helpers import assert_almost_equal
 

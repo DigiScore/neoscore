@@ -2,7 +2,7 @@ import unittest
 
 import pytest
 
-from brown.utils.color import Color, ColorBoundsError, color_from_def
+from neoscore.utils.color import Color, ColorBoundsError, color_from_def
 
 
 class TestColor(unittest.TestCase):

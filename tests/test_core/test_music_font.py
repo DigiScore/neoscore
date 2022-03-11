@@ -1,8 +1,8 @@
 import unittest
 
-from brown.core import brown
-from brown.core.music_font import MusicFont
-from brown.utils.units import Mm, Unit
+from neoscore.core import neoscore
+from neoscore.core.music_font import MusicFont
+from neoscore.utils.units import Mm, Unit
 
 
 class EquivalentUnit(Unit):
@@ -11,7 +11,7 @@ class EquivalentUnit(Unit):
 
 class TestMusicFont(unittest.TestCase):
     def setUp(self):
-        brown.setup()
+        neoscore.setup()
 
     def test_modified(self):
         font = MusicFont("Bravura", Unit)

@@ -1,18 +1,18 @@
 import unittest
 
-from brown import constants
-from brown.core import brown
-from brown.core.invisible_object import InvisibleObject
-from brown.core.music_char import MusicChar
-from brown.core.music_font import MusicFont
-from brown.core.music_text import MusicText
-from brown.core.staff import Staff
-from brown.utils.units import GraphicUnit, Mm, Unit
+from neoscore import constants
+from neoscore.core import neoscore
+from neoscore.core.invisible_object import InvisibleObject
+from neoscore.core.music_char import MusicChar
+from neoscore.core.music_font import MusicFont
+from neoscore.core.music_text import MusicText
+from neoscore.core.staff import Staff
+from neoscore.utils.units import GraphicUnit, Mm, Unit
 
 
 class TestMusicText(unittest.TestCase):
     def setUp(self):
-        brown.setup()
+        neoscore.setup()
         self.staff = Staff((Mm(0), Mm(0)), Mm(100), flowable=None, staff_unit=Mm(1))
         self.font = MusicFont(constants.DEFAULT_MUSIC_FONT_NAME, self.staff.unit)
 

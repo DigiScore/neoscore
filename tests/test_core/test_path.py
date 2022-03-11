@@ -1,25 +1,25 @@
 import unittest
 
-from brown.core import brown
-from brown.core.brush import Brush
-from brown.core.invisible_object import InvisibleObject
-from brown.core.path import Path
-from brown.core.path_element import ControlPoint, CurveTo, LineTo, MoveTo
-from brown.core.pen import Pen
-from brown.interface.path_interface import (
+from neoscore.core import neoscore
+from neoscore.core.brush import Brush
+from neoscore.core.invisible_object import InvisibleObject
+from neoscore.core.path import Path
+from neoscore.core.path_element import ControlPoint, CurveTo, LineTo, MoveTo
+from neoscore.core.pen import Pen
+from neoscore.interface.path_interface import (
     ResolvedCurveTo,
     ResolvedLineTo,
     ResolvedMoveTo,
 )
-from brown.utils.point import ORIGIN, Point
-from brown.utils.units import ZERO, Unit
+from neoscore.utils.point import ORIGIN, Point
+from neoscore.utils.units import ZERO, Unit
 
 from ..helpers import assert_path_els_equal
 
 
 class TestPath(unittest.TestCase):
     def setUp(self):
-        brown.setup()
+        neoscore.setup()
 
     def test_init(self):
         mock_parent = InvisibleObject(ORIGIN, parent=None)

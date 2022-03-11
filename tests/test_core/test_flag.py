@@ -2,16 +2,16 @@ import unittest
 
 import pytest
 
-from brown.core import brown
-from brown.core.flag import Flag, NoFlagNeededError
-from brown.core.staff import Staff
-from brown.models.beat import Beat
-from brown.utils.units import Mm
+from neoscore.core import neoscore
+from neoscore.core.flag import Flag, NoFlagNeededError
+from neoscore.core.staff import Staff
+from neoscore.models.beat import Beat
+from neoscore.utils.units import Mm
 
 
 class TestFlag(unittest.TestCase):
     def setUp(self):
-        brown.setup()
+        neoscore.setup()
         self.staff = Staff((Mm(0), Mm(0)), Mm(100), flowable=None)
 
     def test_glyphnames(self):

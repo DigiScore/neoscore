@@ -1,6 +1,6 @@
 from PyQt5.QtGui import QPainterPath, QTransform
 
-from brown.interface.qt import hashing
+from neoscore.interface.qt import hashing
 
 
 def test_hash_path():

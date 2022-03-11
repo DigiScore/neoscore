@@ -1,11 +1,11 @@
 import unittest
 
-from brown.core import brown
-from brown.core.graphic_object import GraphicObject
-from brown.core.invisible_object import InvisibleObject
-from brown.core.spanner_2d import Spanner2D
-from brown.utils.point import Point
-from brown.utils.units import Unit
+from neoscore.core import neoscore
+from neoscore.core.graphic_object import GraphicObject
+from neoscore.core.invisible_object import InvisibleObject
+from neoscore.core.spanner_2d import Spanner2D
+from neoscore.utils.point import Point
+from neoscore.utils.units import Unit
 
 from ..helpers import assert_almost_equal
 
@@ -21,7 +21,7 @@ class MockSpanner2D(GraphicObject, Spanner2D):
 
 class TestSpanner2D(unittest.TestCase):
     def setUp(self):
-        brown.setup()
+        neoscore.setup()
 
     def end_y_settable(self):
         spanner = MockSpanner2D(
@@ -41,9 +41,9 @@ class TestSpanner2D(unittest.TestCase):
     def test_length_no_parents(self):
         spanner = MockSpanner2D(
             Point(Unit(1), Unit(2)),
-            brown.document.pages[0],
+            neoscore.document.pages[0],
             Point(Unit(5), Unit(7)),
-            brown.document.pages[0],
+            neoscore.document.pages[0],
         )
         # math.sqrt(((5-1)**2) + ((7-2)**2))
         assert_almost_equal(spanner.spanner_2d_length, Unit(6.4031242374328485))

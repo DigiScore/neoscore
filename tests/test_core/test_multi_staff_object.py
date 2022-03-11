@@ -1,17 +1,17 @@
 import unittest
 
-from brown.core import brown
-from brown.core.flowable import Flowable
-from brown.core.multi_staff_object import MultiStaffObject
-from brown.core.staff import Staff
-from brown.utils.units import Mm
+from neoscore.core import neoscore
+from neoscore.core.flowable import Flowable
+from neoscore.core.multi_staff_object import MultiStaffObject
+from neoscore.core.staff import Staff
+from neoscore.utils.units import Mm
 
 from ..helpers import assert_almost_equal
 
 
 class TestMultiStaffObject(unittest.TestCase):
     def setUp(self):
-        brown.setup()
+        neoscore.setup()
         self.flowable = Flowable((Mm(0), Mm(0)), Mm(10000), Mm(30), Mm(5))
         self.staff_1 = Staff((Mm(0), Mm(0)), Mm(100), self.flowable)
         self.staff_2 = Staff((Mm(0), Mm(30)), Mm(100), self.flowable)

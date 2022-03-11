@@ -2,16 +2,16 @@ import unittest
 
 import pytest
 
-from brown.core import brown
-from brown.core.flowable import Flowable, OutOfBoundsError
-from brown.core.paper import Paper
-from brown.utils.point import Point
-from brown.utils.units import Mm
+from neoscore.core import neoscore
+from neoscore.core.flowable import Flowable, OutOfBoundsError
+from neoscore.core.paper import Paper
+from neoscore.utils.point import Point
+from neoscore.utils.units import Mm
 
 
 class TestFlowable(unittest.TestCase):
     def setUp(self):
-        brown.setup(Paper(*[Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]))
+        neoscore.setup(Paper(*[Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]))
         # live_width == Mm(160)
         # live_height == Mm(257)
 
@@ -37,19 +37,19 @@ class TestFlowable(unittest.TestCase):
         assert len(test_flowable.layout_controllers) == 1
         assert test_flowable.layout_controllers[0].flowable_x == Mm(0)
         assert test_flowable.layout_controllers[0].pos == Point(Mm(9), Mm(11))
-        assert test_flowable.layout_controllers[0].page == brown.document.pages[0]
+        assert test_flowable.layout_controllers[0].page == neoscore.document.pages[0]
 
     def test_generate_layout_controllers_with_two_lines(self):
-        live_width = brown.document.paper.live_width
+        live_width = neoscore.document.paper.live_width
         test_flowable = Flowable((Mm(0), Mm(0)), live_width * 1.5, Mm(50), Mm(5))
         # Should result in 2 lines separated by 1 line break
         test_flowable._generate_layout_controllers()
         assert len(test_flowable.layout_controllers) == 2
         assert test_flowable.layout_controllers[1].flowable_x == live_width
-        assert test_flowable.layout_controllers[1].page == brown.document.pages[0]
+        assert test_flowable.layout_controllers[1].page == neoscore.document.pages[0]
 
     def test_generate_layout_controllers_with_many_lines(self):
-        live_width = brown.document.paper.live_width
+        live_width = neoscore.document.paper.live_width
         test_flowable = Flowable((Mm(0), Mm(0)), live_width * 3.5, Mm(50), Mm(5))
         # Should result in four lines separated by 3 line breaks
         test_flowable._generate_layout_controllers()
@@ -59,7 +59,7 @@ class TestFlowable(unittest.TestCase):
         assert test_flowable.layout_controllers[3].flowable_x == live_width * 3
 
     def test_generate_layout_controllers_with_two_pages(self):
-        live_width = brown.document.paper.live_width
+        live_width = neoscore.document.paper.live_width
         test_flowable = Flowable((Mm(0), Mm(0)), live_width * 1.5, Mm(256), Mm(5))
         # Should result in two lines separated by one page break
         test_flowable._generate_layout_controllers()
@@ -67,7 +67,7 @@ class TestFlowable(unittest.TestCase):
         assert test_flowable.layout_controllers[1].flowable_x == live_width
 
     def test_generate_layout_controllers_with_many_pages(self):
-        live_width = brown.document.paper.live_width
+        live_width = neoscore.document.paper.live_width
         test_flowable = Flowable((Mm(0), Mm(0)), live_width * 3.5, Mm(256), Mm(5))
         test_flowable._generate_layout_controllers()
         assert len(test_flowable.layout_controllers) == 4
@@ -76,7 +76,7 @@ class TestFlowable(unittest.TestCase):
         assert test_flowable.layout_controllers[3].flowable_x == live_width * 3
 
     def test_generate_layout_controllers_new_lines_have_padding(self):
-        live_width = brown.document.paper.live_width
+        live_width = neoscore.document.paper.live_width
         test_flowable = Flowable((Mm(0), Mm(0)), live_width * 3.5, Mm(1000), Mm(5))
         test_flowable._generate_layout_controllers()
         # Test that every NewLine which is not also a page break has the expected
@@ -89,7 +89,7 @@ class TestFlowable(unittest.TestCase):
             assert line.margin_bottom == test_flowable.y_padding
 
     def test_generate_layout_controllers_on_new_pages_have_no_padding(self):
-        live_width = brown.document.paper.live_width
+        live_width = neoscore.document.paper.live_width
         test_flowable = Flowable((Mm(0), Mm(0)), live_width * 3.5, Mm(1000), Mm(5))
         test_flowable._generate_layout_controllers()
         # Test that every NewLine which is also a page break

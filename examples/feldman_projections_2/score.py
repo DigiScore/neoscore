@@ -1,13 +1,13 @@
 from typing import Union
 
-from brown import constants
-from brown.core import brown
-from brown.core.music_font import MusicFont
-from brown.core.object_group import ObjectGroup
-from brown.core.path import Path
-from brown.core.pen import Pen
-from brown.core.pen_pattern import PenPattern
-from brown.core.staff import Staff
+from neoscore import constants
+from neoscore.core import neoscore
+from neoscore.core.music_font import MusicFont
+from neoscore.core.object_group import ObjectGroup
+from neoscore.core.path import Path
+from neoscore.core.pen import Pen
+from neoscore.core.pen_pattern import PenPattern
+from neoscore.core.staff import Staff
 from examples.feldman_projections_2.glyph_name import GlyphName
 from examples.feldman_projections_2.grid_unit import GridUnit
 from examples.feldman_projections_2.instrument_data import InstrumentData
@@ -27,7 +27,7 @@ class Score(ObjectGroup):
     def __init__(self, pos, instruments, parent):
         super().__init__(pos, parent)
         self.events = []
-        self.text_font = brown.default_font.modified(
+        self.text_font = neoscore.default_font.modified(
             size=Score._TEXT_FONT_SIZE, weight=60
         )
         self.music_font = MusicFont(

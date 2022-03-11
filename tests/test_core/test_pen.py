@@ -1,13 +1,13 @@
 import unittest
 
-from brown import constants
-from brown.core.pen import Pen
-from brown.core.pen_cap_style import PenCapStyle
-from brown.core.pen_join_style import PenJoinStyle
-from brown.core.pen_pattern import PenPattern
-from brown.interface.pen_interface import PenInterface
-from brown.utils.color import Color
-from brown.utils.units import Unit
+from neoscore import constants
+from neoscore.core.pen import Pen
+from neoscore.core.pen_cap_style import PenCapStyle
+from neoscore.core.pen_join_style import PenJoinStyle
+from neoscore.core.pen_pattern import PenPattern
+from neoscore.interface.pen_interface import PenInterface
+from neoscore.utils.color import Color
+from neoscore.utils.units import Unit
 
 from ..helpers import assert_almost_equal
 

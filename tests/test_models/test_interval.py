@@ -1,6 +1,6 @@
 import pytest
 
-from brown.models.interval import Interval, InvalidIntervalError
+from neoscore.models.interval import Interval, InvalidIntervalError
 
 
 def test__repr__():

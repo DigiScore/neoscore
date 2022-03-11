@@ -1,19 +1,19 @@
 import unittest
 
-from brown.core import brown
-from brown.core.brush_pattern import BrushPattern
-from brown.core.pen import NO_PEN
-from brown.interface.brush_interface import BrushInterface
-from brown.interface.font_interface import FontInterface
-from brown.interface.text_interface import TextInterface
-from brown.utils.color import Color
-from brown.utils.point import Point
-from brown.utils.units import Unit
+from neoscore.core import neoscore
+from neoscore.core.brush_pattern import BrushPattern
+from neoscore.core.pen import NO_PEN
+from neoscore.interface.brush_interface import BrushInterface
+from neoscore.interface.font_interface import FontInterface
+from neoscore.interface.text_interface import TextInterface
+from neoscore.utils.color import Color
+from neoscore.utils.point import Point
+from neoscore.utils.units import Unit
 
 
 class TestTextInterface(unittest.TestCase):
     def setUp(self):
-        brown.setup()
+        neoscore.setup()
         self.brush = BrushInterface(Color("#000000"), BrushPattern.SOLID)
 
     def test_path_caching(self):

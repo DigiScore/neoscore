@@ -1,11 +1,11 @@
 import unittest
 
-from brown.core import brown
-from brown.core.flowable import Flowable
-from brown.core.hairpin import Hairpin
-from brown.core.staff import Staff
-from brown.utils.point import Point
-from brown.utils.units import Mm, Unit
+from neoscore.core import neoscore
+from neoscore.core.flowable import Flowable
+from neoscore.core.hairpin import Hairpin
+from neoscore.core.staff import Staff
+from neoscore.utils.point import Point
+from neoscore.utils.units import Mm, Unit
 from tests.mocks.mock_staff_object import MockStaffObject
 
 from ..helpers import assert_almost_equal
@@ -13,7 +13,7 @@ from ..helpers import assert_almost_equal
 
 class TestHairpin(unittest.TestCase):
     def setUp(self):
-        brown.setup()
+        neoscore.setup()
         self.flowable = Flowable((Mm(0), Mm(0)), Mm(10000), Mm(30), Mm(5))
         self.staff = Staff((Mm(0), Mm(0)), Mm(5000), self.flowable)
         self.left_parent = MockStaffObject((Unit(0), Unit(0)), self.staff)

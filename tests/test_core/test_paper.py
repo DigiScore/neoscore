@@ -1,8 +1,8 @@
 import unittest
 
-from brown.core import paper
-from brown.core.paper import Paper
-from brown.utils.units import Mm
+from neoscore.core import paper
+from neoscore.core.paper import Paper
+from neoscore.utils.units import Mm
 
 
 class TestPaper(unittest.TestCase):
