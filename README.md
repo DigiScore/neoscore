@@ -6,6 +6,7 @@
 
 [![Build Status](https://travis-ci.org/ajyoon/brown.svg?branch=master)](https://travis-ci.org/ajyoon/brown)
 
+## NOTE: This project is actively being heavily updated, and the below README is increasingly out of date. Relative stabilization and updated documentation can be expected around May 2022.
 
 Brown is a (WIP) Python API that provides an easy-to-use interface for working with high-level vector graphics in Python, with an emphasis on providing powerful primitives and abstractions for creating music scores which use unconventional notation. It emphasizes easy extensibility, transparent architecture, and striking a balance between convenience and deep customizability.
 
