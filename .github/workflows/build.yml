@@ -57,4 +57,5 @@ jobs:
         run: |
           source .venv/bin/activate
           pytest -n auto
-        env: NEOSCORE_HEADLESS
+        env:
+          NEOSCORE_HEADLESS: True
