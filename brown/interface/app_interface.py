@@ -29,7 +29,9 @@ class AppInterface:
 
     _QT_FONT_ERROR_CODE = -1
 
-    def __init__(self, document: Document):
+    def __init__(
+        self, document: Document, repl_refresh_func: Callable[[float], [float]]
+    ):
         self.document = document
         self.app = QtWidgets.QApplication([])
         self.main_window = MainWindow()
@@ -38,17 +40,35 @@ class AppInterface:
         self.view.setScene(self.scene)
         self.registered_music_fonts = {}
         self.font_database = QtGui.QFontDatabase()
+        self.repl_refresh_func = repl_refresh_func
 
     ######## PUBLIC METHODS ########
 
-    def set_refresh_func(self, refresh_func: Callable[[float], None]):
+    def set_refresh_func(self, refresh_func: Callable[[float], float]):
         self.main_window.refresh_func = refresh_func
 
     def show(self):
         """Open a window showing a preview of the document."""
         self._optimize_for_interactive_view()
         self.main_window.show()
-        self.app.exec_()
+        should_exec = True
+        try:
+            # If running from within IPython with `--gui=qt5` or
+            # having run magic command `%gui qt5`, we shouldn't exec the app.
+            # This way we can have an interactive REPL while the scene runs.
+            import IPython
+
+            # None if not running within ipython
+            ipython = IPython.get_ipython()
+            if ipython:
+                if ipython.config["TerminalIPythonApp"]["gui"] == "qt5":
+                    should_exec = False
+            if not self.main_window.refresh_func:
+                self.main_window.refresh_func = self.repl_refresh_func
+        except e:
+            pass
+        if should_exec:
+            self.app.exec_()
 
     def render_pdf(self, pages, path):
         """Render the document to a pdf file.

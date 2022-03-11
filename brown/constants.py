@@ -65,3 +65,9 @@ DEBUG = _resolve_bool_env_variable("NEOSCORE_DEBUG")
 
 # QT Runtime
 QT_PIXMAP_CACHE_LIMIT_KB = 200_000
+
+# Target time in seconds between frames in animated views
+FRAME_REFRESH_TIME_S = 1 / 60
+
+# Target time in seconds between frames in default, non-animated views
+DEFAULT_REPL_FRAME_REFRESH_TIME_S = 0.2

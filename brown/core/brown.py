@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+from time import time
 from typing import TYPE_CHECKING, Callable, Optional
 from warnings import warn
 
@@ -61,7 +62,7 @@ def setup(initial_paper: Paper = A4):
     from brown.core.document import Document
 
     document = Document(initial_paper)
-    _app_interface = AppInterface(document)
+    _app_interface = AppInterface(document, _repl_refresh_func)
     _register_default_fonts()
     default_font = Font(
         constants.DEFAULT_TEXT_FONT_NAME, constants.DEFAULT_TEXT_FONT_SIZE, 1, False
@@ -254,14 +255,27 @@ def render_image(
     _app_interface.render_image(rect, image_path, dpm, quality, bg_color, autocrop)
 
 
+def _repl_refresh_func(_: float) -> float:
+    """Default refresh func to be used in REPL mode"""
+    _clear_interfaces()
+    document._render()
+    return constants.DEFAULT_REPL_FRAME_REFRESH_TIME_S
+
+
 def set_refresh_func(refresh_func: RefreshFunc):
     global _app_interface
     global document
 
-    def wrapped_refresh_func(time: float):
+    # Wrap the user-provided refresh function with code that clears
+    # the scene and re-renders it, then returns the requested delay
+    # before the next frame, calculated to automatically compensate
+    # for refresh time.
+    def wrapped_refresh_func(frame_time: float) -> float:
         _clear_interfaces()
-        refresh_func(time)
+        refresh_func(frame_time)
         document._render()
+        elapsed_time = time() - frame_time
+        return max(constants.FRAME_REFRESH_TIME_S - elapsed_time, 0)
 
     _app_interface.set_refresh_func(wrapped_refresh_func)
 
