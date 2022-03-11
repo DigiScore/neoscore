@@ -22,7 +22,9 @@ if TYPE_CHECKING:
 class Staff(Path):
     """A staff capable of holding `StaffObject`s"""
 
-    _whole_note_size = 8  # StaffUnits
+    # Type sentinel used to hackily check if objects are Staff
+    # without importing the type, risking cyclic imports.
+    _neoscore_staff_type_marker = True
 
     def __init__(
         self,

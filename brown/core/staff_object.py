@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Any, Optional, cast
 
 from brown.core import mapping
 from brown.core.graphic_object import GraphicObject
-from brown.core.mapping import Positioned, first_ancestor_of_exact_class
+from brown.core.mapping import Positioned, first_ancestor_with_attr
 from brown.utils.exceptions import NoAncestorStaffError
 from brown.utils.point import Point
 from brown.utils.units import Unit
@@ -54,6 +54,7 @@ class StaffObject:
     @staticmethod
     def find_staff(obj: Positioned) -> Optional[Staff]:
         """Find the first staff which is an ancestor of `obj` or `obj` itself"""
-        if type(obj).__name__ == "Staff":
+        marker = "_neoscore_staff_type_marker"
+        if hasattr(obj, marker):
             return cast(Any, obj)
-        return first_ancestor_of_exact_class(obj, "Staff")
+        return first_ancestor_with_attr(obj, marker)

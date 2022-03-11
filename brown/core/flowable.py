@@ -24,6 +24,8 @@ class Flowable(InvisibleObject):
     majority of objects will be placed inside it.
     """
 
+    _neoscore_flowable_type_marker = True
+
     # TODO HIGH this only allows parent to be the first page - fix that
 
     def __init__(

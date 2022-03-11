@@ -3,13 +3,10 @@ from __future__ import annotations
 from abc import ABC
 from collections.abc import Iterator
 from typing import TYPE_CHECKING, Optional, Type
+
 from brown.core import brown
 from brown.core.brush import DEFAULT_BRUSH, Brush, SimpleBrushDef, brush_from_simple_def
-from brown.core.mapping import (
-    canvas_pos_of,
-    descendant_pos,
-    first_ancestor_of_exact_class,
-)
+from brown.core.mapping import canvas_pos_of, descendant_pos, first_ancestor_with_attr
 from brown.core.pen import DEFAULT_PEN, Pen, SimplePenDef, pen_from_simple_def
 from brown.interface.graphic_object_interface import GraphicObjectInterface
 from brown.utils.point import Point, PointDef
@@ -209,7 +206,7 @@ class GraphicObject(ABC):
     @property
     def flowable(self) -> Optional[Flowable]:
         """Flowable or None: The flowable this object belongs in."""
-        return first_ancestor_of_exact_class(self, "Flowable")
+        return first_ancestor_with_attr(self, "_neoscore_flowable_type_marker")
 
     ######## PUBLIC METHODS ########
 

@@ -6,6 +6,8 @@ from typing import Union
 from brown.models.accidental_type import AccidentalType
 from brown.utils.exceptions import InvalidPitchDescriptionError
 
+# TODO HIGH make immutable
+
 
 class Pitch:
 
@@ -59,7 +61,7 @@ class Pitch:
 
     def __repr__(self):
         """Represent the pitch as the code needed to instantiate it"""
-        return '{}("{}")'.format(type(self).__name__, self.string_desriptor)
+        return 'Pitch("{}")'.format(self.string_desriptor)
 
     def __eq__(self, other):
         """Two Pitches are equal if all of their attributes are equal."""

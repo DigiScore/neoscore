@@ -139,26 +139,12 @@ def canvas_pos_of(grob: Positioned) -> Point:
 # this doesn't really belong here...
 
 
-def first_ancestor_of_exact_class(
-    positioned: Positioned, type_: Union[str, Type]
-) -> Optional[Any]:
-    """Get a `Positioned` object's nearest ancestor with a class.
-
-    If none can be found, returns `None`.
-
-    Args:
-        graphic_object_class (type or str): The type to search for.
-            This should be a subclass of GraphicObject.
-            A str of a class name may also be used.
+def first_ancestor_with_attr(positioned: Positioned, attr: str) -> Optional[Parent]:
+    """Get a `Positioned` object's nearest ancestor with an attribute
 
     Returns: GraphicObject or None
     """
-    if isinstance(type_, str):
-        return next(
-            (item for item in ancestors(positioned) if type(item).__name__ == type_),
-            None,
-        )
     return next(
-        (item for item in ancestors(positioned) if type(item) == type_),
+        (item for item in ancestors(positioned) if hasattr(item, attr)),
         None,
     )
