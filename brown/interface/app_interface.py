@@ -10,6 +10,7 @@ from brown import constants
 from brown.interface import images
 from brown.interface.qt.converters import color_to_q_color, rect_to_qt_rect_f
 from brown.interface.qt.main_window import MainWindow
+from brown.interface.repl import running_in_ipython_gui_repl
 from brown.utils.color import Color
 from brown.utils.exceptions import FontRegistrationError, ImageExportError
 from brown.utils.rect import Rect
@@ -51,23 +52,12 @@ class AppInterface:
         """Open a window showing a preview of the document."""
         self._optimize_for_interactive_view()
         self.main_window.show()
-        should_exec = True
-        try:
-            # If running from within IPython with `--gui=qt5` or
-            # having run magic command `%gui qt5`, we shouldn't exec the app.
-            # This way we can have an interactive REPL while the scene runs.
-            import IPython
-
-            # None if not running within ipython
-            ipython = IPython.get_ipython()
-            if ipython:
-                if ipython.config["TerminalIPythonApp"]["gui"] == "qt5":
-                    should_exec = False
+        if running_in_ipython_gui_repl():
+            # Do not run app.exec_() in GUI REPL mode, since IPython
+            # manages the GUI thread in that case.
             if not self.main_window.refresh_func:
                 self.main_window.refresh_func = self.repl_refresh_func
-        except e:
-            pass
-        if should_exec:
+        else:
             self.app.exec_()
 
     def render_pdf(self, pages, path):
