@@ -34,7 +34,12 @@ class AppInterface:
         self, document: Document, repl_refresh_func: Callable[[float], [float]]
     ):
         self.document = document
-        self.app = QtWidgets.QApplication([])
+        args = (
+            ["TestApplication", "-platform", "offscreen"]
+            if constants.HEADLESS_FOR_TEST
+            else []
+        )
+        self.app = QtWidgets.QApplication(args)
         self.main_window = MainWindow()
         self.scene = QtWidgets.QGraphicsScene()
         self.view = self.main_window.graphicsView

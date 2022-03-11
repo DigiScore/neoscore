@@ -71,3 +71,5 @@ FRAME_REFRESH_TIME_S = 1 / 60
 
 # Target time in seconds between frames in default, non-animated views
 DEFAULT_REPL_FRAME_REFRESH_TIME_S = 0.2
+
+HEADLESS_FOR_TEST = _resolve_bool_env_variable("NEOSCORE_HEADLESS")
