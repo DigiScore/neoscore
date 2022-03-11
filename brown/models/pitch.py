@@ -6,8 +6,6 @@ from typing import Union
 from brown.models.accidental_type import AccidentalType
 from brown.utils.exceptions import InvalidPitchDescriptionError
 
-# TODO HIGH make immutable
-
 
 class Pitch:
 
