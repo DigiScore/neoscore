@@ -1,4 +1,4 @@
-# Brown
+# Neoscore
 
 ## A WIP Graphic Music Notation API
 
@@ -8,7 +8,7 @@
 
 ## NOTE: This project is actively being heavily updated, and the below README is increasingly out of date. Relative stabilization and updated documentation can be expected around May 2022.
 
-Brown is a (WIP) Python API that provides an easy-to-use interface for working with high-level vector graphics in Python, with an emphasis on providing powerful primitives and abstractions for creating music scores which use unconventional notation. It emphasizes easy extensibility, transparent architecture, and striking a balance between convenience and deep customizability.
+Neoscore is a (WIP) Python API that provides an easy-to-use interface for working with high-level vector graphics in Python, with an emphasis on providing powerful primitives and abstractions for creating music scores which use unconventional notation. It emphasizes easy extensibility, transparent architecture, and striking a balance between convenience and deep customizability.
 
 It uses Python and provides a convenient interface to its Qt backend through a simple yet expressive layer of abstractions, with the hope that its users will never have to make a direct Qt call or worry about the underlying render logic.
 
