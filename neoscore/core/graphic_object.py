@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import ABC
 from collections.abc import Iterator
-from typing import TYPE_CHECKING, Optional, Type
+from typing import TYPE_CHECKING, Any, Optional, Type, cast
 
 from neoscore.core import neoscore
 from neoscore.core.brush import (
@@ -209,43 +209,33 @@ class GraphicObject(ABC):
 
     @property
     def flowable(self) -> Optional[Flowable]:
-        """Flowable or None: The flowable this object belongs in."""
-        return first_ancestor_with_attr(self, "_neoscore_flowable_type_marker")
+        """The flowable this object belongs in."""
+        return cast(
+            Any, first_ancestor_with_attr(self, "_neoscore_flowable_type_marker")
+        )
 
     ######## PUBLIC METHODS ########
 
     def descendants_of_class_or_subclass(
         self, graphic_object_class: Type[GraphicObject]
-    ):
-        """Yield all child descendants with a given class or its subclasses.
-
-        Args: graphic_object_class (type): The type to search for.
-            This should be a subclass of GraphicObject.
-
-        Yields: GraphicObject
-        """
+    ) -> Iterator[GraphicObject]:
+        """Yield all child descendants with a given class or its subclasses."""
         for descendant in self.descendants:
             if isinstance(descendant, graphic_object_class):
                 yield descendant
 
-    def descendants_of_exact_class(self, graphic_object_class: Type[GraphicObject]):
-        """Yield all child descendants with a given class.
-
-        Args: graphic_object_class (type): The type to search for.
-            This should be a subclass of GraphicObject.
-
-        Yields: GraphicObject
-        """
+    def descendants_of_exact_class(
+        self, graphic_object_class: Type[GraphicObject]
+    ) -> Iterator[GraphicObject]:
+        """Yield all child descendants of a given class, excluding sublcasses"""
         for descendant in self.descendants:
             if type(descendant) == graphic_object_class:
                 yield descendant
 
-    def descendants_with_attribute(self, attribute: str):
+    def descendants_with_attribute(self, attribute: str) -> Iterator[GraphicObject]:
         """Yield all child descendants which has a given attribute.
 
         This is useful for searching descendants for duck-typing matches.
-
-        Yields: GraphicObject
         """
         for descendant in self.descendants:
             if hasattr(descendant, attribute):
@@ -276,10 +266,7 @@ class GraphicObject(ABC):
         """
 
     def _render(self):
-        """Render the object and all its children.
-
-        Returns: None
-        """
+        """Render the object and all its children."""
         if self.flowable is not None:
             self._render_in_flowable()
         else:
@@ -288,30 +275,16 @@ class GraphicObject(ABC):
             child._render()
 
     def _register_child(self, child: GraphicObject):
-        """Add an object to `self.children`.
-
-        Args:
-            child (GraphicObject): The object to add
-
-        Returns: None
-        """
+        """Add an object to `self.children`."""
         self.children.append(child)
 
     def _unregister_child(self, child: GraphicObject):
-        """Remove an object from `self.children`.
-
-        Args:
-            child (GraphicObject): The object to remove
-
-        Returns: None
-        """
+        """Remove an object from `self.children`."""
         self.children.remove(child)
 
     def _render_in_flowable(self):
         """Render the object to the scene, dispatching partial rendering calls
         when needed if an object flows across a break in the flowable.
-
-        Returns: None
         """
         # Calculate position within flowable
         pos_in_flowable = descendant_pos(self, self.flowable)
