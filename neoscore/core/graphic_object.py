@@ -5,8 +5,17 @@ from collections.abc import Iterator
 from typing import TYPE_CHECKING, Optional, Type
 
 from neoscore.core import neoscore
-from neoscore.core.brush import DEFAULT_BRUSH, Brush, SimpleBrushDef, brush_from_simple_def
-from neoscore.core.mapping import canvas_pos_of, descendant_pos, first_ancestor_with_attr
+from neoscore.core.brush import (
+    DEFAULT_BRUSH,
+    Brush,
+    SimpleBrushDef,
+    brush_from_simple_def,
+)
+from neoscore.core.mapping import (
+    canvas_pos_of,
+    descendant_pos,
+    first_ancestor_with_attr,
+)
 from neoscore.core.pen import DEFAULT_PEN, Pen, SimplePenDef, pen_from_simple_def
 from neoscore.interface.graphic_object_interface import GraphicObjectInterface
 from neoscore.utils.point import Point, PointDef
@@ -166,12 +175,7 @@ class GraphicObject(ABC):
 
     @parent.setter
     def parent(self, value: Optional[Parent]):
-        # TODO MEDIUM clean this up, looks way too complicated
-        if (
-            hasattr(self, "_parent")
-            and self._parent is not None
-            and isinstance(self._parent, GraphicObject)
-        ):
+        if isinstance(getattr(self, "_parent", None), GraphicObject):
             self._parent._unregister_child(self)
         if value is None:
             value = neoscore.document.pages[0]
