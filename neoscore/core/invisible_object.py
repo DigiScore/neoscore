@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 from neoscore.core.graphic_object import GraphicObject
 from neoscore.utils.point import PointDef
@@ -13,7 +13,7 @@ class InvisibleObject(GraphicObject):
 
     """A non-renderable object."""
 
-    def __init__(self, pos: PointDef, parent: Parent = None):
+    def __init__(self, pos: PointDef, parent: Optional[Parent] = None):
         """
         Args:
             pos: The position relative to parent

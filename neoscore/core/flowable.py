@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Optional
+
 from neoscore.core import neoscore
 from neoscore.core.invisible_object import InvisibleObject
 from neoscore.core.layout_controller import LayoutController
@@ -6,6 +10,9 @@ from neoscore.core.new_line import NewLine
 from neoscore.utils.exceptions import OutOfBoundsError
 from neoscore.utils.point import ORIGIN, Point, PointDef
 from neoscore.utils.units import ZERO, Mm, Unit
+
+if TYPE_CHECKING:
+    from neoscore.core.mapping import Parent
 
 
 class Flowable(InvisibleObject):
@@ -26,8 +33,6 @@ class Flowable(InvisibleObject):
 
     _neoscore_flowable_type_marker = True
 
-    # TODO HIGH this only allows parent to be the first page - fix that
-
     def __init__(
         self,
         pos: PointDef,
@@ -35,6 +40,7 @@ class Flowable(InvisibleObject):
         height: Unit,
         y_padding: Unit = Mm(5),
         break_threshold: Unit = Mm(5),
+        parent: Optional[Parent] = None,
     ):
         """
         Args:
@@ -45,8 +51,11 @@ class Flowable(InvisibleObject):
             y_padding: The vertical gap between flowable sections
             break_threshold: The maximum distance the flowable will shorten a line
                 to allow a break to occur on a `BreakOpportunity`
+            parent: An optional parent object. Nested flowables are not supported,
+                so this should not be a flowable or in one. This defaults to the
+                document's first page.
         """
-        super().__init__(pos)
+        super().__init__(pos, parent)
         self._length = width
         self._height = height
         self._y_padding = y_padding

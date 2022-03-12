@@ -48,7 +48,7 @@ jobs:
       #----------------------------------------------
       # install your root project, if required
       #----------------------------------------------
-      - name: Install library
+      - name: Install neoscore
         run: poetry install --no-interaction
       #----------------------------------------------
       #              run test suite
