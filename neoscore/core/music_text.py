@@ -47,7 +47,7 @@ class MusicText(Text):
             text (str, tuple, MusicChar, or list of these):
                 The text to be used, represented as a either a `str`
                 (glyph name), `tuple` (glyph name, alternate number),
-                `MusicChar`, or a list of these.
+                `MusicChar`, or a list of these. Empty text will fail.
             parent: The parent of the glyph. If no `font`
                 is given, this must either be a `Staff` or an object which has
                 a `Staff` as an ancestor.
@@ -81,13 +81,21 @@ class MusicText(Text):
     def music_chars(self) -> list[MusicChar]:
         """A list of the SMuFL characters in the string including metadata.
 
-        This is set by `MusicText.text`.
+        If set, this will also update `self.text`.
         """
         return self._music_chars
 
+    @music_chars.setter
+    def music_chars(self, value: list[MusicChar]):
+        self._music_chars = value
+        self._text = MusicText._music_chars_to_str(value)
+
     @property
     def text(self) -> str:
-        """The raw unicode representation of the SMuFL text."""
+        """The raw unicode representation of the SMuFL text.
+
+        If set, this will also update `self.music_chars`
+        """
         return self._text
 
     @text.setter
@@ -106,33 +114,25 @@ class MusicText(Text):
         cached_result = _GEOMETRY_CACHE.get(key)
         if cached_result:
             return cached_result.bounding_rect
-        bounding_rect = self._char_list_bounding_rect(self.music_chars)
+        bounding_rect = MusicText._char_list_bounding_rect(self.music_chars, self.scale)
         _GEOMETRY_CACHE[key] = _CachedTextGeometry(bounding_rect)
         return bounding_rect
 
     ######## PRIVATE METHODS ########
 
-    def _char_list_bounding_rect(self, music_chars: list[MusicChar]) -> Rect:
+    @staticmethod
+    def _char_list_bounding_rect(music_chars: list[MusicChar], scale:float) -> Rect:
         """Find the bounding rect of a given list of music chars.
 
         Takes a list of MusicChars and determined the bounding rect
         they would have if they were in this MusicText.
-
-        The fonts of every music character should the the same as self.font.
 
         Args:
             music_chars: The string to represent
 
         Returns:
             The bounding rect of the specified text if drawn.
-
-        Raises:
-            ValueError: if `music_chars` is empty.
         """
-        if not music_chars:
-            raise ValueError(
-                "Cannot find the bounding rect of an empty character sequence."
-            )
         x = music_chars[0].glyph_info["glyphBBox"]["bBoxSW"][0]
         y = music_chars[0].glyph_info["glyphBBox"]["bBoxNE"][1]
         w = ZERO
@@ -143,10 +143,10 @@ class MusicText(Text):
             w += char.glyph_info["glyphBBox"]["bBoxNE"][0] - char_x
             h += (char.glyph_info["glyphBBox"]["bBoxSW"][1] - char_y) * -1
         return Rect(
-            x * self.scale,
-            y * self.scale,
-            w * self.scale,
-            h * self.scale,
+            x * scale,
+            y * scale,
+            w * scale,
+            h * scale,
         )
 
     @staticmethod

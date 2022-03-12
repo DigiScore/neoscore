@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, cast
 
 from neoscore.core.graphic_object import GraphicObject
 from neoscore.core.music_font import MusicFont
@@ -41,18 +41,17 @@ class RepeatingMusicTextLine(MusicText, StaffObject, Spanner):
             scale (float): A hard scaling factor to be applied
                 in addition to the size of the music font.
         """
-        start = start if isinstance(start, Point) else Point(*start)
-        # init the MusicText to ask it how wide a single
-        # repetition of `text` is in order to calculate how many
-        # repetitions are needed to cover the spanner.
+        # Start the MusicText with a single repetition, then after
+        # superclasses are set up figure out how many repetitions are
+        # needed to cover `self.length` and update the text
+        # accordingly.
         MusicText.__init__(self, start, text, parent, font, scale)
         StaffObject.__init__(self, parent)
         Spanner.__init__(self, end_x, end_parent or self)
-        self.repeating_music_chars = self.music_chars
-        self.repeating_text = self.text
-        repetitions = self._repetitions_needed
-        self.music_chars = self.music_chars * repetitions
-        self._text = self.text * repetitions
+        self.single_repetition_chars = self.music_chars
+        base_width = MusicText._char_list_bounding_rect(self.music_chars, scale).width
+        repetitions_needed = int(cast(float, self.length / base_width))
+        self.music_chars = self.music_chars * repetitions_needed
 
     ######## PUBLIC PROPERTIES ########
 
@@ -60,14 +59,3 @@ class RepeatingMusicTextLine(MusicText, StaffObject, Spanner):
     def length(self) -> Unit:
         return self.spanner_x_length
 
-    ######## PRIVATE PROPERTIES ########
-
-    @property
-    def _repetitions_needed(self) -> int:
-        """int: The number of text repetitions needed to cover the line.
-
-        This value rounds down, such that the real length of the drawn
-        text will always be <= self.length.
-        """
-        base_width = self._char_list_bounding_rect(self.repeating_music_chars).width
-        return int(self.length / base_width)

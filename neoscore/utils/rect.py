@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Union
 
-from neoscore.utils.units import Unit
+from neoscore.utils.units import Unit, ZERO
 
 
 @dataclass(frozen=True)
@@ -19,8 +19,7 @@ class Rect:
     y: Unit
     width: Unit
     height: Unit
-
-
+    
 RectDef = Union[Rect, tuple[Unit, Unit, Unit, Unit]]
 
 
