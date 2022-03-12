@@ -8,6 +8,7 @@ from neoscore.core.graphic_object import GraphicObject
 from neoscore.core.pen import NO_PEN
 from neoscore.interface.text_interface import TextInterface
 from neoscore.utils.point import Point, PointDef
+from neoscore.utils.rect import Rect
 from neoscore.utils.units import ZERO, Unit
 
 if TYPE_CHECKING:
@@ -50,37 +51,41 @@ class Text(GraphicObject):
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def text(self):
+    def text(self) -> str:
         """str: The text to be drawn"""
         return self._text
 
+    @text.setter
+    def text(self, value: str):
+        self._text = value
+
     @property
-    def font(self):
-        """Font: The text font"""
+    def font(self) -> Font:
+        """The text font"""
         return self._font
 
     @font.setter
-    def font(self, value):
+    def font(self, value: Font):
         self._font = value
 
     @property
-    def baseline_y(self):
-        """Unit: The y coordinate of the first text line's baseline."""
+    def baseline_y(self) -> Unit:
+        """The y coordinate of the first text line's baseline."""
         return self.y + self.font.ascent
 
     @property
-    def scale(self):
-        """float: A hard scale factor to be applied to the rendered text"""
+    def scale(self) -> float:
+        """A hard scale factor to be applied to the rendered text"""
         return self._scale
 
     @scale.setter
-    def scale(self, value):
+    def scale(self, value: float):
         self._scale = value
 
     ######## PRIVATE PROPERTIES ########
 
     @property
-    def bounding_rect(self):
+    def bounding_rect(self) -> Rect:
         """The bounding rect override for this text."""
         return self.font.bounding_rect_of(self.text)
 

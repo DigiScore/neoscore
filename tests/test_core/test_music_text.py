@@ -18,27 +18,31 @@ class TestMusicText(unittest.TestCase):
 
     def test_init(self):
         mock_parent = InvisibleObject((Unit(10), Unit(11)), parent=self.staff)
-        test_object = MusicText(
-            (Unit(5), Unit(6)), "accidentalFlat", mock_parent, self.font
-        )
-        assert test_object.x == GraphicUnit(5)
-        assert test_object.y == GraphicUnit(6)
-        assert test_object.text == "\ue260"
-        assert test_object.font == self.font
-        assert test_object.parent == mock_parent
+        mtext = MusicText((Unit(5), Unit(6)), "accidentalFlat", mock_parent, self.font)
+        assert mtext.x == GraphicUnit(5)
+        assert mtext.y == GraphicUnit(6)
+        assert mtext.text == "\ue260"
+        assert mtext.font == self.font
+        assert mtext.parent == mock_parent
 
     def test_init_with_one_tuple(self):
-        test_object = MusicText((Unit(5), Unit(6)), ("brace", 1), self.staff)
-        assert test_object.text == "\uF400"
+        mtext = MusicText((Unit(5), Unit(6)), ("brace", 1), self.staff)
+        assert mtext.text == "\uF400"
 
     def test_init_with_one_music_char(self):
-        test_object = MusicText(
+        mtext = MusicText(
             (Unit(5), Unit(6)), MusicChar(self.staff.music_font, "brace", 1), self.staff
         )
-        assert test_object.text == "\uF400"
+        assert mtext.text == "\uF400"
 
     def test_init_with_multiple_chars_in_list(self):
-        test_object = MusicText(
+        mtext = MusicText(
             (Unit(5), Unit(6)), ["accidentalFlat", ("brace", 1)], self.staff
         )
-        assert test_object.text == "\ue260\uF400"
+        assert mtext.text == "\ue260\uF400"
+
+    def test_text_setter(self):
+        mtext = MusicText((Unit(5), Unit(6)), "accidentalSharp", self.staff)
+        assert mtext.text == "\ue262"
+        mtext.text = "accidentalFlat"
+        assert mtext.text == "\ue260"

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, NamedTuple, Optional
+
 from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
 from neoscore.core.staff_object import StaffObject
@@ -62,9 +63,9 @@ class MusicText(Text):
                     "MusicText must be given either a MusicFont or an ancestor staff"
                 )
             font = ancestor_staff.music_font
-        self.music_chars = MusicText._resolve_music_chars(text, font)
-        text = "".join(char.codepoint for char in self.music_chars)
-        Text.__init__(self, pos, text, font, parent, scale=scale)
+        self._music_chars = MusicText._resolve_music_chars(text, font)
+        resolved_str = MusicText._music_chars_to_str(self._music_chars)
+        Text.__init__(self, pos, resolved_str, font, parent, scale=scale)
 
     ######## PUBLIC PROPERTIES ########
 
@@ -75,6 +76,26 @@ class MusicText(Text):
         This is used to determine how and where rendering cuts should be made.
         """
         return self.bounding_rect.width
+
+    @property
+    def music_chars(self) -> list[MusicChar]:
+        """A list of the SMuFL characters in the string including metadata.
+
+        This is set by `MusicText.text`.
+        """
+        return self._music_chars
+
+    @property
+    def text(self) -> str:
+        """The raw unicode representation of the SMuFL text."""
+        return self._text
+
+    @text.setter
+    # TODO MEDIUM when typing music text args update here as well
+    def text(self, value):
+        self._music_chars = MusicText._resolve_music_chars(value, self.font)
+        resolved_str = MusicText._music_chars_to_str(self._music_chars)
+        self._text = resolved_str
 
     ######## PRIVATE PROPERTIES ########
 
@@ -127,6 +148,10 @@ class MusicText(Text):
             w * self.scale,
             h * self.scale,
         )
+
+    @staticmethod
+    def _music_chars_to_str(music_chars: list[MusicChar]) -> str:
+        return "".join(char.codepoint for char in music_chars)
 
     @staticmethod
     def _resolve_music_chars(text: Any, font: MusicFont) -> list[MusicChar]:
