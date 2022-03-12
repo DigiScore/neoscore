@@ -7,8 +7,10 @@ from neoscore.core.flowable import Flowable
 from neoscore.core.staff import Staff
 from neoscore.models.beat import Beat
 from neoscore.models.pitch import Pitch
+from neoscore.models.vertical_direction import VerticalDirection
 from neoscore.utils.point import Point
 from neoscore.utils.units import Mm
+
 
 from ..helpers import assert_almost_equal
 
@@ -119,25 +121,25 @@ class TestChordrest(unittest.TestCase):
     def test_stem_direction_down(self):
         pitches = ["c'", "b'", "c''''"]
         chord = Chordrest(Mm(1), self.staff, pitches, Beat(1, 4))
-        assert chord.stem_direction == 1
+        assert chord.stem_direction == VerticalDirection.DOWN
 
     def test_stem_direction_up(self):
         pitches = ["c,,,,,", "b'", "c'''"]
         chord = Chordrest(Mm(1), self.staff, pitches, Beat(1, 4))
-        assert chord.stem_direction == -1
+        assert chord.stem_direction == VerticalDirection.UP
 
     def test_stem_direction_down_with_one_note_at_staff_center(self):
         pitches = ["b'"]
         chord = Chordrest(Mm(1), self.staff, pitches, Beat(1, 4))
-        assert chord.stem_direction == 1
+        assert chord.stem_direction == VerticalDirection.DOWN
 
     def test_stem_direction_override(self):
         pitches = ["b'"]
-        chord = Chordrest(Mm(1), self.staff, pitches, Beat(1, 4), -1)
-        assert chord.stem_direction == -1
+        chord = Chordrest(Mm(1), self.staff, pitches, Beat(1, 4), VerticalDirection.UP)
+        assert chord.stem_direction == VerticalDirection.UP
         # Setting stem_direction = None should revert to default 1
         chord.stem_direction = None
-        assert chord.stem_direction == 1
+        assert chord.stem_direction == VerticalDirection.DOWN
 
     def test_stem_height_min(self):
         pitches = ["b'"]

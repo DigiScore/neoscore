@@ -12,6 +12,7 @@ from neoscore.core.staff_object import StaffObject
 from neoscore.core.stem import Stem
 from neoscore.models.beat import Beat, BeatDef
 from neoscore.models.pitch import Pitch, PitchDef
+from neoscore.models.vertical_direction import VerticalDirection
 from neoscore.utils.point import Point
 from neoscore.utils.units import Unit
 
@@ -35,15 +36,13 @@ class Chordrest(ObjectGroup, StaffObject):
         * `RhythmDot`s if needed by the given `Duration`
     """
 
-    # TODO MEDIUM stem direction should probably be a bool or enum or
-    # something, int is not expressive
     def __init__(
         self,
         pos_x: Unit,
         staff: Staff,
         pitches: Optional[list[PitchDef]],
         duration: BeatDef,
-        stem_direction: Optional[int] = None,
+        stem_direction: Optional[VerticalDirection] = None,
     ):
         """
         Args:
@@ -253,8 +252,8 @@ class Chordrest(ObjectGroup, StaffObject):
             return extent - left_bounding_note.x
 
     @property
-    def stem_direction(self):
-        """int: The direction of the stem, either `1` (down) or `-1` (up)
+    def stem_direction(self) -> VerticalDirection:
+        """VerticalDirection: The direction of the stem
 
         Takes the notehead furthest from the center of the staff,
         and returns the opposite direction.
@@ -265,14 +264,19 @@ class Chordrest(ObjectGroup, StaffObject):
         This automatically calculated property may be overridden using
         its setter. To revert back to the automatically calculated value
         set this property to `None`.
+        
+        If there are no noteheads (meaning this Chordrest is a rest),
+        this arbitrarily returns `VerticalDirection.UP`.
         """
-        if self._stem_direction_override is not None:
+        if self._stem_direction_override:
             return self._stem_direction_override
         furthest = self.furthest_notehead
         if furthest:
-            return 1 if furthest.staff_pos <= self.staff.center_pos_y else -1
+            return (VerticalDirection.DOWN
+                    if furthest.staff_pos <= self.staff.center_pos_y
+                    else VerticalDirection.UP)
         else:
-            return None
+            return VerticalDirection.UP
 
     @stem_direction.setter
     def stem_direction(self, value):
@@ -289,7 +293,7 @@ class Chordrest(ObjectGroup, StaffObject):
             + flag_offset
         )
         abs_height = max(min_abs_height, fitted_abs_height)
-        return abs_height * self.stem_direction
+        return abs_height * self.stem_direction.value
 
     ######## PRIVATE METHODS ########
 
@@ -376,7 +380,7 @@ class Chordrest(ObjectGroup, StaffObject):
         """
         # Find the preferred side of the stem for noteheads,
         # where 1 means right and -1 means left
-        default_side = self.stem_direction
+        default_side = self.stem_direction.value
         # Start last staff pos at sentinel infinity position
         prev_staff_pos = self.staff.unit(float("inf"))
         # Start prev_side at wrong side so first note goes on the default side
@@ -384,7 +388,7 @@ class Chordrest(ObjectGroup, StaffObject):
         for note in sorted(
             self.noteheads,
             key=lambda n: n.staff_pos,
-            reverse=(self.stem_direction == -1),
+            reverse=(self.stem_direction == VerticalDirection.UP),
         ):
             if abs(prev_staff_pos - note.staff_pos) < self.staff.unit(1):
                 # This note collides with previous, use switch sides
