@@ -302,7 +302,7 @@ class GraphicObject(ABC):
         first_line_i = self.flowable.last_break_index_at(pos_in_flowable.x)
         current_line = self.flowable.layout_controllers[first_line_i]
         render_start_pos = canvas_pos_of(self)
-        first_line_length = self.flowable.dist_to_line_end(pos_in_flowable.x) * -1
+        first_line_length = -self.flowable.dist_to_line_end(pos_in_flowable.x)
         render_end_pos = Point(
             render_start_pos.x + first_line_length, render_start_pos.y
         )

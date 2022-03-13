@@ -16,6 +16,10 @@ class QClippingPath(QGraphicsPathItem):
     horizontal slice of the path. Clipping occurs independently of
     scaling.
 
+    While the Qt superclass is mutable, this is intended to be treated
+    immutably. Mutations after instantation will result unexpected
+    behavior. Object mutations at higher abstraction levels should
+    result in new Qt objects created.
     """
 
     def __init__(
@@ -23,20 +27,26 @@ class QClippingPath(QGraphicsPathItem):
         qt_path: QPainterPath,
         clip_start_x: Optional[float],
         clip_width: Optional[float],
+        scale: float = 1,
     ):
         """
         Args:
             qt_path: The path for the item. This value should
                 be the same as in `QGraphicsPathItem.__init__()`
-            clip_start_x: The local starting position for the
-                path clipping region. Use `None` to render from the start.
-            clip_width: The width of the path clipping region.
-                Use `None` to render to the end
+            clip_start_x: The local starting position for the path clipping region.
+                This should not adjust for scaling, as that is performed
+                automatically. Use `None` to render from the start.
+            clip_width: The width of the path clipping region. This should not adjust
+                for scaling, as that is performed automatically. Use `None` to render
+                to the end
+            scale: A scaling factor on the object's coordinate system.
         """
         super().__init__(qt_path)
-        self.clip_start_x = clip_start_x
-        self.clip_width = clip_width
+        super().setScale(scale)
+        self.clip_start_x = None if clip_start_x is None else clip_start_x / scale
+        self.clip_width = None if clip_width is None else clip_width / scale
         self.setCacheMode(QGraphicsItem.CacheMode.DeviceCoordinateCache)
+        self.padding = self.pen().width() / scale
         self.update_geometry()
 
     def boundingRect(self):
@@ -63,19 +73,16 @@ class QClippingPath(QGraphicsPathItem):
             path_bounding_rect,
             self.clip_start_x,
             self.clip_width,
-            self.pen().width(),
+            self.padding,
         )
         self.bounding_rect = QClippingPath.calculate_bounding_rect(
             path_bounding_rect,
             self.clip_start_x,
             self.clip_width,
-            self.pen().width(),
+            self.padding,
         )
         if self.clip_start_x is not None:
-            self.painter_offset = QtCore.QPointF(
-                -1 * self.clip_start_x,
-                0,
-            )
+            self.painter_offset = QtCore.QPointF(-1 * self.clip_start_x, 0)
         else:
             self.painter_offset = None
 
@@ -128,9 +135,9 @@ class QClippingPath(QGraphicsPathItem):
                 clipping region. Use `None` to render from the start.
             clip_width: The width of the clipping region.
                 Use `None` to render to the end
-            extra_padding: Extra area padding to be added to all
-                sides of the clipping area. This might be useful, for instance,
-                for making sure thick pen strokes render completely.
+            padding: Extra area padding to be added to all sides of the clipping area.
+                This might be useful, for instance, for making sure thick pen strokes
+                render completely.
         """
         resolved_clip_start_x = (
             clip_start_x if clip_start_x is not None else bounding_rect.x()

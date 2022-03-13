@@ -52,7 +52,7 @@ class Text(GraphicObject):
 
     @property
     def text(self) -> str:
-        """str: The text to be drawn"""
+        """The text to be drawn"""
         return self._text
 
     @text.setter

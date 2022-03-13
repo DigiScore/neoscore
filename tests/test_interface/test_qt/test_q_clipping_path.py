@@ -1,6 +1,7 @@
 import unittest
 
 from PyQt5 import QtGui
+
 from neoscore.interface.qt.q_clipping_path import QClippingPath
 
 

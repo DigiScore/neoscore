@@ -81,9 +81,7 @@ class TextInterface(GraphicObjectInterface):
 
     ######## PRIVATE METHODS ########
 
-    def _get_path(
-        self, text: str, font: FontInterface, additional_scale: float
-    ) -> QClippingPath:
+    def _get_path(self, text: str, font: FontInterface, scale: float) -> QClippingPath:
         qt_font = font.qt_object
         needed_font_size = qt_font.pointSizeF()
         key = _CachedTextKey(text, font.family_name, font.weight, font.italic)
@@ -94,8 +92,8 @@ class TextInterface(GraphicObjectInterface):
                 cached_result.path,
                 self.clip_start_x.base_value if self.clip_start_x is not None else None,
                 self.clip_width.base_value if self.clip_width is not None else None,
+                cache_scale * scale,
             )
-            clipping_path.setScale(cache_scale * additional_scale)
             return clipping_path
         path = TextInterface._create_qt_path(text, qt_font)
         _PATH_CACHE[key] = _CachedTextPath(path, needed_font_size)
@@ -103,8 +101,8 @@ class TextInterface(GraphicObjectInterface):
             path,
             self.clip_start_x.base_value if self.clip_start_x is not None else None,
             self.clip_width.base_value if self.clip_width is not None else None,
+            scale,
         )
-        clipping_path.setScale(additional_scale)
         return clipping_path
 
     @staticmethod
