@@ -25,7 +25,6 @@ class Viewport(QtWidgets.QGraphicsView):
 
     def wheelEvent(self, event):
         """Zoom in or out of the view."""
-
         zoom_in_factor = 1.25
         zoom_out_factor = 1 / zoom_in_factor
         wheel_delta = event.angleDelta().y()
@@ -46,3 +45,7 @@ class Viewport(QtWidgets.QGraphicsView):
         # Move scene to old position
         delta = new_pos - old_pos
         self.translate(delta.x(), delta.y())
+
+    def mouseMoveEvent(self, event):
+        super().mouseMoveEvent(event)
+        self.viewport().update()
