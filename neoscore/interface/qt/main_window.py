@@ -33,14 +33,14 @@ class MainWindow(QtWidgets.QMainWindow):
             requested_delay_s = self.refresh_func(start_time)
             requested_delay_ms = int(requested_delay_s * 1000)
             QtCore.QTimer.singleShot(requested_delay_ms, QT_PRECISE_TIMER, self.refresh)
-            if DEBUG:
-                update_time = time() - start_time
-                refresh_fps = int(1 / (time() - start_time))
-                if self._frame % 30 == 0:
-                    print(
-                        f"Scene update took {int(update_time * 1000)} ms ({refresh_fps} / s)"
-                    )
-                    print(f"requested delay was {requested_delay_ms} ms")
-                self._frame += 1
+            # if DEBUG:
+            #     update_time = time() - start_time
+            #     refresh_fps = int(1 / (time() - start_time))
+            #     if self._frame % 30 == 0:
+            #         print(
+            #             f"Scene update took {int(update_time * 1000)} ms ({refresh_fps} / s)"
+            #         )
+            #         print(f"requested delay was {requested_delay_ms} ms")
+            #     self._frame += 1
         # The viewport is unconditionally updated because we disable automatic updates
         self.graphicsView.viewport().update()

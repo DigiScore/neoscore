@@ -79,7 +79,7 @@ class Brace(MultiStaffObject, StaffObject, MusicText):
         if start.x == ZERO:
             self._render_complete(Point(start.x - self.bounding_rect.width, start.y))
 
-    def _render_after_break(self, local_start_x, start, stop):
+    def _render_after_break(self, local_start_x, start):
         self._render_complete(Point(start.x - self.bounding_rect.width, start.y))
 
     def _render_spanning_continuation(self, local_start_x, start, stop):

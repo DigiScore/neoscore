@@ -43,7 +43,8 @@ from neoscore.models.accidental_type import AccidentalType
 from neoscore.models.beat import Beat
 from neoscore.models.clef_type import ClefType
 from neoscore.models.key_signature_type import KeySignatureType
+from neoscore.models.vertical_direction import VerticalDirection
 from neoscore.utils.color import Color
-from neoscore.utils.point import Point
+from neoscore.utils.point import ORIGIN, Point
 from neoscore.utils.rect import Rect
-from neoscore.utils.units import GraphicUnit, Inch, Mm
+from neoscore.utils.units import ZERO, GraphicUnit, Inch, Mm

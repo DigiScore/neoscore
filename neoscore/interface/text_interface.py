@@ -76,7 +76,7 @@ class TextInterface(GraphicObjectInterface):
         qt_object = self._get_path(self.text, self.font, self.scale)
         qt_object.setPos(point_to_qt_point_f(self.pos))
         qt_object.setBrush(self.brush.qt_object)
-        qt_object.setPen(self.pen.qt_object)  # No pen
+        qt_object.setPen(self.pen.qt_object)
         return qt_object
 
     ######## PRIVATE METHODS ########
@@ -90,7 +90,7 @@ class TextInterface(GraphicObjectInterface):
             cache_scale = needed_font_size / cached_result.generation_font_size
             clipping_path = QClippingPath(
                 cached_result.path,
-                self.clip_start_x.base_value if self.clip_start_x is not None else None,
+                self.clip_start_x.base_value if self.clip_start_x is not None else 0,
                 self.clip_width.base_value if self.clip_width is not None else None,
                 cache_scale * scale,
             )
@@ -99,7 +99,7 @@ class TextInterface(GraphicObjectInterface):
         _PATH_CACHE[key] = _CachedTextPath(path, needed_font_size)
         clipping_path = QClippingPath(
             path,
-            self.clip_start_x.base_value if self.clip_start_x is not None else None,
+            self.clip_start_x.base_value if self.clip_start_x is not None else 0,
             self.clip_width.base_value if self.clip_width is not None else None,
             scale,
         )

@@ -6,7 +6,13 @@ from neoscore import constants
 from neoscore.core.brush import Brush, SimpleBrushDef
 from neoscore.core.graphic_object import GraphicObject
 from neoscore.core.mapping import map_between, map_between_x
-from neoscore.core.path_element import ControlPoint, CurveTo, LineTo, MoveTo, PathElement
+from neoscore.core.path_element import (
+    ControlPoint,
+    CurveTo,
+    LineTo,
+    MoveTo,
+    PathElement,
+)
 from neoscore.core.pen import SimplePenDef
 from neoscore.interface.path_interface import (
     PathInterface,
@@ -264,8 +270,8 @@ class Path(GraphicObject):
     ):
         self._render_slice(start, ZERO, stop.x - start.x)
 
-    def _render_after_break(self, local_start_x: Unit, start: Point, stop: Point):
-        self._render_slice(start, local_start_x, stop.x - start.x)
+    def _render_after_break(self, local_start_x: Unit, start: Point):
+        self._render_slice(start, local_start_x, None)
 
     def _render_spanning_continuation(
         self, local_start_x: Unit, start: Point, stop: Point

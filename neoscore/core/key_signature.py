@@ -190,7 +190,7 @@ class _KeySignatureAccidental(MusicText, StaffObject):
     def _render_before_break(self, local_start_x, start, stop, dist_to_line_start):
         self._render_occurrence(start, local_start_x, False)
 
-    def _render_after_break(self, local_start_x, start, stop):
+    def _render_after_break(self, local_start_x, start):
         self._render_occurrence(start, local_start_x, True)
 
     def _render_spanning_continuation(self, local_start_x, start, stop):

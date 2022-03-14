@@ -40,13 +40,15 @@ Chordrest(unit(19), upper_staff, ["b''"], Beat(1, 16))
 
 # Lower staff notes - upper voice
 Rest(Point(unit(10), unit(-3)), lower_staff, Beat(1, 4))
-Chordrest(unit(16), lower_staff, ["d'"], Beat(1, 4), stem_direction=-1)
+Chordrest(
+    unit(16), lower_staff, ["d'"], Beat(1, 4), stem_direction=VerticalDirection.UP
+)
 
 # Lower staff notes - middle voice
 # Can't use Chordrest for these rests because Chordrest doesn't
 # currently support explicit vertical positioning of rests.
 Rest(Point(unit(8), unit(-2)), lower_staff, Beat(1, 4))
-Chordrest(unit(12), lower_staff, ["b"], Beat(2, 4), stem_direction=-1)
+Chordrest(unit(12), lower_staff, ["b"], Beat(2, 4), stem_direction=VerticalDirection.UP)
 
 # Lower staff notes - lower voice
 Chordrest(unit(8), lower_staff, ["g"], Beat(3, 4))

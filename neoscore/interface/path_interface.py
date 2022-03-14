@@ -88,7 +88,7 @@ class PathInterface(GraphicObjectInterface):
         painter_path = PathInterface.create_qt_path(self.elements)
         qt_object = QClippingPath(
             painter_path,
-            self.clip_start_x.base_value if self.clip_start_x is not None else None,
+            self.clip_start_x.base_value if self.clip_start_x is not None else 0,
             self.clip_width.base_value if self.clip_width is not None else None,
         )
         qt_object.setPos(point_to_qt_point_f(self.pos))

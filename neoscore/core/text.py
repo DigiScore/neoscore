@@ -132,8 +132,8 @@ class Text(GraphicObject):
     ):
         self._render_slice(start, ZERO, stop.x - start.x)
 
-    def _render_after_break(self, local_start_x: Unit, start: Point, stop: Point):
-        self._render_slice(start, local_start_x, stop.x - start.x)
+    def _render_after_break(self, local_start_x: Unit, start: Point):
+        self._render_slice(start, local_start_x, None)
 
     def _render_spanning_continuation(
         self, local_start_x: Unit, start: Point, stop: Point

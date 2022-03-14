@@ -121,7 +121,7 @@ class Clef(MusicText, StaffObject):
     def _render_before_break(self, local_start_x, start, stop, dist_to_line_start):
         self._render_slice(start, None)
 
-    def _render_after_break(self, local_start_x, start, stop):
+    def _render_after_break(self, local_start_x, start):
         self._render_slice(start, None)
 
     def _render_spanning_continuation(self, local_start_x, start, stop):

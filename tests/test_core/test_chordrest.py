@@ -11,7 +11,6 @@ from neoscore.models.vertical_direction import VerticalDirection
 from neoscore.utils.point import Point
 from neoscore.utils.units import Mm
 
-
 from ..helpers import assert_almost_equal
 
 # TODO LOW test that glyphs are actually created successfully - this
@@ -51,10 +50,10 @@ class TestChordrest(unittest.TestCase):
         dots = list(chord.rhythm_dot_positions)
         dots.sort(key=lambda d: d.x)
         assert_almost_equal(
-            dots[0], Point(self.staff.unit(1.326), self.staff.unit(1.5))
+            dots[0], Point(self.staff.unit(1.52), self.staff.unit(1.5)), 2
         )
         assert_almost_equal(
-            dots[1], Point(self.staff.unit(1.826), self.staff.unit(1.5))
+            dots[1], Point(self.staff.unit(2.02), self.staff.unit(1.5)), 2
         )
 
     def test_rhythm_dot_positions_with_noteheads(self):
@@ -63,19 +62,24 @@ class TestChordrest(unittest.TestCase):
         dots = list(chord.rhythm_dot_positions)
         dots.sort(key=lambda d: d.x)
         dots.sort(key=lambda d: d.y)
+        print(dots[0])
         assert_almost_equal(
-            dots[0], Point(self.staff.unit(1.43), self.staff.unit(-3.5))
+            dots[0], Point(self.staff.unit(1.605), self.staff.unit(-3.5)), 2
         )
         assert_almost_equal(
-            dots[1], Point(self.staff.unit(1.93), self.staff.unit(-3.5))
-        )
-        assert_almost_equal(dots[2], Point(self.staff.unit(1.43), self.staff.unit(7.5)))
-        assert_almost_equal(dots[3], Point(self.staff.unit(1.93), self.staff.unit(7.5)))
-        assert_almost_equal(
-            dots[4], Point(self.staff.unit(1.43), self.staff.unit(10.5))
+            dots[1], Point(self.staff.unit(2.105), self.staff.unit(-3.5)), 2
         )
         assert_almost_equal(
-            dots[5], Point(self.staff.unit(1.93), self.staff.unit(10.5))
+            dots[2], Point(self.staff.unit(1.605), self.staff.unit(7.5)), 2
+        )
+        assert_almost_equal(
+            dots[3], Point(self.staff.unit(2.105), self.staff.unit(7.5)), 2
+        )
+        assert_almost_equal(
+            dots[4], Point(self.staff.unit(1.605), self.staff.unit(10.5)), 2
+        )
+        assert_almost_equal(
+            dots[5], Point(self.staff.unit(2.105), self.staff.unit(10.5)), 2
         )
 
     def test_furthest_notehead_with_one_note(self):

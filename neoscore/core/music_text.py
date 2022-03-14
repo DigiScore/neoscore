@@ -114,40 +114,11 @@ class MusicText(Text):
         cached_result = _GEOMETRY_CACHE.get(key)
         if cached_result:
             return cached_result.bounding_rect
-        bounding_rect = MusicText._char_list_bounding_rect(self.music_chars, self.scale)
+        bounding_rect = self.font.bounding_rect_of(self.text) * self.scale
         _GEOMETRY_CACHE[key] = _CachedTextGeometry(bounding_rect)
         return bounding_rect
 
     ######## PRIVATE METHODS ########
-
-    @staticmethod
-    def _char_list_bounding_rect(music_chars: list[MusicChar], scale:float) -> Rect:
-        """Find the bounding rect of a given list of music chars.
-
-        Takes a list of MusicChars and determined the bounding rect
-        they would have if they were in this MusicText.
-
-        Args:
-            music_chars: The string to represent
-
-        Returns:
-            The bounding rect of the specified text if drawn.
-        """
-        x = music_chars[0].glyph_info["glyphBBox"]["bBoxSW"][0]
-        y = music_chars[0].glyph_info["glyphBBox"]["bBoxNE"][1]
-        w = ZERO
-        h = ZERO
-        for char in music_chars:
-            char_x = char.glyph_info["glyphBBox"]["bBoxSW"][0]
-            char_y = char.glyph_info["glyphBBox"]["bBoxNE"][1]
-            w += char.glyph_info["glyphBBox"]["bBoxNE"][0] - char_x
-            h += (char.glyph_info["glyphBBox"]["bBoxSW"][1] - char_y) * -1
-        return Rect(
-            x * scale,
-            y * scale,
-            w * scale,
-            h * scale,
-        )
 
     @staticmethod
     def _music_chars_to_str(music_chars: list[MusicChar]) -> str:

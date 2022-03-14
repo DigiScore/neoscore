@@ -15,6 +15,10 @@ class RepeatingMusicTextLine(MusicText, StaffObject, Spanner):
 
     # TODO MEDIUM figure out how to type `text` - same problem as in `MusicText`
 
+    # TODO medium it doesn't really make sense that this supports
+    # scale - spanners shouldn't be scaleable since their size is
+    # determined by their start/end points.
+
     def __init__(
         self,
         start: PointDef,
@@ -49,7 +53,7 @@ class RepeatingMusicTextLine(MusicText, StaffObject, Spanner):
         StaffObject.__init__(self, parent)
         Spanner.__init__(self, end_x, end_parent or self)
         self.single_repetition_chars = self.music_chars
-        base_width = MusicText._char_list_bounding_rect(self.music_chars, scale).width
+        base_width = self.font.bounding_rect_of(self.text).width
         repetitions_needed = int(cast(float, self.length / base_width))
         self.music_chars = self.music_chars * repetitions_needed
 
@@ -58,4 +62,3 @@ class RepeatingMusicTextLine(MusicText, StaffObject, Spanner):
     @property
     def length(self) -> Unit:
         return self.spanner_x_length
-

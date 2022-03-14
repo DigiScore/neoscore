@@ -178,7 +178,7 @@ class _OctaveLineText(MusicText, StaffObject):
         interface.render()
         self.interfaces.append(interface)
 
-    def _render_after_break(self, local_start_x: Unit, start: Point, stop: Point):
+    def _render_after_break(self, local_start_x: Unit, start: Point):
         interface = TextInterface(
             start,
             NO_PEN.interface,

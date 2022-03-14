@@ -2,8 +2,8 @@ import unittest
 
 from neoscore.core import neoscore
 from neoscore.core.flowable import Flowable
-from neoscore.core.music_text import MusicText
 from neoscore.core.music_char import MusicChar
+from neoscore.core.music_text import MusicText
 from neoscore.core.repeating_music_text_line import RepeatingMusicTextLine
 from neoscore.core.staff import Staff
 from neoscore.utils.units import Mm
@@ -18,9 +18,8 @@ class TestRepeatingMusicTextLine(unittest.TestCase):
         self.left_parent = MockStaffObject((Mm(0), Mm(0)), self.staff)
         self.right_parent = MockStaffObject((Mm(10), Mm(2)), self.staff)
         self.char = "gClef"
-        self.scale = 2
         self.single_repetition_width = MusicText(
-            (Mm(0), Mm(0)), self.char, self.staff, scale=self.scale
+            (Mm(0), Mm(0)), self.char, self.staff
         ).bounding_rect.width
 
     def test_init(self):
@@ -30,8 +29,9 @@ class TestRepeatingMusicTextLine(unittest.TestCase):
             Mm(3),
             self.char,
             self.right_parent,
-            scale=self.scale,
         )
-        assert line.single_repetition_chars == [MusicChar(self.staff.music_font, 'gClef')]
+        assert line.single_repetition_chars == [
+            MusicChar(self.staff.music_font, "gClef")
+        ]
         expected_reps = int(Mm(12) / self.single_repetition_width)
         assert len(line.music_chars) == expected_reps

@@ -337,9 +337,7 @@ class GraphicObject(ABC):
             Point(current_line.flowable_x, pos_in_flowable.y)
         )
         render_end_pos = Point(render_start_pos.x + remaining_x, render_start_pos.y)
-        self._render_after_break(
-            self.length - remaining_x, render_start_pos, render_end_pos
-        )
+        self._render_after_break(self.length - remaining_x, render_start_pos)
 
     def _render_complete(
         self,
@@ -398,7 +396,7 @@ class GraphicObject(ABC):
         """
         raise NotImplementedError
 
-    def _render_after_break(self, local_start_x: Unit, start: Point, stop: Point):
+    def _render_after_break(self, local_start_x: Unit, start: Point):
         """Render the continuation of an object after a break.
 
         For use in flowable containers when rendering an object that
@@ -412,7 +410,6 @@ class GraphicObject(ABC):
             local_start_x: The local starting position of this
                 drawing segment.
             start: The starting point in document space for drawing.
-            stop: The stopping point in document space for drawing.
 
         Note: All GraphicObject subclasses whose `length` can
               be nonzero must implement this method.
