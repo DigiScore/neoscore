@@ -5,6 +5,7 @@ from neoscore.core.graphic_object import GraphicObject
 from neoscore.core.path import Path
 from neoscore.core.spanner_2d import Spanner2D
 from neoscore.core.staff_object import StaffObject
+from neoscore.models.vertical_direction import VerticalDirection
 from neoscore.utils.point import Point, PointDef
 
 
@@ -21,8 +22,7 @@ class Slur(Path, StaffObject, Spanner2D):
         start_parent: GraphicObject,
         stop: PointDef,
         stop_parent: Optional[GraphicObject],
-        # TODO HIGH change to use VerticalDirection
-        direction: int = -1,
+        direction: VerticalDirection = VerticalDirection.UP,
     ):
         """
         Args:

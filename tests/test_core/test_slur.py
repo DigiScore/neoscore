@@ -9,14 +9,14 @@ from tests.mocks.mock_staff_object import MockStaffObject
 
 
 class TestSlur(unittest.TestCase):
-    def setUp(self):
+    def setup(self):
         neoscore.setup()
         self.flowable = Flowable((Mm(0), Mm(0)), None, Mm(10000), Mm(30), Mm(5))
         self.staff = Staff((Mm(0), Mm(0)), self.flowable, Mm(5000))
         self.left_parent = MockStaffObject((Unit(0), Unit(0)), self.staff)
         self.right_parent = MockStaffObject((Unit(10), Unit(2)), self.staff)
 
-    def testDrawingDoesntCrash(self):
+    def test_doesnt_crash(self):
         """A woefully inadequate test to just see if slurs can be drawn at all.
 
         TODO LOW: Replace this with real tests
