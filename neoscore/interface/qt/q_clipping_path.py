@@ -1,7 +1,6 @@
 from typing import Optional
 
-from PyQt5 import QtCore
-from PyQt5.QtCore import QPointF, QRectF
+from PyQt5.QtCore import QRectF
 from PyQt5.QtGui import QBrush, QColor, QPainter, QPainterPath, QPen
 from PyQt5.QtWidgets import QGraphicsItem, QGraphicsPathItem
 

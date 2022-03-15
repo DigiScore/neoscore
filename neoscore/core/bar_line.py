@@ -1,4 +1,5 @@
 from collections.abc import Iterable
+
 from neoscore.core.mapping import map_between
 from neoscore.core.multi_staff_object import MultiStaffObject
 from neoscore.core.path import Path

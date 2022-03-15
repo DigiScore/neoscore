@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, cast
+
 from neoscore.core.mapping import Positioned, map_between, map_between_x
 from neoscore.utils.point import Point
 from neoscore.utils.units import Unit

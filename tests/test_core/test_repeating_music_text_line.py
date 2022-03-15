@@ -24,11 +24,7 @@ class TestRepeatingMusicTextLine(unittest.TestCase):
 
     def test_init(self):
         line = RepeatingMusicTextLine(
-            (Mm(1), Mm(2)),
-            self.left_parent,
-            Mm(3),
-            self.char,
-            self.right_parent,
+            (Mm(1), Mm(2)), self.left_parent, Mm(3), self.char, self.right_parent
         )
         assert line.single_repetition_chars == [
             MusicChar(self.staff.music_font, "gClef")

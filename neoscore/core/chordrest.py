@@ -10,8 +10,8 @@ from neoscore.core.rhythm_dot import RhythmDot
 from neoscore.core.staff import Staff
 from neoscore.core.staff_object import StaffObject
 from neoscore.core.stem import Stem
-from neoscore.models.beat import Beat, BeatDef
-from neoscore.models.pitch import Pitch, PitchDef
+from neoscore.models.beat import BeatDef
+from neoscore.models.pitch import PitchDef
 from neoscore.models.vertical_direction import VerticalDirection
 from neoscore.utils.point import Point
 from neoscore.utils.units import Unit

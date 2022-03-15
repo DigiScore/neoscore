@@ -1,9 +1,9 @@
+from examples.feldman_projections_2.grid_unit import GridUnit
 from neoscore.core.object_group import ObjectGroup
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
 from neoscore.core.pen_join_style import PenJoinStyle
 from neoscore.core.spanner import Spanner
-from examples.feldman_projections_2.grid_unit import GridUnit
 
 
 class Event(ObjectGroup, Spanner):

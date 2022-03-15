@@ -8,7 +8,7 @@ from neoscore.core.layout_controller import LayoutController
 from neoscore.core.mapping import canvas_pos_of
 from neoscore.core.new_line import NewLine
 from neoscore.utils.exceptions import OutOfBoundsError
-from neoscore.utils.point import ORIGIN, Point, PointDef
+from neoscore.utils.point import Point, PointDef
 from neoscore.utils.units import ZERO, Mm, Unit
 
 if TYPE_CHECKING:

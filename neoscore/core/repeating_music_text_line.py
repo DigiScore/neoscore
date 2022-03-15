@@ -5,7 +5,7 @@ from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.spanner import Spanner
 from neoscore.core.staff_object import StaffObject
-from neoscore.utils.point import Point, PointDef
+from neoscore.utils.point import PointDef
 from neoscore.utils.units import Unit
 
 
@@ -15,10 +15,6 @@ class RepeatingMusicTextLine(MusicText, StaffObject, Spanner):
 
     # TODO MEDIUM figure out how to type `text` - same problem as in `MusicText`
 
-    # TODO HIGH it doesn't really make sense that this supports
-    # scale - spanners shouldn't be scaleable since their size is
-    # determined by their start/end points.
-
     def __init__(
         self,
         start: PointDef,
@@ -27,7 +23,6 @@ class RepeatingMusicTextLine(MusicText, StaffObject, Spanner):
         text,
         end_parent: Optional[GraphicObject] = None,
         font: Optional[MusicFont] = None,
-        scale: float = 1,
     ):
         """
         Args:
@@ -42,14 +37,12 @@ class RepeatingMusicTextLine(MusicText, StaffObject, Spanner):
                 If omitted, the end position is relative to the main object.
             font: The music font to be used. If not specified,
                 the font is taken from the ancestor staff.
-            scale: A hard scaling factor to be applied
-                in addition to the size of the music font.
         """
         # Start the MusicText with a single repetition, then after
         # superclasses are set up figure out how many repetitions are
         # needed to cover `self.length` and update the text
         # accordingly.
-        MusicText.__init__(self, start, parent, text, font, scale)
+        MusicText.__init__(self, start, parent, text, font)
         StaffObject.__init__(self, parent)
         Spanner.__init__(self, end_x, end_parent or self)
         self.single_repetition_chars = self.music_chars

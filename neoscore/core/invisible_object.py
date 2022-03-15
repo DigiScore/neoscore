@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Optional
 
 from neoscore.core.graphic_object import GraphicObject
 from neoscore.utils.point import PointDef
-from neoscore.utils.units import Unit, ZERO
+from neoscore.utils.units import ZERO, Unit
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent

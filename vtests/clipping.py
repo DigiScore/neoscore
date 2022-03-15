@@ -2,13 +2,8 @@
 
 """A development sandbox used for manually checking visual outputs."""
 
-import os
-import random
-import sys
-import time
-
 from neoscore.common import *
-from neoscore.utils.units import ZERO, Unit
+from neoscore.utils.units import ZERO
 
 neoscore.setup()
 

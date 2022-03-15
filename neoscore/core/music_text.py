@@ -8,7 +8,7 @@ from neoscore.core.staff_object import StaffObject
 from neoscore.core.text import Text
 from neoscore.utils.point import PointDef
 from neoscore.utils.rect import Rect
-from neoscore.utils.units import ZERO, Unit
+from neoscore.utils.units import Unit
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent

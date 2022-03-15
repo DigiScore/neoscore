@@ -1,5 +1,11 @@
 from typing import Union
 
+from examples.feldman_projections_2.glyph_name import GlyphName
+from examples.feldman_projections_2.grid_unit import GridUnit
+from examples.feldman_projections_2.instrument_data import InstrumentData
+from examples.feldman_projections_2.measure import Measure
+from examples.feldman_projections_2.music_text_event import MusicTextEvent
+from examples.feldman_projections_2.text_event import TextEvent
 from neoscore import constants
 from neoscore.core import neoscore
 from neoscore.core.music_font import MusicFont
@@ -8,12 +14,6 @@ from neoscore.core.path import Path
 from neoscore.core.pen import Pen
 from neoscore.core.pen_pattern import PenPattern
 from neoscore.core.staff import Staff
-from examples.feldman_projections_2.glyph_name import GlyphName
-from examples.feldman_projections_2.grid_unit import GridUnit
-from examples.feldman_projections_2.instrument_data import InstrumentData
-from examples.feldman_projections_2.measure import Measure
-from examples.feldman_projections_2.music_text_event import MusicTextEvent
-from examples.feldman_projections_2.text_event import TextEvent
 
 
 class Score(ObjectGroup):

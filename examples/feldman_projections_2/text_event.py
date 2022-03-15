@@ -1,7 +1,7 @@
-from neoscore.core.text import Text
-from neoscore.utils.point import Point
 from examples.feldman_projections_2.event import Event
 from examples.feldman_projections_2.grid_unit import GridUnit
+from neoscore.core.text import Text
+from neoscore.utils.point import Point
 
 
 class TextEvent(Event):

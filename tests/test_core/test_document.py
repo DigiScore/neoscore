@@ -1,4 +1,5 @@
 import unittest
+
 from neoscore.core.document import Document
 from neoscore.core.paper import Paper
 from neoscore.utils.point import Point

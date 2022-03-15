@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Iterator, Optional, Protocol, Type, Union, cast
+from typing import TYPE_CHECKING, Any, Iterator, Optional, Protocol, Union, cast
 
 from neoscore.utils.point import ORIGIN, Point
 from neoscore.utils.units import Unit

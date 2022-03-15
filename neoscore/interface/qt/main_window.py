@@ -3,8 +3,6 @@ from time import time
 
 from PyQt5 import QtCore, QtWidgets, uic
 
-from neoscore.constants import DEBUG
-
 QT_PRECISE_TIMER = 0
 
 
