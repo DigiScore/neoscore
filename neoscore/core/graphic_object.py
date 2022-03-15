@@ -53,7 +53,6 @@ class GraphicObject(ABC):
     def __init__(
         self,
         pos: PointDef,
-        length: Unit = ZERO,
         pen: Optional[SimplePenDef] = None,
         brush: Optional[SimpleBrushDef] = None,
         parent: Optional[Parent] = None,
@@ -61,16 +60,11 @@ class GraphicObject(ABC):
         """
         Args:
             pos: The position of the object relative to its parent
-            length: The width of the object which can be
-                subject to breaking across lines when in a`Flowable`.
-                If the object is not inside a `Flowable`,
-                this has no effect
             pen: The pen to draw outlines with.
             brush: The brush to draw outlines with.
             parent: The parent object or None
         """
         self.pos = pos
-        self._length = length
         self.pen = pen
         self.brush = brush
         self._children: list[GraphicObject] = []
@@ -127,7 +121,7 @@ class GraphicObject(ABC):
 
         This is used to determine how and where rendering cuts should be made.
         """
-        return self._length
+        raise NotImplementedError
 
     @property
     def pen(self) -> Pen:

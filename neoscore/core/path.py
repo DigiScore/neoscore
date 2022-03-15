@@ -57,7 +57,7 @@ class Path(GraphicObject):
             parent: The parent object or None
         """
         brush = brush or Brush.from_existing(Path._default_brush)
-        super().__init__(pos, ZERO, pen, brush, parent)
+        super().__init__(pos, pen, brush, parent)
         self.elements: list[PathElement] = []
 
     ######## CLASSMETHODS ########

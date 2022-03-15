@@ -46,18 +46,14 @@ class TestMusicText(unittest.TestCase):
         assert mtext.text == "\ue262"
         mtext.text = "accidentalFlat"
         assert mtext.text == "\ue260"
-        assert mtext.music_chars == [MusicChar(self.font, 'accidentalFlat')]
+        assert mtext.music_chars == [MusicChar(self.font, "accidentalFlat")]
 
     def test_music_chars_setter(self):
         mtext = MusicText((Unit(5), Unit(6)), "accidentalSharp", self.staff)
-        assert mtext.music_chars == [MusicChar(self.font, 'accidentalSharp')]
+        assert mtext.music_chars == [MusicChar(self.font, "accidentalSharp")]
         assert mtext.text == "\ue262"
-        new_chars = [MusicChar(self.font, 'accidentalFlat')]
+        new_chars = [MusicChar(self.font, "accidentalFlat")]
         mtext.music_chars = new_chars
         assert mtext.music_chars == new_chars
         # text should be updated too
         assert mtext.text == "\ue260"
-
-        
-        
-        

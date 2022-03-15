@@ -51,6 +51,10 @@ class Text(GraphicObject):
     ######## PUBLIC PROPERTIES ########
 
     @property
+    def length(self) -> Unit:
+        return ZERO
+
+    @property
     def text(self) -> str:
         """The text to be drawn"""
         return self._text

@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING, Optional
 
 from neoscore.core.graphic_object import GraphicObject
 from neoscore.utils.point import PointDef
+from neoscore.utils.units import Unit, ZERO
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
@@ -20,6 +21,10 @@ class InvisibleObject(GraphicObject):
             parent: The parent object. If None, defaults to the document's first page.
         """
         super().__init__(pos, parent=parent)
+
+    @property
+    def length(self) -> Unit:
+        return ZERO
 
     def _render(self):
         """Render all child objects.

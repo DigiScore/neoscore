@@ -264,7 +264,7 @@ class Chordrest(ObjectGroup, StaffObject):
         This automatically calculated property may be overridden using
         its setter. To revert back to the automatically calculated value
         set this property to `None`.
-        
+
         If there are no noteheads (meaning this Chordrest is a rest),
         this arbitrarily returns `VerticalDirection.UP`.
         """
@@ -272,9 +272,11 @@ class Chordrest(ObjectGroup, StaffObject):
             return self._stem_direction_override
         furthest = self.furthest_notehead
         if furthest:
-            return (VerticalDirection.DOWN
-                    if furthest.staff_pos <= self.staff.center_pos_y
-                    else VerticalDirection.UP)
+            return (
+                VerticalDirection.DOWN
+                if furthest.staff_pos <= self.staff.center_pos_y
+                else VerticalDirection.UP
+            )
         else:
             return VerticalDirection.UP
 
