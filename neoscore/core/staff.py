@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Type, cast
 
 from neoscore import constants
-from neoscore.core.flowable import Flowable
 from neoscore.core.mapping import Positioned, map_between_x
 from neoscore.core.music_font import MusicFont
 from neoscore.core.octave_line import OctaveLine
@@ -16,6 +15,7 @@ from neoscore.utils.units import ZERO, Unit, make_unit_class
 
 if TYPE_CHECKING:
     from neoscore.core.clef import Clef
+    from neoscore.core.mapping import Parent
     from neoscore.core.staff_object import StaffObject
 
 
@@ -26,12 +26,10 @@ class Staff(Path):
     # without importing the type, risking cyclic imports.
     _neoscore_staff_type_marker = True
 
-    # TODO HIGH does staff really need to always be in a flowable??? it shouldn't!
-
     def __init__(
         self,
         pos: PointDef,
-        flowable: Flowable,
+        parent: Optional[Parent],
         length: Unit,
         staff_unit: Optional[Unit] = None,
         line_count: int = 5,
@@ -41,7 +39,8 @@ class Staff(Path):
         """
         Args:
             pos: The position of the top-left corner of the staff
-            flowable: The flowable container for the staff
+            parent: The parent for the staff. Make this a `Flowable`
+                to allow the staff to run across line and page breaks.
             length: The horizontal width of the staff
             staff_unit: The distance between two lines in the staff.
                 If not set, this will default to `constants.DEFAULT_STAFF_UNIT`
@@ -51,7 +50,7 @@ class Staff(Path):
             pen: The pen used to draw the staff lines. If none, a default solid
                 black line is used.
         """
-        super().__init__(pos, parent=flowable, pen=pen)
+        super().__init__(pos, parent, pen=pen)
         self._line_count = line_count
         self._unit = self._make_unit_class(
             staff_unit if staff_unit else constants.DEFAULT_STAFF_UNIT

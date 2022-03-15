@@ -175,3 +175,7 @@ class TestStaff(unittest.TestCase):
         assert staff.elements[2].parent == staff
         assert staff.elements[3].pos == Point(Mm(10), Mm(1))
         assert staff.elements[3].parent == staff
+
+    def test_staff_outside_flowable(self):
+        staff = Staff((Mm(2), Mm(3)), None, Mm(10), staff_unit=Mm(1), line_count=5)
+        staff._render()

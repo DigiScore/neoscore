@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Optional, Union
 
 from neoscore.core.accidental import Accidental
 from neoscore.core.mapping import map_between
@@ -158,7 +158,9 @@ class _KeySignatureAccidental(MusicText, StaffObject):
     def _padded_clef_width(self, clef):
         return clef.bounding_rect.width + self.staff.unit(0.5)
 
-    def _render_occurrence(self, pos: Point, local_start_x: Unit, shift_for_clef: bool):
+    def _render_occurrence(
+        self, pos: Point, local_start_x: Optional[Unit], shift_for_clef: bool
+    ):
         """Render one appearance of one key signature accidental.
 
         Much of the positioning code needs to be performed
@@ -169,8 +171,11 @@ class _KeySignatureAccidental(MusicText, StaffObject):
         work.
 
         """
-        staff_pos_in_flowable = map_between(self.flowable, self.staff)
-        pos_x_in_staff = local_start_x - staff_pos_in_flowable.x
+        if local_start_x is not None:
+            staff_pos_in_flowable = map_between(self.flowable, self.staff)
+            pos_x_in_staff = local_start_x - staff_pos_in_flowable.x
+        else:
+            pos_x_in_staff = map_between(self.staff, self).x
         clef = self.staff.active_clef_at(pos_x_in_staff)
         if clef is None:
             return
@@ -184,14 +189,23 @@ class _KeySignatureAccidental(MusicText, StaffObject):
             visual_pos_x += self._padded_clef_width(clef)
         self._render_slice(Point(visual_pos_x, visual_pos_y))
 
-    def _render_complete(self, pos, dist_to_line_start=None, local_start_x=None):
+    def _render_complete(
+        self,
+        pos: Point,
+        dist_to_line_start: Optional[Unit] = None,
+        local_start_x: Optional[Unit] = None,
+    ):
         self._render_occurrence(pos, local_start_x, False)
 
-    def _render_before_break(self, local_start_x, start, stop, dist_to_line_start):
+    def _render_before_break(
+        self, local_start_x: Unit, start: Point, stop: Point, dist_to_line_start: Unit
+    ):
         self._render_occurrence(start, local_start_x, False)
 
-    def _render_after_break(self, local_start_x, start):
+    def _render_after_break(self, local_start_x: Unit, start: Point):
         self._render_occurrence(start, local_start_x, True)
 
-    def _render_spanning_continuation(self, local_start_x, start, stop):
+    def _render_spanning_continuation(
+        self, local_start_x: Unit, start: Point, stop: Point
+    ):
         self._render_occurrence(start, local_start_x, True)
