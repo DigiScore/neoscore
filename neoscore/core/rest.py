@@ -44,7 +44,9 @@ class Rest(MusicText, StaffObject):
     ):
         pos = Point.from_def(pos)
         self._duration = Beat.from_def(duration)
-        MusicText.__init__(self, pos, parent, [self._glyphnames[self.duration.base_division]])
+        MusicText.__init__(
+            self, pos, parent, [self._glyphnames[self.duration.base_division]]
+        )
         StaffObject.__init__(self, parent)
 
     ######## PUBLIC PROPERTIES ########

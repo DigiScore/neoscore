@@ -23,20 +23,28 @@ class TestStaff(unittest.TestCase):
     def test_height(self):
         # 5 lines
         assert_almost_equal(
-            Staff((Mm(0), Mm(0)), self.flowable, Mm(100), staff_unit=Mm(1.5), line_count=5).height,
+            Staff(
+                (Mm(0), Mm(0)), self.flowable, Mm(100), staff_unit=Mm(1.5), line_count=5
+            ).height,
             Mm(6),
         )
         assert_almost_equal(
-            Staff((Mm(0), Mm(0)), self.flowable, Mm(100), staff_unit=Mm(1), line_count=5).height,
+            Staff(
+                (Mm(0), Mm(0)), self.flowable, Mm(100), staff_unit=Mm(1), line_count=5
+            ).height,
             Mm(4),
         )
         # 4 lines
         assert_almost_equal(
-            Staff((Mm(0), Mm(0)), self.flowable, Mm(100), staff_unit=Mm(1.5), line_count=4).height,
+            Staff(
+                (Mm(0), Mm(0)), self.flowable, Mm(100), staff_unit=Mm(1.5), line_count=4
+            ).height,
             Mm(4.5),
         )
         assert_almost_equal(
-            Staff((Mm(0), Mm(0)), self.flowable, Mm(100), staff_unit=Mm(1), line_count=4).height,
+            Staff(
+                (Mm(0), Mm(0)), self.flowable, Mm(100), staff_unit=Mm(1), line_count=4
+            ).height,
             Mm(3),
         )
 
@@ -153,7 +161,9 @@ class TestStaff(unittest.TestCase):
         Ensure lines are drawn at the correct locations when staff is not
         positioned at (0, 0)
         """
-        staff = Staff((Mm(2), Mm(3)), self.flowable, Mm(10), staff_unit=Mm(1), line_count=5)
+        staff = Staff(
+            (Mm(2), Mm(3)), self.flowable, Mm(10), staff_unit=Mm(1), line_count=5
+        )
         staff._render()
         # Top line
         assert staff.elements[0].pos == Point(Mm(0), Mm(0))

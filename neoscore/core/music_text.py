@@ -33,7 +33,14 @@ class MusicText(Text):
     """
 
     # TODO MEDIUM find a way to type this text arg and/or simplify it
-    def __init__(self, pos: PointDef, parent: Parent, text: Any, font: Optional[MusicFont] = None, scale: float = 1):
+    def __init__(
+        self,
+        pos: PointDef,
+        parent: Parent,
+        text: Any,
+        font: Optional[MusicFont] = None,
+        scale: float = 1,
+    ):
         """
         Args:
             pos: The position of the text.

@@ -114,8 +114,11 @@ class Score(ObjectGroup):
 
     def draw_instrument_dividers(self):
         for divider in range(len(self.instruments) + 1):
-            current_path = Path((Measure(0), Score._divider_pos_y(divider)), parent=self,
-                                pen=Score._instrument_divider_pen)
+            current_path = Path(
+                (Measure(0), Score._divider_pos_y(divider)),
+                parent=self,
+                pen=Score._instrument_divider_pen,
+            )
             instrument_above = self.instruments[divider - 1] if divider > 0 else None
             instrument_below = (
                 self.instruments[divider] if divider < len(self.instruments) else None
@@ -135,7 +138,11 @@ class Score(ObjectGroup):
 
     def draw_bar_lines(self):
         for measure_num in range(self.measure_count + 1):
-            current_path = Path((Measure(measure_num), GridUnit(0)), parent=self, pen=Score._bar_line_pen)
+            current_path = Path(
+                (Measure(measure_num), GridUnit(0)),
+                parent=self,
+                pen=Score._bar_line_pen,
+            )
             drawing = False
             for divider_num in range(len(self.instruments) + 1):
                 if self._bar_line_extends_below(measure_num, divider_num):

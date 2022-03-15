@@ -37,7 +37,13 @@ class TestFlowable(unittest.TestCase):
     def flowable_with_explicit_parent(self):
         page = neoscore.document.pages[1]
         parent = InvisibleObject((Mm(22), Mm(33)), page)
-        flowable = Flowable((Mm(10), Mm(11)), parent=parent, width=Mm(1000), height=Mm(100), y_padding=Mm(5))
+        flowable = Flowable(
+            (Mm(10), Mm(11)),
+            parent=parent,
+            width=Mm(1000),
+            height=Mm(100),
+            y_padding=Mm(5),
+        )
         map_result = flowable.map_to_canvas(Point(Mm(4), Mm(5)))
         assert_almost_equal(
             map_result,

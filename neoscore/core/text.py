@@ -24,8 +24,14 @@ class Text(GraphicObject):
 
     """A graphical text object."""
 
-    def __init__(self, pos: PointDef, parent: Optional[Parent], text: str, font: Optional[Font] = None,
-                 scale: float = 1):
+    def __init__(
+        self,
+        pos: PointDef,
+        parent: Optional[Parent],
+        text: str,
+        font: Optional[Font] = None,
+        scale: float = 1,
+    ):
         """
         Args:
             pos: Position relative to the parent

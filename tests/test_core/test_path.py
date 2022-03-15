@@ -67,8 +67,12 @@ class TestPath(unittest.TestCase):
         assert_path_els_equal(path.elements[0], MoveTo(ORIGIN, path))
         assert_path_els_equal(
             path.elements[1],
-            CurveTo(Point(Unit(5), Unit(6)), path, ControlPoint(Point(Unit(10), Unit(11)), path),
-                    ControlPoint(Point(ZERO, Unit(1)), path)),
+            CurveTo(
+                Point(Unit(5), Unit(6)),
+                path,
+                ControlPoint(Point(Unit(10), Unit(11)), path),
+                ControlPoint(Point(ZERO, Unit(1)), path),
+            ),
         )
         resolved_els = path._resolve_path_elements()
         assert resolved_els == [
@@ -96,8 +100,12 @@ class TestPath(unittest.TestCase):
         assert_path_els_equal(path.elements[0], MoveTo(ORIGIN, path))
         assert_path_els_equal(
             path.elements[1],
-            CurveTo(Point(Unit(5), Unit(6)), parent_3, ControlPoint(Point(Unit(1), Unit(2)), parent_1),
-                    ControlPoint(Point(Unit(3), Unit(4)), parent_2)),
+            CurveTo(
+                Point(Unit(5), Unit(6)),
+                parent_3,
+                ControlPoint(Point(Unit(1), Unit(2)), parent_1),
+                ControlPoint(Point(Unit(3), Unit(4)), parent_2),
+            ),
         )
         resolved_els = path._resolve_path_elements()
         assert resolved_els == [

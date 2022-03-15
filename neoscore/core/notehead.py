@@ -28,7 +28,9 @@ class Notehead(MusicText, StaffObject):
         1: "noteheadWhole",
     }
 
-    def __init__(self, pos_x: Unit, parent: GraphicObject, pitch: PitchDef, duration: BeatDef):
+    def __init__(
+        self, pos_x: Unit, parent: GraphicObject, pitch: PitchDef, duration: BeatDef
+    ):
         """
         Args:
             pos_x (Unit): The x-axis position relative to `parent`.
@@ -44,7 +46,9 @@ class Notehead(MusicText, StaffObject):
         self._pitch = Pitch.from_def(pitch)
         self._duration = Beat.from_def(duration)
         # Use a temporary y-axis position before calculating it for real
-        MusicText.__init__(self, (pos_x, ZERO), parent, [self._glyphnames[self.duration.base_division]])
+        MusicText.__init__(
+            self, (pos_x, ZERO), parent, [self._glyphnames[self.duration.base_division]]
+        )
         StaffObject.__init__(self, parent)
         self.y = self.staff.unit(
             self.staff_pos - map_between(self.staff, self.parent).y

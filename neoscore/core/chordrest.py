@@ -341,7 +341,11 @@ class Chordrest(ObjectGroup, StaffObject):
             if notehead.pitch.accidental_type is None:
                 continue
             self.accidentals.add(
-                Accidental((padding, self.staff.unit(0)), notehead, notehead.pitch.accidental_type)
+                Accidental(
+                    (padding, self.staff.unit(0)),
+                    notehead,
+                    notehead.pitch.accidental_type,
+                )
             )
 
     def _create_dots(self):
@@ -354,7 +358,11 @@ class Chordrest(ObjectGroup, StaffObject):
 
         Returns: None
         """
-        self._stem = Stem(Point(self.staff.unit(0), self.furthest_notehead.staff_pos), self, self.stem_height)
+        self._stem = Stem(
+            Point(self.staff.unit(0), self.furthest_notehead.staff_pos),
+            self,
+            self.stem_height,
+        )
 
     def _create_flag(self):
         """Create a Flag attached to self.stem and store it in self.flag

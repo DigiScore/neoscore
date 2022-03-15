@@ -28,8 +28,16 @@ class Staff(Path):
 
     # TODO HIGH does staff really need to always be in a flowable??? it shouldn't!
 
-    def __init__(self, pos: PointDef, flowable: Flowable, length: Unit, staff_unit: Optional[Unit] = None,
-                 line_count: int = 5, music_font: Optional[MusicFont] = None, pen: Optional[Pen] = None):
+    def __init__(
+        self,
+        pos: PointDef,
+        flowable: Flowable,
+        length: Unit,
+        staff_unit: Optional[Unit] = None,
+        line_count: int = 5,
+        music_font: Optional[MusicFont] = None,
+        pen: Optional[Pen] = None,
+    ):
         """
         Args:
             pos: The position of the top-left corner of the staff

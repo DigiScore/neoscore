@@ -45,10 +45,16 @@ class TimeSignature(ObjectGroup, StaffObject):
         StaffObject.__init__(self, staff)
         self._meter = Beat.from_def(meter)
         # Add one glyph for each digit
-        self._numerator_glyph = MusicText((staff.unit(0), staff.unit(1)), self,
-                                          TimeSignature._glyphs_for_number(self.meter.numerator))
-        self._denominator_glyph = MusicText((staff.unit(0), staff.unit(3)), self,
-                                            TimeSignature._glyphs_for_number(self.meter.denominator))
+        self._numerator_glyph = MusicText(
+            (staff.unit(0), staff.unit(1)),
+            self,
+            TimeSignature._glyphs_for_number(self.meter.numerator),
+        )
+        self._denominator_glyph = MusicText(
+            (staff.unit(0), staff.unit(3)),
+            self,
+            TimeSignature._glyphs_for_number(self.meter.denominator),
+        )
 
     ######## PUBLIC PROPERTIES ########
 

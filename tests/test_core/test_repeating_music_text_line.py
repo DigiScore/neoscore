@@ -18,7 +18,9 @@ class TestRepeatingMusicTextLine(unittest.TestCase):
         self.left_parent = MockStaffObject((Mm(0), Mm(0)), self.staff)
         self.right_parent = MockStaffObject((Mm(10), Mm(2)), self.staff)
         self.char = "gClef"
-        self.single_repetition_width = MusicText((Mm(0), Mm(0)), self.staff, self.char).bounding_rect.width
+        self.single_repetition_width = MusicText(
+            (Mm(0), Mm(0)), self.staff, self.char
+        ).bounding_rect.width
 
     def test_init(self):
         line = RepeatingMusicTextLine(

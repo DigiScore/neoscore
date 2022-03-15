@@ -15,7 +15,9 @@ class Accidental(MusicText, StaffObject):
         AccidentalType.SHARP: "accidentalSharp",
     }
 
-    def __init__(self, pos: PointDef, parent: GraphicObject, accidental_type: AccidentalType):
+    def __init__(
+        self, pos: PointDef, parent: GraphicObject, accidental_type: AccidentalType
+    ):
         self._accidental_type = accidental_type
         canonical_name = self._canonical_names[self.accidental_type]
         MusicText.__init__(self, pos, parent, [canonical_name])

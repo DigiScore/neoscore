@@ -81,10 +81,17 @@ scaling_texts = []
 for i in range(0, 50, 2):
     scale = 1 + (i / 10)
     scaling_texts.append(
-        MusicText((Mm(290 + i), lowest_staff.unit(4)), lowest_staff, ["brace", ("gClef", 1)], scale=scale)
+        MusicText(
+            (Mm(290 + i), lowest_staff.unit(4)),
+            lowest_staff,
+            ["brace", ("gClef", 1)],
+            scale=scale,
+        )
     )
 
-flowing_text = MusicText((Mm(155), lower_staff.unit(3)), lower_staff, ["gClef"] * 130, scale=1)
+flowing_text = MusicText(
+    (Mm(155), lower_staff.unit(3)), lower_staff, ["gClef"] * 130, scale=1
+)
 
 pen = Pen(thickness=Mm(0.2), pattern=PenPattern.DASHDOTDOT)
 explicit_path = Path((Mm(0), Mm(0)), parent=p, pen=pen)
@@ -96,9 +103,13 @@ fake_trill = RepeatingMusicTextLine(
 
 text_on_first_page = Text((Mm(0), Mm(0)), None, "first page!")
 
-text_on_second_page = Text((Mm(0), Mm(0)), parent=neoscore.document.pages[1], text="second page!")
+text_on_second_page = Text(
+    (Mm(0), Mm(0)), parent=neoscore.document.pages[1], text="second page!"
+)
 
-text_on_third_page = Text((Mm(0), Mm(0)), parent=neoscore.document.pages[2], text="third page!")
+text_on_third_page = Text(
+    (Mm(0), Mm(0)), parent=neoscore.document.pages[2], text="third page!"
+)
 
 explicit_path_on_second_page = Path((Mm(0), Mm(0)), parent=text_on_second_page)
 explicit_path_on_second_page.line_to(Mm(100), Mm(60))

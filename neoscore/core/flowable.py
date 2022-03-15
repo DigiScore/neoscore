@@ -33,8 +33,15 @@ class Flowable(InvisibleObject):
 
     _neoscore_flowable_type_marker = True
 
-    def __init__(self, pos: PointDef, parent: Optional[Parent], width: Unit, height: Unit, y_padding: Unit = Mm(5),
-                 break_threshold: Unit = Mm(5)):
+    def __init__(
+        self,
+        pos: PointDef,
+        parent: Optional[Parent],
+        width: Unit,
+        height: Unit,
+        y_padding: Unit = Mm(5),
+        break_threshold: Unit = Mm(5),
+    ):
         """
         Args:
             pos: Starting position in relative to the top left corner of the

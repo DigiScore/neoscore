@@ -104,12 +104,16 @@ class OctaveLine(ObjectGroup, Spanner, StaffObject):
         # TODO LOW line needs some padding
         path_x = text_rect.width
         path_y = text_rect.height / -2
-        self.line_path = Path(pos=Point(path_x, path_y), parent=self, pen=Pen(
-            thickness=self.staff.music_font.engraving_defaults[
-                "octaveLineThickness"
-            ],
-            pattern=PenPattern.DASH,
-        ))
+        self.line_path = Path(
+            pos=Point(path_x, path_y),
+            parent=self,
+            pen=Pen(
+                thickness=self.staff.music_font.engraving_defaults[
+                    "octaveLineThickness"
+                ],
+                pattern=PenPattern.DASH,
+            ),
+        )
         # Drawn main line part
         self.line_path.line_to(self.end_pos.x, path_y, self.end_parent)
         pos_relative_to_staff = map_between(self.staff, self)

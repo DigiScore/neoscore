@@ -1,0 +1,33 @@
+#!/usr/bin/env python3
+
+"""A development sandbox used for manually checking visual outputs."""
+
+import os
+import random
+import sys
+import time
+
+from neoscore.common import *
+from neoscore.utils.units import ZERO, Unit
+
+neoscore.setup()
+
+flowable = Flowable((Mm(0), Mm(0)), None, Mm(2000), Mm(30), Mm(10))
+
+staff = Staff((Mm(0), Mm(0)), flowable, Mm(2000), Mm(1))
+
+# If staff is longer than flowable, the last line runs to the end.
+# this behavior kind of makes sense, actually..
+
+unit = staff.unit
+clef = Clef(unit(0), staff, "treble")
+KeySignature(clef.bounding_rect.width + unit(0.5), staff, "g_major")
+
+mt = MusicText((Mm(165), staff.unit(4)), staff, ("gClef", 1), scale=4)
+
+w = MusicText((Mm(240), staff.unit(2)), staff, ["gClef"] * 100)
+
+p = Path.straight_line((ZERO, Mm(-10)), w, stop=(w.length, ZERO))
+
+
+neoscore.show()

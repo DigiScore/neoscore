@@ -41,5 +41,9 @@ class PedAndStar(ObjectGroup, Spanner2D, StaffObject):
 
         # Add opening pedal mark
         # (GraphicObject init handles registration with ObjectGroup)
-        self.depress_mark = MusicText((GraphicUnit(0), GraphicUnit(0)), parent=self, text="keyboardPedalPed")
-        self.lift_mark = MusicText(self.end_pos, parent=self.end_parent, text="keyboardPedalUp")
+        self.depress_mark = MusicText(
+            (GraphicUnit(0), GraphicUnit(0)), parent=self, text="keyboardPedalPed"
+        )
+        self.lift_mark = MusicText(
+            self.end_pos, parent=self.end_parent, text="keyboardPedalUp"
+        )
