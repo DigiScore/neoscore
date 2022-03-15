@@ -32,8 +32,7 @@ class Slur(Path, StaffObject, Spanner2D):
             stop: The stopping point.
             stop_parent: The parent for the ending position.
                 If `None`, defaults to `self`.
-            direction: The direction of the slur, where
-                `-1` indicates curving upward, and `1` vice versa.
+            direction: The vertical direction the slur arches.
         """
         Path.__init__(self, start, parent=start_parent, brush=Brush((0, 0, 0, 255)))
         StaffObject.__init__(self, self.parent)
@@ -53,10 +52,6 @@ class Slur(Path, StaffObject, Spanner2D):
     ######## PRIVATE METHODS ########
 
     def _draw_path(self):
-        """Draw the slur shape.
-
-        Returns: None
-        """
         mid_height = self.staff.unit(2) * self.direction
         mid_upper_height = (
             self.staff.unit(2) + self.midpoint_thickness
