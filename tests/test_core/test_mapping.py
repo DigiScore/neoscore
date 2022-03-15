@@ -14,7 +14,7 @@ from ..helpers import assert_almost_equal
 class TestMapping(unittest.TestCase):
     def setUp(self):
         neoscore.setup(Paper(*[Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]))
-        self.flowable = Flowable((Mm(0), Mm(0)), Mm(10000), Mm(30), Mm(5))
+        self.flowable = Flowable((Mm(0), Mm(0)), None, Mm(10000), Mm(30), Mm(5))
 
     def test_map_between(self):
         source = InvisibleObject((Unit(5), Unit(6)), neoscore.document.pages[1])

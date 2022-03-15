@@ -46,21 +46,22 @@ class PedalLine(Spanner, Path, StaffObject):
         start_parent: GraphicObject,
         end_x: Unit,
         end_parent: Optional[GraphicObject] = None,
-        half_lift_positions: Unit = None,
+        half_lift_positions: list[Unit] = None,
     ):
         """
         Args:
-            start (Point or init tuple): The starting position of the
-                pedal line.
-            start_parent (GraphicObject): An object either in a Staff
-                or an actual Staff.
-            end_x (Unit): The
+            start: The starting position of the pedal line.
+            start_parent: An object either in a Staff or an actual Staff.
+            end_x: x position of the end point relative to end_parent
+            end_parent: parent for end_x
+            half_lift_positions: A list of x-axis positions along the line
+                where half lift notches should be drawn.
         """
         StaffObject.__init__(self, start_parent)
         pen = Pen(
             thickness=self.staff.music_font.engraving_defaults["pedalLineThickness"]
         )
-        Path.__init__(self, start, pen, parent=start_parent)
+        Path.__init__(self, start, parent=start_parent, pen=pen)
         Spanner.__init__(self, end_x, end_parent or self)
         self.half_lift_positions = half_lift_positions
         self._draw_path()

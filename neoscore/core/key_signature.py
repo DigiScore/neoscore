@@ -67,9 +67,7 @@ class KeySignature(ObjectGroup, StaffObject):
         length = self.length
         for key, value in self.key_signature_type.value.items():
             if value is not None:
-                _KeySignatureAccidental(
-                    ORIGIN, key, value, self, self.staff.music_font, 1, length
-                )
+                _KeySignatureAccidental(ORIGIN, self, key, value, self.staff.music_font, 1, length)
 
 
 class _KeySignatureAccidental(MusicText, StaffObject):
@@ -128,24 +126,8 @@ class _KeySignatureAccidental(MusicText, StaffObject):
         },
     }
 
-    def __init__(
-        self,
-        pos,
-        pitch_letter,
-        accidental_type,
-        key_signature,
-        music_font,
-        scale,
-        length,
-    ):
-        MusicText.__init__(
-            self,
-            pos,
-            Accidental._canonical_names[accidental_type],
-            key_signature,
-            music_font,
-            scale,
-        )
+    def __init__(self, pos, key_signature, pitch_letter, accidental_type, music_font, scale, length):
+        MusicText.__init__(self, pos, key_signature, Accidental._canonical_names[accidental_type], music_font, scale)
         StaffObject.__init__(self, key_signature)
         self._length = length
         self.pitch_letter = pitch_letter

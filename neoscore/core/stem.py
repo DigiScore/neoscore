@@ -12,13 +12,13 @@ class Stem(Path, StaffObject):
 
     """A vertical note/chord stem."""
 
-    def __init__(self, start: PointDef, height: Unit, parent: GraphicObject):
+    def __init__(self, start: PointDef, parent: GraphicObject, height: Unit):
         """
         Args:
             start: Starting point for the stem
+            parent: The stem's parent
             height: The height of the stem,
                 where positive extend downward.
-            parent:
         """
         Path.__init__(self, start, parent=parent)
         StaffObject.__init__(self, parent=parent)

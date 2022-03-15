@@ -24,20 +24,14 @@ class Text(GraphicObject):
 
     """A graphical text object."""
 
-    def __init__(
-        self,
-        pos: PointDef,
-        text: str,
-        font: Optional[Font] = None,
-        parent: Optional[Parent] = None,
-        scale: float = 1,
-    ):
+    def __init__(self, pos: PointDef, parent: Optional[Parent], text: str, font: Optional[Font] = None,
+                 scale: float = 1):
         """
         Args:
             pos: Position relative to the parent
+            parent: The parent (core-level) object or None
             text: The text to be displayed
             font: The font to display the text in.
-            parent: The parent (core-level) object or None
             scale: A hard scaling factor.
         """
         if font:
@@ -49,6 +43,8 @@ class Text(GraphicObject):
         super().__init__(pos, parent=parent)
 
     ######## PUBLIC PROPERTIES ########
+
+    # TODO MEDIUM Text is not breakable, is this intentional?
 
     @property
     def length(self) -> Unit:

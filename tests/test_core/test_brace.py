@@ -11,8 +11,8 @@ class TestBrace(unittest.TestCase):
         neoscore.setup()
 
     def test_scaling_alternate_glyphs(self):
-        top_staff = Staff((Mm(0), Mm(0)), Mm(100), flowable=None)
-        bottom_staff = Staff((Mm(0), Mm(20)), Mm(100), flowable=None)
+        top_staff = Staff((Mm(0), Mm(0)), flowable=None, length=Mm(100))
+        bottom_staff = Staff((Mm(0), Mm(20)), flowable=None, length=Mm(100))
         small_brace = Brace(Mm(0), {top_staff})
         assert small_brace.music_chars[0].canonical_name == "braceSmall"
         large_brace = Brace(Mm(0), {top_staff, bottom_staff})

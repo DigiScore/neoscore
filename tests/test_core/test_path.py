@@ -25,13 +25,13 @@ class TestPath(unittest.TestCase):
         mock_parent = InvisibleObject(ORIGIN, parent=None)
         test_pen = Pen("#eeeeee")
         test_brush = Brush("#dddddd")
-        path = Path((Unit(5), Unit(6)), test_pen, test_brush, mock_parent)
+        path = Path((Unit(5), Unit(6)), mock_parent, test_brush, test_pen)
         assert path.pos == Point(Unit(5), Unit(6))
         assert path.pen == test_pen
         assert path.brush == test_brush
 
     def test_straight_line(self):
-        path = Path.straight_line((Unit(5), Unit(6)), (Unit(10), Unit(11)))
+        path = Path.straight_line((Unit(5), Unit(6)), None, (Unit(10), Unit(11)))
         assert path.pos == Point(Unit(5), Unit(6))
         assert len(path.elements) == 2
         assert_path_els_equal(path.elements[0], MoveTo(ORIGIN, path))
@@ -67,12 +67,8 @@ class TestPath(unittest.TestCase):
         assert_path_els_equal(path.elements[0], MoveTo(ORIGIN, path))
         assert_path_els_equal(
             path.elements[1],
-            CurveTo(
-                ControlPoint(Point(Unit(10), Unit(11)), path),
-                ControlPoint(Point(ZERO, Unit(1)), path),
-                Point(Unit(5), Unit(6)),
-                path,
-            ),
+            CurveTo(Point(Unit(5), Unit(6)), path, ControlPoint(Point(Unit(10), Unit(11)), path),
+                    ControlPoint(Point(ZERO, Unit(1)), path)),
         )
         resolved_els = path._resolve_path_elements()
         assert resolved_els == [
@@ -100,12 +96,8 @@ class TestPath(unittest.TestCase):
         assert_path_els_equal(path.elements[0], MoveTo(ORIGIN, path))
         assert_path_els_equal(
             path.elements[1],
-            CurveTo(
-                ControlPoint(Point(Unit(1), Unit(2)), parent_1),
-                ControlPoint(Point(Unit(3), Unit(4)), parent_2),
-                Point(Unit(5), Unit(6)),
-                parent_3,
-            ),
+            CurveTo(Point(Unit(5), Unit(6)), parent_3, ControlPoint(Point(Unit(1), Unit(2)), parent_1),
+                    ControlPoint(Point(Unit(3), Unit(4)), parent_2)),
         )
         resolved_els = path._resolve_path_elements()
         assert resolved_els == [

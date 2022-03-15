@@ -67,7 +67,7 @@ class Chordrest(ObjectGroup, StaffObject):
         self._stem_direction_override = stem_direction
         if pitches:
             for pitch in pitches:
-                self._noteheads.add(Notehead(staff.unit(0), pitch, self.duration, self))
+                self._noteheads.add(Notehead(staff.unit(0), self, pitch, self.duration))
             self.rest = None
         else:
             # TODO LOW support explicit rest Y positioning
@@ -341,11 +341,7 @@ class Chordrest(ObjectGroup, StaffObject):
             if notehead.pitch.accidental_type is None:
                 continue
             self.accidentals.add(
-                Accidental(
-                    (padding, self.staff.unit(0)),
-                    notehead.pitch.accidental_type,
-                    notehead,
-                )
+                Accidental((padding, self.staff.unit(0)), notehead, notehead.pitch.accidental_type)
             )
 
     def _create_dots(self):
@@ -358,11 +354,7 @@ class Chordrest(ObjectGroup, StaffObject):
 
         Returns: None
         """
-        self._stem = Stem(
-            Point(self.staff.unit(0), self.furthest_notehead.staff_pos),
-            self.stem_height,
-            self,
-        )
+        self._stem = Stem(Point(self.staff.unit(0), self.furthest_notehead.staff_pos), self, self.stem_height)
 
     def _create_flag(self):
         """Create a Flag attached to self.stem and store it in self.flag
@@ -370,7 +362,7 @@ class Chordrest(ObjectGroup, StaffObject):
         Returns: None
         """
         if Flag.needs_flag(self.duration):
-            self._flag = Flag(self.duration, self.stem.direction, self.stem.end_point)
+            self._flag = Flag(self.stem.end_point, self.duration, self.stem.direction)
 
     def _position_noteheads_horizontally(self):
         """Reposition noteheads so that they are laid out correctly

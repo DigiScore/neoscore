@@ -15,7 +15,7 @@ class RepeatingMusicTextLine(MusicText, StaffObject, Spanner):
 
     # TODO MEDIUM figure out how to type `text` - same problem as in `MusicText`
 
-    # TODO medium it doesn't really make sense that this supports
+    # TODO HIGH it doesn't really make sense that this supports
     # scale - spanners shouldn't be scaleable since their size is
     # determined by their start/end points.
 
@@ -31,25 +31,25 @@ class RepeatingMusicTextLine(MusicText, StaffObject, Spanner):
     ):
         """
         Args:
-            start (Point or init tuple): The starting point.
-            parent (GraphicObject): The parent of the starting point.
-            end_x (Unit): The end x position.
+            start: The starting point.
+            parent: The parent of the starting point.
+            end_x: The end x position.
             text (str, tuple, MusicChar, or list of these):
                 The text to be repeated over the spanner,
                 represented as a str (glyph name), tuple
                 (glyph name, alternate number), MusicChar, or a list of them.
-            end_parent (GraphicObject): An optional parent of the end point.
+            end_parent: An optional parent of the end point.
                 If omitted, the end position is relative to the main object.
-            font (MusicFont): The music font to be used. If not specified,
+            font: The music font to be used. If not specified,
                 the font is taken from the ancestor staff.
-            scale (float): A hard scaling factor to be applied
+            scale: A hard scaling factor to be applied
                 in addition to the size of the music font.
         """
         # Start the MusicText with a single repetition, then after
         # superclasses are set up figure out how many repetitions are
         # needed to cover `self.length` and update the text
         # accordingly.
-        MusicText.__init__(self, start, text, parent, font, scale)
+        MusicText.__init__(self, start, parent, text, font, scale)
         StaffObject.__init__(self, parent)
         Spanner.__init__(self, end_x, end_parent or self)
         self.single_repetition_chars = self.music_chars

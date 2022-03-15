@@ -35,13 +35,13 @@ class Flag(MusicText, StaffObject):
         8: "flag8thDown",
     }
 
-    def __init__(self, duration: Beat, direction: int, parent: GraphicObject):
+    def __init__(self, parent: GraphicObject, duration: Beat, direction: int):
         """
         Args:
+            parent (StaffObject or Staff)
             duration (Beat):
             direction (int): The direction of the flag, where
                 -1 indicates pointing upward, and 1 vice versa.
-            parent (StaffObject or Staff)
         """
         self.duration = duration
         self.direction = direction
@@ -49,7 +49,7 @@ class Flag(MusicText, StaffObject):
             glyph_name = self._down_glyphnames[self.duration.base_division]
         else:
             glyph_name = self._up_glyphnames[self.duration.base_division]
-        MusicText.__init__(self, ORIGIN, [glyph_name], parent)
+        MusicText.__init__(self, ORIGIN, parent, [glyph_name])
         StaffObject.__init__(self, parent)
 
     ######## PUBLIC PROPERTIES ########

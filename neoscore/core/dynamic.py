@@ -20,16 +20,16 @@ class Dynamic(MusicText, StaffObject):
         "n": "dynamicNiente",
     }
 
-    def __init__(self, pos: PointDef, text: str, parent: GraphicObject):
+    def __init__(self, pos: PointDef, parent: GraphicObject, text: str):
         """
         Args:
             pos: The object position
+            parent: The object parent.
             text: A valid dynamic indicator string consisting
                 of the letters: 'p, m, f, r, s, z, n'
-            parent: The object parent.
         """
         parsed_text = self._parse_dynamic_string(text)
-        MusicText.__init__(self, pos, parsed_text, parent)
+        MusicText.__init__(self, pos, parent, parsed_text)
         StaffObject.__init__(self, parent)
 
     ######## CONSTRUCTORS ########
@@ -39,52 +39,52 @@ class Dynamic(MusicText, StaffObject):
     @classmethod
     def ppp(cls, pos, parent):
         """Create a 'ppp' dynamic."""
-        return cls(pos, "ppp", parent)
+        return cls(pos, parent, "ppp")
 
     @classmethod
     def pp(cls, pos, parent):
         """Create a 'pp' dynamic."""
-        return cls(pos, "pp", parent)
+        return cls(pos, parent, "pp")
 
     @classmethod
     def p(cls, pos, parent):
         """Create a 'p' dynamic."""
-        return cls(pos, "p", parent)
+        return cls(pos, parent, "p")
 
     @classmethod
     def mp(cls, pos, parent):
         """Create an 'mp' dynamic."""
-        return cls(pos, "mp", parent)
+        return cls(pos, parent, "mp")
 
     @classmethod
     def mf(cls, pos, parent):
         """Create an 'mf' dynamic."""
-        return cls(pos, "mf", parent)
+        return cls(pos, parent, "mf")
 
     @classmethod
     def f(cls, pos, parent):
         """Create a 'f' dynamic."""
-        return cls(pos, "f", parent)
+        return cls(pos, parent, "f")
 
     @classmethod
     def ff(cls, pos, parent):
         """Create a 'ff' dynamic."""
-        return cls(pos, "ff", parent)
+        return cls(pos, parent, "ff")
 
     @classmethod
     def fff(cls, pos, parent):
         """Create a 'fff' dynamic."""
-        return cls(pos, "fff", parent)
+        return cls(pos, parent, "fff")
 
     @classmethod
     def sfz(cls, pos, parent):
         """Create an 'sfz' dynamic."""
-        return cls(pos, "sfz", parent)
+        return cls(pos, parent, "sfz")
 
     @classmethod
     def fp(cls, pos, parent):
         """Create an 'fp' dynamic."""
-        return cls(pos, "fp", parent)
+        return cls(pos, parent, "fp")
 
     ######## PRIVATE METHODS ########
 

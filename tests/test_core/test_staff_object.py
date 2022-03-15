@@ -11,8 +11,8 @@ from tests.mocks.mock_staff_object import MockStaffObject
 class TestStaffObject(unittest.TestCase):
     def setUp(self):
         neoscore.setup(Paper(*[Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]))
-        self.flowable = Flowable((Mm(0), Mm(0)), Mm(10000), Mm(30), Mm(5))
-        self.staff = Staff((Mm(0), Mm(0)), Mm(5000), self.flowable)
+        self.flowable = Flowable((Mm(0), Mm(0)), None, Mm(10000), Mm(30), Mm(5))
+        self.staff = Staff((Mm(0), Mm(0)), self.flowable, Mm(5000))
 
     def test_find_staff_with_direct_parent(self):
         child_object = MockStaffObject((Mm(0), Mm(0)), self.staff)

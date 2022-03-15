@@ -104,16 +104,12 @@ class OctaveLine(ObjectGroup, Spanner, StaffObject):
         # TODO LOW line needs some padding
         path_x = text_rect.width
         path_y = text_rect.height / -2
-        self.line_path = Path(
-            pos=Point(path_x, path_y),
-            pen=Pen(
-                thickness=self.staff.music_font.engraving_defaults[
-                    "octaveLineThickness"
-                ],
-                pattern=PenPattern.DASH,
-            ),
-            parent=self,
-        )
+        self.line_path = Path(pos=Point(path_x, path_y), parent=self, pen=Pen(
+            thickness=self.staff.music_font.engraving_defaults[
+                "octaveLineThickness"
+            ],
+            pattern=PenPattern.DASH,
+        ))
         # Drawn main line part
         self.line_path.line_to(self.end_pos.x, path_y, self.end_parent)
         pos_relative_to_staff = map_between(self.staff, self)
@@ -148,7 +144,7 @@ class _OctaveLineText(MusicText, StaffObject):
             indication: A valid octave indication.
                 Should be a valid entry in `OctaveLine.glyphs`.
         """
-        MusicText.__init__(self, pos, OctaveLine.glyphs[indication], parent)
+        MusicText.__init__(self, pos, parent, OctaveLine.glyphs[indication])
         StaffObject.__init__(self, parent)
         open_paren_char = MusicChar(self.font, OctaveLine.glyphs["("])
         close_paren_char = MusicChar(self.font, OctaveLine.glyphs[")"])

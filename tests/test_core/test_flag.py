@@ -12,22 +12,22 @@ from neoscore.utils.units import Mm
 class TestFlag(unittest.TestCase):
     def setUp(self):
         neoscore.setup()
-        self.staff = Staff((Mm(0), Mm(0)), Mm(100), flowable=None)
+        self.staff = Staff((Mm(0), Mm(0)), flowable=None, length=Mm(100))
 
     def test_glyphnames(self):
         # All flags with durations in the following denominations should
         # be init-able without error.
         for i in [1024, 512, 256, 128, 64, 32, 16, 8]:
-            Flag(Beat(1, i), 1, self.staff)
-            Flag(Beat(1, i), -1, self.staff)
+            Flag(self.staff, Beat(1, i), 1)
+            Flag(self.staff, Beat(1, i), -1)
 
     def test_invalid_direction_raises_value_error(self):
         with pytest.raises(ValueError):
-            Flag(Beat(1, 8), 0, self.staff)
+            Flag(self.staff, Beat(1, 8), 0)
         with pytest.raises(ValueError):
-            Flag(Beat(1, 8), 2, self.staff)
+            Flag(self.staff, Beat(1, 8), 2)
         with pytest.raises(ValueError):
-            Flag(Beat(1, 8), -2, self.staff)
+            Flag(self.staff, Beat(1, 8), -2)
 
     def test_needs_flag(self):
         assert Flag.needs_flag(Beat(1, 4)) is False
@@ -51,13 +51,13 @@ class TestFlag(unittest.TestCase):
 
     def test_raises_no_flag_needed_error(self):
         # Test valid durations
-        Flag(Beat(1, 16), 1, self.staff)
-        Flag(Beat(1, 8), 1, self.staff)
+        Flag(self.staff, Beat(1, 16), 1)
+        Flag(self.staff, Beat(1, 8), 1)
 
         # Test invalid durations
         with pytest.raises(NoFlagNeededError):
-            Flag(Beat(1, 4), 1, self.staff)
+            Flag(self.staff, Beat(1, 4), 1)
         with pytest.raises(NoFlagNeededError):
-            Flag(Beat(1, 2), 1, self.staff)
+            Flag(self.staff, Beat(1, 2), 1)
         with pytest.raises(NoFlagNeededError):
-            Flag(Beat(1, 1), 1, self.staff)
+            Flag(self.staff, Beat(1, 1), 1)

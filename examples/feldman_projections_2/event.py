@@ -20,9 +20,7 @@ class _EventBox(Path, Spanner):
     box_pen = Pen(thickness=GridUnit(0.07), join_style=PenJoinStyle.MITER)
 
     def __init__(self, parent, length):
-        Path.__init__(
-            self, (GridUnit(0), GridUnit(0)), pen=_EventBox.box_pen, parent=parent
-        )
+        Path.__init__(self, (GridUnit(0), GridUnit(0)), parent=parent, pen=_EventBox.box_pen)
         Spanner.__init__(self, length, self)
         self._construct_path()
 

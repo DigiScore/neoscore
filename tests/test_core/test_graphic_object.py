@@ -11,7 +11,7 @@ from neoscore.utils.units import Mm, Unit
 class TestGraphicObject(unittest.TestCase):
     def setUp(self):
         neoscore.setup(Paper(*[Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]))
-        self.flowable = Flowable((Mm(0), Mm(0)), Mm(10000), Mm(30), Mm(5))
+        self.flowable = Flowable((Mm(0), Mm(0)), None, Mm(10000), Mm(30), Mm(5))
 
     def test_pos_setter_changes_x(self):
         grob = InvisibleObject((Unit(5), Unit(6)))

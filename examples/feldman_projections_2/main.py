@@ -6,6 +6,6 @@ from examples.feldman_projections_2.score import Score
 neoscore.setup()
 
 # flowable = Flowable((GridUnit(0), GridUnit(0)), Measure(100), GridUnit(10))
-score = Score((GridUnit(0), GridUnit(0)), instruments, None)
+score = Score((GridUnit(0), GridUnit(0)), None, instruments)
 
 neoscore.show()

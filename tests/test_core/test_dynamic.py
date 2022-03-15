@@ -11,7 +11,7 @@ from neoscore.utils.units import Mm
 class TestNotehead(unittest.TestCase):
     def setUp(self):
         neoscore.setup()
-        self.staff = Staff((Mm(0), Mm(0)), Mm(100), flowable=None)
+        self.staff = Staff((Mm(0), Mm(0)), flowable=None, length=Mm(100))
 
     def test_parse_dynamic_string(self):
         self.assertEqual(
@@ -34,59 +34,59 @@ class TestNotehead(unittest.TestCase):
     def test_ppp(self):
         self.assertEqual(
             Dynamic.ppp((Mm(0), Mm(0)), self.staff).text,
-            Dynamic((Mm(0), Mm(0)), "ppp", self.staff).text,
+            Dynamic((Mm(0), Mm(0)), self.staff, "ppp").text,
         )
 
     def test_pp(self):
         self.assertEqual(
             Dynamic.pp((Mm(0), Mm(0)), self.staff).text,
-            Dynamic((Mm(0), Mm(0)), "pp", self.staff).text,
+            Dynamic((Mm(0), Mm(0)), self.staff, "pp").text,
         )
 
     def test_p(self):
         self.assertEqual(
             Dynamic.p((Mm(0), Mm(0)), self.staff).text,
-            Dynamic((Mm(0), Mm(0)), "p", self.staff).text,
+            Dynamic((Mm(0), Mm(0)), self.staff, "p").text,
         )
 
     def test_mp(self):
         self.assertEqual(
             Dynamic.mp((Mm(0), Mm(0)), self.staff).text,
-            Dynamic((Mm(0), Mm(0)), "mp", self.staff).text,
+            Dynamic((Mm(0), Mm(0)), self.staff, "mp").text,
         )
 
     def test_mf(self):
         self.assertEqual(
             Dynamic.mf((Mm(0), Mm(0)), self.staff).text,
-            Dynamic((Mm(0), Mm(0)), "mf", self.staff).text,
+            Dynamic((Mm(0), Mm(0)), self.staff, "mf").text,
         )
 
     def test_f(self):
         self.assertEqual(
             Dynamic.f((Mm(0), Mm(0)), self.staff).text,
-            Dynamic((Mm(0), Mm(0)), "f", self.staff).text,
+            Dynamic((Mm(0), Mm(0)), self.staff, "f").text,
         )
 
     def test_ff(self):
         self.assertEqual(
             Dynamic.ff((Mm(0), Mm(0)), self.staff).text,
-            Dynamic((Mm(0), Mm(0)), "ff", self.staff).text,
+            Dynamic((Mm(0), Mm(0)), self.staff, "ff").text,
         )
 
     def test_fff(self):
         self.assertEqual(
             Dynamic.fff((Mm(0), Mm(0)), self.staff).text,
-            Dynamic((Mm(0), Mm(0)), "fff", self.staff).text,
+            Dynamic((Mm(0), Mm(0)), self.staff, "fff").text,
         )
 
     def test_sfz(self):
         self.assertEqual(
             Dynamic.sfz((Mm(0), Mm(0)), self.staff).text,
-            Dynamic((Mm(0), Mm(0)), "sfz", self.staff).text,
+            Dynamic((Mm(0), Mm(0)), self.staff, "sfz").text,
         )
 
     def test_fp(self):
         self.assertEqual(
             Dynamic.fp((Mm(0), Mm(0)), self.staff).text,
-            Dynamic((Mm(0), Mm(0)), "fp", self.staff).text,
+            Dynamic((Mm(0), Mm(0)), self.staff, "fp").text,
         )

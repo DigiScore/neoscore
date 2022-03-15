@@ -10,7 +10,7 @@ class MusicTextEvent(Event):
 
     def __init__(self, pos, parent, length, text, font):
         Event.__init__(self, pos, parent, length)
-        self.text = MusicText(pos, text, self, font)
+        self.text = MusicText(pos, self, text, font)
         MusicTextEvent._center_music_text(self.text)
 
     @staticmethod

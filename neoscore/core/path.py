@@ -45,19 +45,19 @@ class Path(GraphicObject):
     def __init__(
         self,
         pos: PointDef,
-        pen: Optional[SimplePenDef] = None,
-        brush: Optional[SimpleBrushDef] = None,
         parent: Optional[Parent] = None,
+        brush: Optional[SimpleBrushDef] = None,
+        pen: Optional[SimplePenDef] = None,
     ):
         """
         Args:
             pos: The position of the path root.
-            pen: The pen to draw outlines with.
-            brush: The brush to draw outlines with.
             parent: The parent object or None
+            brush: The brush to draw outlines with.
+            pen: The pen to draw outlines with.
         """
         brush = brush or Brush.from_existing(Path._default_brush)
-        super().__init__(pos, pen, brush, parent)
+        super().__init__(pos, parent, brush, pen)
         self.elements: list[PathElement] = []
 
     ######## CLASSMETHODS ########
@@ -66,21 +66,21 @@ class Path(GraphicObject):
     def straight_line(
         cls,
         start: PointDef,
+        parent: Parent,
         stop: PointDef,
-        pen: Optional[SimplePenDef] = None,
         brush: Optional[SimpleBrushDef] = None,
-        parent: Parent = None,
+        pen: Optional[SimplePenDef] = None,
     ) -> Path:
         """Path: Constructor for a straight line
 
         Args:
             start: Starting position relative to the parent
-            stop: Ending position relative to the parent.
-            pen: The pen to draw outlines with.
-            brush: The brush to draw outlines with.
             parent: The parent object or None
+            stop: Ending position relative to the parent.
+            brush: The brush to draw outlines with.
+            pen: The pen to draw outlines with.
         """
-        line = cls(start, pen, brush, parent)
+        line = cls(start, parent, brush, pen)
         if isinstance(stop, tuple):
             stop = Point(*stop)
         line.line_to(stop.x, stop.y)
@@ -203,7 +203,7 @@ class Path(GraphicObject):
         if not len(self.elements):
             # Needed to ensure bounding rect / length calculations are correct
             self.elements.append(MoveTo(Point(Unit(0), Unit(0)), self))
-        self.elements.append(CurveTo(c1, c2, Point(end_x, end_y), end_parent or self))
+        self.elements.append(CurveTo(Point(end_x, end_y), end_parent or self, c1, c2))
 
     def _relative_element_pos(self, element: Parent) -> Point:
         return map_between(self, element)

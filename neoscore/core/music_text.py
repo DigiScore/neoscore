@@ -33,24 +33,17 @@ class MusicText(Text):
     """
 
     # TODO MEDIUM find a way to type this text arg and/or simplify it
-    def __init__(
-        self,
-        pos: PointDef,
-        text: Any,
-        parent: Parent,
-        font: Optional[MusicFont] = None,
-        scale: float = 1,
-    ):
+    def __init__(self, pos: PointDef, parent: Parent, text: Any, font: Optional[MusicFont] = None, scale: float = 1):
         """
         Args:
             pos: The position of the text.
+            parent: The parent of the glyph. If no `font`
+                is given, this must either be a `Staff` or an object which has
+                a `Staff` as an ancestor.
             text (str, tuple, MusicChar, or list of these):
                 The text to be used, represented as a either a `str`
                 (glyph name), `tuple` (glyph name, alternate number),
                 `MusicChar`, or a list of these. Empty text will fail.
-            parent: The parent of the glyph. If no `font`
-                is given, this must either be a `Staff` or an object which has
-                a `Staff` as an ancestor.
             font: The music font to be used. If not specified,
                 `parent` must be or have a `Staff` ancestor.
             scale: A hard scaling factor to be applied
@@ -65,7 +58,7 @@ class MusicText(Text):
             font = ancestor_staff.music_font
         self._music_chars = MusicText._resolve_music_chars(text, font)
         resolved_str = MusicText._music_chars_to_str(self._music_chars)
-        Text.__init__(self, pos, resolved_str, font, parent, scale=scale)
+        Text.__init__(self, pos, parent, resolved_str, font, scale=scale)
 
     ######## PUBLIC PROPERTIES ########
 

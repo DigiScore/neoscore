@@ -8,7 +8,7 @@ class TextEvent(Event):
     def __init__(self, pos, parent, length, text, font):
         Event.__init__(self, pos, parent, length)
         text_pos = TextEvent._calculate_text_pos(text, font)
-        self.text = Text(text_pos, text, font, self)
+        self.text = Text(text_pos, self, text, font)
 
     @staticmethod
     def _calculate_text_pos(text, font):

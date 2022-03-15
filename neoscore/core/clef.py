@@ -40,11 +40,11 @@ class Clef(MusicText, StaffObject):
         ClefType.ALTO: 2,
     }
 
-    def __init__(self, staff: Staff, pos_x: Unit, clef_type: Union[ClefType, str]):
+    def __init__(self, pos_x: Unit, staff: Staff, clef_type: Union[ClefType, str]):
         """
         Args:
-            staff (Staff):
             pos_x (Unit):
+            staff (Staff):
             clef_type (ClefType or str): The type of clef.
                 For convenience, any `str` of a `ClefType`
                 enum name may be passed.
@@ -57,9 +57,7 @@ class Clef(MusicText, StaffObject):
             self._clef_type = clef_type
         else:
             self._clef_type = ClefType[clef_type.upper()]
-        MusicText.__init__(
-            self, (pos_x, staff.unit(0)), self._canonical_names[self._clef_type], staff
-        )
+        MusicText.__init__(self, (pos_x, staff.unit(0)), staff, self._canonical_names[self._clef_type])
         StaffObject.__init__(self, staff)
         self.y = self.staff_position
 

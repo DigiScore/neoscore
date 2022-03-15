@@ -53,9 +53,9 @@ class GraphicObject(ABC):
     def __init__(
         self,
         pos: PointDef,
-        pen: Optional[SimplePenDef] = None,
-        brush: Optional[SimpleBrushDef] = None,
         parent: Optional[Parent] = None,
+        brush: Optional[SimpleBrushDef] = None,
+        pen: Optional[SimplePenDef] = None,
     ):
         """
         Args:

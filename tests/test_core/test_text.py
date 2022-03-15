@@ -14,7 +14,7 @@ class TestText(unittest.TestCase):
 
     def test_init(self):
         mock_parent = InvisibleObject((Unit(10), Unit(11)), parent=None)
-        test_object = Text((Unit(5), Unit(6)), "testing", self.font, mock_parent)
+        test_object = Text((Unit(5), Unit(6)), mock_parent, "testing", self.font)
         assert test_object.x == GraphicUnit(5)
         assert test_object.y == GraphicUnit(6)
         assert test_object.text == "testing"
@@ -22,6 +22,6 @@ class TestText(unittest.TestCase):
         assert test_object.parent == mock_parent
 
     def test_default_init_values(self):
-        test_object = Text((Unit(5), Unit(6)), "testing")
+        test_object = Text((Unit(5), Unit(6)), None, "testing")
         assert test_object.font == neoscore.default_font
         assert test_object.parent == neoscore.document.pages[0]

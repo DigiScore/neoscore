@@ -21,6 +21,7 @@ class Slur(Path, StaffObject, Spanner2D):
         start_parent: GraphicObject,
         stop: PointDef,
         stop_parent: Optional[GraphicObject],
+        # TODO HIGH change to use VerticalDirection
         direction: int = -1,
     ):
         """

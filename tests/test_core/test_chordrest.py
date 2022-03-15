@@ -21,9 +21,9 @@ from ..helpers import assert_almost_equal
 class TestChordrest(unittest.TestCase):
     def setUp(self):
         neoscore.setup()
-        self.flowable = Flowable(Point(Mm(0), Mm(0)), Mm(10000), Mm(100))
-        self.staff = Staff(Point(Mm(0), Mm(0)), Mm(100), self.flowable)
-        Clef(self.staff, Mm(0), "treble")
+        self.flowable = Flowable(Point(Mm(0), Mm(0)), None, Mm(10000), Mm(100))
+        self.staff = Staff(Point(Mm(0), Mm(0)), self.flowable, Mm(100))
+        Clef(Mm(0), self.staff, "treble")
 
     def test_ledger_line_positions(self):
         pitches = ["c'", "b'", "f'''"]
@@ -36,7 +36,7 @@ class TestChordrest(unittest.TestCase):
         ]
 
     def test_ledger_line_positions_with_different_clef(self):
-        Clef(self.staff, Mm(10), "bass")
+        Clef(Mm(10), self.staff, "bass")
         pitches = ["e,", "d", "e'"]
         chord = Chordrest(Mm(15), self.staff, pitches, Beat(1, 4))
         assert chord.ledger_line_positions == [

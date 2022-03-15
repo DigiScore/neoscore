@@ -11,8 +11,8 @@ from tests.mocks.mock_staff_object import MockStaffObject
 class TestSlur(unittest.TestCase):
     def setUp(self):
         neoscore.setup()
-        self.flowable = Flowable((Mm(0), Mm(0)), Mm(10000), Mm(30), Mm(5))
-        self.staff = Staff((Mm(0), Mm(0)), Mm(5000), self.flowable)
+        self.flowable = Flowable((Mm(0), Mm(0)), None, Mm(10000), Mm(30), Mm(5))
+        self.staff = Staff((Mm(0), Mm(0)), self.flowable, Mm(5000))
         self.left_parent = MockStaffObject((Unit(0), Unit(0)), self.staff)
         self.right_parent = MockStaffObject((Unit(10), Unit(2)), self.staff)
 

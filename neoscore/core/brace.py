@@ -46,22 +46,10 @@ class Brace(MultiStaffObject, StaffObject, MusicText):
             text = ("brace", 1)
         try:
             # Attempt to use size-specific optional glyph
-            MusicText.__init__(
-                self,
-                (pos_x, self.vertical_span),
-                text,
-                self.highest_staff,
-                scale=scale,
-            )
+            MusicText.__init__(self, (pos_x, self.vertical_span), self.highest_staff, text, scale=scale)
         except MusicFontGlyphNotFoundError:
             # Default to non-optional glyph
-            MusicText.__init__(
-                self,
-                (pos_x, self.vertical_span),
-                "brace",
-                self.highest_staff,
-                scale=scale,
-            )
+            MusicText.__init__(self, (pos_x, self.vertical_span), self.highest_staff, "brace", scale=scale)
 
     ######## PUBLIC PROPERTIES ########
 

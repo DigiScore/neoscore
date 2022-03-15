@@ -4,19 +4,19 @@ from neoscore.common import *
 
 neoscore.setup()
 
-flowable = Flowable((Mm(0), Mm(0)), Mm(500), Mm(30), Mm(10))
+flowable = Flowable((Mm(0), Mm(0)), None, Mm(500), Mm(30), Mm(10))
 
-staff = Staff((Mm(0), Mm(0)), Mm(500), flowable, Mm(1))
+staff = Staff((Mm(0), Mm(0)), flowable, Mm(500), Mm(1))
 unit = staff.unit
-clef = Clef(staff, unit(0), "treble")
+clef = Clef(unit(0), staff, "treble")
 KeySignature(clef.bounding_rect.width + unit(0.5), staff, "g_major")
 
 center = unit(20)
 
-n1 = Notehead(center, "g'", Beat(1, 4), staff)
-n2 = Notehead(center, "b'", Beat(1, 4), staff)
-n3 = Notehead(center, "d''", Beat(1, 4), staff)
-n4 = Notehead(center, "f''", Beat(1, 4), staff)
+n1 = Notehead(center, staff, "g'", Beat(1, 4))
+n2 = Notehead(center, staff, "b'", Beat(1, 4))
+n3 = Notehead(center, staff, "d''", Beat(1, 4))
+n4 = Notehead(center, staff, "f''", Beat(1, 4))
 
 
 def refresh_func(time):

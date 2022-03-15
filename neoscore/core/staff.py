@@ -26,28 +26,20 @@ class Staff(Path):
     # without importing the type, risking cyclic imports.
     _neoscore_staff_type_marker = True
 
-    def __init__(
-        self,
-        pos: PointDef,
-        length: Unit,
-        flowable: Flowable,
-        # TODO LOW make staff_unit default be encoded in default value
-        staff_unit: Optional[Unit] = None,
-        line_count: int = 5,
-        music_font: Optional[MusicFont] = None,
-        pen: Optional[Pen] = None,
-    ):
+    # TODO HIGH does staff really need to always be in a flowable??? it shouldn't!
+
+    def __init__(self, pos: PointDef, flowable: Flowable, length: Unit, staff_unit: Optional[Unit] = None,
+                 line_count: int = 5, music_font: Optional[MusicFont] = None, pen: Optional[Pen] = None):
         """
         Args:
-            pos (Point): The position of the top-left corner of the staff
-            length (Unit): The horizontal width of the staff
-            staff_unit (Unit): The distance between two lines in the staff.
+            pos: The position of the top-left corner of the staff
+            flowable: The flowable container for the staff
+            length: The horizontal width of the staff
+            staff_unit: The distance between two lines in the staff.
                 If not set, this will default to `constants.DEFAULT_STAFF_UNIT`
-            line_count (int): The number of lines in the staff.
-            music_font (MusicFont): The font to be used in all
-                MusicTextObjects unless otherwise specified.
-            default_time_signature_duration (tuple or None): The duration tuple
-                of the initial time signature. If none, (4, 4) will be used.
+            line_count: The number of lines in the staff.
+            music_font: The font to be used in all MusicText objects unless
+                otherwise specified.
             pen: The pen used to draw the staff lines. If none, a default solid
                 black line is used.
         """

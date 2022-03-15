@@ -11,10 +11,10 @@ from neoscore.utils.units import Mm
 class TestBarLine(unittest.TestCase):
     def setUp(self):
         neoscore.setup()
-        self.flowable = Flowable((Mm(0), Mm(0)), Mm(10000), Mm(30), Mm(5))
-        self.staff_1 = Staff((Mm(0), Mm(0)), Mm(100), self.flowable)
-        self.staff_2 = Staff((Mm(0), Mm(30)), Mm(100), self.flowable)
-        self.staff_3 = Staff((Mm(10), Mm(50)), Mm(100), self.flowable)
+        self.flowable = Flowable((Mm(0), Mm(0)), None, Mm(10000), Mm(30), Mm(5))
+        self.staff_1 = Staff((Mm(0), Mm(0)), self.flowable, Mm(100))
+        self.staff_2 = Staff((Mm(0), Mm(30)), self.flowable, Mm(100))
+        self.staff_3 = Staff((Mm(10), Mm(50)), self.flowable, Mm(100))
 
     def test_path_shape_with_same_staff_x_coords(self):
         bar_line = BarLine(Mm(15), [self.staff_1, self.staff_2])

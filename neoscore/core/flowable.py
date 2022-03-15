@@ -33,27 +33,20 @@ class Flowable(InvisibleObject):
 
     _neoscore_flowable_type_marker = True
 
-    def __init__(
-        self,
-        pos: PointDef,
-        width: Unit,
-        height: Unit,
-        y_padding: Unit = Mm(5),
-        break_threshold: Unit = Mm(5),
-        parent: Optional[Parent] = None,
-    ):
+    def __init__(self, pos: PointDef, parent: Optional[Parent], width: Unit, height: Unit, y_padding: Unit = Mm(5),
+                 break_threshold: Unit = Mm(5)):
         """
         Args:
             pos: Starting position in relative to the top left corner of the
                 live document area of the first page
+            parent: An optional parent object. Nested flowables are not supported,
+                so this should not be a flowable or in one. This defaults to the
+                document's first page.
             width: length of the flowable
             height: height of the flowable
             y_padding: The vertical gap between flowable sections
             break_threshold: The maximum distance the flowable will shorten a line
                 to allow a break to occur on a `BreakOpportunity`
-            parent: An optional parent object. Nested flowables are not supported,
-                so this should not be a flowable or in one. This defaults to the
-                document's first page.
         """
         super().__init__(pos, parent)
         self._length = width
