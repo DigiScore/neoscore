@@ -76,4 +76,6 @@ class FontInterface:
 
     def bounding_rect_of(self, text: str) -> Rect:
         """Calculate the tight bounding rectangle around a string in this font."""
+        # Qt warns that tightBoundingRect is very slow on windows.
+        # Maybe horizontalAdvance can be used instead?
         return qt_rect_to_rect(self._qt_font_metrics_object.tightBoundingRect(text))

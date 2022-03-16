@@ -1,19 +1,37 @@
+from typing import Optional
+
 from neoscore.core.path_element import CurveTo
 from neoscore.utils.point import Point
 from neoscore.utils.units import Unit
 
 
-def assert_almost_equal(left, right, places=7):
+def assert_almost_equal(
+    left: Point | Unit,
+    right: Point | Unit,
+    places: float = 7,
+    epsilon: Optional[float] = None,
+):
+    """Compare points or units for approximate equality
+
+    This compares based on the arguments' unit base values
+    (corresponding to Qt pixels). If `epsilon` is given, compare
+    equality within a difference of its value. Otherwise compare the
+    base values rounded to `places`.
+    """
     if isinstance(left, Unit):
-        _assert_units_almost_equal(left, right, places)
+        _assert_units_almost_equal(left, right, places, epsilon)
     elif isinstance(left, Point):
-        _assert_points_almost_equal(left, right, places)
+        _assert_points_almost_equal(left, right, places, epsilon)
     else:
         raise TypeError("Unsupported types")
 
 
-def _assert_units_almost_equal(left, right, places):
-    if round(left.base_value - right.base_value, places) != 0:
+def _assert_units_almost_equal(left, right, places, epsilon):
+    if epsilon is not None:
+        eq = abs(left.base_value - right.base_value) < epsilon
+    else:
+        eq = round(left.base_value - right.base_value, places) == 0
+    if not eq:
         left_type = type(left)
         right_type = type(right)
         raise AssertionError(
@@ -33,9 +51,9 @@ def _assert_units_almost_equal(left, right, places):
         )
 
 
-def _assert_points_almost_equal(left, right, places):
-    _assert_units_almost_equal(left.x, right.x, places)
-    _assert_units_almost_equal(left.y, right.y, places)
+def _assert_points_almost_equal(left, right, places, epsilon):
+    _assert_units_almost_equal(left.x, right.x, places, epsilon)
+    _assert_units_almost_equal(left.y, right.y, places, epsilon)
 
 
 def assert_path_els_equal(left, right):
