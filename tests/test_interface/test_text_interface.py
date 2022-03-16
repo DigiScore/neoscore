@@ -20,16 +20,16 @@ class TestTextInterface(unittest.TestCase):
         test_font_1 = FontInterface("Bravura", Unit(12), 1, False)
         test_object_1 = TextInterface(
             Point(Unit(5), Unit(6)),
-            NO_PEN.interface,
             self.brush,
+            NO_PEN.interface,
             "testing",
             test_font_1,
         )
         test_font_2 = FontInterface("Bravura", Unit(24), 1, False)
         test_object_2 = TextInterface(
             Point(Unit(5), Unit(6)),
-            NO_PEN.interface,
             self.brush,
+            NO_PEN.interface,
             "testing",
             test_font_2,
         )

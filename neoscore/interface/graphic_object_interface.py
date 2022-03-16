@@ -1,7 +1,5 @@
 from dataclasses import dataclass
 
-from neoscore.interface.brush_interface import BrushInterface
-from neoscore.interface.pen_interface import PenInterface
 from neoscore.utils.point import Point
 
 
@@ -20,10 +18,6 @@ class GraphicObjectInterface:
 
     pos: Point
     """The absolute position of the object in canvas space."""
-
-    pen: PenInterface
-
-    brush: BrushInterface
 
     def render(self):
         """Render the object to the scene.

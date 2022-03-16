@@ -248,8 +248,8 @@ class Path(GraphicObject):
         resolved_path_elements = self._resolve_path_elements()
         slice_interface = PathInterface(
             pos,
-            self.pen.interface,
             self.brush.interface,
+            self.pen.interface,
             resolved_path_elements,
             clip_start_x,
             clip_width,

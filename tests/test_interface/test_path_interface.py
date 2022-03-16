@@ -31,7 +31,7 @@ class TestPathInterface(unittest.TestCase):
         self.brush = BrushInterface(Color("#000000"), BrushPattern.SOLID)
 
     def test_init(self):
-        test_path = PathInterface(Point(Unit(5), Unit(6)), self.pen, self.brush, [])
+        test_path = PathInterface(Point(Unit(5), Unit(6)), self.brush, self.pen, [])
         assert test_path.brush == self.brush
         assert test_path.pen == self.pen
         assert test_path.elements == []

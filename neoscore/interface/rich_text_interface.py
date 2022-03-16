@@ -9,9 +9,6 @@ from neoscore.interface.graphic_object_interface import GraphicObjectInterface
 from neoscore.interface.qt.converters import point_to_qt_point_f
 from neoscore.utils.units import Unit
 
-# TODO HIGH seems like these dont use brush and pen, so maybe brush
-# and pen shouldn't be members of grob interface
-
 
 @dataclass(frozen=True)
 class RichTextInterface(GraphicObjectInterface):
@@ -30,7 +27,6 @@ class RichTextInterface(GraphicObjectInterface):
 
     def render(self):
         """Render the line to the scene."""
-        print("rendering")
         qt_object = self._create_qt_object()
         neoscore._app_interface.scene.addItem(qt_object)
 

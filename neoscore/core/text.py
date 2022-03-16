@@ -129,8 +129,8 @@ class Text(GraphicObject):
         """
         slice_interface = TextInterface(
             pos,
-            NO_PEN.interface,
             self.brush.interface,
+            NO_PEN.interface,
             self.text,
             self.font.interface,
             self.scale,

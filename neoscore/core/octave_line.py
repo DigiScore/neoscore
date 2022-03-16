@@ -170,8 +170,8 @@ class _OctaveLineText(MusicText, StaffObject):
     ):
         interface = TextInterface(
             start,
-            NO_PEN.interface,
             self.brush.interface,
+            NO_PEN.interface,
             self.text,
             self.font.interface,
         )
@@ -181,8 +181,8 @@ class _OctaveLineText(MusicText, StaffObject):
     def _render_after_break(self, local_start_x: Unit, start: Point):
         interface = TextInterface(
             start,
-            NO_PEN.interface,
             self.brush.interface,
+            NO_PEN.interface,
             self.parenthesized_text,
             self.font.interface,
         )
@@ -194,8 +194,8 @@ class _OctaveLineText(MusicText, StaffObject):
     ):
         interface = TextInterface(
             start,
-            NO_PEN.interface,
             self.brush.interface,
+            NO_PEN.interface,
             self.parenthesized_text,
             self.font.interface,
         )
