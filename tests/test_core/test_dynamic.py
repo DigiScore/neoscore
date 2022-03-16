@@ -11,7 +11,7 @@ from neoscore.utils.units import Mm
 class TestNotehead(unittest.TestCase):
     def setUp(self):
         neoscore.setup()
-        self.staff = Staff((Mm(0), Mm(0)), flowable=None, length=Mm(100))
+        self.staff = Staff((Mm(0), Mm(0)), parent=None, length=Mm(100))
 
     def test_parse_dynamic_string(self):
         self.assertEqual(

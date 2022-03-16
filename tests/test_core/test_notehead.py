@@ -13,7 +13,7 @@ class TestNotehead(unittest.TestCase):
     def setUp(self):
         neoscore.setup()
         self.flowable = Flowable((Mm(0), Mm(0)), None, Mm(10000), Mm(30), Mm(5))
-        self.staff = Staff((Mm(0), Mm(0)), flowable=self.flowable, length=Mm(10000))
+        self.staff = Staff((Mm(0), Mm(0)), self.flowable, length=Mm(10000))
         Clef(Mm(0), self.staff, "treble")
 
     def test_staff_position_middle_c_treble(self):

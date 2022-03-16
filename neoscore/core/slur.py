@@ -52,11 +52,11 @@ class Slur(Path, StaffObject, Spanner2D):
     ######## PRIVATE METHODS ########
 
     def _draw_path(self):
-        mid_height = self.staff.unit(2) * self.direction
+        mid_height = self.staff.unit(2) * self.direction.value
         mid_upper_height = (
             self.staff.unit(2) + self.midpoint_thickness
-        ) * self.direction
-        end_height = self.endpoint_thickness * self.direction
+        ) * self.direction.value
+        end_height = self.endpoint_thickness * self.direction.value
         # Draw upper curve part
         self.move_to(self.staff.unit(0), end_height, self)
         control_1 = Point(self.staff.unit(1), mid_upper_height)

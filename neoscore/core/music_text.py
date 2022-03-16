@@ -8,7 +8,6 @@ from neoscore.core.staff_object import StaffObject
 from neoscore.core.text import Text
 from neoscore.utils.point import PointDef
 from neoscore.utils.rect import Rect
-from neoscore.utils.units import Unit
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
@@ -40,6 +39,7 @@ class MusicText(Text):
         text: Any,
         font: Optional[MusicFont] = None,
         scale: float = 1,
+        breakable: bool = True,
     ):
         """
         Args:
@@ -53,8 +53,10 @@ class MusicText(Text):
                 `MusicChar`, or a list of these. Empty text will fail.
             font: The music font to be used. If not specified,
                 `parent` must be or have a `Staff` ancestor.
-            scale: A hard scaling factor to be applied
+            scale: A scaling factor to be applied
                 in addition to the size of the music font.
+            breakable: Whether this object should break across lines in
+                Flowable containers.
         """
         if font is None:
             ancestor_staff = StaffObject.find_staff(parent)
@@ -65,17 +67,9 @@ class MusicText(Text):
             font = ancestor_staff.music_font
         self._music_chars = MusicText._resolve_music_chars(text, font)
         resolved_str = MusicText._music_chars_to_str(self._music_chars)
-        Text.__init__(self, pos, parent, resolved_str, font, scale=scale)
+        Text.__init__(self, pos, parent, resolved_str, font, scale, breakable)
 
     ######## PUBLIC PROPERTIES ########
-
-    @property
-    def length(self) -> Unit:
-        """The breakable width of the object.
-
-        This is used to determine how and where rendering cuts should be made.
-        """
-        return self.bounding_rect.width
 
     @property
     def music_chars(self) -> list[MusicChar]:

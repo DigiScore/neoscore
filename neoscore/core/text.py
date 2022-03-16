@@ -15,11 +15,6 @@ if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
 
 
-# TODO HIGH it's unclear why this `scale` arg is given priority over
-# other transforms. I think probably it should be removed so it's not
-# confused with font size. Additional scale can be set with grob->qt transforms
-
-
 class Text(GraphicObject):
 
     """A graphical text object."""
@@ -31,6 +26,7 @@ class Text(GraphicObject):
         text: str,
         font: Optional[Font] = None,
         scale: float = 1,
+        breakable: bool = True,
     ):
         """
         Args:
@@ -38,7 +34,9 @@ class Text(GraphicObject):
             parent: The parent (core-level) object or None
             text: The text to be displayed
             font: The font to display the text in.
-            scale: A hard scaling factor.
+            scale: A scaling factor relative to the font size.
+            breakable: Whether this object should break across lines in
+                Flowable containers.
         """
         if font:
             self._font = font
@@ -46,15 +44,23 @@ class Text(GraphicObject):
             self._font = neoscore.default_font
         self._text = text
         self._scale = scale
+        self._breakable = breakable
         super().__init__(pos, parent=parent)
 
     ######## PUBLIC PROPERTIES ########
 
-    # TODO MEDIUM Text is not breakable, is this intentional?
-
     @property
     def length(self) -> Unit:
-        return ZERO
+        """The breakable width of the object.
+
+        This is used to determine how and where rendering cuts should be made.
+
+        This is derived from other properties and cannot be set directly.
+        """
+        if self.breakable:
+            return self.bounding_rect.width
+        else:
+            return ZERO
 
     @property
     def text(self) -> str:
@@ -81,12 +87,21 @@ class Text(GraphicObject):
 
     @property
     def scale(self) -> float:
-        """A hard scale factor to be applied to the rendered text"""
+        """A scale factor to be applied to the rendered text"""
         return self._scale
 
     @scale.setter
     def scale(self, value: float):
         self._scale = value
+
+    @property
+    def breakable(self) -> bool:
+        """Whether this object should be broken across flowable lines."""
+        return self._breakable
+
+    @breakable.setter
+    def breakable(self, value: bool):
+        self._breakable = value
 
     ######## PRIVATE PROPERTIES ########
 

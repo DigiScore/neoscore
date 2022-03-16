@@ -120,6 +120,8 @@ class GraphicObject(ABC):
         """The breakable length of the object.
 
         This is used to determine how and where rendering cuts should be made.
+
+        This is derived from other properties and cannot be set directly.
         """
         raise NotImplementedError
 

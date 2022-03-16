@@ -13,9 +13,7 @@ from neoscore.utils.units import GraphicUnit, Mm, Unit
 class TestMusicText(unittest.TestCase):
     def setUp(self):
         neoscore.setup()
-        self.staff = Staff(
-            (Mm(0), Mm(0)), flowable=None, length=Mm(100), staff_unit=Mm(1)
-        )
+        self.staff = Staff((Mm(0), Mm(0)), None, length=Mm(100), staff_unit=Mm(1))
         self.font = MusicFont(constants.DEFAULT_MUSIC_FONT_NAME, self.staff.unit)
 
     def test_init(self):
@@ -59,3 +57,7 @@ class TestMusicText(unittest.TestCase):
         assert mtext.music_chars == new_chars
         # text should be updated too
         assert mtext.text == "\ue260"
+
+    def test_breakable_passed_to_superclass(self):
+        mtext = MusicText((Unit(5), Unit(6)), self.staff, "accidentalSharp")
+        assert mtext.breakable == True

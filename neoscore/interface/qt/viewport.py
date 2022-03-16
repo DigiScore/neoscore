@@ -49,3 +49,5 @@ class Viewport(QtWidgets.QGraphicsView):
     def mouseMoveEvent(self, event):
         super().mouseMoveEvent(event)
         self.viewport().update()
+
+    # TODO MEDIUM moving viewport by dragging scrollbars doesn't trigger update

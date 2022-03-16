@@ -4,7 +4,7 @@ from neoscore.core import neoscore
 from neoscore.core.font import Font
 from neoscore.core.invisible_object import InvisibleObject
 from neoscore.core.text import Text
-from neoscore.utils.units import GraphicUnit, Unit
+from neoscore.utils.units import ZERO, Unit
 
 
 class TestText(unittest.TestCase):
@@ -14,14 +14,29 @@ class TestText(unittest.TestCase):
 
     def test_init(self):
         mock_parent = InvisibleObject((Unit(10), Unit(11)), parent=None)
-        test_object = Text((Unit(5), Unit(6)), mock_parent, "testing", self.font)
-        assert test_object.x == GraphicUnit(5)
-        assert test_object.y == GraphicUnit(6)
-        assert test_object.text == "testing"
-        assert test_object.font == self.font
-        assert test_object.parent == mock_parent
+        obj = Text((Unit(5), Unit(6)), mock_parent, "testing", self.font)
+        assert obj.x == Unit(5)
+        assert obj.y == Unit(6)
+        assert obj.text == "testing"
+        assert obj.font == self.font
+        assert obj.parent == mock_parent
 
     def test_default_init_values(self):
-        test_object = Text((Unit(5), Unit(6)), None, "testing")
-        assert test_object.font == neoscore.default_font
-        assert test_object.parent == neoscore.document.pages[0]
+        obj = Text((Unit(5), Unit(6)), None, "testing")
+        assert obj.font == neoscore.default_font
+        assert obj.parent == neoscore.document.pages[0]
+
+    def test_length_when_non_breakable(self):
+        obj = Text((Unit(5), Unit(6)), None, "testing", breakable=False)
+        assert obj.length == ZERO
+
+    def test_length_when_breakable(self):
+        obj = Text((Unit(5), Unit(6)), None, "testing", breakable=True)
+        # Can't assert exact length since this can flake
+        assert obj.length == obj.bounding_rect.width
+
+    def test_breakable_setter(self):
+        obj = Text((Unit(5), Unit(6)), None, "testing", breakable=True)
+        assert obj.length == obj.bounding_rect.width
+        obj.breakable = False
+        assert obj.length == ZERO
