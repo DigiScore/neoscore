@@ -33,6 +33,7 @@ from neoscore.core.pen import Pen
 from neoscore.core.pen_pattern import PenPattern
 from neoscore.core.repeating_music_text_line import RepeatingMusicTextLine
 from neoscore.core.rest import Rest
+from neoscore.core.rich_text import RichText
 from neoscore.core.slur import Slur
 from neoscore.core.staff import Staff
 from neoscore.core.staff_object import StaffObject

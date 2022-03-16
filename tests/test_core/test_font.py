@@ -18,10 +18,10 @@ class TestFont(unittest.TestCase):
         assert test_font.size == GraphicUnit(12)
         assert test_font.weight == 2
         assert test_font.italic is False
-        assert test_font._interface.family_name == "Bravura"
-        assert test_font._interface.size == GraphicUnit(12)
-        assert test_font._interface.weight == 2
-        assert test_font._interface.italic is False
+        assert test_font.interface.family_name == "Bravura"
+        assert test_font.interface.size == GraphicUnit(12)
+        assert test_font.interface.weight == 2
+        assert test_font.interface.italic is False
 
     def test_default_init_values(self):
         # API default values canary

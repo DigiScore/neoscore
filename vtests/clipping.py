@@ -1,7 +1,3 @@
-#!/usr/bin/env python3
-
-"""A development sandbox used for manually checking visual outputs."""
-
 from neoscore.common import *
 from neoscore.utils.units import ZERO
 

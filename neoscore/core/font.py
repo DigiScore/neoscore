@@ -79,6 +79,11 @@ class Font:
         """The x-height for the font."""
         return self._interface.x_height
 
+    @property
+    def interface(self) -> FontInterface:
+        """The backing low-level font interface"""
+        return self._interface
+
     ######## SPECIAL METHODS ########
 
     def __eq__(self, other):

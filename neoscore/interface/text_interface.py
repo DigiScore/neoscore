@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from typing import NamedTuple, Optional
 
 from PyQt5.QtGui import QFont, QPainterPath
-from PyQt5.QtWidgets import QGraphicsItem
 
 from neoscore.core import neoscore
 from neoscore.interface.font_interface import FontInterface
@@ -71,7 +70,7 @@ class TextInterface(GraphicObjectInterface):
         qt_object = self._create_qt_object()
         neoscore._app_interface.scene.addItem(qt_object)
 
-    def _create_qt_object(self) -> QGraphicsItem:
+    def _create_qt_object(self) -> QClippingPath:
         """Create and return this interface's underlying Qt object"""
         qt_object = self._get_path(self.text, self.font, self.scale)
         qt_object.setPos(point_to_qt_point_f(self.pos))

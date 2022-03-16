@@ -84,7 +84,7 @@ class PathInterface(GraphicObjectInterface):
 
     ######## PRIVATE METHODS ########
 
-    def _create_qt_object(self):
+    def _create_qt_object(self) -> QClippingPath:
         painter_path = PathInterface.create_qt_path(self.elements)
         qt_object = QClippingPath(
             painter_path,

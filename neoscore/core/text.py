@@ -132,7 +132,7 @@ class Text(GraphicObject):
             NO_PEN.interface,
             self.brush.interface,
             self.text,
-            self.font._interface,
+            self.font.interface,
             self.scale,
             clip_start_x,
             clip_width,
