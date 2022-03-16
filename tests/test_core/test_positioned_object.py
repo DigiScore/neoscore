@@ -14,9 +14,9 @@ class TestPositionedObject(unittest.TestCase):
         self.flowable = Flowable((Mm(0), Mm(0)), None, Mm(10000), Mm(30), Mm(5))
 
     def test_pos_setter_changes_x(self):
-        grob = PositionedObject((Unit(5), Unit(6)))
-        grob.pos = Point(Unit(7), Unit(8))
-        assert grob.pos == Point(Unit(7), Unit(8))
+        obj = PositionedObject((Unit(5), Unit(6)))
+        obj.pos = Point(Unit(7), Unit(8))
+        assert obj.pos == Point(Unit(7), Unit(8))
 
     def test_register_child(self):
         parent = PositionedObject((Unit(0), Unit(0)))
@@ -112,5 +112,5 @@ class TestPositionedObject(unittest.TestCase):
         assert {child_2} == descendants_set
 
     def test_length_is_zero(self):
-        grob = PositionedObject((Unit(5), Unit(6)))
-        assert grob.length == ZERO
+        obj = PositionedObject((Unit(5), Unit(6)))
+        assert obj.length == ZERO

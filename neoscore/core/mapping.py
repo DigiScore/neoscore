@@ -62,7 +62,7 @@ def map_between(src: Positioned, dst: Positioned) -> Point:
     if src.parent == dst:
         return -src.pos
     # Start by collecting all ancestor using IDs because they're hashable
-    src_ancestor_ids = set(id(grob) for grob in ancestors(src))
+    src_ancestor_ids = set(id(obj) for obj in ancestors(src))
     relative_dst_pos = dst.pos
     for dst_ancestor in ancestors(dst):
         if hasattr(dst_ancestor, "parent"):
@@ -116,16 +116,16 @@ def descendant_pos_x(descendant: Positioned, ancestor: Positioned) -> Unit:
     raise ValueError(f"{ancestor} is not an ancestor of {descendant}")
 
 
-def canvas_pos_of(grob: Positioned) -> Point:
+def canvas_pos_of(obj: Positioned) -> Point:
     """Find the paged document position of a PositionedObject.
 
     Args:
-        grob: Any object in the document.
+        obj: Any object in the document.
 
     Returns: The object's paged position relative to the document.
     """
     pos = ORIGIN
-    current = grob
+    current = obj
     while hasattr(current, "parent"):
         pos += current.pos
         current = current.parent

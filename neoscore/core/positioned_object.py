@@ -23,6 +23,22 @@ class PositionedObject:
     """An object positioned in the scene
 
     This is the base class of all objects in the neoscore scene tree.
+
+    A single PositionedObject can have multiple graphical representations,
+    calculated at render-time. If the object's ancestor is a Flowable,
+    it will be rendered as a flowable object, capable of being wrapped around
+    lines.
+
+    The position of this object is relative to that of its parent.
+    Each PositionedObject has another PositionedObject for a parent, except
+    `Page` objects, whose parent is always the global `Document`.
+
+    For convenience, the parent may be initialized to None to indicate
+    the first page of the document.
+
+    To place objects directly in the scene on pages other than the first,
+    simply set the parent to the desired page, accessed through the
+    global document with `neoscore.document.pages[n]`
     """
 
     def __init__(
