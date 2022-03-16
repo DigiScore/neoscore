@@ -2,18 +2,12 @@ from PyQt5 import QtGui, QtWidgets
 
 
 class Viewport(QtWidgets.QGraphicsView):
-    """The graphical view and working area.
+    """A QGraphicsView configured for use in interactive Neoscore scenes.
 
-    Includes some basic hacky interactivity features,
-    architecture will need to be revisited once a general
-    input processing system is worked out.
+    Includes some basic hacky features.
     """
 
-    def __init__(self, scene):
-        """
-        Args:
-            scene (QGraphicsScene):
-        """
+    def __init__(self, scene: QtWidgets.QGraphicsScene):
         super().__init__(scene)
         # Default configs
         self.setViewport(QtWidgets.QOpenGLWidget())
@@ -24,30 +18,25 @@ class Viewport(QtWidgets.QGraphicsView):
         self.setViewportUpdateMode(3)  # NoViewportUpdate
 
     def wheelEvent(self, event):
-        """Zoom in or out of the view."""
+        """Implementation of Qt event hook for zooming with the mouse wheel."""
         zoom_in_factor = 1.25
         zoom_out_factor = 1 / zoom_in_factor
         wheel_delta = event.angleDelta().y()
-
         # Save the scene pos
         old_pos = self.mapToScene(event.pos())
-
         # Zoom
         if wheel_delta > 0:
             zoom_factor = zoom_in_factor
         else:
             zoom_factor = zoom_out_factor
         self.scale(zoom_factor, zoom_factor)
-
         # Get the new position
         new_pos = self.mapToScene(event.pos())
-
         # Move scene to old position
         delta = new_pos - old_pos
         self.translate(delta.x(), delta.y())
 
-    def mouseMoveEvent(self, event):
-        super().mouseMoveEvent(event)
+    def scrollContentsBy(self, *args):
+        """Override of superclass scroll action to trigger a viewport update."""
+        super().scrollContentsBy(*args)
         self.viewport().update()
-
-    # TODO MEDIUM moving viewport by dragging scrollbars doesn't trigger update
