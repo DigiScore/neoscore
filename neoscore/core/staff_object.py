@@ -2,8 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Optional, cast
 
-from neoscore.core import mapping
-from neoscore.core.mapping import Positioned, first_ancestor_with_attr
+from neoscore.core.mapping import first_ancestor_with_attr, map_between, map_between_x
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.utils.exceptions import NoAncestorStaffError
 from neoscore.utils.point import Point
@@ -28,7 +27,7 @@ class StaffObject:
     """
 
     def __init__(self, parent: PositionedObject):
-        self._staff = StaffObject.find_staff(cast(Positioned, parent))
+        self._staff = StaffObject.find_staff(cast(PositionedObject, parent))
         if not self._staff:
             raise NoAncestorStaffError
 
@@ -42,17 +41,17 @@ class StaffObject:
     @property
     def pos_in_staff(self) -> Point:
         """The logical position of this object relative to the staff."""
-        return mapping.map_between(self.staff, cast(mapping.Positioned, self))
+        return map_between(self.staff, cast(PositionedObject, self))
 
     @property
     def pos_x_in_staff(self) -> Unit:
         """A specialized version of `pos_in_staff` which only finds the x pos"""
-        return mapping.map_between_x(self.staff, cast(mapping.Positioned, self))
+        return map_between_x(self.staff, cast(PositionedObject, self))
 
     ######## PRIVATE METHODS ########
 
     @staticmethod
-    def find_staff(obj: Positioned) -> Optional[Staff]:
+    def find_staff(obj: PositionedObject) -> Optional[Staff]:
         """Find the first staff which is an ancestor of `obj` or `obj` itself"""
         marker = "_neoscore_staff_type_marker"
         if hasattr(obj, marker):

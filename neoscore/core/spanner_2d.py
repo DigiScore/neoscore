@@ -3,7 +3,8 @@ from __future__ import annotations
 import math
 from typing import TYPE_CHECKING, cast
 
-from neoscore.core.mapping import Positioned, map_between
+from neoscore.core.mapping import map_between
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner import Spanner
 from neoscore.utils.point import Point
 from neoscore.utils.units import Unit
@@ -48,11 +49,12 @@ class Spanner2D(Spanner):
             relative_stop = self.end_pos
         else:
             relative_stop = (
-                map_between(cast(Positioned, self), self.end_parent) + self.end_pos
+                map_between(cast(PositionedObject, self), self.end_parent)
+                + self.end_pos
             )
         distance = Unit(
             math.sqrt(
                 (relative_stop.x.base_value**2) + (relative_stop.y.base_value**2)
             )
         )
-        return type(cast(Positioned, self).pos.x)(distance)
+        return type(cast(PositionedObject, self).pos.x)(distance)

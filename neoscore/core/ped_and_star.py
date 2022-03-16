@@ -1,6 +1,5 @@
 from typing import Optional, cast
 
-from neoscore.core.mapping import Positioned
 from neoscore.core.music_text import MusicText
 from neoscore.core.object_group import ObjectGroup
 from neoscore.core.positioned_object import PositionedObject
@@ -35,7 +34,7 @@ class PedAndStar(ObjectGroup, Spanner2D, StaffObject):
         Spanner2D.__init__(
             self,
             end if isinstance(end, Point) else Point(*end),
-            cast(Positioned, end_parent) if end_parent else self,
+            cast(PositionedObject, end_parent) if end_parent else self,
         )
         StaffObject.__init__(self, self.parent)
 

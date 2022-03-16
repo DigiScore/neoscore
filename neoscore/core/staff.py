@@ -3,11 +3,12 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Type, cast
 
 from neoscore import constants
-from neoscore.core.mapping import Positioned, map_between_x
+from neoscore.core.mapping import map_between_x
 from neoscore.core.music_font import MusicFont
 from neoscore.core.octave_line import OctaveLine
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.models.transposition import Transposition
 from neoscore.utils.exceptions import NoClefError
 from neoscore.utils.point import PointDef
@@ -128,7 +129,7 @@ class Staff(Path):
         who are active until another of their type occurs,
         such as `KeySignature`s, or `Clef`s.
         """
-        start_x = map_between_x(self, cast(Positioned, staff_object))
+        start_x = map_between_x(self, cast(PositionedObject, staff_object))
         all_others_of_class = (
             item
             for item in self.descendants_of_exact_class(type(staff_object))

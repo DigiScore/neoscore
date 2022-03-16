@@ -1,28 +1,19 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Iterator, Optional, Protocol, Union, cast
+from typing import TYPE_CHECKING, Any, Iterator, Optional, Union, cast
 
 from neoscore.utils.point import ORIGIN, Point
 from neoscore.utils.units import Unit
 
 if TYPE_CHECKING:
     from neoscore.core.document import Document
+    from neoscore.core.positioned_object import PositionedObject
 
-    Parent = Union[Document, Positioned]
+    Parent = Union[Document, PositionedObject]
     """Type alias only accessible when `typing.TYPE_CHECKING == True`"""
 
 
-class Positioned(Protocol):
-    @property
-    def pos(self) -> Point:
-        ...
-
-    @property
-    def parent(self) -> Parent:
-        ...
-
-
-def ancestors(obj: Positioned) -> Iterator[Positioned]:
+def ancestors(obj: PositionedObject) -> Iterator[PositionedObject]:
     """All ancestors of this object.
 
     Follows the chain of parents up to the document root.
@@ -38,7 +29,7 @@ def ancestors(obj: Positioned) -> Iterator[Positioned]:
         ancestor = ancestor.parent
 
 
-def map_between(src: Positioned, dst: Positioned) -> Point:
+def map_between(src: PositionedObject, dst: PositionedObject) -> Point:
     """Find a Positioned object's logical position relative to another
 
     This calculates the position in *logical* space, which differs
@@ -81,12 +72,12 @@ def map_between(src: Positioned, dst: Positioned) -> Point:
     raise ValueError(f"{src} and {dst} have no common ancestor")
 
 
-def map_between_x(src: Positioned, dst: Positioned) -> Unit:
+def map_between_x(src: PositionedObject, dst: PositionedObject) -> Unit:
     # TODO once main function is shown to work, copy here and edit as needed
     return map_between(src, dst).x
 
 
-def descendant_pos(descendant: Positioned, ancestor: Positioned) -> Point:
+def descendant_pos(descendant: PositionedObject, ancestor: PositionedObject) -> Point:
     """Find the position of a descendant relative to one of its ancestors.
 
     Raises:
@@ -100,7 +91,7 @@ def descendant_pos(descendant: Positioned, ancestor: Positioned) -> Point:
     raise ValueError(f"{ancestor} is not an ancestor of {descendant}")
 
 
-def descendant_pos_x(descendant: Positioned, ancestor: Positioned) -> Unit:
+def descendant_pos_x(descendant: PositionedObject, ancestor: PositionedObject) -> Unit:
     """Find the x position of a descendant relative to one of its ancestors.
 
     This is a specialized version of `descendant_pos` provided for optimization.
@@ -116,7 +107,7 @@ def descendant_pos_x(descendant: Positioned, ancestor: Positioned) -> Unit:
     raise ValueError(f"{ancestor} is not an ancestor of {descendant}")
 
 
-def canvas_pos_of(obj: Positioned) -> Point:
+def canvas_pos_of(obj: PositionedObject) -> Point:
     """Find the paged document position of a PositionedObject.
 
     Args:
@@ -139,7 +130,9 @@ def canvas_pos_of(obj: Positioned) -> Point:
 # this doesn't really belong here...
 
 
-def first_ancestor_with_attr(positioned: Positioned, attr: str) -> Optional[Parent]:
+def first_ancestor_with_attr(
+    positioned: PositionedObject, attr: str
+) -> Optional[Parent]:
     """Get a `Positioned` object's nearest ancestor with an attribute"""
     return next(
         (item for item in ancestors(positioned) if hasattr(item, attr)),
