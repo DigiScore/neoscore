@@ -1,6 +1,5 @@
 from typing import Optional
 
-from neoscore.core.graphic_object import GraphicObject
 from neoscore.core.mapping import map_between
 from neoscore.core.music_char import MusicChar
 from neoscore.core.music_text import MusicText
@@ -8,6 +7,7 @@ from neoscore.core.object_group import ObjectGroup
 from neoscore.core.path import Path
 from neoscore.core.pen import NO_PEN, Pen
 from neoscore.core.pen_pattern import PenPattern
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner import Spanner
 from neoscore.core.staff_object import StaffObject
 from neoscore.interface.text_interface import TextInterface
@@ -63,23 +63,23 @@ class OctaveLine(ObjectGroup, Spanner, StaffObject):
     def __init__(
         self,
         start: PointDef,
-        start_parent: GraphicObject,
+        start_parent: PositionedObject,
         end_x: Unit,
-        end_parent: Optional[GraphicObject] = None,
+        end_parent: Optional[PositionedObject] = None,
         indication: str = "8va",
     ):
         """
         Args:
-            start (Point or tuple init args):
-            start_parent (GraphicObject): An object either in a Staff or
+            start:
+            start_parent: An object either in a Staff or
                 a staff itself. This object will become the line's parent.
-            end_x (Unit): The spanner end x position. The y position will be
+            end_x: The spanner end x position. The y position will be
                 automatically calculated to be horizontal.
-            end_parent (GraphicObject): An object either in a Staff or
+            end_parent: An object either in a Staff or
                 a staff itself. The root staff of this *must* be the same
                 as the root staff of `start_parent`. If omitted, the
                 stop point is relative to the start point.
-            indication (str): A valid octave indication.
+            indication: A valid octave indication.
                 currently supported indications are:
                     - '15ma' (two octaves higher)
                     - '8va' (one octave higher)
@@ -138,7 +138,7 @@ class _OctaveLineText(MusicText, StaffObject):
     """
 
     def __init__(
-        self, pos: PointDef, parent: GraphicObject, length: Unit, indication: str
+        self, pos: PointDef, parent: PositionedObject, length: Unit, indication: str
     ):
         """
         Args:

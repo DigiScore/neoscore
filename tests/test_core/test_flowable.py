@@ -4,8 +4,8 @@ import pytest
 
 from neoscore.core import neoscore
 from neoscore.core.flowable import Flowable, OutOfBoundsError
-from neoscore.core.invisible_object import InvisibleObject
 from neoscore.core.paper import Paper
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.utils.point import Point
 from neoscore.utils.units import Mm
 
@@ -36,7 +36,7 @@ class TestFlowable(unittest.TestCase):
 
     def flowable_with_explicit_parent(self):
         page = neoscore.document.pages[1]
-        parent = InvisibleObject((Mm(22), Mm(33)), page)
+        parent = PositionedObject((Mm(22), Mm(33)), page)
         flowable = Flowable(
             (Mm(10), Mm(11)),
             parent=parent,

@@ -1,8 +1,8 @@
-from neoscore.core.invisible_object import InvisibleObject
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.staff_object import StaffObject
 
 
-class MockStaffObject(InvisibleObject, StaffObject):
+class MockStaffObject(PositionedObject, StaffObject):
     def __init__(self, pos, parent):
-        InvisibleObject.__init__(self, pos, parent)
+        PositionedObject.__init__(self, pos, parent)
         StaffObject.__init__(self, parent)

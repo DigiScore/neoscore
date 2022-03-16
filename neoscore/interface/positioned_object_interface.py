@@ -4,14 +4,14 @@ from neoscore.utils.point import Point
 
 
 @dataclass(frozen=True)
-class GraphicObjectInterface:
+class PositionedObjectInterface:
     """Interface for a generic graphic object.
 
     All graphic interfaces for renderable objects should descend from
     this and also be immutable dataclasses.
 
-    `GraphicObjectInterface` classes have no concept of parentage, or,
-    by extension, page numbers. The `GraphicObject`s responsible for
+    `PositionedObjectInterface` classes have no concept of parentage, or,
+    by extension, page numbers. The `PositionedObject`s responsible for
     creating these interface objects should pass only document-space
     positions to these.
     """

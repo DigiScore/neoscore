@@ -1,5 +1,5 @@
-from neoscore.core.graphic_object import GraphicObject
 from neoscore.core.music_text import MusicText
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.staff_object import StaffObject
 from neoscore.models.beat import Beat
 from neoscore.utils.exceptions import NoFlagNeededError
@@ -35,12 +35,13 @@ class Flag(MusicText, StaffObject):
         8: "flag8thDown",
     }
 
-    def __init__(self, parent: GraphicObject, duration: Beat, direction: int):
+    # TODO HIGH change to use VerticalDirection
+    def __init__(self, parent: PositionedObject, duration: Beat, direction: int):
         """
         Args:
-            parent (StaffObject or Staff)
-            duration (Beat):
-            direction (int): The direction of the flag, where
+            parent:
+            duration:
+            direction: The direction of the flag, where
                 -1 indicates pointing upward, and 1 vice versa.
         """
         self.duration = duration

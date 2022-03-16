@@ -1,5 +1,5 @@
-from neoscore.core.graphic_object import GraphicObject
 from neoscore.core.path import Path
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.staff_object import StaffObject
 from neoscore.utils.point import Point, PointDef
 from neoscore.utils.units import ZERO
@@ -17,9 +17,9 @@ class Beam(Path, StaffObject):
     def __init__(
         self,
         start: PointDef,
-        start_parent: GraphicObject,
+        start_parent: PositionedObject,
         stop: PointDef,
-        stop_parent: GraphicObject,
+        stop_parent: PositionedObject,
     ):
         """
         Args:

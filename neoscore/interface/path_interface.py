@@ -5,8 +5,8 @@ from PyQt5.QtGui import QPainterPath
 
 from neoscore.core import neoscore
 from neoscore.interface.brush_interface import BrushInterface
-from neoscore.interface.graphic_object_interface import GraphicObjectInterface
 from neoscore.interface.pen_interface import PenInterface
+from neoscore.interface.positioned_object_interface import PositionedObjectInterface
 from neoscore.interface.qt.converters import point_to_qt_point_f
 from neoscore.interface.qt.q_clipping_path import QClippingPath
 from neoscore.utils.units import Unit
@@ -36,7 +36,7 @@ ResolvedPathElement = Union[ResolvedMoveTo, ResolvedLineTo, ResolvedCurveTo]
 
 
 @dataclass(frozen=True)
-class PathInterface(GraphicObjectInterface):
+class PathInterface(PositionedObjectInterface):
     """Interface for a generic graphic path object."""
 
     brush: BrushInterface

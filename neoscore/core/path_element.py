@@ -2,15 +2,15 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from neoscore.core.graphic_object import GraphicObject
-from neoscore.core.invisible_object import InvisibleObject
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.utils.point import Point
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
 
 
-class PathElement(InvisibleObject):
+class PathElement(PositionedObject):
+    # TODO HIGH can this init be removed?
     def __init__(self, pos: Point, parent: Parent):
         super().__init__(pos, parent)
 
@@ -31,7 +31,7 @@ class CurveTo(PathElement):
     def __init__(
         self,
         pos: Point,
-        parent: GraphicObject,
+        parent: PositionedObject,
         control_1: ControlPoint,
         control_2: ControlPoint,
     ):

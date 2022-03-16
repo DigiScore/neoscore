@@ -2,26 +2,23 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from neoscore.core.invisible_object import InvisibleObject
 from neoscore.core.paper import Paper
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.utils.point import PointDef
 
 if TYPE_CHECKING:
     from neoscore.core.document import Document
 
 
-class Page(InvisibleObject):
+class Page(PositionedObject):
 
     """A document page.
 
-    All manually created `GraphicObject`s will have a `Page` as their
+    All manually created `PositionedObject`s will have a `Page` as their
     ancestor. All `Page`s are children of the global document.
 
     `Page` objects are automatically created by `Document` and should
     not be manually created or manipulated.
-
-    This class shares many properties and methods with GraphicObject,
-    but notably is not a subclass of it.
     """
 
     def __init__(

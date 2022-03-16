@@ -1,8 +1,8 @@
 from typing import Optional, cast
 
-from neoscore.core.graphic_object import GraphicObject
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner import Spanner
 from neoscore.core.staff_object import StaffObject
 from neoscore.utils.point import PointDef
@@ -18,10 +18,10 @@ class RepeatingMusicTextLine(MusicText, StaffObject, Spanner):
     def __init__(
         self,
         start: PointDef,
-        parent: GraphicObject,
+        parent: PositionedObject,
         end_x: Unit,
         text,
-        end_parent: Optional[GraphicObject] = None,
+        end_parent: Optional[PositionedObject] = None,
         font: Optional[MusicFont] = None,
     ):
         """

@@ -14,7 +14,6 @@ from neoscore.core.flag import Flag
 from neoscore.core.flowable import Flowable
 from neoscore.core.font import Font
 from neoscore.core.hairpin import Hairpin
-from neoscore.core.invisible_object import InvisibleObject
 from neoscore.core.key_signature import KeySignature
 from neoscore.core.ledger_line import LedgerLine
 from neoscore.core.multi_staff_object import MultiStaffObject
@@ -31,6 +30,7 @@ from neoscore.core.ped_and_star import PedAndStar
 from neoscore.core.pedal_line import PedalLine
 from neoscore.core.pen import Pen
 from neoscore.core.pen_pattern import PenPattern
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.repeating_music_text_line import RepeatingMusicTextLine
 from neoscore.core.rest import Rest
 from neoscore.core.rich_text import RichText

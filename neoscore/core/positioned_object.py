@@ -1,23 +1,15 @@
 from __future__ import annotations
 
-from abc import ABC
 from collections.abc import Iterator
 from typing import TYPE_CHECKING, Any, Optional, Type, cast
 
 from neoscore.core import neoscore
-from neoscore.core.brush import (
-    DEFAULT_BRUSH,
-    Brush,
-    SimpleBrushDef,
-    brush_from_simple_def,
-)
 from neoscore.core.mapping import (
     canvas_pos_of,
     descendant_pos,
     first_ancestor_with_attr,
 )
-from neoscore.core.pen import DEFAULT_PEN, Pen, SimplePenDef, pen_from_simple_def
-from neoscore.interface.graphic_object_interface import GraphicObjectInterface
+from neoscore.interface.positioned_object_interface import PositionedObjectInterface
 from neoscore.utils.point import Point, PointDef
 from neoscore.utils.units import ZERO, Unit
 
@@ -27,35 +19,16 @@ if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
 
 
-class GraphicObject(ABC):
-    """An abstract graphic object.
+class PositionedObject:
+    """An object positioned in the scene
 
-    All classes in `core` which have the ability to be displayed
-    should be subclasses of this.
-
-    A single GraphicObject can have multiple graphical representations,
-    calculated at render-time. If the object's ancestor is a Flowable,
-    it will be rendered as a flowable object, capable of being wrapped around
-    lines.
-
-    The position of this object is relative to that of its parent.
-    Each GraphicObject has another GraphicObject for a parent, except
-    `Page` objects, whose parent is always the global `Document`.
-
-    For convenience, the parent may be initialized to None to indicate
-    the first page of the document.
-
-    To place objects directly in the scene on pages other than the first,
-    simply set the parent to the desired page, accessed through the
-    global document with `neoscore.document.pages[n]`
+    This is the base class of all objects in the neoscore scene tree.
     """
 
     def __init__(
         self,
         pos: PointDef,
         parent: Optional[Parent] = None,
-        brush: Optional[SimpleBrushDef] = None,
-        pen: Optional[SimplePenDef] = None,
     ):
         """
         Args:
@@ -65,28 +38,10 @@ class GraphicObject(ABC):
             parent: The parent object or None
         """
         self.pos = pos
-        self.pen = pen
-        self.brush = brush
-        self._children: list[GraphicObject] = []
-        self.parent = parent
+        self._children: list[PositionedObject] = []
+        self._parent = PositionedObject._resolve_parent(parent)
+        self._set_parent_and_register_self(parent)
         self._interfaces = []
-
-    ######## PUBLIC PROPERTIES ########
-
-    @property
-    def interfaces(self) -> list[GraphicObjectInterface]:
-        """The interfaces for this object
-
-        Interface objects are created upon calling `GraphicObject.render()`
-
-        Typically each GraphicObject will have one interface for each
-        flowable line it appears in. Objects which fit completely
-        in one visual line will typically have exactly one interface.
-
-        If this is an empty set, the object has not been rendered yet
-        with the `render()` method.
-        """
-        return self._interfaces
 
     @property
     def pos(self) -> Point:
@@ -119,47 +74,13 @@ class GraphicObject(ABC):
     def length(self) -> Unit:
         """The breakable length of the object.
 
-        This is used to determine how and where rendering cuts should be made.
+        This is used to determine how and where rendering cuts should
+        be made. A length of zero indicates that no rendering cuts
+        will be made.
 
         This is derived from other properties and cannot be set directly.
         """
-        raise NotImplementedError
-
-    @property
-    def pen(self) -> Pen:
-        """The pen to draw outlines with"""
-        return self._pen
-
-    @pen.setter
-    def pen(self, value: SimplePenDef):
-        if value:
-            self._pen = pen_from_simple_def(value)
-        else:
-            self._pen = Pen.from_existing(DEFAULT_PEN)
-
-    @property
-    def brush(self) -> Brush:
-        """The brush to draw outlines with
-
-        As a convenience, this may be set with a hex color string
-        for a solid color brush of that color. For brushes using
-        alpha channels and non-solid-color fill patterns, a fully
-        initialized brush must be passed to this.
-        """
-        return self._brush
-
-    @brush.setter
-    def brush(self, value: SimpleBrushDef):
-        if value:
-            self._brush = brush_from_simple_def(value)
-            if isinstance(value, str):
-                self._brush = Brush(value)
-            elif isinstance(value, Brush):
-                self._brush = value
-            else:
-                raise TypeError
-        else:
-            self._brush = Brush.from_existing(DEFAULT_BRUSH)
+        return ZERO
 
     @property
     def parent(self) -> Parent:
@@ -171,25 +92,20 @@ class GraphicObject(ABC):
 
     @parent.setter
     def parent(self, value: Optional[Parent]):
-        if isinstance(getattr(self, "_parent", None), GraphicObject):
-            self._parent._unregister_child(self)
-        if value is None:
-            value = neoscore.document.pages[0]
-        self._parent = value
-        if isinstance(self._parent, GraphicObject):
-            self._parent._register_child(self)
+        self._parent._unregister_child(self)
+        self._set_parent_and_register_self(value)
 
     @property
-    def children(self) -> list[GraphicObject]:
+    def children(self) -> list[PositionedObject]:
         """All objects who have self as their parent."""
         return self._children
 
     @children.setter
-    def children(self, value: list[GraphicObject]):
+    def children(self, value: list[PositionedObject]):
         self._children = value
 
     @property
-    def descendants(self) -> Iterator[GraphicObject]:
+    def descendants(self) -> Iterator[PositionedObject]:
         """All of the objects in the children subtree.
 
         This recursively searches all of the object's children
@@ -210,25 +126,38 @@ class GraphicObject(ABC):
             Any, first_ancestor_with_attr(self, "_neoscore_flowable_type_marker")
         )
 
-    ######## PUBLIC METHODS ########
+    @property
+    def interfaces(self) -> list[PositionedObjectInterface]:
+        """The graphical backend binding interfaces for this object
+
+        Interface objects are created upon calling `PositionedObject.render()`
+
+        Typically each PositionedObject will have one interface for each
+        flowable line it appears in. Objects which fit completely
+        in one visual line will typically have exactly one interface.
+
+        If this is an empty set, the object has not been rendered yet
+        with the `render()` method.
+        """
+        return self._interfaces
 
     def descendants_of_class_or_subclass(
-        self, graphic_object_class: Type[GraphicObject]
-    ) -> Iterator[GraphicObject]:
+        self, graphic_object_class: Type[PositionedObject]
+    ) -> Iterator[PositionedObject]:
         """Yield all child descendants with a given class or its subclasses."""
         for descendant in self.descendants:
             if isinstance(descendant, graphic_object_class):
                 yield descendant
 
     def descendants_of_exact_class(
-        self, graphic_object_class: Type[GraphicObject]
-    ) -> Iterator[GraphicObject]:
+        self, graphic_object_class: Type[PositionedObject]
+    ) -> Iterator[PositionedObject]:
         """Yield all child descendants of a given class, excluding sublcasses"""
         for descendant in self.descendants:
             if type(descendant) == graphic_object_class:
                 yield descendant
 
-    def descendants_with_attribute(self, attribute: str) -> Iterator[GraphicObject]:
+    def descendants_with_attribute(self, attribute: str) -> Iterator[PositionedObject]:
         """Yield all child descendants which has a given attribute.
 
         This is useful for searching descendants for duck-typing matches.
@@ -263,20 +192,12 @@ class GraphicObject(ABC):
 
     def _render(self):
         """Render the object and all its children."""
-        if self.flowable is not None:
+        if self.length != ZERO and self.flowable is not None:
             self._render_in_flowable()
         else:
             self._render_complete(canvas_pos_of(self))
         for child in self.children:
             child._render()
-
-    def _register_child(self, child: GraphicObject):
-        """Add an object to `self.children`."""
-        self.children.append(child)
-
-    def _unregister_child(self, child: GraphicObject):
-        """Remove an object from `self.children`."""
-        self.children.remove(child)
 
     def _render_in_flowable(self):
         """Render the object to the scene, dispatching partial rendering calls
@@ -345,7 +266,7 @@ class GraphicObject(ABC):
 
         This is used to render all objects outside of `Flowable`s,
         as well as those inside flowables when they fit completely in
-        one span of the flowable.
+        one line of the flowable.
 
         This method should create a GraphicInterface and store it in
         `self.interfaces`.
@@ -360,10 +281,9 @@ class GraphicObject(ABC):
             local_start_x: If this object is in a flowable, the local
                 starting position of this drawing segment.
 
-        Note: All GraphicObject subclasses should implement this
-              for correct rendering.
+        Note: By default this is a no-op. Subclasses with with
+        rendered appearances should override this.
         """
-        raise NotImplementedError
 
     def _render_before_break(
         self, local_start_x: Unit, start: Point, stop: Point, dist_to_line_start: Unit
@@ -387,10 +307,9 @@ class GraphicObject(ABC):
                 information to perform basic position modifications at
                 render time, though in most cases this field can be ignored.
 
-        Note: All GraphicObject subclasses whose `length` can
-              be nonzero must implement this method.
+        Note: By default this is a no-op. Subclasses with with
+            rendered appearances should override this.
         """
-        raise NotImplementedError
 
     def _render_after_break(self, local_start_x: Unit, start: Point):
         """Render the continuation of an object after a break.
@@ -407,10 +326,9 @@ class GraphicObject(ABC):
                 drawing segment.
             start: The starting point in document space for drawing.
 
-        Note: All GraphicObject subclasses whose `length` can
-              be nonzero must implement this method.
+        Note: By default this is a no-op. Subclasses with with
+            rendered appearances should override this.
         """
-        raise NotImplementedError
 
     def _render_spanning_continuation(
         self, local_start_x: Unit, start: Point, stop: Point
@@ -431,7 +349,27 @@ class GraphicObject(ABC):
             start: The starting point in document space for drawing.
             stop: The stopping point in document space for drawing.
 
-        Note: All GraphicObject subclasses whose `length` can
-              be nonzero must implement this method.
+        Note: By default this is a no-op. Subclasses with with
+            rendered appearances should override this.
         """
-        raise NotImplementedError
+
+    @staticmethod
+    def _resolve_parent(value: Optional[PositionedObject]) -> PositionedObject:
+        if value is None:
+            return neoscore.document.pages[0]
+        return value
+
+    def _set_parent_and_register_self(self, value: Optional[PositionedObject]):
+        if value is None:
+            value = neoscore.document.pages[0]
+        self._parent = value
+        if hasattr(self._parent, "_register_child"):
+            self._parent._register_child(self)
+
+    def _register_child(self, child: PositionedObject):
+        """Add an object to `self.children`."""
+        self.children.append(child)
+
+    def _unregister_child(self, child: PositionedObject):
+        """Remove an object from `self.children`."""
+        self.children.remove(child)

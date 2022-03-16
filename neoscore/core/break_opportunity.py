@@ -1,5 +1,5 @@
 class BreakOpportunity:
-    """A `GraphicObject` mixin which indicates a break can be performed here.
+    """A `PositionedObject` mixin which indicates a break can be performed here.
 
     Some notational constructs are well suited to be placed at line
     or page breaks, for example bar lines or grand pauses. Such classes

@@ -2,10 +2,10 @@ import unittest
 
 from neoscore import constants
 from neoscore.core import neoscore
-from neoscore.core.invisible_object import InvisibleObject
 from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.staff import Staff
 from neoscore.utils.units import GraphicUnit, Mm, Unit
 
@@ -17,7 +17,7 @@ class TestMusicText(unittest.TestCase):
         self.font = MusicFont(constants.DEFAULT_MUSIC_FONT_NAME, self.staff.unit)
 
     def test_init(self):
-        mock_parent = InvisibleObject((Unit(10), Unit(11)), parent=self.staff)
+        mock_parent = PositionedObject((Unit(10), Unit(11)), parent=self.staff)
         mtext = MusicText((Unit(5), Unit(6)), mock_parent, "accidentalFlat", self.font)
         assert mtext.x == GraphicUnit(5)
         assert mtext.y == GraphicUnit(6)

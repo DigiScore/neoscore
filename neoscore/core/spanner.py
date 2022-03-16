@@ -11,20 +11,21 @@ if TYPE_CHECKING:
 
 
 class Spanner:
-    """A Mixin class for `GraphicObject`s with starting and ending anchors.
+    """A mixin for `PositionedObject`s with starting and ending anchors.
 
-    If the spanner (main `GraphicObject`) is in a `Flowable`, the endpoint
-    must be in the same one. Likewise, if the spanner is *not* in one,
-    the endpoint must not be in one either.
+    If the spanner (main `PositionedObject`) is in a `Flowable`, the
+    endpoint must be in the same one. Likewise, if the spanner is
+    *not* in one, the endpoint must not be in one either.
 
     This mixin only provides a common interface for ending anchors.
     The starting position of this spanner should be the main object's
-    `GraphicObject.pos`, and the starting anchor should be the its
-    `GraphicObject.parent`. It is up to the implementing class to
+    `PositionedObject.pos`, and the starting anchor should be the its
+    `PositionedObject.parent`. It is up to the implementing class to
     decide how to use this information.
 
     Simple `Spanner`s are horizontal relative to their starting
     anchor. Arbitrary end-y positions can be set with `Spanner2D`.
+
     """
 
     def __init__(self, end_x: Unit, end_parent: Parent):
@@ -76,7 +77,7 @@ class Spanner:
         """The x-axis length of the spanner.
 
         Implementing subclasses will often want to override
-        `GraphicObject.length` to return this.
+        `PositionedObject.length` to return this.
         """
         if self.end_parent == self:
             return self.end_pos.x

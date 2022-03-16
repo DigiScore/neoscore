@@ -7,7 +7,7 @@ class MultiStaffObject:
 
     """An object which spans several staves.
 
-    This is a Mixin class, meant to be combined with GraphicObject classes.
+    This is a Mixin class, meant to be combined with PositionedObject classes.
 
     `MultiStaffObject`s must have their visually highest staff as their parent.
 

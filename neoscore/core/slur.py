@@ -1,8 +1,8 @@
 from typing import Optional
 
 from neoscore.core.brush import Brush
-from neoscore.core.graphic_object import GraphicObject
 from neoscore.core.path import Path
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner_2d import Spanner2D
 from neoscore.core.staff_object import StaffObject
 from neoscore.models.vertical_direction import VerticalDirection
@@ -19,9 +19,9 @@ class Slur(Path, StaffObject, Spanner2D):
     def __init__(
         self,
         start: PointDef,
-        start_parent: GraphicObject,
+        start_parent: PositionedObject,
         stop: PointDef,
-        stop_parent: Optional[GraphicObject],
+        stop_parent: Optional[PositionedObject],
         direction: VerticalDirection = VerticalDirection.UP,
     ):
         """

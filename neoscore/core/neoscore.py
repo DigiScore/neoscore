@@ -165,7 +165,9 @@ def _clear_interfaces():
     _app_interface._clear_scene()
     for page in document.pages:
         for obj in page.descendants:
-            obj.interfaces.clear()
+            interfaces = getattr(obj, "interfaces", None)
+            if interfaces:
+                interfaces.clear()
 
 
 def render_pdf(path: str):

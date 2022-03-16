@@ -1,8 +1,8 @@
 from neoscore.core.break_opportunity import BreakOpportunity
-from neoscore.core.invisible_object import InvisibleObject
+from neoscore.core.positioned_object import PositionedObject
 
 
-class BreakHint(InvisibleObject, BreakOpportunity):
+class BreakHint(PositionedObject, BreakOpportunity):
 
     """A standalone invisible break opportunity."""
 

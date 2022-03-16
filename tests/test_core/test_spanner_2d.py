@@ -1,8 +1,8 @@
 import unittest
 
 from neoscore.core import neoscore
-from neoscore.core.graphic_object import GraphicObject
-from neoscore.core.invisible_object import InvisibleObject
+from neoscore.core.painted_object import PaintedObject
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner_2d import Spanner2D
 from neoscore.utils.point import Point
 from neoscore.utils.units import Unit
@@ -10,12 +10,12 @@ from neoscore.utils.units import Unit
 from ..helpers import assert_almost_equal
 
 
-class MockSpanner2D(GraphicObject, Spanner2D):
+class MockSpanner2D(PaintedObject, Spanner2D):
 
     """A mock spanner for testing."""
 
     def __init__(self, pos, parent, end_pos, end_parent):
-        GraphicObject.__init__(self, pos, parent=parent)
+        PaintedObject.__init__(self, pos, parent=parent)
         Spanner2D.__init__(self, end_pos, end_parent or self)
 
 
@@ -59,8 +59,8 @@ class TestSpanner2D(unittest.TestCase):
         assert_almost_equal(spanner.spanner_2d_length, Unit(6.4031242374328485))
 
     def test_length_with_parents(self):
-        parent_1 = InvisibleObject((Unit(1), Unit(2)), None)
-        parent_2 = InvisibleObject((Unit(11), Unit(12)), None)
+        parent_1 = PositionedObject((Unit(1), Unit(2)), None)
+        parent_2 = PositionedObject((Unit(11), Unit(12)), None)
         spanner = MockSpanner2D(
             Point(Unit(1), Unit(2)), parent_1, Point(Unit(4), Unit(5)), parent_2
         )

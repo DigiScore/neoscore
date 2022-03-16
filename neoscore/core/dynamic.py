@@ -1,5 +1,5 @@
-from neoscore.core.graphic_object import GraphicObject
 from neoscore.core.music_text import MusicText
+from neoscore.core.painted_object import PaintedObject
 from neoscore.core.staff_object import StaffObject
 from neoscore.utils.exceptions import DynamicStringError
 from neoscore.utils.point import PointDef
@@ -20,7 +20,7 @@ class Dynamic(MusicText, StaffObject):
         "n": "dynamicNiente",
     }
 
-    def __init__(self, pos: PointDef, parent: GraphicObject, text: str):
+    def __init__(self, pos: PointDef, parent: PaintedObject, text: str):
         """
         Args:
             pos: The object position

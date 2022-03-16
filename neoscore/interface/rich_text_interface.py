@@ -5,13 +5,13 @@ from PyQt5.QtWidgets import QGraphicsTextItem
 
 from neoscore.core import neoscore
 from neoscore.interface.font_interface import FontInterface
-from neoscore.interface.graphic_object_interface import GraphicObjectInterface
+from neoscore.interface.positioned_object_interface import PositionedObjectInterface
 from neoscore.interface.qt.converters import point_to_qt_point_f
 from neoscore.utils.units import Unit
 
 
 @dataclass(frozen=True)
-class RichTextInterface(GraphicObjectInterface):
+class RichTextInterface(PositionedObjectInterface):
 
     """An interface for graphical text objects."""
 

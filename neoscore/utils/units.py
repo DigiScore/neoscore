@@ -97,9 +97,9 @@ class Unit:
         values is less than 0.001, or if both are infinite.
         """
         return hasattr(other, "base_value") and (
-            abs(self.base_value - other.base_value) < Unit._CMP_POS_EPSILON
-            # Do strict equality check to cover inf == inf
-            or self.base_value == other.base_value
+            # Check strict equality first for speed and coverage of infinity values
+            self.base_value == other.base_value
+            or abs(self.base_value - other.base_value) < Unit._CMP_POS_EPSILON
         )
 
     def __gt__(self, other: Unit):

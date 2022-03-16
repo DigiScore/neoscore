@@ -1,9 +1,9 @@
 from typing import Optional, cast
 
-from neoscore.core.graphic_object import GraphicObject
 from neoscore.core.mapping import Positioned
 from neoscore.core.music_text import MusicText
 from neoscore.core.object_group import ObjectGroup
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner_2d import Spanner2D
 from neoscore.core.staff_object import StaffObject
 from neoscore.utils.point import Point, PointDef
@@ -17,9 +17,9 @@ class PedAndStar(ObjectGroup, Spanner2D, StaffObject):
     def __init__(
         self,
         start: PointDef,
-        start_parent: GraphicObject,
+        start_parent: PositionedObject,
         end: PointDef,
-        end_parent: Optional[GraphicObject] = None,
+        end_parent: Optional[PositionedObject] = None,
     ):
         """
         Args:
@@ -40,7 +40,7 @@ class PedAndStar(ObjectGroup, Spanner2D, StaffObject):
         StaffObject.__init__(self, self.parent)
 
         # Add opening pedal mark
-        # (GraphicObject init handles registration with ObjectGroup)
+        # (PositionedObject init handles registration with ObjectGroup)
         self.depress_mark = MusicText(
             (GraphicUnit(0), GraphicUnit(0)), parent=self, text="keyboardPedalPed"
         )

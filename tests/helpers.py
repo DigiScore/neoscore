@@ -60,7 +60,7 @@ def assert_path_els_equal(left, right):
     """Assert equality of the basic attributes of two PathElements
 
     This only checks position and parents, skipping their incidental
-    attributes inherited from GraphicObject like `children`, `brush`,
+    attributes inherited from PaintedObject like `children`, `brush`,
     etc
     """
     assert type(left) == type(right)

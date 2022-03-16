@@ -2,7 +2,7 @@ import unittest
 
 from neoscore.core import neoscore
 from neoscore.core.font import Font
-from neoscore.core.invisible_object import InvisibleObject
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.text import Text
 from neoscore.utils.units import ZERO, Unit
 
@@ -13,7 +13,7 @@ class TestText(unittest.TestCase):
         self.font = Font("Bravura", 12, 1, False)
 
     def test_init(self):
-        mock_parent = InvisibleObject((Unit(10), Unit(11)), parent=None)
+        mock_parent = PositionedObject((Unit(10), Unit(11)), parent=None)
         obj = Text((Unit(5), Unit(6)), mock_parent, "testing", self.font)
         assert obj.x == Unit(5)
         assert obj.y == Unit(6)

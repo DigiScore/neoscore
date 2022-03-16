@@ -3,8 +3,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, Optional, cast
 
 from neoscore.core import mapping
-from neoscore.core.graphic_object import GraphicObject
 from neoscore.core.mapping import Positioned, first_ancestor_with_attr
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.utils.exceptions import NoAncestorStaffError
 from neoscore.utils.point import Point
 from neoscore.utils.units import Unit
@@ -17,9 +17,9 @@ class StaffObject:
 
     """An object which must always be the descendant of a Staff
 
-    This is a Mixin class, meant to be paired with GraphicObject classes.
+    This is a Mixin class, meant to be paired with PositionedObject classes.
 
-    Usage within a GraphicObject will look something like:
+    Usage within a PositionedObject will look something like:
 
     >>> class SomeMusicGlyph(MusicText, StaffObject):  # doctest: +SKIP
     ...     def __init__(self, ...):
@@ -27,7 +27,7 @@ class StaffObject:
     ...         StaffObject.__init__(self, ...)
     """
 
-    def __init__(self, parent: GraphicObject):
+    def __init__(self, parent: PositionedObject):
         self._staff = StaffObject.find_staff(cast(Positioned, parent))
         if not self._staff:
             raise NoAncestorStaffError

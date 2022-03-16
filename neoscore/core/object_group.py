@@ -2,23 +2,26 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional
 
-from neoscore.core.graphic_object import GraphicObject
-from neoscore.core.invisible_object import InvisibleObject
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.utils.point import PointDef
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
 
 
-class ObjectGroup(InvisibleObject):
+# TODO MEDIUM maybe this class should be removed since it doesn't
+# really do anything PositionedObject can't already.
 
-    """An abstract collection of GraphicObjects."""
+
+class ObjectGroup(PositionedObject):
+
+    """A collection of `PositionedObject`s."""
 
     def __init__(
         self,
         pos: PointDef,
         parent: Optional[Parent] = None,
-        objects: Optional[set[GraphicObject]] = None,
+        objects: Optional[set[PositionedObject]] = None,
     ):
         """
         Args:

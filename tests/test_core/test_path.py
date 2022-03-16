@@ -2,10 +2,10 @@ import unittest
 
 from neoscore.core import neoscore
 from neoscore.core.brush import Brush
-from neoscore.core.invisible_object import InvisibleObject
 from neoscore.core.path import Path
 from neoscore.core.path_element import ControlPoint, CurveTo, LineTo, MoveTo
 from neoscore.core.pen import Pen
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.interface.path_interface import (
     ResolvedCurveTo,
     ResolvedLineTo,
@@ -22,7 +22,7 @@ class TestPath(unittest.TestCase):
         neoscore.setup()
 
     def test_init(self):
-        mock_parent = InvisibleObject(ORIGIN, parent=None)
+        mock_parent = PositionedObject(ORIGIN, parent=None)
         test_pen = Pen("#eeeeee")
         test_brush = Brush("#dddddd")
         path = Path((Unit(5), Unit(6)), mock_parent, test_brush, test_pen)
@@ -51,7 +51,7 @@ class TestPath(unittest.TestCase):
 
     def test_line_to_with_parent(self):
         path = Path((Unit(5), Unit(6)))
-        parent = InvisibleObject((Unit(100), Unit(50)))
+        parent = PositionedObject((Unit(100), Unit(50)))
         path.line_to(Unit(1), Unit(3), parent)
         assert path.elements[-1].parent == parent
         resolved_els = path._resolve_path_elements()
@@ -82,9 +82,9 @@ class TestPath(unittest.TestCase):
 
     def test_cubic_to_with_parents(self):
         path = Path((Unit(Unit(100)), Unit(Unit(200))))
-        parent_1 = InvisibleObject((Unit(Unit(10)), Unit(Unit(20))))
-        parent_2 = InvisibleObject((Unit(Unit(30)), Unit(Unit(40))))
-        parent_3 = InvisibleObject((Unit(Unit(50)), Unit(Unit(60))))
+        parent_1 = PositionedObject((Unit(Unit(10)), Unit(Unit(20))))
+        parent_2 = PositionedObject((Unit(Unit(30)), Unit(Unit(40))))
+        parent_3 = PositionedObject((Unit(Unit(50)), Unit(Unit(60))))
         path.cubic_to(
             Unit(1),
             Unit(2),
@@ -128,7 +128,7 @@ class TestPath(unittest.TestCase):
 
     def test_move_to_with_parent(self):
         path = Path(ORIGIN)
-        parent = InvisibleObject((Unit(100), Unit(50)))
+        parent = PositionedObject((Unit(100), Unit(50)))
         path.move_to(Unit(10), Unit(11), parent)
         assert len(path.elements) == 1
         assert_path_els_equal(

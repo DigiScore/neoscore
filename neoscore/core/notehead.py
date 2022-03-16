@@ -1,6 +1,6 @@
-from neoscore.core.graphic_object import GraphicObject
 from neoscore.core.mapping import map_between
 from neoscore.core.music_text import MusicText
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.staff_object import StaffObject
 from neoscore.models.beat import Beat, BeatDef
 from neoscore.models.pitch import Pitch, PitchDef
@@ -29,18 +29,18 @@ class Notehead(MusicText, StaffObject):
     }
 
     def __init__(
-        self, pos_x: Unit, parent: GraphicObject, pitch: PitchDef, duration: BeatDef
+        self, pos_x: Unit, parent: PositionedObject, pitch: PitchDef, duration: BeatDef
     ):
         """
         Args:
-            pos_x (Unit): The x-axis position relative to `parent`.
+            pos_x: The x-axis position relative to `parent`.
                 The y-axis position is calculated automatically based
                 on `pitch` and contextual information in `self.staff`.
-            parent (GraphicObject): Must either be a `Staff` or an object
+            parent: Must either be a `Staff` or an object
                 with an ancestor `Staff`.
-            pitch (Pitch or str): May be a `str` pitch representation.
+            pitch: May be a `str` pitch representation.
                 See `Pitch` for valid signatures.
-            duration (Beat or init tuple): The logical duration of
+            duration: The logical duration of
                 the notehead. This is used to determine the glyph style.
         """
         self._pitch = Pitch.from_def(pitch)

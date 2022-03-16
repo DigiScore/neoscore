@@ -1,5 +1,5 @@
-from neoscore.core.graphic_object import GraphicObject
 from neoscore.core.music_text import MusicText
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.staff_object import StaffObject
 from neoscore.models.accidental_type import AccidentalType
 from neoscore.utils.point import PointDef
@@ -16,7 +16,7 @@ class Accidental(MusicText, StaffObject):
     }
 
     def __init__(
-        self, pos: PointDef, parent: GraphicObject, accidental_type: AccidentalType
+        self, pos: PointDef, parent: PositionedObject, accidental_type: AccidentalType
     ):
         self._accidental_type = accidental_type
         canonical_name = self._canonical_names[self.accidental_type]

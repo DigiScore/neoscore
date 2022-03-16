@@ -1,6 +1,6 @@
-from neoscore.core.graphic_object import GraphicObject
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.staff_object import StaffObject
 from neoscore.utils.point import PointDef
 from neoscore.utils.units import Unit
@@ -14,7 +14,7 @@ class LedgerLine(Path, StaffObject):
     but can be manually instantiated as well.
     """
 
-    def __init__(self, pos: PointDef, parent: GraphicObject, base_length: Unit):
+    def __init__(self, pos: PointDef, parent: PositionedObject, base_length: Unit):
         """
         Args:
             pos: The position of the left edge of the notehead column.

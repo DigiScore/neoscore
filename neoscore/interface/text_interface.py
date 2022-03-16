@@ -6,8 +6,8 @@ from PyQt5.QtGui import QFont, QPainterPath
 from neoscore.core import neoscore
 from neoscore.interface.brush_interface import BrushInterface
 from neoscore.interface.font_interface import FontInterface
-from neoscore.interface.graphic_object_interface import GraphicObjectInterface
 from neoscore.interface.pen_interface import PenInterface
+from neoscore.interface.positioned_object_interface import PositionedObjectInterface
 from neoscore.interface.qt.converters import point_to_qt_point_f
 from neoscore.interface.qt.q_clipping_path import QClippingPath
 from neoscore.utils.units import Unit
@@ -43,7 +43,7 @@ see https://doc.qt.io/qt-5/qgraphicsitem.html#setCacheMode
 
 
 @dataclass(frozen=True)
-class TextInterface(GraphicObjectInterface):
+class TextInterface(PositionedObjectInterface):
 
     """An interface for graphical text objects."""
 

@@ -1,8 +1,8 @@
 from typing import Optional
 
-from neoscore.core.graphic_object import GraphicObject
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner import Spanner
 from neoscore.core.staff_object import StaffObject
 from neoscore.utils.point import PointDef
@@ -43,9 +43,9 @@ class PedalLine(Spanner, Path, StaffObject):
     def __init__(
         self,
         start: PointDef,
-        start_parent: GraphicObject,
+        start_parent: PositionedObject,
         end_x: Unit,
-        end_parent: Optional[GraphicObject] = None,
+        end_parent: Optional[PositionedObject] = None,
         half_lift_positions: list[Unit] = None,
     ):
         """

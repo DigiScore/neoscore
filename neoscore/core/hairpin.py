@@ -1,9 +1,9 @@
 import math
 from typing import Optional
 
-from neoscore.core.graphic_object import GraphicObject
 from neoscore.core.mapping import map_between
 from neoscore.core.path import Path
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner_2d import Spanner2D
 from neoscore.core.staff_object import StaffObject
 from neoscore.utils.point import Point, PointDef
@@ -17,9 +17,9 @@ class Hairpin(Path, StaffObject, Spanner2D):
     def __init__(
         self,
         start: PointDef,
-        start_parent: GraphicObject,
+        start_parent: PositionedObject,
         stop: PointDef,
-        stop_parent: Optional[GraphicObject],
+        stop_parent: Optional[PositionedObject],
         direction: int,
         width: Optional[Unit] = None,
     ):
@@ -65,7 +65,9 @@ class Hairpin(Path, StaffObject, Spanner2D):
 
     def _find_hairpin_points(
         self,
-    ) -> tuple[Point, GraphicObject, Point, GraphicObject, Point, GraphicObject]:
+    ) -> tuple[
+        Point, PositionedObject, Point, PositionedObject, Point, PositionedObject
+    ]:
         """Find the hairpin path points for a set of parameters.
 
         The returned tuple is 3 pairs of Points and parents, where the

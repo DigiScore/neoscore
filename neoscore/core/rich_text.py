@@ -3,10 +3,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 
 from neoscore.core import neoscore
-from neoscore.core.brush import NO_BRUSH
 from neoscore.core.font import Font
-from neoscore.core.graphic_object import GraphicObject
-from neoscore.core.pen import NO_PEN
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.interface.rich_text_interface import RichTextInterface
 from neoscore.utils.point import Point, PointDef
 from neoscore.utils.units import ZERO, Unit
@@ -15,7 +13,7 @@ if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
 
 
-class RichText(GraphicObject):
+class RichText(PositionedObject):
 
     """A graphical rich text object.
 
@@ -115,8 +113,6 @@ class RichText(GraphicObject):
     ):
         interface = RichTextInterface(
             pos,
-            NO_PEN.interface,
-            NO_BRUSH.interface,
             self.html_text,
             self.font.interface,
             self.width,

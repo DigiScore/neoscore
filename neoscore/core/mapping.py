@@ -117,7 +117,7 @@ def descendant_pos_x(descendant: Positioned, ancestor: Positioned) -> Unit:
 
 
 def canvas_pos_of(grob: Positioned) -> Point:
-    """Find the paged document position of a GraphicObject.
+    """Find the paged document position of a PositionedObject.
 
     Args:
         grob: Any object in the document.
@@ -140,10 +140,7 @@ def canvas_pos_of(grob: Positioned) -> Point:
 
 
 def first_ancestor_with_attr(positioned: Positioned, attr: str) -> Optional[Parent]:
-    """Get a `Positioned` object's nearest ancestor with an attribute
-
-    Returns: GraphicObject or None
-    """
+    """Get a `Positioned` object's nearest ancestor with an attribute"""
     return next(
         (item for item in ancestors(positioned) if hasattr(item, attr)),
         None,

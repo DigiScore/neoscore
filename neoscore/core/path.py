@@ -4,8 +4,8 @@ from typing import TYPE_CHECKING, Optional, cast
 
 from neoscore import constants
 from neoscore.core.brush import Brush, SimpleBrushDef
-from neoscore.core.graphic_object import GraphicObject
 from neoscore.core.mapping import map_between, map_between_x
+from neoscore.core.painted_object import PaintedObject
 from neoscore.core.path_element import (
     ControlPoint,
     CurveTo,
@@ -28,7 +28,7 @@ if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
 
 
-class Path(GraphicObject):
+class Path(PaintedObject):
 
     """A vector path whose points can be anchored to other objects.
 
@@ -114,9 +114,9 @@ class Path(GraphicObject):
     def line_to(self, x: Unit, y: Unit, parent: Optional[Parent] = None):
         """Draw a path from the current position to a new point.
 
-        A point parent may be passed as well, anchored the target point to
-        a separate GraphicObject. In this case, the coordinates passed will be
-        considered relative to the parent.
+        A point parent may be passed as well, anchored the target
+        point to a separate PositionedObject. In this case, the
+        coordinates passed will be considered relative to the parent.
 
         If the path is empty, this will add two elements, an initial
         `MoveTo(Point(Unit(0), Unit(0)), self)` and the requested
@@ -127,6 +127,7 @@ class Path(GraphicObject):
             y: The end y position
             parent: An optional parent, whose position the target coordinate
                 will be relative to.
+
         """
         if not len(self.elements):
             # Needed to ensure bounding rect / length calculations are correct
@@ -137,7 +138,7 @@ class Path(GraphicObject):
         """Close the current sub-path and start a new one.
 
         A point parent may be passed as well, anchored the target point to
-        a separate `GraphicObject`. In this case, the coordinates passed will be
+        a separate `PositionedObject`. In this case, the coordinates passed will be
         considered relative to the parent.
 
         Args:

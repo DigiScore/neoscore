@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Optional
 
 from neoscore.core import neoscore
 from neoscore.core.font import Font
-from neoscore.core.graphic_object import GraphicObject
+from neoscore.core.painted_object import PaintedObject
 from neoscore.core.pen import NO_PEN
 from neoscore.interface.text_interface import TextInterface
 from neoscore.utils.point import Point, PointDef
@@ -15,7 +15,7 @@ if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
 
 
-class Text(GraphicObject):
+class Text(PaintedObject):
 
     """A graphical text object."""
 
