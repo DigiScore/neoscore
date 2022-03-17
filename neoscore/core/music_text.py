@@ -4,10 +4,10 @@ from typing import TYPE_CHECKING, Any, NamedTuple, Optional
 
 from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
-from neoscore.core.staff_object import StaffObject
 from neoscore.core.text import Text
 from neoscore.utils.point import PointDef
 from neoscore.utils.rect import Rect
+from neoscore.western.staff_object import StaffObject
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent

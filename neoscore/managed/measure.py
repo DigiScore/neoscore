@@ -1,5 +1,5 @@
-from neoscore.core.time_signature import TimeSignature
 from neoscore.managed.container import Container
+from neoscore.western.time_signature import TimeSignature
 
 
 class Measure(Container):

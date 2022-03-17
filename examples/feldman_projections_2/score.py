@@ -13,7 +13,7 @@ from neoscore.core.object_group import ObjectGroup
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
 from neoscore.core.pen_pattern import PenPattern
-from neoscore.core.staff import Staff
+from neoscore.western.staff import Staff
 
 
 class Score(ObjectGroup):

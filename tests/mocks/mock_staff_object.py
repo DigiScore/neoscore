@@ -1,5 +1,5 @@
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.core.staff_object import StaffObject
+from neoscore.western.staff_object import StaffObject
 
 
 class MockStaffObject(PositionedObject, StaffObject):

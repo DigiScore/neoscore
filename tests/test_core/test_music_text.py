@@ -6,8 +6,8 @@ from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.core.staff import Staff
 from neoscore.utils.units import GraphicUnit, Mm, Unit
+from neoscore.western.staff import Staff
 
 
 class TestMusicText(unittest.TestCase):

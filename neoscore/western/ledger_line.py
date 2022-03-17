@@ -1,0 +1,33 @@
+from neoscore.core.path import Path
+from neoscore.core.pen import Pen
+from neoscore.core.positioned_object import PositionedObject
+from neoscore.utils.point import PointDef
+from neoscore.utils.units import Unit
+from neoscore.western.staff_object import StaffObject
+
+
+class LedgerLine(Path, StaffObject):
+
+    """A horizontal ledger line.
+
+    These are generated automatically by `Chordrest` objects,
+    but can be manually instantiated as well.
+    """
+
+    def __init__(self, pos: PointDef, parent: PositionedObject, base_length: Unit):
+        """
+        Args:
+            pos: The position of the left edge of the notehead column.
+            parent: The parent, which must be a staff or in one.
+            base_length: The of the notehead this line is related to.
+                The real length will be this plus a small extension defined in the
+                `MusicFont`s engraving defaults.
+        """
+        Path.__init__(self, pos, parent=parent)
+        StaffObject.__init__(self, parent=parent)
+        thickness = self.staff.music_font.engraving_defaults["legerLineThickness"]
+        self.pen = Pen(thickness=thickness)
+        extension = self.staff.music_font.engraving_defaults["legerLineExtension"]
+        length = base_length + extension
+        self.move_to(extension * -1, self.staff.unit(0))
+        self.line_to(length, self.staff.unit(0))
