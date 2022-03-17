@@ -6,13 +6,11 @@ from neoscore.core.positioned_object import PositionedObject
 from neoscore.utils.point import Point
 
 if TYPE_CHECKING:
-    from neoscore.core.mapping import Parent
+    pass
 
 
 class PathElement(PositionedObject):
-    # TODO HIGH can this init be removed?
-    def __init__(self, pos: Point, parent: Parent):
-        super().__init__(pos, parent)
+    pass
 
 
 class MoveTo(PathElement):

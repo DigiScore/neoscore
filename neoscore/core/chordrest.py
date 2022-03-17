@@ -13,7 +13,7 @@ from neoscore.core.stem import Stem
 from neoscore.models.beat import BeatDef
 from neoscore.models.pitch import PitchDef
 from neoscore.models.vertical_direction import VerticalDirection
-from neoscore.utils.point import Point
+from neoscore.utils.point import ORIGIN, Point
 from neoscore.utils.units import Unit
 
 
@@ -285,9 +285,9 @@ class Chordrest(ObjectGroup, StaffObject):
         self._stem_direction_override = value
 
     @property
-    def stem_height(self):
-        """Unit: The height of the stem"""
-        flag_offset = Flag.vertical_offset_needed(self.duration, self.staff.unit)
+    def stem_height(self) -> Unit:
+        """The height of the stem"""
+        flag_offset = self.staff.unit(Flag.vertical_offset_needed(self.duration))
         min_abs_height = self.staff.unit(3) + flag_offset
         fitted_abs_height = (
             abs(self.lowest_notehead.y - self.highest_notehead.y)
@@ -323,8 +323,6 @@ class Chordrest(ObjectGroup, StaffObject):
 
     def _create_ledgers(self):
         """Create all required ledger lines and store them in `self.ledgers`
-
-        Returns: None
 
         Warning: This should be called after _position_noteheads_horizontally()
                  as it relies on the position of noteheads in the chord to
@@ -365,20 +363,17 @@ class Chordrest(ObjectGroup, StaffObject):
         )
 
     def _create_flag(self):
-        """Create a Flag attached to self.stem and store it in self.flag
-
-        Returns: None
-        """
+        """Create a Flag attached to self.stem and store it in `self.flag`"""
         if Flag.needs_flag(self.duration):
-            self._flag = Flag(self.stem.end_point, self.duration, self.stem.direction)
+            self._flag = Flag(
+                ORIGIN, self.stem.end_point, self.duration, self.stem.direction
+            )
 
     def _position_noteheads_horizontally(self):
         """Reposition noteheads so that they are laid out correctly
 
         Decides which noteheads lie on which side of the staff,
         and modifies positions when needed.
-
-        Returns: None
         """
         # Find the preferred side of the stem for noteheads,
         # where 1 means right and -1 means left

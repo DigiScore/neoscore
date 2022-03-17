@@ -2,17 +2,14 @@ from neoscore.core.music_text import MusicText
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.staff_object import StaffObject
 from neoscore.models.beat import Beat
+from neoscore.models.vertical_direction import VerticalDirection
 from neoscore.utils.exceptions import NoFlagNeededError
-from neoscore.utils.point import ORIGIN
+from neoscore.utils.point import PointDef
 
 
 class Flag(MusicText, StaffObject):
 
-    """A simple Flag glyph with a duration and direction
-
-    This is meant to be attached to a Stem end_point.
-    As a result, Flags are positioned at (0, 0) relative to their parent.
-    """
+    """A simple Flag glyph with a duration and direction"""
 
     _up_glyphnames = {
         1024: "flag1024thUp",
@@ -35,14 +32,21 @@ class Flag(MusicText, StaffObject):
         8: "flag8thDown",
     }
 
-    # TODO HIGH change to use VerticalDirection
-    def __init__(self, parent: PositionedObject, duration: Beat, direction: int):
+    def __init__(
+        self,
+        pos: PointDef,
+        parent: PositionedObject,
+        duration: Beat,
+        direction: VerticalDirection,
+    ):
         """
         Args:
-            parent:
-            duration:
-            direction: The direction of the flag, where
-                -1 indicates pointing upward, and 1 vice versa.
+            pos: The position of this flag. When `parent` is a stem end point
+                this should typically be `ORIGIN`.
+            parent: The parent for the flag
+            duration: The beat corresponding to the flag. This controls the flag
+                glyph rendered.
+            direction: The direction of the flag
         """
         self.duration = duration
         self.direction = direction
@@ -50,61 +54,47 @@ class Flag(MusicText, StaffObject):
             glyph_name = self._down_glyphnames[self.duration.base_division]
         else:
             glyph_name = self._up_glyphnames[self.duration.base_division]
-        MusicText.__init__(self, ORIGIN, parent, [glyph_name])
+        MusicText.__init__(self, pos, parent, [glyph_name])
         StaffObject.__init__(self, parent)
 
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def duration(self):
-        """Beat: The time duration of this object"""
+    def duration(self) -> Beat:
+        """The beat corresponding to this flag"""
         return self._duration
 
     @duration.setter
-    def duration(self, value):
+    def duration(self, value: Beat):
         if not self.needs_flag(value):
             raise NoFlagNeededError(value)
         self._duration = value
 
     @property
-    def direction(self):
-        """int: The flag direction, where -1 points up and 1 points down.
-
-        Setting to values other than -1 and 1 will raise a ValueError.
-        """
+    def direction(self) -> VerticalDirection:
+        """The flag direction"""
         return self._direction
 
     @direction.setter
-    def direction(self, value):
-        if not (value == 1 or value == -1):
-            raise ValueError("Flag.direction must be 1 or -1")
-        else:
-            self._direction = value
+    def direction(self, value: VerticalDirection):
+        self._direction = value
 
     ######## PUBLIC CLASS METHODS ########
 
     @classmethod
-    def needs_flag(cls, duration):
-        """Determine if a Beat needs a flag.
-
-        Args:
-            duration (Beat): The Duration to check
-
-        Returns: bool
-        """
+    def needs_flag(cls, duration: Beat) -> bool:
+        """Determine if a Beat needs a flag."""
         return duration.base_division in cls._up_glyphnames
 
     @classmethod
-    def vertical_offset_needed(cls, duration, staff_unit):
+    def vertical_offset_needed(cls, duration: Beat) -> int:
         """Find the space needed in a stem using a flag of a given duration
 
-        Args:
-            duration (Beat): The duration for the hypothetical flag
-            staff_unit (type): The staff unit to give the result in
-
-        Returns: StaffUnit
+        Returns: a number to be plugged into a staff unit
         """
+        # TODO LOW I believe this should become longer according to
+        # division (and thus number of flaglets)
         if cls.needs_flag(duration):
-            return staff_unit(1)
+            return 1
         else:
-            return staff_unit(0)
+            return 0
