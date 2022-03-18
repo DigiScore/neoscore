@@ -123,6 +123,15 @@ pedal_line = PedalLine(
     half_lift_positions=[Mm(30), Mm(60), Mm(100)],
 )
 
+Path.rect(
+    (Mm(200), lowest_staff.unit(3)),
+    lowest_staff,
+    Mm(10),
+    lowest_staff.unit(1),
+    Brush("#00ffaa", BrushPattern.CROSSING_DIAGONAL_LINES),
+    "#ff0000",
+)
+
 if "--image" in sys.argv:
     image_path = os.path.join(os.path.dirname(__file__), "output", "vtest_image.png")
     neoscore.render_image((Mm(0), Mm(0), Inch(2), Inch(2)), image_path, autocrop=True)

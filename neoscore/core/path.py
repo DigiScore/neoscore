@@ -60,12 +60,12 @@ class Path(PaintedObject):
     def straight_line(
         cls,
         start: PointDef,
-        parent: Parent,
+        parent: Optional[Parent],
         stop: PointDef,
         brush: Optional[SimpleBrushDef] = None,
         pen: Optional[SimplePenDef] = None,
     ) -> Path:
-        """Path: Constructor for a straight line
+        """Convenience for drawing simple lines.
 
         Args:
             start: Starting position relative to the parent
@@ -79,6 +79,23 @@ class Path(PaintedObject):
             stop = Point(*stop)
         line.line_to(stop.x, stop.y)
         return line
+
+    @classmethod
+    def rect(
+        cls,
+        start: PointDef,
+        parent: Optional[Parent],
+        width: Unit,
+        height: Unit,
+        brush: Optional[SimpleBrushDef] = None,
+        pen: Optional[SimplePenDef] = None,
+    ):
+        """Convenience for drawing simple rectangles with only one parent"""
+        path = cls(start, parent, brush, pen)
+        path.line_to(width, ZERO)
+        path.line_to(width, height)
+        path.line_to(ZERO, height)
+        path.line_to(ZERO, ZERO)
 
     ######## PUBLIC PROPERTIES ########
 
