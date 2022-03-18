@@ -15,6 +15,10 @@ if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
 
 
+# TODO MEDIUM support Pen and Brush for this.
+# brush is supported with a post-init setter, pen isn't supported at all.
+
+
 class Text(PaintedObject):
 
     """A graphical text object."""

@@ -2,8 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional, cast
 
-from neoscore import constants
-from neoscore.core.brush import Brush, SimpleBrushDef
+from neoscore.core.brush import SimpleBrushDef
 from neoscore.core.mapping import map_between, map_between_x
 from neoscore.core.painted_object import PaintedObject
 from neoscore.core.path_element import (
@@ -38,10 +37,6 @@ class Path(PaintedObject):
     in a `Flowable`, all point anchors should not be in one either.
     """
 
-    _default_brush = Brush(
-        constants.DEFAULT_PATH_BRUSH_COLOR, constants.DEFAULT_BRUSH_PATTERN
-    )
-
     def __init__(
         self,
         pos: PointDef,
@@ -56,7 +51,6 @@ class Path(PaintedObject):
             brush: The brush to draw outlines with.
             pen: The pen to draw outlines with.
         """
-        brush = brush or Brush.from_existing(Path._default_brush)
         super().__init__(pos, parent, brush, pen)
         self.elements: list[PathElement] = []
 
