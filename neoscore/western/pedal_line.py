@@ -1,15 +1,20 @@
-from typing import Optional
+from __future__ import annotations
 
+from typing import TYPE_CHECKING, Optional
+
+from neoscore.core.has_music_font import HasMusicFont
+from neoscore.core.music_font import MusicFont
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
-from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner import Spanner
 from neoscore.utils.point import PointDef
 from neoscore.utils.units import Unit
-from neoscore.western.staff_object import StaffObject
+
+if TYPE_CHECKING:
+    from neoscore.core.mapping import Parent
 
 
-class PedalLine(Spanner, Path, StaffObject):
+class PedalLine(Spanner, Path, HasMusicFont):
 
     """A line-style pedal marking with optional half-lift (^) marks.
 
@@ -34,6 +39,8 @@ class PedalLine(Spanner, Path, StaffObject):
     ...               (Mm(1), some_chord)]  # 1 mm right of some_chord
     ...          ) # doctest: +SKIP
 
+    While this is a path, it requires a music font from which to
+    derive its appearance.
     """
 
     # TODO LOW this way of setting half-lift positions without parents
@@ -43,28 +50,36 @@ class PedalLine(Spanner, Path, StaffObject):
     def __init__(
         self,
         start: PointDef,
-        start_parent: PositionedObject,
+        start_parent: Parent,
         end_x: Unit,
-        end_parent: Optional[PositionedObject] = None,
+        end_parent: Optional[Parent] = None,
         half_lift_positions: list[Unit] = None,
+        font: Optional[MusicFont] = None,
     ):
         """
         Args:
             start: The starting position of the pedal line.
-            start_parent: An object either in a Staff or an actual Staff.
+            start_parent: The parent for the starting position. If no font is given,
+                this or one of its ancestors must implement `HasMusicFont`.
             end_x: x position of the end point relative to end_parent
             end_parent: parent for end_x
             half_lift_positions: A list of x-axis positions along the line
                 where half lift notches should be drawn.
+            font: If provided, this overrides any font found in the ancestor chain.
         """
-        StaffObject.__init__(self, start_parent)
-        pen = Pen(
-            thickness=self.staff.music_font.engraving_defaults["pedalLineThickness"]
-        )
+        if font is None:
+            font = HasMusicFont.find_music_font(start_parent)
+        self._music_font = font
+
+        pen = Pen(thickness=font.engraving_defaults["pedalLineThickness"])
         Path.__init__(self, start, parent=start_parent, pen=pen)
         Spanner.__init__(self, end_x, end_parent or self)
         self.half_lift_positions = half_lift_positions
         self._draw_path()
+
+    @property
+    def music_font(self) -> MusicFont:
+        return self._music_font
 
     ######## PRIVATE METHODS ########
 
@@ -75,12 +90,12 @@ class PedalLine(Spanner, Path, StaffObject):
         """
         # Set up constants
         # The vertical extent of the shape
-        descent = self.staff.unit(1)
+        descent = self.music_font.unit(1)
         # The horizontal distance extended to from half lift positions
-        half_lift_x_extent = self.staff.unit(0.5)
+        half_lift_x_extent = self.music_font.unit(0.5)
 
         # Draw opening crook
-        self.line_to(self.staff.unit(0), descent)
+        self.line_to(self.music_font.unit(0), descent)
 
         # Draw half lift positions, if any exist
         for pos in self.half_lift_positions:

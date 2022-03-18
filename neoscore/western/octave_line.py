@@ -118,6 +118,8 @@ class OctaveLine(ObjectGroup, Spanner, StaffObject):
         self.line_path.line_to(self.end_pos.x, path_y, self.end_parent)
         pos_relative_to_staff = map_between(self.staff, self)
         # Draw end hook pointing toward the staff
+        # TODO HIGH make hook_direction an argument so this class
+        # can be made a HasMusicFont, not StaffObject.
         hook_direction = 1 if pos_relative_to_staff.y <= ZERO else -1
         self.line_path.line_to(
             self.end_pos.x,
