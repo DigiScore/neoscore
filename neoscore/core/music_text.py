@@ -1,13 +1,14 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, NamedTuple, Optional
+from typing import TYPE_CHECKING, Any, NamedTuple, Optional, Type, cast
 
+from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
 from neoscore.core.text import Text
 from neoscore.utils.point import PointDef
 from neoscore.utils.rect import Rect
-from neoscore.western.staff_object import StaffObject
+from neoscore.utils.units import Unit
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
@@ -26,7 +27,7 @@ class _CachedTextGeometry(NamedTuple):
 _GEOMETRY_CACHE: dict[_CachedTextGeometryKey, _CachedTextGeometry] = {}
 
 
-class MusicText(Text):
+class MusicText(Text, HasMusicFont):
     """
     A glyph with a MusicFont and convenient access to relevant SMuFL metadata.
     """
@@ -59,12 +60,7 @@ class MusicText(Text):
                 Flowable containers.
         """
         if font is None:
-            ancestor_staff = StaffObject.find_staff(parent)
-            if ancestor_staff is None:
-                raise ValueError(
-                    "MusicText must be given either a MusicFont or an ancestor staff"
-                )
-            font = ancestor_staff.music_font
+            font = HasMusicFont.find_music_font(parent)
         self._music_chars = MusicText._resolve_music_chars(text, font)
         resolved_str = MusicText._music_chars_to_str(self._music_chars)
         Text.__init__(self, pos, parent, resolved_str, font, scale, breakable)
@@ -95,16 +91,31 @@ class MusicText(Text):
     @text.setter
     # TODO MEDIUM when typing music text args update here as well
     def text(self, value):
-        self._music_chars = MusicText._resolve_music_chars(value, self.font)
+        self._music_chars = MusicText._resolve_music_chars(value, self.music_font)
         resolved_str = MusicText._music_chars_to_str(self._music_chars)
         self._text = resolved_str
 
-    ######## PRIVATE PROPERTIES ########
+    @property
+    def music_font(self) -> MusicFont:
+        """The SMuFL font used in this text.
+
+        This is an expressive synonym for the `font` field which implements the
+        `HasMusicFont` mixin.
+        """
+        return cast(MusicFont, self._font)
+
+    @music_font.setter
+    def music_font(self, value: MusicFont):
+        self._font = value
+
+    @property
+    def unit(self) -> Type[Unit]:
+        return self.music_font.unit
 
     @property
     def bounding_rect(self) -> Rect:
         """The bounding rect for this text when rendered."""
-        key = _CachedTextGeometryKey(self.text, self.font, self.scale)
+        key = _CachedTextGeometryKey(self.text, self.music_font, self.scale)
         cached_result = _GEOMETRY_CACHE.get(key)
         if cached_result:
             return cached_result.bounding_rect

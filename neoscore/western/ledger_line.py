@@ -1,12 +1,12 @@
+from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.utils.point import PointDef
 from neoscore.utils.units import Unit
-from neoscore.western.staff_object import StaffObject
 
 
-class LedgerLine(Path, StaffObject):
+class LedgerLine(Path, HasMusicFont):
 
     """A horizontal ledger line.
 
@@ -24,10 +24,10 @@ class LedgerLine(Path, StaffObject):
                 `MusicFont`s engraving defaults.
         """
         Path.__init__(self, pos, parent=parent)
-        StaffObject.__init__(self, parent=parent)
-        thickness = self.staff.music_font.engraving_defaults["legerLineThickness"]
+        font = self.music_font
+        thickness = font.engraving_defaults["legerLineThickness"]
         self.pen = Pen(thickness=thickness)
-        extension = self.staff.music_font.engraving_defaults["legerLineExtension"]
+        extension = font.engraving_defaults["legerLineExtension"]
         length = base_length + extension
-        self.move_to(extension * -1, self.staff.unit(0))
-        self.line_to(length, self.staff.unit(0))
+        self.move_to(extension * -1, self.unit(0))
+        self.line_to(length, self.unit(0))

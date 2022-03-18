@@ -1,47 +1,59 @@
-import math
-from typing import Optional
+from __future__ import annotations
 
+import math
+from typing import TYPE_CHECKING, Optional
+
+from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.mapping import map_between
+from neoscore.core.music_font import MusicFont
 from neoscore.core.path import Path
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner_2d import Spanner2D
 from neoscore.utils.point import Point, PointDef
 from neoscore.utils.units import ZERO, Unit
-from neoscore.western.staff_object import StaffObject
+
+if TYPE_CHECKING:
+    from neoscore.core.mapping import Parent
 
 
-class Hairpin(Path, StaffObject, Spanner2D):
+class Hairpin(Path, Spanner2D, HasMusicFont):
 
-    """A crescendo/diminuendo hairpin spanner."""
+    """A crescendo/diminuendo hairpin spanner.
+
+    While this is a path, it requires a music font from which to
+    derive its appearance.
+    """
 
     def __init__(
         self,
         start: PointDef,
-        start_parent: PositionedObject,
+        start_parent: Parent,
         stop: PointDef,
-        stop_parent: Optional[PositionedObject],
+        stop_parent: Optional[Parent],
         direction: int,
         width: Optional[Unit] = None,
+        font: Optional[MusicFont] = None,
     ):
         """
         Args:
             start: The starting point.
-            start_parent: The parent for the starting position.
-                Must be a staff or in one.
+            start_parent: The parent for the starting position. If no font is given,
+                this or one of its ancestors must implement `HasMusicFont`.
             stop: The stopping point.
             stop_parent: The parent for the ending position.
                 If `None`, defaults to `self`.
             direction: The direction of the hairpin, where `-1` means diminuendo (>)
                 and `1` means crescendo (<).
             width: The width of the wide hairpin. Defaults to 1 staff unit.
+            font: If provided, this overrides any font found in the ancestor chain.
         """
         Path.__init__(self, start, parent=start_parent)
-        StaffObject.__init__(self, start_parent)
         stop = Point.from_def(stop)
         Spanner2D.__init__(self, stop, stop_parent or self)
         self.direction = direction
-        self.width = width if width is not None else self.staff.unit(1)
-        self.thickness = self.staff.music_font.engraving_defaults["hairpinThickness"]
+        font = self.music_font
+        self.width = width if width is not None else font.unit(1)
+        self.thickness = font.engraving_defaults["hairpinThickness"]
         self._draw_path()
 
     ######## PUBLIC PROPERTIES ########

@@ -1,11 +1,17 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Optional
+
+from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
-from neoscore.core.painted_object import PaintedObject
 from neoscore.utils.exceptions import DynamicStringError
 from neoscore.utils.point import PointDef
-from neoscore.western.staff_object import StaffObject
+
+if TYPE_CHECKING:
+    from neoscore.core.mapping import Parent
 
 
-class Dynamic(MusicText, StaffObject):
+class Dynamic(MusicText):
 
     """A textual dynamic marking"""
 
@@ -20,80 +26,98 @@ class Dynamic(MusicText, StaffObject):
         "n": "dynamicNiente",
     }
 
-    def __init__(self, pos: PointDef, parent: PaintedObject, text: str):
+    def __init__(
+        self,
+        pos: PointDef,
+        parent: Parent,
+        text: str,
+        font: Optional[MusicFont] = None,
+    ):
         """
         Args:
-            pos: The object position
-            parent: The object parent.
+            pos: Position relative to `parent`
+            parent: If no font is given, this or one of its ancestors must
+                implement `HasMusicFont`.
             text: A valid dynamic indicator string consisting
                 of the letters: 'p, m, f, r, s, z, n'
+            font: If provided, this overrides any font found in the ancestor chain.
         """
         parsed_text = self._parse_dynamic_string(text)
-        MusicText.__init__(self, pos, parent, parsed_text)
-        StaffObject.__init__(self, parent)
-
-    ######## CONSTRUCTORS ########
-
-    # ---- Convenience constructors ----
+        MusicText.__init__(self, pos, parent, parsed_text, font)
 
     @classmethod
-    def ppp(cls, pos, parent):
+    def ppp(
+        cls, pos: PointDef, parent: Parent, font: Optional[MusicFont] = None
+    ) -> Dynamic:
         """Create a 'ppp' dynamic."""
-        return cls(pos, parent, "ppp")
+        return cls(pos, parent, "ppp", font)
 
     @classmethod
-    def pp(cls, pos, parent):
+    def pp(
+        cls, pos: PointDef, parent: Parent, font: Optional[MusicFont] = None
+    ) -> Dynamic:
         """Create a 'pp' dynamic."""
-        return cls(pos, parent, "pp")
+        return cls(pos, parent, "pp", font)
 
     @classmethod
-    def p(cls, pos, parent):
+    def p(
+        cls, pos: PointDef, parent: Parent, font: Optional[MusicFont] = None
+    ) -> Dynamic:
         """Create a 'p' dynamic."""
-        return cls(pos, parent, "p")
+        return cls(pos, parent, "p", font)
 
     @classmethod
-    def mp(cls, pos, parent):
+    def mp(
+        cls, pos: PointDef, parent: Parent, font: Optional[MusicFont] = None
+    ) -> Dynamic:
         """Create an 'mp' dynamic."""
-        return cls(pos, parent, "mp")
+        return cls(pos, parent, "mp", font)
 
     @classmethod
-    def mf(cls, pos, parent):
+    def mf(
+        cls, pos: PointDef, parent: Parent, font: Optional[MusicFont] = None
+    ) -> Dynamic:
         """Create an 'mf' dynamic."""
-        return cls(pos, parent, "mf")
+        return cls(pos, parent, "mf", font)
 
     @classmethod
-    def f(cls, pos, parent):
+    def f(
+        cls, pos: PointDef, parent: Parent, font: Optional[MusicFont] = None
+    ) -> Dynamic:
         """Create a 'f' dynamic."""
-        return cls(pos, parent, "f")
+        return cls(pos, parent, "f", font)
 
     @classmethod
-    def ff(cls, pos, parent):
+    def ff(
+        cls, pos: PointDef, parent: Parent, font: Optional[MusicFont] = None
+    ) -> Dynamic:
         """Create a 'ff' dynamic."""
-        return cls(pos, parent, "ff")
+        return cls(pos, parent, "ff", font)
 
     @classmethod
-    def fff(cls, pos, parent):
+    def fff(
+        cls, pos: PointDef, parent: Parent, font: Optional[MusicFont] = None
+    ) -> Dynamic:
         """Create a 'fff' dynamic."""
-        return cls(pos, parent, "fff")
+        return cls(pos, parent, "fff", font)
 
     @classmethod
-    def sfz(cls, pos, parent):
+    def sfz(
+        cls, pos: PointDef, parent: Parent, font: Optional[MusicFont] = None
+    ) -> Dynamic:
         """Create an 'sfz' dynamic."""
-        return cls(pos, parent, "sfz")
+        return cls(pos, parent, "sfz", font)
 
     @classmethod
-    def fp(cls, pos, parent):
+    def fp(
+        cls, pos: PointDef, parent: Parent, font: Optional[MusicFont] = None
+    ) -> Dynamic:
         """Create an 'fp' dynamic."""
-        return cls(pos, parent, "fp")
-
-    ######## PRIVATE METHODS ########
+        return cls(pos, parent, "fp", font)
 
     @classmethod
-    def _parse_dynamic_string(cls, string):
-        """Parse a dynamics string into a list of SMuFL canonical names
-
-        Returns: list[MusicChar]
-        """
+    def _parse_dynamic_string(cls, string: str) -> list[str]:
+        """Parse a dynamics string into a list of SMuFL canonical names"""
         music_chars = []
         for char in string:
             try:

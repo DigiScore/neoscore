@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Type, cast
 
 from neoscore import constants
+from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.mapping import map_between_x
 from neoscore.core.music_font import MusicFont
 from neoscore.core.path import Path
@@ -17,10 +18,9 @@ from neoscore.western.octave_line import OctaveLine
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
     from neoscore.western.clef import Clef
-    from neoscore.western.staff_object import StaffObject
 
 
-class Staff(Path):
+class Staff(Path, HasMusicFont):
     """A staff capable of holding `StaffObject`s"""
 
     # Type sentinel used to hackily check if objects are Staff
@@ -34,7 +34,7 @@ class Staff(Path):
         length: Unit,
         staff_unit: Optional[Unit] = None,
         line_count: int = 5,
-        music_font: Optional[MusicFont] = None,
+        music_font_family: Optional[str] = None,
         pen: Optional[Pen] = None,
     ):
         """
@@ -46,8 +46,9 @@ class Staff(Path):
             staff_unit: The distance between two lines in the staff.
                 If not set, this will default to `constants.DEFAULT_STAFF_UNIT`
             line_count: The number of lines in the staff.
-            music_font: The font to be used in all MusicText objects unless
-                otherwise specified.
+            music_font_family: The name of the font to use for MusicText objects
+                in the staff. This defaults to the system-wide default music font
+                family.
             pen: The pen used to draw the staff lines. If none, a default solid
                 black line is used.
         """
@@ -56,8 +57,9 @@ class Staff(Path):
         self._unit = self._make_unit_class(
             staff_unit if staff_unit else constants.DEFAULT_STAFF_UNIT
         )
-        if music_font is None:
-            self.music_font = MusicFont(constants.DEFAULT_MUSIC_FONT_NAME, self.unit)
+        self._music_font = MusicFont(
+            music_font_family or constants.DEFAULT_MUSIC_FONT_NAME, self.unit
+        )
         self._length = length
         # Construct the staff path
         for i in range(self.line_count):
@@ -66,6 +68,10 @@ class Staff(Path):
             self.line_to(length, y_offset)
 
     ######## PUBLIC PROPERTIES ########
+
+    @property
+    def music_font(self) -> MusicFont:
+        return self._music_font
 
     @property
     def unit(self) -> Type[Unit]:
@@ -119,7 +125,7 @@ class Staff(Path):
 
     ######## PUBLIC METHODS ########
 
-    def distance_to_next_of_type(self, staff_object: StaffObject) -> Unit:
+    def distance_to_next_of_type(self, staff_object: PositionedObject) -> Unit:
         """Find the x distance until the next occurrence of an object's type.
 
         If the object is the last of its type, this gives the remaining length

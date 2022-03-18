@@ -1,13 +1,20 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Optional
+
+from neoscore.core.has_music_font import HasMusicFont
+from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.object_group import ObjectGroup
 from neoscore.models.beat import Beat, BeatDef
 from neoscore.utils.point import Point
-from neoscore.utils.units import Unit
-from neoscore.western.staff import Staff
-from neoscore.western.staff_object import StaffObject
+from neoscore.utils.units import ZERO, Unit
+
+if TYPE_CHECKING:
+    from neoscore.core.mapping import Parent
 
 
-class TimeSignature(ObjectGroup, StaffObject):
+class TimeSignature(ObjectGroup, HasMusicFont):
 
     """A logical and graphical time signature
 
@@ -27,11 +34,19 @@ class TimeSignature(ObjectGroup, StaffObject):
         9: "timeSig9",
     }
 
-    def __init__(self, pos_x: Unit, staff: Staff, meter: BeatDef):
+    def __init__(
+        self,
+        pos_x: Unit,
+        parent: Parent,
+        meter: BeatDef,
+        font: Optional[MusicFont] = None,
+    ):
         """
         Args:
             pos_x: The x position relative to the
                 parent staff
+            parent: If no font is given, this or one of its ancestors must
+                implement `HasMusicFont`.
             meter: The length of a measure in this
                 time signature. The numerator and denominators
                 of this duration are used literally as the numbers
@@ -39,24 +54,31 @@ class TimeSignature(ObjectGroup, StaffObject):
                 While a 6/8 measure will take the same amount of time
                 as a 3/4 measure, the representations (and note groupings)
                 are different.
-            staff: The parent staff
+            font: If provided, this overrides any font found in the ancestor chain.
         """
-        ObjectGroup.__init__(self, Point(pos_x, staff.unit(0)), staff)
-        StaffObject.__init__(self, staff)
+        ObjectGroup.__init__(self, Point(pos_x, ZERO), parent)
+        if font is None:
+            font = HasMusicFont.find_music_font(parent)
+        self._music_font = font
+        # TODO LOW error if this beat is a nested tuplet
         self._meter = Beat.from_def(meter)
         # Add one glyph for each digit
         self._numerator_glyph = MusicText(
-            (staff.unit(0), staff.unit(1)),
+            (ZERO, font.unit(1)),
             self,
             TimeSignature._glyphs_for_number(self.meter.numerator),
         )
         self._denominator_glyph = MusicText(
-            (staff.unit(0), staff.unit(3)),
+            (ZERO, font.unit(3)),
             self,
             TimeSignature._glyphs_for_number(self.meter.denominator),
         )
 
     ######## PUBLIC PROPERTIES ########
+
+    @property
+    def music_font(self) -> MusicFont:
+        return self._music_font
 
     @property
     def numerator_glyph(self) -> MusicText:

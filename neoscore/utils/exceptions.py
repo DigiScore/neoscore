@@ -4,31 +4,21 @@
 class MusicFontMetadataNotFoundError(Exception):
     """Exception raised when metadata for a music font can't be found."""
 
-    pass
-
 
 class MusicFontGlyphNotFoundError(Exception):
     """Exception raised when a glyph cannot be found in a MusicFont"""
-
-    pass
 
 
 class NoClefError(Exception):
     """Exception raised when no clef is present in a Staff where needed"""
 
-    pass
-
 
 class OutOfBoundsError(Exception):
     """Exception raised when a point lies outside of a Flowable"""
 
-    pass
-
 
 class NoAncestorStaffError(Exception):
     """Exception raised when a StaffObject does not have an ancestor Staff"""
-
-    pass
 
 
 class DynamicStringError(Exception):
@@ -71,8 +61,6 @@ class UnknownFontFamilyError(Exception):
     Exception raised when an invalid font name is passed to a FontInterface.
     """
 
-    pass
-
 
 class ColorBoundsError(Exception):
     """Exception raised when a color channel is set out of bounds"""
@@ -85,22 +73,18 @@ class ColorBoundsError(Exception):
 class InvalidIntervalError(Exception):
     """An exception raised when an invalid interval specifier is used."""
 
-    pass
-
 
 class InvalidPitchDescriptionError(Exception):
     """An exception raised when an invalid pitch specifier is used."""
-
-    pass
 
 
 class InvalidImageFormatError(Exception):
     """Raised when an image format cannot be determined."""
 
-    pass
-
 
 class ImageExportError(Exception):
     """Raised when low level image export fails."""
 
-    pass
+
+class NoAncestorWithMusicFontError(Exception):
+    """Raised when a lookup expecting to find an ancestor with a MusicFont fails."""

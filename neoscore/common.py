@@ -37,7 +37,6 @@ from neoscore.western.flag import Flag
 from neoscore.western.hairpin import Hairpin
 from neoscore.western.key_signature import KeySignature
 from neoscore.western.ledger_line import LedgerLine
-from neoscore.western.multi_staff_object import MultiStaffObject
 from neoscore.western.notehead import Notehead
 from neoscore.western.octave_line import OctaveLine
 from neoscore.western.ped_and_star import PedAndStar
@@ -46,6 +45,5 @@ from neoscore.western.repeating_music_text_line import RepeatingMusicTextLine
 from neoscore.western.rest import Rest
 from neoscore.western.slur import Slur
 from neoscore.western.staff import Staff
-from neoscore.western.staff_object import StaffObject
 from neoscore.western.stem import Stem
 from neoscore.western.time_signature import TimeSignature

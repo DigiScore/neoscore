@@ -1,13 +1,19 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Optional
+
+from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
-from neoscore.core.positioned_object import PositionedObject
 from neoscore.models.beat import Beat
 from neoscore.models.vertical_direction import VerticalDirection
 from neoscore.utils.exceptions import NoFlagNeededError
 from neoscore.utils.point import PointDef
-from neoscore.western.staff_object import StaffObject
+
+if TYPE_CHECKING:
+    from neoscore.core.mapping import Parent
 
 
-class Flag(MusicText, StaffObject):
+class Flag(MusicText):
 
     """A simple Flag glyph with a duration and direction"""
 
@@ -35,18 +41,21 @@ class Flag(MusicText, StaffObject):
     def __init__(
         self,
         pos: PointDef,
-        parent: PositionedObject,
+        parent: Parent,
         duration: Beat,
         direction: VerticalDirection,
+        font: Optional[MusicFont] = None,
     ):
         """
         Args:
             pos: The position of this flag. When `parent` is a stem end point
                 this should typically be `ORIGIN`.
-            parent: The parent for the flag
+            parent: If no font is given, this or one of its ancestors must
+                implement `HasMusicFont`.
             duration: The beat corresponding to the flag. This controls the flag
                 glyph rendered.
             direction: The direction of the flag
+            font: If provided, this overrides any font found in the ancestor chain.
         """
         self.duration = duration
         self.direction = direction
@@ -55,7 +64,6 @@ class Flag(MusicText, StaffObject):
         else:
             glyph_name = self._up_glyphnames[self.duration.base_division]
         MusicText.__init__(self, pos, parent, [glyph_name])
-        StaffObject.__init__(self, parent)
 
     ######## PUBLIC PROPERTIES ########
 

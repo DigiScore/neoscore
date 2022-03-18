@@ -75,9 +75,9 @@ def sign(value: Unit) -> int:
     """Return the sign of a unit as 1 or -1.
 
     Args:
-        value (int): The value to check
+        value: The value to check
 
-    Returns: int: -1 if `value` is negative, and 1 if `value` is positive
+    Returns: -1 if `value` is negative, and 1 if `value` is positive
     """
     if value.base_value < 0:
         return -1

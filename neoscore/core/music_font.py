@@ -48,7 +48,7 @@ class MusicFont(Font):
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def unit(self) -> Unit:
+    def unit(self) -> Type[Unit]:
         return self._unit
 
     @property

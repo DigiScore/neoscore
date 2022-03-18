@@ -1,17 +1,17 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Optional
 
+from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.models.beat import Beat, BeatDef
 from neoscore.utils.point import Point, PointDef
-from neoscore.western.staff_object import StaffObject
 
 if TYPE_CHECKING:
-    from neoscore.western.staff import Staff
+    from neoscore.core.mapping import Parent
 
 
-class Rest(MusicText, StaffObject):
+class Rest(MusicText):
 
     """A simple Rest glyph whose appearance is determined by a duration
 
@@ -39,15 +39,23 @@ class Rest(MusicText, StaffObject):
     def __init__(
         self,
         pos: PointDef,
-        parent: Union[StaffObject, Staff],
+        parent: Parent,
         duration: BeatDef,
+        font: Optional[MusicFont] = None,
     ):
+        """
+        Args:
+            pos: The position of the rest from its SMuFL anchor point
+            parent: The parent of the rest. If no font is provided,
+                this parent or one of its ancestors must implement `HasStaffUnit`.
+            duration: `Beat` determining the particular rest glyph used.
+            font: If provided, this overrides any font inherited from an ancestor.
+        """
         pos = Point.from_def(pos)
         self._duration = Beat.from_def(duration)
         MusicText.__init__(
-            self, pos, parent, [self._glyphnames[self.duration.base_division]]
+            self, pos, parent, [self._glyphnames[self.duration.base_division]], font
         )
-        StaffObject.__init__(self, parent)
 
     ######## PUBLIC PROPERTIES ########
 
