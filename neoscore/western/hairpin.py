@@ -3,11 +3,15 @@ from __future__ import annotations
 import math
 from typing import TYPE_CHECKING, Optional
 
+from neoscore.core.music_path import MusicPath
+from neoscore.core.pen import DEFAULT_PEN, Pen
+
+if TYPE_CHECKING:
+    pass
+
 from neoscore.core.brush import NO_BRUSH
-from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.mapping import map_between
 from neoscore.core.music_font import MusicFont
-from neoscore.core.path import Path
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner_2d import Spanner2D
 from neoscore.utils.point import Point, PointDef
@@ -17,7 +21,7 @@ if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
 
 
-class Hairpin(Path, Spanner2D, HasMusicFont):
+class Hairpin(MusicPath, Spanner2D):
 
     """A crescendo/diminuendo hairpin spanner.
 
@@ -50,15 +54,15 @@ class Hairpin(Path, Spanner2D, HasMusicFont):
             width: The width of the wide hairpin. Defaults to 1 staff unit.
             font: If provided, this overrides any font found in the ancestor chain.
         """
-        Path.__init__(self, start, parent=start_parent, brush=NO_BRUSH)
+        MusicPath.__init__(self, start, start_parent, brush=NO_BRUSH, font=font)
         stop = Point.from_def(stop)
         Spanner2D.__init__(self, stop, stop_parent or self)
         self.direction = direction
-        if font is None:
-            font = HasMusicFont.find_music_font(start_parent)
-        self._music_font = font
-        self.width = width if width is not None else font.unit(1)
-        self.thickness = font.engraving_defaults["hairpinThickness"]
+        self.width = width if width is not None else self.music_font.unit(1)
+        self.pen = Pen.from_existing(
+            DEFAULT_PEN,
+            thickness=self.music_font.engraving_defaults["hairpinThickness"],
+        )
         self._draw_path()
 
     ######## PUBLIC PROPERTIES ########

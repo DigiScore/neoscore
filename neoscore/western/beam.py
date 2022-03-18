@@ -2,19 +2,21 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional
 
-from neoscore.core.has_music_font import HasMusicFont
+from neoscore.core.brush import SimpleBrushDef
 from neoscore.core.music_font import MusicFont
-from neoscore.core.path import Path
+from neoscore.core.music_path import MusicPath
+from neoscore.core.pen import SimplePenDef
 from neoscore.utils.point import Point, PointDef
 from neoscore.utils.units import ZERO
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
 
-# TODO HIGH many classes are Paths with a MusicFont for getting engraving defaults and unit sizes. maybe it would make sense to make a common class for this, like MusicPath or something?
+
+# TODO MEDIUM normalize "end" vs "stop" in spanner-like args
 
 
-class Beam(Path, HasMusicFont):
+class Beam(MusicPath):
 
     """A rhythmic beam connecting groups of notes.
 
@@ -32,6 +34,8 @@ class Beam(Path, HasMusicFont):
         start_parent: Parent,
         stop: PointDef,
         stop_parent: Parent,
+        brush: Optional[SimpleBrushDef] = None,
+        pen: Optional[SimplePenDef] = None,
         font: Optional[MusicFont] = None,
     ):
         """
@@ -44,18 +48,11 @@ class Beam(Path, HasMusicFont):
                 Must be a staff or in one.
             font: If provided, this overrides any font found in the ancestor chain.
         """
-        Path.__init__(self, start, parent=start_parent)
-        if font is None:
-            font = HasMusicFont.find_music_font(start_parent)
-        self._music_font = font
-        self.beam_thickness = font.engraving_defaults["beamThickness"]
+        MusicPath.__init__(self, start, start_parent, brush, pen, font)
+        self.beam_thickness = self.music_font.engraving_defaults["beamThickness"]
         # Draw beam
         stop = Point.from_def(stop)
         self.line_to(stop.x, stop.y, stop_parent)
         self.line_to(stop.x, stop.y + self.beam_thickness, stop_parent)
         self.line_to(ZERO, self.beam_thickness, self)
         self.close_subpath()
-
-    @property
-    def music_font(self) -> MusicFont:
-        return self._music_font

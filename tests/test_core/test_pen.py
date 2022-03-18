@@ -48,6 +48,20 @@ class TestPen(unittest.TestCase):
         assert original.pattern == clone.pattern
         assert original.join_style == clone.join_style
         assert original.cap_style == clone.cap_style
+        assert Pen.from_existing(original, color="#ffffff").color == Color("#ffffff")
+        assert Pen.from_existing(original, thickness=Unit(1)).thickness == Unit(1)
+        assert (
+            Pen.from_existing(original, pattern=PenPattern.SOLID).pattern
+            == PenPattern.SOLID
+        )
+        assert (
+            Pen.from_existing(original, join_style=PenJoinStyle.BEVEL).join_style
+            == PenJoinStyle.BEVEL
+        )
+        assert (
+            Pen.from_existing(original, cap_style=PenCapStyle.FLAT).cap_style
+            == PenCapStyle.FLAT
+        )
 
     def test_interface_generation(self):
         pen = Pen(

@@ -2,11 +2,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional
 
-from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.music_font import MusicFont
-from neoscore.core.path import Path
+from neoscore.core.music_path import MusicPath
 from neoscore.core.path_element import PathElement
-from neoscore.core.pen import Pen
+from neoscore.core.pen import DEFAULT_PEN, Pen
 from neoscore.models.vertical_direction import VerticalDirection
 from neoscore.utils.math_helpers import sign
 from neoscore.utils.point import PointDef
@@ -18,7 +17,7 @@ if TYPE_CHECKING:
 # TODO MEDIUM maybe make this take a length and vertical direction?
 
 
-class Stem(Path, HasMusicFont):
+class Stem(MusicPath):
 
     """A vertical note/chord stem.
 
@@ -42,22 +41,17 @@ class Stem(Path, HasMusicFont):
                 downward and negative extends upward.
             font: If provided, this overrides any font found in the ancestor chain.
         """
-        Path.__init__(self, start, parent=parent)
-        if font is None:
-            font = HasMusicFont.find_music_font(parent)
-        self._music_font = font
-        thickness = self.music_font.engraving_defaults["stemThickness"]
-        self.pen = Pen(thickness=thickness)
+        MusicPath.__init__(self, start, parent, font=font)
+        self.pen = Pen.from_existing(
+            DEFAULT_PEN,
+            thickness=self.music_font.engraving_defaults["stemThickness"],
+        )
 
         self._height = height
         # Draw stem path
         self.line_to(ZERO, self.height)
 
     ######## PUBLIC PROPERTIES ########
-
-    @property
-    def music_font(self) -> MusicFont:
-        return self._music_font
 
     @property
     def height(self) -> Unit:

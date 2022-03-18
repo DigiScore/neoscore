@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional
 
-from neoscore.core.brush import Brush
-from neoscore.core.has_music_font import HasMusicFont
+from neoscore.core.brush import SimpleBrushDef
 from neoscore.core.music_font import MusicFont
-from neoscore.core.path import Path
+from neoscore.core.music_path import MusicPath
+from neoscore.core.pen import SimplePenDef
 from neoscore.core.spanner_2d import Spanner2D
 from neoscore.models.vertical_direction import VerticalDirection
 from neoscore.utils.point import Point, PointDef
@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
 
 
-class Slur(Path, Spanner2D, HasMusicFont):
+class Slur(MusicPath, Spanner2D):
 
     """A slur, also usable as a tie.
 
@@ -29,6 +29,8 @@ class Slur(Path, Spanner2D, HasMusicFont):
         stop: PointDef,
         stop_parent: Optional[Parent],
         direction: VerticalDirection = VerticalDirection.UP,
+        brush: Optional[SimpleBrushDef] = None,
+        pen: Optional[SimplePenDef] = None,
         font: Optional[MusicFont] = None,
     ):
         """
@@ -42,21 +44,18 @@ class Slur(Path, Spanner2D, HasMusicFont):
             direction: The vertical direction the slur arches.
             font: If provided, this overrides any font found in the ancestor chain.
         """
-        Path.__init__(self, start, parent=start_parent, brush=Brush((0, 0, 0, 255)))
+        MusicPath.__init__(self, start, start_parent, brush, pen, font)
         stop = Point.from_def(stop)
         Spanner2D.__init__(self, stop, stop_parent or self)
         self.direction = direction
         # Load relevant engraving defaults from music font
-        if font is None:
-            font = HasMusicFont.find_music_font(start_parent)
-        self._music_font = font
-        self.midpoint_thickness = font.engraving_defaults["slurMidpointThickness"]
-        self.endpoint_thickness = font.engraving_defaults["slurEndpointThickness"]
+        self.midpoint_thickness = self.music_font.engraving_defaults[
+            "slurMidpointThickness"
+        ]
+        self.endpoint_thickness = self.music_font.engraving_defaults[
+            "slurEndpointThickness"
+        ]
         self._draw_path()
-
-    @property
-    def music_font(self) -> MusicFont:
-        return self._music_font
 
     ######## PRIVATE METHODS ########
 

@@ -3,11 +3,10 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Type, cast
 
 from neoscore import constants
-from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.mapping import map_between_x
 from neoscore.core.music_font import MusicFont
-from neoscore.core.path import Path
-from neoscore.core.pen import Pen
+from neoscore.core.music_path import MusicPath
+from neoscore.core.pen import DEFAULT_PEN, Pen
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.models.transposition import Transposition
 from neoscore.utils.exceptions import NoClefError
@@ -20,12 +19,18 @@ if TYPE_CHECKING:
     from neoscore.western.clef import Clef
 
 
-class Staff(Path, HasMusicFont):
+class Staff(MusicPath):
     """A staff capable of holding `StaffObject`s"""
 
     # Type sentinel used to hackily check if objects are Staff
     # without importing the type, risking cyclic imports.
     _neoscore_staff_type_marker = True
+
+    # TODO HIGH this init signature works very differently than most
+    # MusicPath and similar do. It can't inherit its font (and thus
+    # size) from an ancestor music font and the way it takes a music
+    # font *family* and staff_unit feels awkward. rework this soon, as
+    # it's a disruptive breaking change.
 
     def __init__(
         self,
@@ -49,17 +54,20 @@ class Staff(Path, HasMusicFont):
             music_font_family: The name of the font to use for MusicText objects
                 in the staff. This defaults to the system-wide default music font
                 family.
-            pen: The pen used to draw the staff lines. If none, a default solid
-                black line is used.
+            pen: The pen used to draw the staff lines. Defaults to a line with
+                thickness from the music font's engraving default.
         """
-        super().__init__(pos, parent, pen=pen)
-        self._line_count = line_count
-        self._unit = self._make_unit_class(
+        unit = self._make_unit_class(
             staff_unit if staff_unit else constants.DEFAULT_STAFF_UNIT
         )
-        self._music_font = MusicFont(
-            music_font_family or constants.DEFAULT_MUSIC_FONT_NAME, self.unit
+        music_font = MusicFont(
+            music_font_family or constants.DEFAULT_MUSIC_FONT_NAME, unit
         )
+        pen = Pen.from_existing(
+            DEFAULT_PEN, thickness=music_font.engraving_defaults["staffLineThickness"]
+        )
+        super().__init__(pos, parent, pen=pen, font=music_font)
+        self._line_count = line_count
         self._length = length
         # Construct the staff path
         for i in range(self.line_count):
@@ -68,26 +76,6 @@ class Staff(Path, HasMusicFont):
             self.line_to(length, y_offset)
 
     ######## PUBLIC PROPERTIES ########
-
-    @property
-    def music_font(self) -> MusicFont:
-        return self._music_font
-
-    @property
-    def unit(self) -> Type[Unit]:
-        """A unit type where 1 is the distance between two staff lines.
-
-        This is a generated class with the name `StaffUnit`. All `Staff`
-        objects have a unique `StaffUnit` class such that different sized
-        staves may coexist within a score and `StaffObject`s placed within
-        them will be able to correctly position and scale themselves
-        accordingly.
-
-        This class is generated automatically according to `self.height`
-        and `self.line_count`, with the assumption that all staff lines
-        are evenly spaced.
-        """
-        return self._unit
 
     @property
     def height(self) -> Unit:

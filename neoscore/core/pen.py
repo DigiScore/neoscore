@@ -47,9 +47,23 @@ class Pen:
         self._regenerate_interface()
 
     @classmethod
-    def from_existing(cls, pen: Pen) -> Pen:
+    def from_existing(
+        cls,
+        pen: Pen,
+        color: Optional[ColorDef] = None,
+        thickness: Optional[Unit] = None,
+        pattern: Optional[PenPattern] = None,
+        join_style: Optional[PenJoinStyle] = None,
+        cap_style: Optional[PenCapStyle] = None,
+    ) -> Pen:
         """Clone a pen."""
-        return cls(pen.color, pen.thickness, pen.pattern, pen.join_style, pen.cap_style)
+        return cls(
+            color or pen.color,
+            thickness or pen.thickness,
+            pattern or pen.pattern,
+            join_style or pen.join_style,
+            cap_style or pen.cap_style,
+        )
 
     def _regenerate_interface(self):
         self._interface = PenInterface(
