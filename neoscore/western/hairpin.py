@@ -24,6 +24,8 @@ class Hairpin(Path, Spanner2D, HasMusicFont):
     derive its appearance.
     """
 
+    # TODO MEDIUM add and use HorizontalDirection here?
+
     def __init__(
         self,
         start: PointDef,
@@ -51,12 +53,18 @@ class Hairpin(Path, Spanner2D, HasMusicFont):
         stop = Point.from_def(stop)
         Spanner2D.__init__(self, stop, stop_parent or self)
         self.direction = direction
-        font = self.music_font
+        if font is None:
+            font = HasMusicFont.find_music_font(start_parent)
+        self._music_font = font
         self.width = width if width is not None else font.unit(1)
         self.thickness = font.engraving_defaults["hairpinThickness"]
         self._draw_path()
 
     ######## PUBLIC PROPERTIES ########
+
+    @property
+    def music_font(self) -> MusicFont:
+        return self._music_font
 
     @property
     def direction(self):

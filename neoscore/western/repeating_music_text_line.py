@@ -1,4 +1,6 @@
-from typing import Optional, cast
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Optional, cast
 
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
@@ -6,19 +8,24 @@ from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner import Spanner
 from neoscore.utils.point import PointDef
 from neoscore.utils.units import Unit
-from neoscore.western.staff_object import StaffObject
+
+if TYPE_CHECKING:
+    from neoscore.core.mapping import Parent
 
 
-class RepeatingMusicTextLine(MusicText, StaffObject, Spanner):
+class RepeatingMusicTextLine(MusicText, Spanner):
 
     """A spanner of repeating music text over its length."""
 
     # TODO MEDIUM figure out how to type `text` - same problem as in `MusicText`
 
+    # TODO MEDIUM maybe reorder args here so end_x and end_parent are
+    # adjacent. see how other spanners do this.
+
     def __init__(
         self,
         start: PointDef,
-        parent: PositionedObject,
+        start_parent: Parent,
         end_x: Unit,
         text,
         end_parent: Optional[PositionedObject] = None,
@@ -27,7 +34,8 @@ class RepeatingMusicTextLine(MusicText, StaffObject, Spanner):
         """
         Args:
             start: The starting point.
-            parent: The parent of the starting point.
+            start_parent: If no font is given, this or one of its ancestors
+                must implement `HasMusicFont`.
             end_x: The end x position.
             text (str, tuple, MusicChar, or list of these):
                 The text to be repeated over the spanner,
@@ -35,15 +43,13 @@ class RepeatingMusicTextLine(MusicText, StaffObject, Spanner):
                 (glyph name, alternate number), MusicChar, or a list of them.
             end_parent: An optional parent of the end point.
                 If omitted, the end position is relative to the main object.
-            font: The music font to be used. If not specified,
-                the font is taken from the ancestor staff.
+            font: If provided, this overrides any font found in the ancestor chain.
         """
         # Start the MusicText with a single repetition, then after
         # superclasses are set up figure out how many repetitions are
         # needed to cover `self.length` and update the text
         # accordingly.
-        MusicText.__init__(self, start, parent, text, font)
-        StaffObject.__init__(self, parent)
+        MusicText.__init__(self, start, start_parent, text, font)
         Spanner.__init__(self, end_x, end_parent or self)
         self.single_repetition_chars = self.music_chars
         base_width = self.font.bounding_rect_of(self.text).width

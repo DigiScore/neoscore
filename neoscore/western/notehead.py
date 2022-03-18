@@ -1,10 +1,18 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Optional
+
 from neoscore.core.mapping import map_between
+from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.models.beat import Beat, BeatDef
 from neoscore.models.pitch import Pitch, PitchDef
 from neoscore.utils.units import ZERO, Unit
 from neoscore.western.staff_object import StaffObject
+
+if TYPE_CHECKING:
+    pass
 
 
 class Notehead(MusicText, StaffObject):
@@ -29,7 +37,12 @@ class Notehead(MusicText, StaffObject):
     }
 
     def __init__(
-        self, pos_x: Unit, parent: PositionedObject, pitch: PitchDef, duration: BeatDef
+        self,
+        pos_x: Unit,
+        parent: PositionedObject,
+        pitch: PitchDef,
+        duration: BeatDef,
+        font: Optional[MusicFont] = None,
     ):
         """
         Args:
@@ -42,12 +55,17 @@ class Notehead(MusicText, StaffObject):
                 See `Pitch` for valid signatures.
             duration: The logical duration of
                 the notehead. This is used to determine the glyph style.
+            font: If provided, this overrides any font found in the ancestor chain.
         """
         self._pitch = Pitch.from_def(pitch)
         self._duration = Beat.from_def(duration)
         # Use a temporary y-axis position before calculating it for real
         MusicText.__init__(
-            self, (pos_x, ZERO), parent, [self._glyphnames[self.duration.base_division]]
+            self,
+            (pos_x, ZERO),
+            parent,
+            [self._glyphnames[self.duration.base_division]],
+            font,
         )
         StaffObject.__init__(self, parent)
         self.y = self.staff.unit(
