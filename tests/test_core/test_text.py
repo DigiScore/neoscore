@@ -1,7 +1,9 @@
 import unittest
 
 from neoscore.core import neoscore
+from neoscore.core.brush import DEFAULT_BRUSH, Brush
 from neoscore.core.font import Font
+from neoscore.core.pen import NO_PEN, Pen
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.text import Text
 from neoscore.utils.units import ZERO, Unit
@@ -13,18 +15,29 @@ class TestText(unittest.TestCase):
         self.font = Font("Bravura", 12, 1, False)
 
     def test_init(self):
-        mock_parent = PositionedObject((Unit(10), Unit(11)), parent=None)
-        obj = Text((Unit(5), Unit(6)), mock_parent, "testing", self.font)
+        pen = Pen("#00ff00")
+        brush = Brush("#ff0000")
+        mock_parent = PositionedObject((Unit(10), Unit(11)), None)
+        obj = Text(
+            (Unit(5), Unit(6)), mock_parent, "testing", self.font, brush, pen, 2, False
+        )
         assert obj.x == Unit(5)
         assert obj.y == Unit(6)
         assert obj.text == "testing"
         assert obj.font == self.font
         assert obj.parent == mock_parent
+        assert obj.pen == pen
+        assert obj.brush == brush
 
     def test_default_init_values(self):
         obj = Text((Unit(5), Unit(6)), None, "testing")
         assert obj.font == neoscore.default_font
         assert obj.parent == neoscore.document.pages[0]
+        assert obj.brush.color == DEFAULT_BRUSH.color
+        assert obj.brush.pattern == DEFAULT_BRUSH.pattern
+        assert obj.pen == NO_PEN
+        assert obj.scale == 1
+        assert obj.breakable == True
 
     def test_length_when_non_breakable(self):
         obj = Text((Unit(5), Unit(6)), None, "testing", breakable=False)

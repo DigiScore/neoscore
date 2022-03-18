@@ -63,7 +63,9 @@ class MusicText(Text, HasMusicFont):
             font = HasMusicFont.find_music_font(parent)
         self._music_chars = MusicText._resolve_music_chars(text, font)
         resolved_str = MusicText._music_chars_to_str(self._music_chars)
-        Text.__init__(self, pos, parent, resolved_str, font, scale, breakable)
+        Text.__init__(
+            self, pos, parent, resolved_str, font, None, None, scale, breakable
+        )
 
     ######## PUBLIC PROPERTIES ########
 

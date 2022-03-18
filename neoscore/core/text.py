@@ -3,9 +3,10 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 
 from neoscore.core import neoscore
+from neoscore.core.brush import SimpleBrushDef
 from neoscore.core.font import Font
 from neoscore.core.painted_object import PaintedObject
-from neoscore.core.pen import NO_PEN
+from neoscore.core.pen import NO_PEN, SimplePenDef
 from neoscore.interface.text_interface import TextInterface
 from neoscore.utils.point import Point, PointDef
 from neoscore.utils.rect import Rect
@@ -28,7 +29,13 @@ class Text(PaintedObject):
         pos: PointDef,
         parent: Optional[Parent],
         text: str,
+        # TODO HIGH how to order these args? in MusicPaths, font comes
+        # after brush and pen, but here it feels more natural for font
+        # to come first since it has such an effect on the
+        # shape. maybe update musicpaths signatures?
         font: Optional[Font] = None,
+        brush: Optional[SimpleBrushDef] = None,
+        pen: Optional[SimplePenDef] = None,
         scale: float = 1,
         breakable: bool = True,
     ):
@@ -37,6 +44,8 @@ class Text(PaintedObject):
             pos: Position relative to the parent
             parent: The parent (core-level) object or None
             text: The text to be displayed
+            brush: The brush to fill in text shapes with.
+            pen: The pen to trace text outlines with. This defaults to no pen.
             font: The font to display the text in.
             scale: A scaling factor relative to the font size.
             breakable: Whether this object should break across lines in
@@ -49,7 +58,7 @@ class Text(PaintedObject):
         self._text = text
         self._scale = scale
         self._breakable = breakable
-        super().__init__(pos, parent=parent)
+        super().__init__(pos, parent, brush, pen or NO_PEN)
 
     ######## PUBLIC PROPERTIES ########
 
@@ -134,7 +143,7 @@ class Text(PaintedObject):
         slice_interface = TextInterface(
             pos,
             self.brush.interface,
-            NO_PEN.interface,
+            self.pen.interface,
             self.text,
             self.font.interface,
             self.scale,

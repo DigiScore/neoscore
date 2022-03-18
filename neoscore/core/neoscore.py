@@ -71,14 +71,15 @@ def setup(initial_paper: Paper = A4):
     )
 
 
-def set_default_color(color: Color):
+def set_default_color(color: ColorDef):
     """Set the default color used in unspecified pens and brushes.
 
     This only affects objects created after this is called."""
     # Objects using unspecified pens and brushes make copies of these
     # global default objects.
-    DEFAULT_PEN.color = color
-    DEFAULT_BRUSH.color = color
+    c = color_from_def(color)
+    DEFAULT_PEN.color = c
+    DEFAULT_BRUSH.color = c
 
 
 def register_font(font_file_path: str) -> list[str]:

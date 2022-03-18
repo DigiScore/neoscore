@@ -7,6 +7,8 @@ from neoscore.core.brush_pattern import BrushPattern
 from neoscore.interface.brush_interface import BrushInterface
 from neoscore.utils.color import Color, ColorDef, color_from_def
 
+# TODO HIGH why don't brush and pen have __eq__? did I remove that for some reason? it would be helpful for testing
+
 
 class Brush:
 

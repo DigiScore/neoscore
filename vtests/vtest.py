@@ -13,6 +13,8 @@ start_time = time.time()
 
 neoscore.setup()
 
+neoscore.set_default_color("#ff0000")
+
 flow = Flowable((Mm(0), Mm(0)), None, Mm(35000), Mm(30), Mm(10))
 
 counting_string = "    ".join(str(x) for x in range(600))
