@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional
+from typing import Optional
 
 from neoscore.core.mapping import map_between
 from neoscore.core.music_font import MusicFont
@@ -11,9 +11,6 @@ from neoscore.models.pitch import Pitch, PitchDef
 from neoscore.utils.units import ZERO, Unit
 from neoscore.western.staff_object import StaffObject
 
-if TYPE_CHECKING:
-    pass
-
 
 class Notehead(MusicText, StaffObject):
 
@@ -21,6 +18,8 @@ class Notehead(MusicText, StaffObject):
 
     Currently, values larger than whole notes are not supported.
     """
+
+    # todo medium support letting users pass in a custom override of this glyphnames table
 
     _glyphnames = {
         1024: "noteheadBlack",

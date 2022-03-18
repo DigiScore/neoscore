@@ -1,5 +1,6 @@
 from typing import Optional
 
+from neoscore.core.brush import NO_BRUSH
 from neoscore.core.mapping import map_between
 from neoscore.core.music_char import MusicChar
 from neoscore.core.music_text import MusicText
@@ -105,9 +106,10 @@ class OctaveLine(ObjectGroup, Spanner, StaffObject):
         path_x = text_rect.width
         path_y = text_rect.height / -2
         self.line_path = Path(
-            pos=Point(path_x, path_y),
-            parent=self,
-            pen=Pen(
+            Point(path_x, path_y),
+            self,
+            NO_BRUSH,
+            Pen(
                 thickness=self.staff.music_font.engraving_defaults[
                     "octaveLineThickness"
                 ],

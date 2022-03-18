@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional
 
+from neoscore.core.brush import NO_BRUSH
 from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.music_font import MusicFont
 from neoscore.core.path import Path
@@ -72,7 +73,7 @@ class PedalLine(Spanner, Path, HasMusicFont):
         self._music_font = font
 
         pen = Pen(thickness=font.engraving_defaults["pedalLineThickness"])
-        Path.__init__(self, start, parent=start_parent, pen=pen)
+        Path.__init__(self, start, start_parent, NO_BRUSH, pen)
         Spanner.__init__(self, end_x, end_parent or self)
         self.half_lift_positions = half_lift_positions
         self._draw_path()

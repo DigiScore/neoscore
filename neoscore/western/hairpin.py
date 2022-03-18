@@ -3,6 +3,7 @@ from __future__ import annotations
 import math
 from typing import TYPE_CHECKING, Optional
 
+from neoscore.core.brush import NO_BRUSH
 from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.mapping import map_between
 from neoscore.core.music_font import MusicFont
@@ -49,7 +50,7 @@ class Hairpin(Path, Spanner2D, HasMusicFont):
             width: The width of the wide hairpin. Defaults to 1 staff unit.
             font: If provided, this overrides any font found in the ancestor chain.
         """
-        Path.__init__(self, start, parent=start_parent)
+        Path.__init__(self, start, parent=start_parent, brush=NO_BRUSH)
         stop = Point.from_def(stop)
         Spanner2D.__init__(self, stop, stop_parent or self)
         self.direction = direction
