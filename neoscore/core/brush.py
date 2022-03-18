@@ -1,4 +1,6 @@
-from typing import Union
+from __future__ import annotations
+
+from typing import Optional, Union
 
 from neoscore import constants
 from neoscore.core.brush_pattern import BrushPattern
@@ -19,22 +21,20 @@ class Brush:
         Args:
             color: The brush color
             pattern: The brush fill pattern.
-                Defaults to a solid color.
         """
         self._color = color_from_def(color)
         self._pattern = pattern
         self._regenerate_interface()
 
     @classmethod
-    def from_existing(cls, brush):
-        """Clone a brush.
-
-        Args:
-            brush (Brush): An existing brush.
-
-        Returns: Brush
-        """
-        return cls(brush.color, brush.pattern)
+    def from_existing(
+        cls,
+        brush: Brush,
+        color: Optional[ColorDef] = None,
+        pattern: Optional[BrushPattern] = None,
+    ) -> Brush:
+        """Derive a Brush from another, overriding any provided fields."""
+        return cls(color or brush.color, pattern or brush.pattern)
 
     def _regenerate_interface(self):
         self._interface = BrushInterface(self.color, self.pattern)

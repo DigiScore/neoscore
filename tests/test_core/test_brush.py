@@ -29,6 +29,11 @@ class TestBrush(unittest.TestCase):
         assert id(original) != id(clone)
         assert original.color == clone.color
         assert original.pattern == clone.pattern
+        assert Brush.from_existing(original, color="#000000").color == Color("#000000")
+        assert (
+            Brush.from_existing(original, pattern=BrushPattern.DENSE_2).pattern
+            == BrushPattern.DENSE_2
+        )
 
     def test_interface_generation(self):
         brush = Brush(Color("#ffffff"), BrushPattern.DENSE_1)

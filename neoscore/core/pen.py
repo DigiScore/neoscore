@@ -8,7 +8,7 @@ from neoscore.core.pen_join_style import PenJoinStyle
 from neoscore.core.pen_pattern import PenPattern
 from neoscore.interface.pen_interface import PenInterface
 from neoscore.utils.color import Color, ColorDef, color_from_def
-from neoscore.utils.units import GraphicUnit, Unit
+from neoscore.utils.units import Unit
 
 
 class Pen:
@@ -25,22 +25,18 @@ class Pen:
     ):
         """
         Args:
-            color (Color or init tuple): The stroke color
-            thickness (Unit): The stroke thickness.
-                A value of `0` indicates Args cosmetic pixel width.
+            color: The stroke color
+            thickness: The stroke thickness. A value of `0` indicates
+                a display pixel width.
                 Defaults to `constants.DEFAULT_PEN_THICKNESS`.
-            pattern (PenPattern): The stroke pattern.
+            pattern: The stroke pattern.
                 Defaults to a solid line.
-            join_style (PenJoinStyle): Defaults to a bevel join
-            cap_style (PenCapStyle): Defaults to a square cap
+            join_style: Defaults to a bevel join
+            cap_style: Defaults to a square cap
 
         """
         self._color = color_from_def(color)
-        self._thickness = (
-            thickness
-            if thickness is not None
-            else GraphicUnit(constants.DEFAULT_PEN_THICKNESS)
-        )
+        self._thickness = thickness or constants.DEFAULT_PEN_THICKNESS
         self._pattern = pattern
         self._join_style = join_style
         self._cap_style = cap_style
@@ -56,7 +52,7 @@ class Pen:
         join_style: Optional[PenJoinStyle] = None,
         cap_style: Optional[PenCapStyle] = None,
     ) -> Pen:
-        """Clone a pen."""
+        """Derive a Pen from another, overriding any provided fields."""
         return cls(
             color or pen.color,
             thickness or pen.thickness,
