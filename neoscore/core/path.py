@@ -40,8 +40,7 @@ class Path(PaintedObject):
     def __init__(
         self,
         pos: PointDef,
-        # TODO HIGH remove default value here to harmonize with other classes
-        parent: Optional[Parent] = None,
+        parent: Optional[Parent],
         brush: Optional[SimpleBrushDef] = None,
         pen: Optional[SimplePenDef] = None,
     ):

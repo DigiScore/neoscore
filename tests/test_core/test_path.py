@@ -38,7 +38,7 @@ class TestPath(unittest.TestCase):
         assert_path_els_equal(path.elements[1], LineTo(Point(Unit(10), Unit(11)), path))
 
     def test_line_to(self):
-        path = Path((Unit(5), Unit(6)))
+        path = Path((Unit(5), Unit(6)), None)
         path.line_to(Unit(10), Unit(12))
         assert len(path.elements) == 2
         assert_path_els_equal(path.elements[0], MoveTo(ORIGIN, path))
@@ -50,7 +50,7 @@ class TestPath(unittest.TestCase):
         ]
 
     def test_line_to_with_parent(self):
-        path = Path((Unit(5), Unit(6)))
+        path = Path((Unit(5), Unit(6)), None)
         parent = PositionedObject((Unit(100), Unit(50)))
         path.line_to(Unit(1), Unit(3), parent)
         assert path.elements[-1].parent == parent
@@ -61,7 +61,7 @@ class TestPath(unittest.TestCase):
         ]
 
     def test_cubic_to_with_no_parents(self):
-        path = Path((Unit(5), Unit(6)))
+        path = Path((Unit(5), Unit(6)), None)
         path.cubic_to(Unit(10), Unit(11), ZERO, Unit(1), Unit(5), Unit(6))
         assert len(path.elements) == 2
         assert_path_els_equal(path.elements[0], MoveTo(ORIGIN, path))
@@ -81,10 +81,10 @@ class TestPath(unittest.TestCase):
         ]
 
     def test_cubic_to_with_parents(self):
-        path = Path((Unit(Unit(100)), Unit(Unit(200))))
-        parent_1 = PositionedObject((Unit(Unit(10)), Unit(Unit(20))))
-        parent_2 = PositionedObject((Unit(Unit(30)), Unit(Unit(40))))
-        parent_3 = PositionedObject((Unit(Unit(50)), Unit(Unit(60))))
+        path = Path((Unit(100), Unit(200)), None)
+        parent_1 = PositionedObject((Unit(10), Unit(20)))
+        parent_2 = PositionedObject((Unit(30), Unit(40)))
+        parent_3 = PositionedObject((Unit(50), Unit(60)))
         path.cubic_to(
             Unit(1),
             Unit(2),
@@ -121,13 +121,13 @@ class TestPath(unittest.TestCase):
         ]
 
     def test_move_to_with_no_parent(self):
-        path = Path((Unit(5), Unit(6)))
+        path = Path((Unit(5), Unit(6)), None)
         path.move_to(Unit(10), Unit(11))
         assert len(path.elements) == 1
         assert_path_els_equal(path.elements[0], MoveTo(Point(Unit(10), Unit(11)), path))
 
     def test_move_to_with_parent(self):
-        path = Path(ORIGIN)
+        path = Path(ORIGIN, None)
         parent = PositionedObject((Unit(100), Unit(50)))
         path.move_to(Unit(10), Unit(11), parent)
         assert len(path.elements) == 1
@@ -136,7 +136,7 @@ class TestPath(unittest.TestCase):
         )
 
     def test_close_subpath(self):
-        path = Path((Unit(5), Unit(6)))
+        path = Path((Unit(5), Unit(6)), None)
         path.line_to(Unit(10), Unit(10))
         path.line_to(Unit(10), Unit(100))
         path.close_subpath()
