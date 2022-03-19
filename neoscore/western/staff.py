@@ -6,7 +6,7 @@ from neoscore import constants
 from neoscore.core.mapping import map_between_x
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
-from neoscore.core.pen import DEFAULT_PEN, Pen
+from neoscore.core.pen import Pen
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.models.transposition import Transposition
 from neoscore.utils.exceptions import NoClefError
@@ -57,9 +57,7 @@ class Staff(MusicPath):
         music_font = MusicFont(
             music_font_family or constants.DEFAULT_MUSIC_FONT_NAME, unit
         )
-        pen = Pen.from_existing(
-            DEFAULT_PEN, thickness=music_font.engraving_defaults["staffLineThickness"]
-        )
+        pen = Pen(thickness=music_font.engraving_defaults["staffLineThickness"])
         super().__init__(pos, parent, font=music_font, pen=pen)
         self._line_count = line_count
         self._length = length

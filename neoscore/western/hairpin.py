@@ -4,7 +4,7 @@ import math
 from typing import TYPE_CHECKING, Optional
 
 from neoscore.core.music_path import MusicPath
-from neoscore.core.pen import DEFAULT_PEN, Pen
+from neoscore.core.pen import Pen
 
 if TYPE_CHECKING:
     pass
@@ -59,10 +59,7 @@ class Hairpin(MusicPath, Spanner2D):
         Spanner2D.__init__(self, stop, stop_parent or self)
         self.direction = direction
         self.width = width if width is not None else self.music_font.unit(1)
-        self.pen = Pen.from_existing(
-            DEFAULT_PEN,
-            thickness=self.music_font.engraving_defaults["hairpinThickness"],
-        )
+        self.pen = Pen(thickness=self.music_font.engraving_defaults["hairpinThickness"])
         self._draw_path()
 
     ######## PUBLIC PROPERTIES ########

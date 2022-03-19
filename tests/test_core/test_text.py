@@ -1,7 +1,7 @@
 import unittest
 
 from neoscore.core import neoscore
-from neoscore.core.brush import DEFAULT_BRUSH, Brush
+from neoscore.core.brush import Brush
 from neoscore.core.font import Font
 from neoscore.core.pen import NO_PEN, Pen
 from neoscore.core.positioned_object import PositionedObject
@@ -33,7 +33,7 @@ class TestText(unittest.TestCase):
         obj = Text((Unit(5), Unit(6)), None, "testing")
         assert obj.font == neoscore.default_font
         assert obj.parent == neoscore.document.pages[0]
-        assert obj.brush == DEFAULT_BRUSH
+        assert obj.brush == Brush()
         assert obj.pen == NO_PEN
         assert obj.scale == 1
         assert obj.breakable == True

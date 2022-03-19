@@ -7,10 +7,10 @@ from typing import TYPE_CHECKING, Callable, Optional
 from warnings import warn
 
 from neoscore import constants
-from neoscore.core.brush import DEFAULT_BRUSH
+from neoscore.core.brush import Brush
 from neoscore.core.font import Font
 from neoscore.core.paper import A4, Paper
-from neoscore.core.pen import DEFAULT_PEN
+from neoscore.core.pen import Pen
 from neoscore.interface import images
 from neoscore.interface.app_interface import AppInterface
 from neoscore.utils import file_system
@@ -78,8 +78,8 @@ def set_default_color(color: ColorDef):
     # Objects using unspecified pens and brushes make copies of these
     # global default objects.
     c = color_from_def(color)
-    DEFAULT_PEN.color = c
-    DEFAULT_BRUSH.color = c
+    Pen.default_color = c
+    Brush.default_color = c
 
 
 def register_font(font_file_path: str) -> list[str]:

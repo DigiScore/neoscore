@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Optional
 from neoscore.core.brush import NO_BRUSH
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
-from neoscore.core.pen import DEFAULT_PEN, NO_PEN, Pen
+from neoscore.core.pen import NO_PEN, Pen
 from neoscore.core.spanner import Spanner
 from neoscore.utils.point import PointDef
 from neoscore.utils.units import Unit
@@ -68,9 +68,8 @@ class PedalLine(Spanner, MusicPath):
             font: If provided, this overrides any font found in the ancestor chain.
         """
         MusicPath.__init__(self, start, start_parent, font, NO_BRUSH, NO_PEN)
-        self.pen = Pen.from_existing(
-            DEFAULT_PEN,
-            thickness=self.music_font.engraving_defaults["pedalLineThickness"],
+        self.pen = Pen(
+            thickness=self.music_font.engraving_defaults["pedalLineThickness"]
         )
         Spanner.__init__(self, end_x, end_parent or self)
         self.half_lift_positions = half_lift_positions

@@ -2,13 +2,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional
 
-from neoscore.core.brush import (
-    DEFAULT_BRUSH,
-    Brush,
-    SimpleBrushDef,
-    brush_from_simple_def,
-)
-from neoscore.core.pen import DEFAULT_PEN, Pen, SimplePenDef, pen_from_simple_def
+from neoscore.core.brush import Brush, SimpleBrushDef, brush_from_simple_def
+from neoscore.core.pen import Pen, SimplePenDef, pen_from_simple_def
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.utils.point import PointDef
 
@@ -51,7 +46,7 @@ class PaintedObject(PositionedObject):
         if value:
             self._pen = pen_from_simple_def(value)
         else:
-            self._pen = Pen.from_existing(DEFAULT_PEN)
+            self._pen = Pen()
 
     @property
     def brush(self) -> Brush:
@@ -75,4 +70,4 @@ class PaintedObject(PositionedObject):
             else:
                 raise TypeError
         else:
-            self._brush = Brush.from_existing(DEFAULT_BRUSH)
+            self._brush = Brush()

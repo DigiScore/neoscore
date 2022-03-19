@@ -1,13 +1,12 @@
 import unittest
 
-from neoscore import constants
 from neoscore.core.pen import Pen
 from neoscore.core.pen_cap_style import PenCapStyle
 from neoscore.core.pen_join_style import PenJoinStyle
 from neoscore.core.pen_pattern import PenPattern
 from neoscore.interface.pen_interface import PenInterface
 from neoscore.utils.color import Color
-from neoscore.utils.units import Unit
+from neoscore.utils.units import ZERO, Unit
 
 from ..helpers import assert_almost_equal
 
@@ -19,7 +18,7 @@ class TestPen(unittest.TestCase):
 
     def test_init_default_thicknes(self):
         test_pen = Pen("#eeddcc")
-        assert_almost_equal(test_pen.thickness, constants.DEFAULT_PEN_THICKNESS)
+        assert_almost_equal(test_pen.thickness, ZERO)
 
     def test_init_default_pattern(self):
         test_pen = Pen()

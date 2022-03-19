@@ -2,41 +2,43 @@ from __future__ import annotations
 
 from typing import Any, Optional, Union
 
-from neoscore import constants
 from neoscore.core.pen_cap_style import PenCapStyle
 from neoscore.core.pen_join_style import PenJoinStyle
 from neoscore.core.pen_pattern import PenPattern
 from neoscore.interface.pen_interface import PenInterface
 from neoscore.utils.color import Color, ColorDef, color_from_def
-from neoscore.utils.units import Unit
+from neoscore.utils.units import ZERO, Unit
 
 
 class Pen:
 
     """A pen describing how shape outlines are drawn."""
 
+    default_color = Color("#000000")
+
     def __init__(
         self,
-        color: ColorDef = Color("#000000"),
-        thickness: Optional[Unit] = None,
+        color: Optional[ColorDef] = None,
+        thickness: Optional[Unit] = ZERO,
         pattern: PenPattern = PenPattern.SOLID,
         join_style: PenJoinStyle = PenJoinStyle.BEVEL,
         cap_style: PenCapStyle = PenCapStyle.SQUARE,
     ):
         """
         Args:
-            color: The stroke color
-            thickness: The stroke thickness. A value of `0` indicates
+            color: The stroke color. Defaults to black unless changed globally by
+                `neoscore.set_default_color`.
+            thickness: The stroke thickness. A value of `0` (the default) indicates
                 a display pixel width.
-                Defaults to `constants.DEFAULT_PEN_THICKNESS`.
-            pattern: The stroke pattern.
-                Defaults to a solid line.
+            pattern: The stroke pattern. Defaults to a solid line.
             join_style: Defaults to a bevel join
             cap_style: Defaults to a square cap
-
         """
-        self._color = color_from_def(color)
-        self._thickness = thickness or constants.DEFAULT_PEN_THICKNESS
+        if color is None:
+            self._color = Pen.default_color
+        else:
+            self._color = color_from_def(color)
+        self._thickness = thickness
         self._pattern = pattern
         self._join_style = join_style
         self._cap_style = cap_style
@@ -142,11 +144,6 @@ class Pen:
 
 
 NO_PEN = Pen(pattern=PenPattern.NO_PEN)
-DEFAULT_PEN = Pen(
-    constants.DEFAULT_PEN_COLOR,
-    constants.DEFAULT_PEN_THICKNESS,
-    constants.DEFAULT_PEN_PATTERN,
-)
 
 SimplePenDef = Union[Pen, str]
 

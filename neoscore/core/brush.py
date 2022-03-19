@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from typing import Any, Optional, Union
 
-from neoscore import constants
 from neoscore.core.brush_pattern import BrushPattern
 from neoscore.interface.brush_interface import BrushInterface
 from neoscore.utils.color import Color, ColorDef, color_from_def
@@ -12,17 +11,23 @@ class Brush:
 
     """A brush describing how shapes are filled in."""
 
+    default_color = Color("#000000")
+
     def __init__(
         self,
-        color: ColorDef = Color("#000000"),
+        color: Optional[ColorDef] = None,
         pattern: BrushPattern = BrushPattern.SOLID,
     ):
         """
         Args:
-            color: The brush color
+            color: The brush color. Defaults to black unless changed globally by
+                `neoscore.set_default_color`.
             pattern: The brush fill pattern.
         """
-        self._color = color_from_def(color)
+        if color is None:
+            self._color = Brush.default_color
+        else:
+            self._color = color_from_def(color)
         self._pattern = pattern
         self._regenerate_interface()
 
@@ -73,7 +78,6 @@ class Brush:
 
 
 NO_BRUSH = Brush(pattern=BrushPattern.NO_BRUSH)
-DEFAULT_BRUSH = Brush(constants.DEFAULT_BRUSH_COLOR, constants.DEFAULT_BRUSH_PATTERN)
 
 SimpleBrushDef = Union[Brush, str]
 

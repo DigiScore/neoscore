@@ -2,10 +2,7 @@
 
 import os
 
-from neoscore.core.brush_pattern import BrushPattern
-from neoscore.core.pen_pattern import PenPattern
-from neoscore.utils.color import Color
-from neoscore.utils.units import ZERO, Inch, Mm
+from neoscore.utils.units import Inch, Mm
 
 
 def _resolve_bool_env_variable(var):
@@ -16,16 +13,6 @@ def _resolve_bool_env_variable(var):
 # Directories
 BROWN_ROOT_DIR = os.path.join(os.path.dirname(__file__))
 RESOURCES_DIR = os.path.join(BROWN_ROOT_DIR, "resources")
-
-# Default pen properties
-DEFAULT_PEN_COLOR = Color(0, 0, 0)
-DEFAULT_PEN_THICKNESS = ZERO
-DEFAULT_PEN_PATTERN = PenPattern.SOLID
-
-# Default brush properties
-DEFAULT_BRUSH_COLOR = Color(0, 0, 0, 255)
-DEFAULT_PATH_BRUSH_COLOR = Color(0, 0, 0, 0)
-DEFAULT_BRUSH_PATTERN = BrushPattern.SOLID
 
 # Visual gap between pages on the canvas
 # (This has no effect on exported documents)
