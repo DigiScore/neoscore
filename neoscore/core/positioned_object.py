@@ -50,7 +50,7 @@ class PositionedObject:
         Args:
             pos: The position of the object relative to its parent
             pen: The pen to draw outlines with.
-            brush: The brush to draw outlines with.
+            brush: The brush to fill shapes with.
             parent: The parent object or None
         """
         self.pos = pos

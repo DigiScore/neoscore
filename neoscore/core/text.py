@@ -16,10 +16,6 @@ if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
 
 
-# TODO HIGH support Pen and Brush for this.
-# brush is supported with a post-init setter, pen isn't supported at all.
-
-
 class Text(PaintedObject):
 
     """A graphical text object."""
@@ -29,10 +25,6 @@ class Text(PaintedObject):
         pos: PointDef,
         parent: Optional[Parent],
         text: str,
-        # TODO HIGH how to order these args? in MusicPaths, font comes
-        # after brush and pen, but here it feels more natural for font
-        # to come first since it has such an effect on the
-        # shape. maybe update musicpaths signatures?
         font: Optional[Font] = None,
         brush: Optional[SimpleBrushDef] = None,
         pen: Optional[SimplePenDef] = None,
@@ -44,9 +36,9 @@ class Text(PaintedObject):
             pos: Position relative to the parent
             parent: The parent (core-level) object or None
             text: The text to be displayed
+            font: The font to display the text in.
             brush: The brush to fill in text shapes with.
             pen: The pen to trace text outlines with. This defaults to no pen.
-            font: The font to display the text in.
             scale: A scaling factor relative to the font size.
             breakable: Whether this object should break across lines in
                 Flowable containers.

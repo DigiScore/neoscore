@@ -54,7 +54,7 @@ class Hairpin(MusicPath, Spanner2D):
             width: The width of the wide hairpin. Defaults to 1 staff unit.
             font: If provided, this overrides any font found in the ancestor chain.
         """
-        MusicPath.__init__(self, start, start_parent, brush=NO_BRUSH, font=font)
+        MusicPath.__init__(self, start, start_parent, font=font, brush=NO_BRUSH)
         stop = Point.from_def(stop)
         Spanner2D.__init__(self, stop, stop_parent or self)
         self.direction = direction

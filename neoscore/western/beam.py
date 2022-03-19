@@ -34,9 +34,9 @@ class Beam(MusicPath):
         start_parent: Parent,
         stop: PointDef,
         stop_parent: Parent,
+        font: Optional[MusicFont] = None,
         brush: Optional[SimpleBrushDef] = None,
         pen: Optional[SimplePenDef] = None,
-        font: Optional[MusicFont] = None,
     ):
         """
         Args:
@@ -47,8 +47,10 @@ class Beam(MusicPath):
             stop_parent: The parent for the ending position.
                 Must be a staff or in one.
             font: If provided, this overrides any font found in the ancestor chain.
+            brush: The brush to fill shapes with.
+            pen: The pen to draw outlines with.
         """
-        MusicPath.__init__(self, start, start_parent, brush, pen, font)
+        MusicPath.__init__(self, start, start_parent, font, brush, pen)
         self.beam_thickness = self.music_font.engraving_defaults["beamThickness"]
         # Draw beam
         stop = Point.from_def(stop)

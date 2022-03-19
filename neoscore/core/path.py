@@ -49,7 +49,7 @@ class Path(PaintedObject):
         Args:
             pos: The position of the path root.
             parent: The parent object or None
-            brush: The brush to draw outlines with.
+            brush: The brush to fill shapes with.
             pen: The pen to draw outlines with.
         """
         super().__init__(pos, parent, brush, pen)
@@ -72,7 +72,7 @@ class Path(PaintedObject):
             start: Starting position relative to the parent
             parent: The parent object or None
             stop: Ending position relative to the parent.
-            brush: The brush to draw outlines with.
+            brush: The brush to fill shapes with.
             pen: The pen to draw outlines with.
         """
         line = cls(start, parent, brush, pen)

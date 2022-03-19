@@ -25,18 +25,18 @@ class MusicPath(Path, HasMusicFont):
         self,
         pos: PointDef,
         parent: Optional[Parent] = None,
+        font: Optional[MusicFont] = None,
         brush: Optional[SimpleBrushDef] = None,
         pen: Optional[SimplePenDef] = None,
-        font: Optional[MusicFont] = None,
     ):
         """
         Args:
             pos: The position of the path root.
             parent: The parent object. If no font is given, this or one of its
                 ancestors must implement `HasMusicFont`.
-            brush: The brush to draw outlines with.
-            pen: The pen to draw outlines with.
             font: If provided, this overrides any font found in the ancestor chain.
+            brush: The brush to fill shapes with.
+            pen: The pen to draw outlines with.
         """
         Path.__init__(self, pos, parent, brush, pen)
         if font is None:

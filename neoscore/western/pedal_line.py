@@ -67,7 +67,7 @@ class PedalLine(Spanner, MusicPath):
                 where half lift notches should be drawn.
             font: If provided, this overrides any font found in the ancestor chain.
         """
-        MusicPath.__init__(self, start, start_parent, NO_BRUSH, NO_PEN, font)
+        MusicPath.__init__(self, start, start_parent, font, NO_BRUSH, NO_PEN)
         self.pen = Pen.from_existing(
             DEFAULT_PEN,
             thickness=self.music_font.engraving_defaults["pedalLineThickness"],

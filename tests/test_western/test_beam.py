@@ -32,12 +32,7 @@ class TestBeam(unittest.TestCase):
         assert beam.pos.y == Mm(2)
 
     def test_shape(self):
-        beam = Beam(
-            (Mm(1), Mm(2)),
-            self.left_parent,
-            (Mm(3), Mm(4)),
-            self.right_parent,
-        )
+        beam = Beam((Mm(1), Mm(2)), self.left_parent, (Mm(3), Mm(4)), self.right_parent)
         thickness = beam.beam_thickness
         assert len(beam.elements) == 5
         assert_path_els_equal(beam.elements[0], MoveTo(Point(Mm(0), Mm(0)), beam))

@@ -29,9 +29,9 @@ class Slur(MusicPath, Spanner2D):
         stop: PointDef,
         stop_parent: Optional[Parent],
         direction: VerticalDirection = VerticalDirection.UP,
+        font: Optional[MusicFont] = None,
         brush: Optional[SimpleBrushDef] = None,
         pen: Optional[SimplePenDef] = None,
-        font: Optional[MusicFont] = None,
     ):
         """
         Args:
@@ -43,8 +43,10 @@ class Slur(MusicPath, Spanner2D):
                 If `None`, defaults to `self`.
             direction: The vertical direction the slur arches.
             font: If provided, this overrides any font found in the ancestor chain.
+            brush: The brush to fill shapes with.
+            pen: The pen to draw outlines with.
         """
-        MusicPath.__init__(self, start, start_parent, brush, pen, font)
+        MusicPath.__init__(self, start, start_parent, font, brush, pen)
         stop = Point.from_def(stop)
         Spanner2D.__init__(self, stop, stop_parent or self)
         self.direction = direction

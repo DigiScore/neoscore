@@ -20,17 +20,11 @@ if TYPE_CHECKING:
 
 
 class Staff(MusicPath):
-    """A staff capable of holding `StaffObject`s"""
+    """A staff with decently high-level knowledge of its contents."""
 
     # Type sentinel used to hackily check if objects are Staff
     # without importing the type, risking cyclic imports.
     _neoscore_staff_type_marker = True
-
-    # TODO HIGH this init signature works very differently than most
-    # MusicPath and similar do. It can't inherit its font (and thus
-    # size) from an ancestor music font and the way it takes a music
-    # font *family* and staff_unit feels awkward. rework this soon, as
-    # it's a disruptive breaking change.
 
     def __init__(
         self,
@@ -66,7 +60,7 @@ class Staff(MusicPath):
         pen = Pen.from_existing(
             DEFAULT_PEN, thickness=music_font.engraving_defaults["staffLineThickness"]
         )
-        super().__init__(pos, parent, pen=pen, font=music_font)
+        super().__init__(pos, parent, font=music_font, pen=pen)
         self._line_count = line_count
         self._length = length
         # Construct the staff path
