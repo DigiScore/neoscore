@@ -33,8 +33,7 @@ class TestText(unittest.TestCase):
         obj = Text((Unit(5), Unit(6)), None, "testing")
         assert obj.font == neoscore.default_font
         assert obj.parent == neoscore.document.pages[0]
-        assert obj.brush.color == DEFAULT_BRUSH.color
-        assert obj.brush.pattern == DEFAULT_BRUSH.pattern
+        assert obj.brush == DEFAULT_BRUSH
         assert obj.pen == NO_PEN
         assert obj.scale == 1
         assert obj.breakable == True

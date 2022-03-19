@@ -43,11 +43,7 @@ class TestPen(unittest.TestCase):
         )
         clone = Pen.from_existing(original)
         assert id(original) != id(clone)
-        assert original.color == clone.color
-        assert original.thickness == clone.thickness
-        assert original.pattern == clone.pattern
-        assert original.join_style == clone.join_style
-        assert original.cap_style == clone.cap_style
+        assert original == clone
         assert Pen.from_existing(original, color="#ffffff").color == Color("#ffffff")
         assert Pen.from_existing(original, thickness=Unit(1)).thickness == Unit(1)
         assert (
@@ -97,3 +93,19 @@ class TestPen(unittest.TestCase):
         assert pen.interface.join_style == PenJoinStyle.MITER
         pen.cap_style = PenCapStyle.ROUND
         assert pen.interface.cap_style == PenCapStyle.ROUND
+
+    def test__eq__(self):
+        original = Pen(
+            Color("#eeddcc"),
+            Unit(2),
+            PenPattern.DASH,
+            PenJoinStyle.MITER,
+            PenCapStyle.ROUND,
+        )
+        assert Pen.from_existing(original) == original
+        assert original != "some other type object"
+        assert Pen.from_existing(original, color="#ffffff") != original
+        assert Pen.from_existing(original, thickness=Unit(1)) != original
+        assert Pen.from_existing(original, pattern=PenPattern.SOLID) != original
+        assert Pen.from_existing(original, join_style=PenJoinStyle.BEVEL) != original
+        assert Pen.from_existing(original, cap_style=PenCapStyle.FLAT) != original

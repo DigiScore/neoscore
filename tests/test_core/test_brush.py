@@ -27,8 +27,7 @@ class TestBrush(unittest.TestCase):
         original = Brush(Color("#ffffff"), BrushPattern.DENSE_1)
         clone = Brush.from_existing(original)
         assert id(original) != id(clone)
-        assert original.color == clone.color
-        assert original.pattern == clone.pattern
+        assert original == clone
         assert Brush.from_existing(original, color="#000000").color == Color("#000000")
         assert (
             Brush.from_existing(original, pattern=BrushPattern.DENSE_2).pattern
@@ -45,3 +44,10 @@ class TestBrush(unittest.TestCase):
         assert brush.interface.color == Color("#ffffff")
         brush.pattern = BrushPattern.SOLID
         assert brush.interface.pattern == BrushPattern.SOLID
+
+    def test__eq__(self):
+        brush = Brush(Color("#000000"), BrushPattern.DENSE_1)
+        assert brush == Brush.from_existing(brush)
+        assert brush != "some other type object"
+        assert brush != Brush.from_existing(brush, color="#ffffff")
+        assert brush != Brush.from_existing(brush, pattern=BrushPattern.SOLID)

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Optional, Union
+from typing import Any, Optional, Union
 
 from neoscore import constants
 from neoscore.core.brush_pattern import BrushPattern
@@ -64,6 +64,14 @@ class Brush:
     @property
     def interface(self) -> BrushInterface:
         return self._interface
+
+    def __eq__(self, other: Any) -> bool:
+        """Brushes are compared by their attributes"""
+        return (
+            isinstance(other, Brush)
+            and self.color == other.color
+            and self.pattern == other.pattern
+        )
 
 
 NO_BRUSH = Brush(pattern=BrushPattern.NO_BRUSH)

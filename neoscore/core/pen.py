@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Optional, Union
+from typing import Any, Optional, Union
 
 from neoscore import constants
 from neoscore.core.pen_cap_style import PenCapStyle
@@ -128,6 +128,17 @@ class Pen:
     @property
     def interface(self) -> PenInterface:
         return self._interface
+
+    def __eq__(self, other: Any) -> bool:
+        """Pens are compared by their attributes"""
+        return (
+            isinstance(other, Pen)
+            and self.color == other.color
+            and self.thickness == other.thickness
+            and self.pattern == other.pattern
+            and self.join_style == other.join_style
+            and self.cap_style == other.cap_style
+        )
 
 
 NO_PEN = Pen(pattern=PenPattern.NO_PEN)
