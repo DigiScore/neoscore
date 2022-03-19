@@ -30,31 +30,31 @@ class Beam(MusicPath):
 
     def __init__(
         self,
-        start: PointDef,
-        start_parent: Parent,
-        stop: PointDef,
-        stop_parent: Parent,
+        pos: PointDef,
+        parent: Parent,
+        end_pos: PointDef,
+        end_parent: Parent,
         font: Optional[MusicFont] = None,
         brush: Optional[SimpleBrushDef] = None,
         pen: Optional[SimplePenDef] = None,
     ):
         """
         Args:
-            start: The starting (left) position of the beam
-            start_parent: The parent for the starting position. If no font is given,
+            pos: The starting (left) position of the beam
+            parent: The parent for the starting position. If no font is given,
                 this or one of its ancestors must implement `HasMusicFont`.
-            stop: The ending (right) position of the beam
-            stop_parent: The parent for the ending position.
+            end_pos: The ending (right) position of the beam
+            end_parent: The parent for the ending position.
                 Must be a staff or in one.
             font: If provided, this overrides any font found in the ancestor chain.
             brush: The brush to fill shapes with.
             pen: The pen to draw outlines with.
         """
-        MusicPath.__init__(self, start, start_parent, font, brush, pen)
+        MusicPath.__init__(self, pos, parent, font, brush, pen)
         self.beam_thickness = self.music_font.engraving_defaults["beamThickness"]
         # Draw beam
-        stop = Point.from_def(stop)
-        self.line_to(stop.x, stop.y, stop_parent)
-        self.line_to(stop.x, stop.y + self.beam_thickness, stop_parent)
+        end_pos = Point.from_def(end_pos)
+        self.line_to(end_pos.x, end_pos.y, end_parent)
+        self.line_to(end_pos.x, end_pos.y + self.beam_thickness, end_parent)
         self.line_to(ZERO, self.beam_thickness, self)
         self.close_subpath()

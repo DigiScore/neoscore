@@ -33,30 +33,30 @@ class Hairpin(MusicPath, Spanner2D):
 
     def __init__(
         self,
-        start: PointDef,
-        start_parent: Parent,
-        stop: PointDef,
-        stop_parent: Optional[Parent],
+        pos: PointDef,
+        parent: Parent,
+        end_pos: PointDef,
+        end_parent: Optional[Parent],
         direction: int,
         width: Optional[Unit] = None,
         font: Optional[MusicFont] = None,
     ):
         """
         Args:
-            start: The starting point.
-            start_parent: The parent for the starting position. If no font is given,
+            pos: The starting point.
+            parent: The parent for the starting position. If no font is given,
                 this or one of its ancestors must implement `HasMusicFont`.
-            stop: The stopping point.
-            stop_parent: The parent for the ending position.
+            end_pos: The stopping point.
+            end_parent: The parent for the ending position.
                 If `None`, defaults to `self`.
             direction: The direction of the hairpin, where `-1` means diminuendo (>)
                 and `1` means crescendo (<).
             width: The width of the wide hairpin. Defaults to 1 staff unit.
             font: If provided, this overrides any font found in the ancestor chain.
         """
-        MusicPath.__init__(self, start, start_parent, font=font, brush=NO_BRUSH)
-        stop = Point.from_def(stop)
-        Spanner2D.__init__(self, stop, stop_parent or self)
+        MusicPath.__init__(self, pos, parent, font=font, brush=NO_BRUSH)
+        end_pos = Point.from_def(end_pos)
+        Spanner2D.__init__(self, end_pos, end_parent or self)
         self.direction = direction
         self.width = width if width is not None else self.music_font.unit(1)
         self.pen = Pen(thickness=self.music_font.engraving_defaults["hairpinThickness"])
