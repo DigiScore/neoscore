@@ -2,11 +2,14 @@ import unittest
 
 from neoscore import constants
 from neoscore.core import neoscore
+from neoscore.core.brush import Brush
 from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
+from neoscore.core.pen import Pen
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.utils.units import GraphicUnit, Mm, Unit
+from neoscore.utils.point import Point
+from neoscore.utils.units import Mm, Unit
 from neoscore.western.staff import Staff
 
 
@@ -17,13 +20,25 @@ class TestMusicText(unittest.TestCase):
         self.font = MusicFont(constants.DEFAULT_MUSIC_FONT_NAME, self.staff.unit)
 
     def test_init(self):
-        mock_parent = PositionedObject((Unit(10), Unit(11)), parent=self.staff)
-        mtext = MusicText((Unit(5), Unit(6)), mock_parent, "accidentalFlat", self.font)
-        assert mtext.x == GraphicUnit(5)
-        assert mtext.y == GraphicUnit(6)
+        pen = Pen("#00ff00")
+        brush = Brush("#ff0000")
+        mock_parent = PositionedObject((Unit(10), Unit(11)), self.staff)
+        mtext = MusicText(
+            (Unit(5), Unit(6)),
+            mock_parent,
+            "accidentalFlat",
+            self.font,
+            brush,
+            pen,
+            2,
+            False,
+        )
+        assert mtext.pos == Point(Unit(5), Unit(6))
+        assert mtext.parent == mock_parent
         assert mtext.text == "\ue260"
         assert mtext.font == self.font
-        assert mtext.parent == mock_parent
+        assert mtext.brush == brush
+        assert mtext.pen == pen
 
     def test_init_with_one_tuple(self):
         mtext = MusicText((Unit(5), Unit(6)), self.staff, ("brace", 1))

@@ -108,8 +108,6 @@ class Text(PaintedObject):
     def breakable(self, value: bool):
         self._breakable = value
 
-    ######## PRIVATE PROPERTIES ########
-
     @property
     def bounding_rect(self) -> Rect:
         """The bounding rect override for this text."""

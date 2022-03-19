@@ -2,9 +2,11 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, NamedTuple, Optional, Type, cast
 
+from neoscore.core.brush import SimpleBrushDef
 from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
+from neoscore.core.pen import SimplePenDef
 from neoscore.core.text import Text
 from neoscore.utils.point import PointDef
 from neoscore.utils.rect import Rect
@@ -39,6 +41,8 @@ class MusicText(Text, HasMusicFont):
         parent: Parent,
         text: Any,
         font: Optional[MusicFont] = None,
+        brush: Optional[SimpleBrushDef] = None,
+        pen: Optional[SimplePenDef] = None,
         scale: float = 1,
         breakable: bool = True,
     ):
@@ -54,6 +58,8 @@ class MusicText(Text, HasMusicFont):
                 `MusicChar`, or a list of these. Empty text will fail.
             font: The music font to be used. If not specified,
                 `parent` must be or have a `Staff` ancestor.
+            brush: The brush to fill in text shapes with.
+            pen: The pen to trace text outlines with. This defaults to no pen.
             scale: A scaling factor to be applied
                 in addition to the size of the music font.
             breakable: Whether this object should break across lines in
@@ -64,7 +70,7 @@ class MusicText(Text, HasMusicFont):
         self._music_chars = MusicText._resolve_music_chars(text, font)
         resolved_str = MusicText._music_chars_to_str(self._music_chars)
         Text.__init__(
-            self, pos, parent, resolved_str, font, None, None, scale, breakable
+            self, pos, parent, resolved_str, font, brush, pen, scale, breakable
         )
 
     ######## PUBLIC PROPERTIES ########

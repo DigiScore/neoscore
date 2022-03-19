@@ -26,8 +26,8 @@ class TestText(unittest.TestCase):
         assert obj.text == "testing"
         assert obj.font == self.font
         assert obj.parent == mock_parent
-        assert obj.pen == pen
         assert obj.brush == brush
+        assert obj.pen == pen
 
     def test_default_init_values(self):
         obj = Text((Unit(5), Unit(6)), None, "testing")
