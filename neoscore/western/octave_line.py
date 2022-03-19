@@ -1,8 +1,11 @@
-from typing import Optional
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Optional, cast
 
 from neoscore.core.brush import NO_BRUSH
-from neoscore.core.mapping import map_between
+from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.music_char import MusicChar
+from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.object_group import ObjectGroup
 from neoscore.core.path import Path
@@ -13,12 +16,15 @@ from neoscore.core.spanner import Spanner
 from neoscore.interface.text_interface import TextInterface
 from neoscore.models.interval import Interval
 from neoscore.models.transposition import Transposition
+from neoscore.models.vertical_direction import VerticalDirection
 from neoscore.utils.point import ORIGIN, Point, PointDef
-from neoscore.utils.units import ZERO, Unit
-from neoscore.western.staff_object import StaffObject
+from neoscore.utils.units import Unit
+
+if TYPE_CHECKING:
+    from neoscore.core.mapping import Parent
 
 
-class OctaveLine(ObjectGroup, Spanner, StaffObject):
+class OctaveLine(ObjectGroup, Spanner, HasMusicFont):
 
     """An octave indication with a dashed line.
 
@@ -64,16 +70,18 @@ class OctaveLine(ObjectGroup, Spanner, StaffObject):
     def __init__(
         self,
         start: PointDef,
-        start_parent: PositionedObject,
+        start_parent: Parent,
         end_x: Unit,
-        end_parent: Optional[PositionedObject] = None,
+        end_parent: Optional[Parent] = None,
         indication: str = "8va",
+        direction: VerticalDirection = VerticalDirection.DOWN,
+        font: Optional[MusicFont] = None,
     ):
         """
         Args:
-            start:
-            start_parent: An object either in a Staff or
-                a staff itself. This object will become the line's parent.
+            start: The starting point.
+            start_parent: The parent for the starting position. If no font is given,
+                this or one of its ancestors must implement `HasMusicFont`.
             end_x: The spanner end x position. The y position will be
                 automatically calculated to be horizontal.
             end_parent: An object either in a Staff or
@@ -87,54 +95,51 @@ class OctaveLine(ObjectGroup, Spanner, StaffObject):
                     - '8vb' (one octave lower)
                     - '15mb' (two octaves lower)
                 The default value is '8va'.
+            direction: The direction the line's ending hook points.
+                For lines above staves, this should be down, and vice versa for below.
+            font: If provided, this overrides any font found in the ancestor chain.
         """
         ObjectGroup.__init__(self, start, start_parent)
         Spanner.__init__(self, end_x, end_parent or self)
-        StaffObject.__init__(self, self.parent)
+        if font is None:
+            font = HasMusicFont.find_music_font(start_parent)
+        self._music_font = font
+        self.direction = direction
         self.transposition = Transposition(OctaveLine.intervals[indication])
-        self.line_text = _OctaveLineText(
-            # No offset relative to ObjectGroup
-            pos=ORIGIN,
-            parent=self,
-            length=self.length,
-            indication=indication,
-        )
+        self.line_text = _OctaveLineText(ORIGIN, self, self.length, indication, font)
 
         # Vertically center the path relative to the text
         text_rect = self.line_text.bounding_rect
         # TODO LOW line needs some padding
         path_x = text_rect.width
-        path_y = text_rect.height / -2
+        path_y = cast(Unit, text_rect.height / -2)
         self.line_path = Path(
             Point(path_x, path_y),
             self,
             NO_BRUSH,
             Pen(
-                thickness=self.staff.music_font.engraving_defaults[
-                    "octaveLineThickness"
-                ],
+                thickness=font.engraving_defaults["octaveLineThickness"],
                 pattern=PenPattern.DASH,
             ),
         )
         # Drawn main line part
         self.line_path.line_to(self.end_pos.x, path_y, self.end_parent)
-        pos_relative_to_staff = map_between(self.staff, self)
-        # Draw end hook pointing toward the staff
-        # TODO HIGH make hook_direction an argument so this class
-        # can be made a HasMusicFont, not StaffObject.
-        hook_direction = 1 if pos_relative_to_staff.y <= ZERO else -1
         self.line_path.line_to(
             self.end_pos.x,
-            (path_y + self.staff.unit(0.75 * hook_direction)),
+            (path_y + font.unit(0.75 * self.direction.value)),
             self.end_parent,
         )
+
+    @property
+    def music_font(self) -> MusicFont:
+        return self._music_font
 
     @property
     def length(self) -> Unit:
         return self.spanner_x_length
 
 
-class _OctaveLineText(MusicText, StaffObject):
+class _OctaveLineText(MusicText):
     """An octave text mark recurring at line beginnings with added parenthesis.
 
     This is a private class meant to be used exclusively in the context
@@ -142,20 +147,16 @@ class _OctaveLineText(MusicText, StaffObject):
     """
 
     def __init__(
-        self, pos: PointDef, parent: PositionedObject, length: Unit, indication: str
+        self,
+        pos: PointDef,
+        parent: PositionedObject,
+        length: Unit,
+        indication: str,
+        font: MusicFont,
     ):
-        """
-        Args:
-            pos:
-            parent:
-            length:
-            indication: A valid octave indication.
-                Should be a valid entry in `OctaveLine.glyphs`.
-        """
-        MusicText.__init__(self, pos, parent, OctaveLine.glyphs[indication])
-        StaffObject.__init__(self, parent)
-        open_paren_char = MusicChar(self.font, OctaveLine.glyphs["("])
-        close_paren_char = MusicChar(self.font, OctaveLine.glyphs[")"])
+        MusicText.__init__(self, pos, parent, OctaveLine.glyphs[indication], font)
+        open_paren_char = MusicChar(self.music_font, OctaveLine.glyphs["("])
+        close_paren_char = MusicChar(self.music_font, OctaveLine.glyphs[")"])
         self.parenthesized_text = (
             open_paren_char.codepoint + self.text + close_paren_char.codepoint
         )
