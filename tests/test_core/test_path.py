@@ -20,15 +20,15 @@ from ..helpers import assert_path_els_equal
 class TestPath(unittest.TestCase):
     def setUp(self):
         neoscore.setup()
+        self.brush = Brush("#ff0000")
+        self.pen = Pen("#00ff00")
 
     def test_init(self):
         mock_parent = PositionedObject(ORIGIN, parent=None)
-        test_pen = Pen("#eeeeee")
-        test_brush = Brush("#dddddd")
-        path = Path((Unit(5), Unit(6)), mock_parent, test_brush, test_pen)
+        path = Path((Unit(5), Unit(6)), mock_parent, self.brush, self.pen)
         assert path.pos == Point(Unit(5), Unit(6))
-        assert path.pen == test_pen
-        assert path.brush == test_brush
+        assert path.pen == self.pen
+        assert path.brush == self.brush
 
     def test_straight_line(self):
         path = Path.straight_line((Unit(5), Unit(6)), None, (Unit(10), Unit(11)))
@@ -142,3 +142,70 @@ class TestPath(unittest.TestCase):
         path.close_subpath()
         assert len(path.elements) == 4
         assert_path_els_equal(path.elements[3], MoveTo(ORIGIN, path))
+
+    def test_rect(self):
+        path = Path.rect(ORIGIN, None, Unit(5), Unit(6), self.brush, self.pen)
+        assert path.brush == self.brush
+        assert path.pen == self.pen
+        assert_path_els_equal(path.elements[0], MoveTo(ORIGIN, path))
+        assert_path_els_equal(path.elements[1], LineTo((Unit(5), ZERO), path))
+        assert_path_els_equal(path.elements[2], LineTo((Unit(5), Unit(6)), path))
+        assert_path_els_equal(path.elements[3], LineTo((ZERO, Unit(6)), path))
+        assert_path_els_equal(path.elements[4], LineTo(ORIGIN, path))
+
+    def test_ellipse(self):
+        path = Path.ellipse(ORIGIN, None, Unit(5), Unit(6), self.brush, self.pen)
+        assert path.brush == self.brush
+        assert path.pen == self.pen
+        # These values were visually verified and copied here
+        assert_path_els_equal(path.elements[0], MoveTo((Unit(0.0), Unit(3.0)), path))
+        assert_path_els_equal(
+            path.elements[1],
+            CurveTo(
+                (Unit(2.5), Unit(0.0)),
+                path,
+                ControlPoint((Unit(0.0), Unit(1.343)), path),
+                ControlPoint((Unit(1.119), Unit(0.0)), path),
+            ),
+            3,
+        )
+        assert_path_els_equal(
+            path.elements[2],
+            CurveTo(
+                (Unit(5.0), Unit(3.0)),
+                path,
+                ControlPoint((Unit(3.881), Unit(0.0)), path),
+                ControlPoint((Unit(5.0), Unit(1.343)), path),
+            ),
+            3,
+        )
+        assert_path_els_equal(
+            path.elements[3],
+            CurveTo(
+                (Unit(2.5), Unit(6.0)),
+                path,
+                ControlPoint((Unit(5.0), Unit(4.657)), path),
+                ControlPoint((Unit(3.881), Unit(6.0)), path),
+            ),
+            3,
+        )
+        assert_path_els_equal(
+            path.elements[4],
+            CurveTo(
+                (Unit(0.0), Unit(3.0)),
+                path,
+                ControlPoint((Unit(1.119), Unit(6.0)), path),
+                ControlPoint((Unit(0.0), Unit(4.657)), path),
+            ),
+            3,
+        )
+
+    def test_ellipse_from_center(self):
+        path = Path.ellipse_from_center(
+            ORIGIN, None, Unit(5), Unit(6), self.brush, self.pen
+        )
+        assert path.brush == self.brush
+        assert path.pen == self.pen
+        expected = Path.ellipse((Unit(-2.5), Unit(-3)), None, Unit(5), Unit(6))
+        for (actual, expected) in zip(path.elements, expected.elements):
+            assert_path_els_equal(actual, expected, 3, compare_parents=False)

@@ -56,16 +56,26 @@ def _assert_points_almost_equal(left, right, places, epsilon):
     _assert_units_almost_equal(left.y, right.y, places, epsilon)
 
 
-def assert_path_els_equal(left, right):
+def assert_path_els_equal(
+    left,
+    right,
+    places: float = 7,
+    epsilon: Optional[float] = None,
+    compare_parents=True,
+):
     """Assert equality of the basic attributes of two PathElements
 
     This only checks position and parents, skipping their incidental
-    attributes inherited from PaintedObject like `children`, `brush`,
-    etc
+    attributes inherited from PaintedObject like `children`.
     """
     assert type(left) == type(right)
-    assert_almost_equal(left.pos, right.pos)
-    assert left.parent == right.parent
+    assert_almost_equal(left.pos, right.pos, places, epsilon)
+    if compare_parents:
+        assert left.parent == right.parent
     if isinstance(left, CurveTo):
-        assert_path_els_equal(left.control_1, right.control_1)
-        assert_path_els_equal(left.control_2, right.control_2)
+        assert_path_els_equal(
+            left.control_1, right.control_1, places, epsilon, compare_parents
+        )
+        assert_path_els_equal(
+            left.control_2, right.control_2, places, epsilon, compare_parents
+        )

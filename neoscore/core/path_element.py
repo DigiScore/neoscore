@@ -10,7 +10,8 @@ if TYPE_CHECKING:
 
 
 class PathElement(PositionedObject):
-    pass
+    def __repr__(self) -> str:
+        return f"{type(self).__name__}(pos={self.pos}, parent={self.parent})"
 
 
 class MoveTo(PathElement):
@@ -36,3 +37,9 @@ class CurveTo(PathElement):
         super().__init__(pos, parent)
         self.control_1 = control_1
         self.control_2 = control_2
+
+    def __repr__(self) -> str:
+        return (
+            f"{type(self).__name__}(pos={self.pos}, parent={self.parent},"
+            + f" c1={self.control_1}, c2={self.control_2})"
+        )

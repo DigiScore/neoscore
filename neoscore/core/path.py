@@ -65,15 +65,7 @@ class Path(PaintedObject):
         brush: Optional[SimpleBrushDef] = None,
         pen: Optional[SimplePenDef] = None,
     ) -> Path:
-        """Convenience for drawing simple lines.
-
-        Args:
-            start: Starting position relative to the parent
-            parent: The parent object or None
-            stop: Ending position relative to the parent.
-            brush: The brush to fill shapes with.
-            pen: The pen to draw outlines with.
-        """
+        """Convenience for drawing a single straight line."""
         line = cls(start, parent, brush, pen)
         if isinstance(stop, tuple):
             stop = Point(*stop)
@@ -83,19 +75,77 @@ class Path(PaintedObject):
     @classmethod
     def rect(
         cls,
-        start: PointDef,
+        pos: PointDef,
         parent: Optional[Parent],
         width: Unit,
         height: Unit,
         brush: Optional[SimpleBrushDef] = None,
         pen: Optional[SimplePenDef] = None,
     ):
-        """Convenience for drawing simple rectangles with only one parent"""
-        path = cls(start, parent, brush, pen)
+        """Convenience for drawing a rectangle."""
+        path = cls(pos, parent, brush, pen)
         path.line_to(width, ZERO)
         path.line_to(width, height)
         path.line_to(ZERO, height)
         path.line_to(ZERO, ZERO)
+        return path
+
+    @classmethod
+    def ellipse(
+        cls,
+        pos: PointDef,
+        parent: Optional[Parent],
+        width: Unit,
+        height: Unit,
+        brush: Optional[SimpleBrushDef] = None,
+        pen: Optional[SimplePenDef] = None,
+    ):
+        """Convenience for drawing an ellipse.
+
+        `pos` indicates the top left corner of the ellipse's bounding rect.
+        To create a path from a center point, use `Path.ellipse_from_center`.
+
+        This can also be used for drawing circles by giving the same width and height.
+        """
+        # Algorithm courtesy of https://stackoverflow.com/a/2173084/5615927
+        path = cls(pos, parent, brush, pen)
+        kappa = 0.5522848
+        ox = (width / 2) * kappa  # control point offset horizontal
+        oy = (height / 2) * kappa  # control point offset vertical
+        xe = path.x + width  # x-end
+        ye = path.y + height  # y-end
+        xm = path.x + (width / 2)  # x-middle
+        ym = path.y + (height / 2)  # y-middle
+        path.move_to(path.x, ym)
+        path.cubic_to(path.x, ym - oy, xm - ox, path.y, xm, path.y)
+        path.cubic_to(xm + ox, path.y, xe, ym - oy, xe, ym)
+        path.cubic_to(xe, ym + oy, xm + ox, ye, xm, ye)
+        path.cubic_to(xm - ox, ye, path.x, ym + oy, path.x, ym)
+        return path
+
+    @classmethod
+    def ellipse_from_center(
+        cls,
+        center_pos: PointDef,
+        parent: Optional[Parent],
+        width: Unit,
+        height: Unit,
+        brush: Optional[SimpleBrushDef] = None,
+        pen: Optional[SimplePenDef] = None,
+    ):
+        """Convenience for drawing an ellipse from its center point.
+
+        See also `Path.ellipse`
+        """
+        center_pos = Point.from_def(center_pos)
+        return Path.ellipse(
+            Point(center_pos.x - (width / 2), center_pos.y - (height / 2)),
+            parent,
+            width,
+            height,
+            brush,
+            pen,
+        )
 
     ######## PUBLIC PROPERTIES ########
 
