@@ -1,4 +1,7 @@
+import math
 import unittest
+
+import pytest
 
 from neoscore.core import neoscore
 from neoscore.core.brush import Brush
@@ -209,3 +212,60 @@ class TestPath(unittest.TestCase):
         expected = Path.ellipse((Unit(-2.5), Unit(-3)), None, Unit(5), Unit(6))
         for (actual, expected) in zip(path.elements, expected.elements):
             assert_path_els_equal(actual, expected, 3, compare_parents=False)
+
+    def test_arc(self):
+        path = Path.arc(
+            ORIGIN,
+            None,
+            Unit(5),
+            Unit(6),
+            math.pi / 4,
+            math.pi * 1.5,
+            self.brush,
+            self.pen,
+        )
+        assert path.brush == self.brush
+        assert path.pen == self.pen
+        assert_path_els_equal(
+            path.elements[0], MoveTo(Point(Unit(4.4205531), Unit(4.920553)), path), 3
+        )
+        assert_path_els_equal(
+            path.elements[1],
+            CurveTo(
+                Point(Unit(0.899539), Unit(5.30466)),
+                path,
+                ControlPoint(Point(Unit(3.5366429), Unit(6.1933)), path),
+                ControlPoint(Point(Unit(1.960231), Unit(6.365356)), path),
+            ),
+            3,
+        )
+        assert_path_els_equal(
+            path.elements[2],
+            CurveTo(
+                Point(Unit(0.5794468), Unit(1.0794468)),
+                path,
+                ControlPoint(Point(Unit(-0.1611532), Unit(4.2439)), path),
+                ControlPoint(Point(Unit(-0.30446), Unit(2.352277)), path),
+            ),
+            3,
+        )
+        assert_path_els_equal(
+            path.elements[3],
+            CurveTo(
+                Point(Unit(2.5), Unit(0.0)),
+                path,
+                ControlPoint(Point(Unit(1.05443), Unit(0.39546)), path),
+                ControlPoint(Point(Unit(1.75805), Unit(0)), path),
+            ),
+            3,
+        )
+
+    def test_arc_with_invalid_angle(self):
+        with pytest.raises(ValueError):
+            path = Path.arc(ORIGIN, None, Unit(10), Unit(10), 1.0, 1.0 + 2 * math.pi)
+
+        with pytest.raises(ValueError):
+            path = Path.arc(ORIGIN, None, Unit(10), Unit(10), 1.0, 1.0)
+
+        with pytest.raises(ValueError):
+            path = Path.arc(ORIGIN, None, Unit(10), Unit(10), 0, 2 * math.pi)
