@@ -127,14 +127,13 @@ class QClippingPath(QGraphicsPathItem):
                 This might be useful, for instance, for making sure thick pen strokes
                 render completely.
         """
-        resolved_clip_start_x = bounding_rect.x() + clip_start_x
-        resolved_clip_width = (
-            clip_width
-            if clip_width is not None
-            else bounding_rect.width() - resolved_clip_start_x
-        )
+        if clip_width is None:
+            resolved_clip_width = bounding_rect.width() - clip_start_x
+        else:
+            resolved_clip_width = clip_width
+        # i think this assumes bounding rect starts at 0,0??
         return QRectF(
-            -padding,
+            bounding_rect.x() - padding,
             bounding_rect.y() - padding,
             resolved_clip_width + (padding * 2),
             bounding_rect.height() + (padding * 2),

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from math import atan, cos, pi, sin, tan
 from typing import TYPE_CHECKING, Optional, cast
 
 from neoscore.core.brush import SimpleBrushDef
@@ -65,7 +66,10 @@ class Path(PaintedObject):
         brush: Optional[SimpleBrushDef] = None,
         pen: Optional[SimplePenDef] = None,
     ) -> Path:
-        """Convenience for drawing a single straight line."""
+        """Convenience for drawing a single straight line.
+
+        `stop` is measured relative to the starting point.
+        """
         line = cls(start, parent, brush, pen)
         if isinstance(stop, tuple):
             stop = Point(*stop)
@@ -146,6 +150,145 @@ class Path(PaintedObject):
             brush,
             pen,
         )
+
+    @staticmethod
+    def _acute_arc_to_bezier(start: float, size: float) -> dict:
+        """
+        Generate a cubic Bezier representing an arc on the unit circle of total
+        angle `size` radians, beginning `start` radians above the x-axis.
+        """
+        # Evaluate constants.
+        alpha = size / 2.0
+        cos_alpha = cos(alpha)
+        sin_alpha = sin(alpha)
+        cot_alpha = 1.0 / tan(alpha)
+        phi = start + alpha  # This is how far the arc needs to be rotated.
+        cos_phi = cos(phi)
+        sin_phi = sin(phi)
+        lambda_ = (4.0 - cos_alpha) / 3.0
+        mu = sin_alpha + (cos_alpha - lambda_) * cot_alpha
+        # Return rotated waypoints.
+        return {
+            "ax": cos(start),
+            "ay": sin(start),
+            "bx": lambda_ * cos_phi + mu * sin_phi,
+            "by": lambda_ * sin_phi - mu * cos_phi,
+            "cx": lambda_ * cos_phi - mu * sin_phi,
+            "cy": lambda_ * sin_phi + mu * cos_phi,
+            "dx": cos(start + size),
+            "dy": sin(start + size),
+        }
+
+    @classmethod
+    def arc(
+        cls,
+        pos: PointDef,
+        parent: Optional[Parent],
+        width: Unit,
+        height: Unit,
+        start_angle: float,
+        stop_angle: float,
+        brush: Optional[SimpleBrushDef] = None,
+        pen: Optional[SimplePenDef] = None,
+    ):
+        """Convenience for drawing an elliptical arc.
+
+        Args:
+            pos: The position of the upper left corner of the traced ellipse.
+            parent: The parent object or None
+            width: The traced ellipse's width
+            height: The traced ellipse's height
+            start_angle: The starting arc angle in radians clockwise relative
+                to the 3 o'clock position.
+            stop_angle: The stopping arc angle in radians clockwise relative
+                to the 3 o'clock position.
+            brush: The brush to fill shapes with.
+            pen: The pen to draw outlines with.
+
+        The arc definition can be most easily understood as tracing an
+        ellipse as defined in `Path.ellipse()`, where `pos` marks the
+        top-left corner of the ellipse bounding rect. Two angles are
+        provided in clockwise radians relative to the 3 o'clock
+        position. The arc is traced from `start_angle` clockwise to
+        `stop_angle`. Consequently, depending on the provided angles
+        the actually drawn path may be far from the Path's position.
+
+        The provided angles are interpreted mod `2*pi`. The angle
+        between them must not be 0. This also means arc angles of
+        `2*pi`, (i.e. complete ellipses), are not supported as they
+        are interpreted as 0. Complete ellipses should instead be
+        drawn with `Path.ellipse()`.
+
+        Raises: ValueError: if invalid angles are given
+        """
+        # This method and `_acute_arc_to_bezier` are adapted from Joe
+        # Cridge's algorithm and JS implementation found at
+        # https://www.joecridge.me/bezier.pdf. Most of the original
+        # comments have been left in place as well.
+
+        # Work in float base units, converting back to units at the end
+        TWO_PI = pi * 2
+        HALF_PI = pi / 2
+
+        w = width.base_value
+        h = height.base_value
+
+        # Make all angles positive...
+        while start_angle < 0:
+            start_angle += TWO_PI
+        while stop_angle < 0:
+            stop_angle += TWO_PI
+
+        # ...and confine them to the interval [0,TWO_PI).
+        start_angle %= TWO_PI
+        stop_angle %= TWO_PI
+
+        # Adjust angles to counter linear scaling.
+        if start_angle <= HALF_PI:
+            start_angle = atan(w / h * tan(start_angle))
+        elif start_angle > HALF_PI and start_angle <= 3 * HALF_PI:
+            start_angle = atan(w / h * tan(start_angle)) + pi
+        else:
+            start_angle = atan(w / h * tan(start_angle)) + TWO_PI
+        if stop_angle <= HALF_PI:
+            stop_angle = atan(w / h * tan(stop_angle))
+        elif stop_angle > HALF_PI and stop_angle <= 3 * HALF_PI:
+            stop_angle = atan(w / h * tan(stop_angle)) + pi
+        else:
+            stop_angle = atan(w / h * tan(stop_angle)) + TWO_PI
+
+        # Exceed the interval if necessary in order to preserve the size and
+        # orientation of the arc.
+        if start_angle > stop_angle:
+            stop_angle += TWO_PI
+
+        # Create curves
+        epsilon = 0.00001  # Smallest visible angle on displays up to 4K.
+        arc_to_draw = 0.0
+        curves = []
+        while stop_angle - start_angle > epsilon:
+            arc_to_draw = min(stop_angle - start_angle, HALF_PI)
+            curves.append(Path._acute_arc_to_bezier(start_angle, arc_to_draw))
+            start_angle += arc_to_draw
+
+        if not len(curves):
+            raise ValueError(f"Invalid arc angles {start_angle} and {stop_angle}.")
+
+        # Draw curves
+        path = cls(pos, parent, brush, pen)
+        rx = w / 2.0
+        ry = h / 2.0
+        path.move_to(Unit(rx * curves[0]["ax"] + rx), Unit(ry * curves[0]["ay"] + ry))
+        for curve in curves:
+            path.cubic_to(
+                Unit(rx * curve["bx"] + rx),
+                Unit(ry * curve["by"] + ry),
+                Unit(rx * curve["cx"] + rx),
+                Unit(ry * curve["cy"] + ry),
+                Unit(rx * curve["dx"] + rx),
+                Unit(ry * curve["dy"] + ry),
+            )
+        return path
 
     ######## PUBLIC PROPERTIES ########
 

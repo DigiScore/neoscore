@@ -19,6 +19,7 @@ class TestQClippingPath(unittest.TestCase):
 
     def test_geometry_covering_full_path(self):
         painter_path = QPainterPath()
+        painter_path.moveTo(-5, -5)
         painter_path.lineTo(100, 200)
         obj = QClippingPath(painter_path, 0, None)
         obj.setPen(self.pen)
@@ -32,6 +33,7 @@ class TestQClippingPath(unittest.TestCase):
 
     def test_geometry_covering_end_of_path(self):
         painter_path = QPainterPath()
+        painter_path.moveTo(-5, -5)
         painter_path.lineTo(100, 200)
         obj = QClippingPath(painter_path, 50, None)
         obj.setPen(self.pen)
@@ -44,6 +46,7 @@ class TestQClippingPath(unittest.TestCase):
 
     def test_geometry_covering_start_of_path(self):
         painter_path = QPainterPath()
+        painter_path.moveTo(-5, -5)
         painter_path.lineTo(100, 200)
         obj = QClippingPath(painter_path, 0, 50)
         obj.setPen(self.pen)
@@ -56,6 +59,7 @@ class TestQClippingPath(unittest.TestCase):
 
     def test_geometry_covering_middle_of_path(self):
         painter_path = QPainterPath()
+        painter_path.moveTo(-5, -5)
         painter_path.lineTo(100, 200)
         obj = QClippingPath(painter_path, 25, 30)
         obj.setPen(self.pen)
