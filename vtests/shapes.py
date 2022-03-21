@@ -35,10 +35,8 @@ for i in range(1, 10):
     # Label angle
     Text((pos.x, pos.y - Mm(4)), None, f"θ={angle:.2f}", font)
 
+Path.arrow((Mm(10), Mm(10)), None, (Mm(20), Mm(5)))
+Path.straight_line((Mm(10), Mm(10)), None, (Mm(20), Mm(5)), pen="#ff0000")
 
-# p2 = Path(ORIGIN, None, NO_BRUSH, "#ff0000")
-# p2.move_to(Unit(59), Unit(0))
-# p2.line_to(Unit(0), Unit(59))
-# p2.line_to(Unit(-24), Unit(53))
 
 neoscore.show()

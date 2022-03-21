@@ -150,56 +150,51 @@ class TestPath(unittest.TestCase):
         path = Path.rect(ORIGIN, None, Unit(5), Unit(6), self.brush, self.pen)
         assert path.brush == self.brush
         assert path.pen == self.pen
-        assert_path_els_equal(path.elements[0], MoveTo(ORIGIN, path))
-        assert_path_els_equal(path.elements[1], LineTo((Unit(5), ZERO), path))
-        assert_path_els_equal(path.elements[2], LineTo((Unit(5), Unit(6)), path))
-        assert_path_els_equal(path.elements[3], LineTo((ZERO, Unit(6)), path))
-        assert_path_els_equal(path.elements[4], LineTo(ORIGIN, path))
+        assert_path_els_equal(
+            path.elements,
+            [
+                MoveTo(ORIGIN, path),
+                LineTo((Unit(5), ZERO), path),
+                LineTo((Unit(5), Unit(6)), path),
+                LineTo((ZERO, Unit(6)), path),
+                LineTo(ORIGIN, path),
+            ],
+        )
 
     def test_ellipse(self):
         path = Path.ellipse(ORIGIN, None, Unit(5), Unit(6), self.brush, self.pen)
         assert path.brush == self.brush
         assert path.pen == self.pen
         # These values were visually verified and copied here
-        assert_path_els_equal(path.elements[0], MoveTo((Unit(0.0), Unit(3.0)), path))
         assert_path_els_equal(
-            path.elements[1],
-            CurveTo(
-                (Unit(2.5), Unit(0.0)),
-                path,
-                ControlPoint((Unit(0.0), Unit(1.343)), path),
-                ControlPoint((Unit(1.119), Unit(0.0)), path),
-            ),
-            3,
-        )
-        assert_path_els_equal(
-            path.elements[2],
-            CurveTo(
-                (Unit(5.0), Unit(3.0)),
-                path,
-                ControlPoint((Unit(3.881), Unit(0.0)), path),
-                ControlPoint((Unit(5.0), Unit(1.343)), path),
-            ),
-            3,
-        )
-        assert_path_els_equal(
-            path.elements[3],
-            CurveTo(
-                (Unit(2.5), Unit(6.0)),
-                path,
-                ControlPoint((Unit(5.0), Unit(4.657)), path),
-                ControlPoint((Unit(3.881), Unit(6.0)), path),
-            ),
-            3,
-        )
-        assert_path_els_equal(
-            path.elements[4],
-            CurveTo(
-                (Unit(0.0), Unit(3.0)),
-                path,
-                ControlPoint((Unit(1.119), Unit(6.0)), path),
-                ControlPoint((Unit(0.0), Unit(4.657)), path),
-            ),
+            path.elements,
+            [
+                MoveTo((Unit(0.0), Unit(3.0)), path),
+                CurveTo(
+                    (Unit(2.5), Unit(0.0)),
+                    path,
+                    ControlPoint((Unit(0.0), Unit(1.343)), path),
+                    ControlPoint((Unit(1.119), Unit(0.0)), path),
+                ),
+                CurveTo(
+                    (Unit(5.0), Unit(3.0)),
+                    path,
+                    ControlPoint((Unit(3.881), Unit(0.0)), path),
+                    ControlPoint((Unit(5.0), Unit(1.343)), path),
+                ),
+                CurveTo(
+                    (Unit(2.5), Unit(6.0)),
+                    path,
+                    ControlPoint((Unit(5.0), Unit(4.657)), path),
+                    ControlPoint((Unit(3.881), Unit(6.0)), path),
+                ),
+                CurveTo(
+                    (Unit(0.0), Unit(3.0)),
+                    path,
+                    ControlPoint((Unit(1.119), Unit(6.0)), path),
+                    ControlPoint((Unit(0.0), Unit(4.657)), path),
+                ),
+            ],
             3,
         )
 
@@ -227,36 +222,28 @@ class TestPath(unittest.TestCase):
         assert path.brush == self.brush
         assert path.pen == self.pen
         assert_path_els_equal(
-            path.elements[0], MoveTo(Point(Unit(4.4205531), Unit(4.920553)), path), 3
-        )
-        assert_path_els_equal(
-            path.elements[1],
-            CurveTo(
-                Point(Unit(0.899539), Unit(5.30466)),
-                path,
-                ControlPoint(Point(Unit(3.5366429), Unit(6.1933)), path),
-                ControlPoint(Point(Unit(1.960231), Unit(6.365356)), path),
-            ),
-            3,
-        )
-        assert_path_els_equal(
-            path.elements[2],
-            CurveTo(
-                Point(Unit(0.5794468), Unit(1.0794468)),
-                path,
-                ControlPoint(Point(Unit(-0.1611532), Unit(4.2439)), path),
-                ControlPoint(Point(Unit(-0.30446), Unit(2.352277)), path),
-            ),
-            3,
-        )
-        assert_path_els_equal(
-            path.elements[3],
-            CurveTo(
-                Point(Unit(2.5), Unit(0.0)),
-                path,
-                ControlPoint(Point(Unit(1.05443), Unit(0.39546)), path),
-                ControlPoint(Point(Unit(1.75805), Unit(0)), path),
-            ),
+            path.elements,
+            [
+                MoveTo(Point(Unit(4.4205531), Unit(4.920553)), path),
+                CurveTo(
+                    Point(Unit(0.899539), Unit(5.30466)),
+                    path,
+                    ControlPoint(Point(Unit(3.5366429), Unit(6.1933)), path),
+                    ControlPoint(Point(Unit(1.960231), Unit(6.365356)), path),
+                ),
+                CurveTo(
+                    Point(Unit(0.5794468), Unit(1.0794468)),
+                    path,
+                    ControlPoint(Point(Unit(-0.1611532), Unit(4.2439)), path),
+                    ControlPoint(Point(Unit(-0.30446), Unit(2.352277)), path),
+                ),
+                CurveTo(
+                    Point(Unit(2.5), Unit(0.0)),
+                    path,
+                    ControlPoint(Point(Unit(1.05443), Unit(0.39546)), path),
+                    ControlPoint(Point(Unit(1.75805), Unit(0)), path),
+                ),
+            ],
             3,
         )
 
@@ -269,3 +256,58 @@ class TestPath(unittest.TestCase):
 
         with pytest.raises(ValueError):
             path = Path.arc(ORIGIN, None, Unit(10), Unit(10), 0, 2 * math.pi)
+
+    def test_arrow_without_end_parent(self):
+        path = Path.arrow(
+            (Unit(10), Unit(11)),
+            None,
+            (Unit(5), Unit(6)),
+            brush=self.brush,
+            pen=self.pen,
+        )
+        assert path.brush == self.brush
+        assert path.pen == self.pen
+        assert_path_els_equal(
+            path.elements,
+            [
+                MoveTo(Point(Unit(0.0), Unit(0.0)), path),
+                LineTo(Point(Unit(-2.2683), Unit(1.8903)), path),
+                LineTo(Point(Unit(-12.39084), Unit(-10.2566)), path),
+                LineTo(Point(Unit(-19.1959), Unit(-4.5857)), path),
+                LineTo(Point(Unit(5.0), Unit(6.0)), path),
+                LineTo(Point(Unit(-1.0489), Unit(-19.708)), path),
+                LineTo(Point(Unit(-7.854), Unit(-14.037)), path),
+                LineTo(Point(Unit(2.2683), Unit(-1.890)), path),
+                LineTo(Point(Unit(0.0), Unit(0.0)), path),
+            ],
+            2,
+        )
+
+    def test_arrow_with_end_parent(self):
+        start_parent = PositionedObject((Unit(100), Unit(200)), None)
+        end_parent = PositionedObject((Unit(1000), Unit(2000)), None)
+        path = Path.arrow(
+            (Unit(10), Unit(11)),
+            start_parent,
+            (Unit(5), Unit(6)),
+            end_parent,
+            self.brush,
+            self.pen,
+        )
+        assert path.brush == self.brush
+        assert path.pen == self.pen
+        assert_path_els_equal(
+            path.elements,
+            [
+                MoveTo(Point(Unit(0.0), Unit(0.0)), path),
+                LineTo(Point(Unit(-2.6424), Unit(1.3175)), path),
+                LineTo(Point(Unit(881.8169), Unit(1775.1775)), path),
+                LineTo(Point(Unit(873.8894), Unit(1779.1302)), path),
+                LineTo(Point(Unit(895.0000), Unit(1795.0)), path),
+                LineTo(Point(Unit(895.0294), Unit(1768.5897)), path),
+                LineTo(Point(Unit(887.1019), Unit(1772.5424)), path),
+                LineTo(Point(Unit(2.64249), Unit(-1.3175)), path),
+                LineTo(Point(Unit(0.0), Unit(0.0)), path),
+            ],
+            2,
+        )

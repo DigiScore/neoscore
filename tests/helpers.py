@@ -68,6 +68,13 @@ def assert_path_els_equal(
     This only checks position and parents, skipping their incidental
     attributes inherited from PaintedObject like `children`.
     """
+    if isinstance(left, list) and isinstance(right, list):
+        assert len(left) == len(right)
+        for (left_el, right_el) in zip(left, right):
+            assert_path_els_equal(
+                left_el, right_el, places, epsilon, compare_parents=True
+            )
+        return
     assert type(left) == type(right)
     assert_almost_equal(left.pos, right.pos, places, epsilon)
     if compare_parents:

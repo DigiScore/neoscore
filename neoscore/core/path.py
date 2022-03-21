@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from math import atan, cos, pi, sin, tan
+from math import atan, cos, pi, sin, sqrt, tan
 from typing import TYPE_CHECKING, Optional, cast
 
 from neoscore.core.brush import SimpleBrushDef
@@ -13,7 +13,7 @@ from neoscore.core.path_element import (
     MoveTo,
     PathElement,
 )
-from neoscore.core.pen import SimplePenDef
+from neoscore.core.pen import NO_PEN, SimplePenDef
 from neoscore.interface.path_interface import (
     PathInterface,
     ResolvedCurveTo,
@@ -22,7 +22,7 @@ from neoscore.interface.path_interface import (
     ResolvedPathElement,
 )
 from neoscore.utils.point import Point, PointDef
-from neoscore.utils.units import ZERO, Unit
+from neoscore.utils.units import ZERO, Mm, Unit
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
@@ -288,6 +288,84 @@ class Path(PaintedObject):
                 Unit(rx * curve["dx"] + rx),
                 Unit(ry * curve["dy"] + ry),
             )
+        return path
+
+    @classmethod
+    def arrow(
+        cls,
+        start: PointDef,
+        parent: Optional[Parent],
+        end: PointDef,
+        end_parent: Optional[Parent] = None,
+        brush: Optional[SimpleBrushDef] = None,
+        pen: Optional[SimplePenDef] = None,
+        line_width: Unit = Mm(0.5),
+        arrow_head_width: Unit = Mm(1),
+        arrow_head_length: Unit = Mm(2),
+    ) -> Path:
+        """Convenience for drawing an arrow
+
+        Args:
+            start: The position of the center of the arrow line's start
+            parent: A parent object
+            end: The position of the arrow's tip, relative to `end_parent`
+                if provided or `start`
+            end_parent: An optional parent for the end point.
+            brush: The brush to fill shapes with.
+            pen: The pen to draw outlines with. Defaults to no pen.
+            line_width: The thickness of the arrow's line
+            arrow_head_width: The width of the arrow head extending perpendicular
+                from the line.
+            arrow_head_length: The length of the arrow head parallel to the line.
+
+        Note that `end_parent` is only used for initially drawing the
+        path. If `end_parent` moves relative to the path after
+        creation, the path shape will not be automatically updated.
+        """
+        # This algorithm is lightly adapted from
+        # https://github.com/frogcat/canvas-arrow by Yuzo Matsuzawa
+        # released under MIT.
+        path = cls(start, parent, brush, pen or NO_PEN)
+        end = Point.from_def(end)
+        if end_parent:
+            end = map_between(path, end_parent) + end
+        # The original algorithm supports diverse shapes, including
+        # things like double-headed arrows, using this system of a
+        # variable numbers of control points. We don't use them right
+        # now, but since we might want to later (and since I don't
+        # understand the code enough to refactor it) it's left in
+        # place here.
+        control_points = [
+            (0, line_width.base_value / 2),
+            (-arrow_head_length.base_value, line_width.base_value / 2),
+            (-arrow_head_length.base_value, arrow_head_width.base_value),
+        ]
+        # The start pos (relative to the path) is always (0, 0), so dx
+        # and dy are just the end position
+        dx = end.x.base_value
+        dy = end.y.base_value
+        length = sqrt(dx * dx + dy * dy)
+        sin_ = dy / length
+        cos_ = dx / length
+        resolved_points: list[tuple[float, float]] = []
+        resolved_points.append((0, 0))
+        for cp in control_points:
+            if cp[0] < 0:
+                resolved_points.append((length + cp[0], cp[1]))
+            else:
+                resolved_points.append(cp)
+        resolved_points.append((length, 0))
+        for cp in reversed(control_points):
+            if cp[0] < 0:
+                resolved_points.append((length + cp[0], -cp[1]))
+            else:
+                resolved_points.append((cp[0], -cp[1]))
+        resolved_points.append((0, 0))
+        path.move_to(Unit(resolved_points[0][0]), Unit(resolved_points[0][1]))
+        for rp in resolved_points[1:]:
+            x = rp[0] * cos_ - rp[1] * sin_
+            y = rp[0] * sin_ + rp[1] * cos_
+            path.line_to(Unit(x), Unit(y))
         return path
 
     ######## PUBLIC PROPERTIES ########
