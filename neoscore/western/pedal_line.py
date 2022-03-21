@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional
 
-from neoscore.core.brush import NO_BRUSH
+from neoscore.core.brush import Brush
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
-from neoscore.core.pen import NO_PEN, Pen
+from neoscore.core.pen import Pen
 from neoscore.core.spanner import Spanner
 from neoscore.utils.point import PointDef
 from neoscore.utils.units import Unit
@@ -67,10 +67,8 @@ class PedalLine(Spanner, MusicPath):
                 where half lift notches should be drawn.
             font: If provided, this overrides any font found in the ancestor chain.
         """
-        MusicPath.__init__(self, start, start_parent, font, NO_BRUSH, NO_PEN)
-        self.pen = Pen(
-            thickness=self.music_font.engraving_defaults["pedalLineThickness"]
-        )
+        MusicPath.__init__(self, start, start_parent, font, Brush.no_brush(), Pen())
+        self.pen.thickness = self.music_font.engraving_defaults["pedalLineThickness"]
         Spanner.__init__(self, end_x, end_parent or self)
         self.half_lift_positions = half_lift_positions
         self._draw_path()

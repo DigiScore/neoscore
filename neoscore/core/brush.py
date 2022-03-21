@@ -41,6 +41,11 @@ class Brush:
         """Derive a Brush from another, overriding any provided fields."""
         return cls(color or brush.color, pattern or brush.pattern)
 
+    @classmethod
+    def no_brush(cls) -> Brush:
+        """Create a non-drawing brush."""
+        return Brush(pattern=BrushPattern.INVISIBLE)
+
     def _regenerate_interface(self):
         self._interface = BrushInterface(self.color, self.pattern)
 
@@ -76,8 +81,6 @@ class Brush:
             and self.pattern == other.pattern
         )
 
-
-NO_BRUSH = Brush(pattern=BrushPattern.NO_BRUSH)
 
 SimpleBrushDef = Union[Brush, str]
 

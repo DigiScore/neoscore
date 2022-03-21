@@ -13,7 +13,7 @@ from neoscore.core.path_element import (
     MoveTo,
     PathElement,
 )
-from neoscore.core.pen import NO_PEN, SimplePenDef
+from neoscore.core.pen import Pen, SimplePenDef
 from neoscore.interface.path_interface import (
     PathInterface,
     ResolvedCurveTo,
@@ -325,7 +325,7 @@ class Path(PaintedObject):
         # This algorithm is lightly adapted from
         # https://github.com/frogcat/canvas-arrow by Yuzo Matsuzawa
         # released under MIT.
-        path = cls(start, parent, brush, pen or NO_PEN)
+        path = cls(start, parent, brush, pen or Pen.no_pen())
         end = Point.from_def(end)
         if end_parent:
             end = map_between(path, end_parent) + end

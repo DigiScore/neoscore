@@ -1,6 +1,5 @@
 import unittest
 
-from neoscore.core import neoscore
 from neoscore.core.brush import Brush
 from neoscore.core.brush_pattern import BrushPattern
 from neoscore.interface.brush_interface import BrushInterface
@@ -8,9 +7,6 @@ from neoscore.utils.color import Color
 
 
 class TestBrush(unittest.TestCase):
-    def setUp(self):
-        neoscore.setup()
-
     def test_init_with_hex_color(self):
         brush = Brush("#eeddcc")
         assert brush.color == Color(238, 221, 204, 255)
@@ -33,6 +29,11 @@ class TestBrush(unittest.TestCase):
             Brush.from_existing(original, pattern=BrushPattern.DENSE_2).pattern
             == BrushPattern.DENSE_2
         )
+
+    def test_no_brush(self):
+        brush = Brush.no_brush()
+        assert brush == Brush(Brush.default_color, BrushPattern.INVISIBLE)
+        assert id(brush) != Brush.no_brush()
 
     def test_interface_generation(self):
         brush = Brush(Color("#ffffff"), BrushPattern.DENSE_1)

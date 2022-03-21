@@ -2,7 +2,7 @@ import unittest
 
 from neoscore.core import neoscore
 from neoscore.core.brush_pattern import BrushPattern
-from neoscore.core.pen import NO_PEN
+from neoscore.core.pen import Pen
 from neoscore.interface.brush_interface import BrushInterface
 from neoscore.interface.font_interface import FontInterface
 from neoscore.interface.text_interface import TextInterface
@@ -21,7 +21,7 @@ class TestTextInterface(unittest.TestCase):
         test_object_1 = TextInterface(
             Point(Unit(5), Unit(6)),
             self.brush,
-            NO_PEN.interface,
+            Pen.no_pen().interface,
             "testing",
             test_font_1,
         )
@@ -29,7 +29,7 @@ class TestTextInterface(unittest.TestCase):
         test_object_2 = TextInterface(
             Point(Unit(5), Unit(6)),
             self.brush,
-            NO_PEN.interface,
+            Pen.no_pen().interface,
             "testing",
             test_font_2,
         )

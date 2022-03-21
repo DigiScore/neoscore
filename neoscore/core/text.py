@@ -6,7 +6,7 @@ from neoscore.core import neoscore
 from neoscore.core.brush import SimpleBrushDef
 from neoscore.core.font import Font
 from neoscore.core.painted_object import PaintedObject
-from neoscore.core.pen import NO_PEN, SimplePenDef
+from neoscore.core.pen import Pen, SimplePenDef
 from neoscore.interface.text_interface import TextInterface
 from neoscore.utils.point import Point, PointDef
 from neoscore.utils.rect import Rect
@@ -50,7 +50,7 @@ class Text(PaintedObject):
         self._text = text
         self._scale = scale
         self._breakable = breakable
-        super().__init__(pos, parent, brush, pen or NO_PEN)
+        super().__init__(pos, parent, brush, pen or Pen.no_pen())
 
     ######## PUBLIC PROPERTIES ########
 

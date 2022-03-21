@@ -2,14 +2,14 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional, cast
 
-from neoscore.core.brush import NO_BRUSH
+from neoscore.core.brush import Brush
 from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.object_group import ObjectGroup
 from neoscore.core.path import Path
-from neoscore.core.pen import NO_PEN, Pen
+from neoscore.core.pen import Pen
 from neoscore.core.pen_pattern import PenPattern
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner import Spanner
@@ -116,7 +116,7 @@ class OctaveLine(ObjectGroup, Spanner, HasMusicFont):
         self.line_path = Path(
             Point(path_x, path_y),
             self,
-            NO_BRUSH,
+            Brush.no_brush(),
             Pen(
                 thickness=font.engraving_defaults["octaveLineThickness"],
                 pattern=PenPattern.DASH,
@@ -176,7 +176,7 @@ class _OctaveLineText(MusicText):
         interface = TextInterface(
             start,
             self.brush.interface,
-            NO_PEN.interface,
+            Pen.no_pen().interface,
             self.text,
             self.font.interface,
         )
@@ -187,7 +187,7 @@ class _OctaveLineText(MusicText):
         interface = TextInterface(
             start,
             self.brush.interface,
-            NO_PEN.interface,
+            Pen.no_pen().interface,
             self.parenthesized_text,
             self.font.interface,
         )
@@ -200,7 +200,7 @@ class _OctaveLineText(MusicText):
         interface = TextInterface(
             start,
             self.brush.interface,
-            NO_PEN.interface,
+            Pen.no_pen().interface,
             self.parenthesized_text,
             self.font.interface,
         )

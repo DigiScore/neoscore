@@ -58,6 +58,11 @@ class TestPen(unittest.TestCase):
             == PenCapStyle.FLAT
         )
 
+    def test_no_pen(self):
+        pen = Pen.no_pen()
+        assert pen == Pen(pattern=PenPattern.INVISIBLE)
+        assert id(pen) != id(Pen.no_pen())
+
     def test_interface_generation(self):
         pen = Pen(
             Color("#eeddcc"),

@@ -13,7 +13,7 @@ class PenPattern(Enum):
     The corresponding integer values must align with Qt's enum values.
     """
 
-    NO_PEN = 0
+    INVISIBLE = 0
 
     SOLID = 1
     """A solid line"""

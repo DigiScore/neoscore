@@ -14,7 +14,7 @@ class BrushPattern(Enum):
     The corresponding integer values must align with Qt's enum values.
     """
 
-    NO_BRUSH = 0
+    INVISIBLE = 0
     """No brush pattern. This is equivalent to a fully transparent color."""
 
     SOLID = 1

@@ -63,6 +63,11 @@ class Pen:
             cap_style or pen.cap_style,
         )
 
+    @classmethod
+    def no_pen(cls) -> Pen:
+        """Create a non-drawing pen."""
+        return Pen(pattern=PenPattern.INVISIBLE)
+
     def _regenerate_interface(self):
         self._interface = PenInterface(
             self.color,
@@ -142,14 +147,6 @@ class Pen:
             and self.cap_style == other.cap_style
         )
 
-
-# TODO HIGH replace this with a generator function, and same with
-# NO_BRUSH.  without this change, objects using NO_PEN which mutate
-# their pen will mutate other objects, which is quite
-# counterintuitive. In other cases, passing a common pen into many
-# objects and mutating it is more intuitive behavior, but NO_PEN feels
-# more like a constant.
-NO_PEN = Pen(pattern=PenPattern.NO_PEN)
 
 SimplePenDef = Union[Pen, str]
 
