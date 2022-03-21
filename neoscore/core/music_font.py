@@ -105,17 +105,17 @@ class MusicFont(Font):
         """Collect and return all known metadata about a glyph.
 
         Args:
-            glyph_name (str): The canonical name of the glyph
-            alternate_number (int or None): A glyph alternate number
-
-        Returns:
-            None: If the glyph is not available in the font
-            dict: A collection of all known metadata about the glyph
+            glyph_name: The canonical name of the glyph, or its main version
+                if using an alternate number.
+            alternate_number: A glyph alternate number
 
         Raises:
             MusicFontGlyphNotFoundError: If the requested glyph
                 could not be found in the font.
         """
+        # TODO LOW this is really complicated and inefficient and
+        # doesn't furnish metadata correctly on optional glyphs and
+        # ligatures. Refactor and test more.
         info = {}
         if alternate_number:
             try:
@@ -123,7 +123,7 @@ class MusicFont(Font):
                     "alternates"
                 ][alternate_number - 1]
                 info["codepoint"] = alternate["codepoint"]
-                real_name = alternate["name"]
+                canonical_name = alternate["name"]
             except KeyError:
                 # Alternate not found in the font
                 raise MusicFontGlyphNotFoundError
@@ -131,40 +131,50 @@ class MusicFont(Font):
             try:
                 info["codepoint"] = smufl.glyph_names[glyph_name]["codepoint"]
             except KeyError:
-                raise MusicFontGlyphNotFoundError
-            real_name = glyph_name
+                try:
+                    info["codepoint"] = self.metadata["optionalGlyphs"][glyph_name][
+                        "codepoint"
+                    ]
+                except KeyError:
+                    try:
+                        info["codepoint"] = self.metadata["ligatures"][glyph_name][
+                            "codepoint"
+                        ]
+                    except KeyError:
+                        raise MusicFontGlyphNotFoundError
+            canonical_name = glyph_name
 
         try:
-            info["description"] = smufl.glyph_names[real_name]["description"]
+            info["description"] = smufl.glyph_names[canonical_name]["description"]
         except KeyError:
             pass
         try:
-            info["classes"] = smufl.get_glyph_classes(real_name)
+            info["classes"] = smufl.get_glyph_classes(canonical_name)
         except KeyError:
             pass
         try:
-            info["glyphBBox"] = self.metadata["glyphBBoxes"][real_name]
+            info["glyphBBox"] = self.metadata["glyphBBoxes"][canonical_name]
         except KeyError:
             pass
         try:
-            info["alternates"] = self.metadata["glyphsWithAlternates"][real_name][
+            info["alternates"] = self.metadata["glyphsWithAlternates"][canonical_name][
                 "alternates"
             ]
         except KeyError:
             pass
         try:
-            info["anchors"] = self.metadata["glyphsWithAnchors"][real_name]
+            info["anchors"] = self.metadata["glyphsWithAnchors"][canonical_name]
         except KeyError:
             pass
         try:
-            info["componentGlyphs"] = self.metadata["ligatures"][real_name][
+            info["componentGlyphs"] = self.metadata["ligatures"][canonical_name][
                 "componentGlyphs"
             ]
         except KeyError:
             pass
         for set_key in self.metadata["sets"].keys():
             for glyph in self.metadata["sets"][set_key]["glyphs"]:
-                if glyph["alternateFor"] == real_name:
+                if glyph["alternateFor"] == canonical_name:
                     info["setAlternatives"] = {}
                     info["setAlternatives"][set_key] = {}
                     info["setAlternatives"][set_key]["description"] = self.metadata[
@@ -174,7 +184,6 @@ class MusicFont(Font):
                     info["setAlternatives"][set_key]["codepoint"] = glyph["codepoint"]
         if not info:
             raise MusicFontGlyphNotFoundError
-        info["is_optional"] = real_name in self.metadata["optionalGlyphs"]
-        info["canonicalName"] = real_name
+        info["canonicalName"] = canonical_name
         convert_all_to_unit(info, self.unit)
         return info

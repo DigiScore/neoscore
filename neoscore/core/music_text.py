@@ -49,9 +49,8 @@ class MusicText(Text, HasMusicFont):
         """
         Args:
             pos: The position of the text.
-            parent: The parent of the glyph. If no `font`
-                is given, this must either be a `Staff` or an object which has
-                a `Staff` as an ancestor.
+            parent: The parent of the glyph. If no `font` is given,
+                this or one of its ancestors must implement `HasMusicFont`.
             text (str, tuple, MusicChar, or list of these):
                 The text to be used, represented as a either a `str`
                 (glyph name), `tuple` (glyph name, alternate number),

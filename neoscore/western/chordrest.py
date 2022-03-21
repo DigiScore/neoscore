@@ -1,7 +1,9 @@
 from typing import Optional
 
 from neoscore.core.object_group import ObjectGroup
-from neoscore.models.beat import BeatDef
+from neoscore.models import notehead_tables
+from neoscore.models.beat import Beat, BeatDef
+from neoscore.models.notehead_tables import NoteheadTable
 from neoscore.models.pitch import PitchDef
 from neoscore.models.vertical_direction import VerticalDirection
 from neoscore.utils.point import ORIGIN, Point
@@ -43,6 +45,7 @@ class Chordrest(ObjectGroup, StaffObject):
         pitches: Optional[list[PitchDef]],
         duration: BeatDef,
         stem_direction: Optional[VerticalDirection] = None,
+        notehead_table: NoteheadTable = notehead_tables.STANDARD,
     ):
         """
         Args:
@@ -55,6 +58,7 @@ class Chordrest(ObjectGroup, StaffObject):
                 where `1` points down and `-1` points up. If omitted, the
                 direction is automatically calculated to point away from
                 the furthest-out notehead.
+            notehead_table: The set of noteheads to use according to `duration`.
         """
         StaffObject.__init__(self, staff)
         ObjectGroup.__init__(self, Point(pos_x, staff.unit(0)), staff, None)
@@ -65,9 +69,18 @@ class Chordrest(ObjectGroup, StaffObject):
         self._dots = set()
         self._noteheads = set()
         self._stem_direction_override = stem_direction
+        self._notehead_table = notehead_table
         if pitches:
             for pitch in pitches:
-                self._noteheads.add(Notehead(staff.unit(0), self, pitch, self.duration))
+                self._noteheads.add(
+                    Notehead(
+                        staff.unit(0),
+                        self,
+                        pitch,
+                        self.duration,
+                        notehead_table=self.notehead_table,
+                    )
+                )
             self.rest = None
         else:
             # TODO LOW support explicit rest Y positioning
@@ -120,8 +133,16 @@ class Chordrest(ObjectGroup, StaffObject):
         return self._flag
 
     @property
-    def duration(self):
-        """Beat: The length of this event.
+    def notehead_table(self) -> NoteheadTable:
+        return self._notehead_table
+
+    @notehead_table.setter
+    def notehead_table(self, table: NoteheadTable):
+        self._notehead_table = table
+
+    @property
+    def duration(self) -> Beat:
+        """The length of this event.
 
         This is used to determine which (if any) `Flag`s, `RhythmDot`s,
         and `Notehead`/`Rest` styles. Higher level managers may also
@@ -130,8 +151,8 @@ class Chordrest(ObjectGroup, StaffObject):
         return self._duration
 
     @duration.setter
-    def duration(self, value):
-        self._duration = value
+    def duration(self, value: BeatDef):
+        self._duration = Beat.from_def(value)
 
     @property
     def ledger_line_positions(self) -> list[Unit]:
@@ -356,6 +377,8 @@ class Chordrest(ObjectGroup, StaffObject):
 
         Returns: None
         """
+        # TODO HIGH this unconditionally crates stems when some
+        # durations shouldnt have them.
         self._stem = Stem(
             Point(self.staff.unit(0), self.furthest_notehead.staff_pos),
             self,

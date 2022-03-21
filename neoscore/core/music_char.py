@@ -24,14 +24,6 @@ class MusicChar:
     alternate_number: Optional[int] = None
     """An SMuFL alternate glyph code, if applicable."""
 
-    # glyph_info: dict = field(init=False, hash=False, compare=False, repr=False)
-    # """SMuFL data on the glyph sized to `self.font`"""
-
-    # def __post_init__(self):
-    #     super().__setattr__(
-    #         "glyph_info", self.font.glyph_info(self.glyph_name, self.alternate_number)
-    #     )
-
     ######## PUBLIC PROPERTIES ########
 
     @cached_property

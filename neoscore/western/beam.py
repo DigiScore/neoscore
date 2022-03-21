@@ -13,9 +13,6 @@ if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
 
 
-# TODO MEDIUM normalize "end" vs "stop" in spanner-like args
-
-
 class Beam(MusicPath):
 
     """A rhythmic beam connecting groups of notes.

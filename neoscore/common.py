@@ -17,6 +17,7 @@ from neoscore.core.pen_pattern import PenPattern
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.rich_text import RichText
 from neoscore.core.text import Text
+from neoscore.models import notehead_tables
 from neoscore.models.accidental_type import AccidentalType
 from neoscore.models.beat import Beat
 from neoscore.models.clef_type import ClefType

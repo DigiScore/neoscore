@@ -6,34 +6,22 @@ from neoscore.core.mapping import map_between
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.positioned_object import PositionedObject
+from neoscore.models import notehead_tables
 from neoscore.models.beat import Beat, BeatDef
+from neoscore.models.notehead_tables import NoteheadTable
 from neoscore.models.pitch import Pitch, PitchDef
 from neoscore.utils.units import ZERO, Unit
 from neoscore.western.staff_object import StaffObject
 
+# TODO MEDIUM the Beat -> glyph lookup algorithm used here is almost
+# definitely incorrect for tuplets.
+
 
 class Notehead(MusicText, StaffObject):
 
-    """A simple notehead glyph whose appearance is determined by a Duration
-
-    Currently, values larger than whole notes are not supported.
-    """
+    """A simple notehead glyph whose appearance is determined by a Duration"""
 
     # todo medium support letting users pass in a custom override of this glyphnames table
-
-    _glyphnames = {
-        1024: "noteheadBlack",
-        512: "noteheadBlack",
-        256: "noteheadBlack",
-        128: "noteheadBlack",
-        64: "noteheadBlack",
-        32: "noteheadBlack",
-        16: "noteheadBlack",
-        8: "noteheadBlack",
-        4: "noteheadBlack",
-        2: "noteheadHalf",
-        1: "noteheadWhole",
-    }
 
     def __init__(
         self,
@@ -42,6 +30,7 @@ class Notehead(MusicText, StaffObject):
         pitch: PitchDef,
         duration: BeatDef,
         font: Optional[MusicFont] = None,
+        notehead_table: NoteheadTable = notehead_tables.STANDARD,
     ):
         """
         Args:
@@ -55,15 +44,17 @@ class Notehead(MusicText, StaffObject):
             duration: The logical duration of
                 the notehead. This is used to determine the glyph style.
             font: If provided, this overrides any font found in the ancestor chain.
+            notehead_table: The set of noteheads to use according to `duration`.
         """
         self._pitch = Pitch.from_def(pitch)
         self._duration = Beat.from_def(duration)
+        self._notehead_table = notehead_table
         # Use a temporary y-axis position before calculating it for real
         MusicText.__init__(
             self,
             (pos_x, ZERO),
             parent,
-            [self._glyphnames[self.duration.base_division]],
+            Notehead._look_up_glyph(self._notehead_table, self._duration),
             font,
         )
         StaffObject.__init__(self, parent)
@@ -110,3 +101,17 @@ class Notehead(MusicText, StaffObject):
         return self.staff.middle_c_at(self.pos_x_in_staff) + self.staff.unit(
             self.pitch.staff_pos_from_middle_c
         )
+
+    ######## PRIVATE METHODS ########
+
+    @staticmethod
+    def _look_up_glyph(table: NoteheadTable, duration: Beat):
+        DOUBLE_WHOLE_MIN = 1.99  # `2 - epsilon` for tuplet float math errors
+        if duration.collapsed_fraction > DOUBLE_WHOLE_MIN:
+            return table.double_whole
+        elif duration.base_division == 1:
+            return table.whole
+        elif duration.base_division == 2:
+            return table.half
+        else:
+            return table.short
