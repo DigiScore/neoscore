@@ -151,34 +151,6 @@ class Path(PaintedObject):
             pen,
         )
 
-    @staticmethod
-    def _acute_arc_to_bezier(start: float, size: float) -> dict:
-        """
-        Generate a cubic Bezier representing an arc on the unit circle of total
-        angle `size` radians, beginning `start` radians above the x-axis.
-        """
-        # Evaluate constants.
-        alpha = size / 2.0
-        cos_alpha = cos(alpha)
-        sin_alpha = sin(alpha)
-        cot_alpha = 1.0 / tan(alpha)
-        phi = start + alpha  # This is how far the arc needs to be rotated.
-        cos_phi = cos(phi)
-        sin_phi = sin(phi)
-        lambda_ = (4.0 - cos_alpha) / 3.0
-        mu = sin_alpha + (cos_alpha - lambda_) * cot_alpha
-        # Return rotated waypoints.
-        return {
-            "ax": cos(start),
-            "ay": sin(start),
-            "bx": lambda_ * cos_phi + mu * sin_phi,
-            "by": lambda_ * sin_phi - mu * cos_phi,
-            "cx": lambda_ * cos_phi - mu * sin_phi,
-            "cy": lambda_ * sin_phi + mu * cos_phi,
-            "dx": cos(start + size),
-            "dy": sin(start + size),
-        }
-
     @classmethod
     def arc(
         cls,
@@ -289,6 +261,34 @@ class Path(PaintedObject):
                 Unit(ry * curve["dy"] + ry),
             )
         return path
+
+    @staticmethod
+    def _acute_arc_to_bezier(start: float, size: float) -> dict:
+        """
+        Generate a cubic Bezier representing an arc on the unit circle of total
+        angle `size` radians, beginning `start` radians above the x-axis.
+        """
+        # Evaluate constants.
+        alpha = size / 2.0
+        cos_alpha = cos(alpha)
+        sin_alpha = sin(alpha)
+        cot_alpha = 1.0 / tan(alpha)
+        phi = start + alpha  # This is how far the arc needs to be rotated.
+        cos_phi = cos(phi)
+        sin_phi = sin(phi)
+        lambda_ = (4.0 - cos_alpha) / 3.0
+        mu = sin_alpha + (cos_alpha - lambda_) * cot_alpha
+        # Return rotated waypoints.
+        return {
+            "ax": cos(start),
+            "ay": sin(start),
+            "bx": lambda_ * cos_phi + mu * sin_phi,
+            "by": lambda_ * sin_phi - mu * cos_phi,
+            "cx": lambda_ * cos_phi - mu * sin_phi,
+            "cy": lambda_ * sin_phi + mu * cos_phi,
+            "dx": cos(start + size),
+            "dy": sin(start + size),
+        }
 
     @classmethod
     def arrow(
