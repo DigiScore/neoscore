@@ -13,7 +13,7 @@ used.
 
 from dataclasses import dataclass
 
-from neoscore.models.notehead_duration import NoteheadDuration
+from neoscore.models.beat_display import BaseDuration
 
 # NOTE: When creating a new table, be sure to add it to ALL_TABLES at
 # the end of this file.
@@ -29,17 +29,16 @@ class NoteheadTable:
     short: str
     """Quarter notes and shorter"""
 
-    def lookup_duration(self, dur: NoteheadDuration) -> str:
-        if dur == NoteheadDuration.SHORT:
+    def lookup_duration(self, dur: BaseDuration) -> str:
+        val = dur.val
+        if val >= 4:
             return self.short
-        elif dur == NoteheadDuration.HALF:
+        elif val == 2:
             return self.half
-        elif dur == NoteheadDuration.WHOLE:
+        elif val == 1:
             return self.whole
-        elif dur == NoteheadDuration.DOUBLE_WHOLE:
-            return self.double_whole
         else:
-            raise ValueError(f"Unknown notehead duration: {dur}")
+            return self.double_whole
 
 
 STANDARD = NoteheadTable(

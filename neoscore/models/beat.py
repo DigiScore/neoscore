@@ -3,11 +3,8 @@ from __future__ import annotations
 from fractions import Fraction
 from typing import Optional, Union, cast
 
-from neoscore.models.notehead_duration import NoteheadDuration
+from neoscore.models.beat_display import BaseDuration
 from neoscore.utils.math_helpers import float_to_rounded_fraction_tuple
-
-# TODO HIGH centralize Beat -> display info logic here, and ensure
-# it's correct for tuplets and durations which require ties.
 
 
 class Beat:
@@ -110,7 +107,7 @@ class Beat:
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def notehead_duration(self) -> NoteheadDuration:
+    def notehead_duration(self) -> BaseDuration:
         """The notehead duration class used to write this in a note.
 
         This is not suitable for finding rest glyphs, since
@@ -120,13 +117,13 @@ class Beat:
         # I believe this doesn't work when `requires_tie == True`, and
         # probably not in tuplets.
         if self.collapsed_fraction >= 2:
-            return NoteheadDuration.DOUBLE_WHOLE
+            return BaseDuration(0)
         elif self.base_division == 1:
-            return NoteheadDuration.WHOLE
+            return BaseDuration(1)
         elif self.base_division == 2:
-            return NoteheadDuration.HALF
+            return BaseDuration(2)
         else:
-            return NoteheadDuration.SHORT
+            return BaseDuration(4)
 
     @property
     def requires_tie(self) -> bool:

@@ -4,7 +4,7 @@ from fractions import Fraction
 import pytest
 
 from neoscore.models.beat import Beat
-from neoscore.models.notehead_duration import NoteheadDuration
+from neoscore.models.beat_display import BaseDuration
 
 
 class TestBeat(unittest.TestCase):
@@ -26,16 +26,16 @@ class TestBeat(unittest.TestCase):
         assert Beat.from_float(0.4, 8) == Beat(3, 8)
 
     def test_notehead_duration(self):
-        assert Beat(1, 4).notehead_duration == NoteheadDuration.SHORT
-        assert Beat(3, 8).notehead_duration == NoteheadDuration.SHORT
-        assert Beat(1, 256).notehead_duration == NoteheadDuration.SHORT
-        assert Beat(1, 2).notehead_duration == NoteheadDuration.HALF
-        assert Beat(3, 4).notehead_duration == NoteheadDuration.HALF
-        assert Beat(4, 4).notehead_duration == NoteheadDuration.WHOLE
-        assert Beat(1, 1).notehead_duration == NoteheadDuration.WHOLE
-        assert Beat(3, 2).notehead_duration == NoteheadDuration.WHOLE
-        assert Beat(2, 1).notehead_duration == NoteheadDuration.DOUBLE_WHOLE
-        assert Beat(3, 1).notehead_duration == NoteheadDuration.DOUBLE_WHOLE
+        assert Beat(1, 4).notehead_duration == BaseDuration(4)
+        assert Beat(3, 8).notehead_duration == BaseDuration(4)
+        assert Beat(1, 256).notehead_duration == BaseDuration(4)
+        assert Beat(1, 2).notehead_duration == BaseDuration(2)
+        assert Beat(3, 4).notehead_duration == BaseDuration(2)
+        assert Beat(4, 4).notehead_duration == BaseDuration(1)
+        assert Beat(1, 1).notehead_duration == BaseDuration(1)
+        assert Beat(3, 2).notehead_duration == BaseDuration(1)
+        assert Beat(2, 1).notehead_duration == BaseDuration(0)
+        assert Beat(3, 1).notehead_duration == BaseDuration(0)
 
     @pytest.mark.skip
     def test_requires_tie(self):
