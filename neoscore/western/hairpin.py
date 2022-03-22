@@ -3,17 +3,14 @@ from __future__ import annotations
 import math
 from typing import TYPE_CHECKING, Optional
 
-from neoscore.core.music_path import MusicPath
-from neoscore.core.pen import Pen
-
-if TYPE_CHECKING:
-    pass
-
 from neoscore.core.brush import Brush
 from neoscore.core.mapping import map_between
 from neoscore.core.music_font import MusicFont
+from neoscore.core.music_path import MusicPath
+from neoscore.core.pen import Pen
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner_2d import Spanner2D
+from neoscore.models.directions import HorizontalDirection
 from neoscore.utils.point import Point, PointDef
 from neoscore.utils.units import ZERO, Unit
 
@@ -29,15 +26,13 @@ class Hairpin(MusicPath, Spanner2D):
     derive its appearance.
     """
 
-    # TODO MEDIUM add and use HorizontalDirection here?
-
     def __init__(
         self,
         pos: PointDef,
         parent: Parent,
         end_pos: PointDef,
         end_parent: Optional[Parent],
-        direction: int,
+        direction: HorizontalDirection,
         width: Optional[Unit] = None,
         font: Optional[MusicFont] = None,
     ):
@@ -49,8 +44,8 @@ class Hairpin(MusicPath, Spanner2D):
             end_pos: The stopping point.
             end_parent: The parent for the ending position.
                 If `None`, defaults to `self`.
-            direction: The direction of the hairpin, where `-1` means diminuendo (>)
-                and `1` means crescendo (<).
+            direction: The direction of the hairpin, where `LEFT` means diminuendo (>)
+                and `RIGHT` means crescendo (<).
             width: The width of the wide hairpin. Defaults to 1 staff unit.
             font: If provided, this overrides any font found in the ancestor chain.
         """
@@ -69,19 +64,16 @@ class Hairpin(MusicPath, Spanner2D):
         return self._music_font
 
     @property
-    def direction(self):
-        """int: The direction of the hairpin.
+    def direction(self) -> HorizontalDirection:
+        """The direction of the hairpin.
 
-        `-1` means diminuendo (>) and `1` means crescendo (<).
+        `LEFT` means diminuendo (>) and `RIGHT` means crescendo (<).
         """
         return self._direction
 
     @direction.setter
-    def direction(self, value):
-        if value != 1 and value != -1:
-            raise ValueError("Hairpin.direction must be -1 or 1")
-        else:
-            self._direction = value
+    def direction(self, value: HorizontalDirection):
+        self._direction = value
 
     ######## PRIVATE METHODS ########
 
@@ -96,7 +88,7 @@ class Hairpin(MusicPath, Spanner2D):
         outer 2 represent the wide ends of the hairpin and the middle
         represents the small end joint.
         """
-        if self.direction == -1:
+        if self.direction == HorizontalDirection.LEFT:
             joint_pos = self.end_pos
             joint_parent = self.end_parent
             end_center_pos = self.pos

@@ -3,8 +3,8 @@ import unittest
 from neoscore.core import neoscore
 from neoscore.core.flowable import Flowable
 from neoscore.models.beat import Beat
+from neoscore.models.directions import VerticalDirection
 from neoscore.models.pitch import Pitch
-from neoscore.models.vertical_direction import VerticalDirection
 from neoscore.utils.point import Point
 from neoscore.utils.units import Mm
 from neoscore.western.chordrest import Chordrest

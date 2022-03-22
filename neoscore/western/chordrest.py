@@ -3,9 +3,9 @@ from typing import Optional
 from neoscore.core.object_group import ObjectGroup
 from neoscore.models import notehead_tables
 from neoscore.models.beat import Beat, BeatDef
+from neoscore.models.directions import VerticalDirection
 from neoscore.models.notehead_tables import NoteheadTable
 from neoscore.models.pitch import PitchDef
-from neoscore.models.vertical_direction import VerticalDirection
 from neoscore.utils.point import ORIGIN, Point
 from neoscore.utils.units import Unit
 from neoscore.western.accidental import Accidental

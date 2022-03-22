@@ -14,9 +14,9 @@ from neoscore.core.pen_pattern import PenPattern
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner import Spanner
 from neoscore.interface.text_interface import TextInterface
+from neoscore.models.directions import VerticalDirection
 from neoscore.models.interval import Interval
 from neoscore.models.transposition import Transposition
-from neoscore.models.vertical_direction import VerticalDirection
 from neoscore.utils.point import ORIGIN, Point, PointDef
 from neoscore.utils.units import Unit
 

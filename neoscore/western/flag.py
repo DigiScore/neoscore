@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Optional
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.models.beat import Beat
-from neoscore.models.vertical_direction import VerticalDirection
+from neoscore.models.directions import VerticalDirection
 from neoscore.utils.exceptions import NoFlagNeededError
 from neoscore.utils.point import PointDef
 
