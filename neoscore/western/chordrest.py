@@ -373,12 +373,9 @@ class Chordrest(ObjectGroup, StaffObject):
             self.dots.add(RhythmDot(dot_pos, self))
 
     def _create_stem(self):
-        """Create a Stem and stores it in `self.stem`.
-
-        Returns: None
-        """
-        # TODO HIGH this unconditionally crates stems when some
-        # durations shouldnt have them.
+        """If needed, create a Stem and store it in `self.stem`."""
+        if not self.duration.requires_stem:
+            return
         self._stem = Stem(
             Point(self.staff.unit(0), self.furthest_notehead.staff_pos),
             self,

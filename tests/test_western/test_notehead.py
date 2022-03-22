@@ -104,14 +104,8 @@ class TestNotehead(unittest.TestCase):
 
     def test_glyph_lookup(self):
         self.assert_glyph_lookup(Beat(1, 4), "noteheadBlack")
-        self.assert_glyph_lookup(Beat(3, 8), "noteheadBlack")
-        self.assert_glyph_lookup(Beat(1, 256), "noteheadBlack")
-        self.assert_glyph_lookup(Beat(1, 2), "noteheadHalf")
         self.assert_glyph_lookup(Beat(3, 4), "noteheadHalf")
-        self.assert_glyph_lookup(Beat(4, 4), "noteheadWhole")
-        self.assert_glyph_lookup(Beat(1, 1), "noteheadWhole")
         self.assert_glyph_lookup(Beat(3, 2), "noteheadWhole")
-        self.assert_glyph_lookup(Beat(2, 1), "noteheadDoubleWhole")
         self.assert_glyph_lookup(Beat(3, 1), "noteheadDoubleWhole")
 
     def test_glyph_lookup_other_table(self):

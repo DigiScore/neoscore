@@ -3,7 +3,11 @@ from __future__ import annotations
 from fractions import Fraction
 from typing import Optional, Union, cast
 
+from neoscore.models.notehead_duration import NoteheadDuration
 from neoscore.utils.math_helpers import float_to_rounded_fraction_tuple
+
+# TODO HIGH centralize Beat -> display info logic here, and ensure
+# it's correct for tuplets and durations which require ties.
 
 
 class Beat:
@@ -59,7 +63,7 @@ class Beat:
             dot_count = 0
             partial_numerator = self.collapsed_fraction.numerator
             partial_denominator = self.collapsed_fraction.denominator
-            while partial_numerator > 1:
+            while partial_numerator > 1 and partial_denominator > 1:
                 partial_numerator = (partial_numerator - 1) / 2
                 partial_denominator = partial_denominator / 2
                 dot_count += 1
@@ -106,9 +110,33 @@ class Beat:
     ######## PUBLIC PROPERTIES ########
 
     @property
+    def notehead_duration(self) -> NoteheadDuration:
+        """The notehead duration class used to write this in a note.
+
+        This is not suitable for finding rest glyphs, since
+        NoteheadDuration does not distinguish between quarters (solid
+        noteheads) and shorter.
+        """
+        # I believe this doesn't work when `requires_tie == True`, and
+        # probably not in tuplets.
+        if self.collapsed_fraction >= 2:
+            return NoteheadDuration.DOUBLE_WHOLE
+        elif self.base_division == 1:
+            return NoteheadDuration.WHOLE
+        elif self.base_division == 2:
+            return NoteheadDuration.HALF
+        else:
+            return NoteheadDuration.SHORT
+
+    @property
     def requires_tie(self) -> bool:
         """If this Beat requires a tie to be written."""
         return self._requires_tie
+
+    @property
+    def requires_stem(self) -> bool:
+        """If a note of this duration would require a stem."""
+        return self.collapsed_fraction < 1
 
     @property
     def numerator(self) -> Union[int, Beat]:

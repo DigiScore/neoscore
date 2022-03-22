@@ -1,5 +1,10 @@
 """Tables of glyphs for common notehead styles
 
+This module includes prebuilt `NoteheadTable`s for many notehead
+flavors included in SMuFL. Custom tables using arbitrary SMuFL glyphs
+may also be created by simply instantiating a `NoteheadTable` and
+passing it wherever needed.
+
 Note that many of the more obscure glyph tables only have a solid and
 empty variant, for example `MOON`. In these cases, the empty glyph is
 used for all except the `short` key, for which the solid glyph is
@@ -8,17 +13,33 @@ used.
 
 from dataclasses import dataclass
 
+from neoscore.models.notehead_duration import NoteheadDuration
+
 # NOTE: When creating a new table, be sure to add it to ALL_TABLES at
 # the end of this file.
 
 
 @dataclass(frozen=True)
 class NoteheadTable:
+    """A mapping from duration classes to canonical SMuFL glyph names."""
+
     double_whole: str
     whole: str
     half: str
     short: str
     """Quarter notes and shorter"""
+
+    def lookup_duration(self, dur: NoteheadDuration) -> str:
+        if dur == NoteheadDuration.SHORT:
+            return self.short
+        elif dur == NoteheadDuration.HALF:
+            return self.half
+        elif dur == NoteheadDuration.WHOLE:
+            return self.whole
+        elif dur == NoteheadDuration.DOUBLE_WHOLE:
+            return self.double_whole
+        else:
+            raise ValueError(f"Unknown notehead duration: {dur}")
 
 
 STANDARD = NoteheadTable(

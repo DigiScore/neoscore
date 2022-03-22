@@ -13,9 +13,6 @@ from neoscore.models.pitch import Pitch, PitchDef
 from neoscore.utils.units import ZERO, Unit
 from neoscore.western.staff_object import StaffObject
 
-# TODO MEDIUM the Beat -> glyph lookup algorithm used here is almost
-# definitely incorrect for tuplets.
-
 
 class Notehead(MusicText, StaffObject):
 
@@ -54,7 +51,7 @@ class Notehead(MusicText, StaffObject):
             self,
             (pos_x, ZERO),
             parent,
-            Notehead._look_up_glyph(self._notehead_table, self._duration),
+            self._notehead_table.lookup_duration(self._duration.notehead_duration),
             font,
         )
         StaffObject.__init__(self, parent)
@@ -101,17 +98,3 @@ class Notehead(MusicText, StaffObject):
         return self.staff.middle_c_at(self.pos_x_in_staff) + self.staff.unit(
             self.pitch.staff_pos_from_middle_c
         )
-
-    ######## PRIVATE METHODS ########
-
-    @staticmethod
-    def _look_up_glyph(table: NoteheadTable, duration: Beat):
-        DOUBLE_WHOLE_MIN = 1.99  # `2 - epsilon` for tuplet float math errors
-        if duration.collapsed_fraction > DOUBLE_WHOLE_MIN:
-            return table.double_whole
-        elif duration.base_division == 1:
-            return table.whole
-        elif duration.base_division == 2:
-            return table.half
-        else:
-            return table.short

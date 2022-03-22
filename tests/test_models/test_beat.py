@@ -4,6 +4,7 @@ from fractions import Fraction
 import pytest
 
 from neoscore.models.beat import Beat
+from neoscore.models.notehead_duration import NoteheadDuration
 
 
 class TestBeat(unittest.TestCase):
@@ -24,10 +25,31 @@ class TestBeat(unittest.TestCase):
         assert Beat.from_float(0.4, limit_denominator=1) == Beat(0, 1)
         assert Beat.from_float(0.4, 8) == Beat(3, 8)
 
+    def test_notehead_duration(self):
+        assert Beat(1, 4).notehead_duration == NoteheadDuration.SHORT
+        assert Beat(3, 8).notehead_duration == NoteheadDuration.SHORT
+        assert Beat(1, 256).notehead_duration == NoteheadDuration.SHORT
+        assert Beat(1, 2).notehead_duration == NoteheadDuration.HALF
+        assert Beat(3, 4).notehead_duration == NoteheadDuration.HALF
+        assert Beat(4, 4).notehead_duration == NoteheadDuration.WHOLE
+        assert Beat(1, 1).notehead_duration == NoteheadDuration.WHOLE
+        assert Beat(3, 2).notehead_duration == NoteheadDuration.WHOLE
+        assert Beat(2, 1).notehead_duration == NoteheadDuration.DOUBLE_WHOLE
+        assert Beat(3, 1).notehead_duration == NoteheadDuration.DOUBLE_WHOLE
+
     @pytest.mark.skip
     def test_requires_tie(self):
         assert Beat(5, 8).requires_tie is True
         assert Beat(4, 8).requires_tie is False
+
+    def test_requires_stem(self):
+        assert Beat(3, 4).requires_stem is True
+        assert Beat(Beat(1, 3), 4).requires_stem is True
+        assert Beat(2, 16).requires_stem is True
+        assert Beat(2, 2).requires_stem is False
+        assert Beat(1, 1).requires_stem is False
+        assert Beat(3, 2).requires_stem is False
+        assert Beat(2, 1).requires_stem is False
 
     # noinspection PyPropertyAccess
     def test_properties_are_immutable(self):
@@ -103,6 +125,7 @@ class TestBeat(unittest.TestCase):
         assert Beat(8, 16).dot_count == 0
         assert Beat(3, 8).dot_count == 1
         assert Beat(7, 16).dot_count == 2
+        assert Beat(2, 1).dot_count == 0
 
     def test_collapsed_fraction(self):
         assert (Beat(1, 4)).to_fraction() == Fraction(1, 4)
