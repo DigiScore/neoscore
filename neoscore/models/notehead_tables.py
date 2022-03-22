@@ -44,6 +44,7 @@ class NoteheadTable:
 STANDARD = NoteheadTable(
     "noteheadDoubleWhole", "noteheadWhole", "noteheadHalf", "noteheadBlack"
 )
+"""Standard western notation noteheads"""
 
 STANDARD_WITH_PARENTHESES = NoteheadTable(
     "noteheadDoubleWholeParens",
@@ -51,6 +52,10 @@ STANDARD_WITH_PARENTHESES = NoteheadTable(
     "noteheadHalfParens",
     "noteheadBlackParens",
 )
+"""Standard noteheads enclosed in parentheses.
+
+Not available in all fonts.
+"""
 
 STANDARD_SMALL = NoteheadTable(
     "noteheadDoubleWholeSmall",
@@ -58,10 +63,70 @@ STANDARD_SMALL = NoteheadTable(
     "noteheadHalfSmall",
     "noteheadBlackSmall",
 )
+"""Standard noteheads at a smaller size.
+
+Not available in all fonts.
+"""
+
+STANDARD_OVERSIZED = NoteheadTable(
+    "noteheadDoubleWholeOversized",
+    "noteheadWholeOversized",
+    "noteheadHalfOversized",
+    "noteheadBlackOversized",
+)
+"""Standard noteheads at a larger size.
+
+Not available in all fonts.
+"""
 
 X = NoteheadTable(
     "noteheadXDoubleWhole", "noteheadXWhole", "noteheadXHalf", "noteheadXBlack"
 )
+
+SLASH = NoteheadTable(
+    "noteheadSlashWhiteDoubleWhole",
+    "noteheadSlashWhiteWhole",
+    "noteheadSlashWhiteHalf",
+    "noteheadSlashVerticalEnds",
+)
+"""Percussion-style slash noteheads.
+
+This uses SMuFL's vertical-ends-style short notehead.
+"""
+
+MUTED_SLASH = NoteheadTable(
+    "noteheadSlashWhiteDoubleWhole",
+    "noteheadSlashWhiteMuted",
+    "noteheadSlashWhiteMuted",
+    "noteheadSlashVerticalEndsMuted",
+)
+"""Percussion-style slash noteheads with secondary slashes indicating mutes.
+
+Because SMuFL provides no muted variant for double whole notes, this
+uses the regular slash double whole notehead.
+"""
+
+SLASH_OVERSIZED = NoteheadTable(
+    "noteheadSlashWhiteDoubleWholeOversized",
+    "noteheadSlashWhiteWholeOversized",
+    "noteheadSlashWhiteHalfOversized",
+    "noteheadSlashVerticalEndsOversized",
+)
+"""Like `SLASH` but with oversized variants.
+
+Not available in all fonts.
+"""
+
+MUTED_SLASH_OVERSIZED = NoteheadTable(
+    "noteheadSlashWhiteDoubleWholeOversized",
+    "noteheadSlashWhiteMutedOversized",
+    "noteheadSlashWhiteMutedOversized",
+    "noteheadSlashVerticalEndsMutedOversized",
+)
+"""Like `MUTED_SLASH` but with oversized variants.
+
+Not available in all fonts.
+"""
 
 PLUS = NoteheadTable(
     "noteheadPlusDoubleWhole",
@@ -215,11 +280,76 @@ LARGE_ARROW_DOWN = NoteheadTable(
     "noteheadLargeArrowDownBlack",
 )
 
+CLUSTER_SQUARE = NoteheadTable(
+    "noteheadClusterSquareWhite",
+    "noteheadClusterSquareWhite",
+    "noteheadClusterSquareWhite",
+    "noteheadClusterSquareBlack",
+)
+"""Large tone clusters in square shapes
+
+This uses the same glyph for all durations except `short`.
+"""
+
+CLUSTER_ROUND = NoteheadTable(
+    "noteheadClusterRoundWhite",
+    "noteheadClusterRoundWhite",
+    "noteheadClusterRoundWhite",
+    "noteheadClusterRoundBlack",
+)
+"""Large tone clusters in round shapes
+
+This uses the same glyph for all durations except `short`.
+"""
+
+CLUSTER_SECOND = NoteheadTable(
+    "noteheadClusterDoubleWhole2nd",
+    "noteheadClusterWhole2nd",
+    "noteheadClusterHalf2nd",
+    "noteheadClusterQuarter2nd",
+)
+"""Tone cluster glyphs spanning a second"""
+
+CLUSTER_THIRD = NoteheadTable(
+    "noteheadClusterDoubleWhole3rd",
+    "noteheadClusterWhole3rd",
+    "noteheadClusterHalf3rd",
+    "noteheadClusterQuarter3rd",
+)
+"""Tone cluster glyphs spanning a third"""
+
+CLUSTER_SECOND_DIAMOND = NoteheadTable(
+    "noteheadDiamondClusterWhite2nd",
+    "noteheadDiamondClusterWhite2nd",
+    "noteheadDiamondClusterWhite2nd",
+    "noteheadDiamondClusterBlack2nd",
+)
+"""Tone cluster glyphs spanning a second using diamond glyphs
+
+This uses the same glyph for all durations except `short`.
+"""
+
+CLUSTER_THIRD_DIAMOND = NoteheadTable(
+    "noteheadDiamondClusterWhite3rd",
+    "noteheadDiamondClusterWhite3rd",
+    "noteheadDiamondClusterWhite3rd",
+    "noteheadDiamondClusterBlack3rd",
+)
+"""Tone cluster glyphs spanning a second using diamond glyphs
+
+This uses the same glyph for all durations except `short`.
+"""
+
 ALL_TABLES: list[NoteheadTable] = [
     STANDARD,
     STANDARD_WITH_PARENTHESES,
     STANDARD_SMALL,
+    STANDARD_OVERSIZED,
     X,
+    SLASH,
+    MUTED_SLASH,
+    SLASH_OVERSIZED,
+    MUTED_SLASH_OVERSIZED,
     PLUS,
     CIRCLE_X,
     STANDARD_WITH_X,
@@ -241,5 +371,11 @@ ALL_TABLES: list[NoteheadTable] = [
     STANDARD_LARGE_CIRCLED,
     LARGE_ARROW_UP,
     LARGE_ARROW_DOWN,
+    CLUSTER_SQUARE,
+    CLUSTER_ROUND,
+    CLUSTER_SECOND,
+    CLUSTER_THIRD,
+    CLUSTER_SECOND_DIAMOND,
+    CLUSTER_THIRD_DIAMOND,
 ]
 """A list of all the notehead tables in this module"""
