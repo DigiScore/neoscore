@@ -1,0 +1,17 @@
+# Contributor's guide
+
+## Environment setup
+
+1. Clone this repo
+2. Ensure python >= 3.10 is available on your system (it doesn't need to be the default installation)
+3. Install [poetry](https://python-poetry.org)
+4. Navigate your shell to the project direction
+5. Run `poetry env use 3.10` to create a Python virtual environment
+6. Run `poetry install` to install dependencies in the environment
+7. Run `poetry shell` to shell into the virtual environment
+8. Run `sh dev_scripts/install_devtools.sh` to install dependencies used to enforce code standards.
+9. Test your environment by running `python vtests/vtest.py`
+
+## Committing
+
+Before committing, please be sure to run the code standards script with `sh dev_scripts/pre-commit.sh`. This will format your code and clean up imports automatically.
