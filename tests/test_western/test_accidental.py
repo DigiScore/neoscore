@@ -1,7 +1,5 @@
 import unittest
 
-import pytest
-
 from neoscore.core import neoscore
 from neoscore.core.flowable import Flowable
 from neoscore.core.music_char import MusicChar
@@ -32,7 +30,6 @@ class TestAccidental(unittest.TestCase):
         acc = Accidental((Mm(0), Mm(0)), self.staff, AccidentalType.SHARP)
         assert acc.music_chars == [MusicChar(self.staff.music_font, "accidentalSharp")]
 
-    @pytest.mark.xfail
     def test_modifying_accidental_type_changes_music_char(self):
         # This will fail until the causing bug is fixed
         acc = Accidental((Mm(0), Mm(0)), self.staff, AccidentalType.SHARP)

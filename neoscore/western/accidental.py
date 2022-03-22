@@ -43,14 +43,14 @@ class Accidental(MusicText):
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def accidental_type(self):
-        """AccidentalType: What type of accidental this is."""
+    def accidental_type(self) -> AccidentalType:
+        """The accidental variant.
+
+        Setting this automatically updates the displayed glyph.
+        """
         return self._accidental_type
 
     @accidental_type.setter
-    def accidental_type(self, value):
-        # TODO MEDIUM this needs to update the underlying text. This
-        # can't currently be done because MusicText doesn't support
-        # changing the text.
-        # ((later update - i think this is unblocked now))
+    def accidental_type(self, value: AccidentalType):
         self._accidental_type = value
+        self.text = self._canonical_names[value]
