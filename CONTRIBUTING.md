@@ -12,6 +12,13 @@
 8. Run `sh dev_scripts/install_devtools.sh` to install dependencies used to enforce code standards.
 9. Test your environment by running `python vtests/vtest.py`
 
+## Running tests
+
+The automated test suite is run using [pytest](https://docs.pytest.org/). Simply call `pytest` to run the suite. The suite can be run much faster in parallel with `pytest -n auto`.
+
+Several visual tests ("vtests") are included which are used to run neoscore programs end-to-end, allowing manual visual inspection. The kitchen sink test is found at `vtests/vtest.py`. If your change has effects on rendered outputs, please verify its correctness on any applicable vtests, adding new tests or code to them if needed.
+
 ## Committing
 
 Before committing, please be sure to run the code standards script with `sh dev_scripts/pre-commit.sh`. This will format your code and clean up imports automatically.
+
