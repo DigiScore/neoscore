@@ -8,7 +8,6 @@ from neoscore.models.clef_type import ClefType
 from neoscore.models.key_signature_type import KeySignatureType
 from neoscore.utils.point import ORIGIN, Point
 from neoscore.utils.units import Unit
-from neoscore.western.accidental import Accidental
 from neoscore.western.staff import Staff
 from neoscore.western.staff_object import StaffObject
 
@@ -142,7 +141,7 @@ class _KeySignatureAccidental(MusicText, StaffObject):
             self,
             pos,
             key_signature,
-            Accidental._canonical_names[accidental_type],
+            accidental_type.value,
             music_font,
             scale=scale,
         )

@@ -15,17 +15,11 @@ class Accidental(MusicText):
 
     """A visual accidental."""
 
-    _canonical_names = {
-        AccidentalType.FLAT: "accidentalFlat",
-        AccidentalType.NATURAL: "accidentalNatural",
-        AccidentalType.SHARP: "accidentalSharp",
-    }
-
     def __init__(
         self,
         pos: PointDef,
         parent: Parent,
-        accidental_type: AccidentalType,
+        accidental_type: AccidentalType | str,
         font: Optional[MusicFont] = None,
     ):
         """
@@ -33,24 +27,34 @@ class Accidental(MusicText):
             pos: Position relative to `parent`
             parent: If no font is given, this or one of its ancestors must
                 implement `HasMusicFont`.
-            accidental_type: the accidental to draw
+            accidental_type: Which accidental to draw. For extended accidentals,
+                an arbitrary string SMuFL glyph name may be provided.
             font: If provided, this overrides any font found in the ancestor chain.
         """
         self._accidental_type = accidental_type
-        canonical_name = self._canonical_names[self.accidental_type]
-        MusicText.__init__(self, pos, parent, [canonical_name], font)
+        if isinstance(accidental_type, AccidentalType):
+            canonical_name = accidental_type.value
+        else:
+            canonical_name = accidental_type
+        MusicText.__init__(self, pos, parent, canonical_name, font)
 
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def accidental_type(self) -> AccidentalType:
+    def accidental_type(self) -> AccidentalType | str:
         """The accidental variant.
+
+        Can be set to either a standard accidental type or an
+        arbitrary SMuFL glyph name.
 
         Setting this automatically updates the displayed glyph.
         """
         return self._accidental_type
 
     @accidental_type.setter
-    def accidental_type(self, value: AccidentalType):
+    def accidental_type(self, value: AccidentalType | str):
         self._accidental_type = value
-        self.text = self._canonical_names[value]
+        if isinstance(value, AccidentalType):
+            self.text = value.value
+        else:
+            self.text = value

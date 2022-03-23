@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import re
-from typing import Union
+from typing import Optional, Union
 
 from neoscore.models.accidental_type import AccidentalType
 from neoscore.utils.exceptions import InvalidPitchDescriptionError
@@ -43,10 +43,10 @@ class Pitch:
         "s": AccidentalType.SHARP,
     }
 
-    def __init__(self, pitch):
+    def __init__(self, pitch: str):
         """
         Args:
-            pitch (str): A pitch indicator. (see above class documentation).
+            pitch: A pitch indicator. (see above class documentation).
         """
         # These three are initialized by the pitch setter
         match = Pitch._pitch_regex.match(pitch)
@@ -89,23 +89,23 @@ class Pitch:
 
     def __hash__(self):
         """Pitches with different attributes will have different hashes"""
-        return hash(self.letter) ^ hash(self.accidental_type) ^ self.octave
+        return hash((self.letter, self.accidental_type, self.octave))
 
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def pitch(self):
-        """str: A pitch indicator."""
+    def pitch(self) -> str:
+        """A pitch indicator."""
         return self._pitch
 
     @property
-    def letter(self):
-        """str: The a-g letter name of the pitch."""
+    def letter(self) -> str:
+        """The a-g letter name of the pitch."""
         return self._letter
 
     @property
-    def accidental_type(self):
-        """AccidentalType or None: The accidental descriptor.
+    def accidental_type(self) -> Optional[AccidentalType]:
+        """The accidental descriptor.
 
         If no accidental is needed for this pitch (e.g. C-natural in C Major),
         this should be left as `None`.
@@ -113,16 +113,18 @@ class Pitch:
         return self._accidental_type
 
     @property
-    def octave(self):
-        """int: The octave number for the pitch in scientific notation.
+    def octave(self) -> int:
+        """The octave number for the pitch in scientific notation.
 
         `octave == 4` corresponds to middle-C.
         Descending pitches correspond to lower octave numbers.
         """
         return self._octave
 
+    # TODO MEDIUM maybe remove this, since use with extended
+    # accidentals makes this ambiguous with them
     @property
-    def pitch_class(self):
+    def pitch_class(self) -> int:
         """int: The 0-11 pitch class of this pitch."""
         natural = Pitch.natural_pitch_classes[self.letter]
         if self.accidental_type:
@@ -132,7 +134,7 @@ class Pitch:
         return natural
 
     @property
-    def diatonic_degree_in_c(self):
+    def diatonic_degree_in_c(self) -> int:
         """int: The diatonic degree of the pitch as if it were in C.
 
         >>> Pitch("c").diatonic_degree_in_c
@@ -147,13 +149,8 @@ class Pitch:
         return Pitch._diatonic_degrees_in_c[self.letter]
 
     @property
-    def midi_number(self):
-        # todo
-        pass
-
-    @property
-    def staff_pos_from_middle_c(self):
-        """float: The pitch's staff position relative to middle C.
+    def staff_pos_from_middle_c(self) -> float:
+        """The pitch's staff position relative to middle C.
 
         Values are in numeric pseudo-staff-units where positive
         values mean positions below middle C, and negative values
@@ -179,8 +176,8 @@ class Pitch:
             return position
 
     @property
-    def string_desriptor(self):
-        """str: The string that can be used to recreate this Pitch"""
+    def string_desriptor(self) -> str:
+        """The string that can be used to recreate this Pitch"""
         descriptor = self.letter
         if self.accidental_type is not None:
             descriptor += self.accidental_type.name

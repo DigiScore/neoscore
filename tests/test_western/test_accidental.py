@@ -22,16 +22,14 @@ class TestAccidental(unittest.TestCase):
         acc = Accidental((Mm(0), Mm(0)), self.staff, AccidentalType.SHARP)
         assert acc.music_chars == [MusicChar(self.staff.music_font, "accidentalSharp")]
 
-        acc = Accidental((Mm(0), Mm(0)), self.staff, AccidentalType.NATURAL)
-        assert acc.music_chars == [
-            MusicChar(self.staff.music_font, "accidentalNatural")
-        ]
-
-        acc = Accidental((Mm(0), Mm(0)), self.staff, AccidentalType.SHARP)
-        assert acc.music_chars == [MusicChar(self.staff.music_font, "accidentalSharp")]
-
     def test_modifying_accidental_type_changes_music_char(self):
         # This will fail until the causing bug is fixed
         acc = Accidental((Mm(0), Mm(0)), self.staff, AccidentalType.SHARP)
         acc.accidental_type = AccidentalType.FLAT
         assert acc.music_chars == [MusicChar(self.staff.music_font, "accidentalFlat")]
+
+    def test_extended_glyph_use(self):
+        acc = Accidental((Mm(0), Mm(0)), self.staff, "accidentalQuarterToneSharpStein")
+        assert acc.music_chars == [
+            MusicChar(self.staff.music_font, "accidentalQuarterToneSharpStein")
+        ]
