@@ -37,6 +37,11 @@ class Pitch:
     natural_pitch_classes = {"c": 0, "d": 2, "e": 4, "f": 5, "g": 7, "a": 9, "b": 11}
     _diatonic_degrees_in_c = {"c": 1, "d": 2, "e": 3, "f": 4, "g": 5, "a": 6, "b": 7}
     _middle_c_octave = 4
+    _accidental_shorthands = {
+        "f": AccidentalType.FLAT,
+        "n": AccidentalType.NATURAL,
+        "s": AccidentalType.SHARP,
+    }
 
     def __init__(self, pitch):
         """
@@ -52,7 +57,7 @@ class Pitch:
         ticks = match.group(3)
         self._letter = letter
         if accidental_str:
-            self._accidental_type = AccidentalType[accidental_str.upper()]
+            self._accidental_type = Pitch._accidental_shorthands[accidental_str.lower()]
         else:
             self._accidental_type = None
         if not ticks:
@@ -121,7 +126,9 @@ class Pitch:
         """int: The 0-11 pitch class of this pitch."""
         natural = Pitch.natural_pitch_classes[self.letter]
         if self.accidental_type:
-            return natural + self.accidental_type.value
+            offset = self.accidental_type.pitch_class_offset
+            if offset:
+                return natural + offset
         return natural
 
     @property

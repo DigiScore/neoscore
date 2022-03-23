@@ -18,8 +18,6 @@ class Notehead(MusicText, StaffObject):
 
     """A simple notehead glyph whose appearance is determined by a Duration"""
 
-    # todo medium support letting users pass in a custom override of this glyphnames table
-
     def __init__(
         self,
         pos_x: Unit,
