@@ -37,4 +37,6 @@ class RichTextInterface(PositionedObjectInterface):
         qt_object.setPos(point_to_qt_point_f(self.pos))
         qt_object.setTextWidth(self.width.base_value if self.width is not None else -1)
         qt_object.setFont(self.font.qt_object)
+        if self.scale != 1:
+            qt_object.setScale(self.scale)
         return qt_object

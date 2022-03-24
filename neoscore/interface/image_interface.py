@@ -28,7 +28,7 @@ class ImageInterface(PositionedObjectInterface):
 
     file_path: pathlib.Path
 
-    scale: float
+    scale: float = 1
 
     def _create_svg_qt_object(self) -> Any:  # todo
         raise NotImplemented
