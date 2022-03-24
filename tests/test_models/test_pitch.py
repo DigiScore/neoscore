@@ -52,3 +52,13 @@ class TestPitch(unittest.TestCase):
         assert Pitch.from_str("d'").staff_pos_from_middle_c == -0.5
         assert Pitch.from_str("d''").staff_pos_from_middle_c == -4
         assert Pitch.from_str("cn,").staff_pos_from_middle_c == 7
+
+    def test_from_def_with_pitch(self):
+        p = Pitch.from_str("c")
+        assert Pitch.from_def(p) == p
+
+    def test_from_def_with_str(self):
+        assert Pitch.from_def("c") == Pitch.from_str("c")
+
+    def test_from_def_with_tuple(self):
+        assert Pitch.from_def(("g", AccidentalType.SHARP, 3)) == Pitch.from_str("g#")

@@ -105,6 +105,8 @@ class Pitch:
     def from_def(cls, pitch_def: PitchDef) -> Pitch:
         if isinstance(pitch_def, Pitch):
             return pitch_def
+        elif isinstance(pitch_def, tuple):
+            return Pitch(*pitch_def)
         return Pitch.from_str(pitch_def)
 
     @property
@@ -150,4 +152,4 @@ class Pitch:
             return position
 
 
-PitchDef = Union[Pitch, str]
+PitchDef = Union[Pitch, str, tuple]

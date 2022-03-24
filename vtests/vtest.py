@@ -57,15 +57,13 @@ Chordrest(Mm(10), staff, ["a'", "bs"], Beat(2, 4))
 Chordrest(Mm(40), staff, ["a'", "bs"], Beat(2, 4))
 Chordrest(Mm(60), staff, ["b'", "bs"], Beat(2, 4))
 
-Chordrest(
-    Mm(10), lowest_staff, [Pitch("a", "accidentalQuarterToneSharpStein", 2)], (3, 4)
-)
+Chordrest(Mm(10), lowest_staff, [("a", "accidentalQuarterToneSharpStein", 2)], (3, 4))
 
 
 Chordrest(
     Mm(15),
     lowest_staff,
-    [Pitch("a", "accidentalFlatRepeatedSpaceStockhausen", 2)],
+    [("a", "accidentalFlatRepeatedSpaceStockhausen", 2)],
     (5, 16),
 )
 
