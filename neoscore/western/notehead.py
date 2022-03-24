@@ -16,7 +16,7 @@ from neoscore.western.staff_object import StaffObject
 
 class Notehead(MusicText, StaffObject):
 
-    """A simple notehead glyph whose appearance is determined by a Duration"""
+    """A simple notehead automatically selected and vertically positioned."""
 
     def __init__(
         self,

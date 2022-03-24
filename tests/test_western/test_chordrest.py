@@ -84,37 +84,37 @@ class TestChordrest(unittest.TestCase):
     def test_furthest_notehead_with_one_note(self):
         pitches = ["b'"]
         chord = Chordrest(Mm(1), self.staff, pitches, Beat(1, 4))
-        assert chord.furthest_notehead.pitch == Pitch("b'")
+        assert chord.furthest_notehead.pitch == Pitch.from_str("b'")
         pitches = ["f'''"]
         chord = Chordrest(Mm(1), self.staff, pitches, Beat(1, 4))
-        assert chord.furthest_notehead.pitch == Pitch("f'''")
+        assert chord.furthest_notehead.pitch == Pitch.from_str("f'''")
         pitches = ["c,,,,"]
         chord = Chordrest(Mm(1), self.staff, pitches, Beat(1, 4))
-        assert chord.furthest_notehead.pitch == Pitch("c,,,,")
+        assert chord.furthest_notehead.pitch == Pitch.from_str("c,,,,")
 
     def test_furthest_notehead_with_many_notes(self):
         pitches = ["b''", "bs'"]
         chord = Chordrest(Mm(1), self.staff, pitches, Beat(1, 4))
-        assert chord.furthest_notehead.pitch == Pitch("b''")
+        assert chord.furthest_notehead.pitch == Pitch.from_str("b''")
         pitches = ["b'", "b,,,"]
         chord = Chordrest(Mm(1), self.staff, pitches, Beat(1, 4))
-        assert chord.furthest_notehead.pitch == Pitch("b,,,")
+        assert chord.furthest_notehead.pitch == Pitch.from_str("b,,,")
         pitches = ["f''''", "b"]
         chord = Chordrest(Mm(1), self.staff, pitches, Beat(1, 4))
-        assert chord.furthest_notehead.pitch == Pitch("f''''")
+        assert chord.furthest_notehead.pitch == Pitch.from_str("f''''")
         pitches = ["c'", "c,,,,", "b'", "c'''"]
         chord = Chordrest(Mm(1), self.staff, pitches, Beat(1, 4))
-        assert chord.furthest_notehead.pitch == Pitch("c,,,,")
+        assert chord.furthest_notehead.pitch == Pitch.from_str("c,,,,")
 
     def test_highest_notehead(self):
         pitches = ["c'", "b'", "c'''"]
         chord = Chordrest(Mm(1), self.staff, pitches, Beat(1, 4))
-        assert chord.highest_notehead.pitch == Pitch("c'''")
+        assert chord.highest_notehead.pitch == Pitch.from_str("c'''")
 
     def test_lowest_notehead(self):
         pitches = ["c'", "b'", "c'''"]
         chord = Chordrest(Mm(1), self.staff, pitches, Beat(1, 4))
-        assert chord.lowest_notehead.pitch == Pitch("c'")
+        assert chord.lowest_notehead.pitch == Pitch.from_str("c'")
 
     def test_highest_and_lowest_notehead_same_with_one_note(self):
         pitches = ["c'"]

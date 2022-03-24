@@ -13,7 +13,6 @@ start_time = time.time()
 
 neoscore.setup()
 
-neoscore.set_default_color("#ff0000")
 
 flow = Flowable((Mm(0), Mm(0)), None, Mm(35000), Mm(30), Mm(10))
 
@@ -57,6 +56,18 @@ octave_line = OctaveLine((Mm(20), staff.unit(-2)), staff, Mm(1000), indication="
 Chordrest(Mm(10), staff, ["a'", "bs"], Beat(2, 4))
 Chordrest(Mm(40), staff, ["a'", "bs"], Beat(2, 4))
 Chordrest(Mm(60), staff, ["b'", "bs"], Beat(2, 4))
+
+Chordrest(
+    Mm(10), lowest_staff, [Pitch("a", "accidentalQuarterToneSharpStein", 2)], (3, 4)
+)
+
+
+Chordrest(
+    Mm(15),
+    lowest_staff,
+    [Pitch("a", "accidentalFlatRepeatedSpaceStockhausen", 2)],
+    (5, 16),
+)
 
 font = Font("Lora", Mm(2), weight=100, italic=True)
 

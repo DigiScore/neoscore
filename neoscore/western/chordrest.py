@@ -36,6 +36,13 @@ class Chordrest(ObjectGroup, StaffObject):
         * `Accidental`s as needed by any given pitches
         * a `Rest` if no pitches are given
         * `RhythmDot`s if needed by the given `Duration`
+
+    The given pitches are treated mostly as written pitches. The only
+    transposition automatically applied to them is octave
+    transpositions from `OctaveLine`s.
+
+    Any accidentals given in pitches will be unconditionally drawn
+    regardless of context and key signature.
     """
 
     def __init__(
@@ -357,13 +364,15 @@ class Chordrest(ObjectGroup, StaffObject):
     def _create_accidentals(self):
         padding = self.staff.unit(-1.2)
         for notehead in self.noteheads:
-            if notehead.pitch.accidental_type is None:
+            if notehead.pitch.accidental is None:
                 continue
             self.accidentals.add(
+                # TODO HIGH this x-axis position is wrong for larger
+                # accidental glyphs like double flats.
                 Accidental(
                     (padding, self.staff.unit(0)),
                     notehead,
-                    notehead.pitch.accidental_type,
+                    notehead.pitch.accidental,
                 )
             )
 
