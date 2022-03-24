@@ -7,7 +7,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtPrintSupport import QPrinter
 
 from neoscore import constants
-from neoscore.interface import images
 from neoscore.interface.qt.converters import color_to_q_color, rect_to_qt_rect_f
 from neoscore.interface.qt.main_window import MainWindow
 from neoscore.interface.repl import running_in_ipython_gui_repl

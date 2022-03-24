@@ -88,3 +88,7 @@ class ImageExportError(Exception):
 
 class NoAncestorWithMusicFontError(Exception):
     """Raised when a lookup expecting to find an ancestor with a MusicFont fails."""
+
+
+class ImageLoadingError(Exception):
+    """Raised when an image cannot be loaded"""

@@ -11,8 +11,8 @@ from neoscore.core.brush import Brush
 from neoscore.core.font import Font
 from neoscore.core.paper import A4, Paper
 from neoscore.core.pen import Pen
-from neoscore.interface import images
 from neoscore.interface.app_interface import AppInterface
+from neoscore.interface.qt import image_utils
 from neoscore.utils import file_system
 from neoscore.utils.color import Color, ColorDef, color_from_def
 from neoscore.utils.exceptions import InvalidImageFormatError
@@ -253,7 +253,7 @@ def render_image(
     if not file_system.is_valid_file_path(image_path):
         raise FileNotFoundError("Invalid image_path: " + image_path)
 
-    if not os.path.splitext(image_path)[1] in images.supported_formats:
+    if not os.path.splitext(image_path)[1] in image_utils.supported_formats:
         raise InvalidImageFormatError(
             "image_path {} is not in a supported format.".format(image_path)
         )
@@ -263,7 +263,7 @@ def render_image(
         bg_color = Color(255, 255, 255, 255)
     else:
         bg_color = color_from_def(bg_color)
-    dpm = int(images.dpi_to_dpm(dpi))
+    dpm = int(image_utils.dpi_to_dpm(dpi))
 
     document._render()
 

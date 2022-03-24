@@ -2,6 +2,8 @@ from PyQt5.QtGui import QBitmap, QRegion
 
 from neoscore.utils.units import Inch, Mm
 
+# TODO MEDIUM this is a grab bag of utils and should be better organized
+
 supported_formats = {
     ".bmp",
     ".jpg",

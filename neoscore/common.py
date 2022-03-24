@@ -5,6 +5,7 @@ from neoscore.core.brush_pattern import BrushPattern
 from neoscore.core.document import Document
 from neoscore.core.flowable import Flowable
 from neoscore.core.font import Font
+from neoscore.core.image import Image
 from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
