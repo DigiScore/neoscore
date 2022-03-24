@@ -362,19 +362,17 @@ class Chordrest(ObjectGroup, StaffObject):
             self.ledgers.add(LedgerLine(Point(pos_x, staff_pos), self, length))
 
     def _create_accidentals(self):
-        padding = self.staff.unit(-1.2)
+        padding = self.staff.music_font.engraving_defaults["staffLineThickness"]
         for notehead in self.noteheads:
             if notehead.pitch.accidental is None:
                 continue
-            self.accidentals.add(
-                # TODO HIGH this x-axis position is wrong for larger
-                # accidental glyphs like double flats.
-                Accidental(
-                    (padding, self.staff.unit(0)),
-                    notehead,
-                    notehead.pitch.accidental,
-                )
+            accidental = Accidental(
+                ORIGIN,
+                notehead,
+                notehead.pitch.accidental,
             )
+            accidental.x -= accidental.bounding_rect.width + padding
+            self.accidentals.add(accidental)
 
     def _create_dots(self):
         """Create all the RhythmDots needed by this Chordrest."""
