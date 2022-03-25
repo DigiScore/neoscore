@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from PyQt5.QtGui import QPixmap
+from PyQt5.QtSvg import QGraphicsSvgItem
 from PyQt5.QtWidgets import QGraphicsPixmapItem
 
 from neoscore.core import neoscore
@@ -30,12 +31,20 @@ class ImageInterface(PositionedObjectInterface):
 
     scale: float = 1
 
+    @property
+    def _resolved_path(self) -> str:
+        return str(self.file_path.expanduser())
+
     def _create_svg_qt_object(self) -> Any:  # todo
-        raise NotImplemented
+        qt_object = QGraphicsSvgItem(self._resolved_path)
+        qt_object.setPos(point_to_qt_point_f(self.pos))
+        if self.scale != 1:
+            qt_object.setScale(self.scale)
+        return qt_object
 
     def _create_pixmap_qt_object(self) -> QGraphicsPixmapItem:
         pixmap = QPixmap()
-        load_success = pixmap.load(str(self.file_path.expanduser()))
+        load_success = pixmap.load(self._resolved_path)
         if not load_success:
             raise ImageLoadingError(f"Failed to load image at {self.file_path}")
         qt_object = QGraphicsPixmapItem(pixmap)
