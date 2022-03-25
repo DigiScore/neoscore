@@ -12,8 +12,6 @@
 8. Run `sh dev_scripts/install_devtools.sh` to install dependencies used to enforce code standards.
 9. Test your environment by running `python vtests/vtest.py`
 
-If for some reason you can't get `poetry` working in your environment, you can install from the `requirements.txt` file provided, which includes both dev and prod dependencies.
-
 ## Running tests
 
 The automated test suite is run using [pytest](https://docs.pytest.org/). Simply call `pytest` to run the suite. The suite can be run much faster in parallel with `pytest -n auto`.

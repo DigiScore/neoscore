@@ -4,8 +4,6 @@ version = "0.1.0"
 description = ""
 authors = ["Andrew Yoon <andrew@nothing-to-say.org>"]
 
-# When changing dependencies, be sure to recreate the derived requirements file with
-# poetry export --dev --format requirements.txt > requirements.txt
 [tool.poetry.dependencies]
 python = "^3.10"
 PyQt5 = "^5.15.6"
