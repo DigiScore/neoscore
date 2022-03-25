@@ -8,8 +8,9 @@ from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.pen import Pen
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.utils.point import Point
-from neoscore.utils.units import Mm, Unit
+from neoscore.utils.point import ORIGIN, Point
+from neoscore.utils.rect import Rect
+from neoscore.utils.units import ZERO, Mm, Unit
 from neoscore.western.staff import Staff
 
 
@@ -55,6 +56,13 @@ class TestMusicText(unittest.TestCase):
             (Unit(5), Unit(6)), self.staff, ["accidentalFlat", ("brace", 1)]
         )
         assert mtext.text == "\ue260\uF400"
+
+    def test_init_with_empty_str(self):
+        mtext = MusicText(ORIGIN, self.staff, "")
+        assert mtext.text == ""
+        assert mtext.music_chars == []
+        bounding_rect = mtext.bounding_rect
+        assert bounding_rect == Rect(ZERO, ZERO, ZERO, ZERO)
 
     def test_text_setter(self):
         mtext = MusicText((Unit(5), Unit(6)), self.staff, "accidentalSharp")

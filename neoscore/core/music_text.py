@@ -147,7 +147,10 @@ class MusicText(Text, HasMusicFont):
             font: The font to be applied to the text
         """
         if isinstance(text, str):
-            return [MusicChar(font, text)]
+            if text:
+                return [MusicChar(font, text)]
+            else:
+                return []
         elif isinstance(text, tuple):
             return [MusicChar(font, *text)]
         elif isinstance(text, MusicChar):

@@ -22,3 +22,5 @@ class ClefType(Enum):
 
     ALTO = auto()
     """An alto clef."""
+
+    # TODO HIGH support treble 8vb and other C-clefs

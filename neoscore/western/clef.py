@@ -2,6 +2,7 @@ from typing import Union
 
 from neoscore.core.music_text import MusicText
 from neoscore.models.clef_type import ClefType
+from neoscore.utils.point import Point
 from neoscore.utils.units import Unit
 from neoscore.western.staff import Staff
 from neoscore.western.staff_object import StaffObject
@@ -43,10 +44,9 @@ class Clef(MusicText, StaffObject):
     def __init__(self, pos_x: Unit, staff: Staff, clef_type: Union[ClefType, str]):
         """
         Args:
-            pos_x (Unit):
-            staff (Staff):
-            clef_type (ClefType or str): The type of clef.
-                For convenience, any `str` of a `ClefType`
+            pos_x:
+            staff:
+            clef_type: The type of clef. For convenience, any `str` of a `ClefType`
                 enum name may be passed.
 
         Raises:
@@ -57,21 +57,23 @@ class Clef(MusicText, StaffObject):
             self._clef_type = clef_type
         else:
             self._clef_type = ClefType[clef_type.upper()]
-        MusicText.__init__(
-            self, (pos_x, staff.unit(0)), staff, self._canonical_names[self._clef_type]
-        )
         StaffObject.__init__(self, staff)
-        self.y = self.staff_position
+        MusicText.__init__(
+            self,
+            (pos_x, self.staff_position),
+            staff,
+            self._canonical_names[self._clef_type],
+        )
 
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def clef_type(self):
-        """ClefType: The type of clef, both logical and graphical."""
+    def clef_type(self) -> ClefType:
+        """The type of clef, both logical and graphical."""
         return self._clef_type
 
     @property
-    def length(self):
+    def length(self) -> Unit:
         """Find the length in the staff during which this clef is active.
 
         This is defined as the distance relative to the staff until
@@ -92,8 +94,8 @@ class Clef(MusicText, StaffObject):
         return self.staff.length - self_staff_x
 
     @property
-    def staff_position(self):
-        """StaffUnit: The y position in staff units below top of the staff.
+    def staff_position(self) -> Unit:
+        """The y position in staff units below top of the staff.
 
         0 means exactly at the top staff line.
         Positive values extend *downward* below the top staff line
@@ -102,8 +104,8 @@ class Clef(MusicText, StaffObject):
         return self.staff.unit(Clef._baseline_staff_positions[self.clef_type])
 
     @property
-    def middle_c_staff_position(self):
-        """StaffUnit: The vertical position of middle C for this clef
+    def middle_c_staff_position(self) -> Unit:
+        """The vertical position of middle C for this clef
 
         0 means exactly at the top staff line.
         Positive values extend *downward* below the top staff line
@@ -118,11 +120,15 @@ class Clef(MusicText, StaffObject):
 
     # Always render the whole glyph.
 
-    def _render_before_break(self, local_start_x, start, stop, dist_to_line_start):
+    def _render_before_break(
+        self, local_start_x: Unit, start: Point, stop: Point, dist_to_line_start: Unit
+    ):
         self._render_slice(start, None)
 
-    def _render_after_break(self, local_start_x, start):
+    def _render_after_break(self, local_start_x: Unit, start: Point):
         self._render_slice(start, None)
 
-    def _render_spanning_continuation(self, local_start_x, start, stop):
+    def _render_spanning_continuation(
+        self, local_start_x: Unit, start: Point, stop: Point
+    ):
         self._render_slice(start, None)

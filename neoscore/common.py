@@ -38,6 +38,7 @@ from neoscore.western.clef import Clef
 from neoscore.western.dynamic import Dynamic
 from neoscore.western.flag import Flag
 from neoscore.western.hairpin import Hairpin
+from neoscore.western.invisible_clef import InvisibleClef
 from neoscore.western.key_signature import KeySignature
 from neoscore.western.ledger_line import LedgerLine
 from neoscore.western.notehead import Notehead
