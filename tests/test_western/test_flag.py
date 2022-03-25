@@ -22,12 +22,6 @@ class TestFlag(unittest.TestCase):
             Flag(ORIGIN, self.staff, Beat(1, i), 1)
             Flag(ORIGIN, self.staff, Beat(1, i), -1)
 
-    def test_needs_flag(self):
-        assert Flag.needs_flag(Beat(1, 4)) is False
-        assert Flag.needs_flag(Beat(1, 2)) is False
-        assert Flag.needs_flag(Beat(1, 8)) is True
-        assert Flag.needs_flag(Beat(1, 16)) is True
-
     def test_vertical_offset_needed(self):
         assert Flag.vertical_offset_needed(Beat(1, 4)) == 0
         assert Flag.vertical_offset_needed(Beat(1, 8)) == 1

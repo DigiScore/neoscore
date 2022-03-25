@@ -1,7 +1,7 @@
 from neoscore.utils.math_helpers import (
     clamp_value,
-    float_to_rounded_fraction_tuple,
     interpolate,
+    is_power_of_2,
     min_and_max,
     sign,
 )
@@ -45,5 +45,11 @@ def test_sign():
     assert sign(Unit(-1)) == -1
 
 
-def test_float_to_rounded_fraction():
-    assert float_to_rounded_fraction_tuple(0.4, 4) == (2, 4)
+def test_is_power_of_2():
+    assert is_power_of_2(-2) is False
+    assert is_power_of_2(-1) is False
+    assert is_power_of_2(0) is False
+    assert is_power_of_2(1) is True
+    assert is_power_of_2(2) is True
+    assert is_power_of_2(4) is True
+    assert is_power_of_2(8) is True

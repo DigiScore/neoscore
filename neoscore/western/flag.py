@@ -1,10 +1,11 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, cast
 
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
-from neoscore.models.beat import Beat
+from neoscore.models.beat import Beat, BeatDef
+from neoscore.models.beat_display import BeatDisplay
 from neoscore.models.directions import VerticalDirection
 from neoscore.utils.exceptions import NoFlagNeededError
 from neoscore.utils.point import PointDef
@@ -18,24 +19,24 @@ class Flag(MusicText):
     """A simple Flag glyph with a duration and direction"""
 
     _up_glyphnames = {
-        1024: "flag1024thUp",
-        512: "flag512thUp",
-        256: "flag256thUp",
-        128: "flag128thUp",
-        64: "flag64thUp",
-        32: "flag32ndUp",
-        16: "flag16thUp",
-        8: "flag8thUp",
+        8: "flag1024thUp",
+        7: "flag512thUp",
+        6: "flag256thUp",
+        5: "flag128thUp",
+        4: "flag64thUp",
+        3: "flag32ndUp",
+        2: "flag16thUp",
+        1: "flag8thUp",
     }
     _down_glyphnames = {
-        1024: "flag1024thDown",
-        512: "flag512thDown",
-        256: "flag256thDown",
-        128: "flag128thDown",
-        64: "flag64thDown",
-        32: "flag32ndDown",
-        16: "flag16thDown",
-        8: "flag8thDown",
+        8: "flag1024thDown",
+        7: "flag512thDown",
+        6: "flag256thDown",
+        5: "flag128thDown",
+        4: "flag64thDown",
+        3: "flag32ndDown",
+        2: "flag16thDown",
+        1: "flag8thDown",
     }
 
     def __init__(
@@ -59,23 +60,27 @@ class Flag(MusicText):
         """
         self.duration = duration
         self.direction = direction
+        beat_display = cast(BeatDisplay, self.duration.display)
+        if beat_display.flag_count == 0:
+            raise NoFlagNeededError(self.duration)
         if self.direction == 1:
-            glyph_name = self._down_glyphnames[self.duration.base_division]
+            glyph_name = self._down_glyphnames[beat_display.flag_count]
         else:
-            glyph_name = self._up_glyphnames[self.duration.base_division]
+            glyph_name = self._up_glyphnames[beat_display.flag_count]
         MusicText.__init__(self, pos, parent, [glyph_name])
 
     ######## PUBLIC PROPERTIES ########
 
     @property
     def duration(self) -> Beat:
-        """The beat corresponding to this flag"""
+        """Beat: The time duration of this Notehead"""
         return self._duration
 
     @duration.setter
-    def duration(self, value: Beat):
-        if not self.needs_flag(value):
-            raise NoFlagNeededError(value)
+    def duration(self, value: BeatDef):
+        value = Beat.from_def(value)
+        if value.display is None:
+            raise ValueError(f"{value} cannot be represented as a single note")
         self._duration = value
 
     @property
@@ -90,11 +95,6 @@ class Flag(MusicText):
     ######## PUBLIC CLASS METHODS ########
 
     @classmethod
-    def needs_flag(cls, duration: Beat) -> bool:
-        """Determine if a Beat needs a flag."""
-        return duration.base_division in cls._up_glyphnames
-
-    @classmethod
     def vertical_offset_needed(cls, duration: Beat) -> int:
         """Find the space needed in a stem using a flag of a given duration
 
@@ -102,7 +102,9 @@ class Flag(MusicText):
         """
         # TODO LOW I believe this should become longer according to
         # division (and thus number of flaglets)
-        if cls.needs_flag(duration):
+        if duration.display is None:
+            return 0
+        elif duration.display.flag_count:
             return 1
         else:
             return 0

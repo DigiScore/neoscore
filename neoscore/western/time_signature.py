@@ -66,12 +66,12 @@ class TimeSignature(ObjectGroup, HasMusicFont):
         self._numerator_glyph = MusicText(
             (ZERO, font.unit(1)),
             self,
-            TimeSignature._glyphs_for_number(self.meter.numerator),
+            TimeSignature._glyphs_for_number(self.meter.fraction.numerator),
         )
         self._denominator_glyph = MusicText(
             (ZERO, font.unit(3)),
             self,
-            TimeSignature._glyphs_for_number(self.meter.denominator),
+            TimeSignature._glyphs_for_number(self.meter.fraction.denominator),
         )
 
     ######## PUBLIC PROPERTIES ########

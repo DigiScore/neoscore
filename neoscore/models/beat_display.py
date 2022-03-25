@@ -1,39 +1,38 @@
 import math
 from dataclasses import dataclass
+from typing import NewType
 
+from neoscore.utils.math_helpers import is_power_of_2
 
-@dataclass(frozen=True)
-class BaseDuration:
-    """The duration value to use in determining a notehead or rest glyph type
+BaseDuration = NewType("BaseDuration", int)
+"""A base duration used to set notehead and rest glyphs.
 
-    Given values must be 0 or a power of 2. The values correspond to glyphs in
-    the following manner:
+Must be 0 or a power of 2. The values correspond to durations like so:
 
-    * 0: double whole note/rest
-    * 1: whole note/rest
-    * 2: half note/rest
-    * 4: quarter note/rest
-    * 8: eighth note/rest
-    """
-
-    val: int
-
-    def __post_init__(self):
-        if not self.val & (self.val - 1) == 0:
-            raise ValueError("Value must be 0 or a power of 2")
+* 0: Double whole note
+* 1: Whole note
+* 2: Half note
+* 4: Quarter note (etc)
+"""
 
 
 @dataclass(frozen=True)
 class BeatDisplay:
     base_duration: BaseDuration
-    """The base duration used to set notehead and rest glyphs"""
 
     dot_count: int
-    """The number of flags required"""
+
+    def __post_init__(self):
+        if not (is_power_of_2(self.base_duration) or self.base_duration == 0):
+            raise ValueError("base_duration must be 0 or a power of 2")
 
     @property
     def flag_count(self) -> int:
         """Flag and beam count needed if used in a note"""
-        if self.base_duration.val <= 4:
+        if self.base_duration <= 4:
             return 0
-        return int(math.log2(self.base_duration.val) - 2)
+        return int(math.log2(self.base_duration) - 2)
+
+    @property
+    def requires_stem(self):
+        return self.base_duration > 1

@@ -62,7 +62,7 @@ Chordrest(
     Mm(15),
     lowest_staff,
     [("a", "accidentalFlatRepeatedSpaceStockhausen", 2)],
-    (5, 16),
+    (3, 16),
 )
 
 font = Font("Lora", Mm(2), weight=100, italic=True)

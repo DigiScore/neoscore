@@ -159,7 +159,10 @@ class Chordrest(ObjectGroup, StaffObject):
 
     @duration.setter
     def duration(self, value: BeatDef):
-        self._duration = Beat.from_def(value)
+        value = Beat.from_def(value)
+        if value.display is None:
+            raise ValueError(f"{value} cannot be represented as a single note")
+        self._duration = value
 
     @property
     def ledger_line_positions(self) -> list[Unit]:
@@ -193,7 +196,7 @@ class Chordrest(ObjectGroup, StaffObject):
                 self.leftmost_notehead.x + self.notehead_column_width + start_padding
             )
             dottables = self.noteheads
-        for i in range(self.duration.dot_count):
+        for i in range(self.duration.display.dot_count):
             for dottable in dottables:
                 if dottable.y.display_value % 1 == 0:
                     # Dottable is on a line, add dot offset to space below
@@ -381,7 +384,7 @@ class Chordrest(ObjectGroup, StaffObject):
 
     def _create_stem(self):
         """If needed, create a Stem and store it in `self.stem`."""
-        if not self.duration.requires_stem:
+        if not self.duration.display.requires_stem:
             return
         self._stem = Stem(
             Point(self.staff.unit(0), self.furthest_notehead.staff_pos),
@@ -391,7 +394,7 @@ class Chordrest(ObjectGroup, StaffObject):
 
     def _create_flag(self):
         """Create a Flag attached to self.stem and store it in `self.flag`"""
-        if Flag.needs_flag(self.duration):
+        if self.duration.display.flag_count:
             self._flag = Flag(
                 ORIGIN, self.stem.end_point, self.duration, self.stem.direction
             )

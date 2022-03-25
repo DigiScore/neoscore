@@ -1,10 +1,11 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, cast
 
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.models.beat import Beat, BeatDef
+from neoscore.models.beat_display import BeatDisplay
 from neoscore.utils.point import Point, PointDef
 
 if TYPE_CHECKING:
@@ -52,18 +53,26 @@ class Rest(MusicText):
             font: If provided, this overrides any font inherited from an ancestor.
         """
         pos = Point.from_def(pos)
-        self._duration = Beat.from_def(duration)
+        self.duration = Beat.from_def(duration)
+        beat_display = cast(BeatDisplay, self.duration.display)
         MusicText.__init__(
-            self, pos, parent, [self._glyphnames[self.duration.base_division]], font
+            self,
+            pos,
+            parent,
+            [self._glyphnames[beat_display.base_duration]],
+            font,
         )
 
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def duration(self):
-        """Beat: The time duration of this Rest"""
+    def duration(self) -> Beat:
+        """The time duration of this Rest"""
         return self._duration
 
     @duration.setter
-    def duration(self, value):
+    def duration(self, value: BeatDef):
+        value = Beat.from_def(value)
+        if value.display is None:
+            raise ValueError(f"{value} cannot be represented as a single note")
         self._duration = value

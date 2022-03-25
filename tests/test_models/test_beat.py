@@ -1,133 +1,125 @@
 import unittest
-from fractions import Fraction
 
 import pytest
 
 from neoscore.models.beat import Beat
-from neoscore.models.beat_display import BaseDuration
+from neoscore.models.beat_display import BeatDisplay
 
 
 class TestBeat(unittest.TestCase):
-    def test_init_from_numerator_denominator(self):
-        dur = Beat(1, 4)
-        assert dur.numerator == 1
-        assert dur.denominator == 4
+    def test_init_validation(self):
+        with pytest.raises(ValueError):
+            Beat(-1, 2)
+        with pytest.raises(ValueError):
+            Beat(-2, 2)
+        with pytest.raises(ValueError):
+            Beat(0, 2)
+        with pytest.raises(ValueError):
+            Beat(1, 3)
+        with pytest.raises(ValueError):
+            Beat(1, 10)
+        with pytest.raises(ValueError):
+            Beat(1, 0)
 
-    def test_nested_is_not_reduced(self):
-        dur = Beat(Beat(1, 2), 4)
-        assert isinstance(dur.numerator, Beat)
-        assert dur.numerator.numerator == 1
-        assert dur.numerator.denominator == 2
-        assert dur.denominator == 4
+    def test_init_fraction_reduced(self):
+        beat = Beat(4, 8)
+        assert beat.fraction.numerator == 1
+        assert beat.fraction.denominator == 2
 
-    def test_from_float(self):
-        assert Beat.from_float(0.4) == Beat(2, 5)
-        assert Beat.from_float(0.4, limit_denominator=1) == Beat(0, 1)
-        assert Beat.from_float(0.4, 8) == Beat(3, 8)
+    def test_from_def(self):
+        assert Beat.from_def(Beat(1, 4)) == Beat(1, 4)
+        assert Beat.from_def((1, 4)) == Beat(1, 4)
 
-    def test_notehead_duration(self):
-        assert Beat(1, 4).notehead_duration == BaseDuration(4)
-        assert Beat(3, 8).notehead_duration == BaseDuration(4)
-        assert Beat(1, 256).notehead_duration == BaseDuration(4)
-        assert Beat(1, 2).notehead_duration == BaseDuration(2)
-        assert Beat(3, 4).notehead_duration == BaseDuration(2)
-        assert Beat(4, 4).notehead_duration == BaseDuration(1)
-        assert Beat(1, 1).notehead_duration == BaseDuration(1)
-        assert Beat(3, 2).notehead_duration == BaseDuration(1)
-        assert Beat(2, 1).notehead_duration == BaseDuration(0)
-        assert Beat(3, 1).notehead_duration == BaseDuration(0)
+    def test_from_description(self):
+        assert Beat.from_description(16, 0) == Beat(1, 16)
+        assert Beat.from_description(16, 1) == Beat(3, 32)
+        assert Beat.from_description(16, 2) == Beat(7, 64)
+        assert Beat.from_description(16, 3) == Beat(15, 128)
+        assert Beat.from_description(2, 1) == Beat(3, 4)
+        assert Beat.from_description(1, 0) == Beat(1, 1)
+        assert Beat.from_description(1, 1) == Beat(3, 2)
+        assert Beat.from_description(1, 2) == Beat(7, 4)
+        # double breves use base_division 0
+        assert Beat.from_description(0, 0) == Beat(2, 1)
+        assert Beat.from_description(0, 1) == Beat(3, 1)
+        assert Beat.from_description(0, 2) == Beat(7, 2)
 
-    @pytest.mark.skip
-    def test_requires_tie(self):
-        assert Beat(5, 8).requires_tie is True
-        assert Beat(4, 8).requires_tie is False
+    def test_from_description_to_beat_display_always_match(self):
+        for base_division in [0, 1, 2, 4, 8, 16, 32, 64]:
+            for dot_count in range(0, 5):
+                assert Beat.from_description(
+                    base_division, dot_count
+                ).display == BeatDisplay(base_division, dot_count)
 
-    def test_requires_stem(self):
-        assert Beat(3, 4).requires_stem is True
-        assert Beat(Beat(1, 3), 4).requires_stem is True
-        assert Beat(2, 16).requires_stem is True
-        assert Beat(2, 2).requires_stem is False
-        assert Beat(1, 1).requires_stem is False
-        assert Beat(3, 2).requires_stem is False
-        assert Beat(2, 1).requires_stem is False
+    def test_no_display_with_beat_requiring_tie(self):
+        beat = Beat(5, 8)
+        assert beat.display is None
+        assert beat.requires_tie
 
-    # noinspection PyPropertyAccess
-    def test_properties_are_immutable(self):
-        dur = Beat(2, 4)
-        with pytest.raises(AttributeError):
-            dur.numerator = 0
-        with pytest.raises(AttributeError):
-            dur.denominator = 0
+    def test_valid_beat_display(self):
+        # 16ths with increasing dots
+        assert Beat(1, 16).display == BeatDisplay(16, 0)
+        assert Beat(3, 32).display == BeatDisplay(16, 1)
+        assert Beat(7, 64).display == BeatDisplay(16, 2)
+        assert Beat(15, 128).display == BeatDisplay(16, 3)
+        # quarters with increasing dots
+        assert Beat(1, 4).display == BeatDisplay(4, 0)
+        assert Beat(3, 8).display == BeatDisplay(4, 1)
+        assert Beat(7, 16).display == BeatDisplay(4, 2)
+        assert Beat(15, 32).display == BeatDisplay(4, 3)
+        # halfs with increasing dots
+        assert Beat(1, 2).display == BeatDisplay(2, 0)
+        assert Beat(3, 4).display == BeatDisplay(2, 1)
+        assert Beat(7, 8).display == BeatDisplay(2, 2)
+        assert Beat(15, 16).display == BeatDisplay(2, 3)
+        # wholes with increasing dots
+        assert Beat(1, 1).display == BeatDisplay(1, 0)
+        assert Beat(3, 2).display == BeatDisplay(1, 1)
+        assert Beat(7, 4).display == BeatDisplay(1, 2)
+        assert Beat(15, 8).display == BeatDisplay(1, 3)
+        # double-breves with increasing dots
+        assert Beat(2, 1).display == BeatDisplay(0, 0)
+        assert Beat(3, 1).display == BeatDisplay(0, 1)
+        assert Beat(7, 2).display == BeatDisplay(0, 2)
+        assert Beat(15, 4).display == BeatDisplay(0, 3)
+
+    def test_invalid_beat_display(self):
+        # Values < 2 which require ties
+        assert Beat(5, 8).display == None
+        assert Beat(9, 16).display == None
+        assert Beat(11, 16).display == None
+        assert Beat(13, 16).display == None
+        assert Beat(17, 16).display == None
+        assert Beat(18, 16).display == None
+        # Values 2 <= x < 4 which require ties
+        assert Beat(33, 16).display == None
+        assert Beat(35, 16).display == None
+        # Values >= 4 (which always require ties)
+        assert Beat(4, 1).display == None
+        assert Beat(5, 1).display == None
+        assert Beat(65, 16).display == None
 
     def test__float__(self):
         self.assertAlmostEqual(float(Beat(1, 2)), 0.5)
 
-    def test__eq__with_non_nested(self):
-        assert Beat(2, 4) == Beat(2, 4)
-
-    def test__ne__with_non_nested(self):
-        assert Beat(2, 4) != Beat(7, 16)
-
-    def test__eq__with_nested(self):
-        assert Beat(Beat(1, 2), 4) == Beat(Beat(1, 2), 4)
-
-    def test__ne__with_nested(self):
-        assert Beat(Beat(1, 2), 4) != Beat(Beat(2, 4), 8)
-
-    def test__gt__with_non_nested(self):
+    def test__gt__(self):
         assert Beat(1, 4) > Beat(1, 8)
+        assert not (Beat(1, 4) > Beat(3, 8))
 
-    def test__lt__with_non_nested(self):
+    def test__lt__(self):
         assert Beat(1, 4) < Beat(1, 2)
+        assert not (Beat(1, 4) < Beat(3, 64))
 
-    def tests__gte__with_non_nested(self):
+    def tests__ge__(self):
         assert Beat(1, 4) >= Beat(1, 8)
         assert Beat(1, 4) >= Beat(1, 4)
 
-    def tests__lte__with_non_nested(self):
+    def tests__le__(self):
         assert Beat(1, 4) <= Beat(1, 2)
         assert Beat(1, 4) <= Beat(1, 4)
 
-    def test__gt__with_nested(self):
-        assert Beat(Beat(1, 1), 4) > Beat(Beat(1, 2), 4)
-
-    def test__lt__with__nested(self):
-        assert Beat(Beat(1, 2), 4) < Beat(Beat(1, 1), 4)
-
-    def tests__gte__with_nested(self):
-        assert Beat(1, 4) >= Beat(Beat(1, 3), 8)
-        assert Beat(1, 4) >= Beat(Beat(1, 1), 4)
-
-    def tests__lte__with_nested(self):
-        assert Beat(1, 4) <= Beat(Beat(1, 1), 1)
-        assert Beat(1, 4) <= Beat(Beat(1, 2), 2)
-
-    def test__hash__(self):
-        assert {Beat(Beat(1, 2), 4), Beat(Beat(1, 2), 4), Beat(Beat(1, 2), 8)} == {
-            Beat(Beat(1, 2), 4),
-            Beat(Beat(1, 2), 8),
-        }
-
-    def test__add__with_non_nested(self):
+    def test__add__(self):
         assert Beat(1, 4) + Beat(1, 4) == Beat(1, 2)
 
-    def test__add__with_nested(self):
-        assert Beat(Beat(1, 2), 4) + Beat(1, 4) == Beat(3, 8)
-
-    def test__sub__with_non_nested(self):
+    def test__sub__(self):
         assert Beat(3, 4) - Beat(1, 4) == Beat(1, 2)
-
-    def test__sub__with_nested(self):
-        assert Beat(Beat(1, 2), 4) - Beat(1, 16) == Beat(1, 16)
-
-    def test_dot_count(self):
-        assert Beat(1, 4).dot_count == 0
-        assert Beat(8, 16).dot_count == 0
-        assert Beat(3, 8).dot_count == 1
-        assert Beat(7, 16).dot_count == 2
-        assert Beat(2, 1).dot_count == 0
-
-    def test_collapsed_fraction(self):
-        assert (Beat(1, 4)).to_fraction() == Fraction(1, 4)
-        assert (Beat(2, 4)).to_fraction() == Fraction(1, 2)
-        assert Beat(Beat(1, 2), 4).to_fraction() == Fraction(1, 8)

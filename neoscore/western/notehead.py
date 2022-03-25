@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Optional
+from typing import Optional, cast
 
 from neoscore.core.mapping import map_between
 from neoscore.core.music_font import MusicFont
@@ -8,6 +8,7 @@ from neoscore.core.music_text import MusicText
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.models import notehead_tables
 from neoscore.models.beat import Beat, BeatDef
+from neoscore.models.beat_display import BeatDisplay
 from neoscore.models.notehead_tables import NoteheadTable
 from neoscore.models.pitch import Pitch, PitchDef
 from neoscore.utils.units import ZERO, Unit
@@ -42,14 +43,15 @@ class Notehead(MusicText, StaffObject):
             notehead_table: The set of noteheads to use according to `duration`.
         """
         self._pitch = Pitch.from_def(pitch)
-        self._duration = Beat.from_def(duration)
+        self.duration = Beat.from_def(duration)
         self._notehead_table = notehead_table
+        beat_display = cast(BeatDisplay, self.duration.display)
         # Use a temporary y-axis position before calculating it for real
         MusicText.__init__(
             self,
             (pos_x, ZERO),
             parent,
-            self._notehead_table.lookup_duration(self._duration.notehead_duration),
+            self._notehead_table.lookup_duration(beat_display.base_duration),
             font,
         )
         StaffObject.__init__(self, parent)
@@ -60,38 +62,38 @@ class Notehead(MusicText, StaffObject):
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def visual_width(self):
-        """Unit: The visual width of the Notehead"""
+    def visual_width(self) -> Unit:
+        """The visual width of the Notehead"""
         return self.bounding_rect.width
 
     @property
-    def pitch(self):
-        """Pitch: The logical pitch.
-
-        May be set to a valid string pitch descriptor.
-        See Pitch docs.
-        """
+    def pitch(self) -> Pitch:
+        """The logical pitch."""
         return self._pitch
 
     @pitch.setter
     def pitch(self, value):
+        # TODO MEDIUM support setting from pitchdef
         self._pitch = value
 
     @property
-    def duration(self):
-        """Beat: The time duration of this Notehead"""
+    def duration(self) -> Beat:
+        """The time duration of this Notehead"""
         return self._duration
 
     @duration.setter
-    def duration(self, value):
+    def duration(self, value: BeatDef):
+        value = Beat.from_def(value)
+        if value.display is None:
+            raise ValueError(f"{value} cannot be represented as a single note")
         self._duration = value
 
     @property
-    def staff_pos(self):
-        """StaffUnit: The y-axis position in the staff.
+    def staff_pos(self) -> Unit:
+        """The y-axis position in the staff.
 
-        `StaffUnit(0)` means the top staff line, higher values
-        mean lower pitches, and vice versa.
+        0 means the top staff line, higher values mean lower pitches,
+        and vice versa.
         """
         return self.staff.middle_c_at(self.pos_x_in_staff) + self.staff.unit(
             self.pitch.staff_pos_from_middle_c

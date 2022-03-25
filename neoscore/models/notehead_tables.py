@@ -29,13 +29,16 @@ class NoteheadTable:
     short: str
     """Quarter notes and shorter"""
 
-    def lookup_duration(self, dur: BaseDuration) -> str:
-        val = dur.val
-        if val >= 4:
+    def lookup_duration(self, base_division: BaseDuration) -> str:
+        """Given a base division, return the required glyph to represent it.
+
+        Assumes `base_division` is 0 or a power of 2.
+        """
+        if base_division >= 4:
             return self.short
-        elif val == 2:
+        elif base_division == 2:
             return self.half
-        elif val == 1:
+        elif base_division == 1:
             return self.whole
         else:
             return self.double_whole
