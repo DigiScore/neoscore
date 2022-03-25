@@ -9,8 +9,9 @@ from neoscore.utils.point import Point
 from neoscore.utils.units import Mm
 from neoscore.western.chordrest import Chordrest
 from neoscore.western.clef import Clef
+from neoscore.western.key_signature import KeySignature
 from neoscore.western.staff import Staff
-from tests.helpers import assert_almost_equal
+from tests.helpers import assert_almost_equal, render_scene
 
 # TODO LOW test that glyphs are actually created successfully - this
 # failed to catch bugs in creating rhythm dots and flags, and probably
@@ -153,3 +154,14 @@ class TestChordrest(unittest.TestCase):
         pitches = ["c'''", "g"]
         chord = Chordrest(Mm(1), self.staff, pitches, Beat(1, 4))
         assert_almost_equal(chord.stem_height, self.staff.unit(-10.5))
+
+    def test_end_to_end(self):
+        staff = Staff((Mm(0), Mm(0)), None, Mm(100), Mm(1))
+        unit = staff.unit
+        clef = Clef(unit(0), staff, "treble")
+        KeySignature(clef.bounding_rect.width + unit(0.5), staff, "g_major")
+        # Chord with ledgers, dots, flags, and accidentals
+        Chordrest(unit(8), staff, ["gs'''", "cf'", "a,,,"], Beat(3, 64))
+        # Rest with dots
+        Chordrest(unit(20), staff, None, Beat(7, 128))
+        render_scene()

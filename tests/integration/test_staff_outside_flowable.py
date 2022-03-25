@@ -1,6 +1,11 @@
-import tempfile
-
-from neoscore.common import *
+from neoscore.core import neoscore
+from neoscore.models.beat import Beat
+from neoscore.utils.units import Mm
+from neoscore.western.chordrest import Chordrest
+from neoscore.western.clef import Clef
+from neoscore.western.key_signature import KeySignature
+from neoscore.western.staff import Staff
+from tests.helpers import render_scene
 
 
 def test_staff_with_notes():
@@ -15,5 +20,4 @@ def test_staff_with_notes():
     Chordrest(unit(8), staff, ["g''"], Beat(1, 8))
     Chordrest(unit(10), staff, [], Beat(1, 4))
 
-    out_file = tempfile.NamedTemporaryFile(suffix=".png")
-    neoscore.render_image((Mm(-100), Mm(-100), Mm(100), Mm(100)), out_file.name)
+    render_scene()

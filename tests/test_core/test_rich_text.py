@@ -4,7 +4,9 @@ from neoscore.core import neoscore
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.rich_text import RichText
 from neoscore.utils.point import ORIGIN, Point
-from neoscore.utils.units import ZERO, Unit
+from neoscore.utils.units import ZERO, Mm, Unit
+
+from ..helpers import render_scene
 
 
 class TestRichText(unittest.TestCase):
@@ -30,3 +32,7 @@ class TestRichText(unittest.TestCase):
     def test_length_is_zero(self):
         obj = RichText((Unit(5), Unit(6)), None, self.html)
         assert obj.length == ZERO
+
+    def test_rich_text_end_to_end(self):
+        RichText(ORIGIN, None, "<p>test</p>", Mm(50), None, 2)
+        render_scene()

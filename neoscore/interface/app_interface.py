@@ -7,6 +7,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtPrintSupport import QPrinter
 
 from neoscore import constants
+from neoscore.interface.qt import image_utils
 from neoscore.interface.qt.converters import color_to_q_color, rect_to_qt_rect_f
 from neoscore.interface.qt.main_window import MainWindow
 from neoscore.interface.repl import running_in_ipython_gui_repl
@@ -149,7 +150,7 @@ class AppInterface:
         painter.end()
 
         if autocrop:
-            q_image = images.autocrop(q_image, q_color)
+            q_image = image_utils.autocrop(q_image, q_color)
 
         success = q_image.save(image_path, quality=quality)
 

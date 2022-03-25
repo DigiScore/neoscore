@@ -1,4 +1,8 @@
-from neoscore.common import *
+from neoscore.core import neoscore
+from neoscore.core.path import Path
+from neoscore.core.text import Text
+from neoscore.utils.color import Color
+from neoscore.utils.point import ORIGIN
 
 
 def test_setting_global_color():

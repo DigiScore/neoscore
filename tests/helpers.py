@@ -1,8 +1,10 @@
+import tempfile
 from typing import Optional
 
+from neoscore.core import neoscore
 from neoscore.core.path_element import CurveTo
 from neoscore.utils.point import Point
-from neoscore.utils.units import Unit
+from neoscore.utils.units import Mm, Unit
 
 
 def assert_almost_equal(
@@ -86,3 +88,8 @@ def assert_path_els_equal(
         assert_path_els_equal(
             left.control_2, right.control_2, places, epsilon, compare_parents
         )
+
+
+def render_scene():
+    out_file = tempfile.NamedTemporaryFile(suffix=".png")
+    neoscore.render_image((Mm(-100), Mm(-100), Mm(100), Mm(100)), out_file.name)
