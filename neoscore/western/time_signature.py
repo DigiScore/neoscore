@@ -50,7 +50,7 @@ class TimeSignature(ObjectGroup, HasMusicFont):
             self,
             self.meter.lower_text_glyph_names,
         )
-        self._align_glyphs()
+        self._position_glyphs()
 
     ######## PUBLIC PROPERTIES ########
 
@@ -69,6 +69,14 @@ class TimeSignature(ObjectGroup, HasMusicFont):
         return self._lower_text
 
     @property
+    def width(self) -> Unit:
+        """The visual width of the time signature.
+
+        This is useful for laying out staff objects near time signatures.
+        """
+        return self._width
+
+    @property
     def meter(self) -> Meter:
         """The meter represented.
 
@@ -81,15 +89,27 @@ class TimeSignature(ObjectGroup, HasMusicFont):
         self._meter = Meter.from_def(value)
         self.upper_text.text = self._meter.upper_text_glyph_names
         self.lower_text.text = self._meter.lower_text_glyph_names
-        self._align_glyphs()
+        self._position_glyphs()
 
-    def _align_glyphs(self):
+    def _position_glyphs(self):
+        """This must be called after any modification to the glyph text"""
+        # Vertically position
+        if not self.meter.lower_text_glyph_names:
+            self.upper_text.y = self.music_font.unit(2)
+        else:
+            self.upper_text.y = self.music_font.unit(1)
+            self.lower_text.y = self.music_font.unit(3)
+        # Horizontally position
         upper_width = self.upper_text.bounding_rect.width
         lower_width = self.lower_text.bounding_rect.width
         if upper_width > lower_width:
+            self._width = upper_width
+            self.upper_text.x = ZERO
             self.lower_text.x += (upper_width - lower_width) / 2
         elif lower_width > upper_width:
+            self._width = lower_width
+            self.lower_text.x = ZERO
             self.upper_text.x += (lower_width - upper_width) / 2
         else:
-            # No adjustment needed
-            pass
+            # Widths are equal. No adjustment needed.
+            self._width = upper_width

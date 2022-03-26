@@ -20,6 +20,13 @@ _glyph_names = {
 
 @dataclass(frozen=True)
 class Meter:
+    """A textual meter comprising two lists of glyphs for the upper and lower parts.
+
+    If only a single line of text is needed for the meter (like the
+    common time "C"), it should go in `upper_text_glyph_names` and
+    `lower_text_glyph_names` should be left empty.
+    """
+
     upper_text_glyph_names: list[str]
     lower_text_glyph_names: list[str]
 

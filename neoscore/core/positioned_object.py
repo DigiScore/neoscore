@@ -86,6 +86,7 @@ class PositionedObject:
     def y(self, value: Unit):
         self.pos = Point(self.x, value)
 
+    # TODO HIGH rename breakable_length
     @property
     def length(self) -> Unit:
         """The breakable length of the object.
