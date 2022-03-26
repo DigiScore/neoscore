@@ -20,11 +20,17 @@ _glyph_names = {
 
 @dataclass(frozen=True)
 class Meter:
-    """A textual meter comprising two lists of glyphs for the upper and lower parts.
+    """A time signature textual meter comprising two lists of glyphs.
 
-    If only a single line of text is needed for the meter (like the
+    Users are recommended to use the `Meter.numeric()` constructor,
+    which provides a convenient way to create standard meters. The
+    direct constructor is mostly useful for writing more exotic
+    meters, supporting arbitrary glyphs.
+
+    If only a single line of text is needed for the meter (as with the
     common time "C"), it should go in `upper_text_glyph_names` and
     `lower_text_glyph_names` should be left empty.
+
     """
 
     upper_text_glyph_names: list[str]
