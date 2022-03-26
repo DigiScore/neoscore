@@ -28,7 +28,7 @@ lowest_staff = Staff((Mm(10), Mm(18)), flow, Mm(2000), Mm(1))
 
 barline = BarLine(Mm(30), [staff, lower_staff, lowest_staff])
 
-upper_staff_time_signature = TimeSignature(Mm(0), staff, Duration(4, 4))
+upper_staff_time_signature = TimeSignature(Mm(0), staff, (4, 4))
 
 upper_staff_clef = Clef(Mm(0), staff, "treble")
 lower_staff_clef = Clef(Mm(0), lower_staff, "alto")

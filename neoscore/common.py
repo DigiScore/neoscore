@@ -41,6 +41,7 @@ from neoscore.western.hairpin import Hairpin
 from neoscore.western.invisible_clef import InvisibleClef
 from neoscore.western.key_signature import KeySignature
 from neoscore.western.ledger_line import LedgerLine
+from neoscore.western.meter import COMMON_TIME, CUT_TIME, Meter
 from neoscore.western.notehead import Notehead
 from neoscore.western.octave_line import OctaveLine
 from neoscore.western.ped_and_star import PedAndStar

@@ -25,8 +25,8 @@ lower_clef = Clef(unit(0), lower_staff, "bass")
 KeySignature(upper_clef.bounding_rect.width + unit(0.5), upper_staff, "g_major")
 KeySignature(lower_clef.bounding_rect.width + unit(0.5), lower_staff, "g_major")
 
-TimeSignature(unit(5), upper_staff, Duration(3, 4))
-TimeSignature(unit(5), lower_staff, Duration(3, 4))
+TimeSignature(unit(5), upper_staff, (3, 4))
+TimeSignature(unit(5), lower_staff, (3, 4))
 
 Dynamic((unit(7), unit(6)), upper_staff, "p")
 Text((unit(10), unit(6)), upper_staff, "dolce", expressive_font)

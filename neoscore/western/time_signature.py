@@ -6,9 +6,9 @@ from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.object_group import ObjectGroup
-from neoscore.models.duration import Duration, DurationDef
 from neoscore.utils.point import Point
 from neoscore.utils.units import ZERO, Unit
+from neoscore.western.meter import Meter, MeterDef
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
@@ -22,23 +22,11 @@ class TimeSignature(ObjectGroup, HasMusicFont):
     denominators (e.g. 12/8) currently display incorrectly as left-justified.
     """
 
-    _glyph_names = {
-        1: "timeSig1",
-        2: "timeSig2",
-        3: "timeSig3",
-        4: "timeSig4",
-        5: "timeSig5",
-        6: "timeSig6",
-        7: "timeSig7",
-        8: "timeSig8",
-        9: "timeSig9",
-    }
-
     def __init__(
         self,
         pos_x: Unit,
         parent: Parent,
-        meter: DurationDef,
+        meter: MeterDef,
         font: Optional[MusicFont] = None,
     ):
         """
@@ -47,30 +35,24 @@ class TimeSignature(ObjectGroup, HasMusicFont):
                 parent staff
             parent: If no font is given, this or one of its ancestors must
                 implement `HasMusicFont`.
-            meter: The length of a measure in this
-                time signature. The numerator and denominators
-                of this duration are used literally as the numbers
-                in the rendered representation of the signature.
-                While a 6/8 measure will take the same amount of time
-                as a 3/4 measure, the representations (and note groupings)
-                are different.
+            meter: The meter represented.
             font: If provided, this overrides any font found in the ancestor chain.
         """
         ObjectGroup.__init__(self, Point(pos_x, ZERO), parent)
         if font is None:
             font = HasMusicFont.find_music_font(parent)
         self._music_font = font
-        self._meter = Duration.from_def(meter)
+        self._meter = Meter.from_def(meter)
         # Add one glyph for each digit
-        self._numerator_glyph = MusicText(
+        self._upper_text = MusicText(
             (ZERO, font.unit(1)),
             self,
-            TimeSignature._glyphs_for_number(self.meter.fraction.numerator),
+            self.meter.upper_text_glyph_names,
         )
-        self._denominator_glyph = MusicText(
+        self._lower_text = MusicText(
             (ZERO, font.unit(3)),
             self,
-            TimeSignature._glyphs_for_number(self.meter.fraction.denominator),
+            self.meter.lower_text_glyph_names,
         )
 
     ######## PUBLIC PROPERTIES ########
@@ -80,23 +62,25 @@ class TimeSignature(ObjectGroup, HasMusicFont):
         return self._music_font
 
     @property
-    def numerator_glyph(self) -> MusicText:
+    def upper_text(self) -> MusicText:
         """MusicText: The upper glyph for the time signature"""
-        return self._numerator_glyph
+        return self._upper_text
 
     @property
-    def denominator_glyph(self) -> MusicText:
+    def lower_text(self) -> MusicText:
         """MusicText: The lower glyph for the time signature"""
-        return self._denominator_glyph
+        return self._lower_text
 
     @property
-    def meter(self) -> Duration:
-        """Duration: The length of one bar in this time signature"""
+    def meter(self) -> Meter:
+        """The meter represented.
+
+        Setting this will automatically update the time signature's glyphs.
+        """
         return self._meter
 
-    ######## PRIVATE METHODS  ########
-
-    @staticmethod
-    def _glyphs_for_number(number: int) -> list[str]:
-        """Convert time signature number to a list of SMuFL glyph names."""
-        return [TimeSignature._glyph_names[int(digit)] for digit in str(number)]
+    @meter.setter
+    def meter(self, value: MeterDef):
+        self._meter = Meter.from_def(value)
+        self.upper_text.text = self._meter.upper_text_glyph_names
+        self.lower_text.text = self._meter.lower_text_glyph_names
