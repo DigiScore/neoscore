@@ -28,7 +28,7 @@ lowest_staff = Staff((Mm(10), Mm(18)), flow, Mm(2000), Mm(1))
 
 barline = BarLine(Mm(30), [staff, lower_staff, lowest_staff])
 
-upper_staff_time_signature = TimeSignature(Mm(0), staff, Beat(4, 4))
+upper_staff_time_signature = TimeSignature(Mm(0), staff, Duration(4, 4))
 
 upper_staff_clef = Clef(Mm(0), staff, "treble")
 lower_staff_clef = Clef(Mm(0), lower_staff, "alto")
@@ -53,9 +53,9 @@ lowest_staff_key_signature = KeySignature(
 
 octave_line = OctaveLine((Mm(20), staff.unit(-2)), staff, Mm(1000), indication="8vb")
 
-Chordrest(Mm(10), staff, ["a'", "bs"], Beat(2, 4))
-Chordrest(Mm(40), staff, ["a'", "bs"], Beat(2, 4))
-Chordrest(Mm(60), staff, ["b'", "bff"], Beat(2, 4))
+Chordrest(Mm(10), staff, ["a'", "bs"], Duration(2, 4))
+Chordrest(Mm(40), staff, ["a'", "bs"], Duration(2, 4))
+Chordrest(Mm(60), staff, ["b'", "bff"], Duration(2, 4))
 
 Chordrest(Mm(10), lowest_staff, [("a", "accidentalQuarterToneSharpStein", 2)], (3, 4))
 Chordrest(

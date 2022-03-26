@@ -65,7 +65,7 @@ class Interval:
         return "Interval('{}{}{}')".format(self.direction, self.quality, self.distance)
 
     def __hash__(self):
-        """`Beat`s equal to each other share the same hash."""
+        """`Duration`s equal to each other share the same hash."""
         return hash(self.direction) ^ hash(self.quality) ^ hash(self.distance)
 
     def __eq__(self, other):

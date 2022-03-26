@@ -4,8 +4,8 @@ from typing import TYPE_CHECKING, Optional, cast
 
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
-from neoscore.models.beat import Beat, BeatDef
-from neoscore.models.beat_display import BeatDisplay
+from neoscore.models.duration import Duration, DurationDef
+from neoscore.models.duration_display import DurationDisplay
 from neoscore.utils.point import Point, PointDef
 
 if TYPE_CHECKING:
@@ -41,7 +41,7 @@ class Rest(MusicText):
         self,
         pos: PointDef,
         parent: Parent,
-        duration: BeatDef,
+        duration: DurationDef,
         font: Optional[MusicFont] = None,
     ):
         """
@@ -49,30 +49,30 @@ class Rest(MusicText):
             pos: The position of the rest from its SMuFL anchor point
             parent: The parent of the rest. If no font is provided,
                 this parent or one of its ancestors must implement `HasStaffUnit`.
-            duration: `Beat` determining the particular rest glyph used.
+            duration: `Duration` determining the particular rest glyph used.
             font: If provided, this overrides any font inherited from an ancestor.
         """
         pos = Point.from_def(pos)
-        self.duration = Beat.from_def(duration)
-        beat_display = cast(BeatDisplay, self.duration.display)
+        self.duration = Duration.from_def(duration)
+        duration_display = cast(DurationDisplay, self.duration.display)
         MusicText.__init__(
             self,
             pos,
             parent,
-            [self._glyphnames[beat_display.base_duration]],
+            [self._glyphnames[duration_display.base_duration]],
             font,
         )
 
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def duration(self) -> Beat:
+    def duration(self) -> Duration:
         """The time duration of this Rest"""
         return self._duration
 
     @duration.setter
-    def duration(self, value: BeatDef):
-        value = Beat.from_def(value)
+    def duration(self, value: DurationDef):
+        value = Duration.from_def(value)
         if value.display is None:
             raise ValueError(f"{value} cannot be represented as a single note")
         self._duration = value

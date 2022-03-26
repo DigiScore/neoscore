@@ -17,7 +17,7 @@ Must be 0 or a power of 2. The values correspond to durations like so:
 
 
 @dataclass(frozen=True)
-class BeatDisplay:
+class DurationDisplay:
     base_duration: BaseDuration
 
     dot_count: int

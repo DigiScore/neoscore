@@ -1,5 +1,5 @@
 from neoscore.core import neoscore
-from neoscore.models.beat import Beat
+from neoscore.models.duration import Duration
 from neoscore.utils.units import Mm
 from neoscore.western.chordrest import Chordrest
 from neoscore.western.clef import Clef
@@ -17,7 +17,7 @@ def test_staff_with_notes():
     clef = Clef(unit(0), staff, "treble")
     KeySignature(clef.bounding_rect.width + unit(0.5), staff, "g_major")
 
-    Chordrest(unit(8), staff, ["g''"], Beat(1, 8))
-    Chordrest(unit(10), staff, [], Beat(1, 4))
+    Chordrest(unit(8), staff, ["g''"], Duration(1, 8))
+    Chordrest(unit(10), staff, [], Duration(1, 4))
 
     render_scene()

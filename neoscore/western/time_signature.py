@@ -6,7 +6,7 @@ from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.object_group import ObjectGroup
-from neoscore.models.beat import Beat, BeatDef
+from neoscore.models.duration import Duration, DurationDef
 from neoscore.utils.point import Point
 from neoscore.utils.units import ZERO, Unit
 
@@ -38,7 +38,7 @@ class TimeSignature(ObjectGroup, HasMusicFont):
         self,
         pos_x: Unit,
         parent: Parent,
-        meter: BeatDef,
+        meter: DurationDef,
         font: Optional[MusicFont] = None,
     ):
         """
@@ -60,8 +60,7 @@ class TimeSignature(ObjectGroup, HasMusicFont):
         if font is None:
             font = HasMusicFont.find_music_font(parent)
         self._music_font = font
-        # TODO LOW error if this beat is a nested tuplet
-        self._meter = Beat.from_def(meter)
+        self._meter = Duration.from_def(meter)
         # Add one glyph for each digit
         self._numerator_glyph = MusicText(
             (ZERO, font.unit(1)),
@@ -91,8 +90,8 @@ class TimeSignature(ObjectGroup, HasMusicFont):
         return self._denominator_glyph
 
     @property
-    def meter(self) -> Beat:
-        """Beat: The length of one bar in this time signature"""
+    def meter(self) -> Duration:
+        """Duration: The length of one bar in this time signature"""
         return self._meter
 
     ######## PRIVATE METHODS  ########

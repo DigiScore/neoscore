@@ -4,21 +4,21 @@ from dataclasses import InitVar, dataclass, field
 from fractions import Fraction
 from typing import Optional, Union
 
-from neoscore.models.beat_display import BeatDisplay
+from neoscore.models.duration_display import DurationDisplay
 from neoscore.utils.math_helpers import is_power_of_2
 
 
 @dataclass(frozen=True)
-class Beat:
+class Duration:
     """A metered non-tuplet duration.
 
-    The beat fraction indicates beat as a fraction of a whole note.
-    The actual written denomination of beat is deduced
+    The duration fraction indicates duration as a fraction of a whole note.
+    The actual written denomination of duration is deduced
     from the reduced fraction. For instance:
 
-    * `Beat(1, 4)` indicates a quarter note value
-    * `Beat(1, 1)` indicates a whole note value
-    * `Beat(3, 8)` indicates a dotted quarter note value
+    * `Duration(1, 4)` indicates a quarter note value
+    * `Duration(1, 1)` indicates a whole note value
+    * `Duration(3, 8)` indicates a dotted quarter note value
 
     """
 
@@ -27,12 +27,12 @@ class Beat:
     denominator: InitVar[int]
 
     fraction: Fraction = field(init=False)
-    """The reduced fraction representation of the beat"""
+    """The reduced fraction representation of the duration"""
 
-    display: Optional[BeatDisplay] = field(init=False, compare=False)
-    """The appearance spec of the beat when written in notes or rests.
+    display: Optional[DurationDisplay] = field(init=False, compare=False)
+    """The appearance spec of the duration when written in notes or rests.
 
-    This is `None` if the beat cannot be represented without ties.
+    This is `None` if the duration cannot be represented without ties.
     """
 
     def __post_init__(self, numerator: int, denominator: int):
@@ -41,10 +41,10 @@ class Beat:
         if not is_power_of_2(denominator):
             raise ValueError("Denominator must be a power of 2")
         super().__setattr__("fraction", Fraction(numerator, denominator))
-        super().__setattr__("display", Beat._derive_display(self.fraction))
+        super().__setattr__("display", Duration._derive_display(self.fraction))
 
     @staticmethod
-    def _derive_display(fraction: Fraction) -> Optional[BeatDisplay]:
+    def _derive_display(fraction: Fraction) -> Optional[DurationDisplay]:
         if fraction >= 2:
             if fraction >= 4:
                 # Lengths >= 4 whole notes cannot be represented without a tie
@@ -53,11 +53,11 @@ class Beat:
             # hack it by running it on fraction / 2, giving a
             # whole-note value, then plugging its dot count into the
             # result with double-breve (base_division 0) hardcoded
-            sub_result = Beat._derive_display(fraction / 2)
+            sub_result = Duration._derive_display(fraction / 2)
             if sub_result is None:
                 return None
             assert sub_result.base_duration == 1
-            return BeatDisplay(0, sub_result.dot_count)
+            return DurationDisplay(0, sub_result.dot_count)
         partial_numerator: float = fraction.numerator
         partial_denominator: int = fraction.denominator
         dot_count = 0
@@ -66,23 +66,23 @@ class Beat:
             partial_denominator = partial_denominator // 2
             dot_count += 1
         if partial_numerator != 1:
-            # Failure to reduce means the beat requires a tie to write
+            # Failure to reduce means the duration requires a tie to write
             return None
-        return BeatDisplay(partial_denominator, dot_count)
+        return DurationDisplay(partial_denominator, dot_count)
 
     ######## CONSTRUCTORS ########
 
     @classmethod
-    def from_def(cls, beat_def: BeatDef) -> Beat:
-        if isinstance(beat_def, Beat):
-            return beat_def
-        return Beat(*beat_def)
+    def from_def(cls, duration_def: DurationDef) -> Duration:
+        if isinstance(duration_def, Duration):
+            return duration_def
+        return Duration(*duration_def)
 
     @classmethod
-    def from_description(cls, base_division: int, dots: int) -> Beat:
-        """Create a `Beat` from a base division and a number of dots.
+    def from_description(cls, base_division: int, dots: int) -> Duration:
+        """Create a `Duration` from a base division and a number of dots.
 
-        `Beat`s created with this will always have valid `BeatDisplay`s.
+        `Duration`s created with this will always have valid `DurationDisplay`s.
 
         Args:
             base_division: Must be 0 or a power of 2
@@ -100,13 +100,13 @@ class Beat:
         for _ in range(dots):
             val += Fraction(1, inc_division)
             inc_division *= 2
-        return Beat(val.numerator, val.denominator)
+        return Duration(val.numerator, val.denominator)
 
     ######## PUBLIC PROPERTIES ########
 
     @property
     def requires_tie(self) -> bool:
-        """If this Beat requires a tie to be written."""
+        """If this Duration requires a tie to be written."""
         return self.display is None
 
     ######## SPECIAL METHODS ########
@@ -115,40 +115,40 @@ class Beat:
         """Reduce the fractional representation to a `float` and return it."""
         return float(self.fraction)
 
-    def __add__(self, other: Beat):
-        """Beats are added by adding their fractions."""
+    def __add__(self, other: Duration):
+        """Durations are added by adding their fractions."""
         if not isinstance(other, type(self)):
             raise TypeError
         fraction_sum = self.fraction + other.fraction
-        return Beat(fraction_sum.numerator, fraction_sum.denominator)
+        return Duration(fraction_sum.numerator, fraction_sum.denominator)
 
-    def __sub__(self, other: Beat):
-        """Beats are subtracted by subtracting their fractions."""
+    def __sub__(self, other: Duration):
+        """Durations are subtracted by subtracting their fractions."""
         if not isinstance(other, type(self)):
             raise TypeError
         fraction_diff = self.fraction - other.fraction
-        return Beat(fraction_diff.numerator, fraction_diff.denominator)
+        return Duration(fraction_diff.numerator, fraction_diff.denominator)
 
-    def __gt__(self, other: Beat):
-        """Beats are compared by their fractions."""
+    def __gt__(self, other: Duration):
+        """Durations are compared by their fractions."""
         if not isinstance(other, type(self)):
             return False
         return self.fraction > other.fraction
 
-    def __ge__(self, other: Beat):
-        """Beats are compared by their fractions."""
+    def __ge__(self, other: Duration):
+        """Durations are compared by their fractions."""
         return self > other or self == other
 
-    def __lt__(self, other: Beat):
-        """Beats are ordered by their fractions."""
+    def __lt__(self, other: Duration):
+        """Durations are ordered by their fractions."""
         if not isinstance(other, type(self)):
             return False
         return self.fraction < other.fraction
 
-    def __le__(self, other: Beat):
-        """Beats are compared by their fractions."""
+    def __le__(self, other: Duration):
+        """Durations are compared by their fractions."""
         return self < other or self == other
 
 
-BeatDef = Union[Beat, tuple[int, int]]
-"""A Beat or a shorthand tuple for one."""
+DurationDef = Union[Duration, tuple[int, int]]
+"""A Duration or a shorthand tuple for one."""

@@ -2,8 +2,8 @@ from typing import Optional
 
 from neoscore.core.object_group import ObjectGroup
 from neoscore.models import notehead_tables
-from neoscore.models.beat import Beat, BeatDef
 from neoscore.models.directions import VerticalDirection
+from neoscore.models.duration import Duration, DurationDef
 from neoscore.models.notehead_tables import NoteheadTable
 from neoscore.models.pitch import PitchDef
 from neoscore.utils.point import ORIGIN, Point
@@ -50,7 +50,7 @@ class Chordrest(ObjectGroup, StaffObject):
         pos_x: Unit,
         staff: Staff,
         pitches: Optional[list[PitchDef]],
-        duration: BeatDef,
+        duration: DurationDef,
         stem_direction: Optional[VerticalDirection] = None,
         notehead_table: NoteheadTable = notehead_tables.STANDARD,
     ):
@@ -148,7 +148,7 @@ class Chordrest(ObjectGroup, StaffObject):
         self._notehead_table = table
 
     @property
-    def duration(self) -> Beat:
+    def duration(self) -> Duration:
         """The length of this event.
 
         This is used to determine which (if any) `Flag`s, `RhythmDot`s,
@@ -158,8 +158,8 @@ class Chordrest(ObjectGroup, StaffObject):
         return self._duration
 
     @duration.setter
-    def duration(self, value: BeatDef):
-        value = Beat.from_def(value)
+    def duration(self, value: DurationDef):
+        value = Duration.from_def(value)
         if value.display is None:
             raise ValueError(f"{value} cannot be represented as a single note")
         self._duration = value

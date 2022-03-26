@@ -13,7 +13,7 @@ used.
 
 from dataclasses import dataclass
 
-from neoscore.models.beat_display import BaseDuration
+from neoscore.models.duration_display import BaseDuration
 
 # NOTE: When creating a new table, be sure to add it to ALL_TABLES at
 # the end of this file.

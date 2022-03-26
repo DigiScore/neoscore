@@ -13,10 +13,10 @@ KeySignature(clef.bounding_rect.width + unit(0.5), staff, "g_major")
 
 center = unit(20)
 
-n1 = Notehead(center, staff, "g'", Beat(1, 4))
-n2 = Notehead(center, staff, "b'", Beat(1, 4))
-n3 = Notehead(center, staff, "d''", Beat(1, 4))
-n4 = Notehead(center, staff, "f''", Beat(1, 4))
+n1 = Notehead(center, staff, "g'", Duration(1, 4))
+n2 = Notehead(center, staff, "b'", Duration(1, 4))
+n3 = Notehead(center, staff, "d''", Duration(1, 4))
+n4 = Notehead(center, staff, "f''", Duration(1, 4))
 
 
 def refresh_func(time):

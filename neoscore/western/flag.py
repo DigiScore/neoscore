@@ -4,9 +4,9 @@ from typing import TYPE_CHECKING, Optional, cast
 
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
-from neoscore.models.beat import Beat, BeatDef
-from neoscore.models.beat_display import BeatDisplay
 from neoscore.models.directions import VerticalDirection
+from neoscore.models.duration import Duration, DurationDef
+from neoscore.models.duration_display import DurationDisplay
 from neoscore.utils.exceptions import NoFlagNeededError
 from neoscore.utils.point import PointDef
 
@@ -43,7 +43,7 @@ class Flag(MusicText):
         self,
         pos: PointDef,
         parent: Parent,
-        duration: Beat,
+        duration: Duration,
         direction: VerticalDirection,
         font: Optional[MusicFont] = None,
     ):
@@ -53,32 +53,32 @@ class Flag(MusicText):
                 this should typically be `ORIGIN`.
             parent: If no font is given, this or one of its ancestors must
                 implement `HasMusicFont`.
-            duration: The beat corresponding to the flag. This controls the flag
+            duration: The duration corresponding to the flag. This controls the flag
                 glyph rendered.
             direction: The direction of the flag
             font: If provided, this overrides any font found in the ancestor chain.
         """
         self.duration = duration
         self.direction = direction
-        beat_display = cast(BeatDisplay, self.duration.display)
-        if beat_display.flag_count == 0:
+        duration_display = cast(DurationDisplay, self.duration.display)
+        if duration_display.flag_count == 0:
             raise NoFlagNeededError(self.duration)
         if self.direction == 1:
-            glyph_name = self._down_glyphnames[beat_display.flag_count]
+            glyph_name = self._down_glyphnames[duration_display.flag_count]
         else:
-            glyph_name = self._up_glyphnames[beat_display.flag_count]
+            glyph_name = self._up_glyphnames[duration_display.flag_count]
         MusicText.__init__(self, pos, parent, [glyph_name])
 
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def duration(self) -> Beat:
-        """Beat: The time duration of this Notehead"""
+    def duration(self) -> Duration:
+        """Duration: The time duration of this Notehead"""
         return self._duration
 
     @duration.setter
-    def duration(self, value: BeatDef):
-        value = Beat.from_def(value)
+    def duration(self, value: DurationDef):
+        value = Duration.from_def(value)
         if value.display is None:
             raise ValueError(f"{value} cannot be represented as a single note")
         self._duration = value
@@ -95,7 +95,7 @@ class Flag(MusicText):
     ######## PUBLIC CLASS METHODS ########
 
     @classmethod
-    def vertical_offset_needed(cls, duration: Beat) -> int:
+    def vertical_offset_needed(cls, duration: Duration) -> int:
         """Find the space needed in a stem using a flag of a given duration
 
         Returns: a number to be plugged into a staff unit

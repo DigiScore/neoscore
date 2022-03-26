@@ -7,8 +7,8 @@ from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.models import notehead_tables
-from neoscore.models.beat import Beat, BeatDef
-from neoscore.models.beat_display import BeatDisplay
+from neoscore.models.duration import Duration, DurationDef
+from neoscore.models.duration_display import DurationDisplay
 from neoscore.models.notehead_tables import NoteheadTable
 from neoscore.models.pitch import Pitch, PitchDef
 from neoscore.utils.units import ZERO, Unit
@@ -24,7 +24,7 @@ class Notehead(MusicText, StaffObject):
         pos_x: Unit,
         parent: PositionedObject,
         pitch: PitchDef,
-        duration: BeatDef,
+        duration: DurationDef,
         font: Optional[MusicFont] = None,
         notehead_table: NoteheadTable = notehead_tables.STANDARD,
     ):
@@ -43,15 +43,15 @@ class Notehead(MusicText, StaffObject):
             notehead_table: The set of noteheads to use according to `duration`.
         """
         self._pitch = Pitch.from_def(pitch)
-        self.duration = Beat.from_def(duration)
+        self.duration = Duration.from_def(duration)
         self._notehead_table = notehead_table
-        beat_display = cast(BeatDisplay, self.duration.display)
+        duration_display = cast(DurationDisplay, self.duration.display)
         # Use a temporary y-axis position before calculating it for real
         MusicText.__init__(
             self,
             (pos_x, ZERO),
             parent,
-            self._notehead_table.lookup_duration(beat_display.base_duration),
+            self._notehead_table.lookup_duration(duration_display.base_duration),
             font,
         )
         StaffObject.__init__(self, parent)
@@ -77,13 +77,13 @@ class Notehead(MusicText, StaffObject):
         self._pitch = value
 
     @property
-    def duration(self) -> Beat:
+    def duration(self) -> Duration:
         """The time duration of this Notehead"""
         return self._duration
 
     @duration.setter
-    def duration(self, value: BeatDef):
-        value = Beat.from_def(value)
+    def duration(self, value: DurationDef):
+        value = Duration.from_def(value)
         if value.display is None:
             raise ValueError(f"{value} cannot be represented as a single note")
         self._duration = value

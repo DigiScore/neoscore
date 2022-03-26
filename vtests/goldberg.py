@@ -25,33 +25,35 @@ lower_clef = Clef(unit(0), lower_staff, "bass")
 KeySignature(upper_clef.bounding_rect.width + unit(0.5), upper_staff, "g_major")
 KeySignature(lower_clef.bounding_rect.width + unit(0.5), lower_staff, "g_major")
 
-TimeSignature(unit(5), upper_staff, Beat(3, 4))
-TimeSignature(unit(5), lower_staff, Beat(3, 4))
+TimeSignature(unit(5), upper_staff, Duration(3, 4))
+TimeSignature(unit(5), lower_staff, Duration(3, 4))
 
 Dynamic((unit(7), unit(6)), upper_staff, "p")
 Text((unit(10), unit(6)), upper_staff, "dolce", expressive_font)
 
 # Upper staff notes
-Chordrest(unit(8), upper_staff, ["g''"], Beat(1, 4))
-Chordrest(unit(12), upper_staff, ["g''"], Beat(1, 4))
-a = Chordrest(unit(16), upper_staff, ["a''"], Beat(3, 16))
+Chordrest(unit(8), upper_staff, ["g''"], Duration(1, 4))
+Chordrest(unit(12), upper_staff, ["g''"], Duration(1, 4))
+a = Chordrest(unit(16), upper_staff, ["a''"], Duration(3, 16))
 MusicText((unit(-1), unit(-2)), a, "ornamentMordent")
-Chordrest(unit(19), upper_staff, ["b''"], Beat(1, 16))
+Chordrest(unit(19), upper_staff, ["b''"], Duration(1, 16))
 
 # Lower staff notes - upper voice
-Rest(Point(unit(10), unit(-3)), lower_staff, Beat(1, 4))
+Rest(Point(unit(10), unit(-3)), lower_staff, Duration(1, 4))
 Chordrest(
-    unit(16), lower_staff, ["d'"], Beat(1, 4), stem_direction=VerticalDirection.UP
+    unit(16), lower_staff, ["d'"], Duration(1, 4), stem_direction=VerticalDirection.UP
 )
 
 # Lower staff notes - middle voice
 # Can't use Chordrest for these rests because Chordrest doesn't
 # currently support explicit vertical positioning of rests.
-Rest(Point(unit(8), unit(-2)), lower_staff, Beat(1, 4))
-Chordrest(unit(12), lower_staff, ["b"], Beat(2, 4), stem_direction=VerticalDirection.UP)
+Rest(Point(unit(8), unit(-2)), lower_staff, Duration(1, 4))
+Chordrest(
+    unit(12), lower_staff, ["b"], Duration(2, 4), stem_direction=VerticalDirection.UP
+)
 
 # Lower staff notes - lower voice
-Chordrest(unit(8), lower_staff, ["g"], Beat(3, 4))
+Chordrest(unit(8), lower_staff, ["g"], Duration(3, 4))
 
 BarLine(unit(22), [upper_staff, lower_staff])
 
