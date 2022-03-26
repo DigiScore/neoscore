@@ -16,11 +16,7 @@ if TYPE_CHECKING:
 
 class TimeSignature(ObjectGroup, HasMusicFont):
 
-    """A logical and graphical time signature
-
-    TODO LOW: Time signatures with differing character-length numerators and
-    denominators (e.g. 12/8) currently display incorrectly as left-justified.
-    """
+    """A logical and graphical time signature"""
 
     def __init__(
         self,
@@ -54,6 +50,7 @@ class TimeSignature(ObjectGroup, HasMusicFont):
             self,
             self.meter.lower_text_glyph_names,
         )
+        self._align_glyphs()
 
     ######## PUBLIC PROPERTIES ########
 
@@ -84,3 +81,15 @@ class TimeSignature(ObjectGroup, HasMusicFont):
         self._meter = Meter.from_def(value)
         self.upper_text.text = self._meter.upper_text_glyph_names
         self.lower_text.text = self._meter.lower_text_glyph_names
+        self._align_glyphs()
+
+    def _align_glyphs(self):
+        upper_width = self.upper_text.bounding_rect.width
+        lower_width = self.lower_text.bounding_rect.width
+        if upper_width > lower_width:
+            self.lower_text.x += (upper_width - lower_width) / 2
+        elif lower_width > upper_width:
+            self.upper_text.x += (lower_width - upper_width) / 2
+        else:
+            # No adjustment needed
+            pass

@@ -7,7 +7,7 @@ from neoscore.utils.units import ZERO, Mm
 from neoscore.western.meter import COMMON_TIME, CUT_TIME, Meter
 from neoscore.western.staff import Staff
 from neoscore.western.time_signature import TimeSignature
-from tests.helpers import render_scene
+from tests.helpers import assert_almost_equal, render_scene
 
 # TODO LOW test that glyphs are actually created successfully - this
 # failed to catch bugs in creating rhythm dots and flags, and probably
@@ -84,6 +84,16 @@ class TestChordrest(unittest.TestCase):
         assert ts.lower_text.music_chars == [
             MusicChar(self.staff.music_font, "timeSig4")
         ]
+
+    def test_alignment_lower_needing_adjustment(self):
+        ts = TimeSignature(ZERO, self.staff, Meter.numeric([5, 10], 16))
+        assert ts.upper_text.x == ZERO
+        assert_almost_equal(ts.lower_text.x, self.staff.unit(1.905), 2)
+
+    def test_alignment_upper_needing_adjustment(self):
+        ts = TimeSignature(ZERO, self.staff, Meter.numeric(1, 16))
+        assert ts.lower_text.x == ZERO
+        assert_almost_equal(ts.upper_text.x, self.staff.unit(0.889), 2)
 
     def test_end_to_end(self):
         ts = TimeSignature(ZERO, self.staff, COMMON_TIME)
