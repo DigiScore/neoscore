@@ -8,6 +8,8 @@ from neoscore.utils.units import ZERO, Unit
 from neoscore.western.multi_staff_object import MultiStaffObject
 from neoscore.western.staff import Staff
 
+# TODO MEDIUM support double bar lines
+
 
 class BarLine(Path, MultiStaffObject):
 

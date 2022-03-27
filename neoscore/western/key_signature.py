@@ -1,3 +1,4 @@
+import warnings
 from typing import Optional, Union
 
 from neoscore.core.mapping import map_between
@@ -11,6 +12,8 @@ from neoscore.western import clef_type
 from neoscore.western.staff import Staff
 from neoscore.western.staff_object import StaffObject
 
+# TODO LOW this doesn't support natural (cancelling) key signatures
+
 
 class KeySignature(ObjectGroup, StaffObject):
 
@@ -19,10 +22,6 @@ class KeySignature(ObjectGroup, StaffObject):
     The signature will be rendered initially at the given `pos_x`,
     and at the beginning of subsequent lines until a new
     `KeySignature` is encountered.
-
-    All traditional key signatures (those included in `KeySignatureTypes`)
-    are supported by this class. Nontraditional key signatures could
-    be implemented in a fairly straightforward way in a subclass of this.
     """
 
     def __init__(
@@ -77,68 +76,6 @@ class _KeySignatureAccidental(MusicText, StaffObject):
     This should only be used within `KeySignature`s.
     """
 
-    # TODO HIGH move these to ClefType, which will allow key signatures with custom clefs
-
-    __sharp_positions = {
-        "f": (0, 0),
-        "c": (1, 1.5),
-        "g": (2, -0.5),
-        "d": (3, 1),
-        "a": (4, 2.5),
-        "e": (5, 0.5),
-        "b": (6, 2),
-    }
-    __flat_positions = {
-        "b": (0, 2),
-        "e": (1, 0.5),
-        "a": (2, 2.5),
-        "d": (3, 1),
-        "g": (4, 3),
-        "c": (5, 1.5),
-        "f": (6, 3.5),
-    }
-    __bass_flat_positions = {
-        key: (value[0], value[1] + 1) for key, value in __flat_positions.items()
-    }
-    __alto_flat_positions = {
-        key: (value[0], value[1] + 0.5) for key, value in __flat_positions.items()
-    }
-    __bass_sharp_positions = {
-        key: (value[0], value[1] + 1) for key, value in __sharp_positions.items()
-    }
-    __alto_sharp_positions = {
-        key: (value[0], value[1] + 0.5) for key, value in __sharp_positions.items()
-    }
-    # TODO MEDIUM key signature layouts for tenor clef seems to be wrong
-    positions = {
-        AccidentalType.FLAT: {
-            clef_type.TREBLE: __flat_positions,
-            clef_type.TREBLE_8VB: __flat_positions,
-            clef_type.BASS: __bass_flat_positions,
-            clef_type.BASS_8VB: __bass_flat_positions,
-            clef_type.ALTO: __alto_flat_positions,
-            clef_type.TENOR: {
-                key: (value[0], value[1] - 0.5)
-                for key, value in __flat_positions.items()
-            },
-            clef_type.PERCUSSION_1: __alto_flat_positions,
-            clef_type.PERCUSSION_2: __alto_flat_positions,
-        },
-        AccidentalType.SHARP: {
-            clef_type.TREBLE: __sharp_positions,
-            clef_type.TREBLE_8VB: __sharp_positions,
-            clef_type.BASS: __bass_sharp_positions,
-            clef_type.BASS_8VB: __bass_sharp_positions,
-            clef_type.ALTO: __alto_sharp_positions,
-            clef_type.TENOR: {
-                key: (value[0], value[1] - 0.5)
-                for key, value in __sharp_positions.items()
-            },
-            clef_type.PERCUSSION_1: __alto_sharp_positions,
-            clef_type.PERCUSSION_2: __alto_sharp_positions,
-        },
-    }
-
     def __init__(
         self,
         pos,
@@ -191,9 +128,16 @@ class _KeySignatureAccidental(MusicText, StaffObject):
         if clef is None:
             return
         clef_type = clef.clef_type
-        pos_tuple = _KeySignatureAccidental.positions[self.accidental_type][clef_type][
-            self.pitch_letter
-        ]
+        try:
+            if self.accidental_type == AccidentalType.SHARP:
+                pos_tuple = clef_type.key_signature_sharp_layout[self.pitch_letter]
+            else:
+                pos_tuple = clef_type.key_signature_flat_layout[self.pitch_letter]
+        except TypeError:
+            warnings.warn(
+                f"Clef {clef_type} does not support key signatures; skipping this occurrence."
+            )
+            return
         visual_pos_x = self.staff.unit(pos_tuple[0]) + pos.x
         visual_pos_y = self.staff.unit(pos_tuple[1]) + pos.y
         if shift_for_clef:
