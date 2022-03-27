@@ -51,7 +51,7 @@ class TestImage(unittest.TestCase):
 
     def test_length_is_zero(self):
         image = Image(ORIGIN, None, "/test/path")
-        assert image.length == ZERO
+        assert image.breakable_length == ZERO
 
     def test_pixmap_image_end_to_end(self):
         Image(ORIGIN, None, pixmap_image_path, 2)

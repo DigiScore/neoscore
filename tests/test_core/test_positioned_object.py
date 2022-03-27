@@ -113,4 +113,4 @@ class TestPositionedObject(unittest.TestCase):
 
     def test_length_is_zero(self):
         obj = PositionedObject((Unit(5), Unit(6)))
-        assert obj.length == ZERO
+        assert obj.breakable_length == ZERO

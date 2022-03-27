@@ -52,15 +52,12 @@ class RichText(PositionedObject):
         super().__init__(pos, parent)
 
     @property
-    def length(self) -> Unit:
+    def breakable_length(self) -> Unit:
         """The breakable width of the object.
 
         This is always 0, meaning RichText objects cannot be broken
         across Flowable lines.
         """
-        # TODO MEDIUM kind of weird that 'length' and 'width' are
-        # different properties. maybe follow Qt's lead in naming width
-        # to text_width to make it more clear?
         return ZERO
 
     @property

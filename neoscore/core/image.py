@@ -60,7 +60,7 @@ class Image(PositionedObject):
         self._file_path = value
 
     @property
-    def length(self) -> Unit:
+    def breakable_length(self) -> Unit:
         """The breakable width of the object.
 
         This is always 0, meaning Images objects cannot be broken

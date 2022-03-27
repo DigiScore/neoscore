@@ -55,7 +55,7 @@ class Score(ObjectGroup):
                 (Score._instrument_pos_y(instrument_index) + event_data.register.value),
             ),
             self,
-            event_data.length,
+            event_data.breakable_length,
             event_data.text,
             self.text_font,
         )
@@ -67,7 +67,7 @@ class Score(ObjectGroup):
                 (Score._instrument_pos_y(instrument_index) + event_data.register.value),
             ),
             self,
-            event_data.length,
+            event_data.breakable_length,
             event_data.text,
             self.music_font,
         )

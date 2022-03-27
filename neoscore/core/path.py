@@ -371,7 +371,7 @@ class Path(PaintedObject):
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def length(self) -> Unit:
+    def breakable_length(self) -> Unit:
         """The breakable length of the path.
 
         This is calculated automatically from path contents. By extension,

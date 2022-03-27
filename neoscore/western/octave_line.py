@@ -106,7 +106,9 @@ class OctaveLine(ObjectGroup, Spanner, HasMusicFont):
         self._music_font = font
         self.direction = direction
         self.transposition = Transposition(OctaveLine.intervals[indication])
-        self.line_text = _OctaveLineText(ORIGIN, self, self.length, indication, font)
+        self.line_text = _OctaveLineText(
+            ORIGIN, self, self.breakable_length, indication, font
+        )
 
         # Vertically center the path relative to the text
         text_rect = self.line_text.bounding_rect
@@ -135,7 +137,7 @@ class OctaveLine(ObjectGroup, Spanner, HasMusicFont):
         return self._music_font
 
     @property
-    def length(self) -> Unit:
+    def breakable_length(self) -> Unit:
         return self.spanner_x_length
 
 
@@ -165,7 +167,7 @@ class _OctaveLineText(MusicText):
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def length(self) -> Unit:
+    def breakable_length(self) -> Unit:
         return self._length
 
     ######## PRIVATE METHODS ########

@@ -18,7 +18,7 @@ class InstrumentData:
             start_measure_num = int(Measure(event.pos_x).display_value)
             end_measure_num = int(
                 Measure(
-                    event.pos_x + GridUnit(event.length) - GridUnit(1)
+                    event.pos_x + GridUnit(event.breakable_length) - GridUnit(1)
                 ).display_value
             )
             occupied_measures.update(range(start_measure_num, end_measure_num + 1))

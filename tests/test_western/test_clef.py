@@ -58,9 +58,9 @@ class TestClef(unittest.TestCase):
 
     def test_length_with_no_other_clefs(self):
         clef = Clef(Mm(1), self.staff, ClefType.TREBLE)
-        assert clef.length == Mm(200 - 1)
+        assert clef.breakable_length == Mm(200 - 1)
 
     def test_length_with_other_clefs(self):
         clef = Clef(Mm(1), self.staff, ClefType.TREBLE)
         later_clef = Clef(Mm(50), self.staff, ClefType.TREBLE)
-        assert clef.length == Mm(50 - 1)
+        assert clef.breakable_length == Mm(50 - 1)

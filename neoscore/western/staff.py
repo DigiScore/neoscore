@@ -98,7 +98,7 @@ class Staff(MusicPath):
         return self.unit((self.line_count - 1))
 
     @property
-    def length(self) -> Unit:
+    def breakable_length(self) -> Unit:
         # Override expensive `Path.length` since the staff length here
         # is already known.
         return self._length
@@ -127,7 +127,7 @@ class Staff(MusicPath):
             if start_x < relative_x < closest_x:
                 closest_x = relative_x
         if closest_x == Unit(float("inf")):
-            return self.length - start_x
+            return self.breakable_length - start_x
         return closest_x - start_x
 
     def clefs(self) -> list[tuple[Unit, Clef]]:
@@ -149,7 +149,7 @@ class Staff(MusicPath):
         """Return the active transposition at a given x position, if any."""
         for item in self.descendants_of_class_or_subclass(OctaveLine):
             line_pos = map_between_x(self, item)
-            if line_pos <= pos_x <= line_pos + item.length:
+            if line_pos <= pos_x <= line_pos + item.breakable_length:
                 return item.transposition
         return None
 

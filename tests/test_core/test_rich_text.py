@@ -31,7 +31,7 @@ class TestRichText(unittest.TestCase):
 
     def test_length_is_zero(self):
         obj = RichText((Unit(5), Unit(6)), None, self.html)
-        assert obj.length == ZERO
+        assert obj.breakable_length == ZERO
 
     def test_rich_text_end_to_end(self):
         RichText(ORIGIN, None, "<p>test</p>", Mm(50), None, 2)

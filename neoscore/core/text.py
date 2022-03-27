@@ -55,7 +55,7 @@ class Text(PaintedObject):
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def length(self) -> Unit:
+    def breakable_length(self) -> Unit:
         """The breakable width of the object.
 
         This is used to determine how and where rendering cuts should be made.

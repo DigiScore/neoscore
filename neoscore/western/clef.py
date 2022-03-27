@@ -73,7 +73,7 @@ class Clef(MusicText, StaffObject):
         return self._clef_type
 
     @property
-    def length(self) -> Unit:
+    def breakable_length(self) -> Unit:
         """Find the length in the staff during which this clef is active.
 
         This is defined as the distance relative to the staff until
@@ -91,7 +91,7 @@ class Clef(MusicText, StaffObject):
             if clef is self:
                 self_staff_x = staff_x
         # No later clefs exist; return the remaining staff length
-        return self.staff.length - self_staff_x
+        return self.staff.breakable_length - self_staff_x
 
     @property
     def staff_position(self) -> Unit:

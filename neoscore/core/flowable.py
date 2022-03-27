@@ -65,7 +65,7 @@ class Flowable(PositionedObject):
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def length(self) -> Unit:
+    def breakable_length(self) -> Unit:
         """The length of the unwrapped flowable"""
         return self._length
 
@@ -137,7 +137,7 @@ class Flowable(PositionedObject):
         while True:
             x_progress += live_page_width - pos_x
             pos_y = pos_y + self.height + self.y_padding
-            if x_progress >= self.length:
+            if x_progress >= self.breakable_length:
                 # End of breakable width - Done.
                 break
             if pos_y > live_page_height:
@@ -216,7 +216,7 @@ class Flowable(PositionedObject):
         # breaks, and will not work if/when other types are added
         remaining_x = flowable_x
         for i, controller in enumerate(self.layout_controllers):
-            remaining_x -= controller.length
+            remaining_x -= controller.breakable_length
             # Allow error of Unit(1) to compensate for repeated subtraction
             # rounding errors.
             if remaining_x.base_value < -1:

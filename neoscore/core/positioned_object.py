@@ -86,9 +86,8 @@ class PositionedObject:
     def y(self, value: Unit):
         self.pos = Point(self.x, value)
 
-    # TODO HIGH rename breakable_length
     @property
-    def length(self) -> Unit:
+    def breakable_length(self) -> Unit:
         """The breakable length of the object.
 
         This is used to determine how and where rendering cuts should
@@ -209,7 +208,7 @@ class PositionedObject:
 
     def _render(self):
         """Render the object and all its children."""
-        if self.length != ZERO and self.flowable is not None:
+        if self.breakable_length != ZERO and self.flowable is not None:
             self._render_in_flowable()
         else:
             self._render_complete(canvas_pos_of(self))
@@ -223,7 +222,9 @@ class PositionedObject:
         # Calculate position within flowable
         pos_in_flowable = descendant_pos(self, self.flowable)
 
-        remaining_x = self.length + self.flowable.dist_to_line_end(pos_in_flowable.x)
+        remaining_x = self.breakable_length + self.flowable.dist_to_line_end(
+            pos_in_flowable.x
+        )
         if remaining_x < ZERO:
             self._render_complete(
                 canvas_pos_of(self),
@@ -252,17 +253,20 @@ class PositionedObject:
             first_line_i + 1, len(self.flowable.layout_controllers)
         ):
             current_line = self.flowable.layout_controllers[current_line_i]
-            if remaining_x > current_line.length:
+            if remaining_x > current_line.breakable_length:
                 # Render spanning continuation
                 line_pos = canvas_pos_of(current_line)
                 render_start_pos = Point(line_pos.x, line_pos.y + pos_in_flowable.y)
                 render_end_pos = Point(
-                    render_start_pos.x + current_line.length, render_start_pos.y
+                    render_start_pos.x + current_line.breakable_length,
+                    render_start_pos.y,
                 )
                 self._render_spanning_continuation(
-                    self.length - remaining_x, render_start_pos, render_end_pos
+                    self.breakable_length - remaining_x,
+                    render_start_pos,
+                    render_end_pos,
                 )
-                remaining_x -= current_line.length
+                remaining_x -= current_line.breakable_length
             else:
                 break
 
@@ -271,7 +275,7 @@ class PositionedObject:
             Point(current_line.flowable_x, pos_in_flowable.y)
         )
         render_end_pos = Point(render_start_pos.x + remaining_x, render_start_pos.y)
-        self._render_after_break(self.length - remaining_x, render_start_pos)
+        self._render_after_break(self.breakable_length - remaining_x, render_start_pos)
 
     def _render_complete(
         self,

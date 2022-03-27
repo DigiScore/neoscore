@@ -40,15 +40,15 @@ class TestText(unittest.TestCase):
 
     def test_length_when_non_breakable(self):
         obj = Text((Unit(5), Unit(6)), None, "testing", breakable=False)
-        assert obj.length == ZERO
+        assert obj.breakable_length == ZERO
 
     def test_length_when_breakable(self):
         obj = Text((Unit(5), Unit(6)), None, "testing", breakable=True)
         # Can't assert exact length since this can flake
-        assert obj.length == obj.bounding_rect.width
+        assert obj.breakable_length == obj.bounding_rect.width
 
     def test_breakable_setter(self):
         obj = Text((Unit(5), Unit(6)), None, "testing", breakable=True)
-        assert obj.length == obj.bounding_rect.width
+        assert obj.breakable_length == obj.bounding_rect.width
         obj.breakable = False
-        assert obj.length == ZERO
+        assert obj.breakable_length == ZERO

@@ -23,7 +23,7 @@ class TestFlowable(unittest.TestCase):
         assert flowable.pos == Point(Mm(10), Mm(11))
         assert flowable.x == Mm(10)
         assert flowable.y == Mm(11)
-        assert flowable.length == Mm(1000)
+        assert flowable.breakable_length == Mm(1000)
         assert flowable.height == Mm(100)
         assert flowable.y_padding == Mm(5)
 

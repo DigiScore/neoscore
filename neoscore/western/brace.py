@@ -62,12 +62,12 @@ class Brace(MultiStaffObject, StaffObject, MusicText):
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def length(self):
+    def breakable_length(self):
         """Unit: The breakable width of the object.
 
         This is used to determine how and where rendering cuts should be made.
         """
-        return self.staff.length - map_between_x(self.staff, self)
+        return self.staff.breakable_length - map_between_x(self.staff, self)
 
     ######## PRIVATE METHODS ########
 

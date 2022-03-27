@@ -56,14 +56,14 @@ class KeySignature(ObjectGroup, StaffObject):
         return self._key_signature_type
 
     @property
-    def length(self) -> Unit:
+    def breakable_length(self) -> Unit:
         """`KeySignature`s extend until another is found in the staff."""
         return self.staff.distance_to_next_of_type(self)
 
     ######## PRIVATE METHODS ########
 
     def _create_pseudo_accidentals(self):
-        length = self.length
+        length = self.breakable_length
         for key, value in self.key_signature_type.value.items():
             if value is not None:
                 _KeySignatureAccidental(
@@ -151,7 +151,7 @@ class _KeySignatureAccidental(MusicText, StaffObject):
         self.accidental_type = accidental_type
 
     @property
-    def length(self):
+    def breakable_length(self):
         return self._length
 
     def _padded_clef_width(self, clef):

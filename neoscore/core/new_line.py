@@ -48,10 +48,10 @@ class NewLine(LayoutController):
 
         This position is relative to the page.
         """
-        return Point(self.pos.x + self.length, self.pos.y + self.height)
+        return Point(self.pos.x + self.breakable_length, self.pos.y + self.height)
 
     @property
-    def length(self) -> Unit:
+    def breakable_length(self) -> Unit:
         """The length of the line."""
         return self.page.paper.live_width - self.pos.x
 

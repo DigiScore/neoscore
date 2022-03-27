@@ -53,11 +53,11 @@ class RepeatingMusicTextLine(MusicText, Spanner):
         Spanner.__init__(self, end_x, end_parent or self)
         self.single_repetition_chars = self.music_chars
         base_width = self.font.bounding_rect_of(self.text).width
-        repetitions_needed = int(cast(float, self.length / base_width))
+        repetitions_needed = int(cast(float, self.breakable_length / base_width))
         self.music_chars = self.music_chars * repetitions_needed
 
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def length(self) -> Unit:
+    def breakable_length(self) -> Unit:
         return self.spanner_x_length
