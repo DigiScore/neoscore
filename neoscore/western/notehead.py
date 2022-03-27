@@ -66,15 +66,16 @@ class Notehead(MusicText, StaffObject):
         """The visual width of the Notehead"""
         return self.bounding_rect.width
 
+    # TODO MEDIUM make these setter update glyph / pos
+
     @property
     def pitch(self) -> Pitch:
         """The logical pitch."""
         return self._pitch
 
     @pitch.setter
-    def pitch(self, value):
-        # TODO MEDIUM support setting from pitchdef
-        self._pitch = value
+    def pitch(self, value: PitchDef):
+        self._pitch = Pitch.from_def(value)
 
     @property
     def duration(self) -> Duration:

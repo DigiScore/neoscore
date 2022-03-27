@@ -114,3 +114,8 @@ class TestNotehead(unittest.TestCase):
         self.assert_glyph_lookup(Duration(3, 4), "noteheadHalfParens", table)
         self.assert_glyph_lookup(Duration(3, 2), "noteheadWholeParens", table)
         self.assert_glyph_lookup(Duration(3, 1), "noteheadDoubleWholeParens", table)
+
+    def test_pitch_setter_from_def(self):
+        note = Notehead(Mm(10), self.staff, "c'", Duration(1, 4))
+        note.pitch = "c"
+        assert note.pitch.letter == "c"
