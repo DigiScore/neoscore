@@ -1,5 +1,5 @@
 from neoscore.managed.instrument_family import InstrumentFamily
-from neoscore.models.clef_type import ClefType
+from neoscore.western import clef_type
 
 
 class Instrument:
@@ -44,7 +44,7 @@ class Instrument:
 class Flute(Instrument):
     name = "Flute"
     short_name = "Fl"
-    staves = [(ClefType.TREBLE, None)]
+    staves = [(clef_type.TREBLE, None)]
     family = InstrumentFamily.WIND
 
 
@@ -53,7 +53,7 @@ class Trumpet(Instrument):
 
     name = "Trumpet"
     short_name = "Tpt"
-    staves = [(ClefType.TREBLE, None)]
+    staves = [(clef_type.TREBLE, None)]
     family = InstrumentFamily.BRASS
 
 
@@ -62,7 +62,7 @@ class Piano(Instrument):
 
     name = "Piano"
     short_name = "Pno"
-    staves = [(ClefType.TREBLE, None), (ClefType.BASS, None)]
+    staves = [(clef_type.TREBLE, None), (clef_type.BASS, None)]
     family = InstrumentFamily.KEYBOARD
 
 
@@ -71,7 +71,7 @@ class Violin(Instrument):
 
     name = "Violin"
     short_name = "Vln"
-    staves = [(ClefType.TREBLE, None)]
+    staves = [(clef_type.TREBLE, None)]
     family = InstrumentFamily.STRING
 
 
@@ -94,7 +94,7 @@ class Viola(Instrument):
 
     name = "Viola"
     short_name = "Vla"
-    staves = [(ClefType.ALTO, None)]
+    staves = [(clef_type.ALTO, None)]
     family = InstrumentFamily.STRING
 
 
@@ -103,7 +103,7 @@ class Cello(Instrument):
 
     name = "Cello"
     short_name = "Vc"
-    staves = [(ClefType.BASS, None)]
+    staves = [(clef_type.BASS, None)]
     family = InstrumentFamily.STRING
 
 
@@ -118,7 +118,7 @@ class Bass(Instrument):
 
     name = "Bass"
     short_name = "Cb"
-    staves = [(ClefType.BASS_8VB, None)]
+    staves = [(clef_type.BASS_8VB, None)]
     family = InstrumentFamily.STRING
 
 

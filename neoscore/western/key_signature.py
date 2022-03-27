@@ -4,10 +4,10 @@ from neoscore.core.mapping import map_between
 from neoscore.core.music_text import MusicText
 from neoscore.core.object_group import ObjectGroup
 from neoscore.models.accidental_type import AccidentalType
-from neoscore.models.clef_type import ClefType
 from neoscore.models.key_signature_type import KeySignatureType
 from neoscore.utils.point import ORIGIN, Point
 from neoscore.utils.units import Unit
+from neoscore.western import clef_type
 from neoscore.western.staff import Staff
 from neoscore.western.staff_object import StaffObject
 
@@ -77,6 +77,8 @@ class _KeySignatureAccidental(MusicText, StaffObject):
     This should only be used within `KeySignature`s.
     """
 
+    # TODO HIGH move these to ClefType, which will allow key signatures with custom clefs
+
     __sharp_positions = {
         "f": (0, 0),
         "c": (1, 1.5),
@@ -95,35 +97,45 @@ class _KeySignatureAccidental(MusicText, StaffObject):
         "c": (5, 1.5),
         "f": (6, 3.5),
     }
+    __bass_flat_positions = {
+        key: (value[0], value[1] + 1) for key, value in __flat_positions.items()
+    }
+    __alto_flat_positions = {
+        key: (value[0], value[1] + 0.5) for key, value in __flat_positions.items()
+    }
+    __bass_sharp_positions = {
+        key: (value[0], value[1] + 1) for key, value in __sharp_positions.items()
+    }
+    __alto_sharp_positions = {
+        key: (value[0], value[1] + 0.5) for key, value in __sharp_positions.items()
+    }
+    # TODO MEDIUM key signature layouts for tenor clef seems to be wrong
     positions = {
         AccidentalType.FLAT: {
-            ClefType.TREBLE: __flat_positions,
-            ClefType.BASS: {
-                key: (value[0], value[1] + 1) for key, value in __flat_positions.items()
-            },
-            ClefType.ALTO: {
-                key: (value[0], value[1] + 0.5)
-                for key, value in __flat_positions.items()
-            },
-            ClefType.TENOR: {
+            clef_type.TREBLE: __flat_positions,
+            clef_type.TREBLE_8VB: __flat_positions,
+            clef_type.BASS: __bass_flat_positions,
+            clef_type.BASS_8VB: __bass_flat_positions,
+            clef_type.ALTO: __alto_flat_positions,
+            clef_type.TENOR: {
                 key: (value[0], value[1] - 0.5)
                 for key, value in __flat_positions.items()
             },
+            clef_type.PERCUSSION_1: __alto_flat_positions,
+            clef_type.PERCUSSION_2: __alto_flat_positions,
         },
         AccidentalType.SHARP: {
-            ClefType.TREBLE: __sharp_positions,
-            ClefType.BASS: {
-                key: (value[0], value[1] + 1)
-                for key, value in __sharp_positions.items()
-            },
-            ClefType.ALTO: {
-                key: (value[0], value[1] + 0.5)
-                for key, value in __sharp_positions.items()
-            },
-            ClefType.TENOR: {
+            clef_type.TREBLE: __sharp_positions,
+            clef_type.TREBLE_8VB: __sharp_positions,
+            clef_type.BASS: __bass_sharp_positions,
+            clef_type.BASS_8VB: __bass_sharp_positions,
+            clef_type.ALTO: __alto_sharp_positions,
+            clef_type.TENOR: {
                 key: (value[0], value[1] - 0.5)
                 for key, value in __sharp_positions.items()
             },
+            clef_type.PERCUSSION_1: __alto_sharp_positions,
+            clef_type.PERCUSSION_2: __alto_sharp_positions,
         },
     }
 

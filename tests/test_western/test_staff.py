@@ -5,9 +5,9 @@ import pytest
 from neoscore.core import neoscore
 from neoscore.core.flowable import Flowable
 from neoscore.core.paper import Paper
-from neoscore.models.clef_type import ClefType
 from neoscore.utils.point import Point
 from neoscore.utils.units import Mm
+from neoscore.western import clef_type
 from neoscore.western.clef import Clef
 from neoscore.western.octave_line import OctaveLine
 from neoscore.western.staff import NoClefError, Staff
@@ -59,9 +59,9 @@ class TestStaff(unittest.TestCase):
         Clef(Mm(0), staff, "treble")
         Clef(Mm(10), staff, "bass")
         # Test between two clefs should have treble in effect
-        assert staff.active_clef_at(Mm(1)).clef_type == ClefType.TREBLE
+        assert staff.active_clef_at(Mm(1)).clef_type == clef_type.TREBLE
         # Test after bass clef goes into effect
-        assert staff.active_clef_at(Mm(11)).clef_type == ClefType.BASS
+        assert staff.active_clef_at(Mm(11)).clef_type == clef_type.BASS
 
     def test_active_clef_at_with_implicit_default_clef(self):
         staff = Staff((Mm(0), Mm(0)), self.flowable, Mm(100))

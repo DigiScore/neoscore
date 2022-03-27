@@ -1,9 +1,7 @@
-from typing import Union
-
 from neoscore.core.music_text import MusicText
-from neoscore.models.clef_type import ClefType
 from neoscore.utils.point import Point
-from neoscore.utils.units import Unit
+from neoscore.utils.units import ZERO, Unit
+from neoscore.western.clef_type import ClefType, ClefTypeDef
 from neoscore.western.staff import Staff
 from neoscore.western.staff_object import StaffObject
 
@@ -19,51 +17,23 @@ class Clef(MusicText, StaffObject):
     `Staff`s use these to determine how pitches within them should be laid out.
     """
 
-    _canonical_names = {
-        ClefType.TREBLE: "gClef",
-        ClefType.BASS: "fClef",
-        ClefType.BASS_8VB: "fClef8vb",
-        ClefType.TENOR: "cClef",
-        ClefType.ALTO: "cClef",
-    }
-    _baseline_staff_positions = {
-        ClefType.TREBLE: 3,
-        ClefType.BASS: 1,
-        ClefType.BASS_8VB: 1,
-        ClefType.TENOR: 1,
-        ClefType.ALTO: 2,
-    }
-    _middle_c_staff_positions = {
-        ClefType.TREBLE: 5,
-        ClefType.BASS: -1,
-        ClefType.BASS_8VB: -6.5,
-        ClefType.TENOR: 1,
-        ClefType.ALTO: 2,
-    }
-
-    def __init__(self, pos_x: Unit, staff: Staff, clef_type: Union[ClefType, str]):
+    def __init__(self, pos_x: Unit, staff: Staff, clef_type: ClefTypeDef):
         """
         Args:
-            pos_x:
-            staff:
-            clef_type: The type of clef. For convenience, any `str` of a `ClefType`
-                enum name may be passed.
-
-        Raises:
-            KeyError: If the given `clef_type` is not a valid
-                `ClefType` or `ClefType` enum name.
+            pos_x: The x position in the staff
+            staff: The parent staff
+            clef_type: The type of clef. String names of common clefs may be
+                given as a convenience; see `ClefTypeDef`.
         """
-        if isinstance(clef_type, ClefType):
-            self._clef_type = clef_type
-        else:
-            self._clef_type = ClefType[clef_type.upper()]
         StaffObject.__init__(self, staff)
+        # Init with placeholder y position and text; clef_type setter will update
         MusicText.__init__(
             self,
-            (pos_x, self.staff_position),
+            (pos_x, ZERO),
             staff,
-            self._canonical_names[self._clef_type],
+            "",
         )
+        self.clef_type = clef_type
 
     ######## PUBLIC PROPERTIES ########
 
@@ -71,6 +41,15 @@ class Clef(MusicText, StaffObject):
     def clef_type(self) -> ClefType:
         """The type of clef, both logical and graphical."""
         return self._clef_type
+
+    @clef_type.setter
+    def clef_type(self, value: ClefTypeDef):
+        self._clef_type = ClefType.from_def(value)
+        self.y = self.staff.unit(self._clef_type.staff_pos)
+        self.text = self._clef_type.glyph_name
+        self._middle_c_staff_position = self.staff.unit(
+            self.clef_type.middle_c_staff_pos
+        )
 
     @property
     def breakable_length(self) -> Unit:
@@ -94,16 +73,6 @@ class Clef(MusicText, StaffObject):
         return self.staff.breakable_length - self_staff_x
 
     @property
-    def staff_position(self) -> Unit:
-        """The y position in staff units below top of the staff.
-
-        0 means exactly at the top staff line.
-        Positive values extend *downward* below the top staff line
-        while negative values extend *upward* above the top staff line.
-        """
-        return self.staff.unit(Clef._baseline_staff_positions[self.clef_type])
-
-    @property
     def middle_c_staff_position(self) -> Unit:
         """The vertical position of middle C for this clef
 
@@ -114,7 +83,7 @@ class Clef(MusicText, StaffObject):
         This value is primarily useful in calculations of pitch staff positions
         which take a clef into account
         """
-        return self.staff.unit(Clef._middle_c_staff_positions[self.clef_type])
+        return self._middle_c_staff_position
 
     ######## PRIVATE METHODS ########
 

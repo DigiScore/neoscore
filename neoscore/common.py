@@ -20,7 +20,6 @@ from neoscore.core.rich_text import RichText
 from neoscore.core.text import Text
 from neoscore.models import notehead_tables
 from neoscore.models.accidental_type import AccidentalType
-from neoscore.models.clef_type import ClefType
 from neoscore.models.directions import HorizontalDirection, VerticalDirection
 from neoscore.models.duration import Duration
 from neoscore.models.key_signature_type import KeySignatureType
@@ -35,6 +34,7 @@ from neoscore.western.beam import Beam
 from neoscore.western.brace import Brace
 from neoscore.western.chordrest import Chordrest
 from neoscore.western.clef import Clef
+from neoscore.western.clef_type import ClefType
 from neoscore.western.dynamic import Dynamic
 from neoscore.western.flag import Flag
 from neoscore.western.hairpin import Hairpin
