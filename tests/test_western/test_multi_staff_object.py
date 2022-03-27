@@ -16,6 +16,10 @@ class TestMultiStaffObject(unittest.TestCase):
         self.staff_2 = Staff((Mm(0), Mm(30)), self.flowable, Mm(100))
         self.staff_3 = Staff((Mm(0), Mm(50)), self.flowable, Mm(100))
 
+    def test_init_with_single_staff(self):
+        multi_object = MultiStaffObject(self.staff_1)
+        assert multi_object.staves == {self.staff_1}
+
     def test_visually_sorted_staves(self):
         multi_object = MultiStaffObject({self.staff_1, self.staff_2, self.staff_3})
         assert multi_object.visually_sorted_staves == [

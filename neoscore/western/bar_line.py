@@ -8,8 +8,6 @@ from neoscore.utils.units import ZERO, Unit
 from neoscore.western.multi_staff_object import MultiStaffObject
 from neoscore.western.staff import Staff
 
-# TODO MEDIUM support double bar lines
-
 
 class BarLine(Path, MultiStaffObject):
 
@@ -22,14 +20,13 @@ class BarLine(Path, MultiStaffObject):
     on the top staff.
     """
 
-    def __init__(self, pos_x: Unit, staves: Iterable[Staff]):
+    def __init__(self, pos_x: Unit, staves: Staff | Iterable[Staff]):
         """
         Args:
-            pos_x: The barline position relative to
-                the top staff.
-            staves:
+            pos_x: The barline position relative to the topmost staff.
+            staves: A staff or collection of them to draw the line across.
         """
-        MultiStaffObject.__init__(self, set(staves))
+        MultiStaffObject.__init__(self, staves)
         Path.__init__(self, Point(pos_x, ZERO), parent=self.highest_staff)
         engraving_defaults = self.highest_staff.music_font.engraving_defaults
         thickness = engraving_defaults["thinBarlineThickness"]

@@ -1,3 +1,5 @@
+from collections.abc import Iterable
+
 from neoscore.core import mapping
 from neoscore.utils.units import Unit
 from neoscore.western.staff import Staff
@@ -16,33 +18,34 @@ class MultiStaffObject:
     `self.staves`.
     """
 
-    def __init__(self, staves: set[Staff]):
+    def __init__(self, staves: Staff | Iterable[Staff]):
         """
         Args:
-            staves (set(Staff)): The set of Staff objects this belongs to.
+            staves: The staves this is associated with.
         """
-        self.staves = staves
+        self.staves = set(staves) if isinstance(staves, Iterable) else {staves}
 
     ######## PUBLIC PROPERTIES ########
 
     @property
     def visually_sorted_staves(self) -> list[Staff]:
-        """list[Staff]: self.staves as a list in visually descending order"""
+        """`self.staves` as a list in visually descending order"""
+        # TODO MEDIUM this assumes that all staves have the same parent
         return sorted(list(self.staves), key=lambda s: s.y)
 
     @property
     def highest_staff(self) -> Staff:
-        """Staff: The visually highest staff in self.staves"""
+        """The visually highest staff in self.staves"""
         return self.visually_sorted_staves[0]
 
     @property
     def lowest_staff(self) -> Staff:
-        """Staff: The visually lowest staff in self.staves"""
+        """The visually lowest staff in self.staves"""
         return self.visually_sorted_staves[-1]
 
     @property
     def vertical_span(self) -> Unit:
-        """StaffUnit: The vertical distance covered by the staves
+        """The vertical distance covered by the staves
 
         The distance from the top of `self.highest_staff` to the bottom
         of `self.lowest_staff`, in `self.highest_staff.unit` StaffUnits.

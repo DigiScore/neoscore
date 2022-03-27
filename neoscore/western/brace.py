@@ -1,3 +1,6 @@
+from collections.abc import Iterable
+from typing import cast
+
 from neoscore.core.mapping import map_between_x
 from neoscore.core.music_font import MusicFontGlyphNotFoundError
 from neoscore.core.music_text import MusicText
@@ -24,7 +27,7 @@ class Brace(MultiStaffObject, StaffObject, MusicText):
     until the second line.
     """
 
-    def __init__(self, pos_x: Unit, staves: set[Staff]):
+    def __init__(self, pos_x: Unit, staves: Staff | Iterable[Staff]):
         """
         Args:
             pos_x (Unit): Where this brace goes into effect
@@ -33,7 +36,7 @@ class Brace(MultiStaffObject, StaffObject, MusicText):
         MultiStaffObject.__init__(self, staves)
         StaffObject.__init__(self, self.highest_staff)
         # Calculate the height of the brace in highest_staff staff units
-        scale = self.vertical_span / self.highest_staff.unit(4)
+        scale = cast(float, self.vertical_span / self.highest_staff.unit(4))
         if self.vertical_span > self.highest_staff.unit(50):
             text = ("brace", 4)
         elif self.vertical_span > self.highest_staff.unit(30):
@@ -62,8 +65,8 @@ class Brace(MultiStaffObject, StaffObject, MusicText):
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def breakable_length(self):
-        """Unit: The breakable width of the object.
+    def breakable_length(self) -> Unit:
+        """The breakable width of the object.
 
         This is used to determine how and where rendering cuts should be made.
         """
