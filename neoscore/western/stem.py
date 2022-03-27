@@ -14,8 +14,6 @@ from neoscore.utils.units import ZERO, Unit
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
 
-# TODO MEDIUM maybe make this take a length and vertical direction?
-
 
 class Stem(MusicPath):
 

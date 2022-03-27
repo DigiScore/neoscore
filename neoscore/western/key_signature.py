@@ -3,11 +3,11 @@ from typing import Optional, Union
 
 from neoscore.core.mapping import map_between
 from neoscore.core.music_text import MusicText
-from neoscore.core.object_group import ObjectGroup
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.models.accidental_type import AccidentalType
 from neoscore.models.key_signature_type import KeySignatureType
 from neoscore.utils.point import ORIGIN, Point
-from neoscore.utils.units import Unit
+from neoscore.utils.units import ZERO, Unit
 from neoscore.western import clef_type
 from neoscore.western.staff import Staff
 from neoscore.western.staff_object import StaffObject
@@ -15,7 +15,7 @@ from neoscore.western.staff_object import StaffObject
 # TODO LOW this doesn't support natural (cancelling) key signatures
 
 
-class KeySignature(ObjectGroup, StaffObject):
+class KeySignature(PositionedObject, StaffObject):
 
     """A logical and graphical key signature.
 
@@ -38,7 +38,7 @@ class KeySignature(ObjectGroup, StaffObject):
                 key signature. Any KeySignatureType may be used, or a str
                 of one's name.
         """
-        ObjectGroup.__init__(self, Point(pos_x, staff.unit(0)), staff)
+        PositionedObject.__init__(self, Point(pos_x, ZERO), staff)
         StaffObject.__init__(self, staff)
         self._key_signature_type = (
             key_signature_type

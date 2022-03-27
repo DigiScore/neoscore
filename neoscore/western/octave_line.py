@@ -7,7 +7,6 @@ from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
-from neoscore.core.object_group import ObjectGroup
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
 from neoscore.core.pen_pattern import PenPattern
@@ -24,7 +23,7 @@ if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
 
 
-class OctaveLine(ObjectGroup, Spanner, HasMusicFont):
+class OctaveLine(PositionedObject, Spanner, HasMusicFont):
 
     """An octave indication with a dashed line.
 
@@ -99,7 +98,7 @@ class OctaveLine(ObjectGroup, Spanner, HasMusicFont):
                 For lines above staves, this should be down, and vice versa for below.
             font: If provided, this overrides any font found in the ancestor chain.
         """
-        ObjectGroup.__init__(self, start, start_parent)
+        PositionedObject.__init__(self, start, start_parent)
         Spanner.__init__(self, end_x, end_parent or self)
         if font is None:
             font = HasMusicFont.find_music_font(start_parent)

@@ -9,14 +9,14 @@ from examples.feldman_projections_2.text_event import TextEvent
 from neoscore import constants
 from neoscore.core import neoscore
 from neoscore.core.music_font import MusicFont
-from neoscore.core.object_group import ObjectGroup
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
 from neoscore.core.pen_pattern import PenPattern
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.western.staff import Staff
 
 
-class Score(ObjectGroup):
+class Score(PositionedObject):
 
     _TEXT_FONT_SIZE = GridUnit(0.6).base_value
     _MUSIC_FONT_SIZE = Staff._make_unit_class(GridUnit(0.5))

@@ -1,13 +1,13 @@
 from typing import Optional
 
-from neoscore.core.object_group import ObjectGroup
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.models import notehead_tables
 from neoscore.models.directions import VerticalDirection
 from neoscore.models.duration import Duration, DurationDef
 from neoscore.models.notehead_tables import NoteheadTable
 from neoscore.models.pitch import PitchDef
 from neoscore.utils.point import ORIGIN, Point
-from neoscore.utils.units import Unit
+from neoscore.utils.units import ZERO, Unit
 from neoscore.western.accidental import Accidental
 from neoscore.western.flag import Flag
 from neoscore.western.ledger_line import LedgerLine
@@ -19,7 +19,7 @@ from neoscore.western.staff_object import StaffObject
 from neoscore.western.stem import Stem
 
 
-class Chordrest(ObjectGroup, StaffObject):
+class Chordrest(PositionedObject, StaffObject):
 
     """A chord or a rest.
 
@@ -68,7 +68,7 @@ class Chordrest(ObjectGroup, StaffObject):
             notehead_table: The set of noteheads to use according to `duration`.
         """
         StaffObject.__init__(self, staff)
-        ObjectGroup.__init__(self, Point(pos_x, staff.unit(0)), staff, None)
+        PositionedObject.__init__(self, Point(pos_x, ZERO), staff)
         self.duration = duration
         self._noteheads = set()
         self._accidentals = set()

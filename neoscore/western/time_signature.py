@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Optional
 from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
-from neoscore.core.object_group import ObjectGroup
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.utils.point import Point
 from neoscore.utils.units import ZERO, Unit
 from neoscore.western.meter import Meter, MeterDef
@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
 
 
-class TimeSignature(ObjectGroup, HasMusicFont):
+class TimeSignature(PositionedObject, HasMusicFont):
 
     """A logical and graphical time signature"""
 
@@ -34,7 +34,7 @@ class TimeSignature(ObjectGroup, HasMusicFont):
             meter: The meter represented.
             font: If provided, this overrides any font found in the ancestor chain.
         """
-        ObjectGroup.__init__(self, Point(pos_x, ZERO), parent)
+        PositionedObject.__init__(self, Point(pos_x, ZERO), parent)
         if font is None:
             font = HasMusicFont.find_music_font(parent)
         self._music_font = font
