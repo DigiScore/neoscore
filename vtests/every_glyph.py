@@ -25,7 +25,7 @@ def glyph_test(full_test=True):
                 # print(f'\n\t\t\t\t{testGlyph}, {alt}, {glyphCount}')
                 try:
                     test_info_dict = font._glyph_info(testGlyph, alt)
-                    print(test_info_dict)
+                    print(f'returned dict = {test_info_dict}')
                 except Exception as e:
                     print(f'error for {testGlyph, alt, e}')
 
