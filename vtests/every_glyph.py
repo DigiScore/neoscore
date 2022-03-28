@@ -46,7 +46,8 @@ def glyph_test(full_test=True):
         print(f'\nreturn dict == === == {r}')
 
 if __name__ == "__main__":
-    startTime = time()
+    # startTime = time()
     neoscore.setup()
-    glyph_test()
+    startTime = time()
+    glyph_test(full_test=True)
     print(f'elapsed time = {time() - startTime}')
