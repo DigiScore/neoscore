@@ -17,12 +17,12 @@ def glyph_test(full_test=True):
         for testGlyph in smufl.glyph_names:
 
             # test for every alt option between 1 - 3
-            for alt in range(4):
+            for alt in range(6):
                 if alt == 0:
                     alt = None
-                elif alt == 3:
+                elif alt == 5:
                     testGlyph = 'garbage'
-                print(f'\n\t\t\t\t{testGlyph}, {alt}, {glyphCount}')
+                # print(f'\n\t\t\t\t{testGlyph}, {alt}, {glyphCount}')
                 try:
                     test_info_dict = font._glyph_info(testGlyph, alt)
                     print(test_info_dict)
