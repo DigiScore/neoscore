@@ -4,7 +4,6 @@ from neoscore.core import neoscore
 from neoscore.core.music_font import MusicFont
 from neoscore.utils.units import Mm, Unit
 
-
 class EquivalentUnit(Unit):
     pass
 
