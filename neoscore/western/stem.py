@@ -7,7 +7,7 @@ from neoscore.core.music_path import MusicPath
 from neoscore.core.path_element import PathElement
 from neoscore.core.pen import Pen
 from neoscore.models.directions import VerticalDirection
-from neoscore.utils.math_helpers import sign
+# from neoscore.utils.math_helpers import sign
 from neoscore.utils.point import PointDef
 from neoscore.utils.units import ZERO, Unit
 
