@@ -121,7 +121,7 @@ class MusicFont(Font):
 
         # reset the info dict
         info = {}
-        error = False
+        # error = False
 
         # 1. main glyph alt number
         if alternate_number:
@@ -130,7 +130,7 @@ class MusicFont(Font):
 
             # Alternate not found in the font
             if not _alternate:
-                error = True
+                # error = True
                 raise MusicFontGlyphNotFoundError
 
             else:
@@ -140,44 +140,44 @@ class MusicFont(Font):
                 # if the alternate_number out of range?
                 if alt_count >= alternate_number:
                     # print("alt glyph")
-                    info["codepoint"] = _alternate[glyph_name]['alternates'][alternate_number - 1]["codepoint"]
+                    # info["codepoint"] = _alternate[glyph_name]['alternates'][alternate_number - 1]["codepoint"]
                     _glyphname = _alternate[glyph_name]['alternates'][alternate_number - 1]["name"]
                 else:
                     # Alternate not found in the font
-                    error = True
+                    # error = True
                     raise MusicFontGlyphNotFoundError
 
         # 2. check if main or valid alternate
-        if not error:
-            _name = dict((k, v) for k, v in smufl.glyph_names.items() if k == glyph_name)
-            if _name:
-                # print("main glyph")
-                info["codepoint"] = _name[glyph_name]['codepoint']
-                info["description"] = _name[glyph_name]['description']
+        # if not error:
+        _name = dict((k, v) for k, v in smufl.glyph_names.items() if k == glyph_name)
+        if _name:
+            # print("main glyph")
+            info["codepoint"] = _name[glyph_name]['codepoint']
+            info["description"] = _name[glyph_name]['description']
 
-            # final check is it ligature or optional G
+        # final check is it ligature or optional G
+        else:
+            _ligature = dict((k, v) for k, v in self.metadata['ligatures'].items() if k == glyph_name)
+            if _ligature:
+                # print("ligature")
+                info["codepoint"] = _ligature[glyph_name]['codepoint']
+                info["componentGlyphs"] = _ligature[glyph_name]['componentGlyphs']
+                info['description'] = _ligature[glyph_name]['description']
+            # else check optional glyphs
             else:
-                _ligature = dict((k, v) for k, v in self.metadata['ligatures'].items() if k == glyph_name)
-                if _ligature:
-                    # print("ligature")
-                    info["codepoint"] = _ligature[glyph_name]['codepoint']
-                    info["componentGlyphs"] = _ligature[glyph_name]['componentGlyphs']
-                    info['description'] = _ligature[glyph_name]['description']
-                # else check optional glyphs
-                else:
-                    _optional = dict((k, v) for k, v in self.metadata['optionalGlyphs'].items() if k == glyph_name)
-                    if _optional:
-                        # print("optional")
-                        info["codepoint"] = _optional[glyph_name]['codepoint']
-                        info['description'] = _optional[glyph_name]['description']
+                _optional = dict((k, v) for k, v in self.metadata['optionalGlyphs'].items() if k == glyph_name)
+                if _optional:
+                    # print("optional")
+                    info["codepoint"] = _optional[glyph_name]['codepoint']
+                    info['description'] = _optional[glyph_name]['description']
 
-            # fill dict with info
-            for k in main_glyph_keys:
-                try:
-                    result = self.metadata[k][glyph_name]
-                except KeyError:
-                    result = []
-                info[k] = result
+        # fill dict with info
+        for k in main_glyph_keys:
+            try:
+                result = self.metadata[k][glyph_name]
+            except KeyError:
+                result = []
+            info[k] = result
 
         # if we have made it this far and populated info dict then get other details
         if info:
