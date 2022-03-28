@@ -126,7 +126,7 @@ class MusicFont(Font):
         # 1. main glyph alt number
         if alternate_number:
             # check metadata['glyphsWithAlternates'] for alternate_number -1
-            _alternate = dict([(k, v) for k, v in self.metadata['glyphsWithAlternates'].items() if k == glyph_name])
+            _alternate = dict((k, v) for k, v in self.metadata['glyphsWithAlternates'].items() if k == glyph_name)
 
             # Alternate not found in the font
             if not _alternate:
@@ -149,7 +149,7 @@ class MusicFont(Font):
 
         # 2. check if main or valid alternate
         if not error:
-            _name = dict([(k, v) for k, v in smufl.glyph_names.items() if k == glyph_name])
+            _name = dict((k, v) for k, v in smufl.glyph_names.items() if k == glyph_name)
             if _name:
                 # print("main glyph")
                 info["codepoint"] = _name[glyph_name]['codepoint']
@@ -157,7 +157,7 @@ class MusicFont(Font):
 
             # final check is it ligature or optional G
             else:
-                _ligature = dict([(k, v) for k, v in self.metadata['ligatures'].items() if k == glyph_name])
+                _ligature = dict((k, v) for k, v in self.metadata['ligatures'].items() if k == glyph_name)
                 if _ligature:
                     # print("ligature")
                     info["codepoint"] = _ligature[glyph_name]['codepoint']
@@ -165,7 +165,7 @@ class MusicFont(Font):
                     info['description'] = _ligature[glyph_name]['description']
                 # else check optional glyphs
                 else:
-                    _optional = dict([(k, v) for k, v in self.metadata['optionalGlyphs'].items() if k == glyph_name])
+                    _optional = dict((k, v) for k, v in self.metadata['optionalGlyphs'].items() if k == glyph_name)
                     if _optional:
                         # print("optional")
                         info["codepoint"] = _optional[glyph_name]['codepoint']
