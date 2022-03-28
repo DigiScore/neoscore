@@ -27,6 +27,7 @@ class Stem(MusicPath):
         self,
         start: PointDef,
         parent: Parent,
+        direction: VerticalDirection,
         height: Unit,
         font: Optional[MusicFont] = None,
     ):
@@ -35,13 +36,15 @@ class Stem(MusicPath):
             start: Starting point for the stem
             parent: If no font is given, this or one of its ancestors must
                 implement `HasMusicFont`.
-            height: The height of the stem, where positive extends
-                downward and negative extends upward.
+            direction: The direction a stem points:
+                1: downwards, -1: upwards
+            height: The height/ length of the stem.
             font: If provided, this overrides any font found in the ancestor chain.
         """
         MusicPath.__init__(self, start, parent, font=font)
         self.pen = Pen(thickness=self.music_font.engraving_defaults["stemThickness"])
 
+        self._direction = direction
         self._height = height
         # Draw stem path
         self.line_to(ZERO, self.height)
@@ -50,16 +53,13 @@ class Stem(MusicPath):
 
     @property
     def height(self) -> Unit:
-        """The height of the stem from its position.
-
-        Positive values extend downward, and vice versa.
-        """
+        """The height of the stem from its position."""
         return self._height
 
     @property
     def direction(self) -> VerticalDirection:
         """The direction the stem points, where -1 is up and 1 is down"""
-        if sign(self.height) == 1:
+        if self.direction == 1:
             return VerticalDirection.DOWN
         else:
             return VerticalDirection.UP
