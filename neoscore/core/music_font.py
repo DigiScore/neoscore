@@ -126,33 +126,15 @@ class MusicFont(Font):
         if alternate_number:
             glyph_name = self._alternate_checker(glyph_name, alternate_number)
 
-        # check existance and get details from smufl
+        # check existane and get details from smufl
         _name = smufl.glyph_names.get(glyph_name)
 
         if _name:
             info["codepoint"] = _name['codepoint']
             info["description"] = _name['description']
-
-        # final check is it ligature or optional G
         else:
-            # _ligature = dict((k, v) for k, v in self.metadata['ligatures'].items() if k == glyph_name)
-            _ligature = self.metadata['ligatures'].get(glyph_name)
-            if _ligature:
-                # print("ligature")
-                info["codepoint"] = _ligature['codepoint']
-                info["componentGlyphs"] = _ligature['componentGlyphs']
-                info['description'] = _ligature['description']
-            # else check optional glyphs
-            else:
-                _optional = dict((k, v) for k, v in self.metadata['optionalGlyphs'].items() if k == glyph_name)
-                _optional = self.metadata['optionalGlyphs'].get(glyph_name)
-
-                if _optional:
-                    # print("optional")
-                    info["codepoint"] = _optional['codepoint']
-                    info['description'] = _optional['description']
-                else:
-                    raise MusicFontGlyphNotFoundError
+            #  check is it ligature or optional G
+            info = self._lig_opt_checker(info, glyph_name)
 
         # if we have made it this far and populated info dict then get other details
         if info:
@@ -198,6 +180,35 @@ class MusicFont(Font):
                 raise MusicFontGlyphNotFoundError
 
         return new_glyph_name
+
+    # private helper functions
+    def _lig_opt_checker(self, info, glyph_name):
+        # _ligature = dict((k, v) for k, v in self.metadata['ligatures'].items() if k == glyph_name)
+        _ligature = self.metadata['ligatures'].get(glyph_name)
+        if _ligature:
+            # print("ligature")
+            info["codepoint"] = _ligature['codepoint']
+            info["componentGlyphs"] = _ligature['componentGlyphs']
+            info['description'] = _ligature['description']
+
+        # else check optional glyphs
+        else:
+            # _optional = dict((k, v) for k, v in self.metadata['optionalGlyphs'].items() if k == glyph_name)
+            _optional = self.metadata['optionalGlyphs'].get(glyph_name)
+
+            if _optional:
+                # print("optional")
+                info["codepoint"] = _optional['codepoint']
+                info['description'] = _optional['description']
+            else:
+                raise MusicFontGlyphNotFoundError
+
+        return info
+
+
+
+
+
 
 
     # def _glyph_info(
