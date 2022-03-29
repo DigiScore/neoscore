@@ -27,7 +27,7 @@ class Stem(MusicPath):
         self,
         start: PointDef,
         parent: Parent,
-        direction: int,
+        direction: VerticalDirection,
         height: Unit,
         font: Optional[MusicFont] = None,
     ):

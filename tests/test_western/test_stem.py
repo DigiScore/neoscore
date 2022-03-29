@@ -16,13 +16,6 @@ class TestStem(unittest.TestCase):
 
 
     def test_stem_direction(self):
-        # bar_line = BarLine(Mm(15), [self.staff_1, self.staff_2])
-        stem = Stem((Mm(0), Mm(0)), self.staff, 1, Mm(10))
-        assert stem.pos == Point(Mm(0), Mm(0))
+        stem = Stem((Mm(0), Mm(0)), self.staff, -1, Mm(10))
+        assert stem.pos == Point(Mm(10), Mm(10))
         assert stem.direction == 1
-
-
-        assert bar_line.elements[0].pos == Point(Mm(0), Mm(0))
-        assert bar_line.elements[0].parent == bar_line
-        assert bar_line.elements[1].pos == Point(Mm(15), self.staff_2.height)
-        assert bar_line.elements[1].parent == self.staff_2
