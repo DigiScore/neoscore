@@ -51,5 +51,5 @@ if __name__ == "__main__":
     # startTime = time()
     neoscore.setup()
     startTime = time()
-    glyph_test(full_test=False)
+    glyph_test(full_test=True)
     print(f'elapsed time = {time() - startTime}')
