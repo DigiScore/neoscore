@@ -126,17 +126,17 @@ class MusicFont(Font):
         if alternate_number:
             glyph_name = self._alternate_checker(glyph_name, alternate_number)
 
-        # check existane and get details from smufl
+        # check if glyphname exists then get details from smufl
         _name = smufl.glyph_names.get(glyph_name)
-
         if _name:
             info["codepoint"] = _name['codepoint']
             info["description"] = _name['description']
         else:
-            #  check is it ligature or optional G
+            #  check is it ligature or optional G and get info
             info = self._lig_opt_checker(info, glyph_name)
 
-        # if we have made it this far and populated info dict then get other details
+        # if we have made it this far and populated
+        # info dict then get all other details
         if info:
             # fill dict with info
             for k in main_glyph_keys:
@@ -175,28 +175,24 @@ class MusicFont(Font):
                 new_glyph_name = _alternate['alternates'][alternate_number - 1]["name"]
             else:
                 # Alternate not found in the font
-                # error = True
                 raise MusicFontGlyphNotFoundError
 
         return new_glyph_name
 
 
     def _lig_opt_checker(self, info, glyph_name):
-        # _ligature = dict((k, v) for k, v in self.metadata['ligatures'].items() if k == glyph_name)
+        # check if its a ligagture glyph
         _ligature = self.metadata['ligatures'].get(glyph_name)
         if _ligature:
-            # print("ligature")
             info["codepoint"] = _ligature['codepoint']
             info["componentGlyphs"] = _ligature['componentGlyphs']
             info['description'] = _ligature['description']
 
         # else check optional glyphs
         else:
-            # _optional = dict((k, v) for k, v in self.metadata['optionalGlyphs'].items() if k == glyph_name)
             _optional = self.metadata['optionalGlyphs'].get(glyph_name)
 
             if _optional:
-                # print("optional")
                 info["codepoint"] = _optional['codepoint']
                 info['description'] = _optional['description']
             else:
