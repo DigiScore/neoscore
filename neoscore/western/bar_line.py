@@ -7,6 +7,7 @@ from neoscore.utils.point import Point
 from neoscore.utils.units import ZERO, Unit
 from neoscore.western.multi_staff_object import MultiStaffObject
 from neoscore.western.staff import Staff
+from neoscore.models.bar_lines import BarLine
 
 
 class BarLine(Path, MultiStaffObject):
@@ -20,11 +21,16 @@ class BarLine(Path, MultiStaffObject):
     on the top staff.
     """
 
-    def __init__(self, pos_x: Unit, staves: Staff | Iterable[Staff]):
+    def __init__(
+            self,
+            pos_x: Unit,
+            staves: Staff | Iterable[Staff],
+            style: BarLine):
         """
         Args:
             pos_x: The barline position relative to the topmost staff.
             staves: A staff or collection of them to draw the line across.
+            style: A style/ type of barline as listed in bar_lines models
         """
         MultiStaffObject.__init__(self, staves)
         Path.__init__(self, Point(pos_x, ZERO), parent=self.highest_staff)
@@ -35,3 +41,9 @@ class BarLine(Path, MultiStaffObject):
         offset = map_between(self.lowest_staff, self.highest_staff)
         bottom_x = pos_x + offset.x
         self.line_to(bottom_x, self.lowest_staff.height, parent=self.lowest_staff)
+
+        ######## PUBLIC PROPERTIES ########
+
+        @property
+        def style(self) -> BarLine:
+            """The style of barline"""
