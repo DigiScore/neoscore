@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class BarLine(Enum):
+class BarLineStyle(Enum):
     PLAIN = 1
     THICKDOUBLE = 2
     THINDOUBLE = 3
