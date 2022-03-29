@@ -38,16 +38,18 @@ def glyph_test(full_test=True):
         print(f'total glyph list name count === {len(smufl.glyph_names)}')
 
     else:
-        # oneTestGlyph = "accidentalDoubleFlatParens" # ligature
-        oneTestGlyph = '4stringTabClef' # normal glyph
-        # oneTestGlyph = '4stringTabClefSerif' # optional glyph
-        # oneTestGlyph = 'gClef4Above'  # ligature
-        r = font._glyph_info(oneTestGlyph, 1)
-        print(f'\nreturn dict == === == {r}')
+        oneTestGlyph = ["accidentalDoubleFlatParens",
+                       '4stringTabClef',
+                        'noteFaHalf',
+                        '4stringTabClefSerif',
+                        'gClef4Above']
+        for test in oneTestGlyph:
+            r = font._glyph_info(test)
+            print(f'\nreturn dict == === == {r}')
 
 if __name__ == "__main__":
     # startTime = time()
     neoscore.setup()
     startTime = time()
-    glyph_test(full_test=True)
+    glyph_test(full_test=False)
     print(f'elapsed time = {time() - startTime}')
