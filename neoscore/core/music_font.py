@@ -121,54 +121,36 @@ class MusicFont(Font):
 
         # reset the info dict
         info = {}
-        # error = False
 
-        # if alternate - get that glyph name
+        # if an alt glyph get name
         if alternate_number:
-            # check metadata['glyphsWithAlternates'] for alternate_number -1
-            _alternate = dict((k, v) for k, v in self.metadata['glyphsWithAlternates'].items() if k == glyph_name)
+            glyph_name = self._alternate_checker(glyph_name, alternate_number)
 
-            # Alternate not found in the font
-            if not _alternate:
-                # error = True
-                raise MusicFontGlyphNotFoundError
+        # check existance and get details from smufl
+        _name = smufl.glyph_names.get(glyph_name)
 
-            else:
-                # check if valid alt number
-                alt_count = len(_alternate[glyph_name]['alternates'])
-
-                # if the alternate_number out of range?
-                if alt_count >= alternate_number:
-                    # print("alt glyph")
-                    # info["codepoint"] = _alternate[glyph_name]['alternates'][alternate_number - 1]["codepoint"]
-                    glyph_name = _alternate[glyph_name]['alternates'][alternate_number - 1]["name"]
-                else:
-                    # Alternate not found in the font
-                    # error = True
-                    raise MusicFontGlyphNotFoundError
-
-        # parse glyph info for
-        _name = dict((k, v) for k, v in smufl.glyph_names.items() if k == glyph_name)
         if _name:
-            # print("main glyph")
-            info["codepoint"] = _name[glyph_name]['codepoint']
-            info["description"] = _name[glyph_name]['description']
+            info["codepoint"] = _name['codepoint']
+            info["description"] = _name['description']
 
         # final check is it ligature or optional G
         else:
-            _ligature = dict((k, v) for k, v in self.metadata['ligatures'].items() if k == glyph_name)
+            # _ligature = dict((k, v) for k, v in self.metadata['ligatures'].items() if k == glyph_name)
+            _ligature = self.metadata['ligatures'].get(glyph_name)
             if _ligature:
                 # print("ligature")
-                info["codepoint"] = _ligature[glyph_name]['codepoint']
-                info["componentGlyphs"] = _ligature[glyph_name]['componentGlyphs']
-                info['description'] = _ligature[glyph_name]['description']
+                info["codepoint"] = _ligature['codepoint']
+                info["componentGlyphs"] = _ligature['componentGlyphs']
+                info['description'] = _ligature['description']
             # else check optional glyphs
             else:
                 _optional = dict((k, v) for k, v in self.metadata['optionalGlyphs'].items() if k == glyph_name)
+                _optional = self.metadata['optionalGlyphs'].get(glyph_name)
+
                 if _optional:
                     # print("optional")
-                    info["codepoint"] = _optional[glyph_name]['codepoint']
-                    info['description'] = _optional[glyph_name]['description']
+                    info["codepoint"] = _optional['codepoint']
+                    info['description'] = _optional['description']
                 else:
                     raise MusicFontGlyphNotFoundError
 
@@ -186,6 +168,36 @@ class MusicFont(Font):
             raise MusicFontGlyphNotFoundError
 
         return info
+
+    def _alternate_checker(self, glyph_name, alternate_number):
+        """check to see if the alternate glyph exists,
+        if it does it then returns that glyph name.
+
+        Args: glyph_name: The canonical name of the glyph, or its main version
+                if using an alternate number.
+            alternate_number: A glyph alternate number
+        """
+
+        # check if glyphname has alternates
+        _alternate = self.metadata["glyphsWithAlternates"].get(glyph_name)
+
+        # Alternate not found in the font
+        if not _alternate:
+            raise MusicFontGlyphNotFoundError
+
+        else:
+            # check if valid alt number
+            alt_count = len(_alternate['alternates'])
+
+            # if the alternate_number out of range?
+            if alt_count >= alternate_number:
+                new_glyph_name = _alternate['alternates'][alternate_number - 1]["name"]
+            else:
+                # Alternate not found in the font
+                # error = True
+                raise MusicFontGlyphNotFoundError
+
+        return new_glyph_name
 
 
     # def _glyph_info(

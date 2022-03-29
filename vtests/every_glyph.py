@@ -39,10 +39,10 @@ def glyph_test(full_test=True):
 
     else:
         # oneTestGlyph = "accidentalDoubleFlatParens" # ligature
-        # oneTestGlyph = '4stringTabClef' # normal glyph
+        oneTestGlyph = '4stringTabClef' # normal glyph
         # oneTestGlyph = '4stringTabClefSerif' # optional glyph
-        oneTestGlyph = 'gClef4Above'  # ligature
-        r = font._glyph_info(oneTestGlyph)
+        # oneTestGlyph = 'gClef4Above'  # ligature
+        r = font._glyph_info(oneTestGlyph, 1)
         print(f'\nreturn dict == === == {r}')
 
 if __name__ == "__main__":
