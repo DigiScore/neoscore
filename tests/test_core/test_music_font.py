@@ -41,13 +41,20 @@ class TestMusicFont(unittest.TestCase):
         # assert hash(font) != MusicFont("Foo", Unit)
         assert hash(font) != hash(MusicFont("Bravura", Mm))
 
-    def test_every_glyph(self, full_test = True):
+    def test_every_SMuFL_glyph(self):
         font = MusicFont("Bravura", Unit)
+        # test each glyph in the glyphnamelist json
+        for testGlyph in smufl.glyph_names:
+            assert
+
+
+
+
+
         if full_test:
             glyphCount = 0
 
-            # test each glyph in the glyphnamelist json
-            for testGlyph in smufl.glyph_names:
+
 
                 # test for every alt option between 1 - 3
                 for alt in range(10):
