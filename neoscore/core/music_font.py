@@ -116,15 +116,6 @@ class MusicFont(Font):
                 could not be found in the font.
         """
 
-        # # spell out every key in metadata dict
-        # main_glyph_keys = ['glyphAdvanceWidths',
-        #                    'glyphBBoxes',
-        #                    'glyphsWithAnchors'
-        #                    ]
-
-        # reset the info dict
-        # info = GlyphInfo()
-
         # if an alt glyph get name
         if alternate_number:
             glyph_name = self._alternate_checker(glyph_name, alternate_number)
@@ -142,9 +133,6 @@ class MusicFont(Font):
 
         # if we have made it this far and populated
         # info with all other valid details
-        # for k in main_glyph_keys:
-        #     info[k] = self.metadata[k].get(glyph_name)
-
         info.glyphAdvanceWidths = self.metadata['glyphAdvanceWidths'].get(glyph_name)
         info.glyphBBoxes = self.metadata['glyphBBoxes'].get(glyph_name)
         info.glyphsWithAnchors = self.metadata['glyphsWithAnchors'].get(glyph_name)
@@ -190,7 +178,7 @@ class MusicFont(Font):
             info.componentGlyphs = _ligature['componentGlyphs']
             info.description = _ligature['description']
 
-        # else check the optional glyphs
+        # else check the optional glyph list
         else:
             _optional = self.metadata['optionalGlyphs'].get(glyph_name)
 
@@ -198,7 +186,7 @@ class MusicFont(Font):
                 info.codepoint = _optional['codepoint']
                 info.description = _optional['description']
 
-            # else its a foo glyphname
+            # else glyphname is not registered with SMuFL
             else:
                 raise MusicFontGlyphNotFoundError
 
