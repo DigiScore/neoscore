@@ -62,24 +62,23 @@ class TestChordrest(unittest.TestCase):
         dots = list(chord.rhythm_dot_positions)
         dots.sort(key=lambda d: d.x)
         dots.sort(key=lambda d: d.y)
-        print(dots[0])
         assert_almost_equal(
-            dots[0], Point(self.staff.unit(1.605), self.staff.unit(-3.5)), epsilon=2
+            dots[0], Point(self.staff.unit(0.25), self.staff.unit(-3.5)), epsilon=2
         )
         assert_almost_equal(
-            dots[1], Point(self.staff.unit(2.105), self.staff.unit(-3.5)), epsilon=2
+            dots[1], Point(self.staff.unit(0.75), self.staff.unit(-3.5)), epsilon=2
         )
         assert_almost_equal(
-            dots[2], Point(self.staff.unit(1.605), self.staff.unit(7.5)), epsilon=2
+            dots[2], Point(self.staff.unit(0.25), self.staff.unit(7.5)), epsilon=2
         )
         assert_almost_equal(
-            dots[3], Point(self.staff.unit(2.105), self.staff.unit(7.5)), epsilon=2
+            dots[3], Point(self.staff.unit(0.75), self.staff.unit(7.5)), epsilon=2
         )
         assert_almost_equal(
-            dots[4], Point(self.staff.unit(1.605), self.staff.unit(10.5)), epsilon=2
+            dots[4], Point(self.staff.unit(0.25), self.staff.unit(10.5)), epsilon=2
         )
         assert_almost_equal(
-            dots[5], Point(self.staff.unit(2.105), self.staff.unit(10.5)), epsilon=2
+            dots[5], Point(self.staff.unit(0.75), self.staff.unit(10.5)), epsilon=2
         )
 
     def test_furthest_notehead_with_one_note(self):
