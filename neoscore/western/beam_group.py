@@ -1,57 +1,54 @@
-from dataclasses import dataclass
 from typing import NamedTuple, Optional, cast
 
+from neoscore.core.brush import SimpleBrushDef
+from neoscore.core.has_music_font import HasMusicFont
+from neoscore.core.mapping import map_between
+from neoscore.core.music_font import MusicFont
+from neoscore.core.pen import SimplePenDef
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.models.directions import HorizontalDirection
-
-# wip sketching...
-
-
-@dataclass
-class BeamHint:
-    break_depth: Optional[int] = None
-    hook: Optional[HorizontalDirection] = None
+from neoscore.utils.point import ORIGIN
+from neoscore.utils.units import ZERO
+from neoscore.western.beam import Beam
+from neoscore.western.chordrest import Chordrest
 
 
-@dataclass
-class BeamState:
+class BeamState(NamedTuple):
+    """The state of a beam group at a note.
+
+    (For convenience we describe these as applying to "notes" but they
+    can apply to chords and beamed rests as well.)
+    """
+
     flag_count: int
     break_depth: Optional[int] = None
-    hook: Optional[HorizontalDirection] = None
-
-
-# notice how BeamSpec is identical to BeamState...
-
-
-class BeamSpec(NamedTuple):
-    flag_count: int
-    break_depth: Optional[int] = None
-    """User-provided override setting break depths.
+    """Indicates a subgroup break after this note.
 
     This indicates the number of beams to cut a subdivision to after
     this beam position. The value must be less than `flag_count` and
     greater than 0.
 
-    For example, `[BeamSpec(3), BeamSpec(3, break_depth=1),
-    BeamSpec(3), BeamSpec(3)]` encodes four 32nd notes subdivided into
+    For example, `[BeamState(3), BeamState(3, break_depth=1),
+    BeamState(3), BeamState(3)]` encodes four 32nd notes subdivided into
     2 groups of 2 connected by a single beam.
     
     Because the beam resolver is not meter-aware, it does not perform
     subdivision breaks unless explicitly requested with this field.
-
     """
+
     hook: Optional[HorizontalDirection] = None
-    """User-provided override for hook direction.
+    """Direction for beamlet hooks.
 
-    This only has an effect if the beam position requires a hook and
-    that hook direction is ambiguous. This only applies in places
-    where, within a beam subgroup, a position has more flags than its
-    previous and following position, *and* those adjacent values are
-    equal. For example, a sixteenth note surrounded by two eighth
-    notes.
+    If provided as an override, this only has an effect if the beam
+    position requires a hook and that hook direction is
+    ambiguous. This only applies in places where, within a beam
+    subgroup, a position has more flags than its previous and
+    following position, *and* those adjacent values are equal. For
+    example, a sixteenth note surrounded by two eighth notes.
     """
 
 
-def resolve_beams(specs: list[BeamSpec]) -> list[BeamState]:
+def resolve_beams(specs: list[BeamState]) -> list[BeamState]:
     if len(specs) < 2:
         raise ValueError("Beam groups must have at least 2 members")
     states: list[BeamState] = []
@@ -90,6 +87,8 @@ def resolve_beams(specs: list[BeamSpec]) -> list[BeamState]:
 
 
 class BeamPathSpec(NamedTuple):
+    """An intermediate representation of beam paths."""
+
     depth: int
     """The beam's 1-indexed vertical position in the beam stack.
     
@@ -142,3 +141,89 @@ def resolve_beam_layout(states: list[BeamState]) -> list[BeamPathSpec]:
                     path_specs.append(BeamPathSpec(depth, start_idx, i))
                 start_idx = None
     return path_specs
+
+
+class BeamGroup(PositionedObject, HasMusicFont):
+    def __init__(
+        self,
+        chordrests: list[Chordrest],
+        font: Optional[MusicFont] = None,
+        brush: Optional[SimpleBrushDef] = None,
+        pen: Optional[SimplePenDef] = None,
+    ):
+        """
+        Args:
+            chordrests: The notes or rests to beam across. This must have
+                at least 2 items, all of which must be of durations requiring flags.
+            font: A font override. If not provided, the beams are drawn with the font
+                of the first chordrest given.
+            brush: The brush to fill shapes with.
+            pen: The pen to draw outlines with.
+        """
+        if len(chordrests) < 2:
+            raise ValueError("BeamGroup must have at least 2 Chordrests.")
+        # Determine top beam path
+        chordrests.sort(key=lambda c: c.x)
+        self._chordrests = chordrests
+        self._beams = []
+        first = chordrests[0]
+        last = chordrests[-1]
+        super().__init__(ORIGIN, first.stem.end_point)
+        if font is None:
+            font = HasMusicFont.find_music_font(self.parent)
+        self._music_font = font
+        # For now, use the stem direction of the first chordrest and
+        # overwrite the stems of the others.
+        # (Later, maybe check the stems of every entry and go based on
+        # the furthest out)
+        beam_start_pos = ORIGIN
+        # For now, make all beam horizontal
+        # Adjust all chordrest stems to touch the beam
+        for c in chordrests:
+            c.stem.end_point.y += map_between(c.stem.end_point, self).y
+            c.flag.remove()
+            c._flag = None
+        # Now create the beams!
+        beam_thickness = self.music_font.engraving_defaults["beamThickness"]
+        layer_step = (
+            self.music_font.engraving_defaults["beamSpacing"] + beam_thickness
+        ) * -first.stem.direction.value
+        specs = BeamGroup._resolve_chordrest_beam_layout(chordrests)
+        for spec in specs:
+            start_parent = chordrests[spec.start].stem.end_point
+            if isinstance(spec.end, int):
+                end_parent = chordrests[spec.end].stem.end_point
+                end_x = ZERO
+            else:
+                end_parent = start_parent
+                end_x = beam_thickness * 2 * spec.end.value
+            y = (spec.depth - 1) * layer_step
+            self.beams.append(
+                Beam((ZERO, y), start_parent, (end_x, y), end_parent, font, brush, pen)
+            )
+
+    @staticmethod
+    def _resolve_chordrest_beam_layout(
+        chordrests: list[Chordrest],
+    ) -> list[BeamPathSpec]:
+        states = resolve_beams(
+            [
+                BeamState(
+                    c.duration.display.flag_count, c.beam_break_depth, c.beam_hook_dir
+                )
+                for c in chordrests
+            ]
+        )
+        return resolve_beam_layout(states)
+
+    @property
+    def chordrests(self) -> list[Chordrest]:
+        return self._chordrests
+
+    @property
+    def beams(self) -> list[Beam]:
+        return self._beams
+
+    @property
+    def music_font(self) -> MusicFont:
+        return self._music_font

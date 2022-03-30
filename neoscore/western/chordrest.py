@@ -3,7 +3,7 @@ from typing import Optional
 
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.models import notehead_tables
-from neoscore.models.directions import VerticalDirection
+from neoscore.models.directions import HorizontalDirection, VerticalDirection
 from neoscore.models.duration import Duration, DurationDef
 from neoscore.models.notehead_tables import NoteheadTable
 from neoscore.models.pitch import PitchDef
@@ -55,6 +55,8 @@ class Chordrest(PositionedObject, StaffObject):
         pitches: Optional[list[PitchDef]],
         duration: DurationDef,
         stem_direction: Optional[VerticalDirection] = None,
+        beam_break_depth: Optional[int] = None,
+        beam_hook_dir: Optional[HorizontalDirection] = None,
         notehead_table: NoteheadTable = notehead_tables.STANDARD,
     ):
         """
@@ -68,6 +70,14 @@ class Chordrest(PositionedObject, StaffObject):
                 where `1` points down and `-1` points up. If omitted, the
                 direction is automatically calculated to point away from
                 the furthest-out notehead.
+            beam_break_depth: If this Chordrest is within a beam group, this triggers
+                a beam subdivision break at this point. The value indicates the number
+                of beams to which the subdivision breaks. For example, in run of 16th
+                notes a `beam_break_depth` of `1` would indicate a subdivision break
+                to 1 beam at this point.
+            beam_hook_dir: If this Chordrest is within a beam group and this position
+                is one requiring a beamlet hook whose direction is ambiguous, this
+                controls that direction.
             notehead_table: The set of noteheads to use according to `duration`.
         """
         StaffObject.__init__(self, staff)
@@ -81,6 +91,8 @@ class Chordrest(PositionedObject, StaffObject):
         self._stem = None
         self._flag = None
         self._stem_direction_override = stem_direction
+        self._beam_break_depth = beam_break_depth
+        self._beam_hook_dir = beam_hook_dir
         self._notehead_table = notehead_table
         if pitches:
             for pitch in pitches:
@@ -148,6 +160,16 @@ class Chordrest(PositionedObject, StaffObject):
     def flag(self) -> Optional[Flag]:
         """The flag attached to the stem."""
         return self._flag
+
+    @property
+    def beam_break_depth(self) -> Optional[int]:
+        """Break depth used if this Chordrest is in a BeamGroup."""
+        return self._beam_break_depth
+
+    @property
+    def beam_hook_dir(self) -> Optional[HorizontalDirection]:
+        """Beamlet hook direction used if this Chordrest is in a BeamGroup."""
+        return self._beam_hook_dir
 
     @property
     def notehead_table(self) -> NoteheadTable:

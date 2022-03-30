@@ -1,7 +1,6 @@
 from neoscore.models.directions import HorizontalDirection
 from neoscore.western.beam_group import (
     BeamPathSpec,
-    BeamSpec,
     BeamState,
     resolve_beam_layout,
     resolve_beams,
@@ -9,43 +8,43 @@ from neoscore.western.beam_group import (
 
 
 def test_resolve_beams():
-    assert resolve_beams([BeamSpec(3), BeamSpec(2), BeamSpec(1)]) == [
+    assert resolve_beams([BeamState(3), BeamState(2), BeamState(1)]) == [
         BeamState(3, hook=HorizontalDirection.RIGHT),
         BeamState(2),
         BeamState(1),
     ]
 
-    assert resolve_beams([BeamSpec(1), BeamSpec(3), BeamSpec(2)]) == [
+    assert resolve_beams([BeamState(1), BeamState(3), BeamState(2)]) == [
         BeamState(1),
         BeamState(3, hook=HorizontalDirection.RIGHT),
         BeamState(2),
     ]
 
-    assert resolve_beams([BeamSpec(1), BeamSpec(2), BeamSpec(1)]) == [
+    assert resolve_beams([BeamState(1), BeamState(2), BeamState(1)]) == [
         BeamState(1),
         BeamState(2, hook=HorizontalDirection.LEFT),
         BeamState(1),
     ]
 
-    assert resolve_beams([BeamSpec(2), BeamSpec(3), BeamSpec(1)]) == [
+    assert resolve_beams([BeamState(2), BeamState(3), BeamState(1)]) == [
         BeamState(2),
         BeamState(3, hook=HorizontalDirection.LEFT),
         BeamState(1),
     ]
 
-    assert resolve_beams([BeamSpec(3), BeamSpec(2), BeamSpec(3)]) == [
+    assert resolve_beams([BeamState(3), BeamState(2), BeamState(3)]) == [
         BeamState(3, hook=HorizontalDirection.RIGHT),
         BeamState(2),
         BeamState(3, hook=HorizontalDirection.LEFT),
     ]
 
-    assert resolve_beams([BeamSpec(1), BeamSpec(2), BeamSpec(3)]) == [
+    assert resolve_beams([BeamState(1), BeamState(2), BeamState(3)]) == [
         BeamState(1),
         BeamState(2),
         BeamState(3, hook=HorizontalDirection.LEFT),
     ]
 
-    assert resolve_beams([BeamSpec(3), BeamSpec(2), BeamSpec(2)]) == [
+    assert resolve_beams([BeamState(3), BeamState(2), BeamState(2)]) == [
         BeamState(3, hook=HorizontalDirection.RIGHT),
         BeamState(2),
         BeamState(2),
@@ -54,7 +53,7 @@ def test_resolve_beams():
 
 def test_resolve_beams_with_hook_hints():
     assert resolve_beams(
-        [BeamSpec(2), BeamSpec(2, hook=HorizontalDirection.LEFT), BeamSpec(1)]
+        [BeamState(2), BeamState(2, hook=HorizontalDirection.LEFT), BeamState(1)]
     ) == [
         BeamState(2),  # Invalid hook hint is ignored
         BeamState(2),
@@ -62,7 +61,7 @@ def test_resolve_beams_with_hook_hints():
     ]
 
     assert resolve_beams(
-        [BeamSpec(2, hook=HorizontalDirection.RIGHT), BeamSpec(2), BeamSpec(1)]
+        [BeamState(2, hook=HorizontalDirection.RIGHT), BeamState(2), BeamState(1)]
     ) == [
         BeamState(2),
         BeamState(2),  # Invalid hook hint is ignored
@@ -70,7 +69,7 @@ def test_resolve_beams_with_hook_hints():
     ]
 
     assert resolve_beams(
-        [BeamSpec(1), BeamSpec(2, hook=HorizontalDirection.RIGHT), BeamSpec(1)]
+        [BeamState(1), BeamState(2, hook=HorizontalDirection.RIGHT), BeamState(1)]
     ) == [
         BeamState(1),
         BeamState(2, hook=HorizontalDirection.RIGHT),
@@ -79,17 +78,17 @@ def test_resolve_beams_with_hook_hints():
 
 
 def test_resolve_beams_break_depths_copied():
-    assert resolve_beams([BeamSpec(3), BeamSpec(3, 1), BeamSpec(3)]) == [
+    assert resolve_beams([BeamState(3), BeamState(3, 1), BeamState(3)]) == [
         BeamState(3),
         BeamState(3, 1),
         BeamState(3),
     ]
-    assert resolve_beams([BeamSpec(3, 2), BeamSpec(3, 1), BeamSpec(3)]) == [
+    assert resolve_beams([BeamState(3, 2), BeamState(3, 1), BeamState(3)]) == [
         BeamState(3, 2),
         BeamState(3, 1),
         BeamState(3),
     ]
-    assert resolve_beams([BeamSpec(3), BeamSpec(3), BeamSpec(3, 1)]) == [
+    assert resolve_beams([BeamState(3), BeamState(3), BeamState(3, 1)]) == [
         BeamState(3),
         BeamState(3),
         BeamState(3, 1),
@@ -97,7 +96,9 @@ def test_resolve_beams_break_depths_copied():
 
 
 def test_resolve_beams_with_break_depths_affecting_flags():
-    assert resolve_beams([BeamSpec(2), BeamSpec(2, 1), BeamSpec(3), BeamSpec(2)]) == [
+    assert resolve_beams(
+        [BeamState(2), BeamState(2, 1), BeamState(3), BeamState(2)]
+    ) == [
         BeamState(2),
         BeamState(2, 1),
         BeamState(3, None, HorizontalDirection.RIGHT),
