@@ -137,6 +137,8 @@ class MusicFont(Font):
         info.glyphBBoxes = self.metadata['glyphBBoxes'].get(glyph_name)
         info.glyphsWithAnchors = self.metadata['glyphsWithAnchors'].get(glyph_name)
 
+        # todo - get covert to unit to work
+        # convert_all_to_unit(info, self.unit)
         return info
 
     # private helper functions
