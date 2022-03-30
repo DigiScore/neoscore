@@ -1,9 +1,11 @@
 import unittest
+import pytest
 
 from neoscore.core import neoscore
 from neoscore.core.music_font import MusicFont
 from neoscore.utils.units import Mm, Unit
 from neoscore.utils import smufl
+from neoscore.models.glyph_info import GlyphInfo
 
 class EquivalentUnit(Unit):
     pass
@@ -70,11 +72,11 @@ class TestMusicFont(unittest.TestCase):
 
     def test_glyph_info_for_Foo_glyph(self):
         font = MusicFont("Bravura", Unit)
-        # todo - how to check it raises an error
-        assert font.glyph_info('Foo').canonical_name == "MusicFontGlyphNotFoundError"
+        with pytest.raises(MusicFontGlyphNotFoundError):
+            font.glyph_info('Foo')
 
     def test_glyph_info_for_out_of_range_alternative_glyph(self):
         font = MusicFont("Bravura", Unit)
-        testGlyph = font.glyph_info('brace', 4)
-        # todo - how to check it raises an error
-        assert testGlyph == "MusicFontGlyphNotFoundError"
+        with pytest.raises(MusicFontGlyphNotFoundError):
+            font.glyph_info('brace', 6)
+

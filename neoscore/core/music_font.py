@@ -103,7 +103,7 @@ class MusicFont(Font):
     ######## PRIVATE METHODS ########
     def _glyph_info(
             self, glyph_name: str, alternate_number: Optional[int] = None
-    ) -> object:
+    ) -> GlyphInfo:
         """Collect and return all known metadata about a glyph.
 
         Args:
@@ -170,7 +170,7 @@ class MusicFont(Font):
         return new_glyph_name
 
 
-    def _lig_opt_checker(self, info: object, glyph_name: str) -> object:
+    def _lig_opt_checker(self, info: object, glyph_name: str) -> GlyphInfo:
         # check if glyphname is a ligature glyph
         _ligature = self.metadata['ligatures'].get(glyph_name)
         if _ligature:

@@ -4,6 +4,7 @@ from typing import Optional
 
 from neoscore.core.music_font import MusicFont
 from neoscore.utils.rect import Rect
+from neoscore.models.glyph_info import GlyphInfo
 
 
 @dataclass(frozen=True)
@@ -27,11 +28,9 @@ class MusicChar:
     ######## PUBLIC PROPERTIES ########
 
     @cached_property
-    def glyph_info(self) -> object:
+    def glyph_info(self) -> GlyphInfo:
         # this is a little expensive, so only do it on demand and then cache it
-        """The metadata for a specified glyphname.
-
-        Returned as a dataclass object"""
+        """The metadata for a specified glyphname"""
 
         return self.font.glyph_info(self.glyph_name, self.alternate_number)
 

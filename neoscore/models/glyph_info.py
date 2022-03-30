@@ -3,8 +3,8 @@ from dataclasses import dataclass
 @dataclass
 class GlyphInfo:
     canonical_name: str
-    codepoint: str = ""
-    description: str = None
+    codepoint: Optional[str]
+    description: Optional[str]
     glyphAdvanceWidths: float = 0.0
     glyphBBoxes: dict = None
     glyphsWithAnchors: dict = None
