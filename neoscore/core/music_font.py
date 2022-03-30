@@ -141,16 +141,16 @@ class MusicFont(Font):
             # fill dict with info
             for k in main_glyph_keys:
                 info[k] = self.metadata[k].get(glyph_name)
-            info['canonical_name'] = glyph_name
 
         # else its a foo glyphname
         else:
             raise MusicFontGlyphNotFoundError
 
+        info['canonical_name'] = glyph_name
         return info
 
     # private helper functions
-    def _alternate_checker(self, glyph_name, alternate_number):
+    def _alternate_checker(self, glyph_name: str, alternate_number: int) -> str:
         """check to see if the alternate glyph exists,
         if it does it then returns that glyph name.
 
@@ -180,7 +180,7 @@ class MusicFont(Font):
         return new_glyph_name
 
 
-    def _lig_opt_checker(self, info, glyph_name):
+    def _lig_opt_checker(self, info: dict, glyph_name: str) -> dict:
         # check if its a ligagture glyph
         _ligature = self.metadata['ligatures'].get(glyph_name)
         if _ligature:
