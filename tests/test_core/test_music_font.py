@@ -50,9 +50,9 @@ class TestMusicFont(unittest.TestCase):
 
     def test_glyph_info_for_one_alternate_glyph(self):
         font = MusicFont("Bravura", Unit)
-        testfont = font.glyph_info('brace', 1)
-        assert testfont.canonical_name == 'braceSmall'
-        assert testfont.codepoint == "\uF400"
+        testGlyph = font.glyph_info('brace', 1)
+        assert testGlyph.canonical_name == 'braceSmall'
+        assert testGlyph.codepoint == "\uF400"
 
     def test_glyph_info_for_last_alternate_glyph(self):
         font = MusicFont("Bravura", Unit)
