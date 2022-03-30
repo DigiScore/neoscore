@@ -41,48 +41,40 @@ class TestMusicFont(unittest.TestCase):
         # assert hash(font) != MusicFont("Foo", Unit)
         assert hash(font) != hash(MusicFont("Bravura", Mm))
 
-    def test_every_SMuFL_glyph(self):
+    def test_glyph_info_for_all_required_glyphs(self):
         font = MusicFont("Bravura", Unit)
         # test each glyph in the glyphnamelist json
         for testGlyph in smufl.glyph_names:
-            assert
+            assert font.glyph_info(testGlyph).canonical_name == testGlyph
+            assert font.glyph_info(testGlyph).canonical_name == font._glyph_info(testGlyph).canonical_name
 
+    def test_glyph_info_for_one_alternate_glyph(self):
+        font = MusicFont("Bravura", Unit)
+        testfont = font.glyph_info('brace', 1)
+        assert testfont.canonical_name == 'braceSmall'
+        assert testfont.codepoint == "\uF400"
 
+    def test_glyph_info_for_last_alternate_glyph(self):
+        font = MusicFont("Bravura", Unit)
+        testGlyph = font.glyph_info('brace', 4)
+        assert testGlyph.canonical_name == 'braceFlat'
+        assert testGlyph.codepoint == "\uF403"
 
+    def test_glyph_info_for_ligature_glyph(self):
+        font = MusicFont("Bravura", Unit)
+        testGlyph = font.glyph_info('gClefFlat1Below')
+        assert testGlyph.canonical_name == 'gClefFlat1Below'
+        assert testGlyph.codepoint == "\uF55D"
+        assert testGlyph.componentGlyphs[2] == 'tuplet1'
+        assert testGlyph.description == 'G clef, flat 1 below'
 
+    def test_glyph_info_for_Foo_glyph(self):
+        font = MusicFont("Bravura", Unit)
+        # todo - how to check it raises an error
+        assert font.glyph_info('Foo').canonical_name == "MusicFontGlyphNotFoundError"
 
-        if full_test:
-            glyphCount = 0
-
-
-
-                # test for every alt option between 1 - 3
-                for alt in range(10):
-                    if alt == 0:
-                        alt = None
-                    elif alt == 9:
-                        testGlyph = 'garbage'
-                    # print(f'\n\t\t\t\t{testGlyph}, {alt}, {glyphCount}')
-                    try:
-                        test_info_dict = font._glyph_info(testGlyph, alt)
-                        print(f'returned dict = {test_info_dict}')
-                    except Exception as e:
-                        print(f'error for {testGlyph, alt, e}')
-
-                    # if returns filled dict AND not an alterante glyph add to count
-                    if len(test_info_dict) > 0 and alt == None:
-                        glyphCount += 1
-
-            # tally up - should be the same value
-            print(f'total glyph count === {glyphCount}')
-            print(f'total glyph list name count === {len(smufl.glyph_names)}')
-
-        else:
-            oneTestGlyph = ["accidentalDoubleFlatParens",
-                            '4stringTabClef',
-                            'noteFaHalf',
-                            '4stringTabClefSerif',
-                            'gClef4Above']
-            for test in oneTestGlyph:
-                r = font._glyph_info(test)
-                print(f'\nreturn dict == === == {r}')
+    def test_glyph_info_for_out_of_range_alternative_glyph(self):
+        font = MusicFont("Bravura", Unit)
+        testGlyph = font.glyph_info('brace', 4)
+        # todo - how to check it raises an error
+        assert testGlyph == "MusicFontGlyphNotFoundError"
