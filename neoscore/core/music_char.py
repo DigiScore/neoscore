@@ -29,13 +29,17 @@ class MusicChar:
     @cached_property
     def glyph_info(self) -> object:
         # this is a little expensive, so only do it on demand and then cache it
+        """The metadata for a specified glyphname.
+
+        Returned as a dataclass object"""
+
         return self.font.glyph_info(self.glyph_name, self.alternate_number)
 
     @property
     def canonical_name(self):
         """The canonical SMuFL glyph name.
 
-        This is a convenience property for `glyph_info["canonicalName"]`
+        This is a convenience property for `glyph_info.canonical_name`
         """
         return self.glyph_info.canonical_name
 
@@ -43,7 +47,7 @@ class MusicChar:
     def codepoint(self):
         """The glyph's SMuFL codepoint.
 
-        This is a convenience property for `glyph_info["codepoint"]`
+        This is a convenience property for glyph_info.codepoint`
         """
         return self.glyph_info.codepoint
 
