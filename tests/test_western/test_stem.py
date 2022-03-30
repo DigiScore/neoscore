@@ -6,6 +6,7 @@ from neoscore.utils.point import Point
 from neoscore.utils.units import Mm
 from neoscore.western.stem import Stem
 from neoscore.western.staff import Staff
+from neoscore.models.directions import VerticalDirection
 
 
 class TestStem(unittest.TestCase):
@@ -16,6 +17,4 @@ class TestStem(unittest.TestCase):
 
 
     def test_stem_direction(self):
-        stem = Stem((Mm(0), Mm(0)), self.staff, -1, Mm(10))
-        assert stem.pos == Point(Mm(10), Mm(10))
-        assert stem.direction == 1
+        stem = Stem((Mm(0), Mm(0)), self.staff, VerticalDirection.UP, Mm(10))
