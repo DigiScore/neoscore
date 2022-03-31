@@ -68,7 +68,7 @@ class TestMusicFont(unittest.TestCase):
         testGlyph = font.glyph_info('gClefFlat1Below')
         assert testGlyph.canonical_name == 'gClefFlat1Below'
         assert testGlyph.codepoint == "\uF55D"
-        assert testGlyph.componentGlyphs[2] == 'tuplet1'
+        assert testGlyph.component_glyphs[2] == 'tuplet1'
         assert testGlyph.description == 'G clef, flat 1 below'
 
     def test_glyph_info_for_Foo_glyph(self):

@@ -90,7 +90,7 @@ class MusicFont(Font):
 
     def glyph_info(
         self, glyph_name: str, alternate_number: Optional[int] = None
-    ) -> object:
+    ) -> GlyphInfo:
         key = (glyph_name, alternate_number)
         cached_result = self._glyph_info_cache.get(key, None)
         if cached_result:
