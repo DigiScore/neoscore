@@ -412,9 +412,9 @@ class Chordrest(PositionedObject, StaffObject):
     def _create_ledgers(self):
         """Create all required ledger lines and store them in `self.ledgers`
 
-        Warning: This should be called after _position_noteheads_horizontally()
-                 as it relies on the position of noteheads in the chord to
-                 calculate the position and length of the ledger lines
+        This should be called after _position_noteheads_horizontally()
+        as it relies on the position of noteheads in the chord to
+        calculate the position and length of the ledger lines
         """
         pos_x = self.leftmost_notehead.x
         length = self.notehead_column_outside_staff_width

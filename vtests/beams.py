@@ -84,7 +84,6 @@ create_example(
 Some bugs:
 
 - Beam hooks do not respect the beam group's slope
-- Still need to properly calculate stem offset for increasing flag/beam counts
 """
 
 create_example(
