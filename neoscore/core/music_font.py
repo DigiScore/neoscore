@@ -135,6 +135,9 @@ class MusicFont(Font):
         info.glyphBBoxes = self._bBox_coords_parse(self.metadata['glyphBBoxes'].get(glyph_name))
 
         # get optional anchor metadata if available
+        # todo - should this property use make_class()
+        #  to build a new dataclass from the specific anchors for each indiv glyph?
+        #  How to express that in GlyphInfo DC?
         info.glyphsWithAnchors = self.metadata['glyphsWithAnchors'].get(glyph_name)
 
         # todo - get convert to unit to work with new dataclass GlyphInfo
