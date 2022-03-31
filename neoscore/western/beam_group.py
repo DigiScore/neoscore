@@ -158,11 +158,12 @@ class BeamGroupLine(NamedTuple):
 
 
 def resolve_beam_group_line(
-    chordrests: list[Chordrest], direction: VerticalDirection
+    chordrests: list[Chordrest], direction: VerticalDirection, font: MusicFont
 ) -> BeamGroupLine:
     unit = chordrests[0].staff.unit
     first = chordrests[0]
     last = chordrests[-1]
+    beam_group_height = resolve_beam_group_height(chordrests, font)
     # Determine slope from first and last noteheads furthest on side opposite of beam
     if direction == VerticalDirection.DOWN:
         slope_start_ref_note = first.highest_notehead
@@ -183,16 +184,34 @@ def resolve_beam_group_line(
         cr_with_closest_note = max(chordrests, key=lambda c: c.lowest_notehead.y)
         cr_x = map_between_x(first, cr_with_closest_note)
         closest_y = cr_with_closest_note.lowest_notehead.y
-        nearest_beam_intersect = Point(cr_x, closest_y + unit(3.5))
+        nearest_beam_intersect = Point(cr_x, closest_y + unit(3.5) + beam_group_height)
     else:
         cr_with_closest_note = min(chordrests, key=lambda c: c.highest_notehead.y)
         cr_x = map_between_x(first, cr_with_closest_note)
         closest_y = cr_with_closest_note.highest_notehead.y
-        nearest_beam_intersect = Point(cr_x, closest_y - unit(3.5))
+        nearest_beam_intersect = Point(cr_x, closest_y - unit(3.5) - beam_group_height)
     # Given a beam intersect and a slope, find the beam y at `start`
     # y = m(x - x1) + y1, where x = 0
     start_y = (slope * (-nearest_beam_intersect.x)) + nearest_beam_intersect.y
     return BeamGroupLine(start_y, slope)
+
+
+def beam_layer_height(font: MusicFont):
+    """Determine the height of a beam and it's vertical padding in a given font."""
+    return (
+        font.engraving_defaults["beamSpacing"]
+        + font.engraving_defaults["beamThickness"]
+    )
+
+
+def resolve_beam_group_height(chordrests: list[Chordrest], font: MusicFont) -> Unit:
+    """Find the vertical height occupied by a beam group spanning the given Chordrests.
+
+    This determines the maximum beam depth required and uses it to
+    calculate the expected maximum height in the group.
+    """
+    max_depth = max((c.duration.display.flag_count for c in chordrests))
+    return max_depth * beam_layer_height(font)
 
 
 def resolve_beam_direction(chordrests: list[Chordrest]) -> VerticalDirection:
@@ -229,8 +248,6 @@ class BeamGroup(PositionedObject, HasMusicFont):
         Args:
             chordrests: The notes or rests to beam across. This must have
                 at least 2 items, all of which must be of durations requiring flags.
-            font: A font override. If not provided, the beams are drawn with the font
-                of the first chordrest given.
             brush: The brush to fill shapes with.
             pen: The pen to draw outlines with.
         """
@@ -249,7 +266,9 @@ class BeamGroup(PositionedObject, HasMusicFont):
         beam_start_pos = ORIGIN
         # Work out beam direction, slope, and offset
         beam_direction = resolve_beam_direction(chordrests)
-        beam_group_line = resolve_beam_group_line(chordrests, beam_direction)
+        beam_group_line = resolve_beam_group_line(
+            chordrests, beam_direction, self.music_font
+        )
         # Adjust stems to follow group line
         for c in chordrests:
             # y = m(x - x1) - y1, where x = 0
@@ -266,10 +285,8 @@ class BeamGroup(PositionedObject, HasMusicFont):
             c.flag.remove()
             c._flag = None
         # Now create the beams!
-        beam_thickness = self.music_font.engraving_defaults["beamThickness"]
-        layer_step = (
-            self.music_font.engraving_defaults["beamSpacing"] + beam_thickness
-        ) * -first.stem.direction.value
+        beam_thickness = font.engraving_defaults["beamThickness"]
+        layer_step = beam_layer_height(self.music_font) * -beam_direction.value
         specs = BeamGroup._resolve_chordrest_beam_layout(chordrests)
         for spec in specs:
             start_parent = chordrests[spec.start].stem.end_point
