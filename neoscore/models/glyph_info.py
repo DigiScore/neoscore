@@ -10,27 +10,28 @@ class GlyphInfo:
     metadata from the SMuFL font.
     The canonical_name field is set at instantiation,
     the others are populated immediately afterwards.
-
-    Args:
-        ## ALL GLYPHS WILL RETURN THESE
-        canonical_name: str, set at instantiation e.g. 'gClefFlat1Below'
-        codepoint: hex number e.g. "\uF55D"
-        description: str, e.g. 'G clef, flat 1 below'
-        glyphAdvanceWidths: float, e.g. 1.234.
-        glyphBBoxes: BBoxCoords dataclass
-
-        ## OPTIONAL TO CERTAIN TYPES OF GLYPH
-        glyphsWithAnchors: A variety of keys:[x_coord, y_coord]
-        componentGlyphs: list of strings (glyph names)
-
     """
+
     canonical_name: str
+    """the glyph name e.g. 'gClefFlat1Below"""
+
     codepoint: str
+    """SMuFL hex ID number e.g. "\uF55D"""
+
     description: str
+    """short description of glyph, e.g. 'G clef, flat 1 below"""
+
     boundary_box: Rect
+    """coords to glyph boundary box, e.g. x, y, width, height"""
+
     advance_width: float
+    """float, e.g. 1.234"""
+
     anchors: Optional[dict]
+    """a variety of additional cut outs, e.g. keys:[x_coord, y_coord]"""
+
     component_glyphs: Optional[list[str]]
+    """list of glyphs that make a complex"""
 
 
 
