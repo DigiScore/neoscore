@@ -6,6 +6,7 @@ from neoscore.core.music_font import MusicFont
 from neoscore.utils.units import Mm, Unit
 from neoscore.utils import smufl
 from neoscore.models.glyph_info import GlyphInfo
+from neoscore.utils.exceptions import MusicFontGlyphNotFoundError
 
 class EquivalentUnit(Unit):
     pass
