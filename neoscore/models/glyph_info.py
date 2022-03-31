@@ -1,25 +1,8 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Optional
 
-from neoscore.utils.units import Unit
+from neoscore.utils.rect import Rect
 
-
-@dataclass
-class BBoxCoords:
-    """A dataclass that holds the boundary box coords
-    for a SMuFL glyph.
-
-    Args:
-        bBoxNE_X: Unit, x coord for north-east of box
-        bBoxNE_Y: Unit, y coord for north-east of box
-        bBoxSW_X: Unit, x coord for south-west of box
-        bBoxSW_Y: Unit, y coord for south-west of box
-    """
-
-    bBoxNE_X: Unit
-    bBoxNE_Y: Unit
-    bBoxSW_X: Unit
-    bBoxSW_Y: Unit
 
 @dataclass
 class GlyphInfo:
@@ -42,12 +25,12 @@ class GlyphInfo:
 
     """
     canonical_name: str
-    codepoint: hex = field(default="")
-    description: str = field(default="")
-    glyphBBoxes: BBoxCoords = field(default=None)
-    glyphAdvanceWidths: float = field(default=0.0)
-    glyphsWithAnchors: Optional[dict] = None
-    componentGlyphs: Optional[list[str]] = None
+    codepoint: str
+    description: str
+    boundary_box: Rect
+    advance_width: float
+    anchors: Optional[dict]
+    component_glyphs: Optional[list[str]]
 
 
 

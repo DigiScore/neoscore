@@ -11,8 +11,9 @@ from neoscore.utils.exceptions import (
     MusicFontMetadataNotFoundError)
 from neoscore.utils.platforms import PlatformType, current_platform
 from neoscore.utils.units import Unit, convert_all_to_unit
+from neoscore.utils.rect import Rect
 
-from neoscore.models.glyph_info import GlyphInfo, BBoxCoords
+from neoscore.models.glyph_info import GlyphInfo
 
 # TODO LOW make a nice __repr__
 
@@ -118,47 +119,50 @@ class MusicFont(Font):
         if alternate_number:
             glyph_name = self._alternate_checker(glyph_name, alternate_number)
 
-        info = GlyphInfo(glyph_name)
-
         # check if glyphname exists then get details from smufl
         _name = smufl.glyph_names.get(glyph_name)
         if _name:
-            info.codepoint = _name['codepoint']
-            info.description = _name['description']
+            codepoint = _name['codepoint']
+            description = _name['description']
+            component_glyphs = None
         else:
             #  check is it ligature or optional G and get info
-            info = self._lig_opt_checker(info, glyph_name)
+            (codepoint, description, component_glyphs) = self._lig_opt_checker(glyph_name)
 
         # if we have made it this far and populated
         # info with all other valid details
-        info.glyphAdvanceWidths = self.metadata['glyphAdvanceWidths'].get(glyph_name)
-        info.glyphBBoxes = self._bBox_coords_parse(self.metadata['glyphBBoxes'].get(glyph_name))
+        advance_width = self.metadata['glyphAdvanceWidths'].get(glyph_name)
+        convert_all_to_unit(advance_width, self.unit)
+
+        _boundary_box_raw = (self.metadata['glyphBBoxes'].get(glyph_name))
+        convert_all_to_unit(_boundary_box_raw, self.unit)
+        boundary_box = self._bBox_coords_parse(_boundary_box_raw)
 
         # get optional anchor metadata if available
-        # todo - should this property use make_class()
-        #  to build a new dataclass from the specific anchors for each indiv glyph?
-        #  How to express that in GlyphInfo DC?
-        info.glyphsWithAnchors = self.metadata['glyphsWithAnchors'].get(glyph_name)
+        anchors = self.metadata['glyphsWithAnchors'].get(glyph_name)
 
-        # todo - get convert to unit to work with new dataclass GlyphInfo
-        # convert_all_to_unit(info, self.unit)
-
-        # print(info)
-        return info
+        return GlyphInfo(canonical_name=glyph_name,
+                         codepoint=codepoint,
+                         description=description,
+                         boundary_box=boundary_box,
+                         advance_width=advance_width,
+                         anchors=anchors,
+                         component_glyphs=component_glyphs
+                         )
 
     # private helper functions
-    def _bBox_coords_parse(self, b_box_dict: dict) -> BBoxCoords:
+    def _bBox_coords_parse(self, b_box_dict: dict) -> Rect:
         """Parses the boundary box bBoxNE and bBoxSW coords
         from SMuFL metadata into BBoxCoords dataclass"""
 
         # parse the boundary box coords
-        b_Box_dataclass = BBoxCoords(bBoxNE_X=b_box_dict["bBoxNE"][0],
-                                     bBoxNE_Y=b_box_dict["bBoxNE"][1],
-                                     bBoxSW_X=b_box_dict["bBoxSW"][0],
-                                     bBoxSW_Y=b_box_dict["bBoxSW"][1]
-                                     )
+        rect_dataclass = Rect(x=b_box_dict["bBoxNE"][0],
+                              y=b_box_dict["bBoxNE"][1],
+                              width=b_box_dict["bBoxSW"][0],
+                              height=b_box_dict["bBoxSW"][1]
+                              )
 
-        return b_Box_dataclass
+        return rect_dataclass
 
     def _alternate_checker(self, glyph_name: str, alternate_number: int) -> str:
         """check to see if the alternate glyph exists,
@@ -189,8 +193,7 @@ class MusicFont(Font):
 
         return new_glyph_name
 
-
-    def _lig_opt_checker(self, info: GlyphInfo, glyph_name: str) -> GlyphInfo:
+    def _lig_opt_checker(self, glyph_name: str) -> tuple[str, str, str]:
         """check to see if the called glyph exists as a
         ligature or as an optional, if it does it then
         populate the GlyphInfo dataclass with basic info.
@@ -203,20 +206,21 @@ class MusicFont(Font):
         # check if glyphname is a ligature glyph
         _ligature = self.metadata['ligatures'].get(glyph_name)
         if _ligature:
-            info.codepoint = _ligature['codepoint']
-            info.componentGlyphs = _ligature['componentGlyphs']
-            info.description = _ligature['description']
+            codepoint = _ligature['codepoint']
+            description = _ligature['description']
+            component_glyphs = _ligature['componentGlyphs']
 
         # else check the optional glyph list
         else:
             _optional = self.metadata['optionalGlyphs'].get(glyph_name)
 
             if _optional:
-                info.codepoint = _optional['codepoint']
-                info.description = _optional['description']
+                codepoint = _optional['codepoint']
+                description = _optional['description']
+                component_glyphs = None
 
             # else glyphname is not registered with SMuFL
             else:
                 raise MusicFontGlyphNotFoundError
 
-        return info
+        return (codepoint, description, component_glyphs)
