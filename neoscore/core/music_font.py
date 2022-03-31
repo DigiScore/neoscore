@@ -14,7 +14,7 @@ from neoscore.utils.platforms import PlatformType, current_platform
 from neoscore.utils.units import Unit, convert_all_to_unit
 
 from neoscore.models.glyph_info import GlyphInfo
-
+from neoscore.models.glyph_info import BBoxCoords
 
 # TODO LOW make a nice __repr__
 
@@ -82,7 +82,7 @@ class MusicFont(Font):
     ######## PUBLIC METHODS ########
 
     def modified(
-        self, family_name: Optional[str] = None, unit: Optiona[Type[Unit]] = None
+        self, family_name: Optional[str] = None, unit: Optional[Type[Unit]] = None
     ) -> MusicFont:
         return MusicFont(
             family_name if family_name is not None else self.family_name,
@@ -134,14 +134,35 @@ class MusicFont(Font):
         # if we have made it this far and populated
         # info with all other valid details
         info.glyphAdvanceWidths = self.metadata['glyphAdvanceWidths'].get(glyph_name)
-        info.glyphBBoxes = self.metadata['glyphBBoxes'].get(glyph_name)
+        info.glyphBBoxes = self._bBox_coords_parse(self.metadata['glyphBBoxes'].get(glyph_name))
         info.glyphsWithAnchors = self.metadata['glyphsWithAnchors'].get(glyph_name)
 
-        # todo - get covert to unit to work
+        # todo - get convert to unit to work
         # convert_all_to_unit(info, self.unit)
         return info
 
     # private helper functions
+    def _bBox_coords_parse(self, b_box_dict: dict) -> BBoxCoords:
+        """Parses the boundary box bBoxNE and bBoxSW coords
+        from SMuFL metadata into BBoxCoords dataclass"""
+
+        # parse the boundary box coords
+        # b_Box_dataclass_ne_X = b_box_dict["bBoxNE"][0]
+        # b_Box_dataclass_ne_Y = b_box_dict["bBoxNE"][1]
+        # b_Box_dataclass_sw_X = b_box_dict["bBoxSW"][0]
+        # b_Box_dataclass_sw_Y = b_box_dict["bBoxSW"][1]
+
+        # todo - get convert to unit to work
+        b_Box_dataclass = BBoxCoords(b_box_dict["bBoxNE"][0],
+                                     b_box_dict["bBoxNE"][1],
+                                     b_box_dict["bBoxSW"][0],
+                                     b_box_dict["bBoxSW"][1]
+                                     )
+
+        return b_Box_dataclass
+
+
+
     def _alternate_checker(self, glyph_name: str, alternate_number: int) -> str:
         """check to see if the alternate glyph exists,
         if it does it then returns that glyph name.
