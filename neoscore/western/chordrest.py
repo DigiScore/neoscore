@@ -399,7 +399,9 @@ class Chordrest(PositionedObject, StaffObject):
             self._create_flag()
         else:
             # TODO LOW support explicit rest Y positioning
-            self.rest = Rest(Point(staff.unit(0), staff.unit(2)), self, duration)
+            self.rest = Rest(
+                Point(self.staff.unit(0), self.staff.unit(2)), self, self.duration
+            )
         # Both rests and chords needs dots
         self._create_dots()
         pass
