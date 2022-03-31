@@ -132,7 +132,7 @@ class MusicFont(Font):
         # if we have made it this far and populated
         # info with all other valid details
         advance_width = self.metadata['glyphAdvanceWidths'].get(glyph_name)
-        convert_all_to_unit(advance_width, self.unit)
+        convert_all_to_unit([advance_width], self.unit)
 
         _boundary_box_raw = (self.metadata['glyphBBoxes'].get(glyph_name))
         convert_all_to_unit(_boundary_box_raw, self.unit)
