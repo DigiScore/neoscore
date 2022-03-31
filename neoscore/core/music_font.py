@@ -8,13 +8,11 @@ from neoscore.core.font import Font
 from neoscore.utils import smufl
 from neoscore.utils.exceptions import (
     MusicFontGlyphNotFoundError,
-    MusicFontMetadataNotFoundError,
-)
+    MusicFontMetadataNotFoundError)
 from neoscore.utils.platforms import PlatformType, current_platform
 from neoscore.utils.units import Unit, convert_all_to_unit
 
-from neoscore.models.glyph_info import GlyphInfo
-from neoscore.models.glyph_info import BBoxCoords
+from neoscore.models.glyph_info import GlyphInfo, BBoxCoords
 
 # TODO LOW make a nice __repr__
 
@@ -135,10 +133,14 @@ class MusicFont(Font):
         # info with all other valid details
         info.glyphAdvanceWidths = self.metadata['glyphAdvanceWidths'].get(glyph_name)
         info.glyphBBoxes = self._bBox_coords_parse(self.metadata['glyphBBoxes'].get(glyph_name))
+
+        # get optional anchor metadata if available
         info.glyphsWithAnchors = self.metadata['glyphsWithAnchors'].get(glyph_name)
 
-        # todo - get convert to unit to work
+        # todo - get convert to unit to work with new dataclass GlyphInfo
         # convert_all_to_unit(info, self.unit)
+
+        # print(info)
         return info
 
     # private helper functions
@@ -147,21 +149,13 @@ class MusicFont(Font):
         from SMuFL metadata into BBoxCoords dataclass"""
 
         # parse the boundary box coords
-        # b_Box_dataclass_ne_X = b_box_dict["bBoxNE"][0]
-        # b_Box_dataclass_ne_Y = b_box_dict["bBoxNE"][1]
-        # b_Box_dataclass_sw_X = b_box_dict["bBoxSW"][0]
-        # b_Box_dataclass_sw_Y = b_box_dict["bBoxSW"][1]
-
-        # todo - get convert to unit to work
-        b_Box_dataclass = BBoxCoords(b_box_dict["bBoxNE"][0],
-                                     b_box_dict["bBoxNE"][1],
-                                     b_box_dict["bBoxSW"][0],
-                                     b_box_dict["bBoxSW"][1]
+        b_Box_dataclass = BBoxCoords(bBoxNE_X=b_box_dict["bBoxNE"][0],
+                                     bBoxNE_Y=b_box_dict["bBoxNE"][1],
+                                     bBoxSW_X=b_box_dict["bBoxSW"][0],
+                                     bBoxSW_Y=b_box_dict["bBoxSW"][1]
                                      )
 
         return b_Box_dataclass
-
-
 
     def _alternate_checker(self, glyph_name: str, alternate_number: int) -> str:
         """check to see if the alternate glyph exists,
@@ -193,7 +187,16 @@ class MusicFont(Font):
         return new_glyph_name
 
 
-    def _lig_opt_checker(self, info: object, glyph_name: str) -> GlyphInfo:
+    def _lig_opt_checker(self, info: GlyphInfo, glyph_name: str) -> GlyphInfo:
+        """check to see if the called glyph exists as a
+        ligature or as an optional, if it does it then
+        populate the GlyphInfo dataclass with basic info.
+
+               Args: info: a partially populated GlyphInfo dataclass
+                   glyph_name: The canonical name of the glyph, or its main version
+                       if using an alternate number.
+               """
+
         # check if glyphname is a ligature glyph
         _ligature = self.metadata['ligatures'].get(glyph_name)
         if _ligature:
