@@ -63,8 +63,8 @@ create_example(
 
 create_example(
     [
-        TestChord(["f'"], (3, 16)),
-        TestChord(["f'"], (1, 16)),
+        TestChord(["f''"], (3, 16)),
+        TestChord(["f''"], (1, 16)),
     ]
 )
 
@@ -91,5 +91,19 @@ create_example(
     ]
 )
 
+# TODO the stems on this one seem to be too long
+
+create_example(
+    [
+        TestChord(["bb''", "e''"], (1, 32)),
+        TestChord(["f'"], (1, 32), beam_break_depth=2),
+        TestChord(["f'"], (1, 32)),
+        TestChord(["g''"], (1, 32)),
+        TestChord(["c#'"], (3, 16)),
+        TestChord(["e''"], (1, 32)),
+        TestChord(["eb''"], (1, 32)),
+        TestChord(["d''"], (1, 8)),
+    ]
+)
 
 neoscore.show()
