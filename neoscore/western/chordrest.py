@@ -91,38 +91,25 @@ class Chordrest(PositionedObject, StaffObject):
         self._accidentals = set()
         self._ledgers = set()
         self._dots = set()
-        self._noteheads = set()
+        self._pitches = pitches
         self._stem = None
         self._flag = None
+        self._rest = None
         self._stem_direction_override = stem_direction
         self._beam_break_depth = beam_break_depth
         self._beam_hook_dir = beam_hook_dir
         self._notehead_table = notehead_table
-        if pitches:
-            for pitch in pitches:
-                self._noteheads.add(
-                    Notehead(
-                        ZERO,
-                        self,
-                        pitch,
-                        self.duration,
-                        notehead_table=self.notehead_table,
-                    )
-                )
-            self.rest = None
-            self._position_noteheads_horizontally()
-            self._position_accidentals_horizontally()
-            self._create_accidentals()
-            self._create_ledgers()
-            self._create_stem()
-            self._create_flag()
-        else:
-            # TODO LOW support explicit rest Y positioning
-            self.rest = Rest(Point(staff.unit(0), staff.unit(2)), self, duration)
-        # Both rests and chords needs dots
-        self._create_dots()
+        self.rebuild()
 
     ######## PUBLIC PROPERTIES ########
+
+    @property
+    def pitches(self) -> Optional[list[PitchDef]]:
+        return self._pitches
+
+    @pitches.setter
+    def pitches(self, value: Optional[list[PitchDef]]):
+        self._pitches = value
 
     @property
     def noteheads(self) -> set[Notehead]:
@@ -366,6 +353,56 @@ class Chordrest(PositionedObject, StaffObject):
         return abs_height * self.stem_direction.value
 
     ######## PRIVATE METHODS ########
+
+    def _clear(self):
+        for notehead in self.noteheads:
+            notehead.remove()
+        self._noteheads = set()
+        for accidental in self.accidentals:
+            accidental.remove()
+        self._accidentals = set()
+        for ledger in self.ledgers:
+            ledger.remove()
+        self._ledgers = set()
+        for dot in self.dots:
+            dot.remove()
+        self._dots = set()
+        if self.stem:
+            self.stem.remove()
+        self._stem = None
+        if self.rest:
+            self.rest.remove()
+        self._rest = None
+
+    def rebuild(self):
+        """Generate or regenerate all child objects"""
+        if self.noteheads or self.rest:
+            # Clear existing glyphs
+            self._clear()
+        if self.pitches:
+            for pitch in self.pitches:
+                self._noteheads.add(
+                    Notehead(
+                        ZERO,
+                        self,
+                        pitch,
+                        self.duration,
+                        notehead_table=self.notehead_table,
+                    )
+                )
+            self.rest = None
+            self._position_noteheads_horizontally()
+            self._position_accidentals_horizontally()
+            self._create_accidentals()
+            self._create_ledgers()
+            self._create_stem()
+            self._create_flag()
+        else:
+            # TODO LOW support explicit rest Y positioning
+            self.rest = Rest(Point(staff.unit(0), staff.unit(2)), self, duration)
+        # Both rests and chords needs dots
+        self._create_dots()
+        pass
 
     def _render(self):
         super()._render()

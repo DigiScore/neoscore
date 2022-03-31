@@ -83,9 +83,6 @@ create_example(
 """
 Some bugs:
 
-- when the beam direction changes a CR's stem direction, this needs to
-  trigger a horizontal re-layout of the notes to ensure notes end up on
-  the correct side of the stem.
 - Beam hooks do not respect the beam group's slope
 - Still need to properly calculate stem offset for increasing flag/beam counts
 """

@@ -7,6 +7,7 @@ from neoscore.core.music_font import MusicFont
 from neoscore.core.pen import SimplePenDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.models.directions import HorizontalDirection, VerticalDirection
+from neoscore.utils.math_helpers import sign
 from neoscore.utils.point import ORIGIN, Point
 from neoscore.utils.units import ZERO, Unit
 from neoscore.western.beam import Beam
@@ -254,7 +255,14 @@ class BeamGroup(PositionedObject, HasMusicFont):
             # y = m(x - x1) - y1, where x = 0
             c_relative_x = map_between_x(c, first)
             y = (beam_group_line.slope * c_relative_x) + beam_group_line.start_y
-            c.stem.end_point.y = map_between(c.stem, self).y + y
+            original_stem_sign = sign(c.stem.end_point.y)
+            adjusted_stem_end_y = map_between(c.stem, self).y + y
+            if sign(adjusted_stem_end_y) != original_stem_sign:
+                # Need to re-layout chord notes because stem flipped
+                # Very inefficiently rebuild the whole chordrest for this
+                c.stem_direction = VerticalDirection.from_sign(adjusted_stem_end_y)
+                c.rebuild()
+            c.stem.end_point.y = adjusted_stem_end_y
             c.flag.remove()
             c._flag = None
         # Now create the beams!
