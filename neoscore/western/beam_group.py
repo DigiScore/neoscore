@@ -2,13 +2,13 @@ from typing import NamedTuple, Optional, cast
 
 from neoscore.core.brush import SimpleBrushDef
 from neoscore.core.has_music_font import HasMusicFont
-from neoscore.core.mapping import map_between
+from neoscore.core.mapping import map_between, map_between_x
 from neoscore.core.music_font import MusicFont
 from neoscore.core.pen import SimplePenDef
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.models.directions import HorizontalDirection
-from neoscore.utils.point import ORIGIN
-from neoscore.utils.units import ZERO
+from neoscore.models.directions import HorizontalDirection, VerticalDirection
+from neoscore.utils.point import ORIGIN, Point
+from neoscore.utils.units import ZERO, Unit
 from neoscore.western.beam import Beam
 from neoscore.western.chordrest import Chordrest
 
@@ -122,14 +122,12 @@ def resolve_beam_layout(states: list[BeamState]) -> list[BeamPathSpec]:
                     start_idx = i
                 else:
                     continue
-            if state.break_depth is not None and state.break_depth < depth:
-                break_ends_beam = True
-            else:
-                break_ends_beam = False
-            if i == len(states) - 1 or states[i + 1].flag_count < depth:
-                next_depth_ends_beam = True
-            else:
-                next_depth_ends_beam = False
+            break_ends_beam = (
+                state.break_depth is not None and state.break_depth < depth
+            )
+            next_depth_ends_beam = (
+                i == len(states) - 1 or states[i + 1].flag_count < depth
+            )
             if break_ends_beam or next_depth_ends_beam:
                 # Beam ends after this state
                 if start_idx == i:
@@ -141,6 +139,81 @@ def resolve_beam_layout(states: list[BeamState]) -> list[BeamPathSpec]:
                     path_specs.append(BeamPathSpec(depth, start_idx, i))
                 start_idx = None
     return path_specs
+
+
+class BeamGroupLine(NamedTuple):
+    """Definition for the line along which a beam group's outermost beam runs."""
+
+    start_y: Unit
+    """The starting y position relative to the staff.
+
+    When the starting x position is implied to be 0, this is line's y-intercept.
+    """
+
+    slope: float
+
+
+# TODO HIGH test me
+
+
+def resolve_beam_group_line(
+    chordrests: list[Chordrest], direction: VerticalDirection
+) -> BeamGroupLine:
+    unit = chordrests[0].staff.unit
+    first = chordrests[0]
+    last = chordrests[-1]
+    # Determine slope from first and last noteheads furthest on side opposite of beam
+    if direction == VerticalDirection.DOWN:
+        slope_start_ref_note = first.highest_notehead
+        slope_end_ref_note = last.highest_notehead
+    else:
+        slope_start_ref_note = first.lowest_notehead
+        slope_end_ref_note = last.lowest_notehead
+    if slope_start_ref_note.y > slope_end_ref_note.y:
+        delta_y = unit(-1)
+    elif slope_start_ref_note.y == slope_end_ref_note.y:
+        delta_y = ZERO
+    else:
+        delta_y = unit(1)
+    delta_x = map_between(last, first).x
+    slope = delta_y / delta_x
+    # Now find the note closest to the beam's side
+    if direction == VerticalDirection.DOWN:
+        cr_with_closest_note = max(chordrests, key=lambda c: c.lowest_notehead.y)
+        cr_x = map_between_x(first, cr_with_closest_note)
+        closest_y = cr_with_closest_note.lowest_notehead.y
+        nearest_beam_intersect = Point(cr_x, closest_y + unit(3.5))
+    else:
+        cr_with_closest_note = min(chordrests, key=lambda c: c.highest_notehead.y)
+        cr_x = map_between_x(first, cr_with_closest_note)
+        closest_y = cr_with_closest_note.highest_notehead.y
+        nearest_beam_intersect = Point(cr_x, closest_y - unit(3.5))
+    # Given a beam intersect and a slope, find the beam y at `start`
+    # y = m(x - x1) + y1, where x = 0
+    start_y = (slope * (-nearest_beam_intersect.x)) + nearest_beam_intersect.y
+    return BeamGroupLine(start_y, slope)
+
+
+def resolve_beam_direction(chordrests: list[Chordrest]) -> VerticalDirection:
+    """Try to determine the best direction a beam group should go in.
+
+    The algorithm works by determining the average y position of the
+    outermost notes of each chord, then if that position lies above
+    the middle staff line, placing the beam below (`DOWN`), and vice
+    versa
+    """
+    middle_staff_pos = chordrests[0].staff.center_pos_y
+    center = sum(
+        [
+            c.furthest_notehead.y if c.noteheads else middle_staff_pos
+            for c in chordrests
+        ],
+        start=ZERO,
+    ) / len(chordrests)
+    if center > middle_staff_pos:
+        return VerticalDirection.UP
+    else:
+        return VerticalDirection.DOWN
 
 
 class BeamGroup(PositionedObject, HasMusicFont):
@@ -168,19 +241,20 @@ class BeamGroup(PositionedObject, HasMusicFont):
         self._beams = []
         first = chordrests[0]
         last = chordrests[-1]
-        super().__init__(ORIGIN, first.stem.end_point)
+        super().__init__(ORIGIN, first)
         if font is None:
             font = HasMusicFont.find_music_font(self.parent)
         self._music_font = font
-        # For now, use the stem direction of the first chordrest and
-        # overwrite the stems of the others.
-        # (Later, maybe check the stems of every entry and go based on
-        # the furthest out)
         beam_start_pos = ORIGIN
-        # For now, make all beam horizontal
-        # Adjust all chordrest stems to touch the beam
+        # Work out beam direction, slope, and offset
+        beam_direction = resolve_beam_direction(chordrests)
+        beam_group_line = resolve_beam_group_line(chordrests, beam_direction)
+        # Adjust stems to follow group line
         for c in chordrests:
-            c.stem.end_point.y += map_between(c.stem.end_point, self).y
+            # y = m(x - x1) - y1, where x = 0
+            c_relative_x = map_between_x(c, first)
+            y = (beam_group_line.slope * c_relative_x) + beam_group_line.start_y
+            c.stem.end_point.y = map_between(c.stem, self).y + y
             c.flag.remove()
             c._flag = None
         # Now create the beams!

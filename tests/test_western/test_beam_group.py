@@ -1,10 +1,19 @@
-from neoscore.models.directions import HorizontalDirection
+import unittest
+
+from neoscore.core import neoscore
+from neoscore.models.directions import HorizontalDirection, VerticalDirection
+from neoscore.utils.point import Point
+from neoscore.utils.units import Mm
 from neoscore.western.beam_group import (
     BeamPathSpec,
     BeamState,
+    resolve_beam_direction,
     resolve_beam_layout,
     resolve_beams,
 )
+from neoscore.western.chordrest import Chordrest
+from neoscore.western.clef import Clef
+from neoscore.western.staff import Staff
 
 
 def test_resolve_beams():
@@ -165,3 +174,56 @@ def test_resolve_beam_layout():
         BeamPathSpec(2, 2, 3),
         BeamPathSpec(3, 2, HorizontalDirection.RIGHT),
     ]
+
+
+class TestResolveBeamDirection(unittest.TestCase):
+    def setUp(self):
+        neoscore.setup()
+        self.staff = Staff(Point(Mm(0), Mm(0)), None, Mm(100))
+        Clef(Mm(0), self.staff, "treble")
+
+    def test_resolve_beam_direction_with_single_notes(self):
+        assert (
+            resolve_beam_direction(
+                [
+                    Chordrest(Mm(1), self.staff, ["c,,"], (1, 8)),
+                    Chordrest(Mm(10), self.staff, ["f'"], (1, 8)),
+                ]
+            )
+            == VerticalDirection.UP
+        )
+
+    def test_resolve_beam_direction_with_chords_only_uses_furthest(self):
+        assert (
+            resolve_beam_direction(
+                [
+                    Chordrest(
+                        Mm(1), self.staff, ["c,,", "c'", "c'", "c'", "c'"], (1, 8)
+                    ),
+                    Chordrest(Mm(10), self.staff, ["f'", "e'", "e'", "e'"], (1, 8)),
+                ]
+            )
+            == VerticalDirection.UP
+        )
+
+    def test_resolve_beam_direction_with_rests(self):
+        assert (
+            resolve_beam_direction(
+                [
+                    Chordrest(Mm(10), self.staff, ["c''"], (1, 8)),
+                    Chordrest(Mm(10), self.staff, [], (1, 8)),
+                ]
+            )
+            == VerticalDirection.DOWN
+        )
+
+    def test_resolve_beam_direction_at_center_goes_down(self):
+        assert (
+            resolve_beam_direction(
+                [
+                    Chordrest(Mm(10), self.staff, [], (1, 8)),
+                    Chordrest(Mm(10), self.staff, ["b'"], (1, 8)),
+                ]
+            )
+            == VerticalDirection.DOWN
+        )

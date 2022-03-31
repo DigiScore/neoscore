@@ -20,7 +20,7 @@ last_staff_y = ZERO
 
 def create_example(chords: list[TestChord]):
     global last_staff_y
-    staff = Staff((ZERO, last_staff_y + Mm(20)), None, Mm(100))
+    staff = Staff((ZERO, last_staff_y + Mm(12)), None, Mm(50))
     last_staff_y = staff.y
     clef = Clef(ZERO, staff, "treble")
     unit = staff.unit
@@ -40,6 +40,8 @@ def create_example(chords: list[TestChord]):
         )
     bg = BeamGroup(group)
 
+
+# Flat beams
 
 create_example(
     [
@@ -73,6 +75,29 @@ create_example(
         TestChord(["f'"], (1, 32), beam_break_depth=1),
         TestChord(["f'"], (1, 32)),
         TestChord(["f'"], (1, 32)),
+    ]
+)
+
+# Angled beams
+
+"""
+Some bugs:
+
+- when the beam direction changes a CR's stem direction, this needs to
+  trigger a horizontal re-layout of the notes to ensure notes end up on
+  the correct side of the stem.
+- Beam hooks do not respect the beam group's slope
+- Still need to properly calculate stem offset for increasing flag/beam counts
+"""
+
+create_example(
+    [
+        TestChord(["f'"], (1, 32)),
+        TestChord(["f'"], (1, 32), beam_break_depth=1),
+        TestChord(["f'"], (1, 32)),
+        TestChord(["g''"], (1, 32)),
+        TestChord(["c#'"], (3, 16)),
+        TestChord(["d'"], (1, 16)),
     ]
 )
 

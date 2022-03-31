@@ -21,6 +21,10 @@ from neoscore.western.stem import Stem
 
 # TODO MEDIUM this is not responsive to post-init modification.
 
+# TODO MEDIUM align noteheads and stems properly using glyph anchor metadata
+# see https://w3c.github.io/smufl/latest/specification/glyph-registration-notes-flags.html
+# do this once #2 (glyph info refactor) is finished
+
 
 class Chordrest(PositionedObject, StaffObject):
 
