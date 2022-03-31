@@ -154,9 +154,6 @@ class BeamGroupLine(NamedTuple):
     slope: float
 
 
-# TODO HIGH test me
-
-
 def resolve_beam_group_line(
     chordrests: list[Chordrest], direction: VerticalDirection, font: MusicFont
 ) -> BeamGroupLine:
@@ -290,15 +287,26 @@ class BeamGroup(PositionedObject, HasMusicFont):
         specs = BeamGroup._resolve_chordrest_beam_layout(chordrests)
         for spec in specs:
             start_parent = chordrests[spec.start].stem.end_point
+            start_y = (spec.depth - 1) * layer_step
             if isinstance(spec.end, int):
                 end_parent = chordrests[spec.end].stem.end_point
                 end_x = ZERO
+                end_y = start_y
+
             else:
                 end_parent = start_parent
                 end_x = beam_thickness * 2 * spec.end.value
-            y = (spec.depth - 1) * layer_step
+                end_y = start_y + (-end_x * beam_group_line.slope)
             self.beams.append(
-                Beam((ZERO, y), start_parent, (end_x, y), end_parent, font, brush, pen)
+                Beam(
+                    (ZERO, start_y),
+                    start_parent,
+                    (end_x, end_y),
+                    end_parent,
+                    font,
+                    brush,
+                    pen,
+                )
             )
 
     @staticmethod

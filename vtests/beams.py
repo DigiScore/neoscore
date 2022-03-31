@@ -80,12 +80,6 @@ create_example(
 
 # Angled beams
 
-"""
-Some bugs:
-
-- Beam hooks do not respect the beam group's slope
-"""
-
 create_example(
     [
         TestChord(["f'"], (1, 32)),
