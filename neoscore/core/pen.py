@@ -22,7 +22,7 @@ class Pen:
         thickness: Optional[Unit] = ZERO,
         pattern: PenPattern = PenPattern.SOLID,
         join_style: PenJoinStyle = PenJoinStyle.BEVEL,
-        cap_style: PenCapStyle = PenCapStyle.SQUARE,
+        cap_style: PenCapStyle = PenCapStyle.FLAT,
     ):
         """
         Args:

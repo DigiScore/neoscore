@@ -30,7 +30,7 @@ class TestPen(unittest.TestCase):
 
     def test_init_default_cap_style(self):
         test_pen = Pen()
-        assert test_pen.cap_style == PenCapStyle.SQUARE
+        assert test_pen.cap_style == PenCapStyle.FLAT
 
     def test_from_existing(self):
         original = Pen(

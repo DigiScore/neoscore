@@ -160,6 +160,7 @@ def resolve_beam_group_line(
     unit = chordrests[0].staff.unit
     first = chordrests[0]
     last = chordrests[-1]
+    beam_thickness = font.engraving_defaults["beamThickness"]
     beam_group_height = resolve_beam_group_height(chordrests, font)
     # Determine slope from first and last noteheads furthest on side opposite of beam
     if direction == VerticalDirection.DOWN:
@@ -285,9 +286,10 @@ class BeamGroup(PositionedObject, HasMusicFont):
         beam_thickness = font.engraving_defaults["beamThickness"]
         layer_step = beam_layer_height(self.music_font) * -beam_direction.value
         specs = BeamGroup._resolve_chordrest_beam_layout(chordrests)
+        base_y = -beam_thickness if beam_direction == VerticalDirection.DOWN else ZERO
         for spec in specs:
             start_parent = chordrests[spec.start].stem.end_point
-            start_y = (spec.depth - 1) * layer_step
+            start_y = base_y + ((spec.depth - 1) * layer_step)
             if isinstance(spec.end, int):
                 end_parent = chordrests[spec.end].stem.end_point
                 end_x = ZERO

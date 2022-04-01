@@ -78,6 +78,24 @@ create_example(
     ]
 )
 
+# Hook direction overrides
+
+create_example(
+    [
+        TestChord(["f'"], (1, 8)),
+        TestChord(["f'"], (1, 16)),
+        TestChord(["f'"], (1, 8)),
+    ]
+)
+
+create_example(
+    [
+        TestChord(["f'"], (1, 8)),
+        TestChord(["f'"], (1, 16), beam_hook_dir=HorizontalDirection.RIGHT),
+        TestChord(["f'"], (1, 8)),
+    ]
+)
+
 # Angled beams
 
 create_example(
