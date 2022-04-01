@@ -76,7 +76,7 @@ class TestMusicFont(unittest.TestCase):
 
     def test_glyph_info_for_last_alternate_glyph(self):
         font = MusicFont("Bravura", Unit)
-        testGlyph = font.glyph_info('brace', 4)
+        testGlyph = font.glyph_incdfo('brace', 4)
         assert testGlyph.canonical_name == 'braceFlat'
         assert testGlyph.codepoint == "\uF403"
 

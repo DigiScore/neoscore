@@ -31,7 +31,7 @@ class AppInterface:
     _QT_FONT_ERROR_CODE = -1
 
     def __init__(
-        self, document: Document, repl_refresh_func: Callable[[float], [float]]
+        self, document: Document, repl_refresh_func: Callable[[float], float]
     ):
         self.document = document
         args = (
