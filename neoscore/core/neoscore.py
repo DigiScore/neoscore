@@ -14,7 +14,7 @@ from neoscore.core.pen import Pen
 from neoscore.interface.app_interface import AppInterface
 from neoscore.interface.qt import image_utils
 from neoscore.utils import file_system
-from neoscore.utils.color import Color, ColorDef, color_from_def
+from neoscore.utils.color import Color, ColorDef
 from neoscore.utils.exceptions import InvalidImageFormatError
 from neoscore.utils.rect import RectDef, rect_from_def
 
@@ -77,7 +77,7 @@ def set_default_color(color: ColorDef):
     This only affects objects created after this is called."""
     # Objects using unspecified pens and brushes make copies of these
     # global default objects.
-    c = color_from_def(color)
+    c = Color.from_def(color)
     Pen.default_color = c
     Brush.default_color = c
 
@@ -262,7 +262,7 @@ def render_image(
     if bg_color is None:
         bg_color = Color(255, 255, 255, 255)
     else:
-        bg_color = color_from_def(bg_color)
+        bg_color = Color.from_def(bg_color)
     dpm = int(image_utils.dpi_to_dpm(dpi))
 
     document._render()
@@ -304,3 +304,7 @@ def _register_default_fonts():
     register_font(constants.DEFAULT_TEXT_FONT_BOLD_PATH)
     register_font(constants.DEFAULT_TEXT_FONT_ITALIC_PATH)
     register_font(constants.DEFAULT_TEXT_FONT_BOLD_ITALIC_PATH)
+
+
+def shutdown():
+    _app_interface.destroy()

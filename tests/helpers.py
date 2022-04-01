@@ -1,4 +1,5 @@
 import tempfile
+import unittest
 from typing import Optional
 
 from neoscore.core import neoscore
@@ -93,3 +94,17 @@ def assert_path_els_equal(
 def render_scene():
     out_file = tempfile.NamedTemporaryFile(suffix=".png")
     neoscore.render_image((Mm(-100), Mm(-100), Mm(100), Mm(100)), out_file.name)
+
+
+class AppTest(unittest.TestCase):
+    """Superclass for tests requiring neoscore application.
+
+    Tests using `setUp` and `tearDown` functions should make sure to
+    run the super functions as well.
+    """
+
+    def setUp(self):
+        neoscore.setup()
+
+    def tearDown(self):
+        neoscore.shutdown()

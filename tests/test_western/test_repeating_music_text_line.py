@@ -1,6 +1,3 @@
-import unittest
-
-from neoscore.core import neoscore
 from neoscore.core.flowable import Flowable
 from neoscore.core.music_char import MusicChar
 from neoscore.core.music_text import MusicText
@@ -9,10 +6,12 @@ from neoscore.western.repeating_music_text_line import RepeatingMusicTextLine
 from neoscore.western.staff import Staff
 from tests.mocks.mock_staff_object import MockStaffObject
 
+from ..helpers import AppTest
 
-class TestRepeatingMusicTextLine(unittest.TestCase):
+
+class TestRepeatingMusicTextLine(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.flowable = Flowable((Mm(0), Mm(0)), None, Mm(10000), Mm(30), Mm(5))
         self.staff = Staff((Mm(0), Mm(0)), self.flowable, Mm(5000))
         self.left_parent = MockStaffObject((Mm(0), Mm(0)), self.staff)

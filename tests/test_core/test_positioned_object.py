@@ -1,5 +1,3 @@
-import unittest
-
 from neoscore.core import neoscore
 from neoscore.core.flowable import Flowable
 from neoscore.core.paper import Paper
@@ -7,10 +5,15 @@ from neoscore.core.positioned_object import PositionedObject
 from neoscore.utils.point import Point
 from neoscore.utils.units import ZERO, Mm, Unit
 
+from ..helpers import AppTest
 
-class TestPositionedObject(unittest.TestCase):
+
+class TestPositionedObject(AppTest):
     def setUp(self):
-        neoscore.setup(Paper(*[Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]))
+        super().setUp()
+        neoscore.document.paper = Paper(
+            *[Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]
+        )
         self.flowable = Flowable((Mm(0), Mm(0)), None, Mm(10000), Mm(30), Mm(5))
 
     def test_pos_setter_changes_x(self):

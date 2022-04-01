@@ -4,7 +4,7 @@ from typing import Any, Optional, Union
 
 from neoscore.core.brush_pattern import BrushPattern
 from neoscore.interface.brush_interface import BrushInterface
-from neoscore.utils.color import Color, ColorDef, color_from_def
+from neoscore.utils.color import Color, ColorDef
 
 
 class Brush:
@@ -27,7 +27,7 @@ class Brush:
         if color is None:
             self._color = Brush.default_color
         else:
-            self._color = color_from_def(color)
+            self._color = Color.from_def(color)
         self._pattern = pattern
         self._regenerate_interface()
 
@@ -40,6 +40,13 @@ class Brush:
     ) -> Brush:
         """Derive a Brush from another, overriding any provided fields."""
         return cls(color or brush.color, pattern or brush.pattern)
+
+    @classmethod
+    def from_def(cls, brush_def: BrushDef) -> Brush:
+        if isinstance(brush_def, Brush):
+            return brush_def
+        else:
+            return Brush(brush_def)
 
     @classmethod
     def no_brush(cls) -> Brush:
@@ -82,11 +89,5 @@ class Brush:
         )
 
 
-SimpleBrushDef = Union[Brush, str]
-
-
-def brush_from_simple_def(brush_def: SimpleBrushDef) -> Brush:
-    if isinstance(brush_def, Brush):
-        return brush_def
-    else:
-        return Brush(brush_def)
+BrushDef = Union[Brush, str]
+"""A `Brush` or a color hex string to be passed to an otherwise default `Brush`."""

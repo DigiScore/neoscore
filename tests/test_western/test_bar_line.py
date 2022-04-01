@@ -1,16 +1,15 @@
-import unittest
-
-from neoscore.core import neoscore
 from neoscore.core.flowable import Flowable
 from neoscore.utils.point import Point
 from neoscore.utils.units import Mm
 from neoscore.western.bar_line import BarLine
 from neoscore.western.staff import Staff
 
+from ..helpers import AppTest
 
-class TestBarLine(unittest.TestCase):
+
+class TestBarLine(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.flowable = Flowable((Mm(0), Mm(0)), None, Mm(10000), Mm(30), Mm(5))
         self.staff_1 = Staff((Mm(0), Mm(0)), self.flowable, Mm(100))
         self.staff_2 = Staff((Mm(0), Mm(30)), self.flowable, Mm(100))

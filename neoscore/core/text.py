@@ -3,10 +3,10 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 
 from neoscore.core import neoscore
-from neoscore.core.brush import SimpleBrushDef
+from neoscore.core.brush import BrushDef
 from neoscore.core.font import Font
 from neoscore.core.painted_object import PaintedObject
-from neoscore.core.pen import Pen, SimplePenDef
+from neoscore.core.pen import Pen, PenDef
 from neoscore.interface.text_interface import TextInterface
 from neoscore.utils.point import Point, PointDef
 from neoscore.utils.rect import Rect
@@ -26,8 +26,8 @@ class Text(PaintedObject):
         parent: Optional[Parent],
         text: str,
         font: Optional[Font] = None,
-        brush: Optional[SimpleBrushDef] = None,
-        pen: Optional[SimplePenDef] = None,
+        brush: Optional[BrushDef] = None,
+        pen: Optional[PenDef] = None,
         scale: float = 1,
         breakable: bool = True,
     ):

@@ -1,7 +1,4 @@
-import unittest
-
 from neoscore import constants
-from neoscore.core import neoscore
 from neoscore.core.brush import Brush
 from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
@@ -13,10 +10,12 @@ from neoscore.utils.rect import Rect
 from neoscore.utils.units import ZERO, Mm, Unit
 from neoscore.western.staff import Staff
 
+from ..helpers import AppTest
 
-class TestMusicText(unittest.TestCase):
+
+class TestMusicText(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.staff = Staff((Mm(0), Mm(0)), None, length=Mm(100), staff_unit=Mm(1))
         self.font = MusicFont(constants.DEFAULT_MUSIC_FONT_NAME, self.staff.unit)
 

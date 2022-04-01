@@ -2,11 +2,11 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional
 
-from neoscore.core.brush import SimpleBrushDef
+from neoscore.core.brush import BrushDef
 from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.music_font import MusicFont
 from neoscore.core.path import Path
-from neoscore.core.pen import SimplePenDef
+from neoscore.core.pen import PenDef
 from neoscore.utils.point import PointDef
 
 if TYPE_CHECKING:
@@ -26,8 +26,8 @@ class MusicPath(Path, HasMusicFont):
         pos: PointDef,
         parent: Optional[Parent] = None,
         font: Optional[MusicFont] = None,
-        brush: Optional[SimpleBrushDef] = None,
-        pen: Optional[SimplePenDef] = None,
+        brush: Optional[BrushDef] = None,
+        pen: Optional[PenDef] = None,
     ):
         """
         Args:

@@ -1,14 +1,13 @@
-import unittest
-
 from PyQt5.QtGui import QColor, QPainterPath, QPen
 
-from neoscore.core import neoscore
 from neoscore.interface.qt.q_clipping_path import QClippingPath
 
+from ...helpers import AppTest
 
-class TestQClippingPath(unittest.TestCase):
+
+class TestQClippingPath(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.pen = QPen(QColor("#000000"), 1)
 
     def test_clip_measurements_scale_adjusted(self):

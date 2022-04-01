@@ -1,15 +1,14 @@
-import unittest
-
-from neoscore.core import neoscore
 from neoscore.utils.point import ORIGIN
 from neoscore.utils.units import Mm
 from neoscore.western.invisible_clef import InvisibleClef
 from neoscore.western.staff import Staff
 
+from ..helpers import AppTest
 
-class TestInvisibleClef(unittest.TestCase):
+
+class TestInvisibleClef(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.staff = Staff(ORIGIN, None, Mm(200))
 
     def test_init_with_str_clef_type(self):

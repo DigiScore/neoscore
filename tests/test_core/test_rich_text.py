@@ -1,17 +1,15 @@
-import unittest
-
 from neoscore.core import neoscore
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.rich_text import RichText
 from neoscore.utils.point import ORIGIN, Point
 from neoscore.utils.units import ZERO, Mm, Unit
 
-from ..helpers import render_scene
+from ..helpers import AppTest, render_scene
 
 
-class TestRichText(unittest.TestCase):
+class TestRichText(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.html = "<p>test</p>"
 
     def test_init(self):

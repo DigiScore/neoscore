@@ -1,22 +1,14 @@
-import unittest
-import pytest
-
-from neoscore.core import neoscore
 from neoscore.core.music_font import MusicFont
 from neoscore.utils.units import Mm, Unit
-from neoscore.utils import smufl
-from neoscore.models.glyph_info import GlyphInfo
-from neoscore.utils.exceptions import MusicFontGlyphNotFoundError
-from neoscore.utils.rect import Rect
+
+from ..helpers import AppTest
+
 
 class EquivalentUnit(Unit):
     pass
 
 
-class TestMusicFont(unittest.TestCase):
-    def setUp(self):
-        neoscore.setup()
-
+class TestMusicFont(AppTest):
     def test_modified(self):
         font = MusicFont("Bravura", Unit)
         # Since only Bravura is currently provided, we can't really
@@ -44,55 +36,3 @@ class TestMusicFont(unittest.TestCase):
         # (Can't test case of different family name since only Bravura exists)
         # assert hash(font) != MusicFont("Foo", Unit)
         assert hash(font) != hash(MusicFont("Bravura", Mm))
-
-    def test_glyph_info_for_all_required_glyphs(self):
-        font = MusicFont("Bravura", Unit)
-        # test each glyph in the glyphnamelist json
-        for testGlyph in smufl.glyph_names:
-            assert font.glyph_info(testGlyph).canonical_name == testGlyph
-            assert font.glyph_info(testGlyph).canonical_name == font._glyph_info(testGlyph).canonical_name
-
-    def test_complete_info_for_normal_glyph_with_anchors(self):
-        font = MusicFont("Bravura", Unit)
-        testGlyph = font.glyph_info('accidental3CommaSharp')
-        assert testGlyph.canonical_name == '4stringTabClef'
-        assert testGlyph.codepoint == "\ue452"
-        assert testGlyph.description == "3-comma sharp"
-        assert testGlyph.boundary_box == Rect(x=Unit(1.828),
-                                              y=Unit(2.044),
-                                              width=Unit(0.0),
-                                              height=Unit(-1.392))
-        assert testGlyph.advance_width == 1.736
-        assert testGlyph.anchors == {'cutOutNW': [0.888, 1.516],
-                                     'cutOutSE': [1.108, 0.856],
-                                     'cutOutSW': [0.108, -0.956]}
-
-    def test_glyph_info_for_one_alternate_glyph(self):
-        font = MusicFont("Bravura", Unit)
-        testGlyph = font.glyph_info('brace', 1)
-        assert testGlyph.canonical_name == 'braceSmall'
-        assert testGlyph.codepoint == "\uF400"
-
-    def test_glyph_info_for_last_alternate_glyph(self):
-        font = MusicFont("Bravura", Unit)
-        testGlyph = font.glyph_info('brace', 4)
-        assert testGlyph.canonical_name == 'braceFlat'
-        assert testGlyph.codepoint == "\uF403"
-
-    def test_glyph_info_for_ligature_glyph(self):
-        font = MusicFont("Bravura", Unit)
-        testGlyph = font.glyph_info('gClefFlat1Below')
-        assert testGlyph.canonical_name == 'gClefFlat1Below'
-        assert testGlyph.codepoint == "\uF55D"
-        assert testGlyph.description == 'G clef, flat 1 below'
-
-    def test_glyph_info_for_Foo_glyph(self):
-        font = MusicFont("Bravura", Unit)
-        with pytest.raises(MusicFontGlyphNotFoundError):
-            font.glyph_info('Foo')
-
-    def test_glyph_info_for_out_of_range_alternative_glyph(self):
-        font = MusicFont("Bravura", Unit)
-        with pytest.raises(MusicFontGlyphNotFoundError):
-            font.glyph_info('brace', 6)
-

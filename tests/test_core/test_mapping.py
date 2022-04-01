@@ -1,5 +1,3 @@
-import unittest
-
 from neoscore.core import neoscore
 from neoscore.core.flowable import Flowable
 from neoscore.core.mapping import canvas_pos_of, map_between
@@ -8,12 +6,15 @@ from neoscore.core.positioned_object import PositionedObject
 from neoscore.utils.point import Point
 from neoscore.utils.units import Mm, Unit
 
-from ..helpers import assert_almost_equal
+from ..helpers import AppTest, assert_almost_equal
 
 
-class TestMapping(unittest.TestCase):
+class TestMapping(AppTest):
     def setUp(self):
-        neoscore.setup(Paper(*[Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]))
+        super().setUp()
+        neoscore.document.paper = Paper(
+            *[Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]
+        )
         self.flowable = Flowable((Mm(0), Mm(0)), None, Mm(10000), Mm(30), Mm(5))
 
     def test_map_between(self):

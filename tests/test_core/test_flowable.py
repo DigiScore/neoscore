@@ -1,5 +1,3 @@
-import unittest
-
 import pytest
 
 from neoscore.core import neoscore
@@ -9,12 +7,15 @@ from neoscore.core.positioned_object import PositionedObject
 from neoscore.utils.point import Point
 from neoscore.utils.units import Mm
 
-from ..helpers import assert_almost_equal
+from ..helpers import AppTest, assert_almost_equal
 
 
-class TestFlowable(unittest.TestCase):
+class TestFlowable(AppTest):
     def setUp(self):
-        neoscore.setup(Paper(*[Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]))
+        super().setUp()
+        neoscore.document.paper = Paper(
+            *[Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]
+        )
         # live_width == Mm(160)
         # live_height == Mm(257)
 

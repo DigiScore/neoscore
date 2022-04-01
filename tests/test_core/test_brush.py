@@ -30,6 +30,10 @@ class TestBrush(unittest.TestCase):
             == BrushPattern.DENSE_2
         )
 
+    def test_from_def(self):
+        assert Brush.from_def(Brush("#ffffff")) == Brush("#ffffff")
+        assert Brush.from_def("#ffffff") == Brush("#ffffff")
+
     def test_no_brush(self):
         brush = Brush.no_brush()
         assert brush == Brush(Brush.default_color, BrushPattern.INVISIBLE)

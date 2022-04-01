@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional
 
-from neoscore.core.brush import SimpleBrushDef
+from neoscore.core.brush import BrushDef
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
-from neoscore.core.pen import SimplePenDef
+from neoscore.core.pen import PenDef
 from neoscore.utils.point import Point, PointDef
 from neoscore.utils.units import ZERO
 
@@ -32,8 +32,8 @@ class Beam(MusicPath):
         end_pos: PointDef,
         end_parent: Parent,
         font: Optional[MusicFont] = None,
-        brush: Optional[SimpleBrushDef] = None,
-        pen: Optional[SimplePenDef] = None,
+        brush: Optional[BrushDef] = None,
+        pen: Optional[PenDef] = None,
     ):
         """
         Args:
@@ -54,4 +54,4 @@ class Beam(MusicPath):
         self.line_to(end_pos.x, end_pos.y, end_parent)
         self.line_to(end_pos.x, end_pos.y + self.beam_thickness, end_parent)
         self.line_to(ZERO, self.beam_thickness, self)
-        self.close_subpath()
+        self.line_to(ZERO, ZERO, self)
