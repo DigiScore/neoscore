@@ -1,6 +1,3 @@
-import unittest
-
-from neoscore.core import neoscore
 from neoscore.core.flowable import Flowable
 from neoscore.models.directions import VerticalDirection
 from neoscore.models.duration import Duration
@@ -13,14 +10,16 @@ from neoscore.western.key_signature import KeySignature
 from neoscore.western.staff import Staff
 from tests.helpers import assert_almost_equal, render_scene
 
+from ..helpers import AppTest
+
 # TODO LOW test that glyphs are actually created successfully - this
 # failed to catch bugs in creating rhythm dots and flags, and probably
 # fails to catch other similar ones too.
 
 
-class TestChordrest(unittest.TestCase):
+class TestChordrest(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.flowable = Flowable(Point(Mm(0), Mm(0)), None, Mm(10000), Mm(100))
         self.staff = Staff(Point(Mm(0), Mm(0)), self.flowable, Mm(100))
         Clef(Mm(0), self.staff, "treble")

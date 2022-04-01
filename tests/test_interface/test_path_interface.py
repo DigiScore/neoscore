@@ -1,6 +1,3 @@
-import unittest
-
-from neoscore.core import neoscore
 from neoscore.core.brush_pattern import BrushPattern
 from neoscore.core.pen_cap_style import PenCapStyle
 from neoscore.core.pen_join_style import PenJoinStyle
@@ -17,10 +14,12 @@ from neoscore.utils.color import Color
 from neoscore.utils.point import Point
 from neoscore.utils.units import GraphicUnit, Unit
 
+from ..helpers import AppTest
 
-class TestPathInterface(unittest.TestCase):
+
+class TestPathInterface(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.pen = PenInterface(
             Color("#000000"),
             GraphicUnit(0),

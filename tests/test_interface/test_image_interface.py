@@ -1,20 +1,17 @@
 import pathlib
-import unittest
 
-from neoscore.core import neoscore
 from neoscore.interface.image_interface import ImageInterface
 from neoscore.utils.point import Point
 from neoscore.utils.units import Unit
+
+from ..helpers import AppTest
 
 img_dir = (pathlib.Path(__file__).parent / ".." / "resources").resolve()
 pixmap_image_path = img_dir / "pixmap_image.png"
 svg_image_path = img_dir / "svg_image.svg"
 
 
-class TestImageInterface(unittest.TestCase):
-    def setUp(self):
-        neoscore.setup()
-
+class TestImageInterface(AppTest):
     def test_pixmap_image_loading(self):
         interface = ImageInterface(Point(Unit(5), Unit(6)), pixmap_image_path, 1)
         interface.render()

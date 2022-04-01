@@ -1,18 +1,17 @@
-import unittest
-
 import pytest
 
-from neoscore.core import neoscore
 from neoscore.models.duration import Duration
 from neoscore.utils.point import ORIGIN
 from neoscore.utils.units import Mm
 from neoscore.western.flag import Flag, NoFlagNeededError
 from neoscore.western.staff import Staff
 
+from ..helpers import AppTest
 
-class TestFlag(unittest.TestCase):
+
+class TestFlag(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.staff = Staff((Mm(0), Mm(0)), None, length=Mm(100))
 
     def test_glyphnames(self):

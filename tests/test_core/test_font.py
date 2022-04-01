@@ -1,17 +1,13 @@
-import unittest
-
 import pytest
 
-from neoscore.core import neoscore
 from neoscore.core.font import Font
 from neoscore.utils.rect import Rect
 from neoscore.utils.units import GraphicUnit
 
+from ..helpers import AppTest
 
-class TestFont(unittest.TestCase):
-    def setUp(self):
-        neoscore.setup()
 
+class TestFont(AppTest):
     def test_init(self):
         test_font = Font("Bravura", 12, 2, False)
         assert test_font.family_name == "Bravura"

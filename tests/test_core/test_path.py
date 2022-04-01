@@ -1,9 +1,7 @@
 import math
-import unittest
 
 import pytest
 
-from neoscore.core import neoscore
 from neoscore.core.brush import Brush
 from neoscore.core.path import Path
 from neoscore.core.path_element import ControlPoint, CurveTo, LineTo, MoveTo
@@ -17,12 +15,12 @@ from neoscore.interface.path_interface import (
 from neoscore.utils.point import ORIGIN, Point
 from neoscore.utils.units import ZERO, Unit
 
-from ..helpers import assert_path_els_equal
+from ..helpers import AppTest, assert_path_els_equal
 
 
-class TestPath(unittest.TestCase):
+class TestPath(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.brush = Brush("#ff0000")
         self.pen = Pen("#00ff00")
 

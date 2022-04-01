@@ -1,16 +1,13 @@
-import unittest
-
 import pytest
 
 from neoscore.core import neoscore
 from neoscore.core.page import Page
 from neoscore.core.page_supplier import PageSupplier
 
+from ..helpers import AppTest
 
-class TestPageSupplier(unittest.TestCase):
-    def setUp(self):
-        neoscore.setup()
 
+class TestPageSupplier(AppTest):
     # noinspection PyStatementEffect
     def test_getitem_with_existing(self):
         supplier = PageSupplier(neoscore.document)

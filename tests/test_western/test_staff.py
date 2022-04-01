@@ -1,5 +1,3 @@
-import unittest
-
 import pytest
 
 from neoscore.core import neoscore
@@ -13,10 +11,15 @@ from neoscore.western.octave_line import OctaveLine
 from neoscore.western.staff import NoClefError, Staff
 from tests.helpers import assert_almost_equal
 
+from ..helpers import AppTest
 
-class TestStaff(unittest.TestCase):
+
+class TestStaff(AppTest):
     def setUp(self):
-        neoscore.setup(Paper(*[Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]))
+        super().setUp()
+        neoscore.document.paper = Paper(
+            *[Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]
+        )
         self.flowable = Flowable((Mm(0), Mm(0)), None, Mm(10000), Mm(30), Mm(5))
 
     def test_height(self):

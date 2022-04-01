@@ -1,14 +1,13 @@
-import unittest
-
-from neoscore.core import neoscore
 from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
 from neoscore.utils.units import Unit
 
+from ..helpers import AppTest
 
-class TestMusicChar(unittest.TestCase):
+
+class TestMusicChar(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.font = MusicFont("Bravura", Unit)
 
     def test_glyph_info_calculation(self):

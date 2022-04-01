@@ -1,16 +1,15 @@
-import unittest
-
-from neoscore.core import neoscore
 from neoscore.utils.point import ORIGIN, Point
 from neoscore.utils.units import Mm
 from neoscore.western import clef_type
 from neoscore.western.clef import Clef
 from neoscore.western.staff import Staff
 
+from ..helpers import AppTest
 
-class TestClef(unittest.TestCase):
+
+class TestClef(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.staff = Staff(ORIGIN, None, Mm(200))
 
     def test_treble(self):

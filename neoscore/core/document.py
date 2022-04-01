@@ -59,6 +59,7 @@ class Document:
             # Pages can be accessed by negative indexing too
             >>> assert(first_page == neoscore.document.pages[-6])
             >>> assert(sixth_page == neoscore.document.pages[-1])
+            >>> neoscore.shutdown()
 
         For more information on this object, see `PageSupplier`.
         """

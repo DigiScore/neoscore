@@ -1,6 +1,3 @@
-import unittest
-
-from neoscore.core import neoscore
 from neoscore.models.directions import HorizontalDirection, VerticalDirection
 from neoscore.utils.point import Point
 from neoscore.utils.units import Mm
@@ -18,7 +15,7 @@ from neoscore.western.chordrest import Chordrest
 from neoscore.western.clef import Clef
 from neoscore.western.staff import Staff
 
-from ..helpers import assert_almost_equal
+from ..helpers import AppTest, assert_almost_equal
 
 
 def test_resolve_beam_states():
@@ -183,9 +180,9 @@ def test_resolve_beam_layout():
     ]
 
 
-class TestResolveBeamDirection(unittest.TestCase):
+class TestResolveBeamDirection(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.staff = Staff(Point(Mm(0), Mm(0)), None, Mm(100))
         Clef(Mm(0), self.staff, "treble")
 
@@ -236,29 +233,33 @@ class TestResolveBeamDirection(unittest.TestCase):
         )
 
 
-def test_resolve_beam_group_height():
-    neoscore.setup()
-    staff = Staff(Point(Mm(0), Mm(0)), None, Mm(100))
-    font = staff.music_font
-    Clef(Mm(0), staff, "treble")
+class TestResolveBeamGroupHeight(AppTest):
+    def test_resolve_beam_group_height(self):
+        staff = Staff(Point(Mm(0), Mm(0)), None, Mm(100))
+        font = staff.music_font
+        Clef(Mm(0), staff, "treble")
 
-    layer_height = (
-        font.engraving_defaults["beamSpacing"]
-        + font.engraving_defaults["beamThickness"]
-    )
+        layer_height = (
+            font.engraving_defaults["beamSpacing"]
+            + font.engraving_defaults["beamThickness"]
+        )
 
-    def cr(numerator, denominator):
-        return Chordrest(Mm(1), staff, ["c"], (numerator, denominator))
+        def cr(numerator, denominator):
+            return Chordrest(Mm(1), staff, ["c"], (numerator, denominator))
 
-    assert _resolve_beam_group_height([cr(1, 8), cr(1, 8)], font) == layer_height
-    assert _resolve_beam_group_height([cr(1, 16), cr(1, 8)], font) == layer_height * 2
-    assert _resolve_beam_group_height([cr(3, 16)], font) == layer_height
-    assert _resolve_beam_group_height([cr(3, 16), cr(1, 16)], font) == layer_height * 2
+        assert _resolve_beam_group_height([cr(1, 8), cr(1, 8)], font) == layer_height
+        assert (
+            _resolve_beam_group_height([cr(1, 16), cr(1, 8)], font) == layer_height * 2
+        )
+        assert _resolve_beam_group_height([cr(3, 16)], font) == layer_height
+        assert (
+            _resolve_beam_group_height([cr(3, 16), cr(1, 16)], font) == layer_height * 2
+        )
 
 
-class TestResolveBeamGroupLine(unittest.TestCase):
+class TestResolveBeamGroupLine(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.staff = Staff(Point(Mm(0), Mm(0)), None, Mm(100))
         self.font = self.staff.music_font
         self.unit = self.font.unit

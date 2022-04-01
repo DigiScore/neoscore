@@ -1,5 +1,3 @@
-import unittest
-
 from neoscore.core import neoscore
 from neoscore.core.brush import Brush
 from neoscore.core.font import Font
@@ -8,10 +6,12 @@ from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.text import Text
 from neoscore.utils.units import ZERO, Unit
 
+from ..helpers import AppTest
 
-class TestText(unittest.TestCase):
+
+class TestText(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.font = Font("Bravura", 12, 1, False)
 
     def test_init(self):

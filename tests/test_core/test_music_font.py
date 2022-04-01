@@ -1,21 +1,14 @@
-import unittest
-
-from neoscore.core import neoscore
 from neoscore.core.music_font import MusicFont
 from neoscore.utils.units import Mm, Unit
+
+from ..helpers import AppTest
 
 
 class EquivalentUnit(Unit):
     pass
 
 
-class TestMusicFont(unittest.TestCase):
-    def setUp(self):
-        neoscore.setup()
-
-    def tearDown(self):
-        neoscore.shutdown()
-
+class TestMusicFont(AppTest):
     def test_modified(self):
         font = MusicFont("Bravura", Unit)
         # Since only Bravura is currently provided, we can't really

@@ -234,6 +234,9 @@ def _resolve_beam_direction(chordrests: list[Chordrest]) -> VerticalDirection:
         return VerticalDirection.DOWN
 
 
+# TODO HIGH add direction override
+
+
 class BeamGroup(PositionedObject, HasMusicFont):
     def __init__(
         self,

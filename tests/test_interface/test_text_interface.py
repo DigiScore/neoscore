@@ -1,6 +1,3 @@
-import unittest
-
-from neoscore.core import neoscore
 from neoscore.core.brush_pattern import BrushPattern
 from neoscore.core.pen import Pen
 from neoscore.interface.brush_interface import BrushInterface
@@ -10,10 +7,12 @@ from neoscore.utils.color import Color
 from neoscore.utils.point import Point
 from neoscore.utils.units import Unit
 
+from ..helpers import AppTest
 
-class TestTextInterface(unittest.TestCase):
+
+class TestTextInterface(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.brush = BrushInterface(Color("#000000"), BrushPattern.SOLID)
 
     def test_path_caching(self):

@@ -1,14 +1,14 @@
-import unittest
-
 from neoscore.core import neoscore
 from neoscore.interface.rich_text_interface import RichTextInterface
 from neoscore.utils.point import Point
 from neoscore.utils.units import Unit
 
+from ..helpers import AppTest
 
-class TestRichTextInterface(unittest.TestCase):
+
+class TestRichTextInterface(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.font = neoscore.default_font.interface
         self.html = "<p>test</p>"
 

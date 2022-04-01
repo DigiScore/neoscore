@@ -161,7 +161,6 @@ class AppInterface:
 
     def destroy(self):
         """Destroy the window and all global interface-level data."""
-        print("Tearing down Qt Application instance")
         self.app.exit()
         self.app = None
         self.scene = None
