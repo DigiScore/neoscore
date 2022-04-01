@@ -4,6 +4,7 @@ from neoscore.core import neoscore
 from neoscore.core.music_font import MusicFont
 from neoscore.utils.units import Mm, Unit
 from neoscore.utils import smufl
+from neoscore.utils.rect import Rect
 from neoscore.models.glyph_info import GlyphInfo
 from neoscore.utils.exceptions import MusicFontGlyphNotFoundError
 
@@ -43,14 +44,22 @@ class TestMusicFont(AppTest):
         # assert hash(font) != MusicFont("Foo", Unit)
         assert hash(font) != hash(MusicFont("Bravura", Mm))
 
-    def test_glyph_info_for_all_required_glyphs(self):
+    def test_complete_info_for_normal_glyph_with_anchors(self):
         font = MusicFont("Bravura", Unit)
-        # test each glyph in the glyphnamelist json
-        for testGlyph in smufl.glyph_names:
-            test = font.glyph_info(testGlyph).canonical_name
-            raw = font._glyph_info(testGlyph).canonical_name
-            # assert test == testGlyph
-            assert test == raw
+        testGlyph = font.glyph_info('accidental3CommaSharp')
+        assert testGlyph.canonical_name == 'accidental3CommaSharp'
+        assert testGlyph.codepoint == "\ue452"
+        assert testGlyph.description == "3-comma sharp"
+        assert testGlyph.boundary_box == Rect(x=Unit(0),
+                                              y=Unit(2.044),
+                                              width=Unit(1.828),
+                                              height=Unit(3.436)
+                                              )
+        assert testGlyph.advance_width == Unit(1.736)
+        assert testGlyph.anchors == {'cutOutNW': [0.888, 1.516],
+                                     'cutOutSE': [1.108, 0.856],
+                                     'cutOutSW': [0.108, -0.956]
+                                     }
 
     def test_glyph_info_for_one_alternate_glyph(self):
         font = MusicFont("Bravura", Unit)

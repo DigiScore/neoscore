@@ -121,10 +121,10 @@ class MusicFont(Font):
             glyph_name = self._alternate_checker(glyph_name, alternate_number)
 
         # check if glyphname exists then get details from smufl
-        name = smufl.glyph_names.get(glyph_name)
-        if name:
-            codepoint = name['codepoint']
-            description = name['description']
+        check_name = smufl.glyph_names.get(glyph_name)
+        if check_name:
+            codepoint = check_name['codepoint']
+            description = check_name['description']
         else:
             #  check is it ligature or optional G and get info
             (codepoint, description) = self._check_optional_glyphs(glyph_name)
@@ -153,15 +153,19 @@ class MusicFont(Font):
         """Parses the boundary box bBoxNE and bBoxSW coords
         from SMuFL metadata into BBoxCoords dataclass"""
 
-        # parse the boundary box coords
-        # todo - re-engineer to NW & SE
-        rect_dataclass = Rect(x=b_box_dict["bBoxNE"][0],
-                              y=b_box_dict["bBoxNE"][1],
-                              width=b_box_dict["bBoxSW"][0],
-                              height=b_box_dict["bBoxSW"][1]
-                              )
+       # get SMuFL bbox coords
+        ne_x = b_box_dict["bBoxNE"][0]
+        ne_y = b_box_dict["bBoxNE"][1]
+        sw_x = b_box_dict["bBoxSW"][0]
+        sw_y = b_box_dict["bBoxSW"][1]
 
-        return rect_dataclass
+        # calculate neoscore Rect coords
+        x = sw_x
+        y = ne_y
+        width = ne_x - sw_x
+        height = ne_y - sw_y
+
+        return Rect(x=x, y=y, width=width, height=height)
 
     def _alternate_checker(self, glyph_name: str, alternate_number: int) -> str:
         """Check to see if the alternate glyph exists,
