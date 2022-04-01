@@ -13,6 +13,9 @@ class TestMusicFont(unittest.TestCase):
     def setUp(self):
         neoscore.setup()
 
+    def tearDown(self):
+        neoscore.shutdown()
+
     def test_modified(self):
         font = MusicFont("Bravura", Unit)
         # Since only Bravura is currently provided, we can't really
