@@ -1,6 +1,6 @@
 from typing import NamedTuple, Optional, cast
 
-from neoscore.core.brush import BrushDef
+from neoscore.core.brush import Brush, BrushDef
 from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.mapping import map_between, map_between_x
 from neoscore.core.music_font import MusicFont
@@ -14,7 +14,7 @@ from neoscore.western.beam import Beam
 from neoscore.western.chordrest import Chordrest
 
 
-class BeamState(NamedTuple):
+class _BeamState(NamedTuple):
     """The state of a beam group at a note.
 
     (For convenience we describe these as applying to "notes" but they
@@ -29,8 +29,8 @@ class BeamState(NamedTuple):
     this beam position. The value must be less than `flag_count` and
     greater than 0.
 
-    For example, `[BeamState(3), BeamState(3, break_depth=1),
-    BeamState(3), BeamState(3)]` encodes four 32nd notes subdivided into
+    For example, `[_BeamState(3), _BeamState(3, break_depth=1),
+    _BeamState(3), _BeamState(3)]` encodes four 32nd notes subdivided into
     2 groups of 2 connected by a single beam.
     
     Because the beam resolver is not meter-aware, it does not perform
@@ -49,10 +49,10 @@ class BeamState(NamedTuple):
     """
 
 
-def resolve_beams(specs: list[BeamState]) -> list[BeamState]:
+def _resolve_beam_states(specs: list[_BeamState]) -> list[_BeamState]:
     if len(specs) < 2:
         raise ValueError("Beam groups must have at least 2 members")
-    states: list[BeamState] = []
+    states: list[_BeamState] = []
     for i, (current_count, break_depth, current_hint_hook) in enumerate(specs):
         prev_count, prev_hint_break_depth, _ = (
             specs[i - 1] if i > 0 else (None, None, None)
@@ -83,11 +83,11 @@ def resolve_beams(specs: list[BeamState]) -> list[BeamState]:
                     # Surrounding positions flag counts are equal, so
                     # hook direction is ambiguous. Allow override.
                     hook = current_hint_hook or HorizontalDirection.LEFT
-        states.append(BeamState(current_count, break_depth, hook))
+        states.append(_BeamState(current_count, break_depth, hook))
     return states
 
 
-class BeamPathSpec(NamedTuple):
+class _BeamPathSpec(NamedTuple):
     """An intermediate representation of beam paths."""
 
     depth: int
@@ -110,7 +110,7 @@ class BeamPathSpec(NamedTuple):
     """
 
 
-def resolve_beam_layout(states: list[BeamState]) -> list[BeamPathSpec]:
+def _resolve_beam_layout(states: list[_BeamState]) -> list[_BeamPathSpec]:
     """Given a list of individual note beam states, work out how to render the beams."""
     # Iterate through beams from depth 0 to end, left to right.
     path_specs = []
@@ -135,14 +135,14 @@ def resolve_beam_layout(states: list[BeamState]) -> list[BeamPathSpec]:
                     # Beam only spanned one state, treat it as a hook
                     # Sanity check, hook should always be provided when required.
                     assert state.hook
-                    path_specs.append(BeamPathSpec(depth, start_idx, state.hook))
+                    path_specs.append(_BeamPathSpec(depth, start_idx, state.hook))
                 else:
-                    path_specs.append(BeamPathSpec(depth, start_idx, i))
+                    path_specs.append(_BeamPathSpec(depth, start_idx, i))
                 start_idx = None
     return path_specs
 
 
-class BeamGroupLine(NamedTuple):
+class _BeamGroupLine(NamedTuple):
     """Definition for the line along which a beam group's outermost beam runs."""
 
     start_y: Unit
@@ -154,14 +154,14 @@ class BeamGroupLine(NamedTuple):
     slope: float
 
 
-def resolve_beam_group_line(
+def _resolve_beam_group_line(
     chordrests: list[Chordrest], direction: VerticalDirection, font: MusicFont
-) -> BeamGroupLine:
+) -> _BeamGroupLine:
     unit = chordrests[0].staff.unit
     first = chordrests[0]
     last = chordrests[-1]
     beam_thickness = font.engraving_defaults["beamThickness"]
-    beam_group_height = resolve_beam_group_height(chordrests, font)
+    beam_group_height = _resolve_beam_group_height(chordrests, font)
     # Determine slope from first and last noteheads furthest on side opposite of beam
     if direction == VerticalDirection.DOWN:
         slope_start_ref_note = first.highest_notehead
@@ -191,10 +191,10 @@ def resolve_beam_group_line(
     # Given a beam intersect and a slope, find the beam y at `start`
     # y = m(x - x1) + y1, where x = 0
     start_y = (slope * (-nearest_beam_intersect.x)) + nearest_beam_intersect.y
-    return BeamGroupLine(start_y, slope)
+    return _BeamGroupLine(start_y, slope)
 
 
-def beam_layer_height(font: MusicFont):
+def _beam_layer_height(font: MusicFont):
     """Determine the height of a beam and it's vertical padding in a given font."""
     return (
         font.engraving_defaults["beamSpacing"]
@@ -202,17 +202,17 @@ def beam_layer_height(font: MusicFont):
     )
 
 
-def resolve_beam_group_height(chordrests: list[Chordrest], font: MusicFont) -> Unit:
+def _resolve_beam_group_height(chordrests: list[Chordrest], font: MusicFont) -> Unit:
     """Find the vertical height occupied by a beam group spanning the given Chordrests.
 
     This determines the maximum beam depth required and uses it to
     calculate the expected maximum height in the group.
     """
     max_depth = max((c.duration.display.flag_count for c in chordrests))
-    return max_depth * beam_layer_height(font)
+    return max_depth * _beam_layer_height(font)
 
 
-def resolve_beam_direction(chordrests: list[Chordrest]) -> VerticalDirection:
+def _resolve_beam_direction(chordrests: list[Chordrest]) -> VerticalDirection:
     """Try to determine the best direction a beam group should go in.
 
     The algorithm works by determining the average y position of the
@@ -257,27 +257,28 @@ class BeamGroup(PositionedObject, HasMusicFont):
         chordrests.sort(key=lambda c: c.x)
         self._chordrests = chordrests
         self._beams = []
-        first = chordrests[0]
-        last = chordrests[-1]
-        super().__init__(ORIGIN, first)
+        super().__init__(ORIGIN, chordrests[0])
         if font is None:
             font = HasMusicFont.find_music_font(self.parent)
         self._music_font = font
         # Load engraving defaults
-        beam_thickness = font.engraving_defaults["beamThickness"]
-        stem_thickness = font.engraving_defaults["stemThickness"]
+        self._beam_thickness = self.music_font.engraving_defaults["beamThickness"]
+        self._stem_thickness = self.music_font.engraving_defaults["stemThickness"]
         # Use same pen as stem to ensure perfectly aligned overlap
-        self._pen = Pen.from_def(pen) if pen else Pen(thickness=stem_thickness)
-        beam_start_pos = ORIGIN
+        self._brush = Brush.from_def(brush)
+        self._pen = Pen.from_def(pen) if pen else Pen(thickness=self._stem_thickness)
+        self._create_beams()
+
+    def _create_beams(self):
         # Work out beam direction, slope, and offset
-        beam_direction = resolve_beam_direction(chordrests)
-        beam_group_line = resolve_beam_group_line(
-            chordrests, beam_direction, self.music_font
+        beam_direction = _resolve_beam_direction(self._chordrests)
+        beam_group_line = _resolve_beam_group_line(
+            self._chordrests, beam_direction, self.music_font
         )
         # Adjust stems to follow group line
-        for c in chordrests:
+        for c in self._chordrests:
             # y = m(x - x1) - y1, where x = 0
-            c_relative_x = map_between_x(c, first)
+            c_relative_x = map_between_x(c, self._chordrests[0])
             y = (beam_group_line.slope * c_relative_x) + beam_group_line.start_y
             original_stem_sign = sign(c.stem.end_point.y)
             adjusted_stem_end_y = map_between(c.stem, self).y + y
@@ -290,20 +291,21 @@ class BeamGroup(PositionedObject, HasMusicFont):
             c.flag.remove()
             c._flag = None
         # Now create the beams!
-        layer_step = beam_layer_height(self.music_font) * -beam_direction.value
-        specs = BeamGroup._resolve_chordrest_beam_layout(chordrests)
-        base_y = -beam_thickness if beam_direction == VerticalDirection.DOWN else ZERO
+        layer_step = _beam_layer_height(self.music_font) * -beam_direction.value
+        specs = BeamGroup._resolve_chordrest_beam_layout(self._chordrests)
+        base_y = (
+            -self._beam_thickness if beam_direction == VerticalDirection.DOWN else ZERO
+        )
         for spec in specs:
-            start_parent = chordrests[spec.start].stem.end_point
+            start_parent = self._chordrests[spec.start].stem.end_point
             start_y = base_y + ((spec.depth - 1) * layer_step)
             if isinstance(spec.end, int):
-                end_parent = chordrests[spec.end].stem.end_point
+                end_parent = self._chordrests[spec.end].stem.end_point
                 end_x = ZERO
                 end_y = start_y
-
             else:
                 end_parent = start_parent
-                end_x = beam_thickness * 2 * spec.end.value
+                end_x = self._beam_thickness * 2 * spec.end.value
                 end_y = start_y + (-end_x * beam_group_line.slope)
             self.beams.append(
                 Beam(
@@ -311,8 +313,8 @@ class BeamGroup(PositionedObject, HasMusicFont):
                     start_parent,
                     (end_x, end_y),
                     end_parent,
-                    font,
-                    brush,
+                    self.music_font,
+                    self._brush,
                     self._pen,
                 )
             )
@@ -320,16 +322,16 @@ class BeamGroup(PositionedObject, HasMusicFont):
     @staticmethod
     def _resolve_chordrest_beam_layout(
         chordrests: list[Chordrest],
-    ) -> list[BeamPathSpec]:
-        states = resolve_beams(
+    ) -> list[_BeamPathSpec]:
+        states = _resolve_beam_states(
             [
-                BeamState(
+                _BeamState(
                     c.duration.display.flag_count, c.beam_break_depth, c.beam_hook_dir
                 )
                 for c in chordrests
             ]
         )
-        return resolve_beam_layout(states)
+        return _resolve_beam_layout(states)
 
     @property
     def chordrests(self) -> list[Chordrest]:
