@@ -7,6 +7,7 @@ from neoscore.utils.units import Mm, Unit
 from neoscore.utils import smufl
 from neoscore.models.glyph_info import GlyphInfo
 from neoscore.utils.exceptions import MusicFontGlyphNotFoundError
+from neoscore.utils.rect import Rect
 
 class EquivalentUnit(Unit):
     pass
@@ -50,6 +51,22 @@ class TestMusicFont(unittest.TestCase):
         for testGlyph in smufl.glyph_names:
             assert font.glyph_info(testGlyph).canonical_name == testGlyph
             assert font.glyph_info(testGlyph).canonical_name == font._glyph_info(testGlyph).canonical_name
+
+    def test_complete_info_for_normal_glyph_with_anchors(self):
+        font = MusicFont("Bravura", Unit)
+        testGlyph = font.glyph_info('accidental3CommaSharp')
+        assert testGlyph.canonical_name == '4stringTabClef'
+        assert testGlyph.codepoint == "\ue452"
+        assert testGlyph.description == "3-comma sharp"
+        assert testGlyph.boundary_box == Rect(x=Unit(1.828),
+                                              y=Unit(2.044),
+                                              width=Unit(0.0),
+                                              height=Unit(-1.392))
+        assert testGlyph.advance_width == 1.736
+        assert testGlyph.anchors == {'cutOutNW': [0.888, 1.516],
+                                     'cutOutSE': [1.108, 0.856],
+                                     'cutOutSW': [0.108, -0.956]}
+        assert testGlyph.component_glyphs == None
 
     def test_glyph_info_for_one_alternate_glyph(self):
         font = MusicFont("Bravura", Unit)
