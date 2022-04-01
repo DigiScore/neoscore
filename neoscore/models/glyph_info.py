@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 from neoscore.utils.rect import Rect
+from neoscore.utils.units import Unit
 
 
 @dataclass
@@ -24,7 +25,7 @@ class GlyphInfo:
     boundary_box: Rect
     """coords to glyph boundary box, e.g. x, y, width, height"""
 
-    advance_width: float
+    advance_width: Unit
     """float, e.g. 1.234"""
 
     anchors: Optional[dict]
