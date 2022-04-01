@@ -125,7 +125,6 @@ class MusicFont(Font):
         if name:
             codepoint = name['codepoint']
             description = name['description']
-            component_glyphs = None
         else:
             #  check is it ligature or optional G and get info
             (codepoint, description) = self._check_optional_glyphs(glyph_name)
@@ -203,11 +202,11 @@ class MusicFont(Font):
        """
 
         # else check the optional glyph list
-        optional_gylph_field = self.metadata['optionalGlyphs'].get(glyph_name)
+        optional_glyph_field = self.metadata['optionalGlyphs'].get(glyph_name)
 
-        if optional_gylph_field:
-            codepoint = optional_gylph_field['codepoint']
-            description = optional_gylph_field['description']
+        if optional_glyph_field:
+            codepoint = optional_glyph_field['codepoint']
+            description = optional_glyph_field['description']
 
         # else glyphname is not registered with SMuFL
         else:
