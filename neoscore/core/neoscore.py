@@ -304,3 +304,7 @@ def _register_default_fonts():
     register_font(constants.DEFAULT_TEXT_FONT_BOLD_PATH)
     register_font(constants.DEFAULT_TEXT_FONT_ITALIC_PATH)
     register_font(constants.DEFAULT_TEXT_FONT_BOLD_ITALIC_PATH)
+
+
+def shutdown():
+    _app_interface.destroy()
