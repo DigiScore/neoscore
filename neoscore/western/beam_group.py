@@ -241,6 +241,7 @@ class BeamGroup(PositionedObject, HasMusicFont):
     def __init__(
         self,
         chordrests: list[Chordrest],
+        direction: Optional[VerticalDirection] = None,
         font: Optional[MusicFont] = None,
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,
@@ -249,6 +250,8 @@ class BeamGroup(PositionedObject, HasMusicFont):
         Args:
             chordrests: The notes or rests to beam across. This must have
                 at least 2 items, all of which must be of durations requiring flags.
+            direction: Override for the beam direction. Otherwise, the beam direction
+                is automatically chosen based on the given chordrests.
             brush: The brush to fill shapes with.
             pen: The pen to draw outlines with. To ensure perfect overlaps with stems,
                 this should have the same thickness of stems, derived from the
@@ -270,13 +273,13 @@ class BeamGroup(PositionedObject, HasMusicFont):
         # Use same pen as stem to ensure perfectly aligned overlap
         self._brush = Brush.from_def(brush)
         self._pen = Pen.from_def(pen) if pen else Pen(thickness=self._stem_thickness)
+        self._direction = direction or _resolve_beam_direction(self._chordrests)
         self._create_beams()
 
     def _create_beams(self):
         # Work out beam direction, slope, and offset
-        beam_direction = _resolve_beam_direction(self._chordrests)
         beam_group_line = _resolve_beam_group_line(
-            self._chordrests, beam_direction, self.music_font
+            self._chordrests, self.direction, self.music_font
         )
         # Adjust stems to follow group line
         for c in self._chordrests:
@@ -294,10 +297,10 @@ class BeamGroup(PositionedObject, HasMusicFont):
             c.flag.remove()
             c._flag = None
         # Now create the beams!
-        layer_step = _beam_layer_height(self.music_font) * -beam_direction.value
+        layer_step = _beam_layer_height(self.music_font) * -self.direction.value
         specs = BeamGroup._resolve_chordrest_beam_layout(self._chordrests)
         base_y = (
-            -self._beam_thickness if beam_direction == VerticalDirection.DOWN else ZERO
+            -self._beam_thickness if self.direction == VerticalDirection.DOWN else ZERO
         )
         for spec in specs:
             start_parent = self._chordrests[spec.start].stem.end_point
@@ -335,6 +338,10 @@ class BeamGroup(PositionedObject, HasMusicFont):
             ]
         )
         return _resolve_beam_layout(states)
+
+    @property
+    def direction(self) -> VerticalDirection:
+        return self._direction
 
     @property
     def chordrests(self) -> list[Chordrest]:

@@ -2,6 +2,7 @@ from neoscore.models.directions import HorizontalDirection, VerticalDirection
 from neoscore.utils.point import Point
 from neoscore.utils.units import Mm
 from neoscore.western.beam_group import (
+    BeamGroup,
     _BeamGroupLine,
     _BeamPathSpec,
     _BeamState,
@@ -15,7 +16,7 @@ from neoscore.western.chordrest import Chordrest
 from neoscore.western.clef import Clef
 from neoscore.western.staff import Staff
 
-from ..helpers import AppTest, assert_almost_equal
+from ..helpers import AppTest, assert_almost_equal, render_scene
 
 
 def test_resolve_beam_states():
@@ -359,3 +360,33 @@ class TestResolveBeamGroupLine(AppTest):
             _resolve_beam_group_line(crs, VerticalDirection.DOWN, self.font),
             _BeamGroupLine(Mm(15.75), -0.04999999),
         )
+
+
+class TestBeamGroup(AppTest):
+    def setUp(self):
+        super().setUp()
+        self.staff = Staff(Point(Mm(0), Mm(0)), None, Mm(100))
+        Clef(Mm(0), self.staff, "treble")
+
+    def test_beam_direction_override(self):
+        crs = [
+            Chordrest(Mm(10), self.staff, ["a'"], (1, 8)),
+            Chordrest(Mm(20), self.staff, ["g'"], (1, 8)),
+        ]
+        bg = BeamGroup(crs)
+        assert bg.direction == VerticalDirection.UP
+        bg = BeamGroup(crs, VerticalDirection.DOWN)
+        assert bg.direction == VerticalDirection.DOWN
+
+    def test_end_to_end(self):
+        crs = [
+            Chordrest(Mm(10), self.staff, ["bb''", "e''"], (1, 32)),
+            Chordrest(Mm(20), self.staff, ["f'"], (1, 32), beam_break_depth=2),
+            Chordrest(Mm(30), self.staff, ["f'"], (1, 32)),
+            Chordrest(Mm(40), self.staff, ["g''"], (1, 32)),
+            Chordrest(Mm(50), self.staff, ["c#'"], (3, 16)),
+            Chordrest(Mm(60), self.staff, ["e''"], (1, 32)),
+            Chordrest(Mm(70), self.staff, ["eb''"], (1, 32)),
+            Chordrest(Mm(80), self.staff, ["d''"], (1, 8)),
+        ]
+        render_scene()

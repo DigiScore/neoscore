@@ -439,6 +439,10 @@ class Chordrest(PositionedObject, StaffObject):
         for dot_pos in self.rhythm_dot_positions:
             self.dots.add(RhythmDot(dot_pos, self))
 
+    # TODO HIGH this y attachment point is wrong Should be the
+    # furthest in the direction opposite of stem direction.
+    # Fix after #4
+
     def _create_stem(self):
         """If needed, create a Stem and store it in `self.stem`."""
         if not self.duration.display.requires_stem:
