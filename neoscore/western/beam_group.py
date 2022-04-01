@@ -1,10 +1,10 @@
 from typing import NamedTuple, Optional, cast
 
-from neoscore.core.brush import SimpleBrushDef
+from neoscore.core.brush import BrushDef
 from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.mapping import map_between, map_between_x
 from neoscore.core.music_font import MusicFont
-from neoscore.core.pen import Pen, SimplePenDef, pen_from_simple_def
+from neoscore.core.pen import Pen, PenDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.models.directions import HorizontalDirection, VerticalDirection
 from neoscore.utils.math_helpers import sign
@@ -239,8 +239,8 @@ class BeamGroup(PositionedObject, HasMusicFont):
         self,
         chordrests: list[Chordrest],
         font: Optional[MusicFont] = None,
-        brush: Optional[SimpleBrushDef] = None,
-        pen: Optional[SimplePenDef] = None,
+        brush: Optional[BrushDef] = None,
+        pen: Optional[PenDef] = None,
     ):
         """
         Args:
@@ -267,7 +267,7 @@ class BeamGroup(PositionedObject, HasMusicFont):
         beam_thickness = font.engraving_defaults["beamThickness"]
         stem_thickness = font.engraving_defaults["stemThickness"]
         # Use same pen as stem to ensure perfectly aligned overlap
-        self._pen = pen_from_simple_def(pen) if pen else Pen(thickness=stem_thickness)
+        self._pen = Pen.from_def(pen) if pen else Pen(thickness=stem_thickness)
         beam_start_pos = ORIGIN
         # Work out beam direction, slope, and offset
         beam_direction = resolve_beam_direction(chordrests)

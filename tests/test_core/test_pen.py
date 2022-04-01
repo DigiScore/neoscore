@@ -58,6 +58,10 @@ class TestPen(unittest.TestCase):
             == PenCapStyle.FLAT
         )
 
+    def test_from_def(self):
+        assert Pen.from_def(Pen("#ffffff")) == Pen("#ffffff")
+        assert Pen.from_def("#ffffff") == Pen("#ffffff")
+
     def test_no_pen(self):
         pen = Pen.no_pen()
         assert pen == Pen(pattern=PenPattern.INVISIBLE)

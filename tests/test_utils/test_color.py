@@ -2,7 +2,7 @@ import unittest
 
 import pytest
 
-from neoscore.utils.color import Color, ColorBoundsError, color_from_def
+from neoscore.utils.color import Color, ColorBoundsError
 
 
 class TestColor(unittest.TestCase):
@@ -79,10 +79,10 @@ class TestColor(unittest.TestCase):
             Color(0, 0, 0, 0),
         } == {Color(0, 100, 200, 250), Color(0, 0, 0, 0)}
 
-    def test_color_from_def(self):
-        assert color_from_def("#ffffff") == Color("#ffffff")
-        assert color_from_def(Color("#ffffff")) == Color("#ffffff")
-        assert color_from_def((255, 255, 255)) == Color("#ffffff")
+    def test_from_def(self):
+        assert Color.from_def("#ffffff") == Color("#ffffff")
+        assert Color.from_def(Color("#ffffff")) == Color("#ffffff")
+        assert Color.from_def((255, 255, 255)) == Color("#ffffff")
 
     def test_color_is_immutable(self):
         color = Color("#ffffff")

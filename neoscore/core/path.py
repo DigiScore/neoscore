@@ -3,7 +3,7 @@ from __future__ import annotations
 from math import atan, cos, pi, sin, sqrt, tan
 from typing import TYPE_CHECKING, Optional, cast
 
-from neoscore.core.brush import SimpleBrushDef
+from neoscore.core.brush import BrushDef
 from neoscore.core.mapping import map_between, map_between_x
 from neoscore.core.painted_object import PaintedObject
 from neoscore.core.path_element import (
@@ -13,7 +13,7 @@ from neoscore.core.path_element import (
     MoveTo,
     PathElement,
 )
-from neoscore.core.pen import Pen, SimplePenDef
+from neoscore.core.pen import Pen, PenDef
 from neoscore.interface.path_interface import (
     PathInterface,
     ResolvedCurveTo,
@@ -42,8 +42,8 @@ class Path(PaintedObject):
         self,
         pos: PointDef,
         parent: Optional[Parent],
-        brush: Optional[SimpleBrushDef] = None,
-        pen: Optional[SimplePenDef] = None,
+        brush: Optional[BrushDef] = None,
+        pen: Optional[PenDef] = None,
     ):
         """
         Args:
@@ -63,8 +63,8 @@ class Path(PaintedObject):
         start: PointDef,
         parent: Optional[Parent],
         stop: PointDef,
-        brush: Optional[SimpleBrushDef] = None,
-        pen: Optional[SimplePenDef] = None,
+        brush: Optional[BrushDef] = None,
+        pen: Optional[PenDef] = None,
     ) -> Path:
         """Convenience for drawing a single straight line.
 
@@ -83,8 +83,8 @@ class Path(PaintedObject):
         parent: Optional[Parent],
         width: Unit,
         height: Unit,
-        brush: Optional[SimpleBrushDef] = None,
-        pen: Optional[SimplePenDef] = None,
+        brush: Optional[BrushDef] = None,
+        pen: Optional[PenDef] = None,
     ):
         """Convenience for drawing a rectangle."""
         path = cls(pos, parent, brush, pen)
@@ -101,8 +101,8 @@ class Path(PaintedObject):
         parent: Optional[Parent],
         width: Unit,
         height: Unit,
-        brush: Optional[SimpleBrushDef] = None,
-        pen: Optional[SimplePenDef] = None,
+        brush: Optional[BrushDef] = None,
+        pen: Optional[PenDef] = None,
     ):
         """Convenience for drawing an ellipse.
 
@@ -134,8 +134,8 @@ class Path(PaintedObject):
         parent: Optional[Parent],
         width: Unit,
         height: Unit,
-        brush: Optional[SimpleBrushDef] = None,
-        pen: Optional[SimplePenDef] = None,
+        brush: Optional[BrushDef] = None,
+        pen: Optional[PenDef] = None,
     ):
         """Convenience for drawing an ellipse from its center point.
 
@@ -160,8 +160,8 @@ class Path(PaintedObject):
         height: Unit,
         start_angle: float,
         stop_angle: float,
-        brush: Optional[SimpleBrushDef] = None,
-        pen: Optional[SimplePenDef] = None,
+        brush: Optional[BrushDef] = None,
+        pen: Optional[PenDef] = None,
     ):
         """Convenience for drawing an elliptical arc.
 
@@ -297,8 +297,8 @@ class Path(PaintedObject):
         parent: Optional[Parent],
         end: PointDef,
         end_parent: Optional[Parent] = None,
-        brush: Optional[SimpleBrushDef] = None,
-        pen: Optional[SimplePenDef] = None,
+        brush: Optional[BrushDef] = None,
+        pen: Optional[PenDef] = None,
         line_width: Unit = Mm(0.5),
         arrow_head_width: Unit = Mm(1),
         arrow_head_length: Unit = Mm(2),

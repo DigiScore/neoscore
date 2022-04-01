@@ -1,10 +1,12 @@
+from __future__ import annotations
+
 from typing import Union
 
 from neoscore.utils.exceptions import ColorBoundsError
 
 
 class Color:
-    """A general purpose Color class"""
+    """An 8-bit int RGBA color."""
 
     def __init__(self, *args):
         """
@@ -12,9 +14,6 @@ class Color:
             * Color(hex_string)
             * Color(red, green, blue)
             * Color(red, green, blue, alpha)
-
-        Currently entering these values as keyword arguments
-        is not supported.
         """
         if len(args) == 1:
             self._set_with_hex(*args)
@@ -24,6 +23,16 @@ class Color:
             self._set_with_rgba(*args)
         else:
             raise TypeError("Invalid Color init args")
+
+    @classmethod
+    def from_def(cls, color_def: ColorDef) -> Color:
+        if isinstance(color_def, Color):
+            return color_def
+        elif isinstance(color_def, tuple):
+            return Color(*color_def)
+        else:
+            # otherwise color_def must be a str
+            return Color(color_def)
 
     ######## SPECIAL METHODS ########
 
@@ -127,13 +136,4 @@ class Color:
 
 
 ColorDef = Union[Color, str, tuple[int, int, int], tuple[int, int, int, int]]
-
-
-def color_from_def(color_def: ColorDef) -> Color:
-    if isinstance(color_def, Color):
-        return color_def
-    elif isinstance(color_def, tuple):
-        return Color(*color_def)
-    else:
-        # otherwise color_def must be a str
-        return Color(color_def)
+"""A `Color` or a shorthand hex string or init argument tuple for one."""
