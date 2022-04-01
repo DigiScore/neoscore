@@ -357,7 +357,7 @@ class BeamGroup(PositionedObject, HasMusicFont):
     def _resolve_chordrest_beam_layout(
         chordrests: list[Chordrest],
     ) -> list[_BeamPathSpec]:
-        states = _resolve_beam_states(
+        states = _resolve_beam_hooks(
             [
                 _BeamState(
                     c.duration.display.flag_count, c.beam_break_depth, c.beam_hook_dir
