@@ -26,7 +26,7 @@ class GlyphInfo:
     """coords to glyph boundary box, e.g. x, y, width, height"""
 
     advance_width: Unit
-    """float, e.g. 1.234"""
+    """A converted Unit from original float, e.g. Unit[1.234]"""
 
     anchors: Optional[dict]
     """a variety of additional cut outs, e.g. keys:[x_coord, y_coord]"""
