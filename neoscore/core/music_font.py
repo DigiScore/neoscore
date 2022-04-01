@@ -79,7 +79,7 @@ class MusicFont(Font):
     ######## PUBLIC METHODS ########
 
     def modified(
-        self, family_name: Optional[str] = None, unit: Optiona[Type[Unit]] = None
+        self, family_name: Optional[str] = None, unit: Optional[Type[Unit]] = None
     ) -> MusicFont:
         return MusicFont(
             family_name if family_name is not None else self.family_name,

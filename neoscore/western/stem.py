@@ -47,7 +47,7 @@ class Stem(MusicPath):
         self._direction = direction
         self._height = height
         # Draw stem path
-        self.line_to(ZERO, self.height)
+        self.line_to(ZERO, (self.height * self.direction.value()))
 
     ######## PUBLIC PROPERTIES ########
 
@@ -59,10 +59,7 @@ class Stem(MusicPath):
     @property
     def direction(self) -> VerticalDirection:
         """The direction the stem points, where -1 is up and 1 is down"""
-        if self.direction == 1:
-            return VerticalDirection.DOWN
-        else:
-            return VerticalDirection.UP
+        return self._direction
 
     @property
     def end_point(self) -> PathElement:
