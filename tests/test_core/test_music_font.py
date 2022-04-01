@@ -44,6 +44,12 @@ class TestMusicFont(AppTest):
         # assert hash(font) != MusicFont("Foo", Unit)
         assert hash(font) != hash(MusicFont("Bravura", Mm))
 
+    def test_every_glyphname_in_smufl(self):
+        font = MusicFont("Bravura", Unit)
+        for g in smufl.glyph_names:
+            testGlyph = font.glyph_info(g)
+            assert g == testGlyph.canonical_name
+
     def test_complete_info_for_normal_glyph_with_anchors(self):
         font = MusicFont("Bravura", Unit)
         testGlyph = font.glyph_info('accidental3CommaSharp')
