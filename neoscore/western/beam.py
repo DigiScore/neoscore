@@ -17,9 +17,9 @@ class Beam(MusicPath):
 
     """A rhythmic beam connecting groups of notes.
 
-    This is a single beam - for multiple layers of beams
-    (e.g. 2 for 16th notes), multiple `Beam`s must be stacked
-    on top of each other.
+    This is a single beam - for multiple layers of beams (e.g. 2 for
+    16th notes), multiple `Beam`s must be stacked on top of each
+    other. See `BeamGroup` for a reasonable implementation of this.
 
     While this is a path, it requires a music font from which to
     derive its appearance.

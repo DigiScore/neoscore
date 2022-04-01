@@ -15,15 +15,11 @@ from neoscore.western.chordrest import Chordrest
 
 
 class _BeamState(NamedTuple):
-    """The state of a beam group at a note.
-
-    (For convenience we describe these as applying to "notes" but they
-    can apply to chords and beamed rests as well.)
-    """
+    """The state of a beam group at a `Chordrest` position"""
 
     flag_count: int
     break_depth: Optional[int] = None
-    """Indicates a subgroup break after this note.
+    """Indicates a subgroup break after this position.
 
     This indicates the number of beams to cut a subdivision to after
     this beam position. The value must be less than `flag_count` and
@@ -45,11 +41,13 @@ class _BeamState(NamedTuple):
     ambiguous. This only applies in places where, within a beam
     subgroup, a position has more flags than its previous and
     following position, *and* those adjacent values are equal. For
-    example, a sixteenth note surrounded by two eighth notes.
+    example, a 16th note surrounded by two 8th notes.
     """
 
 
-def _resolve_beam_states(specs: list[_BeamState]) -> list[_BeamState]:
+def _resolve_beam_hooks(specs: list[_BeamState]) -> list[_BeamState]:
+    """Determine which states need hooks, accounting for overrides where sensible."""
+
     if len(specs) < 2:
         raise ValueError("Beam groups must have at least 2 members")
     states: list[_BeamState] = []
@@ -143,7 +141,7 @@ def _resolve_beam_layout(states: list[_BeamState]) -> list[_BeamPathSpec]:
 
 
 class _BeamGroupLine(NamedTuple):
-    """Definition for the line along which a beam group's outermost beam runs."""
+    """The line running along the outside of the a group's outermost beam."""
 
     start_y: Unit
     """The starting y position relative to the staff.
@@ -234,10 +232,40 @@ def _resolve_beam_direction(chordrests: list[Chordrest]) -> VerticalDirection:
         return VerticalDirection.DOWN
 
 
-# TODO HIGH add direction override
-
-
 class BeamGroup(PositionedObject, HasMusicFont):
+    """A beam group spanning a collection of Chordrests.
+
+    This analyzes the given chordrests to determine a reasonable beam
+    layout. The beaming algorithm does not take into account metric
+    subdivisions; instead it greedily tries to beam together as many
+    notes as possible. Subdivisions can be specified by setting
+    `Chordrest.beam_break_depth`, which indicates a break after the
+    chord to the given beam count.
+
+    While in most situations beamlet "hooks" (as in a dotted 8th note
+    followed by a 16th note) unambiguously must point right or left,
+    there are some cases where it is ambiguous. For example, the a
+    16th note between two 8th notes could have its beamlet point left
+    or right. In these situations, `BeamGroup` will point it left by
+    default, but users can override this by setting
+    `Chordrest.beam_hook_dir`.
+
+    The beam direction and slant angle are determined automatically
+    based on the given notes. The direction can be overridden in
+    `BeamGroup`'s constructor.
+
+    Beam layout automatically modifies spanned `Chordrests` by
+    snapping their stems to the beam line and, if this causes a stem
+    flip, correcting the `Chordrest` layout.
+
+    This currently has some limitations:
+    * It does not support beamed rests
+    * It does not respond well to mutations. If being used in interactive
+      or animated situations, the group likely will need to be destroyed
+      and recreated after any changes affecting its chordrests.
+
+    """
+
     def __init__(
         self,
         chordrests: list[Chordrest],
@@ -262,7 +290,7 @@ class BeamGroup(PositionedObject, HasMusicFont):
         # Determine top beam path
         chordrests.sort(key=lambda c: c.x)
         self._chordrests = chordrests
-        self._beams = []
+        self._beams: list[Beam] = []
         super().__init__(ORIGIN, chordrests[0])
         if font is None:
             font = HasMusicFont.find_music_font(self.parent)
@@ -271,7 +299,7 @@ class BeamGroup(PositionedObject, HasMusicFont):
         self._beam_thickness = self.music_font.engraving_defaults["beamThickness"]
         self._stem_thickness = self.music_font.engraving_defaults["stemThickness"]
         # Use same pen as stem to ensure perfectly aligned overlap
-        self._brush = Brush.from_def(brush)
+        self._brush = Brush.from_def(brush) if brush else Brush()
         self._pen = Pen.from_def(pen) if pen else Pen(thickness=self._stem_thickness)
         self._direction = direction or _resolve_beam_direction(self._chordrests)
         self._create_beams()
@@ -354,3 +382,11 @@ class BeamGroup(PositionedObject, HasMusicFont):
     @property
     def music_font(self) -> MusicFont:
         return self._music_font
+
+    def remove(self):
+        # Since the beams are actually not children of the beam group
+        # (which is not ideal), we need to ensure they are removed
+        # when the group is.
+        for beam in self.beams:
+            beam.remove()
+        super().remove()

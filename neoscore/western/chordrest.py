@@ -74,14 +74,8 @@ class Chordrest(PositionedObject, StaffObject):
                 where `1` points down and `-1` points up. If omitted, the
                 direction is automatically calculated to point away from
                 the furthest-out notehead.
-            beam_break_depth: If this Chordrest is within a beam group, this triggers
-                a beam subdivision break at this point. The value indicates the number
-                of beams to which the subdivision breaks. For example, in run of 16th
-                notes a `beam_break_depth` of `1` would indicate a subdivision break
-                to 1 beam at this point.
-            beam_hook_dir: If this Chordrest is within a beam group and this position
-                is one requiring a beamlet hook whose direction is ambiguous, this
-                controls that direction.
+            beam_break_depth: Break depth used if in a `BeamGroup`.
+            beam_hook_dir: Beamlet hook direction used in a `BeamGroup`.
             notehead_table: The set of noteheads to use according to `duration`.
         """
         StaffObject.__init__(self, staff)
@@ -154,12 +148,24 @@ class Chordrest(PositionedObject, StaffObject):
 
     @property
     def beam_break_depth(self) -> Optional[int]:
-        """Break depth used if this Chordrest is in a BeamGroup."""
+        """Break depth used if in a `BeamGroup`.
+
+        If this Chordrest is within a beam group, this triggers a
+        beam subdivision break at this point. The value indicates the
+        number of beams to which the subdivision breaks. For example,
+        in run of 16th notes a `beam_break_depth` of `1` would
+        indicate a subdivision break to 1 beam at this point.
+        """
         return self._beam_break_depth
 
     @property
     def beam_hook_dir(self) -> Optional[HorizontalDirection]:
-        """Beamlet hook direction used if this Chordrest is in a BeamGroup."""
+        """Beamlet hook direction used in a `BeamGroup`.
+
+        If this Chordrest is within a beam group and this position is
+        one requiring a beamlet hook whose direction is ambiguous,
+        this controls that direction.
+        """
         return self._beam_hook_dir
 
     @property

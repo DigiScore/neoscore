@@ -9,8 +9,8 @@ from neoscore.western.beam_group import (
     _resolve_beam_direction,
     _resolve_beam_group_height,
     _resolve_beam_group_line,
+    _resolve_beam_hooks,
     _resolve_beam_layout,
-    _resolve_beam_states,
 )
 from neoscore.western.chordrest import Chordrest
 from neoscore.western.clef import Clef
@@ -19,52 +19,52 @@ from neoscore.western.staff import Staff
 from ..helpers import AppTest, assert_almost_equal, render_scene
 
 
-def test_resolve_beam_states():
-    assert _resolve_beam_states([_BeamState(3), _BeamState(2), _BeamState(1)]) == [
+def test_resolve_beam_hooks():
+    assert _resolve_beam_hooks([_BeamState(3), _BeamState(2), _BeamState(1)]) == [
         _BeamState(3, hook=HorizontalDirection.RIGHT),
         _BeamState(2),
         _BeamState(1),
     ]
 
-    assert _resolve_beam_states([_BeamState(1), _BeamState(3), _BeamState(2)]) == [
+    assert _resolve_beam_hooks([_BeamState(1), _BeamState(3), _BeamState(2)]) == [
         _BeamState(1),
         _BeamState(3, hook=HorizontalDirection.RIGHT),
         _BeamState(2),
     ]
 
-    assert _resolve_beam_states([_BeamState(1), _BeamState(2), _BeamState(1)]) == [
+    assert _resolve_beam_hooks([_BeamState(1), _BeamState(2), _BeamState(1)]) == [
         _BeamState(1),
         _BeamState(2, hook=HorizontalDirection.LEFT),
         _BeamState(1),
     ]
 
-    assert _resolve_beam_states([_BeamState(2), _BeamState(3), _BeamState(1)]) == [
+    assert _resolve_beam_hooks([_BeamState(2), _BeamState(3), _BeamState(1)]) == [
         _BeamState(2),
         _BeamState(3, hook=HorizontalDirection.LEFT),
         _BeamState(1),
     ]
 
-    assert _resolve_beam_states([_BeamState(3), _BeamState(2), _BeamState(3)]) == [
+    assert _resolve_beam_hooks([_BeamState(3), _BeamState(2), _BeamState(3)]) == [
         _BeamState(3, hook=HorizontalDirection.RIGHT),
         _BeamState(2),
         _BeamState(3, hook=HorizontalDirection.LEFT),
     ]
 
-    assert _resolve_beam_states([_BeamState(1), _BeamState(2), _BeamState(3)]) == [
+    assert _resolve_beam_hooks([_BeamState(1), _BeamState(2), _BeamState(3)]) == [
         _BeamState(1),
         _BeamState(2),
         _BeamState(3, hook=HorizontalDirection.LEFT),
     ]
 
-    assert _resolve_beam_states([_BeamState(3), _BeamState(2), _BeamState(2)]) == [
+    assert _resolve_beam_hooks([_BeamState(3), _BeamState(2), _BeamState(2)]) == [
         _BeamState(3, hook=HorizontalDirection.RIGHT),
         _BeamState(2),
         _BeamState(2),
     ]
 
 
-def test_resolve_beam_states_with_hook_hints():
-    assert _resolve_beam_states(
+def test_resolve_beam_hooks_with_hook_hints():
+    assert _resolve_beam_hooks(
         [_BeamState(2), _BeamState(2, hook=HorizontalDirection.LEFT), _BeamState(1)]
     ) == [
         _BeamState(2),  # Invalid hook hint is ignored
@@ -72,7 +72,7 @@ def test_resolve_beam_states_with_hook_hints():
         _BeamState(1),
     ]
 
-    assert _resolve_beam_states(
+    assert _resolve_beam_hooks(
         [_BeamState(2, hook=HorizontalDirection.RIGHT), _BeamState(2), _BeamState(1)]
     ) == [
         _BeamState(2),
@@ -80,7 +80,7 @@ def test_resolve_beam_states_with_hook_hints():
         _BeamState(1),
     ]
 
-    assert _resolve_beam_states(
+    assert _resolve_beam_hooks(
         [_BeamState(1), _BeamState(2, hook=HorizontalDirection.RIGHT), _BeamState(1)]
     ) == [
         _BeamState(1),
@@ -89,28 +89,26 @@ def test_resolve_beam_states_with_hook_hints():
     ]
 
 
-def test_resolve_beam_states_break_depths_copied():
-    assert _resolve_beam_states([_BeamState(3), _BeamState(3, 1), _BeamState(3)]) == [
+def test_resolve_beam_hooks_break_depths_copied():
+    assert _resolve_beam_hooks([_BeamState(3), _BeamState(3, 1), _BeamState(3)]) == [
         _BeamState(3),
         _BeamState(3, 1),
         _BeamState(3),
     ]
-    assert _resolve_beam_states(
-        [_BeamState(3, 2), _BeamState(3, 1), _BeamState(3)]
-    ) == [
+    assert _resolve_beam_hooks([_BeamState(3, 2), _BeamState(3, 1), _BeamState(3)]) == [
         _BeamState(3, 2),
         _BeamState(3, 1),
         _BeamState(3),
     ]
-    assert _resolve_beam_states([_BeamState(3), _BeamState(3), _BeamState(3, 1)]) == [
+    assert _resolve_beam_hooks([_BeamState(3), _BeamState(3), _BeamState(3, 1)]) == [
         _BeamState(3),
         _BeamState(3),
         _BeamState(3, 1),
     ]
 
 
-def test_resolve_beam_states_with_break_depths_affecting_flags():
-    assert _resolve_beam_states(
+def test_resolve_beam_hooks_with_break_depths_affecting_flags():
+    assert _resolve_beam_hooks(
         [_BeamState(2), _BeamState(2, 1), _BeamState(3), _BeamState(2)]
     ) == [
         _BeamState(2),
