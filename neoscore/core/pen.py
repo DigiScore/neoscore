@@ -21,7 +21,7 @@ class Pen:
         color: Optional[ColorDef] = None,
         thickness: Optional[Unit] = ZERO,
         pattern: PenPattern = PenPattern.SOLID,
-        join_style: PenJoinStyle = PenJoinStyle.BEVEL,
+        join_style: PenJoinStyle = PenJoinStyle.MITER,
         cap_style: PenCapStyle = PenCapStyle.FLAT,
     ):
         """
@@ -149,6 +149,10 @@ class Pen:
 
 
 SimplePenDef = Union[Pen, str]
+"""A pen or a color hex string to be passed to an otherwise default `Pen`."""
+
+
+# TODO high move into Pen
 
 
 def pen_from_simple_def(pen_def: SimplePenDef) -> Pen:

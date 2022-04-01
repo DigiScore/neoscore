@@ -441,6 +441,8 @@ class Path(PaintedObject):
             If you need to anchor the new point, use an explicit
             `move_to(Unit(0), Unit(0), parent)` instead.
         """
+        # TODO HIGH this strongly implies that it actually draws a
+        # line to the subpath's first point. make it behave this way.
         self.move_to(ZERO, ZERO)
 
     def cubic_to(

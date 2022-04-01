@@ -54,4 +54,4 @@ class Beam(MusicPath):
         self.line_to(end_pos.x, end_pos.y, end_parent)
         self.line_to(end_pos.x, end_pos.y + self.beam_thickness, end_parent)
         self.line_to(ZERO, self.beam_thickness, self)
-        self.close_subpath()
+        self.line_to(ZERO, ZERO, self)

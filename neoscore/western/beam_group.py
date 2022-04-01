@@ -4,7 +4,7 @@ from neoscore.core.brush import SimpleBrushDef
 from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.mapping import map_between, map_between_x
 from neoscore.core.music_font import MusicFont
-from neoscore.core.pen import SimplePenDef
+from neoscore.core.pen import Pen, SimplePenDef, pen_from_simple_def
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.models.directions import HorizontalDirection, VerticalDirection
 from neoscore.utils.math_helpers import sign
@@ -182,12 +182,12 @@ def resolve_beam_group_line(
         cr_with_closest_note = max(chordrests, key=lambda c: c.lowest_notehead.y)
         cr_x = map_between_x(first, cr_with_closest_note)
         closest_y = cr_with_closest_note.lowest_notehead.y
-        nearest_beam_intersect = Point(cr_x, closest_y + unit(3.5) + beam_group_height)
+        nearest_beam_intersect = Point(cr_x, closest_y + unit(2.5) + beam_group_height)
     else:
         cr_with_closest_note = min(chordrests, key=lambda c: c.highest_notehead.y)
         cr_x = map_between_x(first, cr_with_closest_note)
         closest_y = cr_with_closest_note.highest_notehead.y
-        nearest_beam_intersect = Point(cr_x, closest_y - unit(3.5) - beam_group_height)
+        nearest_beam_intersect = Point(cr_x, closest_y - unit(2.5) - beam_group_height)
     # Given a beam intersect and a slope, find the beam y at `start`
     # y = m(x - x1) + y1, where x = 0
     start_y = (slope * (-nearest_beam_intersect.x)) + nearest_beam_intersect.y
@@ -247,7 +247,9 @@ class BeamGroup(PositionedObject, HasMusicFont):
             chordrests: The notes or rests to beam across. This must have
                 at least 2 items, all of which must be of durations requiring flags.
             brush: The brush to fill shapes with.
-            pen: The pen to draw outlines with.
+            pen: The pen to draw outlines with. To ensure perfect overlaps with stems,
+                this should have the same thickness of stems, derived from the
+                `MusicFont` engraving default `"stemThickness`.
         """
         if len(chordrests) < 2:
             raise ValueError("BeamGroup must have at least 2 Chordrests.")
@@ -261,6 +263,11 @@ class BeamGroup(PositionedObject, HasMusicFont):
         if font is None:
             font = HasMusicFont.find_music_font(self.parent)
         self._music_font = font
+        # Load engraving defaults
+        beam_thickness = font.engraving_defaults["beamThickness"]
+        stem_thickness = font.engraving_defaults["stemThickness"]
+        # Use same pen as stem to ensure perfectly aligned overlap
+        self._pen = pen_from_simple_def(pen) if pen else Pen(thickness=stem_thickness)
         beam_start_pos = ORIGIN
         # Work out beam direction, slope, and offset
         beam_direction = resolve_beam_direction(chordrests)
@@ -283,7 +290,6 @@ class BeamGroup(PositionedObject, HasMusicFont):
             c.flag.remove()
             c._flag = None
         # Now create the beams!
-        beam_thickness = font.engraving_defaults["beamThickness"]
         layer_step = beam_layer_height(self.music_font) * -beam_direction.value
         specs = BeamGroup._resolve_chordrest_beam_layout(chordrests)
         base_y = -beam_thickness if beam_direction == VerticalDirection.DOWN else ZERO
@@ -307,7 +313,7 @@ class BeamGroup(PositionedObject, HasMusicFont):
                     end_parent,
                     font,
                     brush,
-                    pen,
+                    self._pen,
                 )
             )
 

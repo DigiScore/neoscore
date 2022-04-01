@@ -278,7 +278,7 @@ class TestResolveBeamGroupLine(unittest.TestCase):
         assert resolve_beam_group_line(
             crs, VerticalDirection.UP, self.font
         ) == BeamGroupLine(
-            crs[0].highest_notehead.y - self.unit(3.5) - self.beam_layer_height, 0
+            crs[0].highest_notehead.y - self.unit(2.5) - self.beam_layer_height, 0
         )
 
     def test_beam_group_line_flat_below(self):
@@ -289,7 +289,7 @@ class TestResolveBeamGroupLine(unittest.TestCase):
         assert resolve_beam_group_line(
             crs, VerticalDirection.DOWN, self.font
         ) == BeamGroupLine(
-            crs[0].lowest_notehead.y + self.unit(3.5) + self.beam_layer_height, 0
+            crs[0].lowest_notehead.y + self.unit(2.5) + self.beam_layer_height, 0
         )
 
     def test_beam_group_line_flat_above_with_higher_notes(self):
@@ -301,7 +301,7 @@ class TestResolveBeamGroupLine(unittest.TestCase):
         assert resolve_beam_group_line(
             crs, VerticalDirection.UP, self.font
         ) == BeamGroupLine(
-            crs[1].highest_notehead.y - self.unit(3.5) - self.beam_layer_height, 0
+            crs[1].highest_notehead.y - self.unit(2.5) - self.beam_layer_height, 0
         )
 
     def test_beam_group_line_flat_below_with_many_beams(self):
@@ -312,7 +312,7 @@ class TestResolveBeamGroupLine(unittest.TestCase):
         assert resolve_beam_group_line(
             crs, VerticalDirection.DOWN, self.font
         ) == BeamGroupLine(
-            crs[0].lowest_notehead.y + self.unit(3.5) + self.beam_layer_height * 4, 0
+            crs[0].lowest_notehead.y + self.unit(2.5) + self.beam_layer_height * 4, 0
         )
 
     def test_beam_group_line_slanted_upward(self):
@@ -322,7 +322,7 @@ class TestResolveBeamGroupLine(unittest.TestCase):
         ]
         self.assert_lines_eq(
             resolve_beam_group_line(crs, VerticalDirection.UP, self.font),
-            BeamGroupLine(Mm(-2.75), 0.0999999999),
+            BeamGroupLine(Mm(-1.75), 0.0999999999),
         )
 
     def test_beam_group_line_slanted_upward_with_closer_notes(self):
@@ -333,7 +333,7 @@ class TestResolveBeamGroupLine(unittest.TestCase):
         ]
         self.assert_lines_eq(
             resolve_beam_group_line(crs, VerticalDirection.UP, self.font),
-            BeamGroupLine(Mm(-4.75), 0.049999999),
+            BeamGroupLine(Mm(-3.75), 0.049999999),
         )
 
     def test_beam_group_line_slanted_downward(self):
@@ -343,7 +343,7 @@ class TestResolveBeamGroupLine(unittest.TestCase):
         ]
         self.assert_lines_eq(
             resolve_beam_group_line(crs, VerticalDirection.DOWN, self.font),
-            BeamGroupLine(Mm(8.25), -0.0999999999),
+            BeamGroupLine(Mm(7.25), -0.0999999999),
         )
 
     def test_beam_group_line_slanted_downward_with_closer_notes(self):
@@ -354,5 +354,5 @@ class TestResolveBeamGroupLine(unittest.TestCase):
         ]
         self.assert_lines_eq(
             resolve_beam_group_line(crs, VerticalDirection.DOWN, self.font),
-            BeamGroupLine(Mm(16.75), -0.04999999),
+            BeamGroupLine(Mm(15.75), -0.04999999),
         )

@@ -26,7 +26,7 @@ class TestPen(unittest.TestCase):
 
     def test_init_default_join_style(self):
         test_pen = Pen()
-        assert test_pen.join_style == PenJoinStyle.BEVEL
+        assert test_pen.join_style == PenJoinStyle.MITER
 
     def test_init_default_cap_style(self):
         test_pen = Pen()

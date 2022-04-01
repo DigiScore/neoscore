@@ -55,7 +55,7 @@ class TestBeam(unittest.TestCase):
         )
         assert_path_els_equal(
             beam.elements[4],
-            MoveTo(
+            LineTo(
                 Point(Mm(0), Mm(0)),
                 beam,
             ),
