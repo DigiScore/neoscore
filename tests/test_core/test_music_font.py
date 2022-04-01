@@ -66,7 +66,6 @@ class TestMusicFont(unittest.TestCase):
         assert testGlyph.anchors == {'cutOutNW': [0.888, 1.516],
                                      'cutOutSE': [1.108, 0.856],
                                      'cutOutSW': [0.108, -0.956]}
-        assert testGlyph.component_glyphs == None
 
     def test_glyph_info_for_one_alternate_glyph(self):
         font = MusicFont("Bravura", Unit)
@@ -76,7 +75,7 @@ class TestMusicFont(unittest.TestCase):
 
     def test_glyph_info_for_last_alternate_glyph(self):
         font = MusicFont("Bravura", Unit)
-        testGlyph = font.glyph_incdfo('brace', 4)
+        testGlyph = font.glyph_info('brace', 4)
         assert testGlyph.canonical_name == 'braceFlat'
         assert testGlyph.codepoint == "\uF403"
 
@@ -85,7 +84,6 @@ class TestMusicFont(unittest.TestCase):
         testGlyph = font.glyph_info('gClefFlat1Below')
         assert testGlyph.canonical_name == 'gClefFlat1Below'
         assert testGlyph.codepoint == "\uF55D"
-        assert testGlyph.component_glyphs[2] == 'tuplet1'
         assert testGlyph.description == 'G clef, flat 1 below'
 
     def test_glyph_info_for_Foo_glyph(self):

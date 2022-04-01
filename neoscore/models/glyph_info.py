@@ -31,8 +31,6 @@ class GlyphInfo:
     anchors: Optional[dict]
     """a variety of additional cut outs, e.g. keys:[x_coord, y_coord]"""
 
-    component_glyphs: Optional[list[str]]
-    """list of glyphs that make a complex"""
 
 
 
