@@ -319,8 +319,10 @@ class Chordrest(PositionedObject, StaffObject):
         Takes the notehead furthest from the center of the staff,
         and returns the opposite direction.
 
-        If the furthest notehead is in the center of the staff,
-        the direction defaults to `1`.
+        If the furthest notehead is in the center of the staff, the
+        direction defaults to `VerticalDirection.DOWN`, unless the
+        staff has only one line, in which case it defaults to
+        `VerticalDirection.UP` as a convenience for percussion staves.
 
         This automatically calculated property may be overridden using
         its setter. To revert back to the automatically calculated value
@@ -328,16 +330,20 @@ class Chordrest(PositionedObject, StaffObject):
 
         If there are no noteheads (meaning this Chordrest is a rest),
         this arbitrarily returns `VerticalDirection.UP`.
+
         """
         if self._stem_direction_override:
             return self._stem_direction_override
         furthest = self.furthest_notehead
-        if furthest:
-            return (
-                VerticalDirection.DOWN
-                if furthest.y <= self.staff.center_pos_y
-                else VerticalDirection.UP
-            )
+        if furthest is None:
+            return VerticalDirection.UP
+        if furthest.y < self.staff.center_pos_y:
+            return VerticalDirection.DOWN
+        elif furthest.y == self.staff.center_pos_y:
+            if self.staff.line_count == 1:
+                return VerticalDirection.UP
+            else:
+                return VerticalDirection.DOWN
         else:
             return VerticalDirection.UP
 
