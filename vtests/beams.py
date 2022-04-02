@@ -1,3 +1,5 @@
+import os
+import sys
 from typing import NamedTuple, Optional
 
 from neoscore.common import *
@@ -137,4 +139,9 @@ create_example(
     ]
 )
 
-neoscore.show()
+
+if "--image" in sys.argv:
+    image_path = os.path.join(os.path.dirname(__file__), "output", "beams_image.png")
+    neoscore.render_image((Mm(0), Mm(0), Inch(2), Inch(2)), image_path, autocrop=True)
+else:
+    neoscore.show()
