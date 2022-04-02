@@ -1,4 +1,5 @@
 from neoscore.core import neoscore
+from neoscore.core.brush import Brush
 from neoscore.core.path import Path
 from neoscore.core.text import Text
 from neoscore.utils.color import Color
@@ -24,3 +25,10 @@ class TestNeoscore(AppTest):
         assert text_created_after_set.brush.color == Color(255, 0, 0)
         assert path_created_after_set.brush.color == Color(255, 0, 0)
         assert path_created_after_set.pen.color == Color(255, 0, 0)
+
+    def test_set_background_brush(self):
+        assert neoscore.background_brush == Brush("#ffffff")
+        new_brush = Brush("#ffff00")
+        neoscore.set_background_brush(new_brush)
+        assert neoscore.background_brush == new_brush
+        assert neoscore._app_interface.background_brush == new_brush.interface
