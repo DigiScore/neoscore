@@ -3,6 +3,7 @@ import pytest
 from neoscore.core import neoscore
 from neoscore.core.flowable import Flowable
 from neoscore.core.paper import Paper
+from neoscore.core.pen import Pen
 from neoscore.utils.point import Point
 from neoscore.utils.units import Mm
 from neoscore.western import clef_type
@@ -49,6 +50,11 @@ class TestStaff(AppTest):
             ).height,
             Mm(3),
         )
+
+    def test_allows_pen_override(self):
+        pen = Pen("#ff0000")
+        staff = Staff((Mm(10), Mm(0)), self.flowable, Mm(100), pen=pen)
+        assert staff.pen == pen
 
     def test_distance_to_next_of_type(self):
         staff = Staff((Mm(10), Mm(0)), self.flowable, Mm(100))

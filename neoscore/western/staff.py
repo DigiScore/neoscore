@@ -57,7 +57,7 @@ class Staff(MusicPath):
         music_font = MusicFont(
             music_font_family or constants.DEFAULT_MUSIC_FONT_NAME, unit
         )
-        pen = Pen(thickness=music_font.engraving_defaults["staffLineThickness"])
+        pen = pen or Pen(thickness=music_font.engraving_defaults["staffLineThickness"])
         super().__init__(pos, parent, font=music_font, pen=pen)
         self._line_count = line_count
         self._length = length
