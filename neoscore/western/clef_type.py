@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Dict, Optional, Union
 
@@ -10,6 +11,10 @@ Instances should have a key for every pitch letter a-g (lowercase),
 and each value should be an `(x, y)` tuple of pseudo staff positions
 to be plugged into a staff's unit.
 """
+
+
+StaffPosFunc = Callable[[int], float]
+"""A function which takes a number of staff lines and returns a staff position."""
 
 
 @dataclass(frozen=True)
@@ -23,19 +28,33 @@ class ClefType:
     glyph_name: str
     """The SMuFL glyph name used to represent the clef."""
 
-    staff_pos: float
+    """
+    how to deal with percussion clefs properly?
+
+    their staff position and middle C position both need to be
+    dynamically calculated from staff line count
+
+    """
+
+    staff_pos: float | StaffPosFunc
     """Where the clef should be vertically drawn in a staff.
 
     This is given in pseudo staff units relative to the staff's top
     line. When positioning clefs, this should be passed into the
     staff's unit to find the appropriate y position.
+    
+    For clefs whose position depends on the number of staff lines,
+    this can be a `StaffPosFunc`.
     """
 
-    middle_c_staff_pos: float
+    middle_c_staff_pos: float | StaffPosFunc
     """Where this clef places middle C in a staff.
 
     Like `staff_pos`, this is given in pseudo staff units relative to
     the staff's top line.
+    
+    For clefs whose middle C position depends on the number of staff
+    lines, this can be a `StaffPosFunc`.
     """
 
     key_signature_flat_layout: Optional[KeySignatureLayout]
@@ -102,20 +121,34 @@ BASS_8VB = ClefType("fClef8vb", 1, -4.5, _bass_flat_positions, _bass_sharp_posit
 TENOR = ClefType("cClef", 1, 1, _tenor_flat_positions, _tenor_sharp_positions)
 ALTO = ClefType("cClef", 2, 2, _alto_flat_positions, _alto_sharp_positions)
 
+
+def _percussion_staff_pos_func(num_lines: int) -> float:
+    return (num_lines - 1) / 2
+
+
 PERCUSSION_1 = ClefType(
-    "unpitchedPercussionClef1", 2, 2, _alto_flat_positions, _alto_sharp_positions
+    "unpitchedPercussionClef1",
+    _percussion_staff_pos_func,
+    _percussion_staff_pos_func,
+    _alto_flat_positions,
+    _alto_sharp_positions,
 )
 """Percussion clef consisting of 2 solid bars.
 
-Percussion clefs placed in staves are treated as alto clefs.
+Percussion clefs are treated as C clefs always centered at the middle
+of the staff. This works with any number of staff lines.
 """
 
 PERCUSSION_2 = ClefType(
-    "unpitchedPercussionClef2", 2, 2, _alto_flat_positions, _alto_sharp_positions
+    "unpitchedPercussionClef2",
+    _percussion_staff_pos_func,
+    _percussion_staff_pos_func,
+    _alto_flat_positions,
+    _alto_sharp_positions,
 )
 """Percussion clef consisting of an open rectangle.
 
-Percussion clefs placed in staves are treated as alto clefs.
+See also `PERCUSSION_1`
 """
 
 CLEF_TYPE_SHORTHAND_NAMES = {

@@ -45,11 +45,19 @@ class Clef(MusicText, StaffObject):
     @clef_type.setter
     def clef_type(self, value: ClefTypeDef):
         self._clef_type = ClefType.from_def(value)
-        self.y = self.staff.unit(self._clef_type.staff_pos)
+        if callable(self._clef_type.staff_pos):
+            staff_pos = self._clef_type.staff_pos(self.staff.line_count)
+        else:
+            staff_pos = self._clef_type.staff_pos
+        self.y = self.staff.unit(staff_pos)
         self.text = self._clef_type.glyph_name
-        self._middle_c_staff_position = self.staff.unit(
-            self.clef_type.middle_c_staff_pos
-        )
+        if callable(self.clef_type.middle_c_staff_pos):
+            middle_c_staff_pos = self.clef_type.middle_c_staff_pos(
+                self.staff.line_count
+            )
+        else:
+            middle_c_staff_pos = self.clef_type.middle_c_staff_pos
+        self._middle_c_staff_position = self.staff.unit(middle_c_staff_pos)
 
     @property
     def breakable_length(self) -> Unit:
