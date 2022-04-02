@@ -63,7 +63,7 @@ class Flag(MusicText):
         duration_display = cast(DurationDisplay, self.duration.display)
         if duration_display.flag_count == 0:
             raise NoFlagNeededError(self.duration)
-        if self.direction == 1:
+        if self.direction == VerticalDirection.DOWN:
             glyph_name = self._down_glyphnames[duration_display.flag_count]
         else:
             glyph_name = self._up_glyphnames[duration_display.flag_count]
