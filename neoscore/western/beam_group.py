@@ -218,7 +218,7 @@ def _resolve_beam_direction(chordrests: list[Chordrest]) -> VerticalDirection:
     the middle staff line, placing the beam below (`DOWN`), and vice
     versa
     """
-    middle_staff_pos = chordrests[0].staff.center_pos_y
+    middle_staff_pos = chordrests[0].staff.center_y
     center = sum(
         [
             c.furthest_notehead.y if c.noteheads else middle_staff_pos

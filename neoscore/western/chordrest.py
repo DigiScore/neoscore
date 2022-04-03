@@ -243,7 +243,7 @@ class Chordrest(PositionedObject, StaffObject):
         """The `Notehead` furthest from the staff center"""
         return max(
             self.noteheads,
-            key=lambda n: abs(n.y - self.staff.center_pos_y),
+            key=lambda n: abs(n.y - self.staff.center_y),
             default=None,
         )
 
@@ -337,9 +337,9 @@ class Chordrest(PositionedObject, StaffObject):
         furthest = self.furthest_notehead
         if furthest is None:
             return VerticalDirection.UP
-        if furthest.y < self.staff.center_pos_y:
+        if furthest.y < self.staff.center_y:
             return VerticalDirection.DOWN
-        elif furthest.y == self.staff.center_pos_y:
+        elif furthest.y == self.staff.center_y:
             if self.staff.line_count == 1:
                 return VerticalDirection.UP
             else:
