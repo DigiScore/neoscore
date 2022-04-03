@@ -118,7 +118,7 @@ class MusicFont(Font):
 
         # if an alt glyph get name
         if alternate_number:
-            glyph_name = self._alternate_checker(glyph_name, alternate_number)
+            glyph_name = self._check_alternate_names(glyph_name, alternate_number)
 
         # check if glyphname exists then get details from smufl
         check_name = smufl.glyph_names.get(glyph_name)
@@ -131,11 +131,14 @@ class MusicFont(Font):
 
         # if we have made it this far and populated
         # info with all other valid details
-        advance_width = self.unit(self.metadata['glyphAdvanceWidths'].get(glyph_name))
+        advance_width = self.metadata['glyphAdvanceWidths'].get(glyph_name)
+        if advance_width:
+            advance_width = self.unit(advance_width)
 
-        boundary_box_raw = copy.deepcopy(self.metadata['glyphBBoxes'].get(glyph_name))
-        convert_all_to_unit(boundary_box_raw, self.unit)
-        boundary_box = self._convert_bbox_to_rect(boundary_box_raw)
+        bounding_box = copy.deepcopy(self.metadata['glyphBBoxes'].get(glyph_name))
+        if bounding_box:
+            convert_all_to_unit(bounding_box, self.unit)
+            bounding_box = self._convert_bbox_to_rect(bounding_box)
 
         # get optional anchor metadata if available
         anchors = self.metadata['glyphsWithAnchors'].get(glyph_name)
@@ -143,15 +146,15 @@ class MusicFont(Font):
         return GlyphInfo(canonical_name=glyph_name,
                          codepoint=codepoint,
                          description=description,
-                         boundary_box=boundary_box,
+                         bounding_box=bounding_box,
                          advance_width=advance_width,
                          anchors=anchors
                          )
 
     # private helper functions
     def _convert_bbox_to_rect(self, b_box_dict: dict) -> Rect:
-        """Parses the boundary box bBoxNE and bBoxSW coords
-        from SMuFL metadata into BBoxCoords dataclass"""
+        """Converst the SMuFL bounding box info
+        into a Rect class format"""
 
        # get SMuFL bbox coords
         ne_x = b_box_dict["bBoxNE"][0]
@@ -167,7 +170,7 @@ class MusicFont(Font):
 
         return Rect(x=x, y=y, width=width, height=height)
 
-    def _alternate_checker(self, glyph_name: str, alternate_number: int) -> str:
+    def _check_alternate_names(self, glyph_name: str, alternate_number: int) -> str:
         """Check to see if the alternate glyph exists,
         if it does it then returns that glyph name.
 

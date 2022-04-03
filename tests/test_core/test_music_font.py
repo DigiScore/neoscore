@@ -56,7 +56,7 @@ class TestMusicFont(AppTest):
         assert testGlyph.canonical_name == 'accidental3CommaSharp'
         assert testGlyph.codepoint == "\ue452"
         assert testGlyph.description == "3-comma sharp"
-        assert testGlyph.boundary_box == Rect(x=Unit(0),
+        assert testGlyph.bounding_box == Rect(x=Unit(0),
                                               y=Unit(2.044),
                                               width=Unit(1.828),
                                               height=Unit(3.436)
