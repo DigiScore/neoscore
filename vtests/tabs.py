@@ -41,6 +41,6 @@ Clef(ZERO, regular_staff, "treble")
 
 all_staves = [staff_1, staff_2, regular_staff]
 
-BarLine(Mm(20), all_staves)
+Barline(Mm(20), all_staves)
 
 neoscore.show()

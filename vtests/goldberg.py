@@ -55,7 +55,7 @@ Chordrest(
 # Lower staff notes - lower voice
 Chordrest(unit(8), lower_staff, ["g"], Duration(3, 4))
 
-BarLine(unit(22), [upper_staff, lower_staff])
+Barline(unit(22), [upper_staff, lower_staff])
 
 if "--image" in sys.argv:
     image_path = os.path.join(os.path.dirname(__file__), "output", "goldberg.png")

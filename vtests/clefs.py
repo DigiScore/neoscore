@@ -18,7 +18,7 @@ for (i, clef_type) in enumerate(CLEF_TYPE_SHORTHAND_NAMES.values()):
     KeySignature(unit(37), staff, "cf_major")
 
 
-BarLine(unit(35), staves)
-BarLine(unit(35.5), staves)
+Barline(unit(35), staves)
+Barline(unit(35.5), staves)
 
 neoscore.show()

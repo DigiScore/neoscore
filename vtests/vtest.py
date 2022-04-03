@@ -26,7 +26,7 @@ lower_staff = Staff((Mm(0), Mm(9)), flow, Mm(7000), Mm(1))
 
 lowest_staff = Staff((Mm(10), Mm(18)), flow, Mm(2000), Mm(1))
 
-barline = BarLine(Mm(30), [staff, lower_staff, lowest_staff])
+barline = Barline(Mm(30), [staff, lower_staff, lowest_staff])
 
 upper_staff_time_signature = TimeSignature(Mm(0), staff, (4, 4))
 

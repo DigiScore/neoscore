@@ -28,7 +28,7 @@ from neoscore.utils.point import ORIGIN, Point
 from neoscore.utils.rect import Rect
 from neoscore.utils.units import ZERO, GraphicUnit, Inch, Mm
 from neoscore.western.accidental import Accidental
-from neoscore.western.bar_line import BarLine
+from neoscore.western.barline import Barline
 from neoscore.western.beam_group import BeamGroup
 from neoscore.western.brace import Brace
 from neoscore.western.chordrest import Chordrest

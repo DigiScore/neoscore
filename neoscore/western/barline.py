@@ -7,10 +7,8 @@ from neoscore.core.pen import Pen, PenDef
 from neoscore.utils.units import ZERO, Unit
 from neoscore.western.multi_staff_object import MultiStaffObject, StaffLike
 
-# TODO HIGH rename Barline? (1 word)
 
-
-class BarLine(MusicPath, MultiStaffObject):
+class Barline(MusicPath, MultiStaffObject):
 
     """A single bar line.
 
