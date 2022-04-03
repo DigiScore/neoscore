@@ -8,26 +8,14 @@ neoscore.setup()
 staff_1 = TabStaff(ORIGIN, None, Mm(100))
 clef_1 = TabClef(ZERO, staff_1)
 
-# Mockup for something that will probably be pulled into tab code
-def add_fingering(x, string, finger):
-    string_y = staff_1.string_y(string)
-    mt = MusicText(
-        (x, ZERO),
-        staff_1,
-        f"fingering{finger}",
-        background_brush=neoscore.background_brush,
-    )
-    mt.y = string_y + (mt.bounding_rect.height / 2)
-
-
-add_fingering(Mm(5), 1, 1)
-add_fingering(Mm(7), 1, 2)
-add_fingering(Mm(7), 2, 1)
-add_fingering(Mm(7), 3, 1)
-add_fingering(Mm(7), 4, 2)
-add_fingering(Mm(7), 5, 3)
-add_fingering(Mm(7), 6, 0)
-add_fingering(Mm(10), 1, 5)
+TabNumber(Mm(5), staff_1, 1, 1)
+TabNumber(Mm(7), staff_1, 1, 2)
+TabNumber(Mm(7), staff_1, 2, 1)
+TabNumber(Mm(7), staff_1, 3, 1)
+TabNumber(Mm(7), staff_1, 4, 2)
+TabNumber(Mm(7), staff_1, 5, 3)
+TabNumber(Mm(7), staff_1, 6, 0)
+TabNumber(Mm(10), staff_1, 1, 9)
 
 
 # 4 line tab
