@@ -36,6 +36,7 @@ class TestText(AppTest):
         assert obj.brush == Brush()
         assert obj.pen == Pen.no_pen()
         assert obj.scale == 1
+        assert obj.background_brush == None
         assert obj.breakable == True
 
     def test_length_when_non_breakable(self):
@@ -52,3 +53,10 @@ class TestText(AppTest):
         assert obj.breakable_length == obj.bounding_rect.width
         obj.breakable = False
         assert obj.breakable_length == ZERO
+
+    def test_background_brush(self):
+        bg_brush = Brush("#ff0000")
+        obj = Text((Unit(5), Unit(6)), None, "testing", background_brush=bg_brush)
+        assert obj.background_brush == bg_brush
+        obj.background_brush = "#00ffff"
+        assert obj.background_brush == Brush("#00ffff")

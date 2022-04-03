@@ -10,7 +10,14 @@ clef_1 = TabClef(ZERO, staff_1)
 
 # Mockup for something that will probably be pulled into tab code
 def add_fingering(x, string, finger):
-    MusicText((x, staff_1.string_y(string)), staff_1, f"fingering{finger}")
+    string_y = staff_1.string_y(string)
+    mt = MusicText(
+        (x, ZERO),
+        staff_1,
+        f"fingering{finger}",
+        background_brush=neoscore.background_brush,
+    )
+    mt.y = string_y + (mt.bounding_rect.height / 2)
 
 
 add_fingering(Mm(5), 1, 1)

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional
 
+from neoscore.core import neoscore
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.utils.units import Unit
@@ -37,7 +38,14 @@ class TabClef(MusicText):
             glyph_name: The SMuFL glyph to use.
             font: The font to use. Defaults to the staff's font.
         """
-        MusicText.__init__(self, (pos_x, staff.center_y), staff, glyph_name, font)
+        MusicText.__init__(
+            self,
+            (pos_x, staff.center_y),
+            staff,
+            glyph_name,
+            font,
+            background_brush=neoscore.background_brush,
+        )
 
     @property
     def breakable_length(self) -> Unit:
