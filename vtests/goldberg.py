@@ -11,7 +11,7 @@ flowable = Flowable((Mm(0), Mm(0)), None, Mm(500), Mm(30), Mm(10))
 
 upper_staff = Staff((Mm(0), Mm(0)), flowable, Mm(500), Mm(1))
 lower_staff = Staff((Mm(0), Mm(12)), flowable, Mm(500), Mm(1))
-Brace(Mm(0), {upper_staff, lower_staff})
+Brace(Mm(0), [upper_staff, lower_staff])
 
 # We can use the same unit in the upper and lower staves since they
 # are the same size

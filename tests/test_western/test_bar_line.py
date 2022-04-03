@@ -1,4 +1,6 @@
 from neoscore.core.flowable import Flowable
+from neoscore.core.music_font import MusicFont
+from neoscore.core.pen import Pen
 from neoscore.utils.point import Point
 from neoscore.utils.units import Mm
 from neoscore.western.bar_line import BarLine
@@ -11,7 +13,7 @@ class TestBarLine(AppTest):
     def setUp(self):
         super().setUp()
         self.flowable = Flowable((Mm(0), Mm(0)), None, Mm(10000), Mm(30), Mm(5))
-        self.staff_1 = Staff((Mm(0), Mm(0)), self.flowable, Mm(100))
+        self.staff_1 = Staff((Mm(0), Mm(0)), self.flowable, Mm(100), Mm(2))
         self.staff_2 = Staff((Mm(0), Mm(30)), self.flowable, Mm(100))
         self.staff_3 = Staff((Mm(10), Mm(50)), self.flowable, Mm(100))
 
@@ -28,3 +30,21 @@ class TestBarLine(AppTest):
         assert bar_line.elements[0].parent == bar_line
         assert bar_line.elements[1].pos == Point(Mm(5), self.staff_3.height)
         assert bar_line.elements[1].parent == self.staff_3
+
+    def test_font_override(self):
+        bar_line = BarLine(Mm(15), [self.staff_1, self.staff_2, self.staff_3])
+        assert bar_line.music_font == self.staff_1.music_font
+        font = MusicFont("Bravura", Mm)
+        bar_line = BarLine(Mm(15), [self.staff_1, self.staff_2, self.staff_3], font)
+        assert bar_line.music_font == font
+
+    def test_default_pen_uses_engraving_default_thickness(self):
+        bar_line = BarLine(Mm(15), [self.staff_1, self.staff_2])
+        assert (
+            bar_line.pen.thickness
+            == self.staff_1.music_font.engraving_defaults["thinBarlineThickness"]
+        )
+
+    def test_pen_override(self):
+        bar_line = BarLine(Mm(15), [self.staff_1, self.staff_2], pen="#ff0000")
+        assert bar_line.pen == Pen("#ff0000")
