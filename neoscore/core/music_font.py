@@ -163,10 +163,16 @@ class MusicFont(Font):
         sw_y = b_box_dict["bBoxSW"][1]
 
         # calculate neoscore Rect coords
+        # x = sw_x
+        # y = ne_y
+        # width = ne_x - sw_x
+        # height = ne_y - sw_y
+
+        # using algo from music_char
         x = sw_x
         y = ne_y
         width = ne_x - sw_x
-        height = ne_y - sw_y
+        height = (sw_y - ne_y) * -1
 
         return Rect(x=x, y=y, width=width, height=height)
 
