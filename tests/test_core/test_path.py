@@ -30,6 +30,14 @@ class TestPath(AppTest):
         assert path.pos == Point(Unit(5), Unit(6))
         assert path.pen == self.pen
         assert path.brush == self.brush
+        assert path.background_brush is None
+
+    def test_background_brush(self):
+        bg_brush = Brush("#ff0000")
+        obj = Path((Unit(5), Unit(6)), None, background_brush=bg_brush)
+        assert obj.background_brush == bg_brush
+        obj.background_brush = "#00ffff"
+        assert obj.background_brush == Brush("#00ffff")
 
     def test_straight_line(self):
         path = Path.straight_line((Unit(5), Unit(6)), None, (Unit(10), Unit(11)))

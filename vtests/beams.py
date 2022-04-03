@@ -1,6 +1,9 @@
+import os
+import sys
 from typing import NamedTuple, Optional
 
 from neoscore.common import *
+from neoscore.models.directions import VerticalDirection
 from neoscore.models.duration import DurationDef
 from neoscore.models.pitch import PitchDef
 
@@ -18,14 +21,16 @@ class TestChord(NamedTuple):
 last_staff_y = ZERO
 
 
-def create_example(chords: list[TestChord]):
+def create_example(
+    chords: list[TestChord], direction: Optional[VerticalDirection] = None
+):
     global last_staff_y
     staff = Staff((ZERO, last_staff_y + Mm(12)), None, Mm(50))
     last_staff_y = staff.y
     clef = Clef(ZERO, staff, "treble")
     unit = staff.unit
     group = []
-    spacing = unit(5)
+    spacing = unit(6)
     for i, c in enumerate(chords):
         group.append(
             Chordrest(
@@ -38,7 +43,7 @@ def create_example(chords: list[TestChord]):
                 c.beam_hook_dir,
             )
         )
-    bg = BeamGroup(group)
+    bg = BeamGroup(group, direction)
 
 
 # Flat beams
@@ -96,6 +101,18 @@ create_example(
     ]
 )
 
+# Beam direction override
+
+create_example(
+    [
+        TestChord(["a'"], (1, 8)),
+        TestChord(["a'"], (1, 16)),
+        TestChord(["a'"], (1, 8)),
+    ],
+    VerticalDirection.DOWN,
+)
+
+
 # Angled beams
 
 create_example(
@@ -108,8 +125,6 @@ create_example(
         TestChord(["d'"], (1, 16)),
     ]
 )
-
-# TODO the stems on this one seem to be too long
 
 create_example(
     [
@@ -124,4 +139,9 @@ create_example(
     ]
 )
 
-neoscore.show()
+
+if "--image" in sys.argv:
+    image_path = os.path.join(os.path.dirname(__file__), "output", "beams_image.png")
+    neoscore.render_image((Mm(0), Mm(0), Inch(2), Inch(2)), image_path, autocrop=True)
+else:
+    neoscore.show()

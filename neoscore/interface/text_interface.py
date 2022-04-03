@@ -57,6 +57,8 @@ class TextInterface(PositionedObjectInterface):
 
     scale: float = 1
 
+    background_brush: Optional[BrushInterface] = None
+
     clip_start_x: Optional[Unit] = None
     """The local starting position of the drawn region in the glyph.
 
@@ -98,6 +100,7 @@ class TextInterface(PositionedObjectInterface):
                 self.clip_start_x.base_value if self.clip_start_x is not None else 0,
                 self.clip_width.base_value if self.clip_width is not None else None,
                 cache_scale * scale,
+                self.background_brush.qt_object if self.background_brush else None,
             )
             return clipping_path
         path = TextInterface._create_qt_path(text, qt_font)
@@ -107,6 +110,7 @@ class TextInterface(PositionedObjectInterface):
             self.clip_start_x.base_value if self.clip_start_x is not None else 0,
             self.clip_width.base_value if self.clip_width is not None else None,
             scale,
+            self.background_brush.qt_object if self.background_brush else None,
         )
         return clipping_path
 

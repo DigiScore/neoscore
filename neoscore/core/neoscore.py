@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Callable, Optional
 from warnings import warn
 
 from neoscore import constants
-from neoscore.core.brush import Brush
+from neoscore.core.brush import Brush, BrushDef
 from neoscore.core.font import Font
 from neoscore.core.paper import A4, Paper
 from neoscore.core.pen import Pen
@@ -36,10 +36,11 @@ registered_music_fonts: dict[str, dict] = {}
 registered_font_family_names: set[str] = set()
 """A set of family names of all registered fonts, including music fonts"""
 
-# Color of background between and around pages. (Not yet implemented)
-_display_background_color = "#dddddd"
-# Background color of pages themselves. (Not yet implemented)
-_display_paper_color = "#ffffff"
+background_brush = Brush("#ffffff")
+"""The scene's background color.
+
+Defaults to white. Set this using `set_background_brush`.
+"""
 
 
 def setup(initial_paper: Paper = A4):
@@ -60,11 +61,14 @@ def setup(initial_paper: Paper = A4):
     global _app_interface
     global default_font
     global document
+    global background_brush
     # Document is imported here to work around cyclic import problems
     from neoscore.core.document import Document
 
     document = Document(initial_paper)
-    _app_interface = AppInterface(document, _repl_refresh_func)
+    _app_interface = AppInterface(
+        document, _repl_refresh_func, background_brush.interface
+    )
     _register_default_fonts()
     default_font = Font(
         constants.DEFAULT_TEXT_FONT_NAME, constants.DEFAULT_TEXT_FONT_SIZE, 1, False
@@ -80,6 +84,13 @@ def set_default_color(color: ColorDef):
     c = Color.from_def(color)
     Pen.default_color = c
     Brush.default_color = c
+
+
+def set_background_brush(brush: BrushDef):
+    global background_brush
+    global _app_interface
+    background_brush = Brush.from_def(brush)
+    _app_interface.background_brush = background_brush.interface
 
 
 def register_font(font_file_path: str) -> list[str]:

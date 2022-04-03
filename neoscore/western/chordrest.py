@@ -74,14 +74,8 @@ class Chordrest(PositionedObject, StaffObject):
                 where `1` points down and `-1` points up. If omitted, the
                 direction is automatically calculated to point away from
                 the furthest-out notehead.
-            beam_break_depth: If this Chordrest is within a beam group, this triggers
-                a beam subdivision break at this point. The value indicates the number
-                of beams to which the subdivision breaks. For example, in run of 16th
-                notes a `beam_break_depth` of `1` would indicate a subdivision break
-                to 1 beam at this point.
-            beam_hook_dir: If this Chordrest is within a beam group and this position
-                is one requiring a beamlet hook whose direction is ambiguous, this
-                controls that direction.
+            beam_break_depth: Break depth used if in a `BeamGroup`.
+            beam_hook_dir: Beamlet hook direction used in a `BeamGroup`.
             notehead_table: The set of noteheads to use according to `duration`.
         """
         StaffObject.__init__(self, staff)
@@ -154,12 +148,24 @@ class Chordrest(PositionedObject, StaffObject):
 
     @property
     def beam_break_depth(self) -> Optional[int]:
-        """Break depth used if this Chordrest is in a BeamGroup."""
+        """Break depth used if in a `BeamGroup`.
+
+        If this Chordrest is within a beam group, this triggers a
+        beam subdivision break at this point. The value indicates the
+        number of beams to which the subdivision breaks. For example,
+        in run of 16th notes a `beam_break_depth` of `1` would
+        indicate a subdivision break to 1 beam at this point.
+        """
         return self._beam_break_depth
 
     @property
     def beam_hook_dir(self) -> Optional[HorizontalDirection]:
-        """Beamlet hook direction used if this Chordrest is in a BeamGroup."""
+        """Beamlet hook direction used in a `BeamGroup`.
+
+        If this Chordrest is within a beam group and this position is
+        one requiring a beamlet hook whose direction is ambiguous,
+        this controls that direction.
+        """
         return self._beam_hook_dir
 
     @property
@@ -237,7 +243,7 @@ class Chordrest(PositionedObject, StaffObject):
         """The `Notehead` furthest from the staff center"""
         return max(
             self.noteheads,
-            key=lambda n: abs(n.y - self.staff.center_pos_y),
+            key=lambda n: abs(n.y - self.staff.center_y),
             default=None,
         )
 
@@ -313,8 +319,10 @@ class Chordrest(PositionedObject, StaffObject):
         Takes the notehead furthest from the center of the staff,
         and returns the opposite direction.
 
-        If the furthest notehead is in the center of the staff,
-        the direction defaults to `1`.
+        If the furthest notehead is in the center of the staff, the
+        direction defaults to `VerticalDirection.DOWN`, unless the
+        staff has only one line, in which case it defaults to
+        `VerticalDirection.UP` as a convenience for percussion staves.
 
         This automatically calculated property may be overridden using
         its setter. To revert back to the automatically calculated value
@@ -322,16 +330,20 @@ class Chordrest(PositionedObject, StaffObject):
 
         If there are no noteheads (meaning this Chordrest is a rest),
         this arbitrarily returns `VerticalDirection.UP`.
+
         """
         if self._stem_direction_override:
             return self._stem_direction_override
         furthest = self.furthest_notehead
-        if furthest:
-            return (
-                VerticalDirection.DOWN
-                if furthest.y <= self.staff.center_pos_y
-                else VerticalDirection.UP
-            )
+        if furthest is None:
+            return VerticalDirection.UP
+        if furthest.y < self.staff.center_y:
+            return VerticalDirection.DOWN
+        elif furthest.y == self.staff.center_y:
+            if self.staff.line_count == 1:
+                return VerticalDirection.UP
+            else:
+                return VerticalDirection.DOWN
         else:
             return VerticalDirection.UP
 
@@ -438,6 +450,10 @@ class Chordrest(PositionedObject, StaffObject):
         """Create all the RhythmDots needed by this Chordrest."""
         for dot_pos in self.rhythm_dot_positions:
             self.dots.add(RhythmDot(dot_pos, self))
+
+    # TODO HIGH this y attachment point is wrong Should be the
+    # furthest in the direction opposite of stem direction.
+    # Fix after #4
 
     def _create_stem(self):
         """If needed, create a Stem and store it in `self.stem`."""

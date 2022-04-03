@@ -45,6 +45,8 @@ class PathInterface(PositionedObjectInterface):
 
     elements: list[ResolvedPathElement]
 
+    background_brush: Optional[BrushInterface] = None
+
     clip_start_x: Optional[Unit] = None
     """The local starting position of the drawn region in the glyph.
 
@@ -96,6 +98,8 @@ class PathInterface(PositionedObjectInterface):
             painter_path,
             self.clip_start_x.base_value if self.clip_start_x is not None else 0,
             self.clip_width.base_value if self.clip_width is not None else None,
+            1,
+            self.background_brush.qt_object if self.background_brush else None,
         )
         qt_object.setPos(point_to_qt_point_f(self.pos))
         qt_object.setBrush(self.brush.qt_object)

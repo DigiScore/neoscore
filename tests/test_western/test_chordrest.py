@@ -135,6 +135,13 @@ class TestChordrest(AppTest):
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
         assert chord.stem_direction == VerticalDirection.DOWN
 
+    def test_stem_direction_at_center_with_one_line_staff(self):
+        staff = Staff(Point(Mm(0), Mm(0)), None, Mm(100), line_count=1)
+        Clef(Mm(0), staff, "percussion_2")
+        pitches = ["c'"]
+        chord = Chordrest(Mm(1), staff, pitches, Duration(1, 4))
+        assert chord.stem_direction == VerticalDirection.UP
+
     def test_stem_direction_override(self):
         pitches = ["b'"]
         chord = Chordrest(

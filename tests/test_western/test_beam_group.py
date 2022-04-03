@@ -2,68 +2,69 @@ from neoscore.models.directions import HorizontalDirection, VerticalDirection
 from neoscore.utils.point import Point
 from neoscore.utils.units import Mm
 from neoscore.western.beam_group import (
+    BeamGroup,
     _BeamGroupLine,
     _BeamPathSpec,
     _BeamState,
     _resolve_beam_direction,
     _resolve_beam_group_height,
     _resolve_beam_group_line,
+    _resolve_beam_hooks,
     _resolve_beam_layout,
-    _resolve_beam_states,
 )
 from neoscore.western.chordrest import Chordrest
 from neoscore.western.clef import Clef
 from neoscore.western.staff import Staff
 
-from ..helpers import AppTest, assert_almost_equal
+from ..helpers import AppTest, assert_almost_equal, render_scene
 
 
-def test_resolve_beam_states():
-    assert _resolve_beam_states([_BeamState(3), _BeamState(2), _BeamState(1)]) == [
+def test_resolve_beam_hooks():
+    assert _resolve_beam_hooks([_BeamState(3), _BeamState(2), _BeamState(1)]) == [
         _BeamState(3, hook=HorizontalDirection.RIGHT),
         _BeamState(2),
         _BeamState(1),
     ]
 
-    assert _resolve_beam_states([_BeamState(1), _BeamState(3), _BeamState(2)]) == [
+    assert _resolve_beam_hooks([_BeamState(1), _BeamState(3), _BeamState(2)]) == [
         _BeamState(1),
         _BeamState(3, hook=HorizontalDirection.RIGHT),
         _BeamState(2),
     ]
 
-    assert _resolve_beam_states([_BeamState(1), _BeamState(2), _BeamState(1)]) == [
+    assert _resolve_beam_hooks([_BeamState(1), _BeamState(2), _BeamState(1)]) == [
         _BeamState(1),
         _BeamState(2, hook=HorizontalDirection.LEFT),
         _BeamState(1),
     ]
 
-    assert _resolve_beam_states([_BeamState(2), _BeamState(3), _BeamState(1)]) == [
+    assert _resolve_beam_hooks([_BeamState(2), _BeamState(3), _BeamState(1)]) == [
         _BeamState(2),
         _BeamState(3, hook=HorizontalDirection.LEFT),
         _BeamState(1),
     ]
 
-    assert _resolve_beam_states([_BeamState(3), _BeamState(2), _BeamState(3)]) == [
+    assert _resolve_beam_hooks([_BeamState(3), _BeamState(2), _BeamState(3)]) == [
         _BeamState(3, hook=HorizontalDirection.RIGHT),
         _BeamState(2),
         _BeamState(3, hook=HorizontalDirection.LEFT),
     ]
 
-    assert _resolve_beam_states([_BeamState(1), _BeamState(2), _BeamState(3)]) == [
+    assert _resolve_beam_hooks([_BeamState(1), _BeamState(2), _BeamState(3)]) == [
         _BeamState(1),
         _BeamState(2),
         _BeamState(3, hook=HorizontalDirection.LEFT),
     ]
 
-    assert _resolve_beam_states([_BeamState(3), _BeamState(2), _BeamState(2)]) == [
+    assert _resolve_beam_hooks([_BeamState(3), _BeamState(2), _BeamState(2)]) == [
         _BeamState(3, hook=HorizontalDirection.RIGHT),
         _BeamState(2),
         _BeamState(2),
     ]
 
 
-def test_resolve_beam_states_with_hook_hints():
-    assert _resolve_beam_states(
+def test_resolve_beam_hooks_with_hook_hints():
+    assert _resolve_beam_hooks(
         [_BeamState(2), _BeamState(2, hook=HorizontalDirection.LEFT), _BeamState(1)]
     ) == [
         _BeamState(2),  # Invalid hook hint is ignored
@@ -71,7 +72,7 @@ def test_resolve_beam_states_with_hook_hints():
         _BeamState(1),
     ]
 
-    assert _resolve_beam_states(
+    assert _resolve_beam_hooks(
         [_BeamState(2, hook=HorizontalDirection.RIGHT), _BeamState(2), _BeamState(1)]
     ) == [
         _BeamState(2),
@@ -79,7 +80,7 @@ def test_resolve_beam_states_with_hook_hints():
         _BeamState(1),
     ]
 
-    assert _resolve_beam_states(
+    assert _resolve_beam_hooks(
         [_BeamState(1), _BeamState(2, hook=HorizontalDirection.RIGHT), _BeamState(1)]
     ) == [
         _BeamState(1),
@@ -88,28 +89,26 @@ def test_resolve_beam_states_with_hook_hints():
     ]
 
 
-def test_resolve_beam_states_break_depths_copied():
-    assert _resolve_beam_states([_BeamState(3), _BeamState(3, 1), _BeamState(3)]) == [
+def test_resolve_beam_hooks_break_depths_copied():
+    assert _resolve_beam_hooks([_BeamState(3), _BeamState(3, 1), _BeamState(3)]) == [
         _BeamState(3),
         _BeamState(3, 1),
         _BeamState(3),
     ]
-    assert _resolve_beam_states(
-        [_BeamState(3, 2), _BeamState(3, 1), _BeamState(3)]
-    ) == [
+    assert _resolve_beam_hooks([_BeamState(3, 2), _BeamState(3, 1), _BeamState(3)]) == [
         _BeamState(3, 2),
         _BeamState(3, 1),
         _BeamState(3),
     ]
-    assert _resolve_beam_states([_BeamState(3), _BeamState(3), _BeamState(3, 1)]) == [
+    assert _resolve_beam_hooks([_BeamState(3), _BeamState(3), _BeamState(3, 1)]) == [
         _BeamState(3),
         _BeamState(3),
         _BeamState(3, 1),
     ]
 
 
-def test_resolve_beam_states_with_break_depths_affecting_flags():
-    assert _resolve_beam_states(
+def test_resolve_beam_hooks_with_break_depths_affecting_flags():
+    assert _resolve_beam_hooks(
         [_BeamState(2), _BeamState(2, 1), _BeamState(3), _BeamState(2)]
     ) == [
         _BeamState(2),
@@ -359,3 +358,33 @@ class TestResolveBeamGroupLine(AppTest):
             _resolve_beam_group_line(crs, VerticalDirection.DOWN, self.font),
             _BeamGroupLine(Mm(15.75), -0.04999999),
         )
+
+
+class TestBeamGroup(AppTest):
+    def setUp(self):
+        super().setUp()
+        self.staff = Staff(Point(Mm(0), Mm(0)), None, Mm(100))
+        Clef(Mm(0), self.staff, "treble")
+
+    def test_beam_direction_override(self):
+        crs = [
+            Chordrest(Mm(10), self.staff, ["a'"], (1, 8)),
+            Chordrest(Mm(20), self.staff, ["g'"], (1, 8)),
+        ]
+        bg = BeamGroup(crs)
+        assert bg.direction == VerticalDirection.UP
+        bg = BeamGroup(crs, VerticalDirection.DOWN)
+        assert bg.direction == VerticalDirection.DOWN
+
+    def test_end_to_end(self):
+        crs = [
+            Chordrest(Mm(10), self.staff, ["bb''", "e''"], (1, 32)),
+            Chordrest(Mm(20), self.staff, ["f'"], (1, 32), beam_break_depth=2),
+            Chordrest(Mm(30), self.staff, ["f'"], (1, 32)),
+            Chordrest(Mm(40), self.staff, ["g''"], (1, 32)),
+            Chordrest(Mm(50), self.staff, ["c#'"], (3, 16)),
+            Chordrest(Mm(60), self.staff, ["e''"], (1, 32)),
+            Chordrest(Mm(70), self.staff, ["eb''"], (1, 32)),
+            Chordrest(Mm(80), self.staff, ["d''"], (1, 8)),
+        ]
+        render_scene()

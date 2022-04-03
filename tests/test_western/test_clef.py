@@ -46,3 +46,19 @@ class TestClef(AppTest):
         assert clef.pos == Point(Mm(1), self.staff.unit(1))
         assert clef.music_chars[0].canonical_name == "fClef"
         assert clef.middle_c_staff_position == self.staff.unit(-1)
+
+    def test_supports_dynamic_position_clef_types(self):
+        perc_staff_1 = Staff(ORIGIN, None, Mm(200), line_count=1)
+        clef_1 = Clef(Mm(1), perc_staff_1, clef_type.PERCUSSION_1)
+        assert clef_1.y == perc_staff_1.unit(0)
+        assert clef_1.middle_c_staff_position == perc_staff_1.unit(0)
+
+        perc_staff_2 = Staff(ORIGIN, None, Mm(200), line_count=3)
+        clef_2 = Clef(Mm(1), perc_staff_2, clef_type.PERCUSSION_1)
+        assert clef_2.y == perc_staff_2.unit(1)
+        assert clef_2.middle_c_staff_position == perc_staff_2.unit(1)
+
+        perc_staff_3 = Staff(ORIGIN, None, Mm(200), line_count=5)
+        clef_3 = Clef(Mm(1), perc_staff_3, clef_type.PERCUSSION_1)
+        assert clef_3.y == perc_staff_3.unit(2)
+        assert clef_3.middle_c_staff_position == perc_staff_3.unit(2)

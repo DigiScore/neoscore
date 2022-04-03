@@ -3,7 +3,7 @@ from __future__ import annotations
 from math import atan, cos, pi, sin, sqrt, tan
 from typing import TYPE_CHECKING, Optional, cast
 
-from neoscore.core.brush import BrushDef
+from neoscore.core.brush import Brush, BrushDef
 from neoscore.core.mapping import map_between, map_between_x
 from neoscore.core.painted_object import PaintedObject
 from neoscore.core.path_element import (
@@ -44,6 +44,7 @@ class Path(PaintedObject):
         parent: Optional[Parent],
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,
+        background_brush: Optional[BrushDef] = None,
     ):
         """
         Args:
@@ -51,8 +52,11 @@ class Path(PaintedObject):
             parent: The parent object or None
             brush: The brush to fill shapes with.
             pen: The pen to draw outlines with.
+            background_brush: Optional brush used to paint the path's bounding rect
+                behind it.
         """
         super().__init__(pos, parent, brush, pen)
+        self.background_brush = background_brush
         self.elements: list[PathElement] = []
 
     ######## CLASSMETHODS ########
@@ -391,6 +395,18 @@ class Path(PaintedObject):
                 min_x = relative_x
         return max_x - min_x
 
+    @property
+    def background_brush(self) -> Optional[Brush]:
+        """The brush to paint over the background with."""
+        return self._background_brush
+
+    @background_brush.setter
+    def background_brush(self, value: Optional[BrushDef]):
+        if value:
+            self._background_brush = Brush.from_def(value)
+        else:
+            self._background_brush = None
+
     ######## Public Methods ########
 
     def line_to(self, x: Unit, y: Unit, parent: Optional[Parent] = None):
@@ -401,8 +417,7 @@ class Path(PaintedObject):
         coordinates passed will be considered relative to the parent.
 
         If the path is empty, this will add two elements, an initial
-        `MoveTo(Point(Unit(0), Unit(0)), self)` and the requested
-        `LineTo`.
+        `MoveTo(ORIGIN, self)` and the requested `LineTo`.
 
         Args:
             x: The end x position
@@ -412,8 +427,7 @@ class Path(PaintedObject):
 
         """
         if not len(self.elements):
-            # Needed to ensure bounding rect / length calculations are correct
-            self.elements.append(MoveTo(Point(Unit(0), Unit(0)), self))
+            self.move_to(ZERO, ZERO)
         self.elements.append(LineTo(Point(x, y), parent or self))
 
     def move_to(self, x: Unit, y: Unit, parent: Optional[Parent] = None):
@@ -441,8 +455,6 @@ class Path(PaintedObject):
             If you need to anchor the new point, use an explicit
             `move_to(Unit(0), Unit(0), parent)` instead.
         """
-        # TODO HIGH this strongly implies that it actually draws a
-        # line to the subpath's first point. make it behave this way.
         self.move_to(ZERO, ZERO)
 
     def cubic_to(
@@ -460,8 +472,7 @@ class Path(PaintedObject):
         """Draw a cubic bezier curve from the current position to a new point.
 
         If the path is empty, this will add two elements, an initial
-        `MoveTo(Point(Unit(0), Unit(0)), self)` and the requested
-        `CurveTo`.
+        `MoveTo(ORIGIN, self)` and the requested `CurveTo`.
 
         Args:
             control_1_x: The x coordinate of the first control point.
@@ -476,6 +487,7 @@ class Path(PaintedObject):
                 the second control point. Defaults to `self`.
             end_parent: An optional parent for the
                 curve target. Defaults to `self`.
+
         """
         c1 = ControlPoint(
             Point(control_1_x, control_1_y),
@@ -486,8 +498,7 @@ class Path(PaintedObject):
             control_2_parent or self,
         )
         if not len(self.elements):
-            # Needed to ensure bounding rect / length calculations are correct
-            self.elements.append(MoveTo(Point(Unit(0), Unit(0)), self))
+            self.move_to(ZERO, ZERO)
         self.elements.append(CurveTo(Point(end_x, end_y), end_parent or self, c1, c2))
 
     def _relative_element_pos(self, element: Parent) -> Point:
@@ -536,6 +547,7 @@ class Path(PaintedObject):
             self.brush.interface,
             self.pen.interface,
             resolved_path_elements,
+            self.background_brush.interface if self.background_brush else None,
             clip_start_x,
             clip_width,
         )

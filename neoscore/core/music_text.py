@@ -44,6 +44,7 @@ class MusicText(Text, HasMusicFont):
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,
         scale: float = 1,
+        background_brush: Optional[BrushDef] = None,
         breakable: bool = True,
     ):
         """
@@ -61,6 +62,8 @@ class MusicText(Text, HasMusicFont):
             pen: The pen to trace text outlines with. This defaults to no pen.
             scale: A scaling factor to be applied
                 in addition to the size of the music font.
+            background_brush: Optional brush used to paint the text's bounding rect
+                behind it.
             breakable: Whether this object should break across lines in
                 Flowable containers.
         """
@@ -69,7 +72,16 @@ class MusicText(Text, HasMusicFont):
         self._music_chars = MusicText._resolve_music_chars(text, font)
         resolved_str = MusicText._music_chars_to_str(self._music_chars)
         Text.__init__(
-            self, pos, parent, resolved_str, font, brush, pen, scale, breakable
+            self,
+            pos,
+            parent,
+            resolved_str,
+            font,
+            brush,
+            pen,
+            scale,
+            background_brush,
+            breakable,
         )
 
     ######## PUBLIC PROPERTIES ########
