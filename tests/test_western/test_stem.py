@@ -18,7 +18,6 @@ class TestStem(unittest.TestCase):
         self.flowable = Flowable((Mm(0), Mm(0)), None, Mm(10000), Mm(30), Mm(5))
         self.staff = Staff((Mm(0), Mm(0)), self.flowable, Mm(100))
 
-
     def test_stem_direction(self):
         stem = Stem((Mm(0), Mm(0)), self.staff, VerticalDirection.UP, Mm(10))
         assert stem.direction == VerticalDirection.UP
