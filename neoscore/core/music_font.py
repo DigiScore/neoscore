@@ -126,7 +126,7 @@ class MusicFont(Font):
             codepoint = check_name['codepoint']
             description = check_name['description']
         else:
-            #  check is it ligature or optional G and get info
+            #  check is it ligature or optional glyph and get info
             (codepoint, description) = self._check_optional_glyphs(glyph_name)
 
         # if we have made it this far and populated
@@ -135,10 +135,10 @@ class MusicFont(Font):
         if advance_width:
             advance_width = self.unit(advance_width)
 
-        bounding_box = copy.deepcopy(self.metadata['glyphBBoxes'].get(glyph_name))
-        if bounding_box:
-            convert_all_to_unit(bounding_box, self.unit)
-            bounding_box = self._convert_bbox_to_rect(bounding_box)
+        bounding_rect = copy.deepcopy(self.metadata['glyphBBoxes'].get(glyph_name))
+        if bounding_rect:
+            convert_all_to_unit(bounding_rect, self.unit)
+            bounding_rect = self._convert_bbox_to_rect(bounding_rect)
 
         # get optional anchor metadata if available
         anchors = self.metadata['glyphsWithAnchors'].get(glyph_name)
@@ -146,7 +146,7 @@ class MusicFont(Font):
         return GlyphInfo(canonical_name=glyph_name,
                          codepoint=codepoint,
                          description=description,
-                         bounding_box=bounding_box,
+                         bounding_rect=bounding_rect,
                          advance_width=advance_width,
                          anchors=anchors
                          )

@@ -4,7 +4,6 @@ from typing import Optional
 
 from neoscore.core.music_font import MusicFont
 from neoscore.models.glyph_info import GlyphInfo
-from neoscore.utils.rect import Rect
 
 
 @dataclass(frozen=True)
@@ -53,9 +52,4 @@ class MusicChar:
     @property
     def bounding_rect(self):
         """Rect: The glyph bounding box."""
-        # I think y and h here are wrong...
-        x = self.glyph_info.bounding_box.x
-        y = self.glyph_info.bounding_box.y
-        w = self.glyph_info.bounding_box.width
-        h = self.glyph_info.bounding_box.height
-        return Rect(x, y, w, h)
+        return self.glyph_info.bounding_rect

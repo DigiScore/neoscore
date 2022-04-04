@@ -20,7 +20,7 @@ class GlyphInfo:
     description: str
     """short description of glyph, e.g. 'G clef, flat 1 below"""
 
-    bounding_box: Optional[Rect]
+    bounding_rect: Optional[Rect]
     """Glyph bounding rect from SMuFL metadata"""
 
     advance_width: Optional[Unit]
