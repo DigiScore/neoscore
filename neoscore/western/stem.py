@@ -37,7 +37,7 @@ class Stem(MusicPath):
             parent: If no font is given, this or one of its ancestors must
                 implement `HasMusicFont`.
             direction: The direction a stem points:
-                1: downwards, -1: upwards
+                verticalDirection.UP or .DOWN
             height: The height/ length of the stem.
             font: If provided, this overrides any font found in the ancestor chain.
         """
@@ -47,7 +47,7 @@ class Stem(MusicPath):
         self._direction = direction
         self._height = height
         # Draw stem path
-        self.line_to(ZERO, (self.height * self.direction.value()))
+        self.line_to(ZERO, (self.height * self.direction.value))
 
     ######## PUBLIC PROPERTIES ########
 
