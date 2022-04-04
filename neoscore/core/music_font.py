@@ -5,15 +5,15 @@ from typing import Dict, Optional, Type
 
 from neoscore.core import neoscore
 from neoscore.core.font import Font
+from neoscore.models.glyph_info import GlyphInfo
 from neoscore.utils import smufl
 from neoscore.utils.exceptions import (
     MusicFontGlyphNotFoundError,
-    MusicFontMetadataNotFoundError)
+    MusicFontMetadataNotFoundError,
+)
 from neoscore.utils.platforms import PlatformType, current_platform
-from neoscore.utils.units import Unit, convert_all_to_unit
 from neoscore.utils.rect import Rect
-
-from neoscore.models.glyph_info import GlyphInfo
+from neoscore.utils.units import Unit, convert_all_to_unit
 
 # TODO LOW make a nice __repr__
 

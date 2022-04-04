@@ -3,8 +3,8 @@ from functools import cached_property
 from typing import Optional
 
 from neoscore.core.music_font import MusicFont
-from neoscore.utils.rect import Rect
 from neoscore.models.glyph_info import GlyphInfo
+from neoscore.utils.rect import Rect
 
 
 @dataclass(frozen=True)
