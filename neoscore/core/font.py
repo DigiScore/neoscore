@@ -4,12 +4,10 @@ from typing import Optional, Union
 
 from neoscore.interface.font_interface import FontInterface
 from neoscore.utils.rect import Rect
-from neoscore.utils.units import GraphicUnit, Unit
+from neoscore.utils.units import GraphicUnit, Unit, Mm
 
 
 class Font:
-
-    'a badly formatted string'
 
     """A text font.
 
