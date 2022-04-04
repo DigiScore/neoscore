@@ -4,7 +4,7 @@ from typing import Optional, Union
 
 from neoscore.interface.font_interface import FontInterface
 from neoscore.utils.rect import Rect
-from neoscore.utils.units import GraphicUnit, Unit, Mm
+from neoscore.utils.units import GraphicUnit, Mm, Unit
 
 
 class Font:
