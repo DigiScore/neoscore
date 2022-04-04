@@ -44,6 +44,7 @@ class Path(PaintedObject):
         parent: Optional[Parent],
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,
+        rotation: float = 0,
         background_brush: Optional[BrushDef] = None,
     ):
         """
@@ -52,11 +53,14 @@ class Path(PaintedObject):
             parent: The parent object or None
             brush: The brush to fill shapes with.
             pen: The pen to draw outlines with.
+            rotation: Angle in degrees. Rotated paths with flowable breaks and
+                path elements anchored to other objects are not currently supported.
             background_brush: Optional brush used to paint the path's bounding rect
                 behind it.
         """
         super().__init__(pos, parent, brush, pen)
         self.background_brush = background_brush
+        self._rotation = rotation
         self.elements: list[PathElement] = []
 
     ######## CLASSMETHODS ########
@@ -396,6 +400,19 @@ class Path(PaintedObject):
         return max_x - min_x
 
     @property
+    def rotation(self) -> float:
+        """An angle in degrees to rotate about the path origin.
+
+        Rotated paths with flowable breaks and path elements anchored
+        to other objects are not currently supported.
+        """
+        return self._rotation
+
+    @rotation.setter
+    def rotation(self, value: float):
+        self._rotation = value
+
+    @property
     def background_brush(self) -> Optional[Brush]:
         """The brush to paint over the background with."""
         return self._background_brush
@@ -547,6 +564,7 @@ class Path(PaintedObject):
             self.brush.interface,
             self.pen.interface,
             resolved_path_elements,
+            self.rotation,
             self.background_brush.interface if self.background_brush else None,
             clip_start_x,
             clip_width,

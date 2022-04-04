@@ -8,7 +8,6 @@ from warnings import warn
 
 from neoscore import constants
 from neoscore.core.brush import Brush, BrushDef
-from neoscore.core.font import Font
 from neoscore.core.paper import A4, Paper
 from neoscore.core.pen import Pen
 from neoscore.interface.app_interface import AppInterface
@@ -20,6 +19,7 @@ from neoscore.utils.rect import RectDef, rect_from_def
 
 if TYPE_CHECKING:
     from neoscore.core.document import Document
+    from neoscore.core.font import Font
 
 """The global state of the application."""
 
@@ -62,8 +62,9 @@ def setup(initial_paper: Paper = A4):
     global default_font
     global document
     global background_brush
-    # Document is imported here to work around cyclic import problems
+    # Some things are imported here to work around cyclic import problems
     from neoscore.core.document import Document
+    from neoscore.core.font import Font
 
     document = Document(initial_paper)
     _app_interface = AppInterface(

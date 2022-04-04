@@ -39,6 +39,13 @@ class TestPath(AppTest):
         obj.background_brush = "#00ffff"
         assert obj.background_brush == Brush("#00ffff")
 
+    def test_rotation(self):
+        path = Path(ORIGIN, None)
+        assert path.rotation == 0
+        path.rotation = 20
+        assert path.rotation == 20
+        assert Path(ORIGIN, None, rotation=123).rotation == 123
+
     def test_straight_line(self):
         path = Path.straight_line((Unit(5), Unit(6)), None, (Unit(10), Unit(11)))
         assert path.pos == Point(Unit(5), Unit(6))

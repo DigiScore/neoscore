@@ -29,6 +29,7 @@ class Text(PaintedObject):
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,
         scale: float = 1,
+        rotation: float = 0,
         background_brush: Optional[BrushDef] = None,
         breakable: bool = True,
     ):
@@ -41,6 +42,8 @@ class Text(PaintedObject):
             brush: The brush to fill in text shapes with.
             pen: The pen to trace text outlines with. This defaults to no pen.
             scale: A scaling factor relative to the font size.
+            rotation: Angle in degrees. Note that breakable rotated text is
+                not currently supported.
             background_brush: Optional brush used to paint the text's bounding rect
                 behind it.
             breakable: Whether this object should break across lines in
@@ -53,6 +56,7 @@ class Text(PaintedObject):
         self._text = text
         self._scale = scale
         self._breakable = breakable
+        self._rotation = rotation
         self.background_brush = background_brush
         super().__init__(pos, parent, brush, pen or Pen.no_pen())
 
@@ -104,6 +108,15 @@ class Text(PaintedObject):
         self._scale = value
 
     @property
+    def rotation(self) -> float:
+        """An angle in degrees to rotate about the text origin"""
+        return self._rotation
+
+    @rotation.setter
+    def rotation(self, value: float):
+        self._rotation = value
+
+    @property
     def background_brush(self) -> Optional[Brush]:
         """The brush to paint over the background with."""
         return self._background_brush
@@ -153,6 +166,7 @@ class Text(PaintedObject):
             self.text,
             self.font.interface,
             self.scale,
+            self.rotation,
             self.background_brush.interface if self.background_brush else None,
             clip_start_x,
             clip_width,

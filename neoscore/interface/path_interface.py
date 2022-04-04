@@ -45,6 +45,8 @@ class PathInterface(PositionedObjectInterface):
 
     elements: list[ResolvedPathElement]
 
+    rotation: float = 0
+
     background_brush: Optional[BrushInterface] = None
 
     clip_start_x: Optional[Unit] = None
@@ -64,6 +66,8 @@ class PathInterface(PositionedObjectInterface):
     @staticmethod
     def create_qt_path(elements: list[ResolvedPathElement]) -> QPainterPath:
         path = QPainterPath()
+        path.setFillRule(1)
+
         for el in elements:
             if isinstance(el, ResolvedLineTo):
                 path.lineTo(el.x.base_value, el.y.base_value)
@@ -99,6 +103,7 @@ class PathInterface(PositionedObjectInterface):
             self.clip_start_x.base_value if self.clip_start_x is not None else 0,
             self.clip_width.base_value if self.clip_width is not None else None,
             1,
+            self.rotation,
             self.background_brush.qt_object if self.background_brush else None,
         )
         qt_object.setPos(point_to_qt_point_f(self.pos))

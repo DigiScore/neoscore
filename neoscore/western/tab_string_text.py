@@ -53,6 +53,7 @@ class TabStringText(MusicText):
             brush,
             pen,
             1,
+            0,
             background_brush,
             breakable,
         )

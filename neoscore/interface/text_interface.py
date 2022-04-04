@@ -27,7 +27,7 @@ class _CachedTextPath(NamedTuple):
 
 _PATH_CACHE: dict[_CachedTextKey, _CachedTextPath] = {}
 
-"""TODO LOW We can actually optimize this even further. We can modify
+"""NOTE: We can actually optimize this even further. We can modify
 q_clipping_path so it explicitly stores paint results in the global
 QPixmapCache. If this were specialized to just text items, the cache
 key would be like _CachedTextKey, except it also includes font size
@@ -56,6 +56,8 @@ class TextInterface(PositionedObjectInterface):
     font: FontInterface
 
     scale: float = 1
+
+    rotation: float = 0
 
     background_brush: Optional[BrushInterface] = None
 
@@ -95,27 +97,23 @@ class TextInterface(PositionedObjectInterface):
         cached_result = _PATH_CACHE.get(key)
         if cached_result:
             cache_scale = needed_font_size / cached_result.generation_font_size
-            clipping_path = QClippingPath(
-                cached_result.path,
-                self.clip_start_x.base_value if self.clip_start_x is not None else 0,
-                self.clip_width.base_value if self.clip_width is not None else None,
-                cache_scale * scale,
-                self.background_brush.qt_object if self.background_brush else None,
-            )
-            return clipping_path
-        path = TextInterface._create_qt_path(text, qt_font)
-        _PATH_CACHE[key] = _CachedTextPath(path, needed_font_size)
-        clipping_path = QClippingPath(
+            scale *= cache_scale
+            path = cached_result.path
+        else:
+            path = TextInterface._create_qt_path(text, qt_font)
+            _PATH_CACHE[key] = _CachedTextPath(path, needed_font_size)
+        return QClippingPath(
             path,
             self.clip_start_x.base_value if self.clip_start_x is not None else 0,
             self.clip_width.base_value if self.clip_width is not None else None,
             scale,
+            self.rotation,
             self.background_brush.qt_object if self.background_brush else None,
         )
-        return clipping_path
 
     @staticmethod
     def _create_qt_path(text: str, font: QFont) -> QPainterPath:
         qt_path = QPainterPath()
         qt_path.addText(0, 0, font, text)
+        qt_path.setFillRule(1)
         return qt_path
