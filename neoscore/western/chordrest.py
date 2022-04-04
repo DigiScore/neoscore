@@ -462,6 +462,7 @@ class Chordrest(PositionedObject, StaffObject):
         self._stem = Stem(
             Point(self.staff.unit(0), self.furthest_notehead.y),
             self,
+            self.stem_direction,
             self.stem_height,
         )
 

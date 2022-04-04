@@ -44,6 +44,7 @@ class TestChordrest(AppTest):
             self.staff.unit(-1),
         ]
 
+    # todo - fix error here
     def test_rhythm_dot_positions_with_rest(self):
         chord = Chordrest(Mm(1), self.staff, None, Duration(7, 16))
         dots = list(chord.rhythm_dot_positions)
