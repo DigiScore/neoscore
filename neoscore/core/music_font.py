@@ -213,7 +213,10 @@ class MusicFont(Font):
 
         if optional_glyph_field:
             codepoint = optional_glyph_field['codepoint']
-            description = optional_glyph_field['description']
+
+            # some don't have descriptions
+            description = optional_glyph_field.get('description')
+
 
         # else glyphname is not registered with SMuFL
         else:

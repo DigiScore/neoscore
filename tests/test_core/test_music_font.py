@@ -63,9 +63,19 @@ class TestMusicFont(AppTest):
                                               )
         assert test_glyph.advance_width == Unit(1.736)
         assert test_glyph.anchors == {'cutOutNW': [0.888, 1.516],
-                                     'cutOutSE': [1.108, 0.856],
-                                     'cutOutSW': [0.108, -0.956]
-                                     }
+                                      'cutOutSE': [1.108, 0.856],
+                                      'cutOutSW': [0.108, -0.956]
+                                      }
+
+    def test_optional_glyph_info(self):
+        font = MusicFont("Bravura", Unit)
+        test_glyph_no_description = font._check_optional_glyphs("accidentalDoubleFlatParens")
+        assert test_glyph_no_description[0] == "\uF5E4"
+        assert test_glyph_no_description[1] == None
+        test_glyph_with_description = font._check_optional_glyphs("4stringTabClefSerif")
+        assert test_glyph_with_description[0] == "\uF40D"
+        assert test_glyph_with_description[1] == "4-string tab clef (serif)"
+
 
     def test_glyph_info_for_one_alternate_glyph(self):
         font = MusicFont("Bravura", Unit)
