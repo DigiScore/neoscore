@@ -16,6 +16,7 @@ TabNumber(Mm(7), staff_1, 4, 2)
 TabNumber(Mm(7), staff_1, 5, 3)
 TabNumber(Mm(7), staff_1, 6, 0)
 TabNumber(Mm(10), staff_1, 1, 9)
+TabNumber(Mm(13), staff_1, 4, 123)
 
 
 # 4 line tab

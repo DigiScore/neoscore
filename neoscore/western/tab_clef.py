@@ -24,6 +24,8 @@ class TabClef(MusicText):
     currently supported.
     """
 
+    # TODO HIGH support brush/pen override
+
     def __init__(
         self,
         pos_x: Unit,

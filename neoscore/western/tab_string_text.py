@@ -25,8 +25,24 @@ class TabStringText(MusicText):
         font: Optional[MusicFont] = None,
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,
+        hide_background: bool = True,
         breakable: bool = True,
     ):
+        """
+        Args:
+            pos_x: The x position relative to the parent
+            staff: The parent staff
+            string: The 1-indexed string number this should appear on
+            text: A `MusicText` text specifier
+            font: The font to use. Defaults to the staff's font.
+            brush: The brush to fill in text shapes with.
+            pen: The pen to trace text outlines with. This defaults to no pen.
+            hide_background: Whether to paint over the background behind the text.
+                Particularly useful for preventing overlaps with staff lines.
+            breakable: Whether this object should break across lines in
+                Flowable containers.
+        """
+        background_brush = neoscore.background_brush if hide_background else None
         pos_y = staff.string_y(string)
         MusicText.__init__(
             self,
@@ -37,7 +53,7 @@ class TabStringText(MusicText):
             brush,
             pen,
             1,
-            neoscore.background_brush,
+            background_brush,
             breakable,
         )
         self.y = pos_y + cast(Unit, self.bounding_rect.height / 2)
