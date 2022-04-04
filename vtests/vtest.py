@@ -26,7 +26,7 @@ lower_staff = Staff((Mm(0), Mm(9)), flow, Mm(7000), Mm(1))
 
 lowest_staff = Staff((Mm(10), Mm(18)), flow, Mm(2000), Mm(1))
 
-barline = BarLine(Mm(30), [staff, lower_staff, lowest_staff])
+barline = Barline(Mm(30), [staff, lower_staff, lowest_staff])
 
 upper_staff_time_signature = TimeSignature(Mm(0), staff, (4, 4))
 
@@ -77,7 +77,7 @@ hairpin = Hairpin((Mm(0), Mm(3)), p, (Mm(0), Mm(3)), sfz, 1)
 
 slur = Slur((Mm(0), Mm(0)), regular_text, (Mm(0), Mm(0)), sfz)
 
-brace = Brace(Mm(0), {staff, lower_staff, lowest_staff})
+brace = Brace(Mm(0), [staff, lower_staff, lowest_staff])
 
 random_wiggles = [
     random.choice(["wiggleRandom1", "wiggleRandom2", "wiggleRandom3", "wiggleRandom4"])

@@ -28,8 +28,8 @@ from neoscore.utils.point import ORIGIN, Point
 from neoscore.utils.rect import Rect
 from neoscore.utils.units import ZERO, GraphicUnit, Inch, Mm
 from neoscore.western.accidental import Accidental
-from neoscore.western.bar_line import BarLine
-from neoscore.western.beam import Beam
+from neoscore.western.barline import Barline
+from neoscore.western.beam_group import BeamGroup
 from neoscore.western.brace import Brace
 from neoscore.western.chordrest import Chordrest
 from neoscore.western.clef import Clef
@@ -50,4 +50,8 @@ from neoscore.western.rest import Rest
 from neoscore.western.slur import Slur
 from neoscore.western.staff import Staff
 from neoscore.western.stem import Stem
+from neoscore.western.tab_clef import TabClef
+from neoscore.western.tab_number import TabNumber
+from neoscore.western.tab_staff import TabStaff
+from neoscore.western.tab_string_text import TabStringText
 from neoscore.western.time_signature import TimeSignature

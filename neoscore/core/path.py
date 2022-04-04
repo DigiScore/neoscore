@@ -3,7 +3,7 @@ from __future__ import annotations
 from math import atan, cos, pi, sin, sqrt, tan
 from typing import TYPE_CHECKING, Optional, cast
 
-from neoscore.core.brush import SimpleBrushDef
+from neoscore.core.brush import Brush, BrushDef
 from neoscore.core.mapping import map_between, map_between_x
 from neoscore.core.painted_object import PaintedObject
 from neoscore.core.path_element import (
@@ -13,7 +13,7 @@ from neoscore.core.path_element import (
     MoveTo,
     PathElement,
 )
-from neoscore.core.pen import Pen, SimplePenDef
+from neoscore.core.pen import Pen, PenDef
 from neoscore.interface.path_interface import (
     PathInterface,
     ResolvedCurveTo,
@@ -42,8 +42,9 @@ class Path(PaintedObject):
         self,
         pos: PointDef,
         parent: Optional[Parent],
-        brush: Optional[SimpleBrushDef] = None,
-        pen: Optional[SimplePenDef] = None,
+        brush: Optional[BrushDef] = None,
+        pen: Optional[PenDef] = None,
+        background_brush: Optional[BrushDef] = None,
     ):
         """
         Args:
@@ -51,8 +52,11 @@ class Path(PaintedObject):
             parent: The parent object or None
             brush: The brush to fill shapes with.
             pen: The pen to draw outlines with.
+            background_brush: Optional brush used to paint the path's bounding rect
+                behind it.
         """
         super().__init__(pos, parent, brush, pen)
+        self.background_brush = background_brush
         self.elements: list[PathElement] = []
 
     ######## CLASSMETHODS ########
@@ -63,8 +67,8 @@ class Path(PaintedObject):
         start: PointDef,
         parent: Optional[Parent],
         stop: PointDef,
-        brush: Optional[SimpleBrushDef] = None,
-        pen: Optional[SimplePenDef] = None,
+        brush: Optional[BrushDef] = None,
+        pen: Optional[PenDef] = None,
     ) -> Path:
         """Convenience for drawing a single straight line.
 
@@ -83,8 +87,8 @@ class Path(PaintedObject):
         parent: Optional[Parent],
         width: Unit,
         height: Unit,
-        brush: Optional[SimpleBrushDef] = None,
-        pen: Optional[SimplePenDef] = None,
+        brush: Optional[BrushDef] = None,
+        pen: Optional[PenDef] = None,
     ):
         """Convenience for drawing a rectangle."""
         path = cls(pos, parent, brush, pen)
@@ -101,8 +105,8 @@ class Path(PaintedObject):
         parent: Optional[Parent],
         width: Unit,
         height: Unit,
-        brush: Optional[SimpleBrushDef] = None,
-        pen: Optional[SimplePenDef] = None,
+        brush: Optional[BrushDef] = None,
+        pen: Optional[PenDef] = None,
     ):
         """Convenience for drawing an ellipse.
 
@@ -134,8 +138,8 @@ class Path(PaintedObject):
         parent: Optional[Parent],
         width: Unit,
         height: Unit,
-        brush: Optional[SimpleBrushDef] = None,
-        pen: Optional[SimplePenDef] = None,
+        brush: Optional[BrushDef] = None,
+        pen: Optional[PenDef] = None,
     ):
         """Convenience for drawing an ellipse from its center point.
 
@@ -160,8 +164,8 @@ class Path(PaintedObject):
         height: Unit,
         start_angle: float,
         stop_angle: float,
-        brush: Optional[SimpleBrushDef] = None,
-        pen: Optional[SimplePenDef] = None,
+        brush: Optional[BrushDef] = None,
+        pen: Optional[PenDef] = None,
     ):
         """Convenience for drawing an elliptical arc.
 
@@ -297,8 +301,8 @@ class Path(PaintedObject):
         parent: Optional[Parent],
         end: PointDef,
         end_parent: Optional[Parent] = None,
-        brush: Optional[SimpleBrushDef] = None,
-        pen: Optional[SimplePenDef] = None,
+        brush: Optional[BrushDef] = None,
+        pen: Optional[PenDef] = None,
         line_width: Unit = Mm(0.5),
         arrow_head_width: Unit = Mm(1),
         arrow_head_length: Unit = Mm(2),
@@ -391,6 +395,18 @@ class Path(PaintedObject):
                 min_x = relative_x
         return max_x - min_x
 
+    @property
+    def background_brush(self) -> Optional[Brush]:
+        """The brush to paint over the background with."""
+        return self._background_brush
+
+    @background_brush.setter
+    def background_brush(self, value: Optional[BrushDef]):
+        if value:
+            self._background_brush = Brush.from_def(value)
+        else:
+            self._background_brush = None
+
     ######## Public Methods ########
 
     def line_to(self, x: Unit, y: Unit, parent: Optional[Parent] = None):
@@ -401,8 +417,7 @@ class Path(PaintedObject):
         coordinates passed will be considered relative to the parent.
 
         If the path is empty, this will add two elements, an initial
-        `MoveTo(Point(Unit(0), Unit(0)), self)` and the requested
-        `LineTo`.
+        `MoveTo(ORIGIN, self)` and the requested `LineTo`.
 
         Args:
             x: The end x position
@@ -412,8 +427,7 @@ class Path(PaintedObject):
 
         """
         if not len(self.elements):
-            # Needed to ensure bounding rect / length calculations are correct
-            self.elements.append(MoveTo(Point(Unit(0), Unit(0)), self))
+            self.move_to(ZERO, ZERO)
         self.elements.append(LineTo(Point(x, y), parent or self))
 
     def move_to(self, x: Unit, y: Unit, parent: Optional[Parent] = None):
@@ -458,8 +472,7 @@ class Path(PaintedObject):
         """Draw a cubic bezier curve from the current position to a new point.
 
         If the path is empty, this will add two elements, an initial
-        `MoveTo(Point(Unit(0), Unit(0)), self)` and the requested
-        `CurveTo`.
+        `MoveTo(ORIGIN, self)` and the requested `CurveTo`.
 
         Args:
             control_1_x: The x coordinate of the first control point.
@@ -474,6 +487,7 @@ class Path(PaintedObject):
                 the second control point. Defaults to `self`.
             end_parent: An optional parent for the
                 curve target. Defaults to `self`.
+
         """
         c1 = ControlPoint(
             Point(control_1_x, control_1_y),
@@ -484,8 +498,7 @@ class Path(PaintedObject):
             control_2_parent or self,
         )
         if not len(self.elements):
-            # Needed to ensure bounding rect / length calculations are correct
-            self.elements.append(MoveTo(Point(Unit(0), Unit(0)), self))
+            self.move_to(ZERO, ZERO)
         self.elements.append(CurveTo(Point(end_x, end_y), end_parent or self, c1, c2))
 
     def _relative_element_pos(self, element: Parent) -> Point:
@@ -534,6 +547,7 @@ class Path(PaintedObject):
             self.brush.interface,
             self.pen.interface,
             resolved_path_elements,
+            self.background_brush.interface if self.background_brush else None,
             clip_start_x,
             clip_width,
         )

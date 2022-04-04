@@ -1,13 +1,11 @@
 import pathlib
-import unittest
 
-from neoscore.core import neoscore
 from neoscore.core.image import Image
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.utils.point import ORIGIN, Point
 from neoscore.utils.units import ZERO, Unit
 
-from ..helpers import render_scene
+from ..helpers import AppTest, render_scene
 
 # Fake path for unit tests
 fake_path = pathlib.Path("/some/file/path.png")
@@ -18,10 +16,7 @@ pixmap_image_path = img_dir / "pixmap_image.png"
 svg_image_path = img_dir / "svg_image.svg"
 
 
-class TestImage(unittest.TestCase):
-    def setUp(self):
-        neoscore.setup()
-
+class TestImage(AppTest):
     def test_init(self):
         parent = PositionedObject(ORIGIN)
         image = Image((Unit(5), Unit(6)), parent, fake_path, 2)

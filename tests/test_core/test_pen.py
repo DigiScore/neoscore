@@ -26,11 +26,11 @@ class TestPen(unittest.TestCase):
 
     def test_init_default_join_style(self):
         test_pen = Pen()
-        assert test_pen.join_style == PenJoinStyle.BEVEL
+        assert test_pen.join_style == PenJoinStyle.MITER
 
     def test_init_default_cap_style(self):
         test_pen = Pen()
-        assert test_pen.cap_style == PenCapStyle.SQUARE
+        assert test_pen.cap_style == PenCapStyle.FLAT
 
     def test_from_existing(self):
         original = Pen(
@@ -57,6 +57,10 @@ class TestPen(unittest.TestCase):
             Pen.from_existing(original, cap_style=PenCapStyle.FLAT).cap_style
             == PenCapStyle.FLAT
         )
+
+    def test_from_def(self):
+        assert Pen.from_def(Pen("#ffffff")) == Pen("#ffffff")
+        assert Pen.from_def("#ffffff") == Pen("#ffffff")
 
     def test_no_pen(self):
         pen = Pen.no_pen()

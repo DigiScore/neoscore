@@ -3,10 +3,10 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 
 from neoscore.core import neoscore
-from neoscore.core.brush import SimpleBrushDef
+from neoscore.core.brush import Brush, BrushDef
 from neoscore.core.font import Font
 from neoscore.core.painted_object import PaintedObject
-from neoscore.core.pen import Pen, SimplePenDef
+from neoscore.core.pen import Pen, PenDef
 from neoscore.interface.text_interface import TextInterface
 from neoscore.utils.point import Point, PointDef
 from neoscore.utils.rect import Rect
@@ -26,9 +26,10 @@ class Text(PaintedObject):
         parent: Optional[Parent],
         text: str,
         font: Optional[Font] = None,
-        brush: Optional[SimpleBrushDef] = None,
-        pen: Optional[SimplePenDef] = None,
+        brush: Optional[BrushDef] = None,
+        pen: Optional[PenDef] = None,
         scale: float = 1,
+        background_brush: Optional[BrushDef] = None,
         breakable: bool = True,
     ):
         """
@@ -40,6 +41,8 @@ class Text(PaintedObject):
             brush: The brush to fill in text shapes with.
             pen: The pen to trace text outlines with. This defaults to no pen.
             scale: A scaling factor relative to the font size.
+            background_brush: Optional brush used to paint the text's bounding rect
+                behind it.
             breakable: Whether this object should break across lines in
                 Flowable containers.
         """
@@ -50,6 +53,7 @@ class Text(PaintedObject):
         self._text = text
         self._scale = scale
         self._breakable = breakable
+        self.background_brush = background_brush
         super().__init__(pos, parent, brush, pen or Pen.no_pen())
 
     ######## PUBLIC PROPERTIES ########
@@ -100,6 +104,18 @@ class Text(PaintedObject):
         self._scale = value
 
     @property
+    def background_brush(self) -> Optional[Brush]:
+        """The brush to paint over the background with."""
+        return self._background_brush
+
+    @background_brush.setter
+    def background_brush(self, value: Optional[BrushDef]):
+        if value:
+            self._background_brush = Brush.from_def(value)
+        else:
+            self._background_brush = None
+
+    @property
     def breakable(self) -> bool:
         """Whether this object should be broken across flowable lines."""
         return self._breakable
@@ -137,6 +153,7 @@ class Text(PaintedObject):
             self.text,
             self.font.interface,
             self.scale,
+            self.background_brush.interface if self.background_brush else None,
             clip_start_x,
             clip_width,
         )

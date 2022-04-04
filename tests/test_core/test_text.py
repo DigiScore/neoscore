@@ -1,5 +1,3 @@
-import unittest
-
 from neoscore.core import neoscore
 from neoscore.core.brush import Brush
 from neoscore.core.font import Font
@@ -8,10 +6,12 @@ from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.text import Text
 from neoscore.utils.units import ZERO, Unit
 
+from ..helpers import AppTest
 
-class TestText(unittest.TestCase):
+
+class TestText(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.font = Font("Bravura", 12, 1, False)
 
     def test_init(self):
@@ -36,6 +36,7 @@ class TestText(unittest.TestCase):
         assert obj.brush == Brush()
         assert obj.pen == Pen.no_pen()
         assert obj.scale == 1
+        assert obj.background_brush == None
         assert obj.breakable == True
 
     def test_length_when_non_breakable(self):
@@ -52,3 +53,10 @@ class TestText(unittest.TestCase):
         assert obj.breakable_length == obj.bounding_rect.width
         obj.breakable = False
         assert obj.breakable_length == ZERO
+
+    def test_background_brush(self):
+        bg_brush = Brush("#ff0000")
+        obj = Text((Unit(5), Unit(6)), None, "testing", background_brush=bg_brush)
+        assert obj.background_brush == bg_brush
+        obj.background_brush = "#00ffff"
+        assert obj.background_brush == Brush("#00ffff")

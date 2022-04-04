@@ -1,5 +1,3 @@
-import unittest
-
 from neoscore.core import neoscore
 from neoscore.core.painted_object import PaintedObject
 from neoscore.core.positioned_object import PositionedObject
@@ -7,7 +5,7 @@ from neoscore.core.spanner_2d import Spanner2D
 from neoscore.utils.point import Point
 from neoscore.utils.units import Unit
 
-from ..helpers import assert_almost_equal
+from ..helpers import AppTest, assert_almost_equal
 
 
 class MockSpanner2D(PaintedObject, Spanner2D):
@@ -19,10 +17,7 @@ class MockSpanner2D(PaintedObject, Spanner2D):
         Spanner2D.__init__(self, end_pos, end_parent or self)
 
 
-class TestSpanner2D(unittest.TestCase):
-    def setUp(self):
-        neoscore.setup()
-
+class TestSpanner2D(AppTest):
     def end_y_settable(self):
         spanner = MockSpanner2D(
             Point(Unit(0), Unit(1)), None, Point(Unit(2), Unit(3)), None

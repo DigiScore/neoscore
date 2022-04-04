@@ -1,17 +1,15 @@
-from collections.abc import Iterable
-from typing import cast
+from typing import Optional, cast
 
-from neoscore.core.mapping import map_between_x
-from neoscore.core.music_font import MusicFontGlyphNotFoundError
+from neoscore.core.brush import BrushDef
+from neoscore.core.music_font import MusicFont, MusicFontGlyphNotFoundError
 from neoscore.core.music_text import MusicText
+from neoscore.core.pen import PenDef
 from neoscore.utils.point import Point
 from neoscore.utils.units import ZERO, Unit
-from neoscore.western.multi_staff_object import MultiStaffObject
-from neoscore.western.staff import Staff
-from neoscore.western.staff_object import StaffObject
+from neoscore.western.multi_staff_object import MultiStaffObject, StaffLike
 
 
-class Brace(MultiStaffObject, StaffObject, MusicText):
+class Brace(MultiStaffObject, MusicText):
 
     """A brace spanning staves, recurring at line beginnings.
 
@@ -27,39 +25,59 @@ class Brace(MultiStaffObject, StaffObject, MusicText):
     until the second line.
     """
 
-    def __init__(self, pos_x: Unit, staves: Staff | Iterable[Staff]):
+    def __init__(
+        self,
+        pos_x: Unit,
+        staves: list[StaffLike],
+        font: Optional[MusicFont] = None,
+        brush: Optional[BrushDef] = None,
+        pen: Optional[PenDef] = None,
+    ):
         """
         Args:
-            pos_x (Unit): Where this brace goes into effect
-            staves (set(Staff)): The staves this brace spans
+            pos_x: The starting X position relative to the highest staff.
+            staves: The staves spanned. Must be in visually descending order.
+            font: If provided, this overrides the font in the parent (top) staff.
+            brush: The brush to fill shapes with.
+            brush: The brush to fill shapes with.
+            pen: The pen to draw outlines with.
         """
         MultiStaffObject.__init__(self, staves)
-        StaffObject.__init__(self, self.highest_staff)
         # Calculate the height of the brace in highest_staff staff units
-        scale = cast(float, self.vertical_span / self.highest_staff.unit(4))
-        if self.vertical_span > self.highest_staff.unit(50):
+        scale = cast(float, self.vertical_span / self.highest.unit(4))
+        if self.vertical_span > self.highest.unit(50):
             text = ("brace", 4)
-        elif self.vertical_span > self.highest_staff.unit(30):
+        elif self.vertical_span > self.highest.unit(30):
             text = ("brace", 3)
-        elif self.vertical_span > self.highest_staff.unit(15):
+        elif self.vertical_span > self.highest.unit(15):
             text = ("brace", 2)
-        elif self.vertical_span > self.highest_staff.unit(4):
+        elif self.vertical_span > self.highest.unit(4):
             text = "brace"
         else:
             text = ("brace", 1)
         try:
             # Attempt to use size-specific optional glyph
             MusicText.__init__(
-                self, (pos_x, self.vertical_span), self.highest_staff, text, scale=scale
+                self,
+                (pos_x, self.vertical_span),
+                self.highest,
+                text,
+                font,
+                brush,
+                pen,
+                scale,
             )
         except MusicFontGlyphNotFoundError:
             # Default to non-optional glyph
             MusicText.__init__(
                 self,
                 (pos_x, self.vertical_span),
-                self.highest_staff,
+                self.highest,
                 "brace",
-                scale=scale,
+                font,
+                brush,
+                pen,
+                scale,
             )
 
     ######## PUBLIC PROPERTIES ########
@@ -70,7 +88,7 @@ class Brace(MultiStaffObject, StaffObject, MusicText):
 
         This is used to determine how and where rendering cuts should be made.
         """
-        return self.staff.breakable_length - map_between_x(self.staff, self)
+        return self.parent.breakable_length - self.x
 
     ######## PRIVATE METHODS ########
 

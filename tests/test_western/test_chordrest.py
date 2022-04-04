@@ -1,6 +1,3 @@
-import unittest
-
-from neoscore.core import neoscore
 from neoscore.core.flowable import Flowable
 from neoscore.models.directions import VerticalDirection
 from neoscore.models.duration import Duration
@@ -13,14 +10,16 @@ from neoscore.western.key_signature import KeySignature
 from neoscore.western.staff import Staff
 from tests.helpers import assert_almost_equal, render_scene
 
+from ..helpers import AppTest
+
 # TODO LOW test that glyphs are actually created successfully - this
 # failed to catch bugs in creating rhythm dots and flags, and probably
 # fails to catch other similar ones too.
 
 
-class TestChordrest(unittest.TestCase):
+class TestChordrest(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.flowable = Flowable(Point(Mm(0), Mm(0)), None, Mm(10000), Mm(100))
         self.staff = Staff(Point(Mm(0), Mm(0)), self.flowable, Mm(100))
         Clef(Mm(0), self.staff, "treble")
@@ -62,24 +61,23 @@ class TestChordrest(unittest.TestCase):
         dots = list(chord.rhythm_dot_positions)
         dots.sort(key=lambda d: d.x)
         dots.sort(key=lambda d: d.y)
-        print(dots[0])
         assert_almost_equal(
-            dots[0], Point(self.staff.unit(1.605), self.staff.unit(-3.5)), epsilon=2
+            dots[0], Point(self.staff.unit(0.25), self.staff.unit(-3.5)), epsilon=2
         )
         assert_almost_equal(
-            dots[1], Point(self.staff.unit(2.105), self.staff.unit(-3.5)), epsilon=2
+            dots[1], Point(self.staff.unit(0.75), self.staff.unit(-3.5)), epsilon=2
         )
         assert_almost_equal(
-            dots[2], Point(self.staff.unit(1.605), self.staff.unit(7.5)), epsilon=2
+            dots[2], Point(self.staff.unit(0.25), self.staff.unit(7.5)), epsilon=2
         )
         assert_almost_equal(
-            dots[3], Point(self.staff.unit(2.105), self.staff.unit(7.5)), epsilon=2
+            dots[3], Point(self.staff.unit(0.75), self.staff.unit(7.5)), epsilon=2
         )
         assert_almost_equal(
-            dots[4], Point(self.staff.unit(1.605), self.staff.unit(10.5)), epsilon=2
+            dots[4], Point(self.staff.unit(0.25), self.staff.unit(10.5)), epsilon=2
         )
         assert_almost_equal(
-            dots[5], Point(self.staff.unit(2.105), self.staff.unit(10.5)), epsilon=2
+            dots[5], Point(self.staff.unit(0.75), self.staff.unit(10.5)), epsilon=2
         )
 
     def test_furthest_notehead_with_one_note(self):
@@ -136,6 +134,13 @@ class TestChordrest(unittest.TestCase):
         pitches = ["b'"]
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
         assert chord.stem_direction == VerticalDirection.DOWN
+
+    def test_stem_direction_at_center_with_one_line_staff(self):
+        staff = Staff(Point(Mm(0), Mm(0)), None, Mm(100), line_count=1)
+        Clef(Mm(0), staff, "percussion_2")
+        pitches = ["c'"]
+        chord = Chordrest(Mm(1), staff, pitches, Duration(1, 4))
+        assert chord.stem_direction == VerticalDirection.UP
 
     def test_stem_direction_override(self):
         pitches = ["b'"]

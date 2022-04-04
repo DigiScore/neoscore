@@ -1,17 +1,17 @@
-import unittest
-
 from neoscore.core import neoscore
 from neoscore.interface.font_interface import FontInterface
 from neoscore.utils.units import Unit
+
+from ..helpers import AppTest
 
 
 class MockUnit(Unit):
     CONVERSION_RATE = 0.5
 
 
-class TestFontInterface(unittest.TestCase):
+class TestFontInterface(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         neoscore._app_interface._remove_all_loaded_fonts()
 
     def test_init(self):

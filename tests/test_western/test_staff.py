@@ -1,11 +1,10 @@
-import unittest
-
 import pytest
 
 from neoscore.core import neoscore
 from neoscore.core.flowable import Flowable
 from neoscore.core.paper import Paper
-from neoscore.utils.point import Point
+from neoscore.core.pen import Pen
+from neoscore.utils.point import ORIGIN, Point
 from neoscore.utils.units import Mm
 from neoscore.western import clef_type
 from neoscore.western.clef import Clef
@@ -13,10 +12,15 @@ from neoscore.western.octave_line import OctaveLine
 from neoscore.western.staff import NoClefError, Staff
 from tests.helpers import assert_almost_equal
 
+from ..helpers import AppTest
 
-class TestStaff(unittest.TestCase):
+
+class TestStaff(AppTest):
     def setUp(self):
-        neoscore.setup(Paper(*[Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]))
+        super().setUp()
+        neoscore.document.paper = Paper(
+            *[Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]
+        )
         self.flowable = Flowable((Mm(0), Mm(0)), None, Mm(10000), Mm(30), Mm(5))
 
     def test_height(self):
@@ -46,6 +50,26 @@ class TestStaff(unittest.TestCase):
             ).height,
             Mm(3),
         )
+
+    def test_allows_pen_override(self):
+        pen = Pen("#ff0000")
+        staff = Staff(ORIGIN, self.flowable, Mm(100), pen=pen)
+        assert staff.pen == pen
+
+    def test_default_pen_thickness_matches_smufl(self):
+        staff = Staff(ORIGIN, self.flowable, Mm(100))
+        assert (
+            staff.pen.thickness
+            == staff.music_font.engraving_defaults["staffLineThickness"]
+        )
+
+    def test_height(self):
+        staff = Staff(ORIGIN, None, Mm(100), line_count=3)
+        assert staff.height == staff.unit(2)
+
+    def test_center_y(self):
+        staff = Staff(ORIGIN, None, Mm(100), line_count=4)
+        assert staff.center_y == staff.unit(1.5)
 
     def test_distance_to_next_of_type(self):
         staff = Staff((Mm(10), Mm(0)), self.flowable, Mm(100))

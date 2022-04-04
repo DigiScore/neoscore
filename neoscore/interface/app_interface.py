@@ -7,6 +7,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtPrintSupport import QPrinter
 
 from neoscore import constants
+from neoscore.interface.brush_interface import BrushInterface
 from neoscore.interface.qt import image_utils
 from neoscore.interface.qt.converters import color_to_q_color, rect_to_qt_rect_f
 from neoscore.interface.qt.main_window import MainWindow
@@ -31,7 +32,10 @@ class AppInterface:
     _QT_FONT_ERROR_CODE = -1
 
     def __init__(
-        self, document: Document, repl_refresh_func: Callable[[float], [float]]
+        self,
+        document: Document,
+        repl_refresh_func: Callable[[float], float],
+        background_brush: BrushInterface,
     ):
         self.document = document
         args = (
@@ -44,6 +48,7 @@ class AppInterface:
         self.scene = QtWidgets.QGraphicsScene()
         self.view = self.main_window.graphicsView
         self.view.setScene(self.scene)
+        self.background_brush = background_brush
         self.registered_music_fonts = {}
         self.font_database = QtGui.QFontDatabase()
         self.repl_refresh_func = repl_refresh_func
@@ -161,7 +166,6 @@ class AppInterface:
 
     def destroy(self):
         """Destroy the window and all global interface-level data."""
-        print("Tearing down Qt Application instance")
         self.app.exit()
         self.app = None
         self.scene = None
@@ -186,6 +190,15 @@ class AppInterface:
             # I think this should be impossible, but log a warning just in case
             print(f"Warning: font at {font_file_path} provided no family names")
         return self.font_database.applicationFontFamilies(font_id)
+
+    @property
+    def background_brush(self) -> BrushInterface:
+        return self._background_brush
+
+    @background_brush.setter
+    def background_brush(self, value: BrushInterface):
+        self._background_brush = value
+        self.scene.setBackgroundBrush(value.qt_object)
 
     ######## PRIVATE METHODS ########
 

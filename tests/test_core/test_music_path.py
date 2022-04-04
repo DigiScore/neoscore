@@ -1,9 +1,6 @@
-import unittest
-
 import pytest
 
 from neoscore import constants
-from neoscore.core import neoscore
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
 from neoscore.core.music_text import MusicText
@@ -12,10 +9,12 @@ from neoscore.utils.exceptions import NoAncestorWithMusicFontError
 from neoscore.utils.point import ORIGIN
 from neoscore.utils.units import Inch, Mm
 
+from ..helpers import AppTest
 
-class TestMusicPath(unittest.TestCase):
+
+class TestMusicPath(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.font = MusicFont(constants.DEFAULT_MUSIC_FONT_NAME, Mm)
 
     def test_init_with_ancestor_with_font(self):

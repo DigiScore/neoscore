@@ -57,7 +57,7 @@ class Staff(MusicPath):
         music_font = MusicFont(
             music_font_family or constants.DEFAULT_MUSIC_FONT_NAME, unit
         )
-        pen = Pen(thickness=music_font.engraving_defaults["staffLineThickness"])
+        pen = pen or Pen(thickness=music_font.engraving_defaults["staffLineThickness"])
         super().__init__(pos, parent, font=music_font, pen=pen)
         self._line_count = line_count
         self._length = length
@@ -83,19 +83,9 @@ class Staff(MusicPath):
         return self._line_count
 
     @property
-    def top_line_y(self) -> Unit:
-        """The position of the top staff line"""
-        return self.unit(0)
-
-    @property
-    def center_pos_y(self) -> Unit:
+    def center_y(self) -> Unit:
         """The position of the center staff position"""
-        return self.unit((self.line_count - 1) / 2)
-
-    @property
-    def bottom_line_y(self) -> Unit:
-        """The position of the bottom staff line"""
-        return self.unit((self.line_count - 1))
+        return self.height / 2
 
     @property
     def breakable_length(self) -> Unit:
@@ -177,7 +167,7 @@ class Staff(MusicPath):
 
         This is true for any position within or on the outer lines.
         """
-        return self.top_line_y <= pos_y <= self.bottom_line_y
+        return ZERO <= pos_y <= self.height
 
     def y_on_ledger(self, pos_y: Unit) -> bool:
         """Determine if a y-axis position is approximately at a ledger line position

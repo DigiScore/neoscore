@@ -1,9 +1,7 @@
 import math
-import unittest
 
 import pytest
 
-from neoscore.core import neoscore
 from neoscore.core.brush import Brush
 from neoscore.core.path import Path
 from neoscore.core.path_element import ControlPoint, CurveTo, LineTo, MoveTo
@@ -17,12 +15,12 @@ from neoscore.interface.path_interface import (
 from neoscore.utils.point import ORIGIN, Point
 from neoscore.utils.units import ZERO, Unit
 
-from ..helpers import assert_path_els_equal
+from ..helpers import AppTest, assert_path_els_equal
 
 
-class TestPath(unittest.TestCase):
+class TestPath(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.brush = Brush("#ff0000")
         self.pen = Pen("#00ff00")
 
@@ -32,6 +30,14 @@ class TestPath(unittest.TestCase):
         assert path.pos == Point(Unit(5), Unit(6))
         assert path.pen == self.pen
         assert path.brush == self.brush
+        assert path.background_brush is None
+
+    def test_background_brush(self):
+        bg_brush = Brush("#ff0000")
+        obj = Path((Unit(5), Unit(6)), None, background_brush=bg_brush)
+        assert obj.background_brush == bg_brush
+        obj.background_brush = "#00ffff"
+        assert obj.background_brush == Brush("#00ffff")
 
     def test_straight_line(self):
         path = Path.straight_line((Unit(5), Unit(6)), None, (Unit(10), Unit(11)))
