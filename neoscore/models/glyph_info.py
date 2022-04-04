@@ -29,10 +29,3 @@ class GlyphInfo:
     anchors: Optional[dict]
     """a variety of additional metadata from SMuFL 
     such as cutOut, splitStems, stemDirection, graceNote"""
-
-
-
-
-
-
-

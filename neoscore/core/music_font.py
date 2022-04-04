@@ -113,7 +113,7 @@ class MusicFont(Font):
 
     ######## PRIVATE METHODS ########
     def _glyph_info(
-            self, glyph_name: str, alternate_number: Optional[int] = None
+        self, glyph_name: str, alternate_number: Optional[int] = None
     ) -> GlyphInfo:
 
         # if an alt glyph get name
@@ -123,40 +123,41 @@ class MusicFont(Font):
         # check if glyphname exists then get details from smufl
         check_name = smufl.glyph_names.get(glyph_name)
         if check_name:
-            codepoint = check_name['codepoint']
-            description = check_name['description']
+            codepoint = check_name["codepoint"]
+            description = check_name["description"]
         else:
             #  check is it ligature or optional glyph and get info
             (codepoint, description) = self._check_optional_glyphs(glyph_name)
 
         # if we have made it this far and populated
         # info with all other valid details
-        advance_width = self.metadata['glyphAdvanceWidths'].get(glyph_name)
+        advance_width = self.metadata["glyphAdvanceWidths"].get(glyph_name)
         if advance_width:
             advance_width = self.unit(advance_width)
 
-        bounding_rect = copy.deepcopy(self.metadata['glyphBBoxes'].get(glyph_name))
+        bounding_rect = copy.deepcopy(self.metadata["glyphBBoxes"].get(glyph_name))
         if bounding_rect:
             convert_all_to_unit(bounding_rect, self.unit)
             bounding_rect = self._convert_bbox_to_rect(bounding_rect)
 
         # get optional anchor metadata if available
-        anchors = self.metadata['glyphsWithAnchors'].get(glyph_name)
+        anchors = self.metadata["glyphsWithAnchors"].get(glyph_name)
 
-        return GlyphInfo(canonical_name=glyph_name,
-                         codepoint=codepoint,
-                         description=description,
-                         bounding_rect=bounding_rect,
-                         advance_width=advance_width,
-                         anchors=anchors
-                         )
+        return GlyphInfo(
+            canonical_name=glyph_name,
+            codepoint=codepoint,
+            description=description,
+            bounding_rect=bounding_rect,
+            advance_width=advance_width,
+            anchors=anchors,
+        )
 
     # private helper functions
     def _convert_bbox_to_rect(self, b_box_dict: dict) -> Rect:
         """Converst the SMuFL bounding box info
         into a Rect class format"""
 
-       # get SMuFL bbox coords
+        # get SMuFL bbox coords
         ne_x = b_box_dict["bBoxNE"][0]
         ne_y = b_box_dict["bBoxNE"][1]
         sw_x = b_box_dict["bBoxSW"][0]
@@ -188,11 +189,13 @@ class MusicFont(Font):
 
         else:
             # check if valid alt number
-            alt_count = len(alternate_glyphs['alternates'])
+            alt_count = len(alternate_glyphs["alternates"])
 
             # if the alternate_number is in range
             if alt_count >= alternate_number:
-                new_glyph_name = alternate_glyphs['alternates'][alternate_number - 1]["name"]
+                new_glyph_name = alternate_glyphs["alternates"][alternate_number - 1][
+                    "name"
+                ]
             else:
                 # Alternate number out of range
                 raise MusicFontGlyphNotFoundError
@@ -201,22 +204,21 @@ class MusicFont(Font):
 
     def _check_optional_glyphs(self, glyph_name: str) -> tuple[str, str]:
         """Check to see if the called glyph exists  as an optional, if it does it then
-        populate the GlyphInfo dataclass with basic info.
+         populate the GlyphInfo dataclass with basic info.
 
-       Args: info: a partially populated GlyphInfo dataclass
-           glyph_name: The canonical name of the glyph, or its main version
-               if using an alternate number.
-       """
+        Args: info: a partially populated GlyphInfo dataclass
+            glyph_name: The canonical name of the glyph, or its main version
+                if using an alternate number.
+        """
 
         # else check the optional glyph list
-        optional_glyph_field = self.metadata['optionalGlyphs'].get(glyph_name)
+        optional_glyph_field = self.metadata["optionalGlyphs"].get(glyph_name)
 
         if optional_glyph_field:
-            codepoint = optional_glyph_field['codepoint']
+            codepoint = optional_glyph_field["codepoint"]
 
             # some don't have descriptions
-            description = optional_glyph_field.get('description')
-
+            description = optional_glyph_field.get("description")
 
         # else glyphname is not registered with SMuFL
         else:
