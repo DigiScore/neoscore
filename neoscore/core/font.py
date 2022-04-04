@@ -9,6 +9,8 @@ from neoscore.utils.units import GraphicUnit, Unit
 
 class Font:
 
+    'a badly formatted string'
+
     """A text font.
 
     All fonts are immutable. To get a modified version of a font, use
