@@ -1,11 +1,12 @@
 import unittest
 import pytest
+from random import uniform
 from neoscore.core import neoscore
 from neoscore.core.music_font import MusicFont
 from neoscore.utils.units import Mm, Unit
 from neoscore.utils import smufl
 from neoscore.utils.rect import Rect
-from neoscore.models.glyph_info import GlyphInfo
+from neoscore.utils.units import Unit, convert_all_to_unit
 from neoscore.utils.exceptions import MusicFontGlyphNotFoundError
 
 from ..helpers import AppTest
@@ -52,34 +53,34 @@ class TestMusicFont(AppTest):
 
     def test_complete_info_for_normal_glyph_with_anchors(self):
         font = MusicFont("Bravura", Unit)
-        testGlyph = font.glyph_info('accidental3CommaSharp')
-        assert testGlyph.canonical_name == 'accidental3CommaSharp'
-        assert testGlyph.codepoint == "\ue452"
-        assert testGlyph.description == "3-comma sharp"
-        assert testGlyph.bounding_box == Rect(x=Unit(0),
-                                              y=Unit(2.044),
+        test_glyph = font.glyph_info('accidental3CommaSharp')
+        assert test_glyph.canonical_name == 'accidental3CommaSharp'
+        assert test_glyph.codepoint == "\ue452"
+        assert test_glyph.description == "3-comma sharp"
+        assert test_glyph.bounding_box == Rect(x=Unit(0),
+                                              y=Unit(-2.044),
                                               width=Unit(1.828),
                                               height=Unit(3.436)
                                               )
-        assert testGlyph.advance_width == Unit(1.736)
-        assert testGlyph.anchors == {'cutOutNW': [0.888, 1.516],
+        assert test_glyph.advance_width == Unit(1.736)
+        assert test_glyph.anchors == {'cutOutNW': [0.888, 1.516],
                                      'cutOutSE': [1.108, 0.856],
                                      'cutOutSW': [0.108, -0.956]
                                      }
 
     def test_glyph_info_for_one_alternate_glyph(self):
         font = MusicFont("Bravura", Unit)
-        testGlyph = font.glyph_info('brace', 1)
-        assert testGlyph.canonical_name == 'braceSmall'
-        assert testGlyph.codepoint == "\uF400"
+        test_glyph = font.glyph_info('brace', 1)
+        assert test_glyph.canonical_name == 'braceSmall'
+        assert test_glyph.codepoint == "\uF400"
 
     def test_glyph_info_for_last_alternate_glyph(self):
         font = MusicFont("Bravura", Unit)
-        testGlyph = font.glyph_info('brace', 4)
-        assert testGlyph.canonical_name == 'braceFlat'
-        assert testGlyph.codepoint == "\uF403"
+        test_glyph = font.glyph_info('brace', 4)
+        assert test_glyph.canonical_name == 'braceFlat'
+        assert test_glyph.codepoint == "\uF403"
 
-    def test_glyph_info_for_Foo_glyph(self):
+    def test_glyph_info_for_foo_glyph(self):
         font = MusicFont("Bravura", Unit)
         with pytest.raises(MusicFontGlyphNotFoundError):
             font.glyph_info('Foo')
@@ -88,3 +89,33 @@ class TestMusicFont(AppTest):
         font = MusicFont("Bravura", Unit)
         with pytest.raises(MusicFontGlyphNotFoundError):
             font.glyph_info('brace', 6)
+
+    def test_all_smufl_bbox_translations_to_rect(self):
+        font = MusicFont("Bravura", Unit)
+        b_box_dict = font.metadata["glyphBBoxes"].items()
+        for glyph, box in b_box_dict:
+            convert_all_to_unit(box, font.unit)
+            rect = Rect(x=box["bBoxSW"][0],
+                        y=box["bBoxNE"][1] * -1,
+                        width=box["bBoxNE"][0] - box["bBoxSW"][0],
+                        height=box["bBoxNE"][1] - box["bBoxSW"][1]
+                        )
+            assert font._convert_bbox_to_rect(box) == rect
+
+    def test_bbox_translations_on_random_foo(self):
+        font = MusicFont("Bravura", Unit)
+        for test in range (20):
+            rnd_dict = {"bBoxNE": [font.unit(uniform(-10.0, 10.0)),
+                                   font.unit(uniform(-10.0, 10.0))],
+                        "bBoxSW": [font.unit(uniform(-10.0, 10.0)),
+                                   font.unit(uniform(-10.0, 10.0))]
+                        }
+            # convert_all_to_unit(rnd_dict, font.unit)
+            rect = Rect(x=rnd_dict["bBoxSW"][0],
+                        y=rnd_dict["bBoxNE"][1] * -1,
+                        width=rnd_dict["bBoxNE"][0] - rnd_dict["bBoxSW"][0],
+                        height=rnd_dict["bBoxNE"][1] - rnd_dict["bBoxSW"][1]
+                        )
+            assert font._convert_bbox_to_rect(rnd_dict) == rect
+
+
