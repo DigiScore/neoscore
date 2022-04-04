@@ -6,6 +6,8 @@ from neoscore.utils.point import Point
 from neoscore.utils.units import Mm
 from neoscore.western.stem import Stem
 from neoscore.western.staff import Staff
+from neoscore.models.duration import Duration
+from neoscore.western.clef import Clef
 from neoscore.western.chordrest import Chordrest
 from neoscore.models.directions import VerticalDirection
 
@@ -25,3 +27,17 @@ class TestStem(unittest.TestCase):
         stem = Stem((Mm(0), Mm(0)), self.staff, VerticalDirection.DOWN, Mm(10))
         assert stem.direction == VerticalDirection.DOWN
         assert stem.direction.value == 1
+
+    def test_stem_direction_in_chordrest(self):
+        Clef(Mm(0), self.staff, "treble")
+        note_list = [("c,", VerticalDirection.UP),
+                     ("c", VerticalDirection.UP),
+                     ("c'", VerticalDirection.UP),
+                     ("g'", VerticalDirection.UP),
+                     ("c''", VerticalDirection.DOWN),
+                     ("gx'", VerticalDirection.UP),
+                     ("gx'''", VerticalDirection.DOWN)
+                     ]
+        for note, direction in note_list:
+            chord = Chordrest(Mm(15), self.staff, [note], Duration(1, 4))
+            assert chord.stem_direction == direction
