@@ -2,7 +2,7 @@
 
 import os
 
-from neoscore.utils.units import Inch, Mm
+from neoscore.core.units import Inch, Mm
 
 
 def _resolve_bool_env_variable(var):

@@ -6,10 +6,10 @@ from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.pen import Pen
+from neoscore.core.point import ORIGIN, Point
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.utils.point import ORIGIN, Point
-from neoscore.utils.rect import Rect
-from neoscore.utils.units import ZERO, Mm, Unit
+from neoscore.core.rect import Rect
+from neoscore.core.units import ZERO, Mm, Unit
 from neoscore.western.staff import Staff
 
 from ..helpers import AppTest

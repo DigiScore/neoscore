@@ -2,12 +2,12 @@ from __future__ import annotations
 
 from typing import Any, Optional, Union
 
+from neoscore.core.color import Color, ColorDef
 from neoscore.core.pen_cap_style import PenCapStyle
 from neoscore.core.pen_join_style import PenJoinStyle
 from neoscore.core.pen_pattern import PenPattern
+from neoscore.core.units import ZERO, Unit
 from neoscore.interface.pen_interface import PenInterface
-from neoscore.utils.color import Color, ColorDef
-from neoscore.utils.units import ZERO, Unit
 
 
 class Pen:

@@ -4,9 +4,9 @@ from typing import Optional
 from PyQt5 import QtGui
 
 from neoscore.core import neoscore
+from neoscore.core.rect import Rect
+from neoscore.core.units import GraphicUnit, Unit
 from neoscore.interface.qt.converters import qt_rect_to_rect
-from neoscore.utils.rect import Rect
-from neoscore.utils.units import GraphicUnit, Unit
 
 
 @dataclass(frozen=True)

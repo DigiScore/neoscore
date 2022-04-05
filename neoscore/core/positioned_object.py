@@ -9,9 +9,9 @@ from neoscore.core.mapping import (
     descendant_pos,
     first_ancestor_with_attr,
 )
+from neoscore.core.point import Point, PointDef
+from neoscore.core.units import ZERO, Unit
 from neoscore.interface.positioned_object_interface import PositionedObjectInterface
-from neoscore.utils.point import Point, PointDef
-from neoscore.utils.units import ZERO, Unit
 
 if TYPE_CHECKING:
     # Used in type annotations, imported here to avoid cyclic imports

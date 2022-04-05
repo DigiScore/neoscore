@@ -1,8 +1,8 @@
 import unittest
 
 from neoscore.core.brush_pattern import BrushPattern
+from neoscore.core.color import Color
 from neoscore.interface.brush_interface import BrushInterface
-from neoscore.utils.color import Color
 
 
 class TestBrushInterface(unittest.TestCase):

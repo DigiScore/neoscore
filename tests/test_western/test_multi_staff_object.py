@@ -1,5 +1,5 @@
 from neoscore.core.flowable import Flowable
-from neoscore.utils.units import Mm
+from neoscore.core.units import Mm
 from neoscore.western.multi_staff_object import MultiStaffObject
 from neoscore.western.staff import Staff
 from tests.helpers import assert_almost_equal

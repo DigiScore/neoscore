@@ -7,15 +7,15 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtPrintSupport import QPrinter
 
 from neoscore import constants
+from neoscore.core.color import Color
+from neoscore.core.exceptions import FontRegistrationError, ImageExportError
+from neoscore.core.rect import Rect
+from neoscore.core.units import Meter
 from neoscore.interface.brush_interface import BrushInterface
 from neoscore.interface.qt import image_utils
 from neoscore.interface.qt.converters import color_to_q_color, rect_to_qt_rect_f
 from neoscore.interface.qt.main_window import MainWindow
 from neoscore.interface.repl import running_in_ipython_gui_repl
-from neoscore.utils.color import Color
-from neoscore.utils.exceptions import FontRegistrationError, ImageExportError
-from neoscore.utils.rect import Rect
-from neoscore.utils.units import Meter
 
 if TYPE_CHECKING:
     from neoscore.core.document import Document

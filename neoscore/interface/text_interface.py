@@ -4,13 +4,13 @@ from typing import NamedTuple, Optional
 from PyQt5.QtGui import QFont, QPainterPath
 
 from neoscore.core import neoscore
+from neoscore.core.units import Unit
 from neoscore.interface.brush_interface import BrushInterface
 from neoscore.interface.font_interface import FontInterface
 from neoscore.interface.pen_interface import PenInterface
 from neoscore.interface.positioned_object_interface import PositionedObjectInterface
 from neoscore.interface.qt.converters import point_to_qt_point_f
 from neoscore.interface.qt.q_clipping_path import QClippingPath
-from neoscore.utils.units import Unit
 
 
 class _CachedTextKey(NamedTuple):

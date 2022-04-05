@@ -4,11 +4,11 @@ import math
 from typing import TYPE_CHECKING, cast
 
 from neoscore.core.mapping import map_between
+from neoscore.core.math_helpers import point_angle
+from neoscore.core.point import Point
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner import Spanner
-from neoscore.utils.math_helpers import point_angle
-from neoscore.utils.point import Point
-from neoscore.utils.units import Unit
+from neoscore.core.units import Unit
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent

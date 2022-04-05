@@ -1,8 +1,8 @@
 from neoscore.core.flowable import Flowable
 from neoscore.core.music_font import MusicFont
 from neoscore.core.pen import Pen
-from neoscore.utils.point import Point
-from neoscore.utils.units import Mm
+from neoscore.core.point import Point
+from neoscore.core.units import Mm
 from neoscore.western.barline import Barline
 from neoscore.western.staff import Staff
 

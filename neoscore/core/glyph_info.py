@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from neoscore.utils.rect import Rect
-from neoscore.utils.units import Unit
+from neoscore.core.rect import Rect
+from neoscore.core.units import Unit
 
 
 @dataclass

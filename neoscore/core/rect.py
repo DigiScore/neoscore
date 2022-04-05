@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Union
 
-from neoscore.utils.units import Unit
+from neoscore.core.units import Unit
 
 
 @dataclass(frozen=True)

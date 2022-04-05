@@ -2,8 +2,8 @@
 
 import math
 
-from neoscore.utils.point import Point
-from neoscore.utils.units import Unit
+from neoscore.core.point import Point
+from neoscore.core.units import Unit
 
 
 def interpolate(line_start: Point, line_end: Point, x: Unit) -> Unit:

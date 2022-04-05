@@ -1,6 +1,6 @@
 from neoscore.core import neoscore
+from neoscore.core.units import Unit
 from neoscore.interface.font_interface import FontInterface
-from neoscore.utils.units import Unit
 
 from ..helpers import AppTest
 

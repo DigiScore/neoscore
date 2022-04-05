@@ -1,6 +1,6 @@
 import re
 
-from neoscore.utils.exceptions import InvalidIntervalError
+from neoscore.core.exceptions import InvalidIntervalError
 
 
 class Interval:

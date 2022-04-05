@@ -1,7 +1,7 @@
 import unittest
 
 from neoscore.core.directions import HorizontalDirection, VerticalDirection
-from neoscore.utils.units import Unit
+from neoscore.core.units import Unit
 
 
 class TestVerticalDirection(unittest.TestCase):

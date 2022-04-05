@@ -1,7 +1,7 @@
 from neoscore.core.flowable import Flowable
 from neoscore.core.path_element import LineTo, MoveTo
-from neoscore.utils.point import Point
-from neoscore.utils.units import Mm, Unit
+from neoscore.core.point import Point
+from neoscore.core.units import Mm, Unit
 from neoscore.western.beam import Beam
 from neoscore.western.staff import Staff
 from tests.helpers import assert_path_els_equal

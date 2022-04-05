@@ -6,9 +6,9 @@ from neoscore.core.brush import Brush
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
 from neoscore.core.pen import Pen
+from neoscore.core.point import PointDef
 from neoscore.core.spanner import Spanner
-from neoscore.utils.point import PointDef
-from neoscore.utils.units import Unit
+from neoscore.core.units import Unit
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent

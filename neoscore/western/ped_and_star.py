@@ -5,9 +5,9 @@ from typing import TYPE_CHECKING, Optional, cast
 from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
+from neoscore.core.point import ORIGIN, Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner_2d import Spanner2D
-from neoscore.utils.point import ORIGIN, Point, PointDef
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent

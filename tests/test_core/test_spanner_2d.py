@@ -1,8 +1,8 @@
 from neoscore.core.painted_object import PaintedObject
+from neoscore.core.point import Point
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner_2d import Spanner2D
-from neoscore.utils.point import Point
-from neoscore.utils.units import Unit
+from neoscore.core.units import Unit
 
 from ..helpers import AppTest, assert_almost_equal
 

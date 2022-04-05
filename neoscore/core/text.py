@@ -7,10 +7,10 @@ from neoscore.core.brush import Brush, BrushDef
 from neoscore.core.font import Font
 from neoscore.core.painted_object import PaintedObject
 from neoscore.core.pen import Pen, PenDef
+from neoscore.core.point import Point, PointDef
+from neoscore.core.rect import Rect
+from neoscore.core.units import ZERO, Unit
 from neoscore.interface.text_interface import TextInterface
-from neoscore.utils.point import Point, PointDef
-from neoscore.utils.rect import Rect
-from neoscore.utils.units import ZERO, Unit
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent

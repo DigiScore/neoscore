@@ -1,13 +1,13 @@
 import pytest
 
 from neoscore import constants
+from neoscore.core.exceptions import NoAncestorWithMusicFontError
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
 from neoscore.core.music_text import MusicText
+from neoscore.core.point import ORIGIN
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.utils.exceptions import NoAncestorWithMusicFontError
-from neoscore.utils.point import ORIGIN
-from neoscore.utils.units import Inch, Mm
+from neoscore.core.units import Inch, Mm
 
 from ..helpers import AppTest
 

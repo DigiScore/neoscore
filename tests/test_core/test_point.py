@@ -2,8 +2,8 @@ import unittest
 
 import pytest
 
-from neoscore.utils.point import Point
-from neoscore.utils.units import Mm, Unit
+from neoscore.core.point import Point
+from neoscore.core.units import Mm, Unit
 
 
 class TestPoint(unittest.TestCase):

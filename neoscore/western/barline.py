@@ -4,7 +4,7 @@ from neoscore.core.mapping import map_between_x
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
 from neoscore.core.pen import Pen, PenDef
-from neoscore.utils.units import ZERO, Unit
+from neoscore.core.units import ZERO, Unit
 from neoscore.western.multi_staff_object import MultiStaffObject, StaffLike
 
 

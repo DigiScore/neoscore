@@ -3,7 +3,7 @@ import unittest
 from neoscore.core import neoscore
 from neoscore.core.directions import VerticalDirection
 from neoscore.core.flowable import Flowable
-from neoscore.utils.units import Mm
+from neoscore.core.units import Mm
 from neoscore.western.chordrest import Chordrest
 from neoscore.western.clef import Clef
 from neoscore.western.duration import Duration

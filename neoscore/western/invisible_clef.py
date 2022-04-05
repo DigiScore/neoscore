@@ -1,4 +1,4 @@
-from neoscore.utils.units import Unit
+from neoscore.core.units import Unit
 from neoscore.western.clef import Clef
 from neoscore.western.clef_type import ClefTypeDef
 from neoscore.western.staff import Staff

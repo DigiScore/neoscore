@@ -1,6 +1,6 @@
 from PyQt5.QtGui import QBitmap, QRegion
 
-from neoscore.utils.units import Inch, Mm
+from neoscore.core.units import Inch, Mm
 
 # TODO MEDIUM this is a grab bag of utils and should be better organized
 

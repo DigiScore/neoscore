@@ -1,7 +1,7 @@
 from neoscore.core import neoscore
+from neoscore.core.point import Point
+from neoscore.core.units import Unit
 from neoscore.interface.rich_text_interface import RichTextInterface
-from neoscore.utils.point import Point
-from neoscore.utils.units import Unit
 
 from ..helpers import AppTest
 

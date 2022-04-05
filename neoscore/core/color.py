@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Union
 
-from neoscore.utils.exceptions import ColorBoundsError
+from neoscore.core.exceptions import ColorBoundsError
 
 
 class Color:

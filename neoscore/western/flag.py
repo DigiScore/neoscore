@@ -3,10 +3,10 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, cast
 
 from neoscore.core.directions import VerticalDirection
+from neoscore.core.exceptions import NoFlagNeededError
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
-from neoscore.utils.exceptions import NoFlagNeededError
-from neoscore.utils.point import PointDef
+from neoscore.core.point import PointDef
 from neoscore.western.duration import Duration, DurationDef
 from neoscore.western.duration_display import DurationDisplay
 

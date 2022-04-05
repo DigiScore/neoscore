@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Optional
 
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
-from neoscore.utils.point import PointDef
+from neoscore.core.point import PointDef
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent

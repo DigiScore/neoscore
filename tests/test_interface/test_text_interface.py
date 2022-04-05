@@ -1,11 +1,11 @@
 from neoscore.core.brush_pattern import BrushPattern
+from neoscore.core.color import Color
 from neoscore.core.pen import Pen
+from neoscore.core.point import ORIGIN
+from neoscore.core.units import Unit
 from neoscore.interface.brush_interface import BrushInterface
 from neoscore.interface.font_interface import FontInterface
 from neoscore.interface.text_interface import TextInterface
-from neoscore.utils.color import Color
-from neoscore.utils.point import ORIGIN
-from neoscore.utils.units import Unit
 
 from ..helpers import AppTest
 

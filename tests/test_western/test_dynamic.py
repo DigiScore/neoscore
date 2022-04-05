@@ -1,6 +1,6 @@
 import pytest
 
-from neoscore.utils.units import Mm
+from neoscore.core.units import Mm
 from neoscore.western.dynamic import Dynamic, DynamicStringError
 from neoscore.western.staff import Staff
 

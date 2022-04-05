@@ -1,9 +1,9 @@
 from neoscore.core import neoscore
 from neoscore.core.flowable import Flowable
 from neoscore.core.paper import Paper
+from neoscore.core.point import Point
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.utils.point import Point
-from neoscore.utils.units import ZERO, Mm, Unit
+from neoscore.core.units import ZERO, Mm, Unit
 
 from ..helpers import AppTest
 

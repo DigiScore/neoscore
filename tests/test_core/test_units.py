@@ -2,9 +2,8 @@ import unittest
 
 import pytest
 
-from neoscore.utils.units import GraphicUnit, Inch, Mm, Unit, make_unit_class
-
-from ..helpers import assert_almost_equal
+from neoscore.core.units import GraphicUnit, Inch, Mm, Unit, make_unit_class
+from tests.helpers import assert_almost_equal
 
 MockUnit = make_unit_class("MockUnit", 2)
 

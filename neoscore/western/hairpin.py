@@ -9,10 +9,10 @@ from neoscore.core.mapping import map_between
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
 from neoscore.core.pen import Pen
+from neoscore.core.point import Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner_2d import Spanner2D
-from neoscore.utils.point import Point, PointDef
-from neoscore.utils.units import ZERO, Unit
+from neoscore.core.units import ZERO, Unit
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent

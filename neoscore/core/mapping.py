@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Iterator, Optional, Union, cast
 
-from neoscore.utils.point import ORIGIN, Point
-from neoscore.utils.units import Unit
+from neoscore.core.point import ORIGIN, Point
+from neoscore.core.units import Unit
 
 if TYPE_CHECKING:
     from neoscore.core.document import Document

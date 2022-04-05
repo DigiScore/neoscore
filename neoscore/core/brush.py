@@ -3,8 +3,8 @@ from __future__ import annotations
 from typing import Any, Optional, Union
 
 from neoscore.core.brush_pattern import BrushPattern
+from neoscore.core.color import Color, ColorDef
 from neoscore.interface.brush_interface import BrushInterface
-from neoscore.utils.color import Color, ColorDef
 
 
 class Brush:

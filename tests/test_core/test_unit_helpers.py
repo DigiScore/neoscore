@@ -1,6 +1,6 @@
 import pytest
 
-from neoscore.utils.units import GraphicUnit, convert_all_to_unit
+from neoscore.core.units import GraphicUnit, convert_all_to_unit
 
 
 def test_convert_all_to_unit_simple_dict():

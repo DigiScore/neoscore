@@ -2,7 +2,7 @@ import math
 from dataclasses import dataclass
 from typing import NewType
 
-from neoscore.utils.math_helpers import is_power_of_2
+from neoscore.core.math_helpers import is_power_of_2
 
 BaseDuration = NewType("BaseDuration", int)
 """A base duration used to set notehead and rest glyphs.

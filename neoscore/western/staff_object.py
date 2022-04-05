@@ -2,11 +2,11 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Optional, cast
 
+from neoscore.core.exceptions import NoAncestorStaffError
 from neoscore.core.mapping import first_ancestor_with_attr, map_between, map_between_x
+from neoscore.core.point import Point
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.utils.exceptions import NoAncestorStaffError
-from neoscore.utils.point import Point
-from neoscore.utils.units import Unit
+from neoscore.core.units import Unit
 
 if TYPE_CHECKING:
     from neoscore.western.staff import Staff

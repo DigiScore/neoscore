@@ -5,7 +5,7 @@ from neoscore.core.brush import BrushDef
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.pen import PenDef
-from neoscore.utils.units import Unit
+from neoscore.core.units import Unit
 from neoscore.western.tab_staff import TabStaff
 
 

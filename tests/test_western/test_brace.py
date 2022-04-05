@@ -1,8 +1,8 @@
 from neoscore.core.brush import Brush
 from neoscore.core.music_font import MusicFont
 from neoscore.core.pen import Pen
-from neoscore.utils.point import ORIGIN
-from neoscore.utils.units import Mm
+from neoscore.core.point import ORIGIN
+from neoscore.core.units import Mm
 from neoscore.western.brace import Brace
 from neoscore.western.staff import Staff
 

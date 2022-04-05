@@ -1,14 +1,14 @@
-"""Helper methods for conversion between `neoscore.utils` and Qt classes"""
+"""Helper methods for conversion between `neoscore.core` and Qt classes"""
 
 from typing import Union
 
 from PyQt5.QtCore import QPoint, QPointF, QRect, QRectF
 from PyQt5.QtGui import QColor
 
-from neoscore.utils.color import Color
-from neoscore.utils.point import Point
-from neoscore.utils.rect import Rect
-from neoscore.utils.units import GraphicUnit
+from neoscore.core.color import Color
+from neoscore.core.point import Point
+from neoscore.core.rect import Rect
+from neoscore.core.units import GraphicUnit
 
 
 def qt_point_to_point(qt_point: Union[QPoint, QPointF]) -> Point:

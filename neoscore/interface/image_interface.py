@@ -7,9 +7,9 @@ from PyQt5.QtSvg import QGraphicsSvgItem
 from PyQt5.QtWidgets import QGraphicsPixmapItem
 
 from neoscore.core import neoscore
+from neoscore.core.exceptions import ImageLoadingError
 from neoscore.interface.positioned_object_interface import PositionedObjectInterface
 from neoscore.interface.qt.converters import point_to_qt_point_f
-from neoscore.utils.exceptions import ImageLoadingError
 
 # Qt::SmoothTransformation
 _QT_SMOOTH_TRANSFORMATION = 1

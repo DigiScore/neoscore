@@ -1,9 +1,9 @@
 from neoscore.core import neoscore
 from neoscore.core.brush import Brush
+from neoscore.core.color import Color
 from neoscore.core.path import Path
+from neoscore.core.point import ORIGIN
 from neoscore.core.text import Text
-from neoscore.utils.color import Color
-from neoscore.utils.point import ORIGIN
 
 from ..helpers import AppTest
 

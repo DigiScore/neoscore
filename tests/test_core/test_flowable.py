@@ -3,9 +3,9 @@ import pytest
 from neoscore.core import neoscore
 from neoscore.core.flowable import Flowable, OutOfBoundsError
 from neoscore.core.paper import Paper
+from neoscore.core.point import Point
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.utils.point import Point
-from neoscore.utils.units import Mm
+from neoscore.core.units import Mm
 
 from ..helpers import AppTest, assert_almost_equal
 

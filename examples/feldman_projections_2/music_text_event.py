@@ -1,7 +1,7 @@
 from examples.feldman_projections_2.event import Event
 from examples.feldman_projections_2.grid_unit import GridUnit
 from neoscore.core.music_text import MusicText
-from neoscore.utils.point import Point
+from neoscore.core.point import Point
 
 
 class MusicTextEvent(Event):

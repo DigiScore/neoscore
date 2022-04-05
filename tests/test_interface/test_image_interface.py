@@ -1,8 +1,8 @@
 import pathlib
 
+from neoscore.core.point import Point
+from neoscore.core.units import Unit
 from neoscore.interface.image_interface import ImageInterface
-from neoscore.utils.point import Point
-from neoscore.utils.units import Unit
 
 from ..helpers import AppTest
 

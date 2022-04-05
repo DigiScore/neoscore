@@ -1,9 +1,9 @@
 import pytest
 
 from neoscore.core.painted_object import PaintedObject
+from neoscore.core.point import Point
 from neoscore.core.spanner import Spanner
-from neoscore.utils.point import Point
-from neoscore.utils.units import ZERO, Unit
+from neoscore.core.units import ZERO, Unit
 
 from ..helpers import AppTest
 

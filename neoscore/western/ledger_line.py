@@ -1,9 +1,9 @@
 from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
+from neoscore.core.point import PointDef
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.utils.point import PointDef
-from neoscore.utils.units import Unit
+from neoscore.core.units import Unit
 
 
 class LedgerLine(Path, HasMusicFont):

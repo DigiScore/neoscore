@@ -7,8 +7,8 @@ from neoscore.core.directions import VerticalDirection
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
 from neoscore.core.pen import PenDef
+from neoscore.core.point import Point, PointDef
 from neoscore.core.spanner_2d import Spanner2D
-from neoscore.utils.point import Point, PointDef
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent

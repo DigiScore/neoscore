@@ -7,15 +7,15 @@ from typing import TYPE_CHECKING, Callable, Optional
 from warnings import warn
 
 from neoscore import constants
+from neoscore.core import file_system
 from neoscore.core.brush import Brush, BrushDef
+from neoscore.core.color import Color, ColorDef
+from neoscore.core.exceptions import InvalidImageFormatError
 from neoscore.core.paper import A4, Paper
 from neoscore.core.pen import Pen
+from neoscore.core.rect import RectDef, rect_from_def
 from neoscore.interface.app_interface import AppInterface
 from neoscore.interface.qt import image_utils
-from neoscore.utils import file_system
-from neoscore.utils.color import Color, ColorDef
-from neoscore.utils.exceptions import InvalidImageFormatError
-from neoscore.utils.rect import RectDef, rect_from_def
 
 if TYPE_CHECKING:
     from neoscore.core.document import Document

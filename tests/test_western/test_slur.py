@@ -1,5 +1,5 @@
 from neoscore.core.flowable import Flowable
-from neoscore.utils.units import Mm, Unit
+from neoscore.core.units import Mm, Unit
 from neoscore.western.slur import Slur
 from neoscore.western.staff import Staff
 from tests.mocks.mock_staff_object import MockStaffObject

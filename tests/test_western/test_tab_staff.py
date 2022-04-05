@@ -1,7 +1,7 @@
 from neoscore.core.music_font import MusicFont
 from neoscore.core.pen import Pen
-from neoscore.utils.point import ORIGIN
-from neoscore.utils.units import ZERO, Mm
+from neoscore.core.point import ORIGIN
+from neoscore.core.units import ZERO, Mm
 from neoscore.western.tab_staff import TabStaff
 
 from ..helpers import AppTest, assert_almost_equal

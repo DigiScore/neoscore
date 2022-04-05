@@ -1,6 +1,6 @@
 from neoscore.core.directions import HorizontalDirection, VerticalDirection
-from neoscore.utils.point import Point
-from neoscore.utils.units import Mm
+from neoscore.core.point import Point
+from neoscore.core.units import Mm
 from neoscore.western.beam_group import (
     BeamGroup,
     _BeamGroupLine,

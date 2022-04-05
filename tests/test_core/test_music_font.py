@@ -1,10 +1,10 @@
 import pytest
 
+from neoscore.core import smufl
+from neoscore.core.exceptions import MusicFontGlyphNotFoundError
 from neoscore.core.music_font import MusicFont
-from neoscore.utils import smufl
-from neoscore.utils.exceptions import MusicFontGlyphNotFoundError
-from neoscore.utils.rect import Rect
-from neoscore.utils.units import Mm, Unit, convert_all_to_unit
+from neoscore.core.rect import Rect
+from neoscore.core.units import Mm, Unit, convert_all_to_unit
 
 from ..helpers import AppTest
 

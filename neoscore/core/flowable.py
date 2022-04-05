@@ -3,13 +3,13 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 
 from neoscore.core import neoscore
+from neoscore.core.exceptions import OutOfBoundsError
 from neoscore.core.layout_controller import LayoutController
 from neoscore.core.mapping import canvas_pos_of
 from neoscore.core.new_line import NewLine
+from neoscore.core.point import Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.utils.exceptions import OutOfBoundsError
-from neoscore.utils.point import Point, PointDef
-from neoscore.utils.units import ZERO, Mm, Unit
+from neoscore.core.units import ZERO, Mm, Unit
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent

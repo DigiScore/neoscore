@@ -4,8 +4,8 @@ from neoscore.core import neoscore
 from neoscore.core.flowable import Flowable
 from neoscore.core.paper import Paper
 from neoscore.core.pen import Pen
-from neoscore.utils.point import ORIGIN, Point
-from neoscore.utils.units import Mm
+from neoscore.core.point import ORIGIN, Point
+from neoscore.core.units import Mm
 from neoscore.western import clef_type
 from neoscore.western.clef import Clef
 from neoscore.western.octave_line import OctaveLine

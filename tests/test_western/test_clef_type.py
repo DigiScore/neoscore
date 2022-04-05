@@ -1,5 +1,5 @@
 from neoscore.core.music_font import MusicFont
-from neoscore.utils.units import Mm
+from neoscore.core.units import Mm
 from neoscore.western.clef_type import CLEF_TYPE_SHORTHAND_NAMES, TREBLE, ClefType
 
 from ..helpers import AppTest
