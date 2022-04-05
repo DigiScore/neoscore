@@ -15,6 +15,7 @@ from neoscore.core.path import Path
 from neoscore.core.pen import Pen
 from neoscore.core.pen_pattern import PenPattern
 from neoscore.core.positioned_object import PositionedObject
+from neoscore.core.repeating_music_text_line import RepeatingMusicTextLine
 from neoscore.core.rich_text import RichText
 from neoscore.core.text import Text
 from neoscore.models import notehead_tables
@@ -45,7 +46,6 @@ from neoscore.western.notehead import Notehead
 from neoscore.western.octave_line import OctaveLine
 from neoscore.western.ped_and_star import PedAndStar
 from neoscore.western.pedal_line import PedalLine
-from neoscore.western.repeating_music_text_line import RepeatingMusicTextLine
 from neoscore.western.rest import Rest
 from neoscore.western.slur import Slur
 from neoscore.western.staff import Staff
