@@ -2,7 +2,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional, cast
 
+from neoscore.core import neoscore
 from neoscore.core.brush import Brush
+from neoscore.core.directions import VerticalDirection
 from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
@@ -13,11 +15,10 @@ from neoscore.core.pen_pattern import PenPattern
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner import Spanner
 from neoscore.interface.text_interface import TextInterface
-from neoscore.models.directions import VerticalDirection
-from neoscore.models.interval import Interval
-from neoscore.models.transposition import Transposition
 from neoscore.utils.point import ORIGIN, Point, PointDef
 from neoscore.utils.units import Unit
+from neoscore.western.interval import Interval
+from neoscore.western.transposition import Transposition
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
@@ -44,10 +45,11 @@ class OctaveLine(PositionedObject, Spanner, HasMusicFont):
     If the spanner goes across line breaks, the octave text is repeated
     in parenthesis at the line beginning.
 
-    TODO LOW: The dashed line portion of this spanner overlaps with
-    the '8va' text. This is an involved fix that may require
-    implementing text background masking or a way to easily inject
-    line continuation offsets for paths.
+    TODO HIGH: The dashed line portion of this spanner overlaps with
+    the '8va' text. The text does apply a background brush, but since
+    it's constructed before the line, the z index doesn't work out to
+    erase the line. Seems like Z index support is needed to support
+    this.
     """
 
     intervals = {
@@ -155,7 +157,14 @@ class _OctaveLineText(MusicText):
         indication: str,
         font: MusicFont,
     ):
-        MusicText.__init__(self, pos, parent, OctaveLine.glyphs[indication], font)
+        MusicText.__init__(
+            self,
+            pos,
+            parent,
+            OctaveLine.glyphs[indication],
+            font,
+            background_brush=neoscore.background_brush,
+        )
         open_paren_char = MusicChar(self.music_font, OctaveLine.glyphs["("])
         close_paren_char = MusicChar(self.music_font, OctaveLine.glyphs[")"])
         self.parenthesized_text = (

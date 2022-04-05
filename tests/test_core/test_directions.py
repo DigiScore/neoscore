@@ -1,6 +1,6 @@
 import unittest
 
-from neoscore.models.directions import HorizontalDirection, VerticalDirection
+from neoscore.core.directions import HorizontalDirection, VerticalDirection
 from neoscore.utils.units import Unit
 
 

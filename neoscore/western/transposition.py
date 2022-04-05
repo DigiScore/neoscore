@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from neoscore.models.interval import Interval
+from neoscore.western.interval import Interval
 
 
 @dataclass(frozen=True)

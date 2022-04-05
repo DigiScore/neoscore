@@ -38,12 +38,13 @@ class MusicText(Text, HasMusicFont):
     def __init__(
         self,
         pos: PointDef,
-        parent: Parent,
+        parent: Optional[Parent],
         text: Any,
         font: Optional[MusicFont] = None,
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,
         scale: float = 1,
+        rotation: float = 0,
         background_brush: Optional[BrushDef] = None,
         breakable: bool = True,
     ):
@@ -62,6 +63,8 @@ class MusicText(Text, HasMusicFont):
             pen: The pen to trace text outlines with. This defaults to no pen.
             scale: A scaling factor to be applied
                 in addition to the size of the music font.
+            rotation: Angle in degrees. Note that breakable rotated text is
+                not currently supported.
             background_brush: Optional brush used to paint the text's bounding rect
                 behind it.
             breakable: Whether this object should break across lines in
@@ -80,6 +83,7 @@ class MusicText(Text, HasMusicFont):
             brush,
             pen,
             scale,
+            rotation,
             background_brush,
             breakable,
         )
@@ -133,7 +137,10 @@ class MusicText(Text, HasMusicFont):
 
     @property
     def bounding_rect(self) -> Rect:
-        """The bounding rect for this text when rendered."""
+        """The bounding rect for this text when rendered.
+
+        Note that this currently accounts for scaling, but not rotation.
+        """
         key = _CachedTextGeometryKey(self.text, self.music_font, self.scale)
         cached_result = _GEOMETRY_CACHE.get(key)
         if cached_result:

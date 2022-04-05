@@ -31,6 +31,7 @@ class RichText(PositionedObject):
         width: Optional[Unit] = None,
         font: Optional[Font] = None,
         scale: float = 1,
+        rotation: float = 0,
     ):
         """
         Args:
@@ -41,14 +42,16 @@ class RichText(PositionedObject):
                 lines will only break when explicitly called for by the HTML.
             font: The font to display the text in.
             scale: A scaling factor relative to the font size.
+            rotation: Rotation angle in degrees.
         """
         if font:
             self._font = font
         else:
             self._font = neoscore.default_font
         self._html_text = html_text
-        self._scale = scale
         self._width = width
+        self._scale = scale
+        self._rotation = rotation
         super().__init__(pos, parent)
 
     @property
@@ -100,6 +103,15 @@ class RichText(PositionedObject):
     def scale(self, value: float):
         self._scale = value
 
+    @property
+    def rotation(self) -> float:
+        """An angle in degrees to rotate about the text origin"""
+        return self._rotation
+
+    @rotation.setter
+    def rotation(self, value: float):
+        self._rotation = value
+
     # Since RichText isn't breakable (for now?), we only need to
     # implement complete rendering
     def _render_complete(
@@ -114,6 +126,7 @@ class RichText(PositionedObject):
             self.font.interface,
             self.width,
             self.scale,
+            self.rotation,
         )
         interface.render()
         self.interfaces.append(interface)

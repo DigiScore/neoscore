@@ -6,12 +6,12 @@ from neoscore.core.mapping import map_between
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.models import notehead_tables
-from neoscore.models.duration import Duration, DurationDef
-from neoscore.models.duration_display import DurationDisplay
-from neoscore.models.notehead_tables import NoteheadTable
-from neoscore.models.pitch import Pitch, PitchDef
 from neoscore.utils.units import ZERO, Unit
+from neoscore.western import notehead_tables
+from neoscore.western.duration import Duration, DurationDef
+from neoscore.western.duration_display import DurationDisplay
+from neoscore.western.notehead_tables import NoteheadTable
+from neoscore.western.pitch import Pitch, PitchDef
 from neoscore.western.staff_object import StaffObject
 
 

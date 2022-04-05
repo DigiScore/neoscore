@@ -1,15 +1,14 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional
+from typing import Optional
 
 from neoscore.core import neoscore
+from neoscore.core.brush import BrushDef
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
+from neoscore.core.pen import PenDef
 from neoscore.utils.units import Unit
 from neoscore.western.tab_staff import TabStaff
-
-if TYPE_CHECKING:
-    pass
 
 
 class TabClef(MusicText):
@@ -30,6 +29,9 @@ class TabClef(MusicText):
         staff: TabStaff,
         glyph_name: str = "6stringTabClef",
         font: Optional[MusicFont] = None,
+        brush: Optional[BrushDef] = None,
+        pen: Optional[PenDef] = None,
+        hide_background: bool = True,
     ):
         """
         Args:
@@ -37,6 +39,9 @@ class TabClef(MusicText):
             staff: The parent staff
             glyph_name: The SMuFL glyph to use.
             font: The font to use. Defaults to the staff's font.
+            brush: The brush to fill in text shapes with.
+            pen: The pen to trace text outlines with. This defaults to no pen.
+            hide_background: Whether to paint over the background behind the text.
         """
         MusicText.__init__(
             self,
@@ -44,6 +49,8 @@ class TabClef(MusicText):
             staff,
             glyph_name,
             font,
+            brush,
+            pen,
             background_brush=neoscore.background_brush,
         )
 

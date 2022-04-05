@@ -3,11 +3,11 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 
 from neoscore.core.brush import BrushDef
+from neoscore.core.directions import VerticalDirection
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
 from neoscore.core.pen import PenDef
 from neoscore.core.spanner_2d import Spanner2D
-from neoscore.models.directions import VerticalDirection
 from neoscore.utils.point import Point, PointDef
 
 if TYPE_CHECKING:

@@ -11,7 +11,7 @@ from neoscore.interface.path_interface import (
 )
 from neoscore.interface.pen_interface import PenInterface
 from neoscore.utils.color import Color
-from neoscore.utils.point import Point
+from neoscore.utils.point import ORIGIN, Point
 from neoscore.utils.units import GraphicUnit, Unit
 
 from ..helpers import AppTest
@@ -34,10 +34,24 @@ class TestPathInterface(AppTest):
         assert test_path.brush == self.brush
         assert test_path.pen == self.pen
         assert test_path.elements == []
+        assert test_path.rotation == 0
+        assert test_path.background_brush == None
+        assert test_path.clip_start_x == None
+        assert test_path.clip_width == None
 
-    def test_create_qt_path_empty(self):
-        qt_path = PathInterface.create_qt_path([])
-        assert qt_path.elementCount() == 0
+    def test_rotation(self):
+        assert (
+            PathInterface(ORIGIN, self.brush, self.pen, [])
+            ._create_qt_object()
+            .rotation()
+            == 0
+        )
+        assert (
+            PathInterface(ORIGIN, self.brush, self.pen, [], rotation=20)
+            ._create_qt_object()
+            .rotation()
+            == 20
+        )
 
     def test_create_qt_path_with_move(self):
         qt_path = PathInterface.create_qt_path([ResolvedMoveTo(Unit(10), Unit(12))])

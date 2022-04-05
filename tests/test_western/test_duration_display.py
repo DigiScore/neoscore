@@ -1,6 +1,6 @@
 import pytest
 
-from neoscore.models.duration_display import DurationDisplay
+from neoscore.western.duration_display import DurationDisplay
 
 
 def test_base_duration_validation():

@@ -106,8 +106,13 @@ pen = Pen(thickness=Mm(0.2), pattern=PenPattern.DASHDOTDOT)
 explicit_path = Path((Mm(0), Mm(0)), parent=p, pen=pen)
 explicit_path.line_to(Mm(5000), Mm(100))
 
-fake_trill = RepeatingMusicTextLine(
-    (Mm(30), staff.unit(-6)), staff, Mm(5000), "wiggleTrill"
+trill = RepeatingMusicTextLine(
+    (lowest_staff.unit(30), lowest_staff.unit(-0.5)),
+    lowest_staff,
+    (lowest_staff.unit(20), lowest_staff.unit(-2)),
+    None,
+    "wiggleArpeggiatoUp",
+    "wiggleArpeggiatoUpArrow",
 )
 
 text_on_first_page = Text((Mm(0), Mm(0)), None, "first page!")

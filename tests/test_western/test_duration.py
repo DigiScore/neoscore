@@ -2,8 +2,8 @@ import unittest
 
 import pytest
 
-from neoscore.models.duration import Duration
-from neoscore.models.duration_display import DurationDisplay
+from neoscore.western.duration import Duration
+from neoscore.western.duration_display import DurationDisplay
 
 
 class TestDuration(unittest.TestCase):

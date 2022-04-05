@@ -20,8 +20,32 @@ class TabNumber(TabStringText):
         font: Optional[MusicFont] = None,
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,
+        hide_background=True,
     ):
-        # TODO HIGH support multiple digits, can be done easily with music char input list.
+        """
+        Args:
+            pos_x: The x position relative to the parent
+            staff: The parent staff
+            string: The 1-indexed string number this should appear on
+            number: The number to display. Must be a non-zero integer.
+            font: The font to use. Defaults to the staff's font.
+            brush: The brush to fill in text shapes with.
+            pen: The pen to trace text outlines with. This defaults to no pen.
+            hide_background: Whether to paint over the background behind the text.
+                Particularly useful for preventing overlaps with staff lines.
+        """
         TabStringText.__init__(
-            self, pos_x, staff, string, f"fingering{number}", font, brush, pen
+            self,
+            pos_x,
+            staff,
+            string,
+            TabNumber._number_to_digit_glyph_names(number),
+            font,
+            brush,
+            pen,
+            hide_background,
         )
+
+    @staticmethod
+    def _number_to_digit_glyph_names(number: int) -> list[str]:
+        return [f"fingering{digit}" for digit in str(number)]

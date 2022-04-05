@@ -49,6 +49,7 @@ class QClippingPath(QGraphicsPathItem):
         clip_start_x: float = 0,
         clip_width: Optional[float] = None,
         scale: float = 1,
+        rotation: float = 0,
         background_brush: QBrush = None,
     ):
         """
@@ -62,6 +63,8 @@ class QClippingPath(QGraphicsPathItem):
                 for scaling, as that is performed automatically. Use `None` to render
                 to the end
             scale: A scaling factor on the object's coordinate system.
+            rotation: Rotation about the path's origin given in degrees. Rotated path
+                clipping is currently not supported.
             background_brush: If given, this will be used to paint over the path's
                 bounding rect behind the path.
         """
@@ -71,6 +74,7 @@ class QClippingPath(QGraphicsPathItem):
         self.clip_width = None if clip_width is None else clip_width / scale
         self.setCacheMode(QGraphicsItem.CacheMode.DeviceCoordinateCache)
         self.padding = self.pen().width() / scale
+        self.setRotation(rotation)
         self.background_brush = background_brush
         self.update_geometry()
 

@@ -1,18 +1,18 @@
 from collections.abc import Iterable
 from typing import Optional
 
+from neoscore.core.directions import HorizontalDirection, VerticalDirection
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.models import notehead_tables
-from neoscore.models.directions import HorizontalDirection, VerticalDirection
-from neoscore.models.duration import Duration, DurationDef
-from neoscore.models.notehead_tables import NoteheadTable
-from neoscore.models.pitch import PitchDef
 from neoscore.utils.point import ORIGIN, Point
 from neoscore.utils.units import ZERO, Unit
+from neoscore.western import notehead_tables
 from neoscore.western.accidental import Accidental
+from neoscore.western.duration import Duration, DurationDef
 from neoscore.western.flag import Flag
 from neoscore.western.ledger_line import LedgerLine
 from neoscore.western.notehead import Notehead
+from neoscore.western.notehead_tables import NoteheadTable
+from neoscore.western.pitch import PitchDef
 from neoscore.western.rest import Rest
 from neoscore.western.rhythm_dot import RhythmDot
 from neoscore.western.staff import Staff

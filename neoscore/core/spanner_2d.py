@@ -6,11 +6,15 @@ from typing import TYPE_CHECKING, cast
 from neoscore.core.mapping import map_between
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner import Spanner
+from neoscore.utils.math_helpers import point_angle
 from neoscore.utils.point import Point
 from neoscore.utils.units import Unit
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
+
+
+# TODO MEDIUM make this support PointDef in end_pos
 
 
 class Spanner2D(Spanner):
@@ -45,16 +49,25 @@ class Spanner2D(Spanner):
         Note: This takes into account both the x and y axis. For only
             the horizontal length, use `spanner_x_length`.
         """
-        if self.end_parent == self:
-            relative_stop = self.end_pos
-        else:
-            relative_stop = (
-                map_between(cast(PositionedObject, self), self.end_parent)
-                + self.end_pos
-            )
+        relative_end_pos = self._relative_end_pos()
         distance = Unit(
             math.sqrt(
-                (relative_stop.x.base_value**2) + (relative_stop.y.base_value**2)
+                (relative_end_pos.x.base_value**2)
+                + (relative_end_pos.y.base_value**2)
             )
         )
         return type(cast(PositionedObject, self).pos.x)(distance)
+
+    @property
+    def angle(self) -> float:
+        """The angle from the start to end point in degrees."""
+        return math.degrees(point_angle(self._relative_end_pos()))
+
+    def _relative_end_pos(self):
+        if self.end_parent == self:
+            return self.end_pos
+        else:
+            return (
+                map_between(cast(PositionedObject, self), self.end_parent)
+                + self.end_pos
+            )

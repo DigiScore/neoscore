@@ -60,3 +60,10 @@ class TestText(AppTest):
         assert obj.background_brush == bg_brush
         obj.background_brush = "#00ffff"
         assert obj.background_brush == Brush("#00ffff")
+
+    def test_rotation(self):
+        obj = Text((Unit(5), Unit(6)), None, "testing")
+        assert obj.rotation == 0
+        obj.rotation = 123
+        assert obj.rotation == 123
+        assert Text((Unit(5), Unit(6)), None, "testing", rotation=123).rotation == 123
