@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional, cast
+from typing import TYPE_CHECKING, Any, Optional, cast
 
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.spanner_2d import Spanner2D
 from neoscore.utils.point import Point, PointDef
-from neoscore.utils.units import Unit
+from neoscore.utils.units import ZERO, Unit
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
@@ -26,10 +26,11 @@ class RepeatingMusicTextLine(MusicText, Spanner2D):
     def __init__(
         self,
         start: PointDef,
-        start_parent: Parent,
+        start_parent: Optional[Parent],
         end_pos: PointDef,
         end_parent: Optional[Parent],
-        text,
+        text: Any,
+        end_cap_text: Any = None,
         font: Optional[MusicFont] = None,
     ):
         """
@@ -53,10 +54,20 @@ class RepeatingMusicTextLine(MusicText, Spanner2D):
         MusicText.__init__(self, start, start_parent, text, font)
         Spanner2D.__init__(self, Point.from_def(end_pos), end_parent or self)
         self.rotation = self.angle
-        self.single_repetition_chars = self.music_chars
-        base_width = self.font.bounding_rect_of(self.text).width
-        repetitions_needed = int(cast(float, self.spanner_2d_length / base_width))
-        self.music_chars = self.music_chars * repetitions_needed
+        single_repetition_chars = self.music_chars
+        main_char_width = self.font.bounding_rect_of(self.text).width
+        if end_cap_text:
+            # Again need to hackily set temporary text value to work out the width
+            self.text = end_cap_text
+            end_cap_chars = self.music_chars
+            end_cap_width = self.font.bounding_rect_of(self.text).width
+        else:
+            end_cap_chars = []
+            end_cap_width = ZERO
+        main_reps_needed = int(
+            cast(float, (self.spanner_2d_length - end_cap_width) / main_char_width)
+        )
+        self.music_chars = (single_repetition_chars * main_reps_needed) + end_cap_chars
 
     ######## PUBLIC PROPERTIES ########
 

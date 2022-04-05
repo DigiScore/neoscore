@@ -32,4 +32,15 @@ html = "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusm
 rich_text = RichText((Mm(30), Mm(50)), None, html, Mm(30), tfont, rotation=-20)
 
 
+arp = RepeatingMusicTextLine(
+    (Mm(60), Mm(50)),
+    None,
+    (Mm(0), Mm(-10)),
+    None,
+    "wiggleArpeggiatoUp",
+    "wiggleArpeggiatoUpArrow",
+    mfont,
+)
+
+
 neoscore.show()

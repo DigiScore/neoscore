@@ -111,7 +111,8 @@ trill = RepeatingMusicTextLine(
     lowest_staff,
     (lowest_staff.unit(20), lowest_staff.unit(-2)),
     None,
-    "wiggleTrill",
+    "wiggleArpeggiatoUp",
+    "wiggleArpeggiatoUpArrow",
 )
 
 text_on_first_page = Text((Mm(0), Mm(0)), None, "first page!")
