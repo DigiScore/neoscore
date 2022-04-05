@@ -14,7 +14,12 @@ if TYPE_CHECKING:
 
 class RepeatingMusicTextLine(MusicText, Spanner2D):
 
-    """A spanner of repeating music text over its length."""
+    """A spanner of repeating music text over its length.
+
+    This automatically rotates the text to support 2D lines, but
+    please note that rotated text breaking across flowable lines is
+    not yet fully supported and will display incorrectly.
+    """
 
     # TODO MEDIUM figure out how to type `text` - same problem as in `MusicText`
 
