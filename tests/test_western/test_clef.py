@@ -1,5 +1,8 @@
+from neoscore.core.brush import Brush
+from neoscore.core.music_font import MusicFont
+from neoscore.core.pen import Pen
 from neoscore.utils.point import ORIGIN, Point
-from neoscore.utils.units import Mm
+from neoscore.utils.units import Inch, Mm
 from neoscore.western import clef_type
 from neoscore.western.clef import Clef
 from neoscore.western.staff import Staff
@@ -29,6 +32,31 @@ class TestClef(AppTest):
 
     def test_init_with_str_clef_type(self):
         assert Clef(Mm(1), self.staff, "treble").clef_type == clef_type.TREBLE
+
+    def test_font_defaults_to_staff(self):
+        clef = Clef(Mm(10), self.staff, "treble")
+        assert clef.music_font == self.staff.music_font
+
+    def test_font_override(self):
+        font = MusicFont("Bravura", Inch)
+        clef = Clef(Mm(10), self.staff, "treble", font)
+        assert clef.music_font == font
+
+    def test_brush_default(self):
+        clef = Clef(Mm(10), self.staff, "treble")
+        assert clef.brush == Brush()
+
+    def test_brush_override(self):
+        clef = Clef(Mm(10), self.staff, "treble", brush="#ff0000")
+        assert clef.brush == Brush("#ff0000")
+
+    def test_pen_default_is_no_pen(self):
+        clef = Clef(Mm(10), self.staff, "treble")
+        assert clef.pen == Pen.no_pen()
+
+    def test_pen_override(self):
+        clef = Clef(Mm(10), self.staff, "treble", pen="#ff0000")
+        assert clef.pen == Pen("#ff0000")
 
     def test_breakable_length_with_no_other_clefs(self):
         clef = Clef(Mm(1), self.staff, clef_type.TREBLE)

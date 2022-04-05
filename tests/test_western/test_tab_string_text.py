@@ -10,7 +10,7 @@ from neoscore.western.tab_string_text import TabStringText
 from ..helpers import AppTest
 
 
-class TestTabClef(AppTest):
+class TestTabStringText(AppTest):
     def setUp(self):
         super().setUp()
         self.staff = TabStaff(ORIGIN, None, Mm(200))

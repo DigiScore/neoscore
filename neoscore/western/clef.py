@@ -1,4 +1,9 @@
+from typing import Optional
+
+from neoscore.core.brush import BrushDef
+from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
+from neoscore.core.pen import PenDef
 from neoscore.utils.point import Point
 from neoscore.utils.units import ZERO, Unit
 from neoscore.western.clef_type import ClefType, ClefTypeDef
@@ -17,7 +22,15 @@ class Clef(MusicText, StaffObject):
     `Staff`s use these to determine how pitches within them should be laid out.
     """
 
-    def __init__(self, pos_x: Unit, staff: Staff, clef_type: ClefTypeDef):
+    def __init__(
+        self,
+        pos_x: Unit,
+        staff: Staff,
+        clef_type: ClefTypeDef,
+        font: Optional[MusicFont] = None,
+        brush: Optional[BrushDef] = None,
+        pen: Optional[PenDef] = None,
+    ):
         """
         Args:
             pos_x: The x position in the staff
@@ -27,12 +40,7 @@ class Clef(MusicText, StaffObject):
         """
         StaffObject.__init__(self, staff)
         # Init with placeholder y position and text; clef_type setter will update
-        MusicText.__init__(
-            self,
-            (pos_x, ZERO),
-            staff,
-            "",
-        )
+        MusicText.__init__(self, (pos_x, ZERO), staff, "", font, brush, pen)
         self.clef_type = clef_type
 
     ######## PUBLIC PROPERTIES ########
