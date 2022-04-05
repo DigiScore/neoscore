@@ -2,8 +2,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Optional, cast
 
+from neoscore.core.brush import BrushDef
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
+from neoscore.core.pen import PenDef
 from neoscore.core.spanner_2d import Spanner2D
 from neoscore.utils.point import Point, PointDef
 from neoscore.utils.units import ZERO, Unit
@@ -30,8 +32,11 @@ class RepeatingMusicTextLine(MusicText, Spanner2D):
         end_pos: PointDef,
         end_parent: Optional[Parent],
         text: Any,
-        end_cap_text: Any = None,
+        end_cap_text: Optional[Any] = None,
         font: Optional[MusicFont] = None,
+        brush: Optional[BrushDef] = None,
+        pen: Optional[PenDef] = None,
+        background_brush: Optional[BrushDef] = None,
     ):
         """
         Args:
@@ -45,13 +50,29 @@ class RepeatingMusicTextLine(MusicText, Spanner2D):
                 The text to be repeated over the spanner,
                 represented as a str (glyph name), tuple
                 (glyph name, alternate number), MusicChar, or a list of them.
+            end_cap_text: A text specifier for the end of text. Especially useful
+                for line terminators like arrows at the end of arppeggio lines.
+                This can be provided in the same form as `text`.
             font: If provided, this overrides any font found in the ancestor chain.
+            brush: The brush to fill in text shapes with.
+            pen: The pen to trace text outlines with. This defaults to no pen.
+            background_brush: Optional brush used to paint the text's bounding rect
+                behind it.
         """
         # Start the MusicText with a single repetition, then after
         # superclasses are set up figure out how many repetitions are
         # needed to cover `self.length` and update the text
         # accordingly.
-        MusicText.__init__(self, start, start_parent, text, font)
+        MusicText.__init__(
+            self,
+            start,
+            start_parent,
+            text,
+            font,
+            brush,
+            pen,
+            background_brush=background_brush,
+        )
         Spanner2D.__init__(self, Point.from_def(end_pos), end_parent or self)
         self.rotation = self.angle
         single_repetition_chars = self.music_chars
