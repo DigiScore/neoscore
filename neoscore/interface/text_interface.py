@@ -58,6 +58,7 @@ class TextInterface(PositionedObjectInterface):
     scale: float = 1
 
     rotation: float = 0
+    """Rotation angle in degrees"""
 
     background_brush: Optional[BrushInterface] = None
 

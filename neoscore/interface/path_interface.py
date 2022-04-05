@@ -46,6 +46,7 @@ class PathInterface(PositionedObjectInterface):
     elements: list[ResolvedPathElement]
 
     rotation: float = 0
+    """Rotation angle in degrees"""
 
     background_brush: Optional[BrushInterface] = None
 
