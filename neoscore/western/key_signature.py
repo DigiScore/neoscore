@@ -4,11 +4,10 @@ from typing import Optional, Union
 from neoscore.core.mapping import map_between
 from neoscore.core.music_text import MusicText
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.models.accidental_type import AccidentalType
-from neoscore.models.key_signature_type import KeySignatureType
 from neoscore.utils.point import ORIGIN, Point
 from neoscore.utils.units import ZERO, Unit
-from neoscore.western import clef_type
+from neoscore.western.accidental_type import AccidentalType
+from neoscore.western.key_signature_type import KeySignatureType
 from neoscore.western.staff import Staff
 from neoscore.western.staff_object import StaffObject
 

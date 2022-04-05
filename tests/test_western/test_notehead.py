@@ -2,10 +2,10 @@ from typing import Optional
 
 from neoscore.core.flowable import Flowable
 from neoscore.core.music_char import MusicChar
-from neoscore.models import notehead_tables
-from neoscore.models.duration import Duration
 from neoscore.utils.units import Mm
+from neoscore.western import notehead_tables
 from neoscore.western.clef import Clef
+from neoscore.western.duration import Duration
 from neoscore.western.notehead import Notehead
 from neoscore.western.staff import Staff
 

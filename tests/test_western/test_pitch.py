@@ -2,8 +2,8 @@ import unittest
 
 import pytest
 
-from neoscore.models.accidental_type import AccidentalType
-from neoscore.models.pitch import InvalidPitchDescriptionError, Pitch
+from neoscore.western.accidental_type import AccidentalType
+from neoscore.western.pitch import InvalidPitchDescriptionError, Pitch
 
 
 class TestPitch(unittest.TestCase):

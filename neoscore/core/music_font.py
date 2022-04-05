@@ -5,7 +5,7 @@ from typing import Dict, Optional, Type
 
 from neoscore.core import neoscore
 from neoscore.core.font import Font
-from neoscore.models.glyph_info import GlyphInfo
+from neoscore.core.glyph_info import GlyphInfo
 from neoscore.utils import smufl
 from neoscore.utils.exceptions import (
     MusicFontGlyphNotFoundError,

@@ -1,9 +1,8 @@
 from neoscore.constants import DEFAULT_MUSIC_FONT_NAME
 from neoscore.core.music_font import MusicFont
-from neoscore.models import notehead_tables
 from neoscore.utils.units import Mm
-
-from ..helpers import AppTest
+from neoscore.western import notehead_tables
+from tests.helpers import AppTest
 
 
 class TestNoteheadTables(AppTest):

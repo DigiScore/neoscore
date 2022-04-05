@@ -2,8 +2,8 @@ from dataclasses import dataclass
 from functools import cached_property
 from typing import Optional
 
+from neoscore.core.glyph_info import GlyphInfo
 from neoscore.core.music_font import MusicFont
-from neoscore.models.glyph_info import GlyphInfo
 
 
 @dataclass(frozen=True)

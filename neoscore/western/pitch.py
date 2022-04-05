@@ -4,8 +4,8 @@ import re
 from dataclasses import dataclass
 from typing import Optional, Union
 
-from neoscore.models.accidental_type import AccidentalType
 from neoscore.utils.exceptions import InvalidPitchDescriptionError
+from neoscore.western.accidental_type import AccidentalType
 
 
 @dataclass(frozen=True)

@@ -1,6 +1,6 @@
 from enum import Enum
 
-from neoscore.models.accidental_type import AccidentalType
+from neoscore.western.accidental_type import AccidentalType
 
 
 class KeySignatureType(Enum):

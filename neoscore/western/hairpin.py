@@ -4,13 +4,13 @@ import math
 from typing import TYPE_CHECKING, Optional
 
 from neoscore.core.brush import Brush
+from neoscore.core.directions import HorizontalDirection
 from neoscore.core.mapping import map_between
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
 from neoscore.core.pen import Pen
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner_2d import Spanner2D
-from neoscore.models.directions import HorizontalDirection
 from neoscore.utils.point import Point, PointDef
 from neoscore.utils.units import ZERO, Unit
 

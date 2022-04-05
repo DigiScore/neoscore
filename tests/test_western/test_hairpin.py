@@ -1,5 +1,5 @@
+from neoscore.core.directions import HorizontalDirection
 from neoscore.core.flowable import Flowable
-from neoscore.models.directions import HorizontalDirection
 from neoscore.utils.point import Point
 from neoscore.utils.units import Mm, Unit
 from neoscore.western.hairpin import Hairpin

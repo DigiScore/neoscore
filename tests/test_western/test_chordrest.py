@@ -1,12 +1,12 @@
+from neoscore.core.directions import VerticalDirection
 from neoscore.core.flowable import Flowable
-from neoscore.models.directions import VerticalDirection
-from neoscore.models.duration import Duration
-from neoscore.models.pitch import Pitch
 from neoscore.utils.point import Point
 from neoscore.utils.units import Mm
 from neoscore.western.chordrest import Chordrest
 from neoscore.western.clef import Clef
+from neoscore.western.duration import Duration
 from neoscore.western.key_signature import KeySignature
+from neoscore.western.pitch import Pitch
 from neoscore.western.staff import Staff
 from tests.helpers import assert_almost_equal, render_scene
 

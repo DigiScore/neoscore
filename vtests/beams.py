@@ -2,10 +2,9 @@ import os
 import sys
 from typing import NamedTuple, Optional
 
-from neoscore.common import *
-from neoscore.models.directions import VerticalDirection
-from neoscore.models.duration import DurationDef
-from neoscore.models.pitch import PitchDef
+from neoscore.core.directions import VerticalDirection
+from neoscore.western.duration import DurationDef
+from neoscore.western.pitch import PitchDef
 
 neoscore.setup()
 

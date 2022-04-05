@@ -8,11 +8,11 @@ from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
 from neoscore.core.pen import Pen
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.models.transposition import Transposition
 from neoscore.utils.exceptions import NoClefError
 from neoscore.utils.point import PointDef
 from neoscore.utils.units import ZERO, Unit, make_unit_class
 from neoscore.western.octave_line import OctaveLine
+from neoscore.western.transposition import Transposition
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent

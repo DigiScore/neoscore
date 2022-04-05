@@ -1,6 +1,6 @@
 import pytest
 
-from neoscore.models.interval import Interval, InvalidIntervalError
+from neoscore.western.interval import Interval, InvalidIntervalError
 
 
 def test__repr__():
