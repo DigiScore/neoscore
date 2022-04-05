@@ -4,31 +4,27 @@ from typing import TYPE_CHECKING, Optional, cast
 
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
-from neoscore.core.positioned_object import PositionedObject
-from neoscore.core.spanner import Spanner
-from neoscore.utils.point import PointDef
+from neoscore.core.spanner_2d import Spanner2D
+from neoscore.utils.point import Point, PointDef
 from neoscore.utils.units import Unit
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
 
 
-class RepeatingMusicTextLine(MusicText, Spanner):
+class RepeatingMusicTextLine(MusicText, Spanner2D):
 
     """A spanner of repeating music text over its length."""
 
     # TODO MEDIUM figure out how to type `text` - same problem as in `MusicText`
 
-    # TODO MEDIUM maybe reorder args here so end_x and end_parent are
-    # adjacent. see how other spanners do this.
-
     def __init__(
         self,
         start: PointDef,
         start_parent: Parent,
-        end_x: Unit,
+        end_pos: PointDef,
+        end_parent: Optional[Parent],
         text,
-        end_parent: Optional[PositionedObject] = None,
         font: Optional[MusicFont] = None,
     ):
         """
@@ -36,13 +32,13 @@ class RepeatingMusicTextLine(MusicText, Spanner):
             start: The starting point.
             start_parent: If no font is given, this or one of its ancestors
                 must implement `HasMusicFont`.
-            end_x: The end x position.
+            end_pos: The stopping point.
+            end_parent: The parent for the ending position.
+                If `None`, defaults to `self`.
             text (str, tuple, MusicChar, or list of these):
                 The text to be repeated over the spanner,
                 represented as a str (glyph name), tuple
                 (glyph name, alternate number), MusicChar, or a list of them.
-            end_parent: An optional parent of the end point.
-                If omitted, the end position is relative to the main object.
             font: If provided, this overrides any font found in the ancestor chain.
         """
         # Start the MusicText with a single repetition, then after
@@ -50,10 +46,11 @@ class RepeatingMusicTextLine(MusicText, Spanner):
         # needed to cover `self.length` and update the text
         # accordingly.
         MusicText.__init__(self, start, start_parent, text, font)
-        Spanner.__init__(self, end_x, end_parent or self)
+        Spanner2D.__init__(self, Point.from_def(end_pos), end_parent or self)
+        self.rotation = self.angle
         self.single_repetition_chars = self.music_chars
         base_width = self.font.bounding_rect_of(self.text).width
-        repetitions_needed = int(cast(float, self.breakable_length / base_width))
+        repetitions_needed = int(cast(float, self.spanner_2d_length / base_width))
         self.music_chars = self.music_chars * repetitions_needed
 
     ######## PUBLIC PROPERTIES ########

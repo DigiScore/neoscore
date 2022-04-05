@@ -1,5 +1,7 @@
 """General math helper tools."""
 
+import math
+
 from neoscore.utils.point import Point
 from neoscore.utils.units import Unit
 
@@ -85,3 +87,14 @@ def sign(value: Unit) -> int:
 
 def is_power_of_2(value: int) -> bool:
     return (value & (value - 1) == 0) and value != 0
+
+
+def point_angle(point: Point) -> float:
+    """Calculate the angle from the positive X axis to a point in radians.
+
+    The returned angle goes positive clockwise and is between pi and -pi.
+
+    Combine with the Python stdlib function `math.degrees()` to get
+    the angle in degrees.
+    """
+    return math.atan2(point.y.base_value, point.x.base_value)

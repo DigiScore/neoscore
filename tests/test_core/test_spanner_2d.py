@@ -1,4 +1,3 @@
-from neoscore.core import neoscore
 from neoscore.core.painted_object import PaintedObject
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner_2d import Spanner2D
@@ -33,27 +32,14 @@ class TestSpanner2D(AppTest):
         spanner.end_pos = Point(Unit(12), Unit(34))
         assert spanner.end_pos == Point(Unit(12), Unit(34))
 
-    def test_length_no_parents(self):
+    def test_length_with_no_end_parent(self):
         spanner = MockSpanner2D(
-            Point(Unit(1), Unit(2)),
-            neoscore.document.pages[0],
-            Point(Unit(5), Unit(7)),
-            neoscore.document.pages[0],
-        )
-        # math.sqrt(((5-1)**2) + ((7-2)**2))
-        assert_almost_equal(spanner.spanner_2d_length, Unit(6.4031242374328485))
-
-    def test_length_with_self_parent(self):
-        parent = MockSpanner2D(
-            Point(Unit(1), Unit(2)), None, Point(Unit(0), Unit(0)), None
-        )
-        spanner = MockSpanner2D(
-            Point(Unit(3), Unit(7)), parent, Point(Unit(4), Unit(5)), None
+            Point(Unit(3), Unit(7)), None, Point(Unit(4), Unit(5)), None
         )
         # math.sqrt((4**2) + (5**2))
         assert_almost_equal(spanner.spanner_2d_length, Unit(6.4031242374328485))
 
-    def test_length_with_parents(self):
+    def test_length_with_end_parent(self):
         parent_1 = PositionedObject((Unit(1), Unit(2)), None)
         parent_2 = PositionedObject((Unit(11), Unit(12)), None)
         spanner = MockSpanner2D(
@@ -61,3 +47,17 @@ class TestSpanner2D(AppTest):
         )
         # math.sqrt(((15-2)**2) + ((17-4)**2))
         assert_almost_equal(spanner.spanner_2d_length, Unit(18.384776310850235))
+
+    def test_angle_with_no_end_parent(self):
+        spanner = MockSpanner2D(
+            Point(Unit(3), Unit(7)), None, Point(Unit(4), Unit(5)), None
+        )
+        self.assertAlmostEqual(spanner.angle, 51.34019174590991)
+
+    def test_angle_with_end_parent(self):
+        parent_1 = PositionedObject((Unit(1), Unit(2)), None)
+        parent_2 = PositionedObject((Unit(11), Unit(12)), None)
+        spanner = MockSpanner2D(
+            Point(Unit(1), Unit(2)), parent_1, Point(Unit(4), Unit(5)), parent_2
+        )
+        self.assertAlmostEqual(spanner.angle, 45.0)

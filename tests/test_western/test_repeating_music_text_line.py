@@ -23,10 +23,16 @@ class TestRepeatingMusicTextLine(AppTest):
 
     def test_init(self):
         line = RepeatingMusicTextLine(
-            (Mm(1), Mm(2)), self.left_parent, Mm(3), self.char, self.right_parent
+            (Mm(1), Mm(2)),
+            self.left_parent,
+            (Mm(3), Mm(-2)),
+            self.right_parent,
+            self.char,
         )
         assert line.single_repetition_chars == [
             MusicChar(self.staff.music_font, "gClef")
         ]
         expected_reps = int(Mm(12) / self.single_repetition_width)
         assert len(line.music_chars) == expected_reps
+        self.assertAlmostEqual(line.rotation, -9.462322208025618)
+        assert line.rotation == line.angle
