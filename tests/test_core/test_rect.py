@@ -1,5 +1,5 @@
-from neoscore.utils.rect import Rect, rect_from_def
-from neoscore.utils.units import Mm
+from neoscore.core.rect import Rect, rect_from_def
+from neoscore.core.units import Mm
 
 
 def test_rect_multiplication():

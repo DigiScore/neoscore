@@ -4,7 +4,7 @@ from neoscore.core.font import Font
 from neoscore.core.pen import Pen
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.text import Text
-from neoscore.utils.units import ZERO, Unit
+from neoscore.core.units import ZERO, Unit
 
 from ..helpers import AppTest
 

@@ -7,10 +7,10 @@ from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
 from neoscore.core.pen import PenDef
+from neoscore.core.point import PointDef
+from neoscore.core.rect import Rect
 from neoscore.core.text import Text
-from neoscore.utils.point import PointDef
-from neoscore.utils.rect import Rect
-from neoscore.utils.units import Unit
+from neoscore.core.units import Unit
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent

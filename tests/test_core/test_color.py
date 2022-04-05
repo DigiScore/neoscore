@@ -2,7 +2,7 @@ import unittest
 
 import pytest
 
-from neoscore.utils.color import Color, ColorBoundsError
+from neoscore.core.color import Color, ColorBoundsError
 
 
 class TestColor(unittest.TestCase):

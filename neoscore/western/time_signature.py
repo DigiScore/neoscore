@@ -5,9 +5,9 @@ from typing import TYPE_CHECKING, Optional
 from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
+from neoscore.core.point import Point
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.utils.point import Point
-from neoscore.utils.units import ZERO, Unit
+from neoscore.core.units import ZERO, Unit
 from neoscore.western.meter import Meter, MeterDef
 
 if TYPE_CHECKING:

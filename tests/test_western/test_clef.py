@@ -1,8 +1,8 @@
 from neoscore.core.brush import Brush
 from neoscore.core.music_font import MusicFont
 from neoscore.core.pen import Pen
-from neoscore.utils.point import ORIGIN, Point
-from neoscore.utils.units import Inch, Mm
+from neoscore.core.point import ORIGIN, Point
+from neoscore.core.units import Inch, Mm
 from neoscore.western import clef_type
 from neoscore.western.clef import Clef
 from neoscore.western.staff import Staff

@@ -2,8 +2,7 @@ from __future__ import annotations
 
 from enum import Enum
 
-from neoscore.utils.math_helpers import sign
-from neoscore.utils.units import Unit
+from neoscore.core.units import Unit
 
 
 class VerticalDirection(Enum):

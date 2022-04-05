@@ -4,12 +4,12 @@ from neoscore.core.brush import Brush, BrushDef
 from neoscore.core.directions import HorizontalDirection, VerticalDirection
 from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.mapping import map_between, map_between_x
+from neoscore.core.math_helpers import sign
 from neoscore.core.music_font import MusicFont
 from neoscore.core.pen import Pen, PenDef
+from neoscore.core.point import ORIGIN, Point
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.utils.math_helpers import sign
-from neoscore.utils.point import ORIGIN, Point
-from neoscore.utils.units import ZERO, Unit
+from neoscore.core.units import ZERO, Unit
 from neoscore.western.beam import Beam
 from neoscore.western.chordrest import Chordrest
 

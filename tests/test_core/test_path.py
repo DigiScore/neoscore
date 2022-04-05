@@ -6,14 +6,14 @@ from neoscore.core.brush import Brush
 from neoscore.core.path import Path
 from neoscore.core.path_element import ControlPoint, CurveTo, LineTo, MoveTo
 from neoscore.core.pen import Pen
+from neoscore.core.point import ORIGIN, Point
 from neoscore.core.positioned_object import PositionedObject
+from neoscore.core.units import ZERO, Unit
 from neoscore.interface.path_interface import (
     ResolvedCurveTo,
     ResolvedLineTo,
     ResolvedMoveTo,
 )
-from neoscore.utils.point import ORIGIN, Point
-from neoscore.utils.units import ZERO, Unit
 
 from ..helpers import AppTest, assert_path_els_equal
 

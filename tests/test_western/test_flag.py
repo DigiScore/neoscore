@@ -2,8 +2,8 @@ import pytest
 
 from neoscore.core.directions import VerticalDirection
 from neoscore.core.music_char import MusicChar
-from neoscore.utils.point import ORIGIN
-from neoscore.utils.units import Mm
+from neoscore.core.point import ORIGIN
+from neoscore.core.units import Mm
 from neoscore.western.duration import Duration
 from neoscore.western.flag import Flag, NoFlagNeededError
 from neoscore.western.staff import Staff

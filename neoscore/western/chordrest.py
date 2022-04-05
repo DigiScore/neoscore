@@ -2,9 +2,9 @@ from collections.abc import Iterable
 from typing import Optional
 
 from neoscore.core.directions import HorizontalDirection, VerticalDirection
+from neoscore.core.point import ORIGIN, Point
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.utils.point import ORIGIN, Point
-from neoscore.utils.units import ZERO, Unit
+from neoscore.core.units import ZERO, Unit
 from neoscore.western import notehead_tables
 from neoscore.western.accidental import Accidental
 from neoscore.western.duration import Duration, DurationDef

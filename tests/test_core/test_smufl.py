@@ -1,6 +1,6 @@
 import pytest
 
-from neoscore.utils import smufl
+from neoscore.core import smufl
 
 """  glyphnames.json
 "6stringTabClef": {

@@ -3,9 +3,9 @@ from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.pen import Pen
+from neoscore.core.point import ORIGIN
 from neoscore.core.repeating_music_text_line import RepeatingMusicTextLine
-from neoscore.utils.point import ORIGIN
-from neoscore.utils.units import Inch, Mm
+from neoscore.core.units import Inch, Mm
 from neoscore.western.staff import Staff
 from tests.helpers import AppTest
 from tests.mocks.mock_staff_object import MockStaffObject

@@ -1,7 +1,7 @@
 import math
 import unittest
 
-from neoscore.utils.math_helpers import (
+from neoscore.core.math_helpers import (
     clamp_value,
     interpolate,
     is_power_of_2,
@@ -9,8 +9,8 @@ from neoscore.utils.math_helpers import (
     point_angle,
     sign,
 )
-from neoscore.utils.point import Point
-from neoscore.utils.units import ZERO, Unit
+from neoscore.core.point import Point
+from neoscore.core.units import ZERO, Unit
 
 
 class TestMathHelpers(unittest.TestCase):

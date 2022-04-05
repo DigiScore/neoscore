@@ -1,6 +1,6 @@
 from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
-from neoscore.utils.units import Unit
+from neoscore.core.units import Unit
 
 from ..helpers import AppTest
 

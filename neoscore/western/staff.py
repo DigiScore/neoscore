@@ -3,14 +3,14 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Type, cast
 
 from neoscore import constants
+from neoscore.core.exceptions import NoClefError
 from neoscore.core.mapping import map_between_x
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
 from neoscore.core.pen import Pen
+from neoscore.core.point import PointDef
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.utils.exceptions import NoClefError
-from neoscore.utils.point import PointDef
-from neoscore.utils.units import ZERO, Unit, make_unit_class
+from neoscore.core.units import ZERO, Unit, make_unit_class
 from neoscore.western.octave_line import OctaveLine
 from neoscore.western.transposition import Transposition
 

@@ -6,7 +6,7 @@ from neoscore.core.mapping import map_between
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.utils.units import ZERO, Unit
+from neoscore.core.units import ZERO, Unit
 from neoscore.western import notehead_tables
 from neoscore.western.duration import Duration, DurationDef
 from neoscore.western.duration_display import DurationDisplay

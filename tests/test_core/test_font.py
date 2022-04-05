@@ -1,8 +1,8 @@
 import pytest
 
 from neoscore.core.font import Font
-from neoscore.utils.rect import Rect
-from neoscore.utils.units import GraphicUnit
+from neoscore.core.rect import Rect
+from neoscore.core.units import GraphicUnit
 
 from ..helpers import AppTest
 

@@ -2,7 +2,7 @@ import unittest
 
 from neoscore.core import paper
 from neoscore.core.paper import Paper
-from neoscore.utils.units import Mm
+from neoscore.core.units import Mm
 
 
 class TestPaper(unittest.TestCase):

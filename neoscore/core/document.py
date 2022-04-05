@@ -3,9 +3,9 @@ from collections.abc import Callable
 from neoscore import constants
 from neoscore.core.page_supplier import PageSupplier
 from neoscore.core.paper import Paper
-from neoscore.utils.point import Point
-from neoscore.utils.rect import Rect
-from neoscore.utils.units import ZERO, Unit
+from neoscore.core.point import Point
+from neoscore.core.rect import Rect
+from neoscore.core.units import ZERO, Unit
 
 
 class Document:

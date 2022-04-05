@@ -4,7 +4,7 @@ from dataclasses import InitVar, dataclass, field
 from fractions import Fraction
 from typing import Optional, Union
 
-from neoscore.utils.math_helpers import is_power_of_2
+from neoscore.core.math_helpers import is_power_of_2
 from neoscore.western.duration_display import DurationDisplay
 
 

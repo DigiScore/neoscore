@@ -12,11 +12,11 @@ from neoscore.core.music_text import MusicText
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
 from neoscore.core.pen_pattern import PenPattern
+from neoscore.core.point import ORIGIN, Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner import Spanner
+from neoscore.core.units import Unit
 from neoscore.interface.text_interface import TextInterface
-from neoscore.utils.point import ORIGIN, Point, PointDef
-from neoscore.utils.units import Unit
 from neoscore.western.interval import Interval
 from neoscore.western.transposition import Transposition
 

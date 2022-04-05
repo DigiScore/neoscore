@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Type, cast
 
+from neoscore.core.exceptions import NoAncestorWithMusicFontError
 from neoscore.core.mapping import first_ancestor_with_attr
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.utils.exceptions import NoAncestorWithMusicFontError
-from neoscore.utils.units import Unit
+from neoscore.core.units import Unit
 
 if TYPE_CHECKING:
     from neoscore.core.music_font import MusicFont

@@ -1,5 +1,5 @@
-from neoscore.utils.point import ORIGIN
-from neoscore.utils.units import Mm
+from neoscore.core.point import ORIGIN
+from neoscore.core.units import Mm
 from neoscore.western.invisible_clef import InvisibleClef
 from neoscore.western.staff import Staff
 

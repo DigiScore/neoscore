@@ -3,13 +3,13 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 
 from neoscore.core.directions import VerticalDirection
+from neoscore.core.math_helpers import sign
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
 from neoscore.core.path_element import PathElement
 from neoscore.core.pen import Pen
-from neoscore.utils.math_helpers import sign
-from neoscore.utils.point import PointDef
-from neoscore.utils.units import ZERO, Unit
+from neoscore.core.point import PointDef
+from neoscore.core.units import ZERO, Unit
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent

@@ -1,6 +1,6 @@
 from neoscore.core.music_char import MusicChar
-from neoscore.utils.point import ORIGIN
-from neoscore.utils.units import Mm
+from neoscore.core.point import ORIGIN
+from neoscore.core.units import Mm
 from neoscore.western.tab_number import TabNumber
 from neoscore.western.tab_staff import TabStaff
 

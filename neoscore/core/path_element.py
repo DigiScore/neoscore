@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from neoscore.core.point import Point
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.utils.point import Point
 
 if TYPE_CHECKING:
     pass

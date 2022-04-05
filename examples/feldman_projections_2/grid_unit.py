@@ -1,5 +1,5 @@
 from examples.feldman_projections_2.measure import Measure
-from neoscore.utils.units import Unit
+from neoscore.core.units import Unit
 
 
 class GridUnit(Unit):

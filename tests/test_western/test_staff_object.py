@@ -3,7 +3,7 @@ import unittest
 from neoscore.core import neoscore
 from neoscore.core.flowable import Flowable
 from neoscore.core.paper import Paper
-from neoscore.utils.units import Mm
+from neoscore.core.units import Mm
 from neoscore.western.staff import Staff
 from tests.mocks.mock_staff_object import MockStaffObject
 

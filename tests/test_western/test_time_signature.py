@@ -1,6 +1,6 @@
 from neoscore.core.music_char import MusicChar
-from neoscore.utils.point import ORIGIN
-from neoscore.utils.units import ZERO, Mm
+from neoscore.core.point import ORIGIN
+from neoscore.core.units import ZERO, Mm
 from neoscore.western.meter import COMMON_TIME, CUT_TIME, Meter
 from neoscore.western.staff import Staff
 from neoscore.western.time_signature import TimeSignature

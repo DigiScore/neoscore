@@ -1,7 +1,7 @@
 from neoscore.core.directions import HorizontalDirection
 from neoscore.core.flowable import Flowable
-from neoscore.utils.point import Point
-from neoscore.utils.units import Mm, Unit
+from neoscore.core.point import Point
+from neoscore.core.units import Mm, Unit
 from neoscore.western.hairpin import Hairpin
 from neoscore.western.staff import Staff
 from tests.helpers import assert_almost_equal

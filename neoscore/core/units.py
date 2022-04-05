@@ -15,7 +15,7 @@ class Unit:
     Common operators (`+`, `-`, `/`, etc.) are supported between them.
     Return values from these operations are given in the type on the left.
 
-        >>> from neoscore.utils.units import Inch, Mm
+        >>> from neoscore.core.units import Inch, Mm
         >>> print(Inch(1) + Mm(1))
         Inch(1.039)
 
@@ -23,7 +23,7 @@ class Unit:
     different units, equality is checked with a tolerance of
     `Unit(0.001)`.
 
-        >>> from neoscore.utils.units import Inch, Mm
+        >>> from neoscore.core.units import Inch, Mm
         >>> assert Inch(Mm(1)) == Mm(1)
         >>> assert Inch(Mm(1)) >= Mm(1)
         >>> assert Inch(Mm(1)) <= Mm(1)

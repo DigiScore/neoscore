@@ -1,8 +1,8 @@
 from neoscore.core import neoscore
+from neoscore.core.point import ORIGIN, Point
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.rich_text import RichText
-from neoscore.utils.point import ORIGIN, Point
-from neoscore.utils.units import ZERO, Mm, Unit
+from neoscore.core.units import ZERO, Mm, Unit
 
 from ..helpers import AppTest, render_scene
 

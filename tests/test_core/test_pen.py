@@ -1,12 +1,12 @@
 import unittest
 
+from neoscore.core.color import Color
 from neoscore.core.pen import Pen
 from neoscore.core.pen_cap_style import PenCapStyle
 from neoscore.core.pen_join_style import PenJoinStyle
 from neoscore.core.pen_pattern import PenPattern
+from neoscore.core.units import ZERO, Unit
 from neoscore.interface.pen_interface import PenInterface
-from neoscore.utils.color import Color
-from neoscore.utils.units import ZERO, Unit
 
 from ..helpers import assert_almost_equal
 

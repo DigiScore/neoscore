@@ -2,8 +2,8 @@ from neoscore.core import neoscore
 from neoscore.core.brush import Brush
 from neoscore.core.music_font import MusicFont
 from neoscore.core.pen import Pen
-from neoscore.utils.point import ORIGIN
-from neoscore.utils.units import Inch, Mm
+from neoscore.core.point import ORIGIN
+from neoscore.core.units import Inch, Mm
 from neoscore.western.tab_staff import TabStaff
 from neoscore.western.tab_string_text import TabStringText
 

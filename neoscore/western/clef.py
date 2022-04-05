@@ -4,8 +4,8 @@ from neoscore.core.brush import BrushDef
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.pen import PenDef
-from neoscore.utils.point import Point
-from neoscore.utils.units import ZERO, Unit
+from neoscore.core.point import Point
+from neoscore.core.units import ZERO, Unit
 from neoscore.western.clef_type import ClefType, ClefTypeDef
 from neoscore.western.staff import Staff
 from neoscore.western.staff_object import StaffObject

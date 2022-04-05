@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import NamedTuple, Type, Union, cast
 
-from neoscore.utils.units import ZERO, Unit
+from neoscore.core.units import ZERO, Unit
 
 
 class Point(NamedTuple):

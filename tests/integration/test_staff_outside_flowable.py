@@ -1,4 +1,4 @@
-from neoscore.utils.units import Mm
+from neoscore.core.units import Mm
 from neoscore.western.chordrest import Chordrest
 from neoscore.western.clef import Clef
 from neoscore.western.duration import Duration

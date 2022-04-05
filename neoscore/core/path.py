@@ -14,6 +14,8 @@ from neoscore.core.path_element import (
     PathElement,
 )
 from neoscore.core.pen import Pen, PenDef
+from neoscore.core.point import Point, PointDef
+from neoscore.core.units import ZERO, Mm, Unit
 from neoscore.interface.path_interface import (
     PathInterface,
     ResolvedCurveTo,
@@ -21,8 +23,6 @@ from neoscore.interface.path_interface import (
     ResolvedMoveTo,
     ResolvedPathElement,
 )
-from neoscore.utils.point import Point, PointDef
-from neoscore.utils.units import ZERO, Mm, Unit
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent

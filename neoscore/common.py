@@ -2,6 +2,7 @@ from neoscore import constants
 from neoscore.core import neoscore
 from neoscore.core.brush import Brush
 from neoscore.core.brush_pattern import BrushPattern
+from neoscore.core.color import Color
 from neoscore.core.directions import HorizontalDirection, VerticalDirection
 from neoscore.core.document import Document
 from neoscore.core.flowable import Flowable
@@ -15,14 +16,13 @@ from neoscore.core.paper import Paper
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
 from neoscore.core.pen_pattern import PenPattern
+from neoscore.core.point import ORIGIN, Point
 from neoscore.core.positioned_object import PositionedObject
+from neoscore.core.rect import Rect
 from neoscore.core.repeating_music_text_line import RepeatingMusicTextLine
 from neoscore.core.rich_text import RichText
 from neoscore.core.text import Text
-from neoscore.utils.color import Color
-from neoscore.utils.point import ORIGIN, Point
-from neoscore.utils.rect import Rect
-from neoscore.utils.units import ZERO, GraphicUnit, Inch, Mm
+from neoscore.core.units import ZERO, GraphicUnit, Inch, Mm
 from neoscore.western import notehead_tables
 from neoscore.western.accidental import Accidental
 from neoscore.western.accidental_type import AccidentalType

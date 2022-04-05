@@ -4,7 +4,7 @@ import re
 from dataclasses import dataclass
 from typing import Optional, Union
 
-from neoscore.utils.exceptions import InvalidPitchDescriptionError
+from neoscore.core.exceptions import InvalidPitchDescriptionError
 from neoscore.western.accidental_type import AccidentalType
 
 

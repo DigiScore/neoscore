@@ -1,9 +1,9 @@
 import pathlib
 
 from neoscore.core.image import Image
+from neoscore.core.point import ORIGIN, Point
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.utils.point import ORIGIN, Point
-from neoscore.utils.units import ZERO, Unit
+from neoscore.core.units import ZERO, Unit
 
 from ..helpers import AppTest, render_scene
 

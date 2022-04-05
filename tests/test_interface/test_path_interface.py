@@ -1,7 +1,10 @@
 from neoscore.core.brush_pattern import BrushPattern
+from neoscore.core.color import Color
 from neoscore.core.pen_cap_style import PenCapStyle
 from neoscore.core.pen_join_style import PenJoinStyle
 from neoscore.core.pen_pattern import PenPattern
+from neoscore.core.point import ORIGIN, Point
+from neoscore.core.units import GraphicUnit, Unit
 from neoscore.interface.brush_interface import BrushInterface
 from neoscore.interface.path_interface import (
     PathInterface,
@@ -10,9 +13,6 @@ from neoscore.interface.path_interface import (
     ResolvedMoveTo,
 )
 from neoscore.interface.pen_interface import PenInterface
-from neoscore.utils.color import Color
-from neoscore.utils.point import ORIGIN, Point
-from neoscore.utils.units import GraphicUnit, Unit
 
 from ..helpers import AppTest
 

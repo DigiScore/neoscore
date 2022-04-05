@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from typing import Optional, Union
 
+from neoscore.core.rect import Rect
+from neoscore.core.units import GraphicUnit, Unit
 from neoscore.interface.font_interface import FontInterface
-from neoscore.utils.rect import Rect
-from neoscore.utils.units import GraphicUnit, Unit
 
 
 class Font:

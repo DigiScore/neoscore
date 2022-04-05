@@ -2,9 +2,9 @@ from neoscore.core import neoscore
 from neoscore.core.flowable import Flowable
 from neoscore.core.mapping import canvas_pos_of, map_between
 from neoscore.core.paper import Paper
+from neoscore.core.point import Point
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.utils.point import Point
-from neoscore.utils.units import Mm, Unit
+from neoscore.core.units import Mm, Unit
 
 from ..helpers import AppTest, assert_almost_equal
 

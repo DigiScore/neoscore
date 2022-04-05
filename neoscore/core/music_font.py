@@ -3,17 +3,16 @@ from __future__ import annotations
 import copy
 from typing import Dict, Optional, Type
 
-from neoscore.core import neoscore
-from neoscore.core.font import Font
-from neoscore.core.glyph_info import GlyphInfo
-from neoscore.utils import smufl
-from neoscore.utils.exceptions import (
+from neoscore.core import neoscore, smufl
+from neoscore.core.exceptions import (
     MusicFontGlyphNotFoundError,
     MusicFontMetadataNotFoundError,
 )
-from neoscore.utils.platforms import PlatformType, current_platform
-from neoscore.utils.rect import Rect
-from neoscore.utils.units import Unit, convert_all_to_unit
+from neoscore.core.font import Font
+from neoscore.core.glyph_info import GlyphInfo
+from neoscore.core.platforms import PlatformType, current_platform
+from neoscore.core.rect import Rect
+from neoscore.core.units import Unit, convert_all_to_unit
 
 # TODO LOW make a nice __repr__
 
