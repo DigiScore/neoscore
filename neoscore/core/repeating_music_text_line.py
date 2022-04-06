@@ -6,7 +6,7 @@ from neoscore.core.brush import BrushDef
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.pen import PenDef
-from neoscore.core.point import Point, PointDef
+from neoscore.core.point import PointDef
 from neoscore.core.spanner_2d import Spanner2D
 from neoscore.core.units import ZERO, Unit
 
@@ -73,7 +73,7 @@ class RepeatingMusicTextLine(MusicText, Spanner2D):
             pen,
             background_brush=background_brush,
         )
-        Spanner2D.__init__(self, Point.from_def(end_pos), end_parent or self)
+        Spanner2D.__init__(self, end_pos, end_parent or self)
         self.rotation = self.angle
         single_repetition_chars = self.music_chars
         main_char_width = self.font.bounding_rect_of(self.text).width

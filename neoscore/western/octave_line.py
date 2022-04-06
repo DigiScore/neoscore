@@ -43,12 +43,6 @@ class OctaveLine(PositionedObject, Spanner, HasMusicFont):
     a dashed line ending in a small vertical hook pointing toward the staff.
     If the spanner goes across line breaks, the octave text is repeated
     in parenthesis at the line beginning.
-
-    TODO HIGH: The dashed line portion of this spanner overlaps with
-    the '8va' text. The text does apply a background brush, but since
-    it's constructed before the line, the z index doesn't work out to
-    erase the line. Seems like Z index support is needed to support
-    this.
     """
 
     intervals = {
