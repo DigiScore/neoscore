@@ -7,6 +7,7 @@ from neoscore.core.brush import BrushDef
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.pen import PenDef
+from neoscore.core.point import Point
 from neoscore.core.units import Unit
 from neoscore.western.tab_staff import TabStaff
 
@@ -62,4 +63,15 @@ class TabClef(MusicText):
     def breakable_length(self) -> Unit:
         return self.parent.breakable_length - self.x
 
-    # TODO HIGH make this render on each flowable line (Copy impl from Clef)
+    def _render_before_break(
+        self, local_start_x: Unit, start: Point, stop: Point, dist_to_line_start: Unit
+    ):
+        super()._render_complete(start)
+
+    def _render_after_break(self, local_start_x: Unit, start: Point):
+        super()._render_complete(start)
+
+    def _render_spanning_continuation(
+        self, local_start_x: Unit, start: Point, stop: Point
+    ):
+        super()._render_complete(start)

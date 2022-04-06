@@ -2,10 +2,11 @@ from neoscore.common import *
 
 neoscore.setup()
 
+flowable = Flowable(ORIGIN, None, Mm(500), Mm(40))
 
 # 6 line tab
 
-staff_1 = TabStaff(ORIGIN, None, Mm(100))
+staff_1 = TabStaff(ORIGIN, flowable, Mm(500))
 clef_1 = TabClef(ZERO, staff_1)
 
 TabNumber(Mm(5), staff_1, 1, 1)
@@ -28,16 +29,16 @@ chord_notes = [
     TabNumber(Mm(22), staff_1, 5, 3),
 ]
 u = staff_1.unit
-ArpeggioLine((u(-1), u(-1)), chord_notes[0], (u(-1), u(2)), chord_notes[-1], True)
+arp = ArpeggioLine((u(-1), u(-1)), chord_notes[0], (u(-1), u(2)), chord_notes[-1], True)
 
 
 # 4 line tab
 
-staff_2 = TabStaff((ZERO, Mm(20)), None, Mm(100), line_count=4)
+staff_2 = TabStaff((ZERO, Mm(15)), flowable, Mm(500), line_count=4)
 clef_2 = TabClef(ZERO, staff_2, "4stringTabClef")
 
 
-regular_staff = Staff((ZERO, Mm(40)), None, Mm(100))
+regular_staff = Staff((ZERO, Mm(30)), flowable, Mm(500))
 Clef(ZERO, regular_staff, "treble")
 
 all_staves = [staff_1, staff_2, regular_staff]
