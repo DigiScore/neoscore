@@ -2,7 +2,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional, cast
 
+from neoscore.core import neoscore
 from neoscore.core.brush import Brush
+from neoscore.core.directions import VerticalDirection
 from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
@@ -10,14 +12,12 @@ from neoscore.core.music_text import MusicText
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
 from neoscore.core.pen_pattern import PenPattern
+from neoscore.core.point import ORIGIN, Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner import Spanner
-from neoscore.interface.text_interface import TextInterface
-from neoscore.models.directions import VerticalDirection
-from neoscore.models.interval import Interval
-from neoscore.models.transposition import Transposition
-from neoscore.utils.point import ORIGIN, Point, PointDef
-from neoscore.utils.units import Unit
+from neoscore.core.units import Unit
+from neoscore.western.interval import Interval
+from neoscore.western.transposition import Transposition
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
@@ -43,11 +43,6 @@ class OctaveLine(PositionedObject, Spanner, HasMusicFont):
     a dashed line ending in a small vertical hook pointing toward the staff.
     If the spanner goes across line breaks, the octave text is repeated
     in parenthesis at the line beginning.
-
-    TODO LOW: The dashed line portion of this spanner overlaps with
-    the '8va' text. This is an involved fix that may require
-    implementing text background masking or a way to easily inject
-    line continuation offsets for paths.
     """
 
     intervals = {
@@ -123,6 +118,7 @@ class OctaveLine(PositionedObject, Spanner, HasMusicFont):
                 pattern=PenPattern.DASH,
             ),
         )
+        self.line_text.z_index = self.line_path.z_index + 1
         # Drawn main line part
         self.line_path.line_to(self.end_pos.x, path_y, self.end_parent)
         self.line_path.line_to(
@@ -155,7 +151,14 @@ class _OctaveLineText(MusicText):
         indication: str,
         font: MusicFont,
     ):
-        MusicText.__init__(self, pos, parent, OctaveLine.glyphs[indication], font)
+        MusicText.__init__(
+            self,
+            pos,
+            parent,
+            OctaveLine.glyphs[indication],
+            font,
+            background_brush=neoscore.background_brush,
+        )
         open_paren_char = MusicChar(self.music_font, OctaveLine.glyphs["("])
         close_paren_char = MusicChar(self.music_font, OctaveLine.glyphs[")"])
         self.parenthesized_text = (
@@ -174,36 +177,12 @@ class _OctaveLineText(MusicText):
     def _render_before_break(
         self, local_start_x: Unit, start: Point, stop: Point, dist_to_line_start: Unit
     ):
-        interface = TextInterface(
-            start,
-            self.brush.interface,
-            Pen.no_pen().interface,
-            self.text,
-            self.font.interface,
-        )
-        interface.render()
-        self.interfaces.append(interface)
+        super()._render_complete(start)
 
     def _render_after_break(self, local_start_x: Unit, start: Point):
-        interface = TextInterface(
-            start,
-            self.brush.interface,
-            Pen.no_pen().interface,
-            self.parenthesized_text,
-            self.font.interface,
-        )
-        interface.render()
-        self.interfaces.append(interface)
+        super()._render_complete(start)
 
     def _render_spanning_continuation(
         self, local_start_x: Unit, start: Point, stop: Point
     ):
-        interface = TextInterface(
-            start,
-            self.brush.interface,
-            Pen.no_pen().interface,
-            self.parenthesized_text,
-            self.font.interface,
-        )
-        interface.render()
-        self.interfaces.append(interface)
+        super()._render_complete(start)

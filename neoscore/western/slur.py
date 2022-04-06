@@ -2,13 +2,13 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional
 
-from neoscore.core.brush import SimpleBrushDef
+from neoscore.core.brush import BrushDef
+from neoscore.core.directions import VerticalDirection
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
-from neoscore.core.pen import SimplePenDef
+from neoscore.core.pen import PenDef
+from neoscore.core.point import Point, PointDef
 from neoscore.core.spanner_2d import Spanner2D
-from neoscore.models.directions import VerticalDirection
-from neoscore.utils.point import Point, PointDef
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
@@ -30,8 +30,8 @@ class Slur(MusicPath, Spanner2D):
         end_parent: Optional[Parent],
         direction: VerticalDirection = VerticalDirection.UP,
         font: Optional[MusicFont] = None,
-        brush: Optional[SimpleBrushDef] = None,
-        pen: Optional[SimplePenDef] = None,
+        brush: Optional[BrushDef] = None,
+        pen: Optional[PenDef] = None,
     ):
         """
         Args:
@@ -47,7 +47,6 @@ class Slur(MusicPath, Spanner2D):
             pen: The pen to draw outlines with.
         """
         MusicPath.__init__(self, pos, parent, font, brush, pen)
-        end_pos = Point.from_def(end_pos)
         Spanner2D.__init__(self, end_pos, end_parent or self)
         self.direction = direction
         # Load relevant engraving defaults from music font

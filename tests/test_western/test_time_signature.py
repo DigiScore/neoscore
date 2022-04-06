@@ -1,18 +1,17 @@
-import unittest
-
-from neoscore.core import neoscore
 from neoscore.core.music_char import MusicChar
-from neoscore.utils.point import ORIGIN
-from neoscore.utils.units import ZERO, Mm
+from neoscore.core.point import ORIGIN
+from neoscore.core.units import ZERO, Mm
 from neoscore.western.meter import COMMON_TIME, CUT_TIME, Meter
 from neoscore.western.staff import Staff
 from neoscore.western.time_signature import TimeSignature
 from tests.helpers import render_scene
 
+from ..helpers import AppTest
 
-class TestTimeSignature(unittest.TestCase):
+
+class TestTimeSignature(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.staff = Staff(ORIGIN, None, Mm(100))
 
     def test_with_single_digit_numeric_meter(self):

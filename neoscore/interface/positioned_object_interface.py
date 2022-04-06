@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from neoscore.utils.point import Point
+from neoscore.core.point import Point
 
 
 @dataclass(frozen=True)

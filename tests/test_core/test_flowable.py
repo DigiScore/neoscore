@@ -1,20 +1,21 @@
-import unittest
-
 import pytest
 
 from neoscore.core import neoscore
 from neoscore.core.flowable import Flowable, OutOfBoundsError
 from neoscore.core.paper import Paper
+from neoscore.core.point import Point
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.utils.point import Point
-from neoscore.utils.units import Mm
+from neoscore.core.units import Mm
 
-from ..helpers import assert_almost_equal
+from ..helpers import AppTest, assert_almost_equal
 
 
-class TestFlowable(unittest.TestCase):
+class TestFlowable(AppTest):
     def setUp(self):
-        neoscore.setup(Paper(*[Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]))
+        super().setUp()
+        neoscore.document.paper = Paper(
+            *[Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]
+        )
         # live_width == Mm(160)
         # live_height == Mm(257)
 
@@ -40,7 +41,7 @@ class TestFlowable(unittest.TestCase):
         flowable = Flowable(
             (Mm(10), Mm(11)),
             parent=parent,
-            width=Mm(1000),
+            length=Mm(1000),
             height=Mm(100),
             y_padding=Mm(5),
         )

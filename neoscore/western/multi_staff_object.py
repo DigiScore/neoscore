@@ -1,8 +1,11 @@
-from collections.abc import Iterable
+from typing import Union
 
 from neoscore.core import mapping
-from neoscore.utils.units import Unit
+from neoscore.core.units import Unit
 from neoscore.western.staff import Staff
+from neoscore.western.tab_staff import TabStaff
+
+StaffLike = Union[Staff, TabStaff]
 
 
 class MultiStaffObject:
@@ -12,45 +15,43 @@ class MultiStaffObject:
     This is a Mixin class, meant to be combined with PositionedObject classes.
 
     `MultiStaffObject`s must have their visually highest staff as their parent.
-
-    If an class is both a `MultiStaffObject` and a `StaffObject`,
-    the parent staff should be the visually highest staff listed in
-    `self.staves`.
     """
 
-    def __init__(self, staves: Staff | Iterable[Staff]):
+    def __init__(self, staves: list[StaffLike]):
         """
         Args:
-            staves: The staves this is associated with.
+            staves: The staves this is associated with, given in descending order.
         """
-        self.staves = set(staves) if isinstance(staves, Iterable) else {staves}
+        self._staves = staves
 
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def visually_sorted_staves(self) -> list[Staff]:
-        """`self.staves` as a list in visually descending order"""
-        # TODO MEDIUM this assumes that all staves have the same parent
-        return sorted(list(self.staves), key=lambda s: s.y)
+    def staves(self) -> list[StaffLike]:
+        """The staves this is associated with, given in descending order."""
+        return self._staves
+
+    @staves.setter
+    def staves(self, value: list[StaffLike]):
+        self._staves = value
 
     @property
-    def highest_staff(self) -> Staff:
-        """The visually highest staff in self.staves"""
-        return self.visually_sorted_staves[0]
+    def highest(self) -> StaffLike:
+        """Shorthand for `staves[0]`"""
+        return self.staves[0]
 
     @property
-    def lowest_staff(self) -> Staff:
-        """The visually lowest staff in self.staves"""
-        return self.visually_sorted_staves[-1]
+    def lowest(self) -> StaffLike:
+        """Shorthand for `staves[-1]`"""
+        return self.staves[-1]
 
     @property
     def vertical_span(self) -> Unit:
-        """The vertical distance covered by the staves
+        """The vertical distance covered by the staves.
 
-        The distance from the top of `self.highest_staff` to the bottom
-        of `self.lowest_staff`, in `self.highest_staff.unit` StaffUnits.
+        This distance extends from the top line of the top staff to
+        the bottom line of the bottom staff.
         """
-        return self.highest_staff.unit(
-            mapping.map_between(self.highest_staff, self.lowest_staff).y
-            + self.lowest_staff.height
-        )
+        highest = self.staves[0]
+        lowest = self.staves[-1]
+        return highest.unit(mapping.map_between(highest, lowest).y + lowest.height)

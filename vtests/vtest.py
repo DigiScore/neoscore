@@ -26,7 +26,7 @@ lower_staff = Staff((Mm(0), Mm(9)), flow, Mm(7000), Mm(1))
 
 lowest_staff = Staff((Mm(10), Mm(18)), flow, Mm(2000), Mm(1))
 
-barline = BarLine(Mm(30), [staff, lower_staff, lowest_staff])
+barline = Barline(Mm(30), [staff, lower_staff, lowest_staff])
 
 upper_staff_time_signature = TimeSignature(Mm(0), staff, (4, 4))
 
@@ -51,7 +51,7 @@ lowest_staff_key_signature = KeySignature(
     "d_minor",
 )
 
-octave_line = OctaveLine((Mm(20), staff.unit(-2)), staff, Mm(1000), indication="8vb")
+octave_line = OctaveLine((Mm(20), staff.unit(-3)), staff, Mm(1000), indication="8vb")
 
 Chordrest(Mm(10), staff, ["a'", "bs"], Duration(2, 4))
 Chordrest(Mm(40), staff, ["a'", "bs"], Duration(2, 4))
@@ -77,7 +77,7 @@ hairpin = Hairpin((Mm(0), Mm(3)), p, (Mm(0), Mm(3)), sfz, 1)
 
 slur = Slur((Mm(0), Mm(0)), regular_text, (Mm(0), Mm(0)), sfz)
 
-brace = Brace(Mm(0), {staff, lower_staff, lowest_staff})
+brace = Brace(Mm(0), [staff, lower_staff, lowest_staff])
 
 random_wiggles = [
     random.choice(["wiggleRandom1", "wiggleRandom2", "wiggleRandom3", "wiggleRandom4"])
@@ -106,8 +106,13 @@ pen = Pen(thickness=Mm(0.2), pattern=PenPattern.DASHDOTDOT)
 explicit_path = Path((Mm(0), Mm(0)), parent=p, pen=pen)
 explicit_path.line_to(Mm(5000), Mm(100))
 
-fake_trill = RepeatingMusicTextLine(
-    (Mm(30), staff.unit(-6)), staff, Mm(5000), "wiggleTrill"
+trill = RepeatingMusicTextLine(
+    (lowest_staff.unit(30), lowest_staff.unit(-0.5)),
+    lowest_staff,
+    (lowest_staff.unit(20), lowest_staff.unit(-2)),
+    None,
+    "wiggleArpeggiatoUp",
+    "wiggleArpeggiatoUpArrow",
 )
 
 text_on_first_page = Text((Mm(0), Mm(0)), None, "first page!")

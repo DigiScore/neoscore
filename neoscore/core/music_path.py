@@ -2,12 +2,12 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional
 
-from neoscore.core.brush import SimpleBrushDef
+from neoscore.core.brush import BrushDef
 from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.music_font import MusicFont
 from neoscore.core.path import Path
-from neoscore.core.pen import SimplePenDef
-from neoscore.utils.point import PointDef
+from neoscore.core.pen import PenDef
+from neoscore.core.point import PointDef
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
@@ -26,8 +26,11 @@ class MusicPath(Path, HasMusicFont):
         pos: PointDef,
         parent: Optional[Parent] = None,
         font: Optional[MusicFont] = None,
-        brush: Optional[SimpleBrushDef] = None,
-        pen: Optional[SimplePenDef] = None,
+        brush: Optional[BrushDef] = None,
+        pen: Optional[PenDef] = None,
+        rotation: float = 0,
+        background_brush: Optional[BrushDef] = None,
+        z_index: int = 0,
     ):
         """
         Args:
@@ -37,8 +40,15 @@ class MusicPath(Path, HasMusicFont):
             font: If provided, this overrides any font found in the ancestor chain.
             brush: The brush to fill shapes with.
             pen: The pen to draw outlines with.
+            rotation: Angle in degrees. Rotated paths with flowable breaks and
+                path elements anchored to other objects are not currently supported.
+            background_brush: Optional brush used to paint the path's bounding rect
+                behind it.
+            z_index: Controls draw order with higher values drawn first.
         """
-        Path.__init__(self, pos, parent, brush, pen)
+        Path.__init__(
+            self, pos, parent, brush, pen, rotation, background_brush, z_index
+        )
         if font is None:
             font = HasMusicFont.find_music_font(parent)
         self._music_font = font

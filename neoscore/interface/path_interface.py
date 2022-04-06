@@ -4,12 +4,12 @@ from typing import NamedTuple, Optional, Union
 from PyQt5.QtGui import QPainterPath
 
 from neoscore.core import neoscore
+from neoscore.core.units import Unit
 from neoscore.interface.brush_interface import BrushInterface
 from neoscore.interface.pen_interface import PenInterface
 from neoscore.interface.positioned_object_interface import PositionedObjectInterface
 from neoscore.interface.qt.converters import point_to_qt_point_f
 from neoscore.interface.qt.q_clipping_path import QClippingPath
-from neoscore.utils.units import Unit
 
 
 class ResolvedMoveTo(NamedTuple):
@@ -45,6 +45,14 @@ class PathInterface(PositionedObjectInterface):
 
     elements: list[ResolvedPathElement]
 
+    rotation: float = 0
+    """Rotation angle in degrees"""
+
+    background_brush: Optional[BrushInterface] = None
+
+    z_index: int = 0
+    """Z-index controlling draw order."""
+
     clip_start_x: Optional[Unit] = None
     """The local starting position of the drawn region in the glyph.
 
@@ -62,6 +70,8 @@ class PathInterface(PositionedObjectInterface):
     @staticmethod
     def create_qt_path(elements: list[ResolvedPathElement]) -> QPainterPath:
         path = QPainterPath()
+        path.setFillRule(1)
+
         for el in elements:
             if isinstance(el, ResolvedLineTo):
                 path.lineTo(el.x.base_value, el.y.base_value)
@@ -96,9 +106,14 @@ class PathInterface(PositionedObjectInterface):
             painter_path,
             self.clip_start_x.base_value if self.clip_start_x is not None else 0,
             self.clip_width.base_value if self.clip_width is not None else None,
+            1,
+            self.rotation,
+            self.background_brush.qt_object if self.background_brush else None,
         )
         qt_object.setPos(point_to_qt_point_f(self.pos))
         qt_object.setBrush(self.brush.qt_object)
         qt_object.setPen(self.pen.qt_object)  # No pen
+        if self.z_index != 0:
+            qt_object.setZValue(self.z_index)
         qt_object.update_geometry()
         return qt_object

@@ -1,10 +1,10 @@
-import unittest
-
-from neoscore.core import neoscore
 from neoscore.core.brush_pattern import BrushPattern
+from neoscore.core.color import Color
 from neoscore.core.pen_cap_style import PenCapStyle
 from neoscore.core.pen_join_style import PenJoinStyle
 from neoscore.core.pen_pattern import PenPattern
+from neoscore.core.point import ORIGIN
+from neoscore.core.units import GraphicUnit, Unit
 from neoscore.interface.brush_interface import BrushInterface
 from neoscore.interface.path_interface import (
     PathInterface,
@@ -13,14 +13,13 @@ from neoscore.interface.path_interface import (
     ResolvedMoveTo,
 )
 from neoscore.interface.pen_interface import PenInterface
-from neoscore.utils.color import Color
-from neoscore.utils.point import Point
-from neoscore.utils.units import GraphicUnit, Unit
+
+from ..helpers import AppTest
 
 
-class TestPathInterface(unittest.TestCase):
+class TestPathInterface(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.pen = PenInterface(
             Color("#000000"),
             GraphicUnit(0),
@@ -30,15 +29,17 @@ class TestPathInterface(unittest.TestCase):
         )
         self.brush = BrushInterface(Color("#000000"), BrushPattern.SOLID)
 
-    def test_init(self):
-        test_path = PathInterface(Point(Unit(5), Unit(6)), self.brush, self.pen, [])
-        assert test_path.brush == self.brush
-        assert test_path.pen == self.pen
-        assert test_path.elements == []
+    def test_rotation(self):
+        path = PathInterface(ORIGIN, self.brush, self.pen, [])
+        assert path._create_qt_object().rotation() == 0
+        path = PathInterface(ORIGIN, self.brush, self.pen, [], rotation=20)
+        assert path._create_qt_object().rotation() == 20
 
-    def test_create_qt_path_empty(self):
-        qt_path = PathInterface.create_qt_path([])
-        assert qt_path.elementCount() == 0
+    def test_z_index(self):
+        path = PathInterface(ORIGIN, self.brush, self.pen, [])
+        assert path._create_qt_object().zValue() == 0
+        path = PathInterface(ORIGIN, self.brush, self.pen, [], z_index=99)
+        assert path._create_qt_object().zValue() == 99
 
     def test_create_qt_path_with_move(self):
         qt_path = PathInterface.create_qt_path([ResolvedMoveTo(Unit(10), Unit(12))])

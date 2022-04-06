@@ -2,7 +2,7 @@
 
 import os
 
-from neoscore.utils.units import Inch, Mm
+from neoscore.core.units import Inch, Mm
 
 
 def _resolve_bool_env_variable(var):
@@ -44,8 +44,11 @@ DEFAULT_MUSIC_FONT_NAME = "Bravura"
 # Print PPI
 PRINT_DPI = Inch.CONVERSION_RATE
 
-# Staff Height
+# Staff line spacing
 DEFAULT_STAFF_UNIT = Mm(1)
+
+# Tab staff line spacing
+DEFAULT_TAB_STAFF_SPACING = Mm(1.5)
 
 # Debug Mode
 DEBUG = _resolve_bool_env_variable("NEOSCORE_DEBUG")

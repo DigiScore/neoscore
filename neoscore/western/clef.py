@@ -1,6 +1,11 @@
+from typing import Optional
+
+from neoscore.core.brush import BrushDef
+from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
-from neoscore.utils.point import Point
-from neoscore.utils.units import ZERO, Unit
+from neoscore.core.pen import PenDef
+from neoscore.core.point import Point
+from neoscore.core.units import ZERO, Unit
 from neoscore.western.clef_type import ClefType, ClefTypeDef
 from neoscore.western.staff import Staff
 from neoscore.western.staff_object import StaffObject
@@ -17,7 +22,15 @@ class Clef(MusicText, StaffObject):
     `Staff`s use these to determine how pitches within them should be laid out.
     """
 
-    def __init__(self, pos_x: Unit, staff: Staff, clef_type: ClefTypeDef):
+    def __init__(
+        self,
+        pos_x: Unit,
+        staff: Staff,
+        clef_type: ClefTypeDef,
+        font: Optional[MusicFont] = None,
+        brush: Optional[BrushDef] = None,
+        pen: Optional[PenDef] = None,
+    ):
         """
         Args:
             pos_x: The x position in the staff
@@ -27,12 +40,7 @@ class Clef(MusicText, StaffObject):
         """
         StaffObject.__init__(self, staff)
         # Init with placeholder y position and text; clef_type setter will update
-        MusicText.__init__(
-            self,
-            (pos_x, ZERO),
-            staff,
-            "",
-        )
+        MusicText.__init__(self, (pos_x, ZERO), staff, "", font, brush, pen)
         self.clef_type = clef_type
 
     ######## PUBLIC PROPERTIES ########
@@ -45,11 +53,19 @@ class Clef(MusicText, StaffObject):
     @clef_type.setter
     def clef_type(self, value: ClefTypeDef):
         self._clef_type = ClefType.from_def(value)
-        self.y = self.staff.unit(self._clef_type.staff_pos)
+        if callable(self._clef_type.staff_pos):
+            staff_pos = self._clef_type.staff_pos(self.staff.line_count)
+        else:
+            staff_pos = self._clef_type.staff_pos
+        self.y = self.staff.unit(staff_pos)
         self.text = self._clef_type.glyph_name
-        self._middle_c_staff_position = self.staff.unit(
-            self.clef_type.middle_c_staff_pos
-        )
+        if callable(self.clef_type.middle_c_staff_pos):
+            middle_c_staff_pos = self.clef_type.middle_c_staff_pos(
+                self.staff.line_count
+            )
+        else:
+            middle_c_staff_pos = self.clef_type.middle_c_staff_pos
+        self._middle_c_staff_position = self.staff.unit(middle_c_staff_pos)
 
     @property
     def breakable_length(self) -> Unit:
@@ -87,17 +103,15 @@ class Clef(MusicText, StaffObject):
 
     ######## PRIVATE METHODS ########
 
-    # Always render the whole glyph.
-
     def _render_before_break(
         self, local_start_x: Unit, start: Point, stop: Point, dist_to_line_start: Unit
     ):
-        self._render_slice(start, None)
+        super()._render_complete(start)
 
     def _render_after_break(self, local_start_x: Unit, start: Point):
-        self._render_slice(start, None)
+        super()._render_complete(start)
 
     def _render_spanning_continuation(
         self, local_start_x: Unit, start: Point, stop: Point
     ):
-        self._render_slice(start, None)
+        super()._render_complete(start)

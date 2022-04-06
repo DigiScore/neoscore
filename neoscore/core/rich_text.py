@@ -4,10 +4,10 @@ from typing import TYPE_CHECKING, Optional
 
 from neoscore.core import neoscore
 from neoscore.core.font import Font
+from neoscore.core.point import Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
+from neoscore.core.units import ZERO, Unit
 from neoscore.interface.rich_text_interface import RichTextInterface
-from neoscore.utils.point import Point, PointDef
-from neoscore.utils.units import ZERO, Unit
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
@@ -31,6 +31,8 @@ class RichText(PositionedObject):
         width: Optional[Unit] = None,
         font: Optional[Font] = None,
         scale: float = 1,
+        rotation: float = 0,
+        z_index: int = 0,
     ):
         """
         Args:
@@ -41,19 +43,23 @@ class RichText(PositionedObject):
                 lines will only break when explicitly called for by the HTML.
             font: The font to display the text in.
             scale: A scaling factor relative to the font size.
+            rotation: Rotation angle in degrees.
+            z_index: Controls draw order with higher values drawn first.
         """
         if font:
             self._font = font
         else:
             self._font = neoscore.default_font
         self._html_text = html_text
-        self._scale = scale
         self._width = width
+        self._scale = scale
+        self._rotation = rotation
+        self._z_index = z_index
         super().__init__(pos, parent)
 
     @property
     def breakable_length(self) -> Unit:
-        """The breakable width of the object.
+        """The breakable length of the object.
 
         This is always 0, meaning RichText objects cannot be broken
         across Flowable lines.
@@ -100,6 +106,24 @@ class RichText(PositionedObject):
     def scale(self, value: float):
         self._scale = value
 
+    @property
+    def rotation(self) -> float:
+        """An angle in degrees to rotate about the text origin"""
+        return self._rotation
+
+    @rotation.setter
+    def rotation(self, value: float):
+        self._rotation = value
+
+    @property
+    def z_index(self) -> int:
+        """Value controlling draw order with higher values being drawn first"""
+        return self._z_index
+
+    @z_index.setter
+    def z_index(self, value: int):
+        self._z_index = value
+
     # Since RichText isn't breakable (for now?), we only need to
     # implement complete rendering
     def _render_complete(
@@ -114,6 +138,8 @@ class RichText(PositionedObject):
             self.font.interface,
             self.width,
             self.scale,
+            self.rotation,
+            self.z_index,
         )
         interface.render()
         self.interfaces.append(interface)

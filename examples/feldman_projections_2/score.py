@@ -21,7 +21,7 @@ class Score(PositionedObject):
     _TEXT_FONT_SIZE = GridUnit(0.6).base_value
     _MUSIC_FONT_SIZE = Staff._make_unit_class(GridUnit(0.5))
 
-    _bar_line_pen = Pen(thickness=GridUnit(0.05), pattern=PenPattern.DOT)
+    _barline_pen = Pen(thickness=GridUnit(0.05), pattern=PenPattern.DOT)
     _instrument_divider_pen = Pen(thickness=GridUnit(0.05))
 
     def __init__(self, pos, parent, instruments):
@@ -41,7 +41,7 @@ class Score(PositionedObject):
                 self.events.append(self._create_event(i, event_data))
 
         self.draw_instrument_dividers()
-        self.draw_bar_lines()
+        self.draw_barlines()
 
     def _create_event(self, instrument_index, event_data):
         if isinstance(event_data.text, GlyphName):
@@ -104,7 +104,7 @@ class Score(PositionedObject):
             and instrument_below.measure_has_events(measure_num)
         )
 
-    def _bar_line_extends_below(self, measure_num: int, divider_num: int) -> bool:
+    def _barline_extends_below(self, measure_num: int, divider_num: int) -> bool:
         if divider_num >= len(self.instruments):
             return False
         instrument = self.instruments[divider_num]
@@ -136,16 +136,16 @@ class Score(PositionedObject):
                         current_path.line_to(Measure(measure_num), GridUnit(0))
                         drawing = False
 
-    def draw_bar_lines(self):
+    def draw_barlines(self):
         for measure_num in range(self.measure_count + 1):
             current_path = Path(
                 (Measure(measure_num), GridUnit(0)),
                 parent=self,
-                pen=Score._bar_line_pen,
+                pen=Score._barline_pen,
             )
             drawing = False
             for divider_num in range(len(self.instruments) + 1):
-                if self._bar_line_extends_below(measure_num, divider_num):
+                if self._barline_extends_below(measure_num, divider_num):
                     if not drawing:
                         current_path.move_to(
                             GridUnit(0), Score._instrument_pos_y(divider_num)

@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from PyQt5 import QtGui
 
 from neoscore.core.brush_pattern import BrushPattern
-from neoscore.utils.color import Color
+from neoscore.core.color import Color
 
 
 @dataclass(frozen=True)

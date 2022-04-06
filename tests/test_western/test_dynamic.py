@@ -1,16 +1,15 @@
-import unittest
-
 import pytest
 
-from neoscore.core import neoscore
-from neoscore.utils.units import Mm
+from neoscore.core.units import Mm
 from neoscore.western.dynamic import Dynamic, DynamicStringError
 from neoscore.western.staff import Staff
 
+from ..helpers import AppTest
 
-class TestNotehead(unittest.TestCase):
+
+class TestNotehead(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.staff = Staff((Mm(0), Mm(0)), parent=None, length=Mm(100))
 
     def test_parse_dynamic_string(self):

@@ -3,13 +3,13 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 
 from neoscore.core import neoscore
+from neoscore.core.exceptions import OutOfBoundsError
 from neoscore.core.layout_controller import LayoutController
 from neoscore.core.mapping import canvas_pos_of
 from neoscore.core.new_line import NewLine
+from neoscore.core.point import Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.utils.exceptions import OutOfBoundsError
-from neoscore.utils.point import Point, PointDef
-from neoscore.utils.units import ZERO, Mm, Unit
+from neoscore.core.units import ZERO, Mm, Unit
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
@@ -37,7 +37,7 @@ class Flowable(PositionedObject):
         self,
         pos: PointDef,
         parent: Optional[Parent],
-        width: Unit,
+        length: Unit,
         height: Unit,
         y_padding: Unit = Mm(5),
         break_threshold: Unit = Mm(5),
@@ -49,14 +49,14 @@ class Flowable(PositionedObject):
             parent: An optional parent object. Nested flowables are not supported,
                 so this should not be a flowable or in one. This defaults to the
                 document's first page.
-            width: length of the flowable
+            length: length of the flowable
             height: height of the flowable
             y_padding: The vertical gap between flowable sections
             break_threshold: The maximum distance the flowable will shorten a line
                 to allow a break to occur on a `BreakOpportunity`
         """
         super().__init__(pos, parent)
-        self._length = width
+        self._length = length
         self._height = height
         self._y_padding = y_padding
         self._break_threshold = break_threshold
@@ -121,7 +121,7 @@ class Flowable(PositionedObject):
         live_page_width = neoscore.document.paper.live_width
         live_page_height = neoscore.document.paper.live_height
         # local progress of layout generation; when the entire flowable has
-        # been covered, this will be equal to `self.width`
+        # been covered, this will be equal to `self.breakable_length`
         x_progress = ZERO
         # Current position on the page relative to the top left corner
         # of the live page area
@@ -138,7 +138,7 @@ class Flowable(PositionedObject):
             x_progress += live_page_width - pos_x
             pos_y = pos_y + self.height + self.y_padding
             if x_progress >= self.breakable_length:
-                # End of breakable width - Done.
+                # End of breakable length - Done.
                 break
             if pos_y > live_page_height:
                 # Page break - No y offset

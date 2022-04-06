@@ -4,13 +4,13 @@ from typing import NamedTuple, Optional
 from PyQt5.QtGui import QFont, QPainterPath
 
 from neoscore.core import neoscore
+from neoscore.core.units import Unit
 from neoscore.interface.brush_interface import BrushInterface
 from neoscore.interface.font_interface import FontInterface
 from neoscore.interface.pen_interface import PenInterface
 from neoscore.interface.positioned_object_interface import PositionedObjectInterface
 from neoscore.interface.qt.converters import point_to_qt_point_f
 from neoscore.interface.qt.q_clipping_path import QClippingPath
-from neoscore.utils.units import Unit
 
 
 class _CachedTextKey(NamedTuple):
@@ -27,7 +27,7 @@ class _CachedTextPath(NamedTuple):
 
 _PATH_CACHE: dict[_CachedTextKey, _CachedTextPath] = {}
 
-"""TODO LOW We can actually optimize this even further. We can modify
+"""NOTE: We can actually optimize this even further. We can modify
 q_clipping_path so it explicitly stores paint results in the global
 QPixmapCache. If this were specialized to just text items, the cache
 key would be like _CachedTextKey, except it also includes font size
@@ -57,6 +57,14 @@ class TextInterface(PositionedObjectInterface):
 
     scale: float = 1
 
+    rotation: float = 0
+    """Rotation angle in degrees"""
+
+    background_brush: Optional[BrushInterface] = None
+
+    z_index: int = 0
+    """Z-index controlling draw order."""
+
     clip_start_x: Optional[Unit] = None
     """The local starting position of the drawn region in the glyph.
 
@@ -82,6 +90,8 @@ class TextInterface(PositionedObjectInterface):
         qt_object.setPos(point_to_qt_point_f(self.pos))
         qt_object.setBrush(self.brush.qt_object)
         qt_object.setPen(self.pen.qt_object)
+        if self.z_index != 0:
+            qt_object.setZValue(self.z_index)
         return qt_object
 
     ######## PRIVATE METHODS ########
@@ -93,25 +103,23 @@ class TextInterface(PositionedObjectInterface):
         cached_result = _PATH_CACHE.get(key)
         if cached_result:
             cache_scale = needed_font_size / cached_result.generation_font_size
-            clipping_path = QClippingPath(
-                cached_result.path,
-                self.clip_start_x.base_value if self.clip_start_x is not None else 0,
-                self.clip_width.base_value if self.clip_width is not None else None,
-                cache_scale * scale,
-            )
-            return clipping_path
-        path = TextInterface._create_qt_path(text, qt_font)
-        _PATH_CACHE[key] = _CachedTextPath(path, needed_font_size)
-        clipping_path = QClippingPath(
+            scale *= cache_scale
+            path = cached_result.path
+        else:
+            path = TextInterface._create_qt_path(text, qt_font)
+            _PATH_CACHE[key] = _CachedTextPath(path, needed_font_size)
+        return QClippingPath(
             path,
             self.clip_start_x.base_value if self.clip_start_x is not None else 0,
             self.clip_width.base_value if self.clip_width is not None else None,
             scale,
+            self.rotation,
+            self.background_brush.qt_object if self.background_brush else None,
         )
-        return clipping_path
 
     @staticmethod
     def _create_qt_path(text: str, font: QFont) -> QPainterPath:
         qt_path = QPainterPath()
         qt_path.addText(0, 0, font, text)
+        qt_path.setFillRule(1)
         return qt_path

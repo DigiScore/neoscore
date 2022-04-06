@@ -2,13 +2,13 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional, cast
 
+from neoscore.core.directions import VerticalDirection
+from neoscore.core.exceptions import NoFlagNeededError
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
-from neoscore.models.directions import VerticalDirection
-from neoscore.models.duration import Duration, DurationDef
-from neoscore.models.duration_display import DurationDisplay
-from neoscore.utils.exceptions import NoFlagNeededError
-from neoscore.utils.point import PointDef
+from neoscore.core.point import PointDef
+from neoscore.western.duration import Duration, DurationDef
+from neoscore.western.duration_display import DurationDisplay
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
@@ -63,7 +63,7 @@ class Flag(MusicText):
         duration_display = cast(DurationDisplay, self.duration.display)
         if duration_display.flag_count == 0:
             raise NoFlagNeededError(self.duration)
-        if self.direction == 1:
+        if self.direction == VerticalDirection.DOWN:
             glyph_name = self._down_glyphnames[duration_display.flag_count]
         else:
             glyph_name = self._up_glyphnames[duration_display.flag_count]

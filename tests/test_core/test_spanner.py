@@ -1,12 +1,11 @@
-import unittest
-
 import pytest
 
-from neoscore.core import neoscore
 from neoscore.core.painted_object import PaintedObject
+from neoscore.core.point import Point
 from neoscore.core.spanner import Spanner
-from neoscore.utils.point import Point
-from neoscore.utils.units import ZERO, Unit
+from neoscore.core.units import ZERO, Unit
+
+from ..helpers import AppTest
 
 
 class MockSpanner(PaintedObject, Spanner):
@@ -18,10 +17,7 @@ class MockSpanner(PaintedObject, Spanner):
         Spanner.__init__(self, end_x, end_parent or self)
 
 
-class TestSpanner(unittest.TestCase):
-    def setUp(self):
-        neoscore.setup()
-
+class TestSpanner(AppTest):
     def test_end_y_with_end_parent_self(self):
         spanner = MockSpanner(Point(Unit(20), Unit(5)), None, Unit(30), None)
         assert spanner.end_y == ZERO

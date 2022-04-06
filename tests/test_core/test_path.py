@@ -1,28 +1,26 @@
 import math
-import unittest
 
 import pytest
 
-from neoscore.core import neoscore
 from neoscore.core.brush import Brush
 from neoscore.core.path import Path
 from neoscore.core.path_element import ControlPoint, CurveTo, LineTo, MoveTo
 from neoscore.core.pen import Pen
+from neoscore.core.point import ORIGIN, Point
 from neoscore.core.positioned_object import PositionedObject
+from neoscore.core.units import ZERO, Unit
 from neoscore.interface.path_interface import (
     ResolvedCurveTo,
     ResolvedLineTo,
     ResolvedMoveTo,
 )
-from neoscore.utils.point import ORIGIN, Point
-from neoscore.utils.units import ZERO, Unit
 
-from ..helpers import assert_path_els_equal
+from ..helpers import AppTest, assert_path_els_equal
 
 
-class TestPath(unittest.TestCase):
+class TestPath(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.brush = Brush("#ff0000")
         self.pen = Pen("#00ff00")
 
@@ -32,6 +30,28 @@ class TestPath(unittest.TestCase):
         assert path.pos == Point(Unit(5), Unit(6))
         assert path.pen == self.pen
         assert path.brush == self.brush
+        assert path.background_brush is None
+
+    def test_background_brush(self):
+        bg_brush = Brush("#ff0000")
+        obj = Path((Unit(5), Unit(6)), None, background_brush=bg_brush)
+        assert obj.background_brush == bg_brush
+        obj.background_brush = "#00ffff"
+        assert obj.background_brush == Brush("#00ffff")
+
+    def test_rotation(self):
+        path = Path(ORIGIN, None)
+        assert path.rotation == 0
+        path.rotation = 20
+        assert path.rotation == 20
+        assert Path(ORIGIN, None, rotation=123).rotation == 123
+
+    def test_z_index(self):
+        path = Path(ORIGIN, None)
+        assert path.z_index == 0
+        path.z_index = 99
+        assert path.z_index == 99
+        assert Path(ORIGIN, None, z_index=123).z_index == 123
 
     def test_straight_line(self):
         path = Path.straight_line((Unit(5), Unit(6)), None, (Unit(10), Unit(11)))

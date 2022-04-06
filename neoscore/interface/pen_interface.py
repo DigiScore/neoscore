@@ -2,11 +2,11 @@ from dataclasses import dataclass, field
 
 from PyQt5 import QtGui
 
+from neoscore.core.color import Color
 from neoscore.core.pen_cap_style import PenCapStyle
 from neoscore.core.pen_join_style import PenJoinStyle
 from neoscore.core.pen_pattern import PenPattern
-from neoscore.utils.color import Color
-from neoscore.utils.units import Unit
+from neoscore.core.units import Unit
 
 
 @dataclass(frozen=True)

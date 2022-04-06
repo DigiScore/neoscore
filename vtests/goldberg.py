@@ -11,7 +11,7 @@ flowable = Flowable((Mm(0), Mm(0)), None, Mm(500), Mm(30), Mm(10))
 
 upper_staff = Staff((Mm(0), Mm(0)), flowable, Mm(500), Mm(1))
 lower_staff = Staff((Mm(0), Mm(12)), flowable, Mm(500), Mm(1))
-Brace(Mm(0), {upper_staff, lower_staff})
+Brace(Mm(0), [upper_staff, lower_staff])
 
 # We can use the same unit in the upper and lower staves since they
 # are the same size
@@ -55,7 +55,7 @@ Chordrest(
 # Lower staff notes - lower voice
 Chordrest(unit(8), lower_staff, ["g"], Duration(3, 4))
 
-BarLine(unit(22), [upper_staff, lower_staff])
+Barline(unit(22), [upper_staff, lower_staff])
 
 if "--image" in sys.argv:
     image_path = os.path.join(os.path.dirname(__file__), "output", "goldberg.png")

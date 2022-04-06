@@ -7,19 +7,19 @@ from typing import TYPE_CHECKING, Callable, Optional
 from warnings import warn
 
 from neoscore import constants
-from neoscore.core.brush import Brush
-from neoscore.core.font import Font
+from neoscore.core import file_system
+from neoscore.core.brush import Brush, BrushDef
+from neoscore.core.color import Color, ColorDef
+from neoscore.core.exceptions import InvalidImageFormatError
 from neoscore.core.paper import A4, Paper
 from neoscore.core.pen import Pen
+from neoscore.core.rect import RectDef, rect_from_def
 from neoscore.interface.app_interface import AppInterface
 from neoscore.interface.qt import image_utils
-from neoscore.utils import file_system
-from neoscore.utils.color import Color, ColorDef, color_from_def
-from neoscore.utils.exceptions import InvalidImageFormatError
-from neoscore.utils.rect import RectDef, rect_from_def
 
 if TYPE_CHECKING:
     from neoscore.core.document import Document
+    from neoscore.core.font import Font
 
 """The global state of the application."""
 
@@ -36,10 +36,11 @@ registered_music_fonts: dict[str, dict] = {}
 registered_font_family_names: set[str] = set()
 """A set of family names of all registered fonts, including music fonts"""
 
-# Color of background between and around pages. (Not yet implemented)
-_display_background_color = "#dddddd"
-# Background color of pages themselves. (Not yet implemented)
-_display_paper_color = "#ffffff"
+background_brush = Brush("#ffffff")
+"""The scene's background color.
+
+Defaults to white. Set this using `set_background_brush`.
+"""
 
 
 def setup(initial_paper: Paper = A4):
@@ -60,11 +61,15 @@ def setup(initial_paper: Paper = A4):
     global _app_interface
     global default_font
     global document
-    # Document is imported here to work around cyclic import problems
+    global background_brush
+    # Some things are imported here to work around cyclic import problems
     from neoscore.core.document import Document
+    from neoscore.core.font import Font
 
     document = Document(initial_paper)
-    _app_interface = AppInterface(document, _repl_refresh_func)
+    _app_interface = AppInterface(
+        document, _repl_refresh_func, background_brush.interface
+    )
     _register_default_fonts()
     default_font = Font(
         constants.DEFAULT_TEXT_FONT_NAME, constants.DEFAULT_TEXT_FONT_SIZE, 1, False
@@ -77,9 +82,16 @@ def set_default_color(color: ColorDef):
     This only affects objects created after this is called."""
     # Objects using unspecified pens and brushes make copies of these
     # global default objects.
-    c = color_from_def(color)
+    c = Color.from_def(color)
     Pen.default_color = c
     Brush.default_color = c
+
+
+def set_background_brush(brush: BrushDef):
+    global background_brush
+    global _app_interface
+    background_brush = Brush.from_def(brush)
+    _app_interface.background_brush = background_brush.interface
 
 
 def register_font(font_file_path: str) -> list[str]:
@@ -262,7 +274,7 @@ def render_image(
     if bg_color is None:
         bg_color = Color(255, 255, 255, 255)
     else:
-        bg_color = color_from_def(bg_color)
+        bg_color = Color.from_def(bg_color)
     dpm = int(image_utils.dpi_to_dpm(dpi))
 
     document._render()
@@ -304,3 +316,7 @@ def _register_default_fonts():
     register_font(constants.DEFAULT_TEXT_FONT_BOLD_PATH)
     register_font(constants.DEFAULT_TEXT_FONT_ITALIC_PATH)
     register_font(constants.DEFAULT_TEXT_FONT_BOLD_ITALIC_PATH)
+
+
+def shutdown():
+    _app_interface.destroy()

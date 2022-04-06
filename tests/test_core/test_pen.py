@@ -1,12 +1,12 @@
 import unittest
 
+from neoscore.core.color import Color
 from neoscore.core.pen import Pen
 from neoscore.core.pen_cap_style import PenCapStyle
 from neoscore.core.pen_join_style import PenJoinStyle
 from neoscore.core.pen_pattern import PenPattern
+from neoscore.core.units import ZERO, Unit
 from neoscore.interface.pen_interface import PenInterface
-from neoscore.utils.color import Color
-from neoscore.utils.units import ZERO, Unit
 
 from ..helpers import assert_almost_equal
 
@@ -26,11 +26,11 @@ class TestPen(unittest.TestCase):
 
     def test_init_default_join_style(self):
         test_pen = Pen()
-        assert test_pen.join_style == PenJoinStyle.BEVEL
+        assert test_pen.join_style == PenJoinStyle.MITER
 
     def test_init_default_cap_style(self):
         test_pen = Pen()
-        assert test_pen.cap_style == PenCapStyle.SQUARE
+        assert test_pen.cap_style == PenCapStyle.FLAT
 
     def test_from_existing(self):
         original = Pen(
@@ -57,6 +57,10 @@ class TestPen(unittest.TestCase):
             Pen.from_existing(original, cap_style=PenCapStyle.FLAT).cap_style
             == PenCapStyle.FLAT
         )
+
+    def test_from_def(self):
+        assert Pen.from_def(Pen("#ffffff")) == Pen("#ffffff")
+        assert Pen.from_def("#ffffff") == Pen("#ffffff")
 
     def test_no_pen(self):
         pen = Pen.no_pen()

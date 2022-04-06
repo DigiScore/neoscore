@@ -59,3 +59,12 @@ jobs:
           pytest -n auto
         env:
           NEOSCORE_HEADLESS: True
+      - name: Check formatting conforms to Black
+        uses: psf/black@stable
+      - name: Check import sorting with isort
+        uses: isort/isort-action@master
+      - name: Check for unused imports with unimport
+        run: |
+          source .venv/bin/activate
+          pip install unimport
+          unimport --check --exclude "neoscore/common.py|.venv"

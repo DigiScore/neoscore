@@ -1,19 +1,18 @@
-import unittest
-
-from neoscore.core import neoscore
 from neoscore.core.flowable import Flowable
 from neoscore.core.path_element import LineTo, MoveTo
-from neoscore.utils.point import Point
-from neoscore.utils.units import Mm, Unit
+from neoscore.core.point import Point
+from neoscore.core.units import Mm, Unit
 from neoscore.western.beam import Beam
 from neoscore.western.staff import Staff
 from tests.helpers import assert_path_els_equal
 from tests.mocks.mock_staff_object import MockStaffObject
 
+from ..helpers import AppTest
 
-class TestBeam(unittest.TestCase):
+
+class TestBeam(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.flowable = Flowable((Mm(0), Mm(0)), None, Mm(10000), Mm(30), Mm(5))
         self.staff = Staff((Mm(0), Mm(0)), self.flowable, Mm(5000))
         self.left_parent = MockStaffObject((Unit(0), Unit(0)), self.staff)
@@ -55,7 +54,7 @@ class TestBeam(unittest.TestCase):
         )
         assert_path_els_equal(
             beam.elements[4],
-            MoveTo(
+            LineTo(
                 Point(Mm(0), Mm(0)),
                 beam,
             ),

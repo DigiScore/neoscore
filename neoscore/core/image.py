@@ -3,10 +3,10 @@ from __future__ import annotations
 import pathlib
 from typing import TYPE_CHECKING, Optional
 
+from neoscore.core.point import Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
+from neoscore.core.units import ZERO, Unit
 from neoscore.interface.image_interface import ImageInterface
-from neoscore.utils.point import Point, PointDef
-from neoscore.utils.units import ZERO, Unit
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
@@ -61,7 +61,7 @@ class Image(PositionedObject):
 
     @property
     def breakable_length(self) -> Unit:
-        """The breakable width of the object.
+        """The breakable length of the object.
 
         This is always 0, meaning Images objects cannot be broken
         across Flowable lines.

@@ -4,7 +4,7 @@ from PyQt5.QtCore import QMarginsF, QSize
 from PyQt5.QtGui import QPageLayout, QPageSize
 
 from neoscore import constants
-from neoscore.utils.units import Unit
+from neoscore.core.units import Unit
 
 
 @dataclass(frozen=True)

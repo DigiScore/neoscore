@@ -1,14 +1,12 @@
-import unittest
-
-from neoscore.core import neoscore
 from neoscore.core.music_font import MusicFont
-from neoscore.utils.units import Mm
+from neoscore.core.units import Mm
 from neoscore.western.clef_type import CLEF_TYPE_SHORTHAND_NAMES, TREBLE, ClefType
 
+from ..helpers import AppTest
 
-class TestClef(unittest.TestCase):
+
+class TestClef(AppTest):
     def test_all_pre_defined_types_have_valid_glyphs(self):
-        neoscore.setup()
         font = MusicFont("Bravura", Mm)
 
         for clef_type in CLEF_TYPE_SHORTHAND_NAMES.values():

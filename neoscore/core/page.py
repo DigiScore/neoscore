@@ -3,8 +3,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from neoscore.core.paper import Paper
+from neoscore.core.point import PointDef
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.utils.point import PointDef
 
 if TYPE_CHECKING:
     from neoscore.core.document import Document

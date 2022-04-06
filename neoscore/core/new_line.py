@@ -1,7 +1,7 @@
 from neoscore.core.layout_controller import LayoutController
 from neoscore.core.page import Page
-from neoscore.utils.point import Point
-from neoscore.utils.units import ZERO, Unit
+from neoscore.core.point import Point
+from neoscore.core.units import ZERO, Unit
 
 
 class NewLine(LayoutController):

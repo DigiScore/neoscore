@@ -2,12 +2,12 @@ from __future__ import annotations
 
 from typing import Any, Optional, Union
 
+from neoscore.core.color import Color, ColorDef
 from neoscore.core.pen_cap_style import PenCapStyle
 from neoscore.core.pen_join_style import PenJoinStyle
 from neoscore.core.pen_pattern import PenPattern
+from neoscore.core.units import ZERO, Unit
 from neoscore.interface.pen_interface import PenInterface
-from neoscore.utils.color import Color, ColorDef, color_from_def
-from neoscore.utils.units import ZERO, Unit
 
 
 class Pen:
@@ -21,8 +21,8 @@ class Pen:
         color: Optional[ColorDef] = None,
         thickness: Optional[Unit] = ZERO,
         pattern: PenPattern = PenPattern.SOLID,
-        join_style: PenJoinStyle = PenJoinStyle.BEVEL,
-        cap_style: PenCapStyle = PenCapStyle.SQUARE,
+        join_style: PenJoinStyle = PenJoinStyle.MITER,
+        cap_style: PenCapStyle = PenCapStyle.FLAT,
     ):
         """
         Args:
@@ -37,7 +37,7 @@ class Pen:
         if color is None:
             self._color = Pen.default_color
         else:
-            self._color = color_from_def(color)
+            self._color = Color.from_def(color)
         self._thickness = thickness
         self._pattern = pattern
         self._join_style = join_style
@@ -67,6 +67,13 @@ class Pen:
     def no_pen(cls) -> Pen:
         """Create a non-drawing pen."""
         return Pen(pattern=PenPattern.INVISIBLE)
+
+    @classmethod
+    def from_def(cls, pen_def: PenDef) -> Pen:
+        if isinstance(pen_def, Pen):
+            return pen_def
+        else:
+            return Pen(pen_def)
 
     def _regenerate_interface(self):
         self._interface = PenInterface(
@@ -148,11 +155,5 @@ class Pen:
         )
 
 
-SimplePenDef = Union[Pen, str]
-
-
-def pen_from_simple_def(pen_def: SimplePenDef) -> Pen:
-    if isinstance(pen_def, Pen):
-        return pen_def
-    else:
-        return Pen(pen_def)
+PenDef = Union[Pen, str]
+"""A `Pen` or a color hex string to be passed to an otherwise default `Pen`."""

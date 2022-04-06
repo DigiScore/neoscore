@@ -49,6 +49,8 @@ class QClippingPath(QGraphicsPathItem):
         clip_start_x: float = 0,
         clip_width: Optional[float] = None,
         scale: float = 1,
+        rotation: float = 0,
+        background_brush: QBrush = None,
     ):
         """
         Args:
@@ -61,6 +63,10 @@ class QClippingPath(QGraphicsPathItem):
                 for scaling, as that is performed automatically. Use `None` to render
                 to the end
             scale: A scaling factor on the object's coordinate system.
+            rotation: Rotation about the path's origin given in degrees. Rotated path
+                clipping is currently not supported.
+            background_brush: If given, this will be used to paint over the path's
+                bounding rect behind the path.
         """
         super().__init__(qt_path)
         super().setScale(scale)
@@ -68,6 +74,8 @@ class QClippingPath(QGraphicsPathItem):
         self.clip_width = None if clip_width is None else clip_width / scale
         self.setCacheMode(QGraphicsItem.CacheMode.DeviceCoordinateCache)
         self.padding = self.pen().width() / scale
+        self.setRotation(rotation)
+        self.background_brush = background_brush
         self.update_geometry()
 
     def boundingRect(self):
@@ -83,12 +91,17 @@ class QClippingPath(QGraphicsPathItem):
             painter.translate(-self.clip_start_x, 0)
         if self.clip_width is not None:
             painter.setClipRect(self.clip_rect)
-        if DEBUG:
+        if DEBUG or self.background_brush:
             bounding_rect = self.bounding_rect
             if self.clip_start_x != 0:
                 # Since painter is translated, cancel that out when
                 # drawing the bounding rect
                 bounding_rect = bounding_rect.translated(self.clip_start_x, 0)
+        if self.background_brush:
+            painter.setBrush(self.background_brush)
+            painter.setPen(QPen(0))
+            painter.drawRect(bounding_rect)
+        if DEBUG:
             painter.setBrush(QBrush())
             painter.setPen(QPen(QColor("#ff0000"), 0))
             painter.drawRect(bounding_rect)

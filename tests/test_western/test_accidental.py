@@ -1,19 +1,18 @@
-import unittest
-
-from neoscore.core import neoscore
 from neoscore.core.flowable import Flowable
 from neoscore.core.music_char import MusicChar
-from neoscore.models.accidental_type import AccidentalType
-from neoscore.utils.point import Point
-from neoscore.utils.units import Mm
+from neoscore.core.point import Point
+from neoscore.core.units import Mm
 from neoscore.western.accidental import Accidental
+from neoscore.western.accidental_type import AccidentalType
 from neoscore.western.clef import Clef
 from neoscore.western.staff import Staff
 
+from ..helpers import AppTest
 
-class TestAccidental(unittest.TestCase):
+
+class TestAccidental(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.flowable = Flowable(Point(Mm(0), Mm(0)), None, Mm(10000), Mm(100))
         self.staff = Staff(Point(Mm(0), Mm(0)), self.flowable, Mm(100))
         Clef(Mm(0), self.staff, "treble")

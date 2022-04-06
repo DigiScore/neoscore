@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Type, cast
 
+from neoscore.core.exceptions import NoAncestorWithMusicFontError
 from neoscore.core.mapping import first_ancestor_with_attr
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.utils.exceptions import NoAncestorWithMusicFontError
-from neoscore.utils.units import Unit
+from neoscore.core.units import Unit
 
 if TYPE_CHECKING:
     from neoscore.core.music_font import MusicFont
@@ -42,7 +42,10 @@ class HasMusicFont:
         """
         if hasattr(obj, "music_font"):
             return cast(HasMusicFont, obj).music_font
-        lookup_result = first_ancestor_with_attr(obj, "music_font")
-        if lookup_result is None:
+        try:
+            lookup_result = first_ancestor_with_attr(obj, "music_font")
+            if lookup_result is None:
+                raise NoAncestorWithMusicFontError()
+        except:
             raise NoAncestorWithMusicFontError()
         return cast(HasMusicFont, lookup_result).music_font

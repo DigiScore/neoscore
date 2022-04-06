@@ -2,12 +2,12 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional
 
-from neoscore.core.brush import SimpleBrushDef
+from neoscore.core.brush import BrushDef
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
-from neoscore.core.pen import SimplePenDef
-from neoscore.utils.point import Point, PointDef
-from neoscore.utils.units import ZERO
+from neoscore.core.pen import PenDef
+from neoscore.core.point import Point, PointDef
+from neoscore.core.units import ZERO
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
@@ -17,9 +17,9 @@ class Beam(MusicPath):
 
     """A rhythmic beam connecting groups of notes.
 
-    This is a single beam - for multiple layers of beams
-    (e.g. 2 for 16th notes), multiple `Beam`s must be stacked
-    on top of each other.
+    This is a single beam - for multiple layers of beams (e.g. 2 for
+    16th notes), multiple `Beam`s must be stacked on top of each
+    other. See `BeamGroup` for a reasonable implementation of this.
 
     While this is a path, it requires a music font from which to
     derive its appearance.
@@ -32,8 +32,8 @@ class Beam(MusicPath):
         end_pos: PointDef,
         end_parent: Parent,
         font: Optional[MusicFont] = None,
-        brush: Optional[SimpleBrushDef] = None,
-        pen: Optional[SimplePenDef] = None,
+        brush: Optional[BrushDef] = None,
+        pen: Optional[PenDef] = None,
     ):
         """
         Args:
@@ -54,4 +54,4 @@ class Beam(MusicPath):
         self.line_to(end_pos.x, end_pos.y, end_parent)
         self.line_to(end_pos.x, end_pos.y + self.beam_thickness, end_parent)
         self.line_to(ZERO, self.beam_thickness, self)
-        self.close_subpath()
+        self.line_to(ZERO, ZERO, self)

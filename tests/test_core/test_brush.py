@@ -2,8 +2,8 @@ import unittest
 
 from neoscore.core.brush import Brush
 from neoscore.core.brush_pattern import BrushPattern
+from neoscore.core.color import Color
 from neoscore.interface.brush_interface import BrushInterface
-from neoscore.utils.color import Color
 
 
 class TestBrush(unittest.TestCase):
@@ -29,6 +29,10 @@ class TestBrush(unittest.TestCase):
             Brush.from_existing(original, pattern=BrushPattern.DENSE_2).pattern
             == BrushPattern.DENSE_2
         )
+
+    def test_from_def(self):
+        assert Brush.from_def(Brush("#ffffff")) == Brush("#ffffff")
+        assert Brush.from_def("#ffffff") == Brush("#ffffff")
 
     def test_no_brush(self):
         brush = Brush.no_brush()

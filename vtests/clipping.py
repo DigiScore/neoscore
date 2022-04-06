@@ -1,5 +1,5 @@
 from neoscore.common import *
-from neoscore.utils.units import ZERO
+from neoscore.core.units import ZERO
 
 neoscore.setup()
 

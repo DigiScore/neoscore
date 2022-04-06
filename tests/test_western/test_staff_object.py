@@ -3,14 +3,19 @@ import unittest
 from neoscore.core import neoscore
 from neoscore.core.flowable import Flowable
 from neoscore.core.paper import Paper
-from neoscore.utils.units import Mm
+from neoscore.core.units import Mm
 from neoscore.western.staff import Staff
 from tests.mocks.mock_staff_object import MockStaffObject
 
+from ..helpers import AppTest
 
-class TestStaffObject(unittest.TestCase):
+
+class TestStaffObject(AppTest):
     def setUp(self):
-        neoscore.setup(Paper(*[Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]))
+        super().setUp()
+        neoscore.document.paper = Paper(
+            *[Mm(val) for val in [210, 297, 20, 20, 20, 20, 10]]
+        )
         self.flowable = Flowable((Mm(0), Mm(0)), None, Mm(10000), Mm(30), Mm(5))
         self.staff = Staff((Mm(0), Mm(0)), self.flowable, Mm(5000))
 

@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 
+from neoscore.core.units import Inch, Mm, Unit
 from neoscore.interface.paper_interface import PaperInterface
-from neoscore.utils.units import Inch, Mm, Unit
 
 
 @dataclass(frozen=True)

@@ -1,22 +1,23 @@
-import unittest
+import pytest
 
 from neoscore import constants
-from neoscore.core import neoscore
 from neoscore.core.brush import Brush
 from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.pen import Pen
+from neoscore.core.point import ORIGIN, Point
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.utils.point import ORIGIN, Point
-from neoscore.utils.rect import Rect
-from neoscore.utils.units import ZERO, Mm, Unit
+from neoscore.core.rect import Rect
+from neoscore.core.units import ZERO, Mm, Unit
 from neoscore.western.staff import Staff
 
+from ..helpers import AppTest
 
-class TestMusicText(unittest.TestCase):
+
+class TestMusicText(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.staff = Staff((Mm(0), Mm(0)), None, length=Mm(100), staff_unit=Mm(1))
         self.font = MusicFont(constants.DEFAULT_MUSIC_FONT_NAME, self.staff.unit)
 
@@ -84,3 +85,13 @@ class TestMusicText(unittest.TestCase):
     def test_breakable_passed_to_superclass(self):
         mtext = MusicText((Unit(5), Unit(6)), self.staff, "accidentalSharp")
         assert mtext.breakable == True
+
+    @pytest.mark.skip("Bounding rects do not currently respond to rotation")
+    def test_bounding_rect_responds_to_rotation(self):
+        # Documenting this functionality gap
+        mtext = MusicText(ORIGIN, self.staff, "accidentalSharp")
+        original = mtext.bounding_rect
+        mtext.rotation = 90
+        rotated = mtext.bounding_rect
+        assert rotated.width == original.height
+        assert rotated.height == original.width

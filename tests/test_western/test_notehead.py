@@ -1,20 +1,20 @@
-import unittest
 from typing import Optional
 
-from neoscore.core import neoscore
 from neoscore.core.flowable import Flowable
 from neoscore.core.music_char import MusicChar
-from neoscore.models import notehead_tables
-from neoscore.models.duration import Duration
-from neoscore.utils.units import Mm
+from neoscore.core.units import Mm
+from neoscore.western import notehead_tables
 from neoscore.western.clef import Clef
+from neoscore.western.duration import Duration
 from neoscore.western.notehead import Notehead
 from neoscore.western.staff import Staff
 
+from ..helpers import AppTest
 
-class TestNotehead(unittest.TestCase):
+
+class TestNotehead(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.flowable = Flowable((Mm(0), Mm(0)), None, Mm(10000), Mm(30), Mm(5))
         self.staff = Staff((Mm(0), Mm(0)), self.flowable, length=Mm(10000))
         Clef(Mm(0), self.staff, "treble")

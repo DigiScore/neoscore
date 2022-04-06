@@ -1,5 +1,8 @@
 from PyQt5.QtCore import QPoint, QPointF, QRect, QRectF
 
+from neoscore.core.point import Point
+from neoscore.core.rect import Rect
+from neoscore.core.units import GraphicUnit
 from neoscore.interface.qt.converters import (
     point_to_qt_point,
     point_to_qt_point_f,
@@ -8,9 +11,6 @@ from neoscore.interface.qt.converters import (
     rect_to_qt_rect,
     rect_to_qt_rect_f,
 )
-from neoscore.utils.point import Point
-from neoscore.utils.rect import Rect
-from neoscore.utils.units import GraphicUnit
 
 # qt_point_to_point ###########################################################
 

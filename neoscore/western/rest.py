@@ -4,9 +4,9 @@ from typing import TYPE_CHECKING, Optional, cast
 
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
-from neoscore.models.duration import Duration, DurationDef
-from neoscore.models.duration_display import DurationDisplay
-from neoscore.utils.point import Point, PointDef
+from neoscore.core.point import Point, PointDef
+from neoscore.western.duration import Duration, DurationDef
+from neoscore.western.duration_display import DurationDisplay
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent

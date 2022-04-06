@@ -11,6 +11,7 @@
 7. Run `poetry shell` to shell into the virtual environment
 8. Run `sh dev_scripts/install_devtools.sh` to install dependencies used to enforce code standards.
 9. Test your environment by running `python vtests/vtest.py`
+10. Install the pre-commit hook with `sh dev_scripts/install_pre_commit_hook.sh`
 
 ## Running tests
 
@@ -20,5 +21,4 @@ Several visual tests ("vtests") are included which are used to run neoscore prog
 
 ## Committing
 
-Before committing, please be sure to run the code standards script with `sh dev_scripts/pre-commit.sh`. This will format your code and clean up imports automatically.
-
+The pre-commit hook, installed with the above-mentioned script, will automatically apply formatting and import corrections. The script will not automatically add them to your commit, since this can be dangerous, so if any changes are added please add and commit them yourself before opening a PR. You can also manually run these hooks before committing with `sh dev_scripts/pre_commit.sh` to prevent double or amended commits. PRs which fail these checks will not build successfully.

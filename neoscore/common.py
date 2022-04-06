@@ -2,6 +2,8 @@ from neoscore import constants
 from neoscore.core import neoscore
 from neoscore.core.brush import Brush
 from neoscore.core.brush_pattern import BrushPattern
+from neoscore.core.color import Color
+from neoscore.core.directions import HorizontalDirection, VerticalDirection
 from neoscore.core.document import Document
 from neoscore.core.flowable import Flowable
 from neoscore.core.font import Font
@@ -14,40 +16,43 @@ from neoscore.core.paper import Paper
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
 from neoscore.core.pen_pattern import PenPattern
+from neoscore.core.point import ORIGIN, Point
 from neoscore.core.positioned_object import PositionedObject
+from neoscore.core.rect import Rect
+from neoscore.core.repeating_music_text_line import RepeatingMusicTextLine
 from neoscore.core.rich_text import RichText
 from neoscore.core.text import Text
-from neoscore.models import notehead_tables
-from neoscore.models.accidental_type import AccidentalType
-from neoscore.models.directions import HorizontalDirection, VerticalDirection
-from neoscore.models.duration import Duration
-from neoscore.models.key_signature_type import KeySignatureType
-from neoscore.models.pitch import Pitch
-from neoscore.utils.color import Color
-from neoscore.utils.point import ORIGIN, Point
-from neoscore.utils.rect import Rect
-from neoscore.utils.units import ZERO, GraphicUnit, Inch, Mm
+from neoscore.core.units import ZERO, GraphicUnit, Inch, Mm
+from neoscore.western import notehead_tables
 from neoscore.western.accidental import Accidental
-from neoscore.western.bar_line import BarLine
-from neoscore.western.beam import Beam
+from neoscore.western.accidental_type import AccidentalType
+from neoscore.western.arpeggio_line import ArpeggioLine
+from neoscore.western.barline import Barline
+from neoscore.western.beam_group import BeamGroup
 from neoscore.western.brace import Brace
 from neoscore.western.chordrest import Chordrest
 from neoscore.western.clef import Clef
 from neoscore.western.clef_type import ClefType
+from neoscore.western.duration import Duration
 from neoscore.western.dynamic import Dynamic
 from neoscore.western.flag import Flag
 from neoscore.western.hairpin import Hairpin
 from neoscore.western.invisible_clef import InvisibleClef
 from neoscore.western.key_signature import KeySignature
+from neoscore.western.key_signature_type import KeySignatureType
 from neoscore.western.ledger_line import LedgerLine
 from neoscore.western.meter import COMMON_TIME, CUT_TIME, Meter
 from neoscore.western.notehead import Notehead
 from neoscore.western.octave_line import OctaveLine
 from neoscore.western.ped_and_star import PedAndStar
 from neoscore.western.pedal_line import PedalLine
-from neoscore.western.repeating_music_text_line import RepeatingMusicTextLine
+from neoscore.western.pitch import Pitch
 from neoscore.western.rest import Rest
 from neoscore.western.slur import Slur
 from neoscore.western.staff import Staff
 from neoscore.western.stem import Stem
+from neoscore.western.tab_clef import TabClef
+from neoscore.western.tab_number import TabNumber
+from neoscore.western.tab_staff import TabStaff
+from neoscore.western.tab_string_text import TabStringText
 from neoscore.western.time_signature import TimeSignature
