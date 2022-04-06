@@ -16,7 +16,6 @@ from neoscore.core.point import ORIGIN, Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner import Spanner
 from neoscore.core.units import Unit
-from neoscore.interface.text_interface import TextInterface
 from neoscore.western.interval import Interval
 from neoscore.western.transposition import Transposition
 
@@ -125,6 +124,7 @@ class OctaveLine(PositionedObject, Spanner, HasMusicFont):
                 pattern=PenPattern.DASH,
             ),
         )
+        self.line_text.z_index = self.line_path.z_index + 1
         # Drawn main line part
         self.line_path.line_to(self.end_pos.x, path_y, self.end_parent)
         self.line_path.line_to(
@@ -183,36 +183,12 @@ class _OctaveLineText(MusicText):
     def _render_before_break(
         self, local_start_x: Unit, start: Point, stop: Point, dist_to_line_start: Unit
     ):
-        interface = TextInterface(
-            start,
-            self.brush.interface,
-            Pen.no_pen().interface,
-            self.text,
-            self.font.interface,
-        )
-        interface.render()
-        self.interfaces.append(interface)
+        super()._render_complete(start)
 
     def _render_after_break(self, local_start_x: Unit, start: Point):
-        interface = TextInterface(
-            start,
-            self.brush.interface,
-            Pen.no_pen().interface,
-            self.parenthesized_text,
-            self.font.interface,
-        )
-        interface.render()
-        self.interfaces.append(interface)
+        super()._render_complete(start)
 
     def _render_spanning_continuation(
         self, local_start_x: Unit, start: Point, stop: Point
     ):
-        interface = TextInterface(
-            start,
-            self.brush.interface,
-            Pen.no_pen().interface,
-            self.parenthesized_text,
-            self.font.interface,
-        )
-        interface.render()
-        self.interfaces.append(interface)
+        super()._render_complete(start)

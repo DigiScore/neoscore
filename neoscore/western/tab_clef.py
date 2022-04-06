@@ -32,6 +32,7 @@ class TabClef(MusicText):
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,
         hide_background: bool = True,
+        z_index: Optional[int] = None,
     ):
         """
         Args:
@@ -42,6 +43,8 @@ class TabClef(MusicText):
             brush: The brush to fill in text shapes with.
             pen: The pen to trace text outlines with. This defaults to no pen.
             hide_background: Whether to paint over the background behind the text.
+            z_index: Controls draw order with higher values drawn first.
+                Defaults to 1 greater than the staff's z_index.
         """
         MusicText.__init__(
             self,
@@ -52,8 +55,11 @@ class TabClef(MusicText):
             brush,
             pen,
             background_brush=neoscore.background_brush,
+            z_index=z_index if z_index is not None else staff.z_index + 1,
         )
 
     @property
     def breakable_length(self) -> Unit:
         return self.parent.breakable_length - self.x
+
+    # TODO HIGH make this render on each flowable line (Copy impl from Clef)

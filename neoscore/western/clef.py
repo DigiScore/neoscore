@@ -103,17 +103,15 @@ class Clef(MusicText, StaffObject):
 
     ######## PRIVATE METHODS ########
 
-    # Always render the whole glyph.
-
     def _render_before_break(
         self, local_start_x: Unit, start: Point, stop: Point, dist_to_line_start: Unit
     ):
-        self._render_slice(start, None)
+        super()._render_complete(start)
 
     def _render_after_break(self, local_start_x: Unit, start: Point):
-        self._render_slice(start, None)
+        super()._render_complete(start)
 
     def _render_spanning_continuation(
         self, local_start_x: Unit, start: Point, stop: Point
     ):
-        self._render_slice(start, None)
+        super()._render_complete(start)

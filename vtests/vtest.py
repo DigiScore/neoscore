@@ -51,7 +51,7 @@ lowest_staff_key_signature = KeySignature(
     "d_minor",
 )
 
-octave_line = OctaveLine((Mm(20), staff.unit(-2)), staff, Mm(1000), indication="8vb")
+octave_line = OctaveLine((Mm(20), staff.unit(-3)), staff, Mm(1000), indication="8vb")
 
 Chordrest(Mm(10), staff, ["a'", "bs"], Duration(2, 4))
 Chordrest(Mm(40), staff, ["a'", "bs"], Duration(2, 4))
