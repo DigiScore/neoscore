@@ -41,7 +41,7 @@ class TestFlowable(AppTest):
         flowable = Flowable(
             (Mm(10), Mm(11)),
             parent=parent,
-            width=Mm(1000),
+            length=Mm(1000),
             height=Mm(100),
             y_padding=Mm(5),
         )

@@ -61,7 +61,7 @@ class Image(PositionedObject):
 
     @property
     def breakable_length(self) -> Unit:
-        """The breakable width of the object.
+        """The breakable length of the object.
 
         This is always 0, meaning Images objects cannot be broken
         across Flowable lines.
