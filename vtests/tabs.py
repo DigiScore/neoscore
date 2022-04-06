@@ -18,6 +18,18 @@ TabNumber(Mm(7), staff_1, 6, 0)
 TabNumber(Mm(10), staff_1, 1, 9)
 TabNumber(Mm(13), staff_1, 4, 123)
 
+# Rolled chord
+
+chord_notes = [
+    TabNumber(Mm(22), staff_1, 1, 2),
+    TabNumber(Mm(22), staff_1, 2, 1),
+    TabNumber(Mm(22), staff_1, 3, 1),
+    TabNumber(Mm(22), staff_1, 4, 2),
+    TabNumber(Mm(22), staff_1, 5, 3),
+]
+u = staff_1.unit
+ArpeggioLine((u(-1), u(-1)), chord_notes[0], (u(-1), u(2)), chord_notes[-1], True)
+
 
 # 4 line tab
 

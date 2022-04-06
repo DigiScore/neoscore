@@ -85,7 +85,7 @@ class RepeatingMusicTextLine(MusicText, Spanner2D):
         else:
             end_cap_chars = []
             end_cap_width = ZERO
-        main_reps_needed = int(
+        main_reps_needed = round(
             cast(float, (self.spanner_2d_length - end_cap_width) / main_char_width)
         )
         self.music_chars = (single_repetition_chars * main_reps_needed) + end_cap_chars
