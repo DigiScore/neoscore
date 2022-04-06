@@ -19,7 +19,7 @@ class RichTextInterface(PositionedObjectInterface):
 
     font: FontInterface
 
-    width: Optional[Unit]
+    width: Optional[Unit] = None
 
     scale: float = 1
 

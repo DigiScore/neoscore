@@ -42,3 +42,10 @@ class TestRichText(AppTest):
         obj.rotation = 15
         assert obj.rotation == 15
         assert RichText(ORIGIN, None, self.html, rotation=20).rotation == 20
+
+    def test_z_index(self):
+        obj = RichText(ORIGIN, None, self.html)
+        assert obj.z_index == 0
+        obj.z_index = 15
+        assert obj.z_index == 15
+        assert RichText(ORIGIN, None, self.html, z_index=20).z_index == 20
