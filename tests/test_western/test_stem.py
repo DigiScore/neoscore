@@ -1,4 +1,5 @@
 import unittest
+from ..helpers import AppTest
 
 from neoscore.core import neoscore
 from neoscore.core.directions import VerticalDirection
@@ -12,9 +13,9 @@ from neoscore.western.staff import Staff
 from neoscore.western.stem import Stem
 
 
-class TestStem(unittest.TestCase):
+class TestStem(AppTest):
     def setUp(self):
-        neoscore.setup()
+        super().setUp()
         self.flowable = Flowable((Mm(0), Mm(0)), None, Mm(10000), Mm(30), Mm(5))
         self.staff = Staff((Mm(0), Mm(0)), self.flowable, Mm(100))
 
