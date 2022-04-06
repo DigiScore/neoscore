@@ -26,6 +26,9 @@ class RichTextInterface(PositionedObjectInterface):
     rotation: float = 0
     """Rotation angle in degrees"""
 
+    z_index: int = 0
+    """Z-index controlling draw order."""
+
     ######## PUBLIC METHODS ########
 
     def render(self):
@@ -43,4 +46,6 @@ class RichTextInterface(PositionedObjectInterface):
         qt_object.setFont(self.font.qt_object)
         if self.scale != 1:
             qt_object.setScale(self.scale)
+        if self.z_index != 0:
+            qt_object.setZValue(self.z_index)
         return qt_object

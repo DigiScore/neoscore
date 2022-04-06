@@ -50,6 +50,9 @@ class PathInterface(PositionedObjectInterface):
 
     background_brush: Optional[BrushInterface] = None
 
+    z_index: int = 0
+    """Z-index controlling draw order."""
+
     clip_start_x: Optional[Unit] = None
     """The local starting position of the drawn region in the glyph.
 
@@ -110,5 +113,7 @@ class PathInterface(PositionedObjectInterface):
         qt_object.setPos(point_to_qt_point_f(self.pos))
         qt_object.setBrush(self.brush.qt_object)
         qt_object.setPen(self.pen.qt_object)  # No pen
+        if self.z_index != 0:
+            qt_object.setZValue(self.z_index)
         qt_object.update_geometry()
         return qt_object

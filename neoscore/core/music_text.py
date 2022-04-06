@@ -46,6 +46,7 @@ class MusicText(Text, HasMusicFont):
         scale: float = 1,
         rotation: float = 0,
         background_brush: Optional[BrushDef] = None,
+        z_index: int = 0,
         breakable: bool = True,
     ):
         """
@@ -67,6 +68,7 @@ class MusicText(Text, HasMusicFont):
                 not currently supported.
             background_brush: Optional brush used to paint the text's bounding rect
                 behind it.
+            z_index: Controls draw order with higher values drawn first.
             breakable: Whether this object should break across lines in
                 Flowable containers.
         """
@@ -85,6 +87,7 @@ class MusicText(Text, HasMusicFont):
             scale,
             rotation,
             background_brush,
+            z_index,
             breakable,
         )
 

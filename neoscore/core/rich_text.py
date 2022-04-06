@@ -32,6 +32,7 @@ class RichText(PositionedObject):
         font: Optional[Font] = None,
         scale: float = 1,
         rotation: float = 0,
+        z_index: int = 0,
     ):
         """
         Args:
@@ -43,6 +44,7 @@ class RichText(PositionedObject):
             font: The font to display the text in.
             scale: A scaling factor relative to the font size.
             rotation: Rotation angle in degrees.
+            z_index: Controls draw order with higher values drawn first.
         """
         if font:
             self._font = font
@@ -52,6 +54,7 @@ class RichText(PositionedObject):
         self._width = width
         self._scale = scale
         self._rotation = rotation
+        self._z_index = z_index
         super().__init__(pos, parent)
 
     @property
@@ -112,6 +115,15 @@ class RichText(PositionedObject):
     def rotation(self, value: float):
         self._rotation = value
 
+    @property
+    def z_index(self) -> int:
+        """Value controlling draw order with higher values being drawn first"""
+        return self._z_index
+
+    @z_index.setter
+    def z_index(self, value: int):
+        self._z_index = value
+
     # Since RichText isn't breakable (for now?), we only need to
     # implement complete rendering
     def _render_complete(
@@ -127,6 +139,7 @@ class RichText(PositionedObject):
             self.width,
             self.scale,
             self.rotation,
+            self.z_index,
         )
         interface.render()
         self.interfaces.append(interface)

@@ -14,7 +14,7 @@ class TestRichTextInterface(AppTest):
 
     def test_qt_object_properties(self):
         interface = RichTextInterface(
-            Point(Unit(5), Unit(6)), self.html, self.font, Unit(50), 2, 15
+            Point(Unit(5), Unit(6)), self.html, self.font, Unit(50), 2, 15, 99
         )
         qt_object = interface._create_qt_object()
         assert qt_object.document().toPlainText() == "test"
@@ -23,6 +23,7 @@ class TestRichTextInterface(AppTest):
         assert qt_object.textWidth() == 50
         assert qt_object.rotation() == 15
         assert qt_object.font() == self.font.qt_object
+        assert qt_object.zValue() == 99
 
     def test_automatic_text_width(self):
         interface = RichTextInterface(
