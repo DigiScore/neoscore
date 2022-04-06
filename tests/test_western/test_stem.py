@@ -5,6 +5,7 @@ from neoscore.core.directions import VerticalDirection
 from neoscore.core.flowable import Flowable
 from neoscore.core.units import Mm
 from neoscore.western.chordrest import Chordrest
+from neoscore.western.octave_line import OctaveLine
 from neoscore.western.clef import Clef
 from neoscore.western.duration import Duration
 from neoscore.western.staff import Staff
@@ -37,6 +38,28 @@ class TestStem(unittest.TestCase):
             ("gx'", VerticalDirection.UP),
             ("gx'''", VerticalDirection.DOWN),
         ]
-        for note, direction in note_list:
-            chord = Chordrest(Mm(15), self.staff, [note], Duration(1, 4))
+        for n, (note, direction) in enumerate(note_list):
+            chord = Chordrest(Mm(15+n), self.staff, [note], Duration(1, 4))
             assert chord.stem_direction == direction
+
+    def test_stem_direction_in_dyads_and_low_staffs(self):
+        Clef(Mm(0), self.staff, "treble")
+        lowest_staff = Staff((Mm(10), Mm(18)), self.flowable, Mm(2000), Mm(1))
+        Clef(Mm(0), lowest_staff, "bass")
+        OctaveLine((Mm(20), self.staff.unit(-2)), self.staff, Mm(1000), indication="8vb")
+
+        assert Chordrest(Mm(10), self.staff, ["a'", "bs"],
+                         Duration(2, 4)).stem_direction == VerticalDirection.UP
+        assert Chordrest(Mm(15), self.staff, ["b'", "bff"],
+                         Duration(2, 4)).stem_direction == VerticalDirection.UP
+        assert Chordrest(Mm(40), self.staff, ["a'", "b'"],
+                         Duration(2, 4)).stem_direction == VerticalDirection.DOWN
+        assert Chordrest(Mm(60), self.staff, ["b'", "bff"],
+                         Duration(2, 4)).stem_direction == VerticalDirection.DOWN
+
+        assert Chordrest(Mm(10), lowest_staff,
+                         [("a", "accidentalQuarterToneSharpStein", 2)],
+                         (3, 4)).stem_direction == VerticalDirection.UP
+        assert Chordrest(Mm(15), lowest_staff,
+                         [("a", "accidentalFlatRepeatedSpaceStockhausen", 2)],
+                         (3, 16)).stem_direction == VerticalDirection.UP
