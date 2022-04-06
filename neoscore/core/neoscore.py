@@ -2,9 +2,12 @@ from __future__ import annotations
 
 import json
 import os
+import tempfile
 from time import time
 from typing import TYPE_CHECKING, Callable, Optional
 from warnings import warn
+
+import img2pdf
 
 from neoscore import constants
 from neoscore.core import file_system
@@ -195,19 +198,29 @@ def _clear_interfaces():
                 interfaces.clear()
 
 
-def render_pdf(path: str):
+# TODO HIGH make this path arg and sim nearby support pathlib.Path
+
+
+def render_pdf(pdf_path: str, dpi: int = 300):
     """Render the score as a pdf.
 
     Args:
-        path (str): The output score path.
-            If a relative path is provided, it will be
-            relative to the current working directory.
+        pdf_path (str): The output pdf path
+        dpi: Resolution to render with
     """
     global document
     global _app_interface
     _clear_interfaces()
     document._render()
-    _app_interface.render_pdf((page.page_index for page in document.pages), path)
+    # Render all pages to temp files
+    page_imgs = []
+    for page in document.pages:
+        img_path = tempfile.NamedTemporaryFile(suffix=".png")
+        render_image(page.bounding_rect, img_path.name, dpi)
+        page_imgs.append(img_path)
+    # Assemble into PDF and write it to file path
+    with open(pdf_path, "wb") as f:
+        f.write(img2pdf.convert(page_imgs))
 
 
 def render_image(

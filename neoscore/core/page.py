@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 from neoscore.core.paper import Paper
 from neoscore.core.point import PointDef
 from neoscore.core.positioned_object import PositionedObject
+from neoscore.core.rect import Rect
 
 if TYPE_CHECKING:
     from neoscore.core.document import Document
@@ -41,9 +42,12 @@ class Page(PositionedObject):
         self._document = document
         self._page_index = page_index
         self.paper = paper
-        self.children = []
 
     @property
     def page_index(self):
         """The index of this page in its managing `PageSupplier` object."""
         return self._page_index
+
+    @property
+    def bounding_rect(self) -> Rect:
+        return Rect(self.x, self.y, self.paper.width, self.paper.height)

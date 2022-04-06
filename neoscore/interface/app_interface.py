@@ -1,10 +1,8 @@
 from __future__ import annotations
 
-import os
 from typing import TYPE_CHECKING, Callable
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtPrintSupport import QPrinter
 
 from neoscore import constants
 from neoscore.core.color import Color
@@ -69,39 +67,6 @@ class AppInterface:
                 self.main_window.refresh_func = self.repl_refresh_func
         else:
             self.app.exec_()
-
-    def render_pdf(self, pages, path):
-        """Render the document to a pdf file.
-
-        Args:
-            pages (iter[int]): The page numbers to render
-            path (str): An output file path.
-
-        Warning: If the file at `path` already exists, it will be overwritten.
-        """
-        printer = QPrinter()
-        printer.setOutputFormat(QPrinter.PdfFormat)
-        printer.setOutputFileName(os.path.realpath(path))
-        printer.setResolution(constants.PRINT_DPI)
-        printer.setPageLayout(self.document.paper.interface.qt_object)
-        painter = QtGui.QPainter()
-        painter.begin(printer)
-        # Scaling ratio for Qt point 72dpi -> constants.PRINT_DPI
-        ratio = constants.PRINT_DPI / 72
-        target_rect_unscaled = printer.paperRect(QPrinter.Point)
-        target_rect_scaled = QtCore.QRectF(
-            target_rect_unscaled.x() * ratio,
-            target_rect_unscaled.y() * ratio,
-            target_rect_unscaled.width() * ratio,
-            target_rect_unscaled.height() * ratio,
-        )
-        for page_number in pages:
-            source_rect = rect_to_qt_rect_f(
-                self.document.paper_bounding_rect(page_number)
-            )
-            self.scene.render(painter, target=target_rect_scaled, source=source_rect)
-            printer.newPage()
-        painter.end()
 
     def render_image(
         self,

@@ -10,7 +10,7 @@ from neoscore.common import *
 neoscore.setup()
 
 
-flow = Flowable((Mm(0), Mm(0)), None, Mm(35000), Mm(30), Mm(10))
+flow = Flowable((Mm(0), Mm(0)), None, Mm(11000), Mm(30), Mm(10))
 
 counting_string = "    ".join(str(x) for x in range(600))
 counting_text = Text((Mm(0), Mm(0)), parent=flow, text=counting_string)

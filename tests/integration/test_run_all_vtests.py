@@ -9,7 +9,8 @@ vtest_dir_contents = os.listdir(vtest_dir)
 vtest_file_names = [
     f
     for f in vtest_dir_contents
-    if f.endswith(".py") and f not in ["helpers.py", "repl.py", "animation.py"]
+    if f.endswith(".py")
+    and f not in ["helpers.py", "repl.py", "animation.py", "pdf.py"]
 ]
 
 
@@ -18,3 +19,9 @@ def test_vtests(vtest_path: str):
     subprocess.run(
         ["python", vtest_path, "--image", "--tmp"], cwd=vtest_dir, check=True
     )
+
+
+# If/when PDF export can be sped up this should be re-enabled
+@pytest.mark.skip(reason="Too slow")
+def test_pdf_vtest():
+    subprocess.run(["python", "pdf.py", "--pdf", "--tmp"], cwd=vtest_dir, check=True)

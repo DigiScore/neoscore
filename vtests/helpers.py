@@ -18,7 +18,12 @@ def render_vtest(name: str):
 
     elif "--pdf" in sys.argv:
         # PDF export is currently broken
-        pdf_path = os.path.join(os.path.dirname(__file__), "output", f"{name}_pdf.pdf")
+        if "--tmp" in sys.argv:
+            pdf_path = tempfile.NamedTemporaryFile(suffix=".pdf").name
+        else:
+            pdf_path = os.path.join(
+                os.path.dirname(__file__), "output", f"{name}_pdf.pdf"
+            )
         neoscore.render_pdf(pdf_path)
     else:
         neoscore.show()
