@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Optional, cast
+from typing import TYPE_CHECKING, Optional, cast
 
 from neoscore.core.brush import BrushDef
 from neoscore.core.music_font import MusicFont
-from neoscore.core.music_text import MusicText
+from neoscore.core.music_text import MusicStringDef, MusicText
 from neoscore.core.pen import PenDef
 from neoscore.core.point import PointDef
 from neoscore.core.spanner_2d import Spanner2D
@@ -23,16 +23,14 @@ class RepeatingMusicTextLine(MusicText, Spanner2D):
     not yet fully supported and will display incorrectly.
     """
 
-    # TODO MEDIUM figure out how to type `text` - same problem as in `MusicText`
-
     def __init__(
         self,
         start: PointDef,
         start_parent: Optional[Parent],
         end_pos: PointDef,
         end_parent: Optional[Parent],
-        text: Any,
-        end_cap_text: Optional[Any] = None,
+        text: MusicStringDef,
+        end_cap_text: Optional[MusicStringDef] = None,
         font: Optional[MusicFont] = None,
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,
@@ -46,10 +44,9 @@ class RepeatingMusicTextLine(MusicText, Spanner2D):
             end_pos: The stopping point.
             end_parent: The parent for the ending position.
                 If `None`, defaults to `self`.
-            text (str, tuple, MusicChar, or list of these):
-                The text to be repeated over the spanner,
-                represented as a str (glyph name), tuple
-                (glyph name, alternate number), MusicChar, or a list of them.
+            text: The text to be repeated over the spanner. Can be given as a SMuFL
+                glyph name, or other shorthand forms. See `MusicStringDef` and
+                `MusicCharDef`.
             end_cap_text: A text specifier for the end of text. Especially useful
                 for line terminators like arrows at the end of arppeggio lines.
                 This can be provided in the same form as `text`.
