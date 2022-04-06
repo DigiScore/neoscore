@@ -9,6 +9,12 @@ from neoscore.western.pitch import PitchDef
 
 neoscore.setup()
 
+# TODO MEDIUM add a mechanism for sanity-check running every vtest as
+# part of CI.  Maybe require each vtest to include the same
+# multi-option "show" mechanism as vtest.py, then a script could just
+# run everything in the folder. This could be provided as a utility
+# function too.
+
 
 class TestChord(NamedTuple):
     pitches: Optional[list[PitchDef]]
