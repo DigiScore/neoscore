@@ -216,7 +216,13 @@ def render_pdf(pdf_path: str, dpi: int = 300):
     page_imgs = []
     for page in document.pages:
         img_path = tempfile.NamedTemporaryFile(suffix=".png")
-        render_image(page.bounding_rect, img_path.name, dpi)
+        render_image(
+            page.bounding_rect,
+            img_path.name,
+            dpi,
+            bg_color="#ffffff",
+            preserve_alpha=False,
+        )
         page_imgs.append(img_path)
     # Assemble into PDF and write it to file path
     with open(pdf_path, "wb") as f:
@@ -230,6 +236,7 @@ def render_image(
     quality: int = -1,
     bg_color: Optional[ColorDef] = None,
     autocrop: bool = False,
+    preserve_alpha=True,
 ):
     """Render a section of the document to an image.
 
@@ -257,6 +264,8 @@ def render_image(
         autocrop: Whether or not to crop the output image to tightly
             fit the contents of the frame. If true, the image will be cropped
             such that all 4 edges have at least one pixel not of `bg_color`.
+        preserve_alpha: Whether to preserve the alpha channel. If false,
+            some non-transparent `bg_color` should be provided.
 
     Raises:
         FileNotFoundError: If the given `image_path` does not point to a valid
@@ -285,14 +294,16 @@ def render_image(
 
     rect = rect_from_def(rect)
     if bg_color is None:
-        bg_color = Color(255, 255, 255, 255)
+        bg_color = Color("#ffffff")
     else:
         bg_color = Color.from_def(bg_color)
     dpm = int(image_utils.dpi_to_dpm(dpi))
 
     document._render()
 
-    _app_interface.render_image(rect, image_path, dpm, quality, bg_color, autocrop)
+    _app_interface.render_image(
+        rect, image_path, dpm, quality, bg_color, autocrop, preserve_alpha
+    )
 
 
 def _repl_refresh_func(_: float) -> float:

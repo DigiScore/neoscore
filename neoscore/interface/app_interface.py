@@ -76,6 +76,7 @@ class AppInterface:
         quality: int,
         bg_color: Color,
         autocrop: bool,
+        preserve_alpha: bool,
     ):
         """Render a section of self.scene to an image.
 
@@ -96,6 +97,8 @@ class AppInterface:
                 fit the contents of the frame. If true, the image will be
                 cropped such that all 4 edges have at least one pixel not of
                 `bg_color`.
+            preserve_alpha: Whether to preserve the alpha channel. If false,
+                some non-transparent `bg_color` should be provided.
 
         Raises:
             ImageExportError: If Qt image export fails for unknown reasons.
@@ -104,7 +107,12 @@ class AppInterface:
         pix_width = int(rect.width.base_value * scale)
         pix_height = int(rect.height.base_value * scale)
 
-        q_image = QtGui.QImage(pix_width, pix_height, QtGui.QImage.Format_ARGB32)
+        if preserve_alpha:
+            q_image_format = QtGui.QImage.Format_ARGB32
+        else:
+            q_image_format = QtGui.QImage.Format_RGB32
+
+        q_image = QtGui.QImage(pix_width, pix_height, q_image_format)
         q_image.setDotsPerMeterX(dpm)
         q_image.setDotsPerMeterY(dpm)
         q_color = color_to_q_color(bg_color)
