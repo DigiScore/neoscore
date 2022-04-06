@@ -1,5 +1,4 @@
-import os
-import sys
+from helpers import render_vtest
 
 from neoscore.common import *
 
@@ -57,12 +56,4 @@ Chordrest(unit(8), lower_staff, ["g"], Duration(3, 4))
 
 Barline(unit(22), [upper_staff, lower_staff])
 
-if "--image" in sys.argv:
-    image_path = os.path.join(os.path.dirname(__file__), "output", "goldberg.png")
-    neoscore.render_image((Mm(0), Mm(0), Inch(2), Inch(2)), image_path, autocrop=True)
-elif "--pdf" in sys.argv:
-    # PDF export is currently broken
-    pdf_path = os.path.join(os.path.dirname(__file__), "output", "goldberg.pdf")
-    neoscore.render_pdf(pdf_path)
-else:
-    neoscore.show()
+render_vtest("goldberg")

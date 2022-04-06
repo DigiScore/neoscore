@@ -1,3 +1,5 @@
+from helpers import render_vtest
+
 from neoscore.common import *
 
 neoscore.setup()
@@ -16,4 +18,4 @@ rt = RichText(
     (Mm(0), Mm(0)), None, text, Mm(20), neoscore.default_font.modified(size=Mm(1))
 )
 
-neoscore.show()
+render_vtest("rich_text")

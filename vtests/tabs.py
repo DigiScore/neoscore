@@ -1,3 +1,5 @@
+from helpers import render_vtest
+
 from neoscore.common import *
 
 neoscore.setup()
@@ -45,4 +47,4 @@ all_staves = [staff_1, staff_2, regular_staff]
 
 Barline(Mm(20), all_staves)
 
-neoscore.show()
+render_vtest("tabs")

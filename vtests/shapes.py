@@ -1,5 +1,7 @@
 import math
 
+from helpers import render_vtest
+
 from neoscore.common import *
 
 neoscore.setup()
@@ -40,4 +42,4 @@ Path.rect(
     Pen(thickness=Mm(0.3)),
 )
 
-neoscore.show()
+render_vtest("shapes")

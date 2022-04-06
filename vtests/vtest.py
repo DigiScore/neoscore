@@ -1,15 +1,11 @@
 #!/usr/bin/env python3
 
 """A development sandbox used for manually checking visual outputs."""
-
-import os
 import random
-import sys
-import time
+
+from helpers import render_vtest
 
 from neoscore.common import *
-
-start_time = time.time()
 
 neoscore.setup()
 
@@ -146,13 +142,4 @@ Path.rect(
     "#ff0000",
 )
 
-if "--image" in sys.argv:
-    image_path = os.path.join(os.path.dirname(__file__), "output", "vtest_image.png")
-    neoscore.render_image((Mm(0), Mm(0), Inch(2), Inch(2)), image_path, autocrop=True)
-    print(f"Non-setup code took {time.time() - start_time}")
-elif "--pdf" in sys.argv:
-    # PDF export is currently broken
-    pdf_path = os.path.join(os.path.dirname(__file__), "output", "vtest_pdf.pdf")
-    neoscore.render_pdf(pdf_path)
-else:
-    neoscore.show()
+render_vtest("vtest")
