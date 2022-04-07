@@ -1,6 +1,3 @@
-doc/build
-tmp
-
 # emacs
 *~
 .\#*
@@ -22,12 +19,8 @@ virtualenv
 # Coverage
 htmlcov
 
-# Qt Creator project files
-# (assuming project name `brown`)
-brown.config
-brown.creator
-brown.files
-brown.includes
-
 # pytest
 .pytest_cache
+
+# vtest output files
+vtests/output

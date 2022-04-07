@@ -19,7 +19,6 @@ from neoscore.core.paper import A4, Paper
 from neoscore.core.pen import Pen
 from neoscore.core.rect import RectDef, rect_from_def
 from neoscore.interface.app_interface import AppInterface
-from neoscore.interface.qt import image_utils
 
 if TYPE_CHECKING:
     from neoscore.core.document import Document
@@ -45,6 +44,18 @@ background_brush = Brush("#ffffff")
 
 Defaults to white. Set this using `set_background_brush`.
 """
+
+_supported_image_extensions = {
+    ".bmp",
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".pbm",
+    ".pgm",
+    ".ppm",
+    ".xbm",
+    ".xpm",
+}
 
 
 def setup(initial_paper: Paper = A4):
@@ -293,7 +304,7 @@ def render_image(
         warn("render_image quality {} invalid; using default.".format(quality))
         quality = -1
 
-    if not os.path.splitext(image_path)[1] in image_utils.supported_formats:
+    if not os.path.splitext(image_path)[1] in _supported_image_extensions:
         raise InvalidImageFormatError(
             "image_path {} is not in a supported format.".format(image_path)
         )
@@ -303,14 +314,13 @@ def render_image(
         bg_color = Color("#ffffff")
     else:
         bg_color = Color.from_def(bg_color)
-    dpm = int(image_utils.dpi_to_dpm(dpi))
 
     document._render()
 
     return _app_interface.render_image(
         rect,
         image_path,
-        dpm,
+        dpi,
         quality,
         bg_color,
         autocrop,

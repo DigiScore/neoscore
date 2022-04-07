@@ -5,15 +5,24 @@ import pathlib
 import threading
 from typing import TYPE_CHECKING, Callable
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QRectF
+from PyQt5.QtGui import (
+    QBitmap,
+    QColor,
+    QFontDatabase,
+    QImage,
+    QPainter,
+    QPixmapCache,
+    QRegion,
+)
+from PyQt5.QtWidgets import QApplication, QGraphicsScene
 
 from neoscore import constants
 from neoscore.core.color import Color
 from neoscore.core.exceptions import FontRegistrationError, ImageExportError
 from neoscore.core.rect import Rect
-from neoscore.core.units import Meter
+from neoscore.core.units import Inch, Meter
 from neoscore.interface.brush_interface import BrushInterface
-from neoscore.interface.qt import image_utils
 from neoscore.interface.qt.converters import color_to_q_color, rect_to_qt_rect_f
 from neoscore.interface.qt.main_window import MainWindow
 from neoscore.interface.repl import running_in_ipython_gui_repl
@@ -21,7 +30,8 @@ from neoscore.interface.repl import running_in_ipython_gui_repl
 if TYPE_CHECKING:
     from neoscore.core.document import Document
 
-_RENDER_IMAGE_THREAD_MAX = int(multiprocessing.cpu_count())
+_RENDER_IMAGE_THREAD_MAX = multiprocessing.cpu_count()
+_INCHES_PER_METER: float = Inch(1) / Meter(1)
 
 
 class AppInterface:
@@ -46,14 +56,14 @@ class AppInterface:
             if constants.HEADLESS_FOR_TEST
             else []
         )
-        self.app = QtWidgets.QApplication(args)
+        self.app = QApplication(args)
         self.main_window = MainWindow()
-        self.scene = QtWidgets.QGraphicsScene()
+        self.scene = QGraphicsScene()
         self.view = self.main_window.graphicsView
         self.view.setScene(self.scene)
         self.background_brush = background_brush
         self.registered_music_fonts = {}
-        self.font_database = QtGui.QFontDatabase()
+        self.font_database = QFontDatabase()
         self.repl_refresh_func = repl_refresh_func
         self._render_image_thread_semaphore = threading.Semaphore(
             _RENDER_IMAGE_THREAD_MAX
@@ -80,7 +90,7 @@ class AppInterface:
         self,
         rect: Rect,
         image_path: str | pathlib.Path,
-        dpm: int,
+        dpi: int,
         quality: int,
         bg_color: Color,
         autocrop: bool,
@@ -101,7 +111,7 @@ class AppInterface:
             image_path: The path to the output image.
                 This must be a valid path relative to the current
                 working directory.
-            dpm: The pixels per meter of the rendered image.
+            dpi: The pixels per inch of the rendered image.
             quality: The quality of the output image for compressed
                 image formats. Must be either `-1` (default compression) or
                 between `0` (most compressed) and `100` (least compressed).
@@ -119,25 +129,26 @@ class AppInterface:
         """
         if isinstance(image_path, pathlib.Path):
             image_path = str(image_path)
+        dpm = AppInterface._dpi_to_dpm(dpi)
         scale = dpm / Meter(1).base_value
         pix_width = int(rect.width.base_value * scale)
         pix_height = int(rect.height.base_value * scale)
 
         if preserve_alpha:
-            q_image_format = QtGui.QImage.Format_ARGB32
+            q_image_format = QImage.Format_ARGB32
         else:
-            q_image_format = QtGui.QImage.Format_RGB32
+            q_image_format = QImage.Format_RGB32
 
-        q_image = QtGui.QImage(pix_width, pix_height, q_image_format)
+        q_image = QImage(pix_width, pix_height, q_image_format)
         q_image.setDotsPerMeterX(dpm)
         q_image.setDotsPerMeterY(dpm)
         q_color = color_to_q_color(bg_color)
         q_image.fill(q_color)
 
-        painter = QtGui.QPainter()
+        painter = QPainter()
         painter.begin(q_image)
 
-        target_rect = QtCore.QRectF(q_image.rect())
+        target_rect = QRectF(q_image.rect())
         source_rect = rect_to_qt_rect_f(rect)
 
         self.scene.render(painter, target=target_rect, source=source_rect)
@@ -146,7 +157,7 @@ class AppInterface:
         def finalize():
             with self._render_image_thread_semaphore:
                 final_image = (
-                    image_utils.autocrop(q_image, q_color) if autocrop else q_image
+                    AppInterface._autocrop(q_image, q_color) if autocrop else q_image
                 )
                 success = q_image.save(image_path, quality=quality)
                 if not success:
@@ -210,6 +221,22 @@ class AppInterface:
         self.scene.clear()
 
     def _optimize_for_interactive_view(self):
-        QtGui.QPixmapCache.setCacheLimit(constants.QT_PIXMAP_CACHE_LIMIT_KB)
+        QPixmapCache.setCacheLimit(constants.QT_PIXMAP_CACHE_LIMIT_KB)
         self.view.setViewportUpdateMode(3)  # NoViewportUpdate
         self.scene.setItemIndexMethod(-1)  # NoIndex
+
+    @staticmethod
+    def _dpi_to_dpm(dpi: int) -> int:
+        """Convert a Dots Per Inch value to Dots Per Meter"""
+        return int(dpi / _INCHES_PER_METER)
+
+    @staticmethod
+    def _autocrop_image(q_image: QImage, q_color: QColor) -> QImage:
+        """Automatically crop a qt image around the pixels not of a given color.
+
+        Returns a newly cropped image; the original is left unmodified.
+        """
+        _QT_MASK_IN_COLOR = 0
+        mask = q_image.createMaskFromColor(q_color.rgb(), _QT_MASK_IN_COLOR)
+        crop_rect = QRegion(QBitmap.fromImage(mask)).boundingRect()
+        return q_image.copy(crop_rect)
