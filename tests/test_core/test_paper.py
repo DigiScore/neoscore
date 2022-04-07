@@ -35,13 +35,33 @@ class TestPaper(unittest.TestCase):
         assert rotated.margin_left == original.margin_bottom
         assert rotated.gutter == original.gutter
 
-    def test_templates(self):
-        assert paper.A4
-        assert paper.LETTER
-
     def test_make_rotation_four_times_no_change(self):
         test_paper = paper.LETTER
         assert (
             test_paper.make_rotation().make_rotation().make_rotation().make_rotation()
             == test_paper
+        )
+
+    def test_modifying(self):
+        test_paper = Paper(Mm(210), Mm(297), Mm(20), Mm(30), Mm(20), Mm(30), Mm(15))
+        assert test_paper.modified(width=Mm(999)) == Paper(
+            Mm(999), Mm(297), Mm(20), Mm(30), Mm(20), Mm(30), Mm(15)
+        )
+        assert test_paper.modified(height=Mm(999)) == Paper(
+            Mm(210), Mm(999), Mm(20), Mm(30), Mm(20), Mm(30), Mm(15)
+        )
+        assert test_paper.modified(margin_top=Mm(1)) == Paper(
+            Mm(210), Mm(297), Mm(1), Mm(30), Mm(20), Mm(30), Mm(15)
+        )
+        assert test_paper.modified(margin_right=Mm(1)) == Paper(
+            Mm(210), Mm(297), Mm(20), Mm(1), Mm(20), Mm(30), Mm(15)
+        )
+        assert test_paper.modified(margin_bottom=Mm(1)) == Paper(
+            Mm(210), Mm(297), Mm(20), Mm(30), Mm(1), Mm(30), Mm(15)
+        )
+        assert test_paper.modified(margin_left=Mm(1)) == Paper(
+            Mm(210), Mm(297), Mm(20), Mm(30), Mm(20), Mm(1), Mm(15)
+        )
+        assert test_paper.modified(gutter=Mm(1)) == Paper(
+            Mm(210), Mm(297), Mm(20), Mm(30), Mm(20), Mm(30), Mm(1)
         )

@@ -238,7 +238,7 @@ def render_pdf(pdf_path: str | pathlib.Path, dpi: int = 300):
         page_imgs.append(img_path)
         render_threads.append(
             render_image(
-                page.bounding_rect,
+                page.document_space_bounding_rect,
                 img_path.name,
                 dpi,
                 bg_color="#ffffff",
@@ -258,6 +258,7 @@ def render_image(
     image_path: str | pathlib.Path,
     dpi: int = 600,
     quality: int = -1,
+    # TODO HIGH remove this? isn't it redundant with background brush now?
     bg_color: Optional[ColorDef] = None,
     autocrop: bool = False,
     preserve_alpha: bool = True,

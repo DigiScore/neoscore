@@ -4,8 +4,7 @@ from neoscore import constants
 from neoscore.core.page_supplier import PageSupplier
 from neoscore.core.paper import Paper
 from neoscore.core.point import Point
-from neoscore.core.rect import Rect
-from neoscore.core.units import ZERO, Unit
+from neoscore.core.units import ZERO
 
 
 class Document:
@@ -15,8 +14,6 @@ class Document:
     This object should not be created directly by users - it is instantiated
     by `neoscore.setup()`, which creates a global instance of this class which
     can be then accessed as `neoscore.document`.
-
-    NOTE: Paper gutters are not yet implemented
     """
 
     def __init__(self, paper: Paper):
@@ -65,17 +62,6 @@ class Document:
         """
         return self._pages
 
-    ######## PRIVATE PROPERTIES ########
-
-    @property
-    def _page_display_gap(self) -> Unit:
-        """The visual horizontal gap between pages on the canvas.
-
-        This only affects page display in the rendered preview,
-        and has no effect on exported documents.
-        """
-        return constants.PAGE_DISPLAY_GAP
-
     ######## PRIVATE METHODS ########
 
     def _run_on_all_descendants(self, func: Callable):
@@ -95,63 +81,13 @@ class Document:
 
     ######## PUBLIC METHODS ########
 
-    def page_origin(self, page_number: int) -> Point:
+    def page_origin(self, page_index: int) -> Point:
         """Find the origin point of a given page number.
 
-        The origin is the top left corner of the live area, equivalent to
-        the real page corner + margins and gutter.
+        The origin is the top left corner of the live page area.
 
         Args:
-            page_number: The number of the page to locate,
-                where 0 is the first page.
-
-        Returns: The position of the origin of the given page.  The
-            page number of this Point will be 0, as this is considered
-            relative to the document's origin.
+            page_index: The 0-based index of the page to locate.
         """
-        # Left edge of paper (not including margin/gutter)
-        x_page_left: Unit = (self.paper.width + self._page_display_gap) * page_number
-        x_page_origin: Unit = x_page_left + self.paper.margin_left
-        y_page_origin = self.paper.margin_top
-        return Point(x_page_origin, y_page_origin)
-
-    def paper_origin(self, page_number: int) -> Point:
-        """Find the paper origin point of a given page number.
-
-        This gives the position of the top left corner of the actual
-        sheet of paper - regardless of margins and gutter.
-
-        Args:
-            page_number (int): The number of the page to locate,
-                where 0 is the first page.
-
-        Returns: The position of the paper origin of the given page.
-            The page number of this Point will be 0, as this is
-            considered relative to the document's origin.
-        """
-        return Point((self.paper.width + self._page_display_gap) * page_number, ZERO)
-
-    def page_bounding_rect(self, page_number: int) -> Rect:
-        """Find the bounding rect of a page in the document.
-
-        The resulting rect will cover the *live page area* - that is,
-        the area within the margins of the page
-        """
-        page_origin = self.page_origin(page_number)
-        return Rect(
-            page_origin.x, page_origin.y, self.paper.live_width, self.paper.live_height
-        )
-
-    def paper_bounding_rect(self, page_number: int) -> Rect:
-        """Find the paper bounding rect of a page in the document.
-
-        The resulting rect will cover the entire paper sheet -
-        regardless of margins and gutter.
-
-        Args:
-            page_number (int):
-
-        Returns: Rect
-        """
-        paper_origin = self.paper_origin(page_number)
-        return Rect(paper_origin.x, paper_origin.y, self.paper.width, self.paper.height)
+        page_x = (self.paper.width + constants.PAGE_DISPLAY_GAP) * page_index
+        return Point(page_x, ZERO)

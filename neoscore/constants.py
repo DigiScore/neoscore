@@ -16,7 +16,7 @@ RESOURCES_DIR = os.path.join(BROWN_ROOT_DIR, "resources")
 
 # Visual gap between pages on the canvas
 # (This has no effect on exported documents)
-PAGE_DISPLAY_GAP = Mm(150)
+PAGE_DISPLAY_GAP = Mm(50)
 
 # Text Font
 DEFAULT_TEXT_FONT_NAME = "Lora"

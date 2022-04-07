@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 from neoscore.core.brush import Brush
 from neoscore.core.color import Color
+from neoscore.core.directions import HorizontalDirection
 from neoscore.core.paper import Paper
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
@@ -33,7 +34,12 @@ class Page(PositionedObject):
     """
 
     def __init__(
-        self, pos: PointDef, document: Document, page_index: int, paper: Paper
+        self,
+        pos: PointDef,
+        document: Document,
+        page_index: int,
+        page_side: HorizontalDirection,
+        paper: Paper,
     ):
         """
         Args:
@@ -46,11 +52,13 @@ class Page(PositionedObject):
             page_index: The index of this page. This should be
                 the same index this Page can be found at in the document's
                 `PageSupplier`. This should be a positive number.
+            page_side: The left/right side the page lies on when printed.
             paper: The type of paper this page uses.
         """
         super().__init__(pos, document)
         self._document = document
         self._page_index = page_index
+        self._page_side = page_side
         self.paper = paper
 
     @property
@@ -59,13 +67,37 @@ class Page(PositionedObject):
         return self._page_index
 
     @property
+    def page_side(self):
+        """The left/right side the page lies on when printed.
+
+        This determines which side the gutter should be placed on.
+        """
+        return self._page_side
+
+    @property
     def bounding_rect(self) -> Rect:
         """The page bounding rect, positioned relative to the page."""
+        if self.page_side == HorizontalDirection.RIGHT:
+            # Page is on right side, apply gutter on left side
+            rect_x = -(self.paper.gutter + self.paper.margin_left)
+        else:
+            rect_x = -self.paper.margin_left
         return Rect(
-            -self.paper.margin_left,
+            rect_x,
             -self.paper.margin_top,
             self.paper.width,
             self.paper.height,
+        )
+
+    @property
+    def document_space_bounding_rect(self) -> Rect:
+        """Find the page bounding rect relative to the document."""
+        local_rect = self.bounding_rect
+        return Rect(
+            local_rect.x + self.x,
+            local_rect.y + self.y,
+            local_rect.width,
+            local_rect.height,
         )
 
     def display_geometry(self, background_brush: Brush):

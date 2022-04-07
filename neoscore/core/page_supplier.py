@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from neoscore.core.directions import HorizontalDirection
 from neoscore.core.page import Page
 
 if TYPE_CHECKING:
@@ -39,11 +40,17 @@ class PageSupplier:
     def __getitem__(self, index):
         if index >= len(self._page_list):
             for new_index in range(len(self._page_list), index + 1):
+                page_side = (
+                    HorizontalDirection.LEFT
+                    if new_index % 2
+                    else HorizontalDirection.RIGHT
+                )
                 self._page_list.append(
                     Page(
                         self.document.page_origin(new_index),
                         self.document,
                         new_index,
+                        page_side,
                         self.document.paper,
                     )
                 )

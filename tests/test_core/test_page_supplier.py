@@ -1,6 +1,7 @@
 import pytest
 
 from neoscore.core import neoscore
+from neoscore.core.directions import HorizontalDirection
 from neoscore.core.page import Page
 from neoscore.core.page_supplier import PageSupplier
 
@@ -46,3 +47,10 @@ class TestPageSupplier(AppTest):
         supplier = PageSupplier(neoscore.document)
         supplier._page_list.extend([1, 2])
         assert [p for p in supplier] == [1, 2]
+
+    def test_page_side_selection(self):
+        supplier = PageSupplier(neoscore.document)
+        assert supplier[0].page_side == HorizontalDirection.RIGHT
+        assert supplier[1].page_side == HorizontalDirection.LEFT
+        assert supplier[2].page_side == HorizontalDirection.RIGHT
+        assert supplier[3].page_side == HorizontalDirection.LEFT
