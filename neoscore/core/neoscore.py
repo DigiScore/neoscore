@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import os
 import tempfile
+import threading
 from time import time
 from typing import TYPE_CHECKING, Callable, Optional
 from warnings import warn
@@ -214,16 +215,22 @@ def render_pdf(pdf_path: str, dpi: int = 300):
     document._render()
     # Render all pages to temp files
     page_imgs = []
+    render_threads = []
     for page in document.pages:
         img_path = tempfile.NamedTemporaryFile(suffix=".png")
-        render_image(
-            page.bounding_rect,
-            img_path.name,
-            dpi,
-            bg_color="#ffffff",
-            preserve_alpha=False,
-        )
         page_imgs.append(img_path)
+        render_threads.append(
+            render_image(
+                page.bounding_rect,
+                img_path.name,
+                dpi,
+                bg_color="#ffffff",
+                preserve_alpha=False,
+                auto_start_thread=False,
+            )
+        )
+    for thread in render_threads:
+        thread.join()
     # Assemble into PDF and write it to file path
     with open(pdf_path, "wb") as f:
         f.write(img2pdf.convert(page_imgs))
@@ -236,8 +243,9 @@ def render_image(
     quality: int = -1,
     bg_color: Optional[ColorDef] = None,
     autocrop: bool = False,
-    preserve_alpha=True,
-):
+    preserve_alpha: bool = True,
+    auto_start_thread: bool = True,
+) -> threading.Thread:
     """Render a section of the document to an image.
 
     The following file extensions are supported:
@@ -249,6 +257,11 @@ def render_image(
         * `.ppm`
         * `.xbm`
         * `.xpm`
+
+    This renders on the main thread but autocrops and saves the image
+    on a spawned thread which is returned to allow efficient rendering
+    of many images in parallel. `render_image` will block if too many
+    render threads are already running.
 
     Args:
         rect: The part of the document to render, in document coordinates.
@@ -274,6 +287,7 @@ def render_image(
             supported image format file extension.
         ImageExportError: If low level Qt image export fails for
             unknown reasons.
+
     """
     global document
     global _app_interface
@@ -301,8 +315,14 @@ def render_image(
 
     document._render()
 
-    _app_interface.render_image(
-        rect, image_path, dpm, quality, bg_color, autocrop, preserve_alpha
+    return _app_interface.render_image(
+        rect,
+        image_path,
+        dpm,
+        quality,
+        bg_color,
+        autocrop,
+        preserve_alpha,
     )
 
 

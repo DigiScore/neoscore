@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import multiprocessing
+import threading
 from typing import TYPE_CHECKING, Callable
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -17,6 +19,8 @@ from neoscore.interface.repl import running_in_ipython_gui_repl
 
 if TYPE_CHECKING:
     from neoscore.core.document import Document
+
+_RENDER_IMAGE_THREAD_MAX = int(multiprocessing.cpu_count())
 
 
 class AppInterface:
@@ -50,6 +54,9 @@ class AppInterface:
         self.registered_music_fonts = {}
         self.font_database = QtGui.QFontDatabase()
         self.repl_refresh_func = repl_refresh_func
+        self._render_image_thread_semaphore = threading.Semaphore(
+            _RENDER_IMAGE_THREAD_MAX
+        )
 
     ######## PUBLIC METHODS ########
 
@@ -77,10 +84,15 @@ class AppInterface:
         bg_color: Color,
         autocrop: bool,
         preserve_alpha: bool,
-    ):
+    ) -> threading.Thread:
         """Render a section of self.scene to an image.
 
         It is assumed that all input arguments are valid.
+
+        This renders on the main thread but autocrops and saves the image
+        on a spawned thread which is returned to allow efficient rendering
+        of many images in parallel. `render_image` will block if too many
+        render threads are already running.
 
         Args:
             rect: The part of the document to render,
@@ -102,6 +114,7 @@ class AppInterface:
 
         Raises:
             ImageExportError: If Qt image export fails for unknown reasons.
+
         """
         scale = dpm / Meter(1).base_value
         pix_width = int(rect.width.base_value * scale)
@@ -127,15 +140,20 @@ class AppInterface:
         self.scene.render(painter, target=target_rect, source=source_rect)
         painter.end()
 
-        if autocrop:
-            q_image = image_utils.autocrop(q_image, q_color)
+        def finalize():
+            with self._render_image_thread_semaphore:
+                final_image = (
+                    image_utils.autocrop(q_image, q_color) if autocrop else q_image
+                )
+                success = q_image.save(image_path, quality=quality)
+                if not success:
+                    raise ImageExportError(
+                        "Unknown error occurred when exporting image to " + image_path
+                    )
 
-        success = q_image.save(image_path, quality=quality)
-
-        if not success:
-            raise ImageExportError(
-                "Unknown error occurred when exporting image to " + image_path
-            )
+        thread = threading.Thread(target=finalize)
+        thread.start()
+        return thread
 
     def destroy(self):
         """Destroy the window and all global interface-level data."""
