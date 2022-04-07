@@ -150,6 +150,8 @@ class MusicText(Text, HasMusicFont):
     def bounding_rect(self) -> Rect:
         """The bounding rect for this text when rendered.
 
+        The rect x, y position is relative to the object's position (`pos`).
+
         Note that this currently accounts for scaling, but not rotation.
         """
         key = _CachedTextGeometryKey(self.text, self.music_font, self.scale)

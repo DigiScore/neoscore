@@ -178,7 +178,7 @@ The function should accept one argument - the current time in seconds.
 """
 
 
-def show(refresh_func: Optional[RefreshFunc] = None):
+def show(refresh_func: Optional[RefreshFunc] = None, display_page_geometry=True):
     """Show a preview of the score in a GUI window.
 
     An update function can be provided (or otherwise set with
@@ -193,6 +193,8 @@ def show(refresh_func: Optional[RefreshFunc] = None):
     global document
     global _app_interface
     _app_interface._clear_scene()
+    if display_page_geometry:
+        _display_page_geometry()
     document._render()
     if refresh_func:
         set_refresh_func(refresh_func)
@@ -208,6 +210,13 @@ def _clear_interfaces():
             interfaces = getattr(obj, "interfaces", None)
             if interfaces:
                 interfaces.clear()
+
+
+def _display_page_geometry():
+    global document
+    global background_brush
+    for page in document.pages:
+        page.display_geometry(background_brush)
 
 
 def render_pdf(pdf_path: str | pathlib.Path, dpi: int = 300):

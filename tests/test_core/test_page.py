@@ -15,4 +15,4 @@ class TestPageSupplier(AppTest):
 
     def test_bounding_rect(self):
         pg = Page((Unit(1), Unit(2)), neoscore.document, 1, paper.LETTER)
-        assert pg.bounding_rect == Rect(Unit(1), Unit(2), Inch(8.5), Inch(11))
+        assert pg.bounding_rect == Rect(Inch(-1), Inch(-1), Inch(8.5), Inch(11))

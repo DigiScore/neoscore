@@ -2,13 +2,23 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from neoscore.core.brush import Brush
+from neoscore.core.color import Color
 from neoscore.core.paper import Paper
-from neoscore.core.point import PointDef
+from neoscore.core.path import Path
+from neoscore.core.pen import Pen
+from neoscore.core.pen_pattern import PenPattern
+from neoscore.core.point import ORIGIN, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.rect import Rect
+from neoscore.core.units import ZERO, Mm
 
 if TYPE_CHECKING:
     from neoscore.core.document import Document
+
+
+_PREVIEW_OUTLINE_COLOR = Color("#551155")
+_PREVIEW_SHADOW_COLOR = Color(0, 0, 0, 80)
 
 
 class Page(PositionedObject):
@@ -50,4 +60,48 @@ class Page(PositionedObject):
 
     @property
     def bounding_rect(self) -> Rect:
-        return Rect(self.x, self.y, self.paper.width, self.paper.height)
+        """The page bounding rect, positioned relative to the page."""
+        return Rect(
+            -self.paper.margin_left,
+            -self.paper.margin_top,
+            self.paper.width,
+            self.paper.height,
+        )
+
+    def display_geometry(self, background_brush: Brush):
+        """Create child objects which graphically show the page geometry.
+
+        This is useful for interactive views, but should typically not
+        be called in PDF and image export contexts.
+        """
+        # Create page rect
+        bounding_rect = self.bounding_rect
+        page_preview_rect = Path.rect(
+            (bounding_rect.x, bounding_rect.y),
+            self,
+            bounding_rect.width,
+            bounding_rect.height,
+            background_brush,
+            pen=Pen(_PREVIEW_OUTLINE_COLOR),
+        )
+        page_preview_rect.z_index = -999999999999
+        page_drop_shadow_rect = Path.rect(
+            (Mm(1), Mm(1)),
+            page_preview_rect,
+            bounding_rect.width,
+            bounding_rect.height,
+            Brush(_PREVIEW_SHADOW_COLOR),
+            Pen.no_pen(),
+        )
+        page_drop_shadow_rect.z_index = page_preview_rect.z_index - 1
+        live_area_bounding_rect = Rect(
+            ZERO, ZERO, self.paper.live_width, self.paper.live_height
+        )
+        live_area_preview_rect = Path.rect(
+            ORIGIN,
+            self,
+            self.paper.live_width,
+            self.paper.live_height,
+            Brush.no_brush(),
+            pen=Pen(_PREVIEW_OUTLINE_COLOR, pattern=PenPattern.DOT),
+        )
