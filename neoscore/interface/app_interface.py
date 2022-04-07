@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import multiprocessing
+import pathlib
 import threading
 from typing import TYPE_CHECKING, Callable
 
@@ -78,7 +79,7 @@ class AppInterface:
     def render_image(
         self,
         rect: Rect,
-        image_path: str,
+        image_path: str | pathlib.Path,
         dpm: int,
         quality: int,
         bg_color: Color,
@@ -116,6 +117,8 @@ class AppInterface:
             ImageExportError: If Qt image export fails for unknown reasons.
 
         """
+        if isinstance(image_path, pathlib.Path):
+            image_path = str(image_path)
         scale = dpm / Meter(1).base_value
         pix_width = int(rect.width.base_value * scale)
         pix_height = int(rect.height.base_value * scale)

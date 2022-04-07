@@ -21,7 +21,5 @@ def test_vtests(vtest_path: str):
     )
 
 
-# If/when PDF export can be sped up this should be re-enabled
-@pytest.mark.skip(reason="Too slow")
 def test_pdf_vtest():
     subprocess.run(["python", "pdf.py", "--pdf", "--tmp"], cwd=vtest_dir, check=True)

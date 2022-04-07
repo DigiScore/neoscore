@@ -2,16 +2,16 @@ from __future__ import annotations
 
 import json
 import os
+import pathlib
 import tempfile
 import threading
 from time import time
 from typing import TYPE_CHECKING, Callable, Optional
 from warnings import warn
 
-import img2pdf
+import img2pdf  # type: ignore
 
 from neoscore import constants
-from neoscore.core import file_system
 from neoscore.core.brush import Brush, BrushDef
 from neoscore.core.color import Color, ColorDef
 from neoscore.core.exceptions import InvalidImageFormatError
@@ -199,10 +199,7 @@ def _clear_interfaces():
                 interfaces.clear()
 
 
-# TODO HIGH make this path arg and sim nearby support pathlib.Path
-
-
-def render_pdf(pdf_path: str, dpi: int = 300):
+def render_pdf(pdf_path: str | pathlib.Path, dpi: int = 300):
     """Render the score as a pdf.
 
     Args:
@@ -238,7 +235,7 @@ def render_pdf(pdf_path: str, dpi: int = 300):
 
 def render_image(
     rect: RectDef,
-    image_path: str,
+    image_path: str | pathlib.Path,
     dpi: int = 600,
     quality: int = -1,
     bg_color: Optional[ColorDef] = None,
@@ -281,8 +278,6 @@ def render_image(
             some non-transparent `bg_color` should be provided.
 
     Raises:
-        FileNotFoundError: If the given `image_path` does not point to a valid
-            location for a new file.
         InvalidImageFormatError: If the given `image_path` does not have a
             supported image format file extension.
         ImageExportError: If low level Qt image export fails for
@@ -297,9 +292,6 @@ def render_image(
     if not ((0 <= quality <= 100) or quality == -1):
         warn("render_image quality {} invalid; using default.".format(quality))
         quality = -1
-
-    if not file_system.is_valid_file_path(image_path):
-        raise FileNotFoundError("Invalid image_path: " + image_path)
 
     if not os.path.splitext(image_path)[1] in image_utils.supported_formats:
         raise InvalidImageFormatError(
