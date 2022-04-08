@@ -67,3 +67,10 @@ class TestText(AppTest):
         obj.rotation = 123
         assert obj.rotation == 123
         assert Text((Unit(5), Unit(6)), None, "testing", rotation=123).rotation == 123
+
+    def test_z_index(self):
+        obj = Text((Unit(5), Unit(6)), None, "testing")
+        assert obj.z_index == 0
+        obj.z_index = 123
+        assert obj.z_index == 123
+        assert Text((Unit(5), Unit(6)), None, "testing", z_index=123).z_index == 123

@@ -46,6 +46,7 @@ class Path(PaintedObject):
         pen: Optional[PenDef] = None,
         rotation: float = 0,
         background_brush: Optional[BrushDef] = None,
+        z_index: int = 0,
     ):
         """
         Args:
@@ -57,9 +58,11 @@ class Path(PaintedObject):
                 path elements anchored to other objects are not currently supported.
             background_brush: Optional brush used to paint the path's bounding rect
                 behind it.
+            z_index: Controls draw order with higher values drawn first.
         """
         super().__init__(pos, parent, brush, pen)
         self.background_brush = background_brush
+        self._z_index = z_index
         self._rotation = rotation
         self.elements: list[PathElement] = []
 
@@ -424,6 +427,15 @@ class Path(PaintedObject):
         else:
             self._background_brush = None
 
+    @property
+    def z_index(self) -> int:
+        """Value controlling draw order with higher values being drawn first"""
+        return self._z_index
+
+    @z_index.setter
+    def z_index(self, value: int):
+        self._z_index = value
+
     ######## Public Methods ########
 
     def line_to(self, x: Unit, y: Unit, parent: Optional[Parent] = None):
@@ -566,6 +578,7 @@ class Path(PaintedObject):
             resolved_path_elements,
             self.rotation,
             self.background_brush.interface if self.background_brush else None,
+            self.z_index,
             clip_start_x,
             clip_width,
         )

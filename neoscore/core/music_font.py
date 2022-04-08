@@ -11,6 +11,7 @@ from neoscore.core.exceptions import (
 from neoscore.core.font import Font
 from neoscore.core.glyph_info import GlyphInfo
 from neoscore.core.platforms import PlatformType, current_platform
+from neoscore.core.point import Point
 from neoscore.core.rect import Rect
 from neoscore.core.units import Unit, convert_all_to_unit
 
@@ -140,15 +141,10 @@ class MusicFont(Font):
             bounding_rect = self._convert_bbox_to_rect(bounding_rect)
 
         # get optional anchor metadata if available
-        anchors = self.metadata["glyphsWithAnchors"].get(glyph_name)
+        anchors = self._load_glyph_anchors(glyph_name)
 
         return GlyphInfo(
-            canonical_name=glyph_name,
-            codepoint=codepoint,
-            description=description,
-            bounding_rect=bounding_rect,
-            advance_width=advance_width,
-            anchors=anchors,
+            glyph_name, codepoint, description, bounding_rect, advance_width, anchors
         )
 
     # private helper functions
@@ -224,3 +220,15 @@ class MusicFont(Font):
             raise MusicFontGlyphNotFoundError
 
         return (codepoint, description)
+
+    def _load_glyph_anchors(self, glyph_name: str) -> Optional[dict[str, Point]]:
+        """Load any glyph anchors and convert coordinates to `Point`s."""
+        anchors = self.metadata["glyphsWithAnchors"].get(glyph_name)
+        if anchors is None:
+            return None
+        anchors = copy.deepcopy(anchors)
+        for key, value in anchors.items():
+            # SMuFL coords have opposite Y axis as neoscore, so flip
+            # when wrapping in Point and Unit.
+            anchors[key] = Point(self.unit(value[0]), self.unit(-value[1]))
+        return anchors

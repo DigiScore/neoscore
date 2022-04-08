@@ -1,9 +1,9 @@
-from typing import Any, Optional, cast
+from typing import Optional, cast
 
 from neoscore.core import neoscore
 from neoscore.core.brush import BrushDef
 from neoscore.core.music_font import MusicFont
-from neoscore.core.music_text import MusicText
+from neoscore.core.music_text import MusicStringDef, MusicText
 from neoscore.core.pen import PenDef
 from neoscore.core.units import Unit
 from neoscore.western.tab_staff import TabStaff
@@ -21,11 +21,12 @@ class TabStringText(MusicText):
         pos_x: Unit,
         staff: TabStaff,
         string: int,
-        text: Any,
+        text: MusicStringDef,
         font: Optional[MusicFont] = None,
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,
         hide_background: bool = True,
+        z_index: Optional[int] = None,
         breakable: bool = True,
     ):
         """
@@ -33,12 +34,15 @@ class TabStringText(MusicText):
             pos_x: The x position relative to the parent
             staff: The parent staff
             string: The 1-indexed string number this should appear on
-            text: A `MusicText` text specifier
+            text: The text to display. Can be given as a SMuFL glyph name,
+                or other shorthand forms. See `MusicStringDef` and `MusicCharDef`.
             font: The font to use. Defaults to the staff's font.
             brush: The brush to fill in text shapes with.
             pen: The pen to trace text outlines with. This defaults to no pen.
             hide_background: Whether to paint over the background behind the text.
                 Particularly useful for preventing overlaps with staff lines.
+            z_index: Controls draw order with higher values drawn first.
+                Defaults to 1 greater than the staff's z_index.
             breakable: Whether this object should break across lines in
                 Flowable containers.
         """
@@ -55,6 +59,7 @@ class TabStringText(MusicText):
             1,
             0,
             background_brush,
+            z_index if z_index is not None else staff.z_index + 1,
             breakable,
         )
         self.y = pos_y + cast(Unit, self.bounding_rect.height / 2)

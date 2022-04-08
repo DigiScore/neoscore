@@ -21,6 +21,7 @@ class TabNumber(TabStringText):
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,
         hide_background=True,
+        z_index: Optional[int] = None,
     ):
         """
         Args:
@@ -33,6 +34,8 @@ class TabNumber(TabStringText):
             pen: The pen to trace text outlines with. This defaults to no pen.
             hide_background: Whether to paint over the background behind the text.
                 Particularly useful for preventing overlaps with staff lines.
+            z_index: Controls draw order with higher values drawn first.
+                Defaults to 1 greater than the staff's z_index.
         """
         TabStringText.__init__(
             self,
@@ -44,6 +47,7 @@ class TabNumber(TabStringText):
             brush,
             pen,
             hide_background,
+            z_index,
         )
 
     @staticmethod

@@ -22,7 +22,7 @@ class TestTextInterface(AppTest):
             ORIGIN,
             self.brush,
             self.pen,
-            "testing",
+            "foo",
             self.font,
         )
         test_font_2 = FontInterface("Bravura", Unit(24), 1, False)
@@ -30,7 +30,7 @@ class TestTextInterface(AppTest):
             ORIGIN,
             self.brush,
             self.pen,
-            "testing",
+            "foo",
             test_font_2,
         )
         # Since the fonts and texts matched, the underlying paths
@@ -42,31 +42,21 @@ class TestTextInterface(AppTest):
         assert test_qt_object_2.scale() == 2
 
     def test_scale(self):
-        assert (
-            TextInterface(ORIGIN, self.brush, self.pen, "testing", self.font)
-            ._create_qt_object()
-            .scale()
-            == 1
-        )
-        assert (
-            TextInterface(ORIGIN, self.brush, self.pen, "testing", self.font, scale=2)
-            ._create_qt_object()
-            .scale()
-            == 2
-        )
+        text = TextInterface(ORIGIN, self.brush, self.pen, "foo", self.font)
+        assert text._create_qt_object().scale() == 1
+        text = TextInterface(ORIGIN, self.brush, self.pen, "foo", self.font, scale=2)
+        assert text._create_qt_object().scale() == 2
 
     def test_rotation(self):
-        assert (
-            TextInterface(ORIGIN, self.brush, self.pen, "testing", self.font)
-            ._create_qt_object()
-            .rotation()
-            == 0
+        text = TextInterface(ORIGIN, self.brush, self.pen, "foo", self.font)
+        assert text._create_qt_object().rotation() == 0
+        text = TextInterface(
+            ORIGIN, self.brush, self.pen, "foo", self.font, rotation=123
         )
-        assert (
-            TextInterface(
-                ORIGIN, self.brush, self.pen, "testing", self.font, rotation=123
-            )
-            ._create_qt_object()
-            .rotation()
-            == 123
-        )
+        assert text._create_qt_object().rotation() == 123
+
+    def test_z_index(self):
+        text = TextInterface(ORIGIN, self.brush, self.pen, "foo", self.font)
+        assert text._create_qt_object().zValue() == 0
+        text = TextInterface(ORIGIN, self.brush, self.pen, "foo", self.font, z_index=99)
+        assert text._create_qt_object().zValue() == 99

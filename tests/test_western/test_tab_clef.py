@@ -53,3 +53,13 @@ class TestTabClef(AppTest):
         assert clef.breakable_length == Mm(200)
         clef = TabClef(Mm(50), self.staff)
         assert clef.breakable_length == Mm(150)
+
+    def test_z_index_defaults_to_1_more_than_staff(self):
+        self.staff.z_index = 5
+        text = TabClef(Mm(10), self.staff)
+        assert text.z_index == 6
+
+    def test_z_index_override(self):
+        self.staff.z_index = 5
+        text = TabClef(Mm(10), self.staff, z_index=1)
+        assert text.z_index == 1

@@ -16,7 +16,6 @@ from neoscore.core.point import ORIGIN, Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner import Spanner
 from neoscore.core.units import Unit
-from neoscore.interface.text_interface import TextInterface
 from neoscore.western.interval import Interval
 from neoscore.western.transposition import Transposition
 
@@ -44,12 +43,6 @@ class OctaveLine(PositionedObject, Spanner, HasMusicFont):
     a dashed line ending in a small vertical hook pointing toward the staff.
     If the spanner goes across line breaks, the octave text is repeated
     in parenthesis at the line beginning.
-
-    TODO HIGH: The dashed line portion of this spanner overlaps with
-    the '8va' text. The text does apply a background brush, but since
-    it's constructed before the line, the z index doesn't work out to
-    erase the line. Seems like Z index support is needed to support
-    this.
     """
 
     intervals = {
@@ -113,7 +106,6 @@ class OctaveLine(PositionedObject, Spanner, HasMusicFont):
 
         # Vertically center the path relative to the text
         text_rect = self.line_text.bounding_rect
-        # TODO LOW line needs some padding
         path_x = text_rect.width
         path_y = cast(Unit, text_rect.height / -2)
         self.line_path = Path(
@@ -125,6 +117,7 @@ class OctaveLine(PositionedObject, Spanner, HasMusicFont):
                 pattern=PenPattern.DASH,
             ),
         )
+        self.line_text.z_index = self.line_path.z_index + 1
         # Drawn main line part
         self.line_path.line_to(self.end_pos.x, path_y, self.end_parent)
         self.line_path.line_to(
@@ -183,36 +176,12 @@ class _OctaveLineText(MusicText):
     def _render_before_break(
         self, local_start_x: Unit, start: Point, stop: Point, dist_to_line_start: Unit
     ):
-        interface = TextInterface(
-            start,
-            self.brush.interface,
-            Pen.no_pen().interface,
-            self.text,
-            self.font.interface,
-        )
-        interface.render()
-        self.interfaces.append(interface)
+        super()._render_complete(start)
 
     def _render_after_break(self, local_start_x: Unit, start: Point):
-        interface = TextInterface(
-            start,
-            self.brush.interface,
-            Pen.no_pen().interface,
-            self.parenthesized_text,
-            self.font.interface,
-        )
-        interface.render()
-        self.interfaces.append(interface)
+        super()._render_complete(start)
 
     def _render_spanning_continuation(
         self, local_start_x: Unit, start: Point, stop: Point
     ):
-        interface = TextInterface(
-            start,
-            self.brush.interface,
-            Pen.no_pen().interface,
-            self.parenthesized_text,
-            self.font.interface,
-        )
-        interface.render()
-        self.interfaces.append(interface)
+        super()._render_complete(start)

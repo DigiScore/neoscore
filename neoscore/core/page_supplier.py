@@ -1,11 +1,20 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Callable, Optional
 
+from neoscore.core.directions import HorizontalDirection
 from neoscore.core.page import Page
 
 if TYPE_CHECKING:
     from neoscore.core.document import Document
+
+
+PageOverlayFunc = Callable[[Page], None]
+"""A function to run on every page after creation.
+
+The function takes one argument, the newly generated page. Functions
+will typically create objects with this page as their parent.
+"""
 
 
 class PageSupplier:
@@ -28,25 +37,37 @@ class PageSupplier:
     for its `pages` property.
     """
 
-    def __init__(self, document: Document):
+    def __init__(
+        self, document: Document, overlay_func: Optional[PageOverlayFunc] = None
+    ):
         """
         Args:
             document: The global document using this object.
+            overlay_func: A function to call with every page when generated.
+                This can be used to create headers and footers.
         """
-        self.document = document
+        self._document = document
         self._page_list: list[Page] = []
+        self.overlay_func = overlay_func
 
     def __getitem__(self, index):
         if index >= len(self._page_list):
             for new_index in range(len(self._page_list), index + 1):
-                self._page_list.append(
-                    Page(
-                        self.document.page_origin(new_index),
-                        self.document,
-                        new_index,
-                        self.document.paper,
-                    )
+                page_side = (
+                    HorizontalDirection.LEFT
+                    if new_index % 2
+                    else HorizontalDirection.RIGHT
                 )
+                new_page = Page(
+                    self.document.page_origin(new_index),
+                    self.document,
+                    new_index,
+                    page_side,
+                    self.document.paper,
+                )
+                self._page_list.append(new_page)
+                if self.overlay_func:
+                    self.overlay_func(new_page)
         return self._page_list[index]
 
     def __iter__(self):
@@ -54,3 +75,21 @@ class PageSupplier:
 
     def __len__(self):
         return len(self._page_list)
+
+    @property
+    def document(self) -> Document:
+        return self._document
+
+    @property
+    def overlay_func(self) -> Optional[PageOverlayFunc]:
+        """A function to call on every page generation.
+
+        This function is called with every generated page at the time
+        of generation. If the value is changed it will only affect
+        pages generated after the change.
+        """
+        return self._overlay_func
+
+    @overlay_func.setter
+    def overlay_func(self, value: Optional[PageOverlayFunc]):
+        self._overlay_func = value

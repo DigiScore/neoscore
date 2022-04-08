@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, NamedTuple, Optional, Type, cast
+from typing import TYPE_CHECKING, NamedTuple, Optional, Type, Union, cast
 
 from neoscore.core.brush import BrushDef
 from neoscore.core.has_music_font import HasMusicFont
-from neoscore.core.music_char import MusicChar
+from neoscore.core.music_char import MusicChar, MusicCharDef
 from neoscore.core.music_font import MusicFont
 from neoscore.core.pen import PenDef
 from neoscore.core.point import PointDef
@@ -29,23 +29,35 @@ class _CachedTextGeometry(NamedTuple):
 _GEOMETRY_CACHE: dict[_CachedTextGeometryKey, _CachedTextGeometry] = {}
 
 
+MusicStringDef = Union[MusicCharDef, list[MusicCharDef]]
+"""Argument specifying SMuFL `MusicText` strings.
+
+This supports several forms for different use-cases. The most commonly
+used form is a simple SMuFL canonical glyph name.
+* A canonical SMuFL glyph name. This may be an empty string to indicate 0-length text.
+* A tuple of a glyph name and a SMuFL alternate number.
+* A fully defined `MusicChar`.
+* A list of any of these, including an empty list.
+"""
+
+
 class MusicText(Text, HasMusicFont):
     """
     A glyph with a MusicFont and convenient access to relevant SMuFL metadata.
     """
 
-    # TODO MEDIUM find a way to type this text arg and/or simplify it
     def __init__(
         self,
         pos: PointDef,
         parent: Optional[Parent],
-        text: Any,
+        text: MusicStringDef,
         font: Optional[MusicFont] = None,
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,
         scale: float = 1,
         rotation: float = 0,
         background_brush: Optional[BrushDef] = None,
+        z_index: int = 0,
         breakable: bool = True,
     ):
         """
@@ -53,10 +65,8 @@ class MusicText(Text, HasMusicFont):
             pos: The position of the text.
             parent: The parent of the glyph. If no `font` is given,
                 this or one of its ancestors must implement `HasMusicFont`.
-            text (str, tuple, MusicChar, or list of these):
-                The text to be used, represented as a either a `str`
-                (glyph name), `tuple` (glyph name, alternate number),
-                `MusicChar`, or a list of these. Empty text will fail.
+            text: The text to display. Can be given as a SMuFL glyph name,
+                or other shorthand forms. See `MusicStringDef` and `MusicCharDef`.
             font: The music font to be used. If not specified,
                 `parent` must be or have a `Staff` ancestor.
             brush: The brush to fill in text shapes with.
@@ -67,12 +77,13 @@ class MusicText(Text, HasMusicFont):
                 not currently supported.
             background_brush: Optional brush used to paint the text's bounding rect
                 behind it.
+            z_index: Controls draw order with higher values drawn first.
             breakable: Whether this object should break across lines in
                 Flowable containers.
         """
         if font is None:
             font = HasMusicFont.find_music_font(parent)
-        self._music_chars = MusicText._resolve_music_chars(text, font)
+        self._music_chars = MusicText._resolve_music_chars(font, text)
         resolved_str = MusicText._music_chars_to_str(self._music_chars)
         Text.__init__(
             self,
@@ -85,6 +96,7 @@ class MusicText(Text, HasMusicFont):
             scale,
             rotation,
             background_brush,
+            z_index,
             breakable,
         )
 
@@ -112,9 +124,8 @@ class MusicText(Text, HasMusicFont):
         return self._text
 
     @text.setter
-    # TODO MEDIUM when typing music text args update here as well
-    def text(self, value):
-        self._music_chars = MusicText._resolve_music_chars(value, self.music_font)
+    def text(self, value: MusicStringDef):
+        self._music_chars = MusicText._resolve_music_chars(self.music_font, value)
         resolved_str = MusicText._music_chars_to_str(self._music_chars)
         self._text = resolved_str
 
@@ -139,6 +150,8 @@ class MusicText(Text, HasMusicFont):
     def bounding_rect(self) -> Rect:
         """The bounding rect for this text when rendered.
 
+        The rect x, y position is relative to the object's position (`pos`).
+
         Note that this currently accounts for scaling, but not rotation.
         """
         key = _CachedTextGeometryKey(self.text, self.music_font, self.scale)
@@ -156,35 +169,35 @@ class MusicText(Text, HasMusicFont):
         return "".join(char.codepoint for char in music_chars)
 
     @staticmethod
-    def _resolve_music_chars(text: Any, font: MusicFont) -> list[MusicChar]:
-        """
-        Args:
-            text (str, tuple, MusicChar, or list of these):
-                The text to be used, represented as a either a `str`
-                (glyph name), `tuple` (glyph name, alternate number),
-                `MusicChar`, or a list of these.
-            font: The font to be applied to the text
-        """
-        if isinstance(text, str):
-            if text:
-                return [MusicChar(font, text)]
-            else:
-                return []
-        elif isinstance(text, tuple):
-            return [MusicChar(font, *text)]
-        elif isinstance(text, MusicChar):
-            return [text]
-        elif isinstance(text, list):
+    def _resolve_music_chars(font: MusicFont, text: MusicStringDef) -> list[MusicChar]:
+        if isinstance(text, list):
             music_chars = []
-            for music_char in text:
-                if isinstance(music_char, str):
-                    music_chars.append(MusicChar(font, music_char))
-                elif isinstance(music_char, tuple):
-                    music_chars.append(MusicChar(font, *music_char))
-                elif isinstance(music_char, MusicChar):
-                    music_chars.append(music_char)
-                else:
-                    raise TypeError
+            for text_char in text:
+                char = MusicText._resolve_single_music_char(
+                    font, cast(MusicCharDef, text_char)
+                )
+                if char is not None:
+                    music_chars.append(char)
             return music_chars
+        else:
+            char = MusicText._resolve_single_music_char(font, text)
+            if char is None:
+                return []
+            else:
+                return [char]
+
+    @staticmethod
+    def _resolve_single_music_char(
+        font: MusicFont, char: MusicCharDef
+    ) -> Optional[MusicChar]:
+        if isinstance(char, str):
+            if char:
+                return MusicChar(font, char)
+            else:
+                return None
+        elif isinstance(char, tuple):
+            return MusicChar(font, *char)
+        elif isinstance(char, MusicChar):
+            return char
         else:
             raise TypeError

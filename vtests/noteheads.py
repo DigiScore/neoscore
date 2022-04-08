@@ -1,3 +1,5 @@
+from helpers import render_vtest
+
 from neoscore.common import *
 
 neoscore.setup()
@@ -17,4 +19,4 @@ for (i, table) in enumerate(notehead_tables.ALL_TABLES):
     Chordrest(unit(40), staff, ["c'"], (1, 32), notehead_table=table)
     Chordrest(unit(45), staff, ["c'"], (1, 64), notehead_table=table)
 
-neoscore.show()
+render_vtest("noteheads")

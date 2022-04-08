@@ -1,7 +1,8 @@
-import os
-import sys
 from typing import NamedTuple, Optional
 
+from helpers import render_vtest
+
+from neoscore.common import *
 from neoscore.core.directions import VerticalDirection
 from neoscore.western.duration import DurationDef
 from neoscore.western.pitch import PitchDef
@@ -138,9 +139,4 @@ create_example(
     ]
 )
 
-
-if "--image" in sys.argv:
-    image_path = os.path.join(os.path.dirname(__file__), "output", "beams_image.png")
-    neoscore.render_image((Mm(0), Mm(0), Inch(2), Inch(2)), image_path, autocrop=True)
-else:
-    neoscore.show()
+render_vtest("beams")

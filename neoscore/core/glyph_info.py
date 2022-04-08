@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import Optional
 
+from neoscore.core.point import Point
 from neoscore.core.rect import Rect
 from neoscore.core.units import Unit
 
@@ -26,6 +27,6 @@ class GlyphInfo:
     advance_width: Optional[Unit]
     """Determines the degree of overlap of a glyph, e.g. Unit[1.234]"""
 
-    anchors: Optional[dict]
+    anchors: Optional[dict[str, Point]]
     """a variety of additional metadata from SMuFL 
     such as cutOut, splitStems, stemDirection, graceNote"""

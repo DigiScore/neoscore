@@ -47,7 +47,6 @@ class Slur(MusicPath, Spanner2D):
             pen: The pen to draw outlines with.
         """
         MusicPath.__init__(self, pos, parent, font, brush, pen)
-        end_pos = Point.from_def(end_pos)
         Spanner2D.__init__(self, end_pos, end_parent or self)
         self.direction = direction
         # Load relevant engraving defaults from music font

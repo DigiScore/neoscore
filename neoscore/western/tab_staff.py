@@ -6,7 +6,7 @@ from neoscore import constants
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
 from neoscore.core.pen import Pen
-from neoscore.core.point import Point, PointDef
+from neoscore.core.point import PointDef
 from neoscore.core.units import ZERO, Unit, make_unit_class
 
 if TYPE_CHECKING:
@@ -117,16 +117,3 @@ class TabStaff(MusicPath):
     @property
     def font_to_staff_space_ratio(self) -> float:
         return cast(float, self.unit(1) / self.line_spacing)
-
-    def _render_before_break(
-        self, local_start_x: Unit, start: Point, stop: Point, dist_to_line_start: Unit
-    ):
-        self._render_slice(start, None)
-
-    def _render_after_break(self, local_start_x: Unit, start: Point):
-        self._render_slice(start, None)
-
-    def _render_spanning_continuation(
-        self, local_start_x: Unit, start: Point, stop: Point
-    ):
-        self._render_slice(start, None)

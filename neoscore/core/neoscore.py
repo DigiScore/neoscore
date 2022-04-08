@@ -2,12 +2,16 @@ from __future__ import annotations
 
 import json
 import os
+import pathlib
+import tempfile
+import threading
 from time import time
 from typing import TYPE_CHECKING, Callable, Optional
 from warnings import warn
 
+import img2pdf  # type: ignore
+
 from neoscore import constants
-from neoscore.core import file_system
 from neoscore.core.brush import Brush, BrushDef
 from neoscore.core.color import Color, ColorDef
 from neoscore.core.exceptions import InvalidImageFormatError
@@ -15,7 +19,6 @@ from neoscore.core.paper import A4, Paper
 from neoscore.core.pen import Pen
 from neoscore.core.rect import RectDef, rect_from_def
 from neoscore.interface.app_interface import AppInterface
-from neoscore.interface.qt import image_utils
 
 if TYPE_CHECKING:
     from neoscore.core.document import Document
@@ -41,6 +44,18 @@ background_brush = Brush("#ffffff")
 
 Defaults to white. Set this using `set_background_brush`.
 """
+
+_supported_image_extensions = {
+    ".bmp",
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".pbm",
+    ".pgm",
+    ".ppm",
+    ".xbm",
+    ".xpm",
+}
 
 
 def setup(initial_paper: Paper = A4):
@@ -163,7 +178,7 @@ The function should accept one argument - the current time in seconds.
 """
 
 
-def show(refresh_func: Optional[RefreshFunc] = None):
+def show(refresh_func: Optional[RefreshFunc] = None, display_page_geometry=True):
     """Show a preview of the score in a GUI window.
 
     An update function can be provided (or otherwise set with
@@ -178,6 +193,8 @@ def show(refresh_func: Optional[RefreshFunc] = None):
     global document
     global _app_interface
     _app_interface._clear_scene()
+    if display_page_geometry:
+        _display_page_geometry()
     document._render()
     if refresh_func:
         set_refresh_func(refresh_func)
@@ -195,29 +212,58 @@ def _clear_interfaces():
                 interfaces.clear()
 
 
-def render_pdf(path: str):
+def _display_page_geometry():
+    global document
+    global background_brush
+    for page in document.pages:
+        page.display_geometry(background_brush)
+
+
+def render_pdf(pdf_path: str | pathlib.Path, dpi: int = 300):
     """Render the score as a pdf.
 
     Args:
-        path (str): The output score path.
-            If a relative path is provided, it will be
-            relative to the current working directory.
+        pdf_path (str): The output pdf path
+        dpi: Resolution to render with
     """
     global document
     global _app_interface
     _clear_interfaces()
     document._render()
-    _app_interface.render_pdf((page.page_index for page in document.pages), path)
+    # Render all pages to temp files
+    page_imgs = []
+    render_threads = []
+    for page in document.pages:
+        img_path = tempfile.NamedTemporaryFile(suffix=".png")
+        page_imgs.append(img_path)
+        render_threads.append(
+            render_image(
+                page.document_space_bounding_rect,
+                img_path.name,
+                dpi,
+                bg_color="#ffffff",
+                preserve_alpha=False,
+                auto_start_thread=False,
+            )
+        )
+    for thread in render_threads:
+        thread.join()
+    # Assemble into PDF and write it to file path
+    with open(pdf_path, "wb") as f:
+        f.write(img2pdf.convert(page_imgs))
 
 
 def render_image(
     rect: RectDef,
-    image_path: str,
+    image_path: str | pathlib.Path,
     dpi: int = 600,
     quality: int = -1,
+    # TODO HIGH remove this? isn't it redundant with background brush now?
     bg_color: Optional[ColorDef] = None,
     autocrop: bool = False,
-):
+    preserve_alpha: bool = True,
+    auto_start_thread: bool = True,
+) -> threading.Thread:
     """Render a section of the document to an image.
 
     The following file extensions are supported:
@@ -229,6 +275,11 @@ def render_image(
         * `.ppm`
         * `.xbm`
         * `.xpm`
+
+    This renders on the main thread but autocrops and saves the image
+    on a spawned thread which is returned to allow efficient rendering
+    of many images in parallel. `render_image` will block if too many
+    render threads are already running.
 
     Args:
         rect: The part of the document to render, in document coordinates.
@@ -244,14 +295,15 @@ def render_image(
         autocrop: Whether or not to crop the output image to tightly
             fit the contents of the frame. If true, the image will be cropped
             such that all 4 edges have at least one pixel not of `bg_color`.
+        preserve_alpha: Whether to preserve the alpha channel. If false,
+            some non-transparent `bg_color` should be provided.
 
     Raises:
-        FileNotFoundError: If the given `image_path` does not point to a valid
-            location for a new file.
         InvalidImageFormatError: If the given `image_path` does not have a
             supported image format file extension.
         ImageExportError: If low level Qt image export fails for
             unknown reasons.
+
     """
     global document
     global _app_interface
@@ -262,24 +314,28 @@ def render_image(
         warn("render_image quality {} invalid; using default.".format(quality))
         quality = -1
 
-    if not file_system.is_valid_file_path(image_path):
-        raise FileNotFoundError("Invalid image_path: " + image_path)
-
-    if not os.path.splitext(image_path)[1] in image_utils.supported_formats:
+    if not os.path.splitext(image_path)[1] in _supported_image_extensions:
         raise InvalidImageFormatError(
             "image_path {} is not in a supported format.".format(image_path)
         )
 
     rect = rect_from_def(rect)
     if bg_color is None:
-        bg_color = Color(255, 255, 255, 255)
+        bg_color = Color("#ffffff")
     else:
         bg_color = Color.from_def(bg_color)
-    dpm = int(image_utils.dpi_to_dpm(dpi))
 
     document._render()
 
-    _app_interface.render_image(rect, image_path, dpm, quality, bg_color, autocrop)
+    return _app_interface.render_image(
+        rect,
+        image_path,
+        dpi,
+        quality,
+        bg_color,
+        autocrop,
+        preserve_alpha,
+    )
 
 
 def _repl_refresh_func(_: float) -> float:

@@ -12,6 +12,7 @@ from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.new_line import NewLine
+from neoscore.core.page import Page
 from neoscore.core.paper import Paper
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
@@ -26,6 +27,7 @@ from neoscore.core.units import ZERO, GraphicUnit, Inch, Mm
 from neoscore.western import notehead_tables
 from neoscore.western.accidental import Accidental
 from neoscore.western.accidental_type import AccidentalType
+from neoscore.western.arpeggio_line import ArpeggioLine
 from neoscore.western.barline import Barline
 from neoscore.western.beam_group import BeamGroup
 from neoscore.western.brace import Brace

@@ -17,7 +17,11 @@ class MockSpanner2D(PaintedObject, Spanner2D):
 
 
 class TestSpanner2D(AppTest):
-    def end_y_settable(self):
+    def test_end_pos_point_def_supported(self):
+        spanner = MockSpanner2D((Unit(0), Unit(1)), None, Point(Unit(2), Unit(3)), None)
+        assert spanner.end_pos == Point(Unit(2), Unit(3))
+
+    def test_end_y_settable(self):
         spanner = MockSpanner2D(
             Point(Unit(0), Unit(1)), None, Point(Unit(2), Unit(3)), None
         )
@@ -25,12 +29,14 @@ class TestSpanner2D(AppTest):
         spanner.end_y = Unit(10)
         assert spanner.end_pos == Point(Unit(2), Unit(10))
 
-    def end_pos_settable(self):
+    def test_end_pos_settable(self):
         spanner = MockSpanner2D(
             Point(Unit(0), Unit(1)), None, Point(Unit(2), Unit(3)), None
         )
         spanner.end_pos = Point(Unit(12), Unit(34))
         assert spanner.end_pos == Point(Unit(12), Unit(34))
+        spanner.end_pos = (Unit(123), Unit(456))
+        assert spanner.end_pos == Point(Unit(123), Unit(456))
 
     def test_length_with_no_end_parent(self):
         spanner = MockSpanner2D(

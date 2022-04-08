@@ -1,24 +1,37 @@
 from __future__ import annotations
 
-import os
+import multiprocessing
+import pathlib
+import threading
 from typing import TYPE_CHECKING, Callable
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtPrintSupport import QPrinter
+from PyQt5.QtCore import QRectF
+from PyQt5.QtGui import (
+    QBitmap,
+    QColor,
+    QFontDatabase,
+    QImage,
+    QPainter,
+    QPixmapCache,
+    QRegion,
+)
+from PyQt5.QtWidgets import QApplication, QGraphicsScene
 
 from neoscore import constants
 from neoscore.core.color import Color
 from neoscore.core.exceptions import FontRegistrationError, ImageExportError
 from neoscore.core.rect import Rect
-from neoscore.core.units import Meter
+from neoscore.core.units import Inch, Meter
 from neoscore.interface.brush_interface import BrushInterface
-from neoscore.interface.qt import image_utils
 from neoscore.interface.qt.converters import color_to_q_color, rect_to_qt_rect_f
 from neoscore.interface.qt.main_window import MainWindow
 from neoscore.interface.repl import running_in_ipython_gui_repl
 
 if TYPE_CHECKING:
     from neoscore.core.document import Document
+
+_RENDER_IMAGE_THREAD_MAX = multiprocessing.cpu_count()
+_INCHES_PER_METER: float = Inch(1) / Meter(1)
 
 
 class AppInterface:
@@ -43,15 +56,18 @@ class AppInterface:
             if constants.HEADLESS_FOR_TEST
             else []
         )
-        self.app = QtWidgets.QApplication(args)
+        self.app = QApplication(args)
         self.main_window = MainWindow()
-        self.scene = QtWidgets.QGraphicsScene()
+        self.scene = QGraphicsScene()
         self.view = self.main_window.graphicsView
         self.view.setScene(self.scene)
         self.background_brush = background_brush
         self.registered_music_fonts = {}
-        self.font_database = QtGui.QFontDatabase()
+        self.font_database = QFontDatabase()
         self.repl_refresh_func = repl_refresh_func
+        self._render_image_thread_semaphore = threading.Semaphore(
+            _RENDER_IMAGE_THREAD_MAX
+        )
 
     ######## PUBLIC METHODS ########
 
@@ -70,51 +86,24 @@ class AppInterface:
         else:
             self.app.exec_()
 
-    def render_pdf(self, pages, path):
-        """Render the document to a pdf file.
-
-        Args:
-            pages (iter[int]): The page numbers to render
-            path (str): An output file path.
-
-        Warning: If the file at `path` already exists, it will be overwritten.
-        """
-        printer = QPrinter()
-        printer.setOutputFormat(QPrinter.PdfFormat)
-        printer.setOutputFileName(os.path.realpath(path))
-        printer.setResolution(constants.PRINT_DPI)
-        printer.setPageLayout(self.document.paper.interface.qt_object)
-        painter = QtGui.QPainter()
-        painter.begin(printer)
-        # Scaling ratio for Qt point 72dpi -> constants.PRINT_DPI
-        ratio = constants.PRINT_DPI / 72
-        target_rect_unscaled = printer.paperRect(QPrinter.Point)
-        target_rect_scaled = QtCore.QRectF(
-            target_rect_unscaled.x() * ratio,
-            target_rect_unscaled.y() * ratio,
-            target_rect_unscaled.width() * ratio,
-            target_rect_unscaled.height() * ratio,
-        )
-        for page_number in pages:
-            source_rect = rect_to_qt_rect_f(
-                self.document.paper_bounding_rect(page_number)
-            )
-            self.scene.render(painter, target=target_rect_scaled, source=source_rect)
-            printer.newPage()
-        painter.end()
-
     def render_image(
         self,
         rect: Rect,
-        image_path: str,
-        dpm: int,
+        image_path: str | pathlib.Path,
+        dpi: int,
         quality: int,
         bg_color: Color,
         autocrop: bool,
-    ):
+        preserve_alpha: bool,
+    ) -> threading.Thread:
         """Render a section of self.scene to an image.
 
         It is assumed that all input arguments are valid.
+
+        This renders on the main thread but autocrops and saves the image
+        on a spawned thread which is returned to allow efficient rendering
+        of many images in parallel. `render_image` will block if too many
+        render threads are already running.
 
         Args:
             rect: The part of the document to render,
@@ -122,7 +111,7 @@ class AppInterface:
             image_path: The path to the output image.
                 This must be a valid path relative to the current
                 working directory.
-            dpm: The pixels per meter of the rendered image.
+            dpi: The pixels per inch of the rendered image.
             quality: The quality of the output image for compressed
                 image formats. Must be either `-1` (default compression) or
                 between `0` (most compressed) and `100` (least compressed).
@@ -131,38 +120,54 @@ class AppInterface:
                 fit the contents of the frame. If true, the image will be
                 cropped such that all 4 edges have at least one pixel not of
                 `bg_color`.
+            preserve_alpha: Whether to preserve the alpha channel. If false,
+                some non-transparent `bg_color` should be provided.
 
         Raises:
             ImageExportError: If Qt image export fails for unknown reasons.
+
         """
+        if isinstance(image_path, pathlib.Path):
+            image_path = str(image_path)
+        dpm = AppInterface._dpi_to_dpm(dpi)
         scale = dpm / Meter(1).base_value
         pix_width = int(rect.width.base_value * scale)
         pix_height = int(rect.height.base_value * scale)
 
-        q_image = QtGui.QImage(pix_width, pix_height, QtGui.QImage.Format_ARGB32)
+        if preserve_alpha:
+            q_image_format = QImage.Format_ARGB32
+        else:
+            q_image_format = QImage.Format_RGB32
+
+        q_image = QImage(pix_width, pix_height, q_image_format)
         q_image.setDotsPerMeterX(dpm)
         q_image.setDotsPerMeterY(dpm)
         q_color = color_to_q_color(bg_color)
         q_image.fill(q_color)
 
-        painter = QtGui.QPainter()
+        painter = QPainter()
         painter.begin(q_image)
 
-        target_rect = QtCore.QRectF(q_image.rect())
+        target_rect = QRectF(q_image.rect())
         source_rect = rect_to_qt_rect_f(rect)
 
         self.scene.render(painter, target=target_rect, source=source_rect)
         painter.end()
 
-        if autocrop:
-            q_image = image_utils.autocrop(q_image, q_color)
+        def finalize():
+            with self._render_image_thread_semaphore:
+                final_image = (
+                    AppInterface._autocrop(q_image, q_color) if autocrop else q_image
+                )
+                success = q_image.save(image_path, quality=quality)
+                if not success:
+                    raise ImageExportError(
+                        "Unknown error occurred when exporting image to " + image_path
+                    )
 
-        success = q_image.save(image_path, quality=quality)
-
-        if not success:
-            raise ImageExportError(
-                "Unknown error occurred when exporting image to " + image_path
-            )
+        thread = threading.Thread(target=finalize)
+        thread.start()
+        return thread
 
     def destroy(self):
         """Destroy the window and all global interface-level data."""
@@ -216,6 +221,22 @@ class AppInterface:
         self.scene.clear()
 
     def _optimize_for_interactive_view(self):
-        QtGui.QPixmapCache.setCacheLimit(constants.QT_PIXMAP_CACHE_LIMIT_KB)
+        QPixmapCache.setCacheLimit(constants.QT_PIXMAP_CACHE_LIMIT_KB)
         self.view.setViewportUpdateMode(3)  # NoViewportUpdate
         self.scene.setItemIndexMethod(-1)  # NoIndex
+
+    @staticmethod
+    def _dpi_to_dpm(dpi: int) -> int:
+        """Convert a Dots Per Inch value to Dots Per Meter"""
+        return int(dpi / _INCHES_PER_METER)
+
+    @staticmethod
+    def _autocrop_image(q_image: QImage, q_color: QColor) -> QImage:
+        """Automatically crop a qt image around the pixels not of a given color.
+
+        Returns a newly cropped image; the original is left unmodified.
+        """
+        _QT_MASK_IN_COLOR = 0
+        mask = q_image.createMaskFromColor(q_color.rgb(), _QT_MASK_IN_COLOR)
+        crop_rect = QRegion(QBitmap.fromImage(mask)).boundingRect()
+        return q_image.copy(crop_rect)
