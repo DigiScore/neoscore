@@ -35,8 +35,7 @@ class Stem(MusicPath):
             start: Starting point for the stem
             parent: If no font is given, this or one of its ancestors must
                 implement `HasMusicFont`.
-            direction: The direction a stem points:
-                verticalDirection.UP or .DOWN
+            direction: The direction a stem points
             height: The height/ length of the stem.
             font: If provided, this overrides any font found in the ancestor chain.
         """
@@ -52,7 +51,8 @@ class Stem(MusicPath):
 
     @property
     def height(self) -> Unit:
-        """The height of the stem from its position."""
+        """The height of the stem from its position.
+        Must be positive value"""
         return self._height
 
     @property

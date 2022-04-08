@@ -362,7 +362,7 @@ class Chordrest(PositionedObject, StaffObject):
             + flag_offset
         )
         abs_height = max(min_abs_height, fitted_abs_height)
-        return abs_height * self.stem_direction.value
+        return abs_height # * self.stem_direction.value
 
     ######## PRIVATE METHODS ########
 
