@@ -1,7 +1,8 @@
 from collections.abc import Callable
+from typing import Optional
 
 from neoscore import constants
-from neoscore.core.page_supplier import PageSupplier
+from neoscore.core.page_supplier import PageOverlayFunc, PageSupplier
 from neoscore.core.paper import Paper
 from neoscore.core.point import Point
 from neoscore.core.units import ZERO
@@ -16,13 +17,13 @@ class Document:
     can be then accessed as `neoscore.document`.
     """
 
-    def __init__(self, paper: Paper):
+    def __init__(self, paper: Paper, overlay_func: Optional[PageOverlayFunc] = None):
         """
         Args:
             paper: The paper to use in the document.
         """
         self._paper = paper
-        self._pages = PageSupplier(self)
+        self._pages = PageSupplier(self, overlay_func)
 
     ######## PUBLIC PROPERTIES ########
 

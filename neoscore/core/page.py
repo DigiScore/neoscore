@@ -12,7 +12,7 @@ from neoscore.core.pen_pattern import PenPattern
 from neoscore.core.point import ORIGIN, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.rect import Rect
-from neoscore.core.units import ZERO, Mm
+from neoscore.core.units import ZERO, Mm, Unit
 
 if TYPE_CHECKING:
     from neoscore.core.document import Document
@@ -99,6 +99,62 @@ class Page(PositionedObject):
             local_rect.width,
             local_rect.height,
         )
+
+    @property
+    def full_margin_left(self) -> Unit:
+        """The left margin, including any gutter if the gutter is on the left."""
+        if self.page_side == HorizontalDirection.RIGHT:
+            return self.paper.margin_left + self.paper.gutter
+        else:
+            return self.paper.margin_left
+
+    @property
+    def full_margin_right(self) -> Unit:
+        """The right margin, including any gutter if the gutter is on the right."""
+        if self.page_side == HorizontalDirection.RIGHT:
+            return self.paper.margin_right
+        else:
+            return self.paper.margin_right + self.paper.gutter
+
+    @property
+    def left_margin_x(self) -> Unit:
+        """The X position of the edge of the left margin.
+
+        This is always `ZERO`, given here as a convenience synonym.
+        """
+        return ZERO
+
+    @property
+    def right_margin_x(self) -> Unit:
+        """The X position of the edge of the right margin.
+
+        This is always `page.paper.live_width`, given here as a convenience synonym.
+        """
+        return self.paper.live_width
+
+    @property
+    def top_margin_y(self) -> Unit:
+        """The Y position of the edge of the top margin.
+
+        This is always `ZERO`, given here as a convenience synonym.
+        """
+        return ZERO
+
+    @property
+    def bottom_margin_y(self) -> Unit:
+        """The Y position of the edge of the top margin.
+
+        This is always `page.paper.live_height`, given here as a convenience synonym.
+        """
+        return self.paper.live_height
+
+    @property
+    def center_x(self) -> Unit:
+        """The X position of the center of the live page area.
+
+        This is a convenience method for `page.paper.live_width / 2`.
+        """
+        return self.paper.live_width / 2
 
     def display_geometry(self, background_brush: Brush):
         """Create child objects which graphically show the page geometry.
