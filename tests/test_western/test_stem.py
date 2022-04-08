@@ -26,3 +26,5 @@ class TestStem(AppTest):
         assert stem.direction == VerticalDirection.DOWN
         assert stem.direction.value == 1
 
+    def test_stem_line_respects_stem_direction(self):
+        pass
