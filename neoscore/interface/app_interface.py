@@ -21,7 +21,7 @@ from neoscore.core import env
 from neoscore.core.color import Color
 from neoscore.core.exceptions import FontRegistrationError, ImageExportError
 from neoscore.core.rect import Rect
-from neoscore.core.units import Inch, Meter
+from neoscore.core.units import Inch, Mm
 from neoscore.interface.brush_interface import BrushInterface
 from neoscore.interface.qt.converters import color_to_q_color, rect_to_qt_rect_f
 from neoscore.interface.qt.main_window import MainWindow
@@ -31,7 +31,7 @@ if TYPE_CHECKING:
     from neoscore.core.document import Document
 
 _RENDER_IMAGE_THREAD_MAX = multiprocessing.cpu_count()
-_INCHES_PER_METER: float = Inch(1) / Meter(1)
+_INCHES_PER_METER: float = Inch(1) / Mm(1000)
 _QT_PIXMAP_CACHE_LIMIT_KB = 200_000
 
 

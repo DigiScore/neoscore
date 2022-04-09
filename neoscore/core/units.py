@@ -170,13 +170,6 @@ class Mm(Unit):
     CONVERSION_RATE = Inch.CONVERSION_RATE * 0.0393701
 
 
-# TODO HIGH this collides with metrical Meter name. probably remove this one instead of renaming the other.
-class Meter(Unit):
-    """A meter."""
-
-    CONVERSION_RATE = Mm.CONVERSION_RATE * 1000
-
-
 # Constants
 
 ZERO = Unit(0)
