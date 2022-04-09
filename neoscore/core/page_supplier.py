@@ -12,8 +12,10 @@ if TYPE_CHECKING:
 PageOverlayFunc = Callable[[Page], None]
 """A function to run on every page after creation.
 
-The function takes one argument, the newly generated page. Functions
-will typically create objects with this page as their parent.
+The function takes one argument, the newly generated page. Functions will typically
+create objects with this page as their parent.
+
+See `simple_header_footer` for a ready-made implementation of a simple overlay function.
 """
 
 
