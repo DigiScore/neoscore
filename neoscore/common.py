@@ -1,4 +1,3 @@
-from neoscore import constants
 from neoscore.core import neoscore
 from neoscore.core.brush import Brush
 from neoscore.core.brush_pattern import BrushPattern

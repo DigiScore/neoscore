@@ -17,7 +17,7 @@ def render_vtest(name: str):
             image_path = pathlib.Path(tempfile.NamedTemporaryFile(suffix=".png").name)
         else:
             image_path = output_dir / f"{name}_image.png"
-        neoscore.render_image((ZERO, ZERO, Inch(2), Inch(2)), image_path)
+        neoscore.render_image((ZERO, ZERO, Inch(8.5), Inch(11)), image_path)
 
     elif "--pdf" in sys.argv:
         # PDF export is currently broken

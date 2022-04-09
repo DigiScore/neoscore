@@ -1,8 +1,7 @@
 import unittest
 
-from neoscore import constants
 from neoscore.core import paper
-from neoscore.core.document import Document
+from neoscore.core.document import _PAGE_DISPLAY_GAP, Document
 from neoscore.core.paper import Paper
 from neoscore.core.point import ORIGIN, Point
 from neoscore.core.units import ZERO, Mm
@@ -18,8 +17,8 @@ class TestDocument(unittest.TestCase):
         test_doc = Document(paper.A4)
         assert test_doc.page_origin(0) == ORIGIN
         assert test_doc.page_origin(1) == Point(
-            paper.A4.width + constants.PAGE_DISPLAY_GAP, ZERO
+            paper.A4.width + _PAGE_DISPLAY_GAP, ZERO
         )
         assert test_doc.page_origin(2) == Point(
-            (paper.A4.width + constants.PAGE_DISPLAY_GAP) * 2, ZERO
+            (paper.A4.width + _PAGE_DISPLAY_GAP) * 2, ZERO
         )

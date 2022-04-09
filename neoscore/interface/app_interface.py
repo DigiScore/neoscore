@@ -17,7 +17,7 @@ from PyQt5.QtGui import (
 )
 from PyQt5.QtWidgets import QApplication, QGraphicsScene
 
-from neoscore import constants
+from neoscore.core import env
 from neoscore.core.color import Color
 from neoscore.core.exceptions import FontRegistrationError, ImageExportError
 from neoscore.core.rect import Rect
@@ -32,6 +32,7 @@ if TYPE_CHECKING:
 
 _RENDER_IMAGE_THREAD_MAX = multiprocessing.cpu_count()
 _INCHES_PER_METER: float = Inch(1) / Meter(1)
+_QT_PIXMAP_CACHE_LIMIT_KB = 200_000
 
 
 class AppInterface:
@@ -51,11 +52,7 @@ class AppInterface:
         background_brush: BrushInterface,
     ):
         self.document = document
-        args = (
-            ["TestApplication", "-platform", "offscreen"]
-            if constants.HEADLESS_FOR_TEST
-            else []
-        )
+        args = ["TestApplication", "-platform", "offscreen"] if env.HEADLESS else []
         self.app = QApplication(args)
         self.main_window = MainWindow()
         self.scene = QGraphicsScene()
@@ -175,18 +172,19 @@ class AppInterface:
         self.app = None
         self.scene = None
 
-    def register_font(self, font_file_path: str) -> list[str]:
+    def register_font(self, font_file_path: str | pathlib.Path) -> list[str]:
         """Register a font file with the graphics engine.
 
         Args:
-            font_file_path: A path to a font file. The path should
-                be relative to the main `neoscore` package. Currently only
-                TrueType and OpenType fonts are supported.
+            font_file_path: A path to a font file. Currently only TrueType and
+                OpenType fonts are supported.
 
         Returns: A list of font families found in the font.
 
         Raises: FontRegistrationError: if the registration fails.
         """
+        if isinstance(font_file_path, pathlib.Path):
+            font_file_path = str(font_file_path)
         font_id = self.font_database.addApplicationFont(font_file_path)
         if font_id == AppInterface._QT_FONT_ERROR_CODE:
             raise FontRegistrationError(font_file_path)
@@ -221,7 +219,7 @@ class AppInterface:
         self.scene.clear()
 
     def _optimize_for_interactive_view(self):
-        QPixmapCache.setCacheLimit(constants.QT_PIXMAP_CACHE_LIMIT_KB)
+        QPixmapCache.setCacheLimit(_QT_PIXMAP_CACHE_LIMIT_KB)
         self.view.setViewportUpdateMode(3)  # NoViewportUpdate
         self.scene.setItemIndexMethod(-1)  # NoIndex
 

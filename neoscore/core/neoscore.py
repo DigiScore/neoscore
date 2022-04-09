@@ -11,18 +11,19 @@ from warnings import warn
 
 import img2pdf  # type: ignore
 
-from neoscore import constants
 from neoscore.core.brush import Brush, BrushDef
 from neoscore.core.color import Color, ColorDef
 from neoscore.core.exceptions import InvalidImageFormatError
 from neoscore.core.paper import A4, Paper
 from neoscore.core.pen import Pen
 from neoscore.core.rect import RectDef, rect_from_def
+from neoscore.core.units import Mm
 from neoscore.interface.app_interface import AppInterface
 
 if TYPE_CHECKING:
     from neoscore.core.document import Document
     from neoscore.core.font import Font
+
 
 """The global state of the application."""
 
@@ -57,6 +58,23 @@ _supported_image_extensions = {
     ".xpm",
 }
 
+# Directories
+_FONTS_DIR = pathlib.Path(__file__).parent / ".." / "resources" / "fonts"
+
+# Text Font
+_LORA_DIR = _FONTS_DIR / "lora"
+_DEFAULT_LORA_FONT_FAMILY_NAME = "Lora"
+_DEFAULT_LORA_FONT_SIZE = Mm(2)
+_LORA_REGULAR_PATH = _LORA_DIR / "Lora-Regular.ttf"
+_LORA_BOLD_PATH = _LORA_DIR / "Lora-Bold.ttf"
+_LORA_ITALIC_PATH = _LORA_DIR / "Lora-Italic.ttf"
+_LORA_BOLD_ITALIC_PATH = _LORA_DIR / "Lora-BoldItalic.ttf"
+
+# Music Text Font
+_BRAVURA_DIR = _FONTS_DIR / "bravura"
+_BRAVURA_PATH = _BRAVURA_DIR / "Bravura.otf"
+_BRAVURA_METADATA_PATH = _BRAVURA_DIR / "bravura_metadata.json"
+
 
 def setup(initial_paper: Paper = A4):
     """Initialize the application and set up the global state.
@@ -69,7 +87,6 @@ def setup(initial_paper: Paper = A4):
 
     Args:
         initial_paper (Paper): The paper to use in the document.
-            If `None`, this defaults to `constants.DEFAULT_PAPER_TYPE`
 
     Returns: None
     """
@@ -87,7 +104,7 @@ def setup(initial_paper: Paper = A4):
     )
     _register_default_fonts()
     default_font = Font(
-        constants.DEFAULT_TEXT_FONT_NAME, constants.DEFAULT_TEXT_FONT_SIZE, 1, False
+        _DEFAULT_LORA_FONT_FAMILY_NAME, _DEFAULT_LORA_FONT_SIZE, 1, False
     )
 
 
@@ -256,7 +273,7 @@ def render_pdf(pdf_path: str | pathlib.Path, dpi: int = 300):
 def render_image(
     rect: RectDef,
     image_path: str | pathlib.Path,
-    dpi: int = 600,
+    dpi: int = 300,
     quality: int = -1,
     # TODO HIGH remove this? isn't it redundant with background brush now?
     bg_color: Optional[ColorDef] = None,
@@ -339,15 +356,20 @@ def render_image(
 
 
 def _repl_refresh_func(_: float) -> float:
-    """Default refresh func to be used in REPL mode"""
+    """Default refresh func to be used in REPL mode.
+
+    Refreshes at a rate of 5 FPS.
+    """
     _clear_interfaces()
     document._render()
-    return constants.DEFAULT_REPL_FRAME_REFRESH_TIME_S
+    return 0.2
 
 
-def set_refresh_func(refresh_func: RefreshFunc):
+def set_refresh_func(refresh_func: RefreshFunc, target_fps: int = 60):
     global _app_interface
     global document
+
+    frame_wait = 1 / target_fps
 
     # Wrap the user-provided refresh function with code that clears
     # the scene and re-renders it, then returns the requested delay
@@ -358,20 +380,20 @@ def set_refresh_func(refresh_func: RefreshFunc):
         refresh_func(frame_time)
         document._render()
         elapsed_time = time() - frame_time
-        return max(constants.FRAME_REFRESH_TIME_S - elapsed_time, 0)
+        return max(frame_wait - elapsed_time, 0)
 
     _app_interface.set_refresh_func(wrapped_refresh_func)
 
 
 def _register_default_fonts():
     register_music_font(
-        constants.DEFAULT_MUSIC_FONT_PATH,
-        constants.DEFAULT_MUSIC_FONT_METADATA_PATH,
+        _BRAVURA_PATH,
+        _BRAVURA_METADATA_PATH,
     )
-    register_font(constants.DEFAULT_TEXT_FONT_REGULAR_PATH)
-    register_font(constants.DEFAULT_TEXT_FONT_BOLD_PATH)
-    register_font(constants.DEFAULT_TEXT_FONT_ITALIC_PATH)
-    register_font(constants.DEFAULT_TEXT_FONT_BOLD_ITALIC_PATH)
+    register_font(_LORA_REGULAR_PATH)
+    register_font(_LORA_BOLD_PATH)
+    register_font(_LORA_ITALIC_PATH)
+    register_font(_LORA_BOLD_ITALIC_PATH)
 
 
 def shutdown():

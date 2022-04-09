@@ -31,7 +31,7 @@ class MainWindow(QtWidgets.QMainWindow):
             requested_delay_s = self.refresh_func(start_time)
             requested_delay_ms = int(requested_delay_s * 1000)
             QtCore.QTimer.singleShot(requested_delay_ms, QT_PRECISE_TIMER, self.refresh)
-            # if DEBUG:
+            # if env.DEBUG:
             #     update_time = time() - start_time
             #     refresh_fps = int(1 / (time() - start_time))
             #     if self._frame % 30 == 0:

@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional, Type, cast
 
-from neoscore import constants
 from neoscore.core.exceptions import NoClefError
 from neoscore.core.mapping import map_between_x
 from neoscore.core.music_font import MusicFont
@@ -10,7 +9,7 @@ from neoscore.core.music_path import MusicPath
 from neoscore.core.pen import Pen
 from neoscore.core.point import PointDef
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.core.units import ZERO, Unit, make_unit_class
+from neoscore.core.units import ZERO, Mm, Unit, make_unit_class
 from neoscore.western.octave_line import OctaveLine
 from neoscore.western.transposition import Transposition
 
@@ -31,9 +30,9 @@ class Staff(MusicPath):
         pos: PointDef,
         parent: Optional[Parent],
         length: Unit,
-        staff_unit: Optional[Unit] = None,
+        line_spacing: Unit = Mm(1),
         line_count: int = 5,
-        music_font_family: Optional[str] = None,
+        music_font_family: str = "Bravura",
         pen: Optional[Pen] = None,
     ):
         """
@@ -42,8 +41,7 @@ class Staff(MusicPath):
             parent: The parent for the staff. Make this a `Flowable`
                 to allow the staff to run across line and page breaks.
             length: The horizontal width of the staff
-            staff_unit: The distance between two lines in the staff.
-                If not set, this will default to `constants.DEFAULT_STAFF_UNIT`
+            line_spacing: The distance between two lines in the staff.
             line_count: The number of lines in the staff.
             music_font_family: The name of the font to use for MusicText objects
                 in the staff. This defaults to the system-wide default music font
@@ -51,12 +49,8 @@ class Staff(MusicPath):
             pen: The pen used to draw the staff lines. Defaults to a line with
                 thickness from the music font's engraving default.
         """
-        unit = self._make_unit_class(
-            staff_unit if staff_unit else constants.DEFAULT_STAFF_UNIT
-        )
-        music_font = MusicFont(
-            music_font_family or constants.DEFAULT_MUSIC_FONT_NAME, unit
-        )
+        unit = self._make_unit_class(line_spacing)
+        music_font = MusicFont(music_font_family, unit)
         pen = pen or Pen(thickness=music_font.engraving_defaults["staffLineThickness"])
         super().__init__(pos, parent, font=music_font, pen=pen)
         self._line_count = line_count

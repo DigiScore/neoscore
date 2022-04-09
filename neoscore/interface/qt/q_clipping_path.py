@@ -4,7 +4,7 @@ from PyQt5.QtCore import QRectF
 from PyQt5.QtGui import QBrush, QColor, QPainter, QPainterPath, QPen
 from PyQt5.QtWidgets import QGraphicsItem, QGraphicsPathItem
 
-from neoscore.constants import DEBUG
+from neoscore.core import env
 
 
 class QClippingPath(QGraphicsPathItem):
@@ -91,7 +91,7 @@ class QClippingPath(QGraphicsPathItem):
             painter.translate(-self.clip_start_x, 0)
         if self.clip_width is not None:
             painter.setClipRect(self.clip_rect)
-        if DEBUG or self.background_brush:
+        if env.DEBUG or self.background_brush:
             bounding_rect = self.bounding_rect
             if self.clip_start_x != 0:
                 # Since painter is translated, cancel that out when
@@ -101,7 +101,7 @@ class QClippingPath(QGraphicsPathItem):
             painter.setBrush(self.background_brush)
             painter.setPen(QPen(0))
             painter.drawRect(bounding_rect)
-        if DEBUG:
+        if env.DEBUG:
             painter.setBrush(QBrush())
             painter.setPen(QPen(QColor("#ff0000"), 0))
             painter.drawRect(bounding_rect)

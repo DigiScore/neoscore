@@ -6,7 +6,6 @@ from examples.feldman_projections_2.instrument_data import InstrumentData
 from examples.feldman_projections_2.measure import Measure
 from examples.feldman_projections_2.music_text_event import MusicTextEvent
 from examples.feldman_projections_2.text_event import TextEvent
-from neoscore import constants
 from neoscore.core import neoscore
 from neoscore.core.music_font import MusicFont
 from neoscore.core.path import Path
@@ -30,9 +29,7 @@ class Score(PositionedObject):
         self.text_font = neoscore.default_font.modified(
             size=Score._TEXT_FONT_SIZE, weight=60
         )
-        self.music_font = MusicFont(
-            constants.DEFAULT_MUSIC_FONT_NAME, Score._MUSIC_FONT_SIZE
-        )
+        self.music_font = MusicFont("Bravura", Score._MUSIC_FONT_SIZE)
 
         self.instruments = instruments
 

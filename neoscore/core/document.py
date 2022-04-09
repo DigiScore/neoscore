@@ -1,11 +1,12 @@
 from collections.abc import Callable
 from typing import Optional
 
-from neoscore import constants
 from neoscore.core.page_supplier import PageOverlayFunc, PageSupplier
 from neoscore.core.paper import Paper
 from neoscore.core.point import Point
-from neoscore.core.units import ZERO
+from neoscore.core.units import ZERO, Mm
+
+_PAGE_DISPLAY_GAP = Mm(50)
 
 
 class Document:
@@ -90,5 +91,5 @@ class Document:
         Args:
             page_index: The 0-based index of the page to locate.
         """
-        page_x = (self.paper.width + constants.PAGE_DISPLAY_GAP) * page_index
+        page_x = (self.paper.width + _PAGE_DISPLAY_GAP) * page_index
         return Point(page_x, ZERO)
