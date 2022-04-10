@@ -28,7 +28,7 @@ class TestRepeatingMusicTextLine(AppTest):
             "#00ff00",
             "#0000ff",
         )
-        assert len(arp.music_chars) in [10, 11]  # exact value can flake
+        assert len(arp.music_chars) == 9
         assert arp.music_chars[0] == MusicChar(font, "wiggleArpeggiatoUp")
         assert arp.music_chars[-1] == MusicChar(font, "wiggleArpeggiatoUpArrow")
         assert arp.brush == Brush("#ff0000")

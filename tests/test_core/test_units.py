@@ -119,14 +119,14 @@ class TestUnit(unittest.TestCase):
 
 class TestMm(unittest.TestCase):
     def test_mm_unit_conversion(self):
-        assert_almost_equal(Mm(1), Unit(11.811029999999999))
-        assert_almost_equal(Mm(2), Unit(23.622059999999998))
+        assert_almost_equal(Mm(1), Unit(2.835), places=3)
+        assert_almost_equal(Mm(2), Unit(5.669), places=3)
 
 
 class TestInch(unittest.TestCase):
     def test_inch_unit_conversion(self):
-        assert_almost_equal(Inch(1), Unit(300))
-        assert_almost_equal(Inch(2), Unit(600))
+        assert_almost_equal(Inch(1), Unit(72))
+        assert_almost_equal(Inch(2), Unit(144))
 
 
 class TestGraphicUnit(unittest.TestCase):

@@ -76,7 +76,7 @@ _BRAVURA_PATH = _BRAVURA_DIR / "Bravura.otf"
 _BRAVURA_METADATA_PATH = _BRAVURA_DIR / "bravura_metadata.json"
 
 
-def setup(initial_paper: Paper = A4):
+def setup(paper: Paper = A4):
     """Initialize the application and set up the global state.
 
     This initializes the global `Document` and a back-end
@@ -86,7 +86,7 @@ def setup(initial_paper: Paper = A4):
     calling this multiple times in one script will cause unexpected behavior.
 
     Args:
-        initial_paper (Paper): The paper to use in the document.
+        paper (Paper): The paper to use in the document.
 
     Returns: None
     """
@@ -98,7 +98,7 @@ def setup(initial_paper: Paper = A4):
     from neoscore.core.document import Document
     from neoscore.core.font import Font
 
-    document = Document(initial_paper)
+    document = Document(paper)
     _app_interface = AppInterface(
         document, _repl_refresh_func, background_brush.interface
     )

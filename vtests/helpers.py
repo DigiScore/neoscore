@@ -4,7 +4,6 @@ import sys
 import tempfile
 
 from neoscore.core import neoscore
-from neoscore.core.units import ZERO, Inch
 
 output_dir = pathlib.Path(__file__).parent / "output"
 
@@ -17,7 +16,9 @@ def render_vtest(name: str):
             image_path = pathlib.Path(tempfile.NamedTemporaryFile(suffix=".png").name)
         else:
             image_path = output_dir / f"{name}_image.png"
-        neoscore.render_image((ZERO, ZERO, Inch(8.5), Inch(11)), image_path)
+        neoscore.render_image(
+            neoscore.document.pages[0].document_space_bounding_rect, image_path
+        )
 
     elif "--pdf" in sys.argv:
         # PDF export is currently broken

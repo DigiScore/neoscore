@@ -10,7 +10,6 @@ from neoscore.core.exceptions import (
 )
 from neoscore.core.font import Font
 from neoscore.core.glyph_info import GlyphInfo
-from neoscore.core.platforms import PlatformType, current_platform
 from neoscore.core.point import Point
 from neoscore.core.rect import Rect
 from neoscore.core.units import Unit, convert_all_to_unit
@@ -21,12 +20,6 @@ from neoscore.core.units import Unit, convert_all_to_unit
 class MusicFont(Font):
 
     """A SMuFL compliant music font"""
-
-    # Scaling factor which may or may not work for fonts other than Bravura.
-    if current_platform() == PlatformType.MAC:
-        __magic_em_scale = 4
-    else:
-        __magic_em_scale = 3
 
     def __init__(self, family_name: str, unit: Type[Unit]):
         """
@@ -41,7 +34,9 @@ class MusicFont(Font):
         except KeyError:
             raise MusicFontMetadataNotFoundError
         self._engraving_defaults = copy.deepcopy(self.metadata["engravingDefaults"])
-        self._em_size = self.unit(self.__magic_em_scale)
+        # 1 SMuFL em is the height of a 5-line staff. See:
+        # w3c.github.io/smufl/latest/specification/scoring-metrics-glyph-registration.html
+        self._em_size = self.unit(4)
         self._glyph_info_cache = {}
         # engraving_defaults is small, so eagerly converting it to self.unit is ok
         convert_all_to_unit(self._engraving_defaults, self.unit)

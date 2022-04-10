@@ -127,7 +127,7 @@ class AppInterface:
         if isinstance(image_path, pathlib.Path):
             image_path = str(image_path)
         dpm = AppInterface._dpi_to_dpm(dpi)
-        scale = dpm / Meter(1).base_value
+        scale = dpm / Mm(1000).base_value
         pix_width = int(rect.width.base_value * scale)
         pix_height = int(rect.height.base_value * scale)
 

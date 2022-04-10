@@ -57,7 +57,7 @@ class FontInterface:
                 self.italic,
             ),
         )
-        self.qt_object.setPointSizeF(self.size.base_value)
+        self.qt_object.setPixelSize(round(self.size.base_value))
         super().__setattr__("_qt_font_info_object", QtGui.QFontInfo(self.qt_object))
         super().__setattr__(
             "_qt_font_metrics_object",

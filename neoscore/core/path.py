@@ -310,9 +310,9 @@ class Path(PaintedObject):
         end_parent: Optional[Parent] = None,
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,
-        line_width: Unit = Mm(0.5),
-        arrow_head_width: Unit = Mm(1),
-        arrow_head_length: Unit = Mm(2),
+        line_width: Unit = Mm(0.35),
+        arrow_head_width: Unit = Mm(1.5),
+        arrow_head_length: Unit = Mm(2.5),
     ) -> Path:
         """Convenience for drawing an arrow
 
@@ -349,7 +349,7 @@ class Path(PaintedObject):
         control_points = [
             (0, line_width.base_value / 2),
             (-arrow_head_length.base_value, line_width.base_value / 2),
-            (-arrow_head_length.base_value, arrow_head_width.base_value),
+            (-arrow_head_length.base_value, arrow_head_width.base_value / 2),
         ]
         # The start pos (relative to the path) is always (0, 0), so dx
         # and dy are just the end position

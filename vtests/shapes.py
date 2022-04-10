@@ -6,6 +6,8 @@ from neoscore.common import *
 
 neoscore.setup()
 
+# TODO MEDIUM increase sizes here
+
 Path.ellipse(ORIGIN, None, Mm(3), Mm(3), "#00ff00")
 ellipse = Path.ellipse(
     (Mm(3), Mm(5)),

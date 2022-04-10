@@ -161,7 +161,7 @@ class GraphicUnit(Unit):
 class Inch(Unit):
     """An inch."""
 
-    CONVERSION_RATE = 300
+    CONVERSION_RATE = 72
 
 
 class Mm(Unit):
