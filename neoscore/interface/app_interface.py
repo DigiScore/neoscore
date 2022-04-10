@@ -144,6 +144,7 @@ class AppInterface:
 
         painter = QPainter()
         painter.begin(q_image)
+        painter.setRenderHint(QPainter.Antialiasing)
 
         target_rect = QRectF(q_image.rect())
         source_rect = rect_to_qt_rect_f(rect)
