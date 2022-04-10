@@ -107,8 +107,6 @@ class Chordrest(PositionedObject, StaffObject):
 
     ######## PUBLIC PROPERTIES ########
 
-    # TODO HIGH maybe rename `notes`?
-
     @property
     def notes(self) -> Optional[list[PitchDef | PitchAndGlyph]]:
         return self._notes

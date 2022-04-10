@@ -156,7 +156,7 @@ class AppInterface:
                 final_image = (
                     AppInterface._autocrop(q_image, q_color) if autocrop else q_image
                 )
-                success = q_image.save(image_path, quality=quality)
+                success = final_image.save(image_path, quality=quality)
                 if not success:
                     raise ImageExportError(
                         "Unknown error occurred when exporting image to " + image_path
@@ -229,12 +229,11 @@ class AppInterface:
         return int(dpi / _INCHES_PER_METER)
 
     @staticmethod
-    def _autocrop_image(q_image: QImage, q_color: QColor) -> QImage:
+    def _autocrop(q_image: QImage, q_color: QColor) -> QImage:
         """Automatically crop a qt image around the pixels not of a given color.
 
         Returns a newly cropped image; the original is left unmodified.
         """
-        _QT_MASK_IN_COLOR = 0
-        mask = q_image.createMaskFromColor(q_color.rgb(), _QT_MASK_IN_COLOR)
+        mask = q_image.createMaskFromColor(q_color.rgb())
         crop_rect = QRegion(QBitmap.fromImage(mask)).boundingRect()
         return q_image.copy(crop_rect)

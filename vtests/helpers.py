@@ -17,8 +17,12 @@ def render_vtest(name: str):
             image_path = pathlib.Path(tempfile.NamedTemporaryFile(suffix=".png").name)
         else:
             image_path = output_dir / f"{name}_image.png"
+        autocrop = "--autocrop" in sys.argv
         neoscore.render_image(
-            neoscore.document.pages[0].document_space_bounding_rect, image_path, dpi
+            neoscore.document.pages[0].document_space_bounding_rect,
+            image_path,
+            dpi,
+            autocrop=autocrop,
         )
     elif "--pdf" in sys.argv:
         # PDF export is currently broken

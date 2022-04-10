@@ -258,7 +258,6 @@ def render_pdf(pdf_path: str | pathlib.Path, dpi: int = 300):
                 page.document_space_bounding_rect,
                 img_path.name,
                 dpi,
-                bg_color="#ffffff",
                 preserve_alpha=False,
                 auto_start_thread=False,
             )
@@ -275,8 +274,6 @@ def render_image(
     image_path: str | pathlib.Path,
     dpi: int = 300,
     quality: int = -1,
-    # TODO HIGH remove this? isn't it redundant with background brush now?
-    bg_color: Optional[ColorDef] = None,
     autocrop: bool = False,
     preserve_alpha: bool = True,
     auto_start_thread: bool = True,
@@ -306,14 +303,10 @@ def render_image(
         quality: The quality of the output image for compressed
             image formats. Must be either `-1` (default compression) or
             between `0` (most compressed) and `100` (least compressed).
-        bg_color: The background color for the image.
-            Defaults to solid white. Use a Color with `alpha=0` for a fully
-            transparent background.
         autocrop: Whether or not to crop the output image to tightly
-            fit the contents of the frame. If true, the image will be cropped
-            such that all 4 edges have at least one pixel not of `bg_color`.
+            fit the contents of the frame.
         preserve_alpha: Whether to preserve the alpha channel. If false,
-            some non-transparent `bg_color` should be provided.
+            `neoscore.background_brush` will be used to flatten any transparency.
 
     Raises:
         InvalidImageFormatError: If the given `image_path` does not have a
@@ -337,11 +330,7 @@ def render_image(
         )
 
     rect = rect_from_def(rect)
-    if bg_color is None:
-        bg_color = Color("#ffffff")
-    else:
-        bg_color = Color.from_def(bg_color)
-
+    bg_color = background_brush.color
     document._render()
 
     return _app_interface.render_image(
