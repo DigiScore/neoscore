@@ -60,6 +60,13 @@ Chordrest(
     [("a", "accidentalFlatRepeatedSpaceStockhausen", 2)],
     (3, 16),
 )
+Chordrest(
+    Mm(25),
+    lowest_staff,
+    ["b", "c", ("g'", notehead_tables.DIAMOND.short)],
+    (1, 16),
+)
+
 
 font = Font("Lora", Mm(2), weight=100, italic=True)
 

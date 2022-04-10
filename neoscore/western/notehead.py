@@ -27,6 +27,7 @@ class Notehead(MusicText, StaffObject):
         duration: DurationDef,
         font: Optional[MusicFont] = None,
         notehead_table: NoteheadTable = notehead_tables.STANDARD,
+        glyph_override: Optional[str] = None,
     ):
         """
         Args:
@@ -41,17 +42,24 @@ class Notehead(MusicText, StaffObject):
                 the notehead. This is used to determine the glyph style.
             font: If provided, this overrides any font found in the ancestor chain.
             notehead_table: The set of noteheads to use according to `duration`.
+            glyph_override: A SMuFL glyph name. If given, this overrides
+                the glyph normally looked up with `duration` from `notehead_table`.
         """
         self._pitch = Pitch.from_def(pitch)
         self.duration = Duration.from_def(duration)
         self._notehead_table = notehead_table
+        self._glyph_override = glyph_override
         duration_display = cast(DurationDisplay, self.duration.display)
         # Use a temporary y-axis position before calculating it for real
+        if self._glyph_override:
+            glyph = self._glyph_override
+        else:
+            glyph = self._notehead_table.lookup_duration(duration_display.base_duration)
         MusicText.__init__(
             self,
             (pos_x, ZERO),
             parent,
-            self._notehead_table.lookup_duration(duration_display.base_duration),
+            glyph,
             font,
         )
         StaffObject.__init__(self, parent)
@@ -88,6 +96,22 @@ class Notehead(MusicText, StaffObject):
         if value.display is None:
             raise ValueError(f"{value} cannot be represented as a single note")
         self._duration = value
+
+    @property
+    def notehead_table(self) -> NoteheadTable:
+        return self._notehead_table
+
+    @notehead_table.setter
+    def notehead_table(self, value: NoteheadTable):
+        self._notehead_table = value
+
+    @property
+    def glyph_override(self) -> Optional[str]:
+        return self._glyph_override
+
+    @glyph_override.setter
+    def glyph_override(self, value: Optional[str]):
+        self._glyph_override = value
 
     @property
     def staff_pos(self) -> Unit:

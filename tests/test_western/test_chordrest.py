@@ -1,7 +1,10 @@
 from neoscore.core.directions import VerticalDirection
 from neoscore.core.flowable import Flowable
+from neoscore.core.music_char import MusicChar
 from neoscore.core.point import Point
 from neoscore.core.units import Mm
+from neoscore.western import notehead_tables
+from neoscore.western.accidental_type import AccidentalType
 from neoscore.western.chordrest import Chordrest
 from neoscore.western.clef import Clef
 from neoscore.western.duration import Duration
@@ -12,17 +15,25 @@ from tests.helpers import assert_almost_equal, render_scene
 
 from ..helpers import AppTest
 
-# TODO LOW test that glyphs are actually created successfully - this
-# failed to catch bugs in creating rhythm dots and flags, and probably
-# fails to catch other similar ones too.
-
 
 class TestChordrest(AppTest):
     def setUp(self):
         super().setUp()
         self.flowable = Flowable(Point(Mm(0), Mm(0)), None, Mm(10000), Mm(100))
         self.staff = Staff(Point(Mm(0), Mm(0)), self.flowable, Mm(100))
+        self.font = self.staff.music_font
         Clef(Mm(0), self.staff, "treble")
+
+    def test_notehead_glyph_overrides(self):
+        pitches = [
+            ("c", AccidentalType.SHARP, 3),
+            ("c'", notehead_tables.DIAMOND.short),
+        ]
+        chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
+        assert chord.noteheads[0].music_chars == [MusicChar(self.font, "noteheadBlack")]
+        assert chord.noteheads[1].music_chars == [
+            MusicChar(self.font, "noteheadDiamondBlack")
+        ]
 
     def test_ledger_line_positions(self):
         pitches = ["c'", "b'", "f'''"]

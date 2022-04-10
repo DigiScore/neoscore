@@ -119,3 +119,15 @@ class TestNotehead(AppTest):
         note = Notehead(Mm(10), self.staff, "c'", Duration(1, 4))
         note.pitch = "c"
         assert note.pitch.letter == "c"
+
+    def test_glyph_override(self):
+        note = Notehead(
+            Mm(10),
+            self.staff,
+            "d",
+            Duration(1, 4),
+            glyph_override="noteheadBlackParens",
+        )
+        assert note.music_chars == [
+            MusicChar(self.staff.music_font, "noteheadBlackParens")
+        ]
