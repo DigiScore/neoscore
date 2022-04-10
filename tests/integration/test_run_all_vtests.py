@@ -17,9 +17,13 @@ vtest_file_names = [
 @pytest.mark.parametrize("vtest_path", vtest_file_names)
 def test_vtests(vtest_path: str):
     subprocess.run(
-        ["python", vtest_path, "--image", "--tmp"], cwd=vtest_dir, check=True
+        ["python", vtest_path, "--image", "--tmp", "--automated"],
+        cwd=vtest_dir,
+        check=True,
     )
 
 
 def test_pdf_vtest():
-    subprocess.run(["python", "pdf.py", "--pdf", "--tmp"], cwd=vtest_dir, check=True)
+    subprocess.run(
+        ["python", "pdf.py", "--pdf", "--tmp", "--automated"], cwd=vtest_dir, check=True
+    )
