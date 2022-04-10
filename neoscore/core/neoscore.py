@@ -17,7 +17,7 @@ from neoscore.core.exceptions import InvalidImageFormatError
 from neoscore.core.paper import A4, Paper
 from neoscore.core.pen import Pen
 from neoscore.core.rect import RectDef, rect_from_def
-from neoscore.core.units import Mm
+from neoscore.core.units import GraphicUnit
 from neoscore.interface.app_interface import AppInterface
 
 if TYPE_CHECKING:
@@ -64,7 +64,7 @@ _FONTS_DIR = pathlib.Path(__file__).parent / ".." / "resources" / "fonts"
 # Text Font
 _LORA_DIR = _FONTS_DIR / "lora"
 _DEFAULT_LORA_FONT_FAMILY_NAME = "Lora"
-_DEFAULT_LORA_FONT_SIZE = Mm(2)
+_DEFAULT_LORA_FONT_SIZE = GraphicUnit(12)
 _LORA_REGULAR_PATH = _LORA_DIR / "Lora-Regular.ttf"
 _LORA_BOLD_PATH = _LORA_DIR / "Lora-Bold.ttf"
 _LORA_ITALIC_PATH = _LORA_DIR / "Lora-Italic.ttf"

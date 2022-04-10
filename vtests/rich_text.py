@@ -14,6 +14,6 @@ and <span style="color: red">with coloring</span>!
 </p>
 """
 
-rt = RichText((Mm(0), Mm(0)), None, text, Mm(20))
+rt = RichText((Mm(0), Mm(0)), None, text, Mm(80))
 
 render_vtest("rich_text")

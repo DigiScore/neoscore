@@ -12,7 +12,7 @@ neoscore.setup()
 
 flow = Flowable((Mm(0), Mm(0)), None, Mm(11000), Mm(30), Mm(10))
 
-counting_string = "    ".join(str(x) for x in range(600))
+counting_string = "    ".join(str(x) for x in range(200))
 counting_text = Text((Mm(0), Mm(0)), parent=flow, text=counting_string)
 counting_text._length = Mm(10000)
 
@@ -107,18 +107,6 @@ random_wiggles = [
 
 MusicText((Mm(25), staff.unit(2)), staff, random_wiggles)
 
-scaling_texts = []
-for i in range(0, 50, 2):
-    scale = 1 + (i / 10)
-    scaling_texts.append(
-        MusicText(
-            (Mm(290 + i), lowest_staff.unit(4)),
-            lowest_staff,
-            ["brace", ("gClef", 1)],
-            scale=scale,
-        )
-    )
-
 flowing_text = MusicText(
     (Mm(155), lower_staff.unit(3)), lower_staff, ["gClef"] * 130, scale=1
 )
@@ -128,14 +116,14 @@ explicit_path = Path((Mm(0), Mm(0)), parent=p, pen=pen)
 explicit_path.line_to(Mm(5000), Mm(100))
 
 
-text_on_first_page = Text((Mm(0), Mm(0)), None, "first page!")
+text_on_first_page = Text((Mm(0), Mm(-4)), None, "first page!")
 
 text_on_second_page = Text(
-    (Mm(0), Mm(0)), parent=neoscore.document.pages[1], text="second page!"
+    (Mm(0), Mm(-4)), parent=neoscore.document.pages[1], text="second page!"
 )
 
 text_on_third_page = Text(
-    (Mm(0), Mm(0)), parent=neoscore.document.pages[2], text="third page!"
+    (Mm(0), Mm(-4)), parent=neoscore.document.pages[2], text="third page!"
 )
 
 explicit_path_on_second_page = Path((Mm(0), Mm(0)), parent=text_on_second_page)
