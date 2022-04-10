@@ -107,6 +107,9 @@ class Chordrest(PositionedObject, StaffObject):
 
     ######## PUBLIC PROPERTIES ########
 
+    # TODO HIGH `notes` should be just a list, using empty list to mean rest.
+    # still allow `None` in setter, but internally always set as list
+
     @property
     def notes(self) -> Optional[list[PitchDef | PitchAndGlyph]]:
         return self._notes
@@ -114,6 +117,7 @@ class Chordrest(PositionedObject, StaffObject):
     @notes.setter
     def notes(self, value: Optional[list[PitchDef | PitchAndGlyph]]):
         self._notes = value
+        self.rebuild()
 
     @property
     def noteheads(self) -> list[Notehead]:
@@ -124,10 +128,6 @@ class Chordrest(PositionedObject, StaffObject):
     def rest(self) -> Optional[Rest]:
         """A Rest glyph, if no noteheads exist."""
         return self._rest
-
-    @rest.setter
-    def rest(self, value: Optional[Rest]):
-        self._rest = value
 
     @property
     def accidentals(self) -> list[Accidental]:
@@ -178,6 +178,8 @@ class Chordrest(PositionedObject, StaffObject):
         """
         return self._beam_hook_dir
 
+    # TODO HIGH rename `table`
+
     @property
     def notehead_table(self) -> NoteheadTable:
         return self._notehead_table
@@ -185,6 +187,7 @@ class Chordrest(PositionedObject, StaffObject):
     @notehead_table.setter
     def notehead_table(self, table: NoteheadTable):
         self._notehead_table = table
+        self.rebuild()
 
     @property
     def duration(self) -> Duration:
@@ -198,10 +201,13 @@ class Chordrest(PositionedObject, StaffObject):
 
     @duration.setter
     def duration(self, value: DurationDef):
+        rebuild_needed = hasattr(self, "_duration")
         value = Duration.from_def(value)
         if value.display is None:
             raise ValueError(f"{value} cannot be represented as a single note")
         self._duration = value
+        if rebuild_needed:
+            self.rebuild()
 
     @property
     def ledger_line_positions(self) -> list[Unit]:
@@ -360,6 +366,7 @@ class Chordrest(PositionedObject, StaffObject):
     @stem_direction.setter
     def stem_direction(self, value: Optional[VerticalDirection]):
         self._stem_direction_override = value
+        self.rebuild()
 
     @property
     def stem_height(self) -> Unit:
@@ -419,7 +426,7 @@ class Chordrest(PositionedObject, StaffObject):
                         glyph_override=glyph_override,
                     )
                 )
-            self.rest = None
+            self._rest = None
             self._position_noteheads_horizontally()
             self._create_accidentals()
             self._position_accidentals_horizontally()
@@ -428,7 +435,7 @@ class Chordrest(PositionedObject, StaffObject):
             self._create_flag()
         else:
             # TODO LOW support explicit rest Y positioning
-            self.rest = Rest(
+            self._rest = Rest(
                 Point(self.staff.unit(0), self.staff.unit(2)), self, self.duration
             )
         # Both rests and chords needs dots

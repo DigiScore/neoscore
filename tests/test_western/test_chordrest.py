@@ -35,6 +35,30 @@ class TestChordrest(AppTest):
             MusicChar(self.font, "noteheadDiamondBlack")
         ]
 
+    def test_notes_setter_triggers_rebuild(self):
+        chord = Chordrest(Mm(1), self.staff, [], Duration(1, 4))
+        assert chord.notes == []
+        assert len(chord.noteheads) == 0
+        assert chord.rest is not None
+        chord.notes = ["c"]
+        assert chord.notes == ["c"]
+        assert len(chord.noteheads) == 1
+        assert chord.rest is None
+
+    def test_notehead_table_setter_triggers_rebuild(self):
+        chord = Chordrest(Mm(1), self.staff, ["c"], Duration(1, 4))
+        assert chord.noteheads[0].music_chars == [MusicChar(self.font, "noteheadBlack")]
+        chord.notehead_table = notehead_tables.DIAMOND
+        assert chord.noteheads[0].music_chars == [
+            MusicChar(self.font, "noteheadDiamondBlack")
+        ]
+
+    def test_duration_setter_triggers_rebuild(self):
+        chord = Chordrest(Mm(1), self.staff, ["c"], Duration(1, 4))
+        assert chord.noteheads[0].music_chars == [MusicChar(self.font, "noteheadBlack")]
+        chord.duration = (1, 1)
+        assert chord.noteheads[0].music_chars == [MusicChar(self.font, "noteheadWhole")]
+
     def test_invisible_notehead(self):
         chord = Chordrest(
             Mm(1),
