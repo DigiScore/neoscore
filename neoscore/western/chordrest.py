@@ -19,8 +19,6 @@ from neoscore.western.staff import Staff
 from neoscore.western.staff_object import StaffObject
 from neoscore.western.stem import Stem
 
-# TODO MEDIUM this is not responsive to post-init modification.
-
 # TODO MEDIUM align noteheads and stems properly using glyph anchor metadata
 # see https://w3c.github.io/smufl/latest/specification/glyph-registration-notes-flags.html
 # do this once #2 (glyph info refactor) is finished
@@ -95,7 +93,7 @@ class Chordrest(PositionedObject, StaffObject):
         self._accidentals = []
         self._ledgers = []
         self._dots = []
-        self._notes = notes
+        self._notes = [] if notes is None else notes
         self._stem = None
         self._flag = None
         self._rest = None
@@ -107,16 +105,13 @@ class Chordrest(PositionedObject, StaffObject):
 
     ######## PUBLIC PROPERTIES ########
 
-    # TODO HIGH `notes` should be just a list, using empty list to mean rest.
-    # still allow `None` in setter, but internally always set as list
-
     @property
-    def notes(self) -> Optional[list[PitchDef | PitchAndGlyph]]:
+    def notes(self) -> list[PitchDef | PitchAndGlyph]:
         return self._notes
 
     @notes.setter
     def notes(self, value: Optional[list[PitchDef | PitchAndGlyph]]):
-        self._notes = value
+        self._notes = [] if value is None else value
         self.rebuild()
 
     @property
@@ -178,8 +173,6 @@ class Chordrest(PositionedObject, StaffObject):
         """
         return self._beam_hook_dir
 
-    # TODO HIGH rename `table`
-
     @property
     def table(self) -> NoteheadTable:
         return self._table
@@ -208,6 +201,10 @@ class Chordrest(PositionedObject, StaffObject):
         self._duration = value
         if rebuild_needed:
             self.rebuild()
+
+    # Note that most/all of these derived properties could be computed ahead of time or
+    # cached, they would just need to be reset on `rebuild()` calls.
+    # Something to consider if these end up being performance hotspots.
 
     @property
     def ledger_line_positions(self) -> list[Unit]:

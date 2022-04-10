@@ -53,6 +53,10 @@ class TestChordrest(AppTest):
             MusicChar(self.font, "noteheadDiamondBlack")
         ]
 
+    def test_notes_none_converted_to_empty_list(self):
+        chord = Chordrest(Mm(1), self.staff, None, Duration(1, 4))
+        assert chord.notes == []
+
     def test_duration_setter_triggers_rebuild(self):
         chord = Chordrest(Mm(1), self.staff, ["c"], Duration(1, 4))
         assert chord.noteheads[0].music_chars == [MusicChar(self.font, "noteheadBlack")]
