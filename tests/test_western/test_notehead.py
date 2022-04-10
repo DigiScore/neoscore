@@ -95,9 +95,7 @@ class TestNotehead(AppTest):
         table: Optional[notehead_tables.NoteheadTable] = None,
     ):
         if table:
-            notehead = Notehead(
-                Mm(10), self.staff, "c'", duration, notehead_table=table
-            )
+            notehead = Notehead(Mm(10), self.staff, "c'", duration, table=table)
         else:
             notehead = Notehead(Mm(10), self.staff, "c'", duration)
         assert notehead.music_chars == [MusicChar(self.staff.music_font, glyph_name)]

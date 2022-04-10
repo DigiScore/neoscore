@@ -66,7 +66,7 @@ class Chordrest(PositionedObject, StaffObject):
         stem_direction: Optional[VerticalDirection] = None,
         beam_break_depth: Optional[int] = None,
         beam_hook_dir: Optional[HorizontalDirection] = None,
-        notehead_table: NoteheadTable = notehead_tables.STANDARD,
+        table: NoteheadTable = notehead_tables.STANDARD,
     ):
         """
         Args:
@@ -77,7 +77,7 @@ class Chordrest(PositionedObject, StaffObject):
                 be a list of pitch string shorthands (see `Pitch.from_str`). Pitches
                 with extended accidentals can be given by passing fully constructed
                 `Pitch` objects. Individual notehead glyphs (by default taken from the
-                given `notehead_table`) can be overridden by passing a tuple of a pitch
+                given `table`) can be overridden by passing a tuple of a pitch
                 and a SMuFL glyph name string.
             duration: The duration of the Chordrest
             stem_direction: An optional stem direction override
@@ -86,7 +86,7 @@ class Chordrest(PositionedObject, StaffObject):
                 the furthest-out notehead.
             beam_break_depth: Break depth used if in a `BeamGroup`.
             beam_hook_dir: Beamlet hook direction used in a `BeamGroup`.
-            notehead_table: The set of noteheads to use according to `duration`.
+            table: The set of noteheads to use according to `duration`.
         """
         StaffObject.__init__(self, staff)
         PositionedObject.__init__(self, Point(pos_x, ZERO), staff)
@@ -102,7 +102,7 @@ class Chordrest(PositionedObject, StaffObject):
         self._stem_direction_override = stem_direction
         self._beam_break_depth = beam_break_depth
         self._beam_hook_dir = beam_hook_dir
-        self._notehead_table = notehead_table
+        self._table = table
         self.rebuild()
 
     ######## PUBLIC PROPERTIES ########
@@ -181,12 +181,12 @@ class Chordrest(PositionedObject, StaffObject):
     # TODO HIGH rename `table`
 
     @property
-    def notehead_table(self) -> NoteheadTable:
-        return self._notehead_table
+    def table(self) -> NoteheadTable:
+        return self._table
 
-    @notehead_table.setter
-    def notehead_table(self, table: NoteheadTable):
-        self._notehead_table = table
+    @table.setter
+    def table(self, table: NoteheadTable):
+        self._table = table
         self.rebuild()
 
     @property
@@ -422,7 +422,7 @@ class Chordrest(PositionedObject, StaffObject):
                         self,
                         pitch,
                         self.duration,
-                        notehead_table=self.notehead_table,
+                        table=self.table,
                         glyph_override=glyph_override,
                     )
                 )

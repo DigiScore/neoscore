@@ -78,10 +78,10 @@ trill = RepeatingMusicTextLine(
 table = notehead_tables.INVISIBLE
 BeamGroup(
     [
-        Chordrest(Mm(50), lowest_staff, ["c'"], (1, 32), notehead_table=table),
-        Chordrest(Mm(53), lowest_staff, ["ab"], (1, 32), notehead_table=table),
-        Chordrest(Mm(55), lowest_staff, ["g"], (3, 16), notehead_table=table),
-        Chordrest(Mm(57), lowest_staff, ["d"], (1, 64), notehead_table=table),
+        Chordrest(Mm(50), lowest_staff, ["c'"], (1, 32), table=table),
+        Chordrest(Mm(53), lowest_staff, ["ab"], (1, 32), table=table),
+        Chordrest(Mm(55), lowest_staff, ["g"], (3, 16), table=table),
+        Chordrest(Mm(57), lowest_staff, ["d"], (1, 64), table=table),
     ]
 )
 

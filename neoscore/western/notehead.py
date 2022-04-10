@@ -26,7 +26,7 @@ class Notehead(MusicText, StaffObject):
         pitch: PitchDef,
         duration: DurationDef,
         font: Optional[MusicFont] = None,
-        notehead_table: NoteheadTable = notehead_tables.STANDARD,
+        table: NoteheadTable = notehead_tables.STANDARD,
         glyph_override: Optional[str] = None,
     ):
         """
@@ -41,20 +41,20 @@ class Notehead(MusicText, StaffObject):
             duration: The logical duration of
                 the notehead. This is used to determine the glyph style.
             font: If provided, this overrides any font found in the ancestor chain.
-            notehead_table: The set of noteheads to use according to `duration`.
+            table: The set of noteheads to use according to `duration`.
             glyph_override: A SMuFL glyph name. If given, this overrides
-                the glyph normally looked up with `duration` from `notehead_table`.
+                the glyph normally looked up with `duration` from `table`.
         """
         self._pitch = Pitch.from_def(pitch)
         self.duration = Duration.from_def(duration)
-        self._notehead_table = notehead_table
+        self._table = table
         self._glyph_override = glyph_override
         duration_display = cast(DurationDisplay, self.duration.display)
         # Use a temporary y-axis position before calculating it for real
         if self._glyph_override:
             glyph = self._glyph_override
         else:
-            glyph = self._notehead_table.lookup_duration(duration_display.base_duration)
+            glyph = self._table.lookup_duration(duration_display.base_duration)
         MusicText.__init__(
             self,
             (pos_x, ZERO),
@@ -98,12 +98,12 @@ class Notehead(MusicText, StaffObject):
         self._duration = value
 
     @property
-    def notehead_table(self) -> NoteheadTable:
-        return self._notehead_table
+    def table(self) -> NoteheadTable:
+        return self._table
 
-    @notehead_table.setter
-    def notehead_table(self, value: NoteheadTable):
-        self._notehead_table = value
+    @table.setter
+    def table(self, value: NoteheadTable):
+        self._table = value
 
     @property
     def glyph_override(self) -> Optional[str]:
