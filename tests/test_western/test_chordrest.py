@@ -35,6 +35,16 @@ class TestChordrest(AppTest):
             MusicChar(self.font, "noteheadDiamondBlack")
         ]
 
+    def test_invisible_notehead(self):
+        chord = Chordrest(
+            Mm(1),
+            self.staff,
+            ["c"],
+            Duration(1, 4),
+            notehead_table=notehead_tables.INVISIBLE,
+        )
+        assert chord.noteheads[0].music_chars == []
+
     def test_ledger_line_positions(self):
         pitches = ["c'", "b'", "f'''"]
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))

@@ -60,11 +60,29 @@ Chordrest(
     [("a", "accidentalFlatRepeatedSpaceStockhausen", 2)],
     (3, 16),
 )
-Chordrest(
+c = Chordrest(
     Mm(25),
     lowest_staff,
     ["b", "c", ("g'", notehead_tables.DIAMOND.short)],
     (1, 16),
+)
+trill = RepeatingMusicTextLine(
+    (lowest_staff.unit(3), lowest_staff.unit(-0.5)),
+    c,
+    (lowest_staff.unit(20), lowest_staff.unit(-2)),
+    None,
+    "wiggleArpeggiatoUp",
+    "wiggleArpeggiatoUpArrow",
+)
+
+table = notehead_tables.INVISIBLE
+BeamGroup(
+    [
+        Chordrest(Mm(50), lowest_staff, ["c'"], (1, 32), notehead_table=table),
+        Chordrest(Mm(53), lowest_staff, ["ab"], (1, 32), notehead_table=table),
+        Chordrest(Mm(55), lowest_staff, ["g"], (3, 16), notehead_table=table),
+        Chordrest(Mm(57), lowest_staff, ["d"], (1, 64), notehead_table=table),
+    ]
 )
 
 
@@ -109,14 +127,6 @@ pen = Pen(thickness=Mm(0.2), pattern=PenPattern.DASHDOTDOT)
 explicit_path = Path((Mm(0), Mm(0)), parent=p, pen=pen)
 explicit_path.line_to(Mm(5000), Mm(100))
 
-trill = RepeatingMusicTextLine(
-    (lowest_staff.unit(30), lowest_staff.unit(-0.5)),
-    lowest_staff,
-    (lowest_staff.unit(20), lowest_staff.unit(-2)),
-    None,
-    "wiggleArpeggiatoUp",
-    "wiggleArpeggiatoUpArrow",
-)
 
 text_on_first_page = Text((Mm(0), Mm(0)), None, "first page!")
 
