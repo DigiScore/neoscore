@@ -269,7 +269,7 @@ class TestResolveBeamGroupLine(AppTest):
         Clef(Mm(0), self.staff, "treble")
 
     def assert_lines_eq(self, left: _BeamGroupLine, right: _BeamGroupLine):
-        assert_almost_equal(left.start_y, right.start_y)
+        assert_almost_equal(left.start_y, right.start_y, places=1)
         self.assertAlmostEqual(left.slope, right.slope)
 
     def test_beam_group_line_flat_above(self):
@@ -324,7 +324,7 @@ class TestResolveBeamGroupLine(AppTest):
         ]
         self.assert_lines_eq(
             _resolve_beam_group_line(crs, VerticalDirection.UP, self.font),
-            _BeamGroupLine(Mm(-1.75), 0.0999999999),
+            _BeamGroupLine(Mm(-3.063), 0.175),
         )
 
     def test_beam_group_line_slanted_upward_with_closer_notes(self):
@@ -335,7 +335,7 @@ class TestResolveBeamGroupLine(AppTest):
         ]
         self.assert_lines_eq(
             _resolve_beam_group_line(crs, VerticalDirection.UP, self.font),
-            _BeamGroupLine(Mm(-3.75), 0.049999999),
+            _BeamGroupLine(Mm(-6.562), 0.0875),
         )
 
     def test_beam_group_line_slanted_downward(self):
@@ -345,7 +345,7 @@ class TestResolveBeamGroupLine(AppTest):
         ]
         self.assert_lines_eq(
             _resolve_beam_group_line(crs, VerticalDirection.DOWN, self.font),
-            _BeamGroupLine(Mm(7.25), -0.0999999999),
+            _BeamGroupLine(Mm(12.688), -0.175),
         )
 
     def test_beam_group_line_slanted_downward_with_closer_notes(self):
@@ -356,7 +356,7 @@ class TestResolveBeamGroupLine(AppTest):
         ]
         self.assert_lines_eq(
             _resolve_beam_group_line(crs, VerticalDirection.DOWN, self.font),
-            _BeamGroupLine(Mm(15.75), -0.04999999),
+            _BeamGroupLine(Mm(27.562), -0.0875),
         )
 
 

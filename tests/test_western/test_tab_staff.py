@@ -26,7 +26,7 @@ class TestTabStaff(AppTest):
 
     def test_line_spacing_default(self):
         staff = TabStaff(ORIGIN, None, Mm(100))
-        assert staff.line_spacing == Mm(1.5)
+        assert staff.line_spacing == Mm(2.5)
 
     def test_line_spacing_override(self):
         staff = TabStaff(ORIGIN, None, Mm(100), Mm(2))

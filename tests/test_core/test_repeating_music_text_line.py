@@ -44,7 +44,7 @@ class TestRepeatingMusicTextLine(AppTest):
             "wiggleArpeggiatoUp",
             "wiggleArpeggiatoUpArrow",
         )
-        assert len(line.music_chars) == 6
+        assert len(line.music_chars) == 3
         for char in line.music_chars[:-1]:
             assert char == MusicChar(self.staff.music_font, "wiggleArpeggiatoUp")
         assert line.music_chars[-1] == MusicChar(

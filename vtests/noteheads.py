@@ -2,11 +2,11 @@ from helpers import render_vtest
 
 from neoscore.common import *
 
-neoscore.setup()
+neoscore.setup(paper=Paper(Inch(8.5), Inch(40), Inch(1), Inch(1), Inch(1), Inch(1)))
 
 
 for (i, table) in enumerate(notehead_tables.ALL_TABLES):
-    staff = Staff((Mm(0), Mm(i * 10)), None, Mm(100))
+    staff = Staff((Mm(0), Mm(i * 18)), None, Mm(100))
     unit = staff.unit
     clef = Clef(unit(0), staff, "treble")
     KeySignature(clef.bounding_rect.width + unit(0.5), staff, "c_major")

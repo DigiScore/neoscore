@@ -14,8 +14,6 @@ and <span style="color: red">with coloring</span>!
 </p>
 """
 
-rt = RichText(
-    (Mm(0), Mm(0)), None, text, Mm(20), neoscore.default_font.modified(size=Mm(1))
-)
+rt = RichText((Mm(0), Mm(0)), None, text, Mm(20))
 
 render_vtest("rich_text")

@@ -30,9 +30,7 @@ class Staff(MusicPath):
         pos: PointDef,
         parent: Optional[Parent],
         length: Unit,
-        # TODO HIGH increase to 1.75 (what Musescore uses as a default)
-        # Adjust TabStaff too
-        line_spacing: Unit = Mm(1),
+        line_spacing: Unit = Mm(1.75),
         line_count: int = 5,
         music_font_family: str = "Bravura",
         pen: Optional[Pen] = None,

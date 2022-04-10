@@ -6,7 +6,7 @@ neoscore.setup()
 
 flowable = Flowable((Mm(0), Mm(0)), None, Mm(500), Mm(30), Mm(10))
 
-staff = Staff((Mm(0), Mm(0)), flowable, Mm(500), Mm(1))
+staff = Staff((Mm(0), Mm(0)), flowable, Mm(500))
 unit = staff.unit
 clef = Clef(unit(0), staff, "treble")
 KeySignature(clef.bounding_rect.width + unit(0.5), staff, "g_major")

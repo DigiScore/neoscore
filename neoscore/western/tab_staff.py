@@ -33,7 +33,7 @@ class TabStaff(MusicPath):
         pos: PointDef,
         parent: Optional[Parent],
         length: Unit,
-        line_spacing: Unit = Mm(1.5),
+        line_spacing: Unit = Mm(2.5),
         line_count: int = 6,
         music_font: Optional[MusicFont] = None,
         pen: Optional[Pen] = None,

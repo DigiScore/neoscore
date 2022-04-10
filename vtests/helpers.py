@@ -8,6 +8,9 @@ from neoscore.core import neoscore
 output_dir = pathlib.Path(__file__).parent / "output"
 
 
+# TODO HIGH lower export resolution when running in automated tests
+
+
 def render_vtest(name: str):
     if not output_dir.exists():
         os.mkdir(output_dir)
