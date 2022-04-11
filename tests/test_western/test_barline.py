@@ -5,7 +5,7 @@ from neoscore.core.point import Point
 from neoscore.core.units import Mm
 from neoscore.western.barline import Barline
 from neoscore.western.staff import Staff
-from neoscore.core.bar_line_style import BarLineStyle
+from neoscore.western.barline_style import BarLineStyle
 
 from ..helpers import AppTest
 
@@ -51,7 +51,7 @@ class TestBarline(AppTest):
         assert barline.pen == Pen("#ff0000")
 
     def test_bar_line_style_enum(self):
-        assert BarLineStyle.SINGLE.value == 0
-        assert BarLineStyle.DASHED.value == 3
-        assert BarLineStyle.THIN_DOUBLE.value != 1
-
+        barline = Barline(Mm(15),
+                          [self.staff_1, self.staff_2],
+                          style=BarLineStyle.SINGLE)
+        assert barline.style["pattern"] == 1
