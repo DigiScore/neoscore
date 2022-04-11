@@ -1,16 +1,15 @@
-import os
-import sys
+from helpers import render_vtest
 
 from neoscore.common import *
 
 neoscore.setup()
 
-expressive_font = Font("Lora", Mm(1.5), italic=True)
+expressive_font = Font("Lora", Mm(4), italic=True)
 
 flowable = Flowable((Mm(0), Mm(0)), None, Mm(500), Mm(30), Mm(10))
 
-upper_staff = Staff((Mm(0), Mm(0)), flowable, Mm(500), Mm(1))
-lower_staff = Staff((Mm(0), Mm(12)), flowable, Mm(500), Mm(1))
+upper_staff = Staff((Mm(0), Mm(0)), flowable, Mm(500))
+lower_staff = Staff((Mm(0), Mm(20)), flowable, Mm(500))
 Brace(Mm(0), [upper_staff, lower_staff])
 
 # We can use the same unit in the upper and lower staves since they
@@ -39,7 +38,7 @@ MusicText((unit(-1), unit(-2)), a, "ornamentMordent")
 Chordrest(unit(19), upper_staff, ["b''"], Duration(1, 16))
 
 # Lower staff notes - upper voice
-Rest(Point(unit(10), unit(-3)), lower_staff, Duration(1, 4))
+Chordrest(unit(10), lower_staff, None, (1, 4), unit(-3))
 Chordrest(
     unit(16), lower_staff, ["d'"], Duration(1, 4), stem_direction=VerticalDirection.UP
 )
@@ -57,12 +56,4 @@ Chordrest(unit(8), lower_staff, ["g"], Duration(3, 4))
 
 Barline(unit(22), [upper_staff, lower_staff])
 
-if "--image" in sys.argv:
-    image_path = os.path.join(os.path.dirname(__file__), "output", "goldberg.png")
-    neoscore.render_image((Mm(0), Mm(0), Inch(2), Inch(2)), image_path, autocrop=True)
-elif "--pdf" in sys.argv:
-    # PDF export is currently broken
-    pdf_path = os.path.join(os.path.dirname(__file__), "output", "goldberg.pdf")
-    neoscore.render_pdf(pdf_path)
-else:
-    neoscore.show()
+render_vtest("goldberg")

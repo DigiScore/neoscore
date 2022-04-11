@@ -26,7 +26,8 @@ class Notehead(MusicText, StaffObject):
         pitch: PitchDef,
         duration: DurationDef,
         font: Optional[MusicFont] = None,
-        notehead_table: NoteheadTable = notehead_tables.STANDARD,
+        table: NoteheadTable = notehead_tables.STANDARD,
+        glyph_override: Optional[str] = None,
     ):
         """
         Args:
@@ -40,24 +41,23 @@ class Notehead(MusicText, StaffObject):
             duration: The logical duration of
                 the notehead. This is used to determine the glyph style.
             font: If provided, this overrides any font found in the ancestor chain.
-            notehead_table: The set of noteheads to use according to `duration`.
+            table: The set of noteheads to use according to `duration`.
+            glyph_override: A SMuFL glyph name. If given, this overrides
+                the glyph normally looked up with `duration` from `table`.
         """
-        self._pitch = Pitch.from_def(pitch)
-        self.duration = Duration.from_def(duration)
-        self._notehead_table = notehead_table
-        duration_display = cast(DurationDisplay, self.duration.display)
-        # Use a temporary y-axis position before calculating it for real
+        self.pitch = pitch
+        self.duration = duration
+        self._table = table
+        self._glyph_override = glyph_override
         MusicText.__init__(
             self,
             (pos_x, ZERO),
             parent,
-            self._notehead_table.lookup_duration(duration_display.base_duration),
+            "",
             font,
         )
         StaffObject.__init__(self, parent)
-        self.y = self.staff.unit(
-            self.staff_pos - map_between(self.staff, self.parent).y
-        )
+        self._update_music_text()
 
     ######## PUBLIC PROPERTIES ########
 
@@ -66,8 +66,6 @@ class Notehead(MusicText, StaffObject):
         """The visual width of the Notehead"""
         return self.bounding_rect.width
 
-    # TODO MEDIUM make these setter update glyph / pos
-
     @property
     def pitch(self) -> Pitch:
         """The logical pitch."""
@@ -75,7 +73,10 @@ class Notehead(MusicText, StaffObject):
 
     @pitch.setter
     def pitch(self, value: PitchDef):
+        rebuild_needed = hasattr(self, "_pitch")
         self._pitch = Pitch.from_def(value)
+        if rebuild_needed:
+            self._update_music_text()
 
     @property
     def duration(self) -> Duration:
@@ -84,10 +85,31 @@ class Notehead(MusicText, StaffObject):
 
     @duration.setter
     def duration(self, value: DurationDef):
+        rebuild_needed = hasattr(self, "_duration")
         value = Duration.from_def(value)
         if value.display is None:
             raise ValueError(f"{value} cannot be represented as a single note")
         self._duration = value
+        if rebuild_needed:
+            self._update_music_text()
+
+    @property
+    def table(self) -> NoteheadTable:
+        return self._table
+
+    @table.setter
+    def table(self, value: NoteheadTable):
+        self._table = value
+        self._update_music_text()
+
+    @property
+    def glyph_override(self) -> Optional[str]:
+        return self._glyph_override
+
+    @glyph_override.setter
+    def glyph_override(self, value: Optional[str]):
+        self._glyph_override = value
+        self._update_music_text()
 
     @property
     def staff_pos(self) -> Unit:
@@ -99,3 +121,14 @@ class Notehead(MusicText, StaffObject):
         return self.staff.middle_c_at(self.pos_x_in_staff) + self.staff.unit(
             self.pitch.staff_pos_from_middle_c
         )
+
+    ######## PRIVATE METHODS ########
+
+    def _update_music_text(self):
+        duration_display = cast(DurationDisplay, self.duration.display)
+        if self._glyph_override:
+            glyph = self._glyph_override
+        else:
+            glyph = self._table.lookup_duration(duration_display.base_duration)
+        self.text = glyph
+        self.y = self.staff_pos - map_between(self.staff, self.parent).y

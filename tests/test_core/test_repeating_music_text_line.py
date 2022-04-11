@@ -30,7 +30,7 @@ class TestRepeatingMusicTextLine(AppTest):
             right_parent,
             char,
         )
-        expected_reps = int(Mm(12) / single_repetition_width)
+        expected_reps = round(Mm(12) / single_repetition_width)
         assert len(line.music_chars) == expected_reps
         self.assertAlmostEqual(line.rotation, -9.462322208025618)
         assert line.rotation == line.angle
@@ -44,7 +44,7 @@ class TestRepeatingMusicTextLine(AppTest):
             "wiggleArpeggiatoUp",
             "wiggleArpeggiatoUpArrow",
         )
-        assert len(line.music_chars) in [7, 8]  # exact value flakes
+        assert len(line.music_chars) == 3
         for char in line.music_chars[:-1]:
             assert char == MusicChar(self.staff.music_font, "wiggleArpeggiatoUp")
         assert line.music_chars[-1] == MusicChar(

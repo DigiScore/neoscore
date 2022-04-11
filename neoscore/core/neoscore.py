@@ -2,24 +2,28 @@ from __future__ import annotations
 
 import json
 import os
+import pathlib
+import tempfile
+import threading
 from time import time
 from typing import TYPE_CHECKING, Callable, Optional
 from warnings import warn
 
-from neoscore import constants
-from neoscore.core import file_system
+import img2pdf  # type: ignore
+
 from neoscore.core.brush import Brush, BrushDef
 from neoscore.core.color import Color, ColorDef
 from neoscore.core.exceptions import InvalidImageFormatError
 from neoscore.core.paper import A4, Paper
 from neoscore.core.pen import Pen
 from neoscore.core.rect import RectDef, rect_from_def
+from neoscore.core.units import GraphicUnit
 from neoscore.interface.app_interface import AppInterface
-from neoscore.interface.qt import image_utils
 
 if TYPE_CHECKING:
     from neoscore.core.document import Document
     from neoscore.core.font import Font
+
 
 """The global state of the application."""
 
@@ -42,8 +46,37 @@ background_brush = Brush("#ffffff")
 Defaults to white. Set this using `set_background_brush`.
 """
 
+_supported_image_extensions = {
+    ".bmp",
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".pbm",
+    ".pgm",
+    ".ppm",
+    ".xbm",
+    ".xpm",
+}
 
-def setup(initial_paper: Paper = A4):
+# Directories
+_FONTS_DIR = pathlib.Path(__file__).parent / ".." / "resources" / "fonts"
+
+# Text Font
+_LORA_DIR = _FONTS_DIR / "lora"
+_DEFAULT_LORA_FONT_FAMILY_NAME = "Lora"
+_DEFAULT_LORA_FONT_SIZE = GraphicUnit(12)
+_LORA_REGULAR_PATH = _LORA_DIR / "Lora-Regular.ttf"
+_LORA_BOLD_PATH = _LORA_DIR / "Lora-Bold.ttf"
+_LORA_ITALIC_PATH = _LORA_DIR / "Lora-Italic.ttf"
+_LORA_BOLD_ITALIC_PATH = _LORA_DIR / "Lora-BoldItalic.ttf"
+
+# Music Text Font
+_BRAVURA_DIR = _FONTS_DIR / "bravura"
+_BRAVURA_PATH = _BRAVURA_DIR / "Bravura.otf"
+_BRAVURA_METADATA_PATH = _BRAVURA_DIR / "bravura_metadata.json"
+
+
+def setup(paper: Paper = A4):
     """Initialize the application and set up the global state.
 
     This initializes the global `Document` and a back-end
@@ -53,8 +86,7 @@ def setup(initial_paper: Paper = A4):
     calling this multiple times in one script will cause unexpected behavior.
 
     Args:
-        initial_paper (Paper): The paper to use in the document.
-            If `None`, this defaults to `constants.DEFAULT_PAPER_TYPE`
+        paper (Paper): The paper to use in the document.
 
     Returns: None
     """
@@ -66,13 +98,13 @@ def setup(initial_paper: Paper = A4):
     from neoscore.core.document import Document
     from neoscore.core.font import Font
 
-    document = Document(initial_paper)
+    document = Document(paper)
     _app_interface = AppInterface(
         document, _repl_refresh_func, background_brush.interface
     )
     _register_default_fonts()
     default_font = Font(
-        constants.DEFAULT_TEXT_FONT_NAME, constants.DEFAULT_TEXT_FONT_SIZE, 1, False
+        _DEFAULT_LORA_FONT_FAMILY_NAME, _DEFAULT_LORA_FONT_SIZE, 1, False
     )
 
 
@@ -163,7 +195,7 @@ The function should accept one argument - the current time in seconds.
 """
 
 
-def show(refresh_func: Optional[RefreshFunc] = None):
+def show(refresh_func: Optional[RefreshFunc] = None, display_page_geometry=True):
     """Show a preview of the score in a GUI window.
 
     An update function can be provided (or otherwise set with
@@ -178,6 +210,8 @@ def show(refresh_func: Optional[RefreshFunc] = None):
     global document
     global _app_interface
     _app_interface._clear_scene()
+    if display_page_geometry:
+        _display_page_geometry()
     document._render()
     if refresh_func:
         set_refresh_func(refresh_func)
@@ -195,29 +229,55 @@ def _clear_interfaces():
                 interfaces.clear()
 
 
-def render_pdf(path: str):
+def _display_page_geometry():
+    global document
+    global background_brush
+    for page in document.pages:
+        page.display_geometry(background_brush)
+
+
+def render_pdf(pdf_path: str | pathlib.Path, dpi: int = 300):
     """Render the score as a pdf.
 
     Args:
-        path (str): The output score path.
-            If a relative path is provided, it will be
-            relative to the current working directory.
+        pdf_path (str): The output pdf path
+        dpi: Resolution to render with
     """
     global document
     global _app_interface
     _clear_interfaces()
     document._render()
-    _app_interface.render_pdf((page.page_index for page in document.pages), path)
+    # Render all pages to temp files
+    page_imgs = []
+    render_threads = []
+    for page in document.pages:
+        img_path = tempfile.NamedTemporaryFile(suffix=".png")
+        page_imgs.append(img_path)
+        render_threads.append(
+            render_image(
+                page.document_space_bounding_rect,
+                img_path.name,
+                dpi,
+                preserve_alpha=False,
+                auto_start_thread=False,
+            )
+        )
+    for thread in render_threads:
+        thread.join()
+    # Assemble into PDF and write it to file path
+    with open(pdf_path, "wb") as f:
+        f.write(img2pdf.convert(page_imgs))
 
 
 def render_image(
     rect: RectDef,
-    image_path: str,
-    dpi: int = 600,
+    image_path: str | pathlib.Path,
+    dpi: int = 300,
     quality: int = -1,
-    bg_color: Optional[ColorDef] = None,
     autocrop: bool = False,
-):
+    preserve_alpha: bool = True,
+    auto_start_thread: bool = True,
+) -> threading.Thread:
     """Render a section of the document to an image.
 
     The following file extensions are supported:
@@ -230,6 +290,11 @@ def render_image(
         * `.xbm`
         * `.xpm`
 
+    This renders on the main thread but autocrops and saves the image
+    on a spawned thread which is returned to allow efficient rendering
+    of many images in parallel. `render_image` will block if too many
+    render threads are already running.
+
     Args:
         rect: The part of the document to render, in document coordinates.
         image_path: The path to the output image.
@@ -238,20 +303,17 @@ def render_image(
         quality: The quality of the output image for compressed
             image formats. Must be either `-1` (default compression) or
             between `0` (most compressed) and `100` (least compressed).
-        bg_color: The background color for the image.
-            Defaults to solid white. Use a Color with `alpha=0` for a fully
-            transparent background.
         autocrop: Whether or not to crop the output image to tightly
-            fit the contents of the frame. If true, the image will be cropped
-            such that all 4 edges have at least one pixel not of `bg_color`.
+            fit the contents of the frame.
+        preserve_alpha: Whether to preserve the alpha channel. If false,
+            `neoscore.background_brush` will be used to flatten any transparency.
 
     Raises:
-        FileNotFoundError: If the given `image_path` does not point to a valid
-            location for a new file.
         InvalidImageFormatError: If the given `image_path` does not have a
             supported image format file extension.
         ImageExportError: If low level Qt image export fails for
             unknown reasons.
+
     """
     global document
     global _app_interface
@@ -262,36 +324,41 @@ def render_image(
         warn("render_image quality {} invalid; using default.".format(quality))
         quality = -1
 
-    if not file_system.is_valid_file_path(image_path):
-        raise FileNotFoundError("Invalid image_path: " + image_path)
-
-    if not os.path.splitext(image_path)[1] in image_utils.supported_formats:
+    if not os.path.splitext(image_path)[1] in _supported_image_extensions:
         raise InvalidImageFormatError(
             "image_path {} is not in a supported format.".format(image_path)
         )
 
     rect = rect_from_def(rect)
-    if bg_color is None:
-        bg_color = Color(255, 255, 255, 255)
-    else:
-        bg_color = Color.from_def(bg_color)
-    dpm = int(image_utils.dpi_to_dpm(dpi))
-
+    bg_color = background_brush.color
     document._render()
 
-    _app_interface.render_image(rect, image_path, dpm, quality, bg_color, autocrop)
+    return _app_interface.render_image(
+        rect,
+        image_path,
+        dpi,
+        quality,
+        bg_color,
+        autocrop,
+        preserve_alpha,
+    )
 
 
 def _repl_refresh_func(_: float) -> float:
-    """Default refresh func to be used in REPL mode"""
+    """Default refresh func to be used in REPL mode.
+
+    Refreshes at a rate of 5 FPS.
+    """
     _clear_interfaces()
     document._render()
-    return constants.DEFAULT_REPL_FRAME_REFRESH_TIME_S
+    return 0.2
 
 
-def set_refresh_func(refresh_func: RefreshFunc):
+def set_refresh_func(refresh_func: RefreshFunc, target_fps: int = 60):
     global _app_interface
     global document
+
+    frame_wait = 1 / target_fps
 
     # Wrap the user-provided refresh function with code that clears
     # the scene and re-renders it, then returns the requested delay
@@ -302,20 +369,20 @@ def set_refresh_func(refresh_func: RefreshFunc):
         refresh_func(frame_time)
         document._render()
         elapsed_time = time() - frame_time
-        return max(constants.FRAME_REFRESH_TIME_S - elapsed_time, 0)
+        return max(frame_wait - elapsed_time, 0)
 
     _app_interface.set_refresh_func(wrapped_refresh_func)
 
 
 def _register_default_fonts():
     register_music_font(
-        constants.DEFAULT_MUSIC_FONT_PATH,
-        constants.DEFAULT_MUSIC_FONT_METADATA_PATH,
+        _BRAVURA_PATH,
+        _BRAVURA_METADATA_PATH,
     )
-    register_font(constants.DEFAULT_TEXT_FONT_REGULAR_PATH)
-    register_font(constants.DEFAULT_TEXT_FONT_BOLD_PATH)
-    register_font(constants.DEFAULT_TEXT_FONT_ITALIC_PATH)
-    register_font(constants.DEFAULT_TEXT_FONT_BOLD_ITALIC_PATH)
+    register_font(_LORA_REGULAR_PATH)
+    register_font(_LORA_BOLD_PATH)
+    register_font(_LORA_ITALIC_PATH)
+    register_font(_LORA_BOLD_ITALIC_PATH)
 
 
 def shutdown():

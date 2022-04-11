@@ -1,6 +1,7 @@
-import unittest
+import pytest
 
 from neoscore.core import neoscore
+from neoscore.core.exceptions import NoAncestorStaffError
 from neoscore.core.flowable import Flowable
 from neoscore.core.paper import Paper
 from neoscore.core.units import Mm
@@ -28,10 +29,9 @@ class TestStaffObject(AppTest):
         child_object = MockStaffObject((Mm(10), Mm(1)), parent_object)
         assert child_object.staff == self.staff
 
-    @unittest.skip
     def test_find_staff_with_no_staff_raises_error(self):
-        # TODO LOW: Implement this test once this functionality is locked down
-        pass
+        with pytest.raises(NoAncestorStaffError):
+            MockStaffObject((Mm(0), Mm(0)), neoscore.document.pages[0])
 
     def test_pos_in_staff(self):
         test_object = MockStaffObject((Mm(5000), Mm(0)), self.staff)

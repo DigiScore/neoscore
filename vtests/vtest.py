@@ -1,22 +1,18 @@
 #!/usr/bin/env python3
 
 """A development sandbox used for manually checking visual outputs."""
-
-import os
 import random
-import sys
-import time
+
+from helpers import render_vtest
 
 from neoscore.common import *
-
-start_time = time.time()
 
 neoscore.setup()
 
 
-flow = Flowable((Mm(0), Mm(0)), None, Mm(35000), Mm(30), Mm(10))
+flow = Flowable((Mm(0), Mm(0)), None, Mm(11000), Mm(30), Mm(10))
 
-counting_string = "    ".join(str(x) for x in range(600))
+counting_string = "    ".join(str(x) for x in range(200))
 counting_text = Text((Mm(0), Mm(0)), parent=flow, text=counting_string)
 counting_text._length = Mm(10000)
 
@@ -64,6 +60,31 @@ Chordrest(
     [("a", "accidentalFlatRepeatedSpaceStockhausen", 2)],
     (3, 16),
 )
+c = Chordrest(
+    Mm(25),
+    lowest_staff,
+    ["b", "c", ("g'", notehead_tables.DIAMOND.short)],
+    (1, 16),
+)
+trill = RepeatingMusicTextLine(
+    (lowest_staff.unit(3), lowest_staff.unit(-0.5)),
+    c,
+    (lowest_staff.unit(20), lowest_staff.unit(-2)),
+    None,
+    "wiggleArpeggiatoUp",
+    "wiggleArpeggiatoUpArrow",
+)
+
+table = notehead_tables.INVISIBLE
+BeamGroup(
+    [
+        Chordrest(Mm(50), lowest_staff, ["c'"], (1, 32), table=table),
+        Chordrest(Mm(53), lowest_staff, ["ab"], (1, 32), table=table),
+        Chordrest(Mm(55), lowest_staff, ["g"], (3, 16), table=table),
+        Chordrest(Mm(57), lowest_staff, ["d"], (1, 64), table=table),
+    ]
+)
+
 
 font = Font("Lora", Mm(2), weight=100, italic=True)
 
@@ -86,18 +107,6 @@ random_wiggles = [
 
 MusicText((Mm(25), staff.unit(2)), staff, random_wiggles)
 
-scaling_texts = []
-for i in range(0, 50, 2):
-    scale = 1 + (i / 10)
-    scaling_texts.append(
-        MusicText(
-            (Mm(290 + i), lowest_staff.unit(4)),
-            lowest_staff,
-            ["brace", ("gClef", 1)],
-            scale=scale,
-        )
-    )
-
 flowing_text = MusicText(
     (Mm(155), lower_staff.unit(3)), lower_staff, ["gClef"] * 130, scale=1
 )
@@ -106,23 +115,15 @@ pen = Pen(thickness=Mm(0.2), pattern=PenPattern.DASHDOTDOT)
 explicit_path = Path((Mm(0), Mm(0)), parent=p, pen=pen)
 explicit_path.line_to(Mm(5000), Mm(100))
 
-trill = RepeatingMusicTextLine(
-    (lowest_staff.unit(30), lowest_staff.unit(-0.5)),
-    lowest_staff,
-    (lowest_staff.unit(20), lowest_staff.unit(-2)),
-    None,
-    "wiggleArpeggiatoUp",
-    "wiggleArpeggiatoUpArrow",
-)
 
-text_on_first_page = Text((Mm(0), Mm(0)), None, "first page!")
+text_on_first_page = Text((Mm(0), Mm(-4)), None, "first page!")
 
 text_on_second_page = Text(
-    (Mm(0), Mm(0)), parent=neoscore.document.pages[1], text="second page!"
+    (Mm(0), Mm(-4)), parent=neoscore.document.pages[1], text="second page!"
 )
 
 text_on_third_page = Text(
-    (Mm(0), Mm(0)), parent=neoscore.document.pages[2], text="third page!"
+    (Mm(0), Mm(-4)), parent=neoscore.document.pages[2], text="third page!"
 )
 
 explicit_path_on_second_page = Path((Mm(0), Mm(0)), parent=text_on_second_page)
@@ -146,13 +147,4 @@ Path.rect(
     "#ff0000",
 )
 
-if "--image" in sys.argv:
-    image_path = os.path.join(os.path.dirname(__file__), "output", "vtest_image.png")
-    neoscore.render_image((Mm(0), Mm(0), Inch(2), Inch(2)), image_path, autocrop=True)
-    print(f"Non-setup code took {time.time() - start_time}")
-elif "--pdf" in sys.argv:
-    # PDF export is currently broken
-    pdf_path = os.path.join(os.path.dirname(__file__), "output", "vtest_pdf.pdf")
-    neoscore.render_pdf(pdf_path)
-else:
-    neoscore.show()
+render_vtest("vtest")

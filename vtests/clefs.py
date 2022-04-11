@@ -2,11 +2,12 @@ from neoscore.common import *
 from neoscore.western.clef_type import CLEF_TYPE_SHORTHAND_NAMES
 
 neoscore.setup()
+from helpers import render_vtest
 
 staves = []
 
 for (i, clef_type) in enumerate(CLEF_TYPE_SHORTHAND_NAMES.values()):
-    staff = Staff((Mm(0), Mm(i * 15)), None, Mm(100))
+    staff = Staff((Mm(0), Mm(i * 30)), None, Mm(100))
     staves.append(staff)
     unit = staff.unit
     clef = Clef(unit(0), staff, clef_type)
@@ -21,4 +22,4 @@ for (i, clef_type) in enumerate(CLEF_TYPE_SHORTHAND_NAMES.values()):
 Barline(unit(35), staves)
 Barline(unit(35.5), staves)
 
-neoscore.show()
+render_vtest("clefs")

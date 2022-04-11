@@ -1,6 +1,5 @@
 import pytest
 
-from neoscore import constants
 from neoscore.core.brush import Brush
 from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
@@ -18,8 +17,8 @@ from ..helpers import AppTest
 class TestMusicText(AppTest):
     def setUp(self):
         super().setUp()
-        self.staff = Staff((Mm(0), Mm(0)), None, length=Mm(100), staff_unit=Mm(1))
-        self.font = MusicFont(constants.DEFAULT_MUSIC_FONT_NAME, self.staff.unit)
+        self.staff = Staff((Mm(0), Mm(0)), None, length=Mm(100), line_spacing=Mm(1))
+        self.font = MusicFont("Bravura", self.staff.unit)
 
     def test_init(self):
         pen = Pen("#00ff00")

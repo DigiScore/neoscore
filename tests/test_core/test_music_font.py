@@ -3,6 +3,7 @@ import pytest
 from neoscore.core import smufl
 from neoscore.core.exceptions import MusicFontGlyphNotFoundError
 from neoscore.core.music_font import MusicFont
+from neoscore.core.point import Point
 from neoscore.core.rect import Rect
 from neoscore.core.units import Mm, Unit, convert_all_to_unit
 
@@ -29,24 +30,14 @@ class TestMusicFont(AppTest):
         assert modifying_unit.family_name == "Bravura"
         assert modifying_unit.unit == Mm
 
-    def test__eq__(self):
-        assert self.font == MusicFont("Bravura", Unit)
-        assert self.font == MusicFont("Bravura", EquivalentUnit)
-        # (Can't test case of different family name since only Bravura exists)
-        # assert font != MusicFont("Foo", Unit)
-        assert self.font != MusicFont("Bravura", Mm)
-
-    def test__hash__(self):
-        assert hash(self.font) == hash(MusicFont("Bravura", Unit))
-        assert hash(self.font) == hash(MusicFont("Bravura", EquivalentUnit))
-        # (Can't test case of different family name since only Bravura exists)
-        # assert hash(font) != MusicFont("Foo", Unit)
-        assert hash(self.font) != hash(MusicFont("Bravura", Mm))
+    def test__str__(self):
+        font = MusicFont("Bravura", Unit)
+        assert str(font) == "MusicFont('Bravura', <unit(1) = Mm(0.353)>)"
 
     def test_every_glyphname_in_smufl(self):
         for g in smufl.glyph_names:
-            testGlyph = self.font.glyph_info(g)
-            assert g == testGlyph.canonical_name
+            test_glyph = self.font.glyph_info(g)
+            assert g == test_glyph.canonical_name
 
     def test_complete_info_for_normal_glyph_with_anchors(self):
         test_glyph = self.font.glyph_info("accidental3CommaSharp")
@@ -54,13 +45,13 @@ class TestMusicFont(AppTest):
         assert test_glyph.codepoint == "\ue452"
         assert test_glyph.description == "3-comma sharp"
         assert test_glyph.bounding_rect == Rect(
-            x=Unit(0), y=Unit(-2.044), width=Unit(1.828), height=Unit(3.436)
+            Unit(0), Unit(-2.044), Unit(1.828), Unit(3.436)
         )
         assert test_glyph.advance_width == Unit(1.736)
         assert test_glyph.anchors == {
-            "cutOutNW": [0.888, 1.516],
-            "cutOutSE": [1.108, 0.856],
-            "cutOutSW": [0.108, -0.956],
+            "cutOutNW": Point(self.font.unit(0.888), self.font.unit(-1.516)),
+            "cutOutSE": Point(self.font.unit(1.108), self.font.unit(-0.856)),
+            "cutOutSW": Point(self.font.unit(0.108), self.font.unit(0.956)),
         }
 
     def test_optional_glyph_info(self):
@@ -94,10 +85,21 @@ class TestMusicFont(AppTest):
             self.font.glyph_info("brace", 6)
 
     def test_bbox_translations_on_foo_boundrys(self):
-        rnd_dict = {"bBoxNE": [-10, 10], "bBoxSW": [10, -10]}
-        convert_all_to_unit(rnd_dict, self.font.unit)
-        rect_result = self.font._convert_bbox_to_rect(rnd_dict)
+        smufl_bbox = {"bBoxNE": [-10, 10], "bBoxSW": [10, -10]}
+        convert_all_to_unit(smufl_bbox, self.font.unit)
+        rect_result = self.font._convert_bbox_to_rect(smufl_bbox)
+        assert rect_result == Rect(Unit(10), Unit(-10.0), Unit(-20.0), Unit(20.0))
 
-        assert rect_result == Rect(
-            x=Unit(10), y=Unit(-10.0), width=Unit(-20.0), height=Unit(20.0)
-        )
+    def test_glyph_anchors_converted_to_neoscore_points(self):
+        assert self.font.metadata["glyphsWithAnchors"]["accidentalSharp"] == {
+            "cutOutNE": [0.84, 0.896],
+            "cutOutNW": [0.144, 0.568],
+            "cutOutSE": [0.84, -0.596],
+            "cutOutSW": [0.144, -0.896],
+        }
+        assert self.font._load_glyph_anchors("accidentalSharp") == {
+            "cutOutNE": Point(Unit(0.84), Unit(-0.896)),
+            "cutOutNW": Point(Unit(0.144), Unit(-0.568)),
+            "cutOutSE": Point(Unit(0.84), Unit(0.596)),
+            "cutOutSW": Point(Unit(0.144), Unit(0.896)),
+        }

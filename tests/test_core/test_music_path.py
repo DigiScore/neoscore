@@ -1,6 +1,5 @@
 import pytest
 
-from neoscore import constants
 from neoscore.core.exceptions import NoAncestorWithMusicFontError
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
@@ -15,7 +14,7 @@ from ..helpers import AppTest
 class TestMusicPath(AppTest):
     def setUp(self):
         super().setUp()
-        self.font = MusicFont(constants.DEFAULT_MUSIC_FONT_NAME, Mm)
+        self.font = MusicFont("Bravura", Mm)
 
     def test_init_with_ancestor_with_font(self):
         parent_1 = MusicText(ORIGIN, None, "accidentalSharp", self.font)
@@ -30,7 +29,7 @@ class TestMusicPath(AppTest):
     def test_init_with_explicit_font_overrides_ancestor_font(self):
         parent_1 = MusicText(ORIGIN, None, "accidentalSharp", self.font)
         parent_2 = PositionedObject(ORIGIN, parent_1)
-        other_font = MusicFont(constants.DEFAULT_MUSIC_FONT_NAME, Inch)
+        other_font = MusicFont("Bravura", Inch)
         mp = MusicPath(ORIGIN, parent_2, font=other_font)
         assert mp.music_font == other_font
 

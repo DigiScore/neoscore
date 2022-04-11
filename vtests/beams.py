@@ -1,6 +1,6 @@
-import os
-import sys
 from typing import NamedTuple, Optional
+
+from helpers import render_vtest
 
 from neoscore.common import *
 from neoscore.core.directions import VerticalDirection
@@ -18,15 +18,15 @@ class TestChord(NamedTuple):
     beam_hook_dir: Optional[HorizontalDirection] = None
 
 
-last_staff_y = ZERO
+staff_y = ZERO
 
 
 def create_example(
     chords: list[TestChord], direction: Optional[VerticalDirection] = None
 ):
-    global last_staff_y
-    staff = Staff((ZERO, last_staff_y + Mm(12)), None, Mm(50))
-    last_staff_y = staff.y
+    global staff_y
+    staff = Staff((ZERO, staff_y), None, Mm(150))
+    staff_y = staff.y
     clef = Clef(ZERO, staff, "treble")
     unit = staff.unit
     group = []
@@ -38,12 +38,13 @@ def create_example(
                 staff,
                 c.pitches,
                 c.duration,
-                c.stem_direction,
-                c.beam_break_depth,
-                c.beam_hook_dir,
+                stem_direction=c.stem_direction,
+                beam_break_depth=c.beam_break_depth,
+                beam_hook_dir=c.beam_hook_dir,
             )
         )
     bg = BeamGroup(group, direction)
+    staff_y += Mm(24)
 
 
 # Flat beams
@@ -139,9 +140,4 @@ create_example(
     ]
 )
 
-
-if "--image" in sys.argv:
-    image_path = os.path.join(os.path.dirname(__file__), "output", "beams_image.png")
-    neoscore.render_image((Mm(0), Mm(0), Inch(2), Inch(2)), image_path, autocrop=True)
-else:
-    neoscore.show()
+render_vtest("beams")

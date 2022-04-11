@@ -22,7 +22,7 @@ class _CachedTextKey(NamedTuple):
 
 class _CachedTextPath(NamedTuple):
     path: QPainterPath
-    generation_font_size: float
+    generation_font_size: int
 
 
 _PATH_CACHE: dict[_CachedTextKey, _CachedTextPath] = {}
@@ -98,7 +98,7 @@ class TextInterface(PositionedObjectInterface):
 
     def _get_path(self, text: str, font: FontInterface, scale: float) -> QClippingPath:
         qt_font = font.qt_object
-        needed_font_size = qt_font.pointSizeF()
+        needed_font_size = qt_font.pixelSize()
         key = _CachedTextKey(text, font.family_name, font.weight, font.italic)
         cached_result = _PATH_CACHE.get(key)
         if cached_result:

@@ -1,7 +1,10 @@
 from neoscore.core.directions import VerticalDirection
 from neoscore.core.flowable import Flowable
-from neoscore.core.point import Point
+from neoscore.core.music_char import MusicChar
+from neoscore.core.point import ORIGIN, Point
 from neoscore.core.units import Mm
+from neoscore.western import notehead_tables
+from neoscore.western.accidental_type import AccidentalType
 from neoscore.western.chordrest import Chordrest
 from neoscore.western.clef import Clef
 from neoscore.western.duration import Duration
@@ -12,17 +15,82 @@ from tests.helpers import assert_almost_equal, render_scene
 
 from ..helpers import AppTest
 
-# TODO LOW test that glyphs are actually created successfully - this
-# failed to catch bugs in creating rhythm dots and flags, and probably
-# fails to catch other similar ones too.
-
 
 class TestChordrest(AppTest):
     def setUp(self):
         super().setUp()
         self.flowable = Flowable(Point(Mm(0), Mm(0)), None, Mm(10000), Mm(100))
-        self.staff = Staff(Point(Mm(0), Mm(0)), self.flowable, Mm(100))
+        self.staff = Staff(ORIGIN, self.flowable, Mm(100))
+        self.font = self.staff.music_font
         Clef(Mm(0), self.staff, "treble")
+
+    def test_rest_y_defaults_to_staff_center(self):
+        # 5 line staff
+        chord = Chordrest(Mm(1), self.staff, None, (1, 4))
+        assert chord.rest.y == self.staff.unit(2)
+        # 1 line staff
+        other_staff = Staff(ORIGIN, self.flowable, Mm(100), line_count=1)
+        chord = Chordrest(Mm(1), other_staff, None, (1, 4))
+        assert chord.rest.y == other_staff.unit(0)
+
+    def test_rest_y_override(self):
+        chord = Chordrest(Mm(1), self.staff, None, (1, 4), self.staff.unit(-1))
+        assert chord.rest.y == self.staff.unit(-1)
+
+    def test_notehead_glyph_overrides(self):
+        pitches = [
+            ("c", AccidentalType.SHARP, 3),
+            ("c'", notehead_tables.DIAMOND.short),
+        ]
+        chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
+        assert chord.noteheads[0].music_chars == [MusicChar(self.font, "noteheadBlack")]
+        assert chord.noteheads[1].music_chars == [
+            MusicChar(self.font, "noteheadDiamondBlack")
+        ]
+
+    def test_notes_setter_triggers_rebuild(self):
+        chord = Chordrest(Mm(1), self.staff, [], Duration(1, 4))
+        assert chord.notes == []
+        assert len(chord.noteheads) == 0
+        assert chord.rest is not None
+        chord.notes = ["c"]
+        assert chord.notes == ["c"]
+        assert len(chord.noteheads) == 1
+        assert chord.rest is None
+
+    def test_table_setter_triggers_rebuild(self):
+        chord = Chordrest(Mm(1), self.staff, ["c"], Duration(1, 4))
+        assert chord.noteheads[0].music_chars == [MusicChar(self.font, "noteheadBlack")]
+        chord.table = notehead_tables.DIAMOND
+        assert chord.noteheads[0].music_chars == [
+            MusicChar(self.font, "noteheadDiamondBlack")
+        ]
+
+    def test_notes_none_converted_to_empty_list(self):
+        chord = Chordrest(Mm(1), self.staff, None, Duration(1, 4))
+        assert chord.notes == []
+
+    def test_duration_setter_triggers_rebuild(self):
+        chord = Chordrest(Mm(1), self.staff, ["c"], Duration(1, 4))
+        assert chord.noteheads[0].music_chars == [MusicChar(self.font, "noteheadBlack")]
+        chord.duration = (1, 1)
+        assert chord.noteheads[0].music_chars == [MusicChar(self.font, "noteheadWhole")]
+
+    def test_rest_y_setter_triggers_rebuild(self):
+        chord = Chordrest(Mm(1), self.staff, None, (1, 4))
+        assert chord.rest.y == self.staff.unit(2)
+        chord.rest_y = self.staff.unit(-1)
+        assert chord.rest.y == self.staff.unit(-1)
+
+    def test_invisible_notehead(self):
+        chord = Chordrest(
+            Mm(1),
+            self.staff,
+            ["c"],
+            Duration(1, 4),
+            table=notehead_tables.INVISIBLE,
+        )
+        assert chord.noteheads[0].music_chars == []
 
     def test_ledger_line_positions(self):
         pitches = ["c'", "b'", "f'''"]
@@ -145,7 +213,11 @@ class TestChordrest(AppTest):
     def test_stem_direction_override(self):
         pitches = ["b'"]
         chord = Chordrest(
-            Mm(1), self.staff, pitches, Duration(1, 4), VerticalDirection.UP
+            Mm(1),
+            self.staff,
+            pitches,
+            Duration(1, 4),
+            stem_direction=VerticalDirection.UP,
         )
         assert chord.stem_direction == VerticalDirection.UP
         # Setting stem_direction = None should revert to default 1

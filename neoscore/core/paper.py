@@ -1,7 +1,9 @@
-from dataclasses import dataclass, field
+from __future__ import annotations
 
-from neoscore.core.units import Inch, Mm, Unit
-from neoscore.interface.paper_interface import PaperInterface
+from dataclasses import dataclass, field
+from typing import Optional
+
+from neoscore.core.units import ZERO, Inch, Mm, Unit
 
 
 @dataclass(frozen=True)
@@ -15,10 +17,9 @@ class Paper:
     margin_right: Unit
     margin_bottom: Unit
     margin_left: Unit
-    gutter: Unit
+    gutter: Unit = ZERO
     live_width: Unit = field(init=False)
     live_height: Unit = field(init=False)
-    interface: PaperInterface = field(init=False)
 
     def __post_init__(self):
         # This hack is needed to assign derived fields on frozen dataclasses
@@ -30,16 +31,13 @@ class Paper:
         super().__setattr__(
             "live_height", self.height - self.margin_bottom - self.margin_top
         )
-        super().__setattr__("interface", PaperInterface(self.width, self.height))
 
     ######## PUBLIC METHODS ########
 
-    def make_rotation(self):
-        """Create a 90 degree clockwise rotation of this `Paper`.
+    def make_rotation(self) -> Paper:
+        """Create a 90 degree clockwise rotation of this paper.
 
-        The `gutter` field is not changed in this new `Paper`.
-
-        Returns: Paper
+        The `gutter` field is left unchanged.
         """
         return Paper(
             self.height,
@@ -51,11 +49,32 @@ class Paper:
             self.gutter,
         )
 
+    def modified(
+        self,
+        width: Optional[Unit] = None,
+        height: Optional[Unit] = None,
+        margin_top: Optional[Unit] = None,
+        margin_right: Optional[Unit] = None,
+        margin_bottom: Optional[Unit] = None,
+        margin_left: Optional[Unit] = None,
+        gutter: Optional[Unit] = None,
+    ) -> Paper:
+        """Derive a new `Paper` from this one with any given changed attributes."""
+        return Paper(
+            width if width is not None else self.width,
+            height if height is not None else self.height,
+            margin_top if margin_top is not None else self.margin_top,
+            margin_right if margin_right is not None else self.margin_right,
+            margin_bottom if margin_bottom is not None else self.margin_bottom,
+            margin_left if margin_left is not None else self.margin_left,
+            gutter if gutter is not None else self.gutter,
+        )
+
 
 # Templates for common paper types are declared below
 
-A4 = Paper(Mm(210), Mm(297), Mm(20), Mm(20), Mm(20), Mm(20), Mm(0))
+A4 = Paper(Mm(210), Mm(297), Mm(20), Mm(20), Mm(20), Mm(20), ZERO)
 """Template for A4-sized portrait paper"""
 
-LETTER = Paper(Inch(8.5), Inch(11), Inch(1), Inch(1), Inch(1), Inch(1), Inch(0.3))
+LETTER = Paper(Inch(8.5), Inch(11), Inch(1), Inch(1), Inch(1), Inch(1), ZERO)
 """Template for letter-sized portrait paper"""

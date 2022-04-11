@@ -106,7 +106,6 @@ class OctaveLine(PositionedObject, Spanner, HasMusicFont):
 
         # Vertically center the path relative to the text
         text_rect = self.line_text.bounding_rect
-        # TODO LOW line needs some padding
         path_x = text_rect.width
         path_y = cast(Unit, text_rect.height / -2)
         self.line_path = Path(

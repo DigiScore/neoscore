@@ -1,5 +1,6 @@
 import pytest
 
+from neoscore.core.directions import VerticalDirection
 from neoscore.western.interval import Interval, InvalidIntervalError
 
 
@@ -22,13 +23,8 @@ def test__hash__():
 
 
 def test_interval_direction():
-    assert Interval("am2").direction == "a"
-    assert Interval("dm2").direction == "d"
-
-
-def test_interval_direction_as_int():
-    assert Interval("am2").direction_as_int == 1
-    assert Interval("dm2").direction_as_int == -1
+    assert Interval("am2").direction == VerticalDirection.UP
+    assert Interval("dm2").direction == VerticalDirection.DOWN
 
 
 def test_interval_quality():
@@ -48,12 +44,12 @@ def test_interval_quality_in_english():
 def test_interval_staff_distance():
     assert Interval("aP1").staff_distance == 0
     assert Interval("dP1").staff_distance == 0
-    assert Interval("am2").staff_distance == 0.5
-    assert Interval("dm2").staff_distance == -0.5
-    assert Interval("aM3").staff_distance == 1
-    assert Interval("dM3").staff_distance == -1
-    assert Interval("aP8").staff_distance == 3.5
-    assert Interval("dP8").staff_distance == -3.5
+    assert Interval("am2").staff_distance == -0.5
+    assert Interval("dm2").staff_distance == 0.5
+    assert Interval("aM3").staff_distance == -1
+    assert Interval("dM3").staff_distance == 1
+    assert Interval("aP8").staff_distance == -3.5
+    assert Interval("dP8").staff_distance == 3.5
 
 
 def test_interval_simple_distance():
@@ -176,44 +172,3 @@ def test_interval_major_minor_fifths_and_compounds_fail():
         Interval("dm19")
     with pytest.raises(InvalidIntervalError):
         Interval("dM19")
-
-
-def test_interval_pitch_class_delta_major_minor():
-    assert Interval("am2").pitch_class_delta == 1
-    assert Interval("aM2").pitch_class_delta == 2
-    assert Interval("am3").pitch_class_delta == 3
-    assert Interval("aM3").pitch_class_delta == 4
-    assert Interval("am6").pitch_class_delta == 8
-    assert Interval("aM6").pitch_class_delta == 9
-    assert Interval("am7").pitch_class_delta == 10
-    assert Interval("aM7").pitch_class_delta == 11
-    assert Interval("dm2").pitch_class_delta == -1
-    assert Interval("dM2").pitch_class_delta == -2
-    assert Interval("dm3").pitch_class_delta == -3
-    assert Interval("dM3").pitch_class_delta == -4
-    assert Interval("dm6").pitch_class_delta == -8
-    assert Interval("dM6").pitch_class_delta == -9
-    assert Interval("dm7").pitch_class_delta == -10
-    assert Interval("dM7").pitch_class_delta == -11
-
-
-def test_interval_pitch_class_delta_aug_dim():
-    assert Interval("ad2").pitch_class_delta == 0
-    assert Interval("aA2").pitch_class_delta == 3
-    assert Interval("ad3").pitch_class_delta == 2
-    assert Interval("aA3").pitch_class_delta == 5
-    assert Interval("ad4").pitch_class_delta == 4
-    assert Interval("aA4").pitch_class_delta == 6
-    assert Interval("ad5").pitch_class_delta == 6
-    assert Interval("aA5").pitch_class_delta == 8
-    assert Interval("ad6").pitch_class_delta == 7
-    assert Interval("aA6").pitch_class_delta == 10
-    assert Interval("ad7").pitch_class_delta == 9
-    assert Interval("aA7").pitch_class_delta == 12
-
-
-def test_interval_pitch_class_delta_compound_intervals():
-    assert Interval("aP8").pitch_class_delta == 12
-    assert Interval("am9").pitch_class_delta == 13
-    assert Interval("aP11").pitch_class_delta == 17
-    assert Interval("aP12").pitch_class_delta == 19

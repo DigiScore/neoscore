@@ -73,7 +73,7 @@ class Flag(MusicText):
 
     @property
     def duration(self) -> Duration:
-        """Duration: The time duration of this Notehead"""
+        """The time duration of this Notehead"""
         return self._duration
 
     @duration.setter

@@ -57,6 +57,10 @@ class TestFont(AppTest):
         assert modifying_italic.weight == 2
         assert modifying_italic.italic is False
 
+    def test__str__(self):
+        font = Font("Bravura", 12, 1, False)
+        assert str(font) == "Font('Bravura', GraphicUnit(12), 1, False)"
+
     def test__eq__(self):
         font = Font("Bravura", 12, 1, False)
         assert font == Font("Bravura", 12, 1, False)

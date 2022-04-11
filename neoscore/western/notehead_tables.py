@@ -343,6 +343,8 @@ CLUSTER_THIRD_DIAMOND = NoteheadTable(
 This uses the same glyph for all durations except `short`.
 """
 
+INVISIBLE = NoteheadTable("", "", "", "")
+
 ALL_TABLES: list[NoteheadTable] = [
     STANDARD,
     STANDARD_WITH_PARENTHESES,
@@ -380,5 +382,6 @@ ALL_TABLES: list[NoteheadTable] = [
     CLUSTER_THIRD,
     CLUSTER_SECOND_DIAMOND,
     CLUSTER_THIRD_DIAMOND,
+    INVISIBLE,
 ]
 """A list of all the notehead tables in this module"""

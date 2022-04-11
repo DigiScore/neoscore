@@ -26,7 +26,7 @@ class TestTabStaff(AppTest):
 
     def test_line_spacing_default(self):
         staff = TabStaff(ORIGIN, None, Mm(100))
-        assert staff.line_spacing == Mm(1.5)
+        assert staff.line_spacing == Mm(2.5)
 
     def test_line_spacing_override(self):
         staff = TabStaff(ORIGIN, None, Mm(100), Mm(2))
@@ -43,9 +43,7 @@ class TestTabStaff(AppTest):
     def test_music_font_size_derived_from_line_spacing(self):
         staff = TabStaff(ORIGIN, None, Mm(100), Mm(2))
         assert staff.music_font.family_name == "Bravura"
-        self.assertAlmostEqual(
-            staff.music_font.unit.CONVERSION_RATE, 15.748039999999998
-        )
+        self.assertAlmostEqual(staff.music_font.unit.CONVERSION_RATE, 3.7795296)
 
     def test_music_font_override(self):
         font = MusicFont("Bravura", Mm)

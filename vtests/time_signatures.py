@@ -1,10 +1,12 @@
+from helpers import render_vtest
+
 from neoscore.common import *
 from neoscore.western.meter import MeterDef
 
 neoscore.setup()
 
 
-staff = Staff(ORIGIN, None, Mm(100))
+staff = Staff(ORIGIN, None, Mm(150))
 
 meters: list[MeterDef] = [
     COMMON_TIME,
@@ -20,4 +22,4 @@ meters: list[MeterDef] = [
 for (i, meter) in enumerate(meters):
     TimeSignature(Mm(i * 15), staff, meter)
 
-neoscore.show()
+render_vtest("time_signature")

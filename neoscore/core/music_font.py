@@ -10,22 +10,14 @@ from neoscore.core.exceptions import (
 )
 from neoscore.core.font import Font
 from neoscore.core.glyph_info import GlyphInfo
-from neoscore.core.platforms import PlatformType, current_platform
+from neoscore.core.point import Point
 from neoscore.core.rect import Rect
-from neoscore.core.units import Unit, convert_all_to_unit
-
-# TODO LOW make a nice __repr__
+from neoscore.core.units import Mm, Unit, convert_all_to_unit
 
 
 class MusicFont(Font):
 
     """A SMuFL compliant music font"""
-
-    # Scaling factor which may or may not work for fonts other than Bravura.
-    if current_platform() == PlatformType.MAC:
-        __magic_em_scale = 4
-    else:
-        __magic_em_scale = 3
 
     def __init__(self, family_name: str, unit: Type[Unit]):
         """
@@ -40,11 +32,17 @@ class MusicFont(Font):
         except KeyError:
             raise MusicFontMetadataNotFoundError
         self._engraving_defaults = copy.deepcopy(self.metadata["engravingDefaults"])
-        self._em_size = self.unit(self.__magic_em_scale)
+        # 1 SMuFL em is the height of a 5-line staff. See:
+        # w3c.github.io/smufl/latest/specification/scoring-metrics-glyph-registration.html
+        self._em_size = self.unit(4)
         self._glyph_info_cache = {}
         # engraving_defaults is small, so eagerly converting it to self.unit is ok
         convert_all_to_unit(self._engraving_defaults, self.unit)
         super().__init__(family_name, self._em_size, 1, False)
+
+    def __str__(self):
+        unit_val_as_mm = Mm(self.unit(1)).display_value
+        return f"MusicFont('{self.family_name}', <unit(1) = Mm({unit_val_as_mm})>)"
 
     ######## PUBLIC PROPERTIES ########
 
@@ -61,21 +59,6 @@ class MusicFont(Font):
     def engraving_defaults(self) -> Dict:
         """dict: The SMuFL engraving defaults information for this font"""
         return self._engraving_defaults
-
-    ######## SPECIAL METHODS ########
-
-    def __eq__(self, other):
-        return (
-            isinstance(other, MusicFont)
-            # Compare only based on name and concrete point size,
-            # allowing fonts with different but equivalent `unit`
-            # types to be equal.
-            and self.family_name == other.family_name
-            and self.size == other.size
-        )
-
-    def __hash__(self):
-        return hash((self.family_name, self.size.rounded_base_value))
 
     ######## PUBLIC METHODS ########
 
@@ -140,15 +123,10 @@ class MusicFont(Font):
             bounding_rect = self._convert_bbox_to_rect(bounding_rect)
 
         # get optional anchor metadata if available
-        anchors = self.metadata["glyphsWithAnchors"].get(glyph_name)
+        anchors = self._load_glyph_anchors(glyph_name)
 
         return GlyphInfo(
-            canonical_name=glyph_name,
-            codepoint=codepoint,
-            description=description,
-            bounding_rect=bounding_rect,
-            advance_width=advance_width,
-            anchors=anchors,
+            glyph_name, codepoint, description, bounding_rect, advance_width, anchors
         )
 
     # private helper functions
@@ -224,3 +202,15 @@ class MusicFont(Font):
             raise MusicFontGlyphNotFoundError
 
         return (codepoint, description)
+
+    def _load_glyph_anchors(self, glyph_name: str) -> Optional[dict[str, Point]]:
+        """Load any glyph anchors and convert coordinates to `Point`s."""
+        anchors = self.metadata["glyphsWithAnchors"].get(glyph_name)
+        if anchors is None:
+            return None
+        anchors = copy.deepcopy(anchors)
+        for key, value in anchors.items():
+            # SMuFL coords have opposite Y axis as neoscore, so flip
+            # when wrapping in Point and Unit.
+            anchors[key] = Point(self.unit(value[0]), self.unit(-value[1]))
+        return anchors

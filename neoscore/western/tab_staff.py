@@ -2,12 +2,11 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional, cast
 
-from neoscore import constants
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
 from neoscore.core.pen import Pen
 from neoscore.core.point import PointDef
-from neoscore.core.units import ZERO, Unit, make_unit_class
+from neoscore.core.units import ZERO, Mm, Unit, make_unit_class
 
 if TYPE_CHECKING:
     from neoscore.core.mapping import Parent
@@ -34,7 +33,7 @@ class TabStaff(MusicPath):
         pos: PointDef,
         parent: Optional[Parent],
         length: Unit,
-        line_spacing: Optional[Unit] = None,
+        line_spacing: Unit = Mm(2.5),
         line_count: int = 6,
         music_font: Optional[MusicFont] = None,
         pen: Optional[Pen] = None,
@@ -46,7 +45,6 @@ class TabStaff(MusicPath):
                 to allow the staff to run across line and page breaks.
             length: The horizontal width of the staff
             line_spacing: The distance between two lines in the staff.
-                If not set, this will default to `constants.DEFAULT_TAB_STAFF_SPACING`.
             line_count: The number of lines in the staff.
             music_font: The font to use for `MusicText` objects in the staff.
                 Unlike in `Staff`, this font's `unit` is not necessarily equivalent
@@ -56,9 +54,8 @@ class TabStaff(MusicPath):
             pen: The pen used to draw the staff lines. Defaults to a line with
                 thickness from the music font's engraving default.
         """
-        line_spacing = line_spacing or constants.DEFAULT_TAB_STAFF_SPACING
         music_font = music_font or MusicFont(
-            constants.DEFAULT_MUSIC_FONT_NAME,
+            "Bravura",
             make_unit_class(
                 "TabStaffTextUnit",
                 line_spacing.base_value * _LINE_SPACE_TO_FONT_UNIT_RATIO,

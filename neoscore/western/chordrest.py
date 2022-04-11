@@ -1,5 +1,5 @@
 from collections.abc import Iterable
-from typing import Optional
+from typing import NamedTuple, Optional
 
 from neoscore.core.directions import HorizontalDirection, VerticalDirection
 from neoscore.core.point import ORIGIN, Point
@@ -19,11 +19,14 @@ from neoscore.western.staff import Staff
 from neoscore.western.staff_object import StaffObject
 from neoscore.western.stem import Stem
 
-# TODO MEDIUM this is not responsive to post-init modification.
-
 # TODO MEDIUM align noteheads and stems properly using glyph anchor metadata
 # see https://w3c.github.io/smufl/latest/specification/glyph-registration-notes-flags.html
 # do this once #2 (glyph info refactor) is finished
+
+
+class PitchAndGlyph(NamedTuple):
+    pitch: PitchDef
+    notehead_glyph: str
 
 
 class Chordrest(PositionedObject, StaffObject):
@@ -56,76 +59,95 @@ class Chordrest(PositionedObject, StaffObject):
         self,
         pos_x: Unit,
         staff: Staff,
-        pitches: Optional[list[PitchDef]],
+        notes: Optional[list[PitchDef | PitchAndGlyph]],
         duration: DurationDef,
+        rest_y: Optional[Unit] = None,
         stem_direction: Optional[VerticalDirection] = None,
         beam_break_depth: Optional[int] = None,
         beam_hook_dir: Optional[HorizontalDirection] = None,
-        notehead_table: NoteheadTable = notehead_tables.STANDARD,
+        table: NoteheadTable = notehead_tables.STANDARD,
     ):
         """
         Args:
             pos_x: The horizontal position
             staff: The staff the object is attached to
-            pitches: A list of pitch strings representing noteheads.
-                An empty list or `None` indicates a rest.
+            notes: A list of pitches and optional notehead-specific data. If `None`
+                this indicates a rest. For simple notes and chords, this can typically
+                be a list of pitch string shorthands (see `Pitch.from_str`). Pitches
+                with extended accidentals can be given by passing fully constructed
+                `Pitch` objects. Individual notehead glyphs (by default taken from the
+                given `table`) can be overridden by passing a tuple of a pitch
+                and a SMuFL glyph name string.
             duration: The duration of the Chordrest
+            rest_y: The vertical position used by rests. This defaults to the center
+                of the staff.
             stem_direction: An optional stem direction override
                 where `1` points down and `-1` points up. If omitted, the
                 direction is automatically calculated to point away from
                 the furthest-out notehead.
             beam_break_depth: Break depth used if in a `BeamGroup`.
             beam_hook_dir: Beamlet hook direction used in a `BeamGroup`.
-            notehead_table: The set of noteheads to use according to `duration`.
+            table: The set of noteheads to use according to `duration`.
         """
         StaffObject.__init__(self, staff)
         PositionedObject.__init__(self, Point(pos_x, ZERO), staff)
         self.duration = duration
-        self._noteheads = set()
-        self._accidentals = set()
-        self._ledgers = set()
-        self._dots = set()
-        self._pitches = pitches
+        self._noteheads = []
+        self._accidentals = []
+        self._ledgers = []
+        self._dots = []
+        self._notes = [] if notes is None else notes
         self._stem = None
         self._flag = None
+        self._rest_y = rest_y
         self._rest = None
         self._stem_direction_override = stem_direction
         self._beam_break_depth = beam_break_depth
         self._beam_hook_dir = beam_hook_dir
-        self._notehead_table = notehead_table
-        self.rebuild()
+        self._table = table
+        self._rebuild()
 
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def pitches(self) -> Optional[list[PitchDef]]:
-        return self._pitches
+    def notes(self) -> list[PitchDef | PitchAndGlyph]:
+        return self._notes
 
-    @pitches.setter
-    def pitches(self, value: Optional[list[PitchDef]]):
-        self._pitches = value
+    @notes.setter
+    def notes(self, value: Optional[list[PitchDef | PitchAndGlyph]]):
+        self._notes = [] if value is None else value
+        self._rebuild()
 
     @property
-    def noteheads(self) -> set[Notehead]:
+    def noteheads(self) -> list[Notehead]:
         """The noteheads contained in this Chordrest."""
         return self._noteheads
+
+    @property
+    def rest_y(self) -> Optional[Unit]:
+        """The vertical position used by generated rests.
+
+        Defaults to the staff center.
+        """
+        return self._rest_y
+
+    @rest_y.setter
+    def rest_y(self, value: Optional[Unit]):
+        self._rest_y = value
+        self._rebuild()
 
     @property
     def rest(self) -> Optional[Rest]:
         """A Rest glyph, if no noteheads exist."""
         return self._rest
 
-    @rest.setter
-    def rest(self, value: Optional[Rest]):
-        self._rest = value
-
     @property
-    def accidentals(self) -> set[Accidental]:
+    def accidentals(self) -> list[Accidental]:
         """The accidentals contained in this Chordrest."""
         return self._accidentals
 
     @property
-    def ledgers(self) -> set[LedgerLine]:
+    def ledgers(self) -> list[LedgerLine]:
         """The ledger lines contained in this Chordrest.
 
         An empty set means no ledgers.
@@ -133,7 +155,7 @@ class Chordrest(PositionedObject, StaffObject):
         return self._ledgers
 
     @property
-    def dots(self) -> set[RhythmDot]:
+    def dots(self) -> list[RhythmDot]:
         return self._dots
 
     @property
@@ -169,12 +191,13 @@ class Chordrest(PositionedObject, StaffObject):
         return self._beam_hook_dir
 
     @property
-    def notehead_table(self) -> NoteheadTable:
-        return self._notehead_table
+    def table(self) -> NoteheadTable:
+        return self._table
 
-    @notehead_table.setter
-    def notehead_table(self, table: NoteheadTable):
-        self._notehead_table = table
+    @table.setter
+    def table(self, table: NoteheadTable):
+        self._table = table
+        self._rebuild()
 
     @property
     def duration(self) -> Duration:
@@ -188,10 +211,17 @@ class Chordrest(PositionedObject, StaffObject):
 
     @duration.setter
     def duration(self, value: DurationDef):
+        rebuild_needed = hasattr(self, "_duration")
         value = Duration.from_def(value)
         if value.display is None:
             raise ValueError(f"{value} cannot be represented as a single note")
         self._duration = value
+        if rebuild_needed:
+            self._rebuild()
+
+    # Note that most/all of these derived properties could be computed ahead of time or
+    # cached, they would just need to be reset on `rebuild()` calls.
+    # Something to consider if these end up being performance hotspots.
 
     @property
     def ledger_line_positions(self) -> list[Unit]:
@@ -350,6 +380,7 @@ class Chordrest(PositionedObject, StaffObject):
     @stem_direction.setter
     def stem_direction(self, value: Optional[VerticalDirection]):
         self._stem_direction_override = value
+        self._rebuild()
 
     @property
     def stem_height(self) -> Unit:
@@ -369,16 +400,16 @@ class Chordrest(PositionedObject, StaffObject):
     def _clear(self):
         for notehead in self.noteheads:
             notehead.remove()
-        self._noteheads = set()
+        self._noteheads = []
         for accidental in self.accidentals:
             accidental.remove()
-        self._accidentals = set()
+        self._accidentals = []
         for ledger in self.ledgers:
             ledger.remove()
-        self._ledgers = set()
+        self._ledgers = []
         for dot in self.dots:
             dot.remove()
-        self._dots = set()
+        self._dots = []
         if self.stem:
             self.stem.remove()
         self._stem = None
@@ -386,34 +417,39 @@ class Chordrest(PositionedObject, StaffObject):
             self.rest.remove()
         self._rest = None
 
-    def rebuild(self):
+    def _rebuild(self):
         """Generate or regenerate all child objects"""
         if self.noteheads or self.rest:
             # Clear existing glyphs
             self._clear()
-        if self.pitches:
-            for pitch in self.pitches:
-                self._noteheads.add(
+        if self.notes:
+            for note in self.notes:
+                if isinstance(note, tuple) and len(note) == 2:
+                    pitch = note[0]
+                    glyph_override = note[1]
+                else:
+                    pitch = note
+                    glyph_override = None
+                self._noteheads.append(
                     Notehead(
                         ZERO,
                         self,
                         pitch,
                         self.duration,
-                        notehead_table=self.notehead_table,
+                        table=self.table,
+                        glyph_override=glyph_override,
                     )
                 )
-            self.rest = None
+            self._rest = None
             self._position_noteheads_horizontally()
-            self._position_accidentals_horizontally()
             self._create_accidentals()
+            self._position_accidentals_horizontally()
             self._create_ledgers()
             self._create_stem()
             self._create_flag()
         else:
-            # TODO LOW support explicit rest Y positioning
-            self.rest = Rest(
-                Point(self.staff.unit(0), self.staff.unit(2)), self, self.duration
-            )
+            rest_y = self.rest_y or self.staff.center_y
+            self._rest = Rest(Point(self.staff.unit(0), rest_y), self, self.duration)
         # Both rests and chords needs dots
         self._create_dots()
         pass
@@ -431,7 +467,7 @@ class Chordrest(PositionedObject, StaffObject):
         pos_x = self.leftmost_notehead.x
         length = self.notehead_column_outside_staff_width
         for staff_pos in self.ledger_line_positions:
-            self.ledgers.add(LedgerLine(Point(pos_x, staff_pos), self, length))
+            self.ledgers.append(LedgerLine(Point(pos_x, staff_pos), self, length))
 
     def _create_accidentals(self):
         padding = self.staff.music_font.engraving_defaults["staffLineThickness"]
@@ -444,12 +480,12 @@ class Chordrest(PositionedObject, StaffObject):
                 notehead.pitch.accidental,
             )
             accidental.x -= accidental.bounding_rect.width + padding
-            self.accidentals.add(accidental)
+            self.accidentals.append(accidental)
 
     def _create_dots(self):
         """Create all the RhythmDots needed by this Chordrest."""
         for dot_pos in self.rhythm_dot_positions:
-            self.dots.add(RhythmDot(dot_pos, self))
+            self.dots.append(RhythmDot(dot_pos, self))
 
     # TODO HIGH this y attachment point is wrong Should be the
     # furthest in the direction opposite of stem direction.

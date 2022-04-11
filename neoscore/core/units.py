@@ -161,19 +161,13 @@ class GraphicUnit(Unit):
 class Inch(Unit):
     """An inch."""
 
-    CONVERSION_RATE = 300
+    CONVERSION_RATE = 72
 
 
 class Mm(Unit):
     """A millimeter."""
 
     CONVERSION_RATE = Inch.CONVERSION_RATE * 0.0393701
-
-
-class Meter(Unit):
-    """A meter."""
-
-    CONVERSION_RATE = Mm.CONVERSION_RATE * 1000
 
 
 # Constants

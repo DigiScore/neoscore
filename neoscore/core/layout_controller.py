@@ -5,10 +5,6 @@ from neoscore.core.point import Point
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import Unit
 
-# TODO MEDIUM does it make sense for these to be PositionedObjects?
-# Does it make sense that LayoutControllers can have their parent
-# changed?
-
 
 class LayoutController(PositionedObject):
     """An abstract layout controller for working with Flowable layouts."""

@@ -22,7 +22,7 @@ class TestFontInterface(AppTest):
         assert test_font.italic is False
         assert test_font.qt_object.bold() is False
         assert test_font.qt_object.italic() is False
-        assert test_font.qt_object.pointSize() == 6
+        assert test_font.qt_object.pixelSize() == 6
         assert test_font.qt_object.weight() == 1
         # These values seems to flakily vary between runs
         # assert test_font.ascent == MockUnit(18)
@@ -31,4 +31,4 @@ class TestFontInterface(AppTest):
 
     def test_float_point_sizes(self):
         test_font = FontInterface("Bravura", MockUnit(13), 1, False)
-        self.assertAlmostEqual(test_font.qt_object.pointSizeF(), 6.5)
+        self.assertAlmostEqual(test_font.qt_object.pixelSize(), 6)
