@@ -38,9 +38,9 @@ def create_example(
                 staff,
                 c.pitches,
                 c.duration,
-                c.stem_direction,
-                c.beam_break_depth,
-                c.beam_hook_dir,
+                stem_direction=c.stem_direction,
+                beam_break_depth=c.beam_break_depth,
+                beam_hook_dir=c.beam_hook_dir,
             )
         )
     bg = BeamGroup(group, direction)

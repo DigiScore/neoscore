@@ -61,6 +61,7 @@ class Chordrest(PositionedObject, StaffObject):
         staff: Staff,
         notes: Optional[list[PitchDef | PitchAndGlyph]],
         duration: DurationDef,
+        rest_y: Optional[Unit] = None,
         stem_direction: Optional[VerticalDirection] = None,
         beam_break_depth: Optional[int] = None,
         beam_hook_dir: Optional[HorizontalDirection] = None,
@@ -78,6 +79,8 @@ class Chordrest(PositionedObject, StaffObject):
                 given `table`) can be overridden by passing a tuple of a pitch
                 and a SMuFL glyph name string.
             duration: The duration of the Chordrest
+            rest_y: The vertical position used by rests. This defaults to the center
+                of the staff.
             stem_direction: An optional stem direction override
                 where `1` points down and `-1` points up. If omitted, the
                 direction is automatically calculated to point away from
@@ -96,6 +99,7 @@ class Chordrest(PositionedObject, StaffObject):
         self._notes = [] if notes is None else notes
         self._stem = None
         self._flag = None
+        self._rest_y = rest_y
         self._rest = None
         self._stem_direction_override = stem_direction
         self._beam_break_depth = beam_break_depth
@@ -118,6 +122,19 @@ class Chordrest(PositionedObject, StaffObject):
     def noteheads(self) -> list[Notehead]:
         """The noteheads contained in this Chordrest."""
         return self._noteheads
+
+    @property
+    def rest_y(self) -> Optional[Unit]:
+        """The vertical position used by generated rests.
+
+        Defaults to the staff center.
+        """
+        return self._rest_y
+
+    @rest_y.setter
+    def rest_y(self, value: Optional[Unit]):
+        self._rest_y = value
+        self._rebuild()
 
     @property
     def rest(self) -> Optional[Rest]:
@@ -431,10 +448,8 @@ class Chordrest(PositionedObject, StaffObject):
             self._create_stem()
             self._create_flag()
         else:
-            # TODO LOW support explicit rest Y positioning
-            self._rest = Rest(
-                Point(self.staff.unit(0), self.staff.unit(2)), self, self.duration
-            )
+            rest_y = self.rest_y or self.staff.center_y
+            self._rest = Rest(Point(self.staff.unit(0), rest_y), self, self.duration)
         # Both rests and chords needs dots
         self._create_dots()
         pass

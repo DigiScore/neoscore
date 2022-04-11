@@ -38,7 +38,7 @@ MusicText((unit(-1), unit(-2)), a, "ornamentMordent")
 Chordrest(unit(19), upper_staff, ["b''"], Duration(1, 16))
 
 # Lower staff notes - upper voice
-Rest(Point(unit(10), unit(-3)), lower_staff, Duration(1, 4))
+Chordrest(unit(10), lower_staff, None, (1, 4), unit(-3))
 Chordrest(
     unit(16), lower_staff, ["d'"], Duration(1, 4), stem_direction=VerticalDirection.UP
 )
