@@ -101,7 +101,7 @@ class Chordrest(PositionedObject, StaffObject):
         self._beam_break_depth = beam_break_depth
         self._beam_hook_dir = beam_hook_dir
         self._table = table
-        self.rebuild()
+        self._rebuild()
 
     ######## PUBLIC PROPERTIES ########
 
@@ -112,7 +112,7 @@ class Chordrest(PositionedObject, StaffObject):
     @notes.setter
     def notes(self, value: Optional[list[PitchDef | PitchAndGlyph]]):
         self._notes = [] if value is None else value
-        self.rebuild()
+        self._rebuild()
 
     @property
     def noteheads(self) -> list[Notehead]:
@@ -180,7 +180,7 @@ class Chordrest(PositionedObject, StaffObject):
     @table.setter
     def table(self, table: NoteheadTable):
         self._table = table
-        self.rebuild()
+        self._rebuild()
 
     @property
     def duration(self) -> Duration:
@@ -200,7 +200,7 @@ class Chordrest(PositionedObject, StaffObject):
             raise ValueError(f"{value} cannot be represented as a single note")
         self._duration = value
         if rebuild_needed:
-            self.rebuild()
+            self._rebuild()
 
     # Note that most/all of these derived properties could be computed ahead of time or
     # cached, they would just need to be reset on `rebuild()` calls.
@@ -363,7 +363,7 @@ class Chordrest(PositionedObject, StaffObject):
     @stem_direction.setter
     def stem_direction(self, value: Optional[VerticalDirection]):
         self._stem_direction_override = value
-        self.rebuild()
+        self._rebuild()
 
     @property
     def stem_height(self) -> Unit:
@@ -400,7 +400,7 @@ class Chordrest(PositionedObject, StaffObject):
             self.rest.remove()
         self._rest = None
 
-    def rebuild(self):
+    def _rebuild(self):
         """Generate or regenerate all child objects"""
         if self.noteheads or self.rest:
             # Clear existing glyphs

@@ -317,10 +317,7 @@ class BeamGroup(PositionedObject, HasMusicFont):
             original_stem_sign = sign(c.stem.end_point.y)
             adjusted_stem_end_y = map_between(c.stem, self).y + y
             if sign(adjusted_stem_end_y) != original_stem_sign:
-                # Need to re-layout chord notes because stem flipped
-                # Very inefficiently rebuild the whole chordrest for this
                 c.stem_direction = VerticalDirection.from_sign(adjusted_stem_end_y)
-                c.rebuild()
             c.stem.end_point.y = adjusted_stem_end_y
             c.flag.remove()
             c._flag = None
