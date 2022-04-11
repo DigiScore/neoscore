@@ -1,5 +1,6 @@
 import re
 
+from neoscore.core.directions import VerticalDirection
 from neoscore.core.exceptions import InvalidIntervalError
 
 
@@ -43,18 +44,21 @@ class Interval:
         match = Interval._shorthand_regex.match(specifier)
         if match is None:
             raise InvalidIntervalError
-        direction = match.group(1)
-        quality = match.group(2)
-        distance = int(match.group(3))
-        self._direction = direction
-        self._quality = quality
-        self._distance = distance
+        self._direction = (
+            VerticalDirection.UP if match.group(1) == "a" else VerticalDirection.DOWN
+        )
+        self._quality = match.group(2)
+        self._distance = int(match.group(3))
         # Check against invalid edge case intervals
-        if self.simple_distance in Interval._perfectable_distances and quality not in [
-            "P",
-            "d",
-            "A",
-        ]:
+        if (
+            self.simple_distance in Interval._perfectable_distances
+            and self._quality
+            not in [
+                "P",
+                "d",
+                "A",
+            ]
+        ):
             # unisons, fourths, fifths, and their compounds
             # can only be perfect, augmented, or diminished
             raise InvalidIntervalError
@@ -62,7 +66,8 @@ class Interval:
     ######## SPECIAL METHODS ########
 
     def __repr__(self):
-        return "Interval('{}{}{}')".format(self.direction, self.quality, self.distance)
+        direction_str = "a" if self.direction == VerticalDirection.UP else "d"
+        return f"Interval('{direction_str}{self.quality}{self.distance}')"
 
     def __hash__(self):
         """`Duration`s equal to each other share the same hash."""
@@ -79,50 +84,41 @@ class Interval:
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def direction(self):
+    def direction(self) -> VerticalDirection:
         return self._direction
 
     @property
-    def direction_as_int(self):
-        return -1 if self._direction == "d" else 1
-
-    @property
-    def quality(self):
+    def quality(self) -> str:
         return self._quality
 
     @property
-    def quality_in_english(self):
+    def quality_in_english(self) -> str:
         return Interval._qualities_in_english[self._quality]
 
     @property
-    def distance(self):
-        # TODO LOW: Roll distance and direction together into a pos/neg int?
+    def distance(self) -> int:
         return self._distance
 
     @property
-    def staff_distance(self):
-        """float: The number of staff units covered by this interval.
+    def staff_distance(self) -> float:
+        """The vertical offset needed to show this interval on a staff.
 
-        If this value is converted to a StaffUnit, it will give the
-        vertical distance from the starting note to ending note on
-        the staff, where 1 is the distance between two staff lines.
-
-        Note that the interval quality has no effect on this property.
+        The value is given in pseudo-staff-units.
 
         >>> Interval('aM3').staff_distance
-        1.0
-        >>> Interval('dm3').staff_distance
         -1.0
+        >>> Interval('dm3').staff_distance
+        1.0
         >>> Interval('aP1').staff_distance
         0.0
         >>> Interval('dP8').staff_distance
-        -3.5
+        3.5
         """
-        return ((self.distance - 1) * self.direction_as_int) / 2
+        return ((self.distance - 1) * self.direction.value) / 2
 
     @property
-    def simple_distance(self):
-        """float: The simplified interval distance collapsing compound intervals.
+    def simple_distance(self) -> float:
+        """The simplified interval distance collapsing compound intervals.
 
         This value is the simplified version of `self.distance` where intervals
         larger than an octave are moved to be within one octave.
@@ -134,24 +130,3 @@ class Interval:
             5
         """
         return ((self.distance - 1) % 7) + 1
-
-    @property
-    def pitch_class_delta(self):
-        octave = (self.distance - 1) // 7
-        octave_pc_dist = octave * 12
-        simple_pc_dist = Interval._base_pc_deltas[self.simple_distance]
-        if self.simple_distance in Interval._perfectable_distances:
-            if self.quality == "d":
-                simple_pc_dist -= 1
-            elif self.quality == "A":
-                simple_pc_dist += 1
-            # Otherwise perfect - no modification needed
-        else:
-            if self.quality == "d":
-                simple_pc_dist -= 2
-            elif self.quality == "m":
-                simple_pc_dist -= 1
-            elif self.quality == "A":
-                simple_pc_dist += 1
-            # Otherwise major - no modification needed
-        return (octave_pc_dist + simple_pc_dist) * self.direction_as_int

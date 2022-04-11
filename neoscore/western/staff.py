@@ -150,7 +150,7 @@ class Staff(MusicPath):
             raise NoClefError
         transposition = self.active_transposition_at(pos_x)
         if transposition:
-            return clef.middle_c_staff_position + self.unit(
+            return clef.middle_c_staff_position - self.unit(
                 transposition.interval.staff_distance
             )
         else:
