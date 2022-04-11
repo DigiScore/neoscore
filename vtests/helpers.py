@@ -9,11 +9,12 @@ output_dir = pathlib.Path(__file__).parent / "output"
 
 
 def render_vtest(name: str):
-    if not output_dir.exists():
+    tmp_mode = "--tmp" in sys.argv
+    if not output_dir.exists() and not tmp_mode:
         os.mkdir(output_dir)
     dpi = 20 if "--automated" in sys.argv else 300
     if "--image" in sys.argv:
-        if "--tmp" in sys.argv:
+        if tmp_mode:
             image_path = pathlib.Path(tempfile.NamedTemporaryFile(suffix=".png").name)
         else:
             image_path = output_dir / f"{name}_image.png"
@@ -26,7 +27,7 @@ def render_vtest(name: str):
         )
     elif "--pdf" in sys.argv:
         # PDF export is currently broken
-        if "--tmp" in sys.argv:
+        if tmp_mode:
             pdf_path = pathlib.Path(tempfile.NamedTemporaryFile(suffix=".pdf").name)
         else:
             pdf_path = output_dir / f"{name}_pdf.pdf"
