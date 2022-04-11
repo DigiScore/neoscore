@@ -86,6 +86,9 @@ class Font:
 
     ######## SPECIAL METHODS ########
 
+    def __str__(self):
+        return f"Font('{self.family_name}', {self.size}, {self.weight}, {self.italic})"
+
     def __eq__(self, other):
         return (
             isinstance(other, Font)
@@ -120,9 +123,6 @@ class Font:
         """Approximate the bounding rect of a string in this font.
 
         Args:
-            string (str): The string to derive the rect from
-
-        Returns:
-            Rect[Unit]: a bounding rectangle.
+            string: The string to derive the rect from
         """
         return self._interface.bounding_rect_of(string)

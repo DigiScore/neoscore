@@ -30,19 +30,9 @@ class TestMusicFont(AppTest):
         assert modifying_unit.family_name == "Bravura"
         assert modifying_unit.unit == Mm
 
-    def test__eq__(self):
-        assert self.font == MusicFont("Bravura", Unit)
-        assert self.font == MusicFont("Bravura", EquivalentUnit)
-        # (Can't test case of different family name since only Bravura exists)
-        # assert font != MusicFont("Foo", Unit)
-        assert self.font != MusicFont("Bravura", Mm)
-
-    def test__hash__(self):
-        assert hash(self.font) == hash(MusicFont("Bravura", Unit))
-        assert hash(self.font) == hash(MusicFont("Bravura", EquivalentUnit))
-        # (Can't test case of different family name since only Bravura exists)
-        # assert hash(font) != MusicFont("Foo", Unit)
-        assert hash(self.font) != hash(MusicFont("Bravura", Mm))
+    def test__str__(self):
+        font = MusicFont("Bravura", Unit)
+        assert str(font) == "MusicFont('Bravura', <unit(1) = Mm(0.353)>)"
 
     def test_every_glyphname_in_smufl(self):
         for g in smufl.glyph_names:

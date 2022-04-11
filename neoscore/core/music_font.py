@@ -12,9 +12,7 @@ from neoscore.core.font import Font
 from neoscore.core.glyph_info import GlyphInfo
 from neoscore.core.point import Point
 from neoscore.core.rect import Rect
-from neoscore.core.units import Unit, convert_all_to_unit
-
-# TODO LOW make a nice __repr__
+from neoscore.core.units import Mm, Unit, convert_all_to_unit
 
 
 class MusicFont(Font):
@@ -42,6 +40,10 @@ class MusicFont(Font):
         convert_all_to_unit(self._engraving_defaults, self.unit)
         super().__init__(family_name, self._em_size, 1, False)
 
+    def __str__(self):
+        unit_val_as_mm = Mm(self.unit(1)).display_value
+        return f"MusicFont('{self.family_name}', <unit(1) = Mm({unit_val_as_mm})>)"
+
     ######## PUBLIC PROPERTIES ########
 
     @property
@@ -57,21 +59,6 @@ class MusicFont(Font):
     def engraving_defaults(self) -> Dict:
         """dict: The SMuFL engraving defaults information for this font"""
         return self._engraving_defaults
-
-    ######## SPECIAL METHODS ########
-
-    def __eq__(self, other):
-        return (
-            isinstance(other, MusicFont)
-            # Compare only based on name and concrete point size,
-            # allowing fonts with different but equivalent `unit`
-            # types to be equal.
-            and self.family_name == other.family_name
-            and self.size == other.size
-        )
-
-    def __hash__(self):
-        return hash((self.family_name, self.size.rounded_base_value))
 
     ######## PUBLIC METHODS ########
 
