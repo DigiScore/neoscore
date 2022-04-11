@@ -161,7 +161,7 @@ class TestChordrest(AppTest):
     def test_stem_height_fitted(self):
         pitches = ["c'''", "g"]
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
-        assert_almost_equal(chord.stem_height, self.staff.unit(-10.5))
+        assert_almost_equal(chord.stem_height, self.staff.unit(10.5))
 
     def test_end_to_end(self):
         staff = Staff((Mm(0), Mm(0)), None, Mm(100), Mm(1))

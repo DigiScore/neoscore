@@ -45,7 +45,7 @@ class Stem(MusicPath):
         self._direction = direction
         self._height = height
         # Draw stem path
-        self.line_to(ZERO, (self.height * self.direction.value))
+        self.line_to(ZERO, self.height * self.direction.value)
 
     ######## PUBLIC PROPERTIES ########
 
