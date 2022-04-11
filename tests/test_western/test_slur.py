@@ -1,10 +1,12 @@
 from neoscore.core.flowable import Flowable
+from neoscore.core.path_element import ControlPoint, CurveTo, LineTo, MoveTo
+from neoscore.core.point import Point
 from neoscore.core.units import Mm, Unit
 from neoscore.western.slur import Slur
 from neoscore.western.staff import Staff
 from tests.mocks.mock_staff_object import MockStaffObject
 
-from ..helpers import AppTest
+from ..helpers import AppTest, assert_path_els_equal
 
 
 class TestSlur(AppTest):
@@ -15,9 +17,26 @@ class TestSlur(AppTest):
         self.left_parent = MockStaffObject((Unit(0), Unit(0)), self.staff)
         self.right_parent = MockStaffObject((Unit(10), Unit(2)), self.staff)
 
-    def test_doesnt_crash(self):
-        """A woefully inadequate test to just see if slurs can be drawn at all.
-
-        TODO LOW: Replace this with real tests
-        """
+    def test_path_elements(self):
         slur = Slur((Mm(1), Mm(2)), self.left_parent, (Mm(3), Mm(4)), self.right_parent)
+        unit = self.staff.unit
+        assert_path_els_equal(
+            slur.elements,
+            [
+                MoveTo(Point(unit(0.0), unit(-0.1)), slur),
+                CurveTo(
+                    Point(Mm(3), Mm(3.825)),
+                    self.right_parent,
+                    ControlPoint(Point(unit(1), unit(-2.22)), slur),
+                    ControlPoint(Point(Mm(1.25), Mm(0.115)), self.right_parent),
+                ),
+                LineTo(Point(Mm(3), Mm(4)), self.right_parent),
+                CurveTo(
+                    Point(Mm(1), Mm(2)),
+                    slur,
+                    ControlPoint(Point(Mm(1.25), Mm(0.5)), self.right_parent),
+                    ControlPoint(Point(Mm(2.75), Mm(-1.5)), slur),
+                ),
+                MoveTo(Point(Unit(0.0), Unit(0.0)), slur),
+            ],
+        )
