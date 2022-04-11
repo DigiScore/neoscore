@@ -49,7 +49,10 @@ class Barline(MusicPath, MultiStaffObject):
                 thickness = engraving_defaults[style.lines[n]]
                 pen = Pen(pattern=style.pattern,
                                thickness=thickness)
-                self.draw_bar_line(pen, seperation * n)
+                self.draw_bar_line(pen)
+                self.move_to(Unit(seperation * n),
+                             self.lowest.height,
+                             parent=self.lowest)
 
         else:
             thickness = engraving_defaults["thinBarlineThickness"]
@@ -63,9 +66,8 @@ class Barline(MusicPath, MultiStaffObject):
         offset_x = map_between_x(self.lowest, self.highest)
         self.bottom_x = self.pos_x + offset_x + separation
         self.line_to(self.bottom_x,
-                     self.lowest.height + separation,
+                     self.lowest.height,
                      parent=self.lowest)
-
 
     # @property
     # def pos_x(self):

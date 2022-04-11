@@ -15,7 +15,7 @@ staff_1 = Staff((Mm(0), Mm(0)), flowable, Mm(100), Mm(2))
 staff_2 = Staff((Mm(0), Mm(30)), flowable, Mm(100))
 staff_3 = Staff((Mm(10), Mm(50)), flowable, Mm(100))
 
-barline = Barline(Mm(15), [staff_1, staff_2])
+# barline = Barline(Mm(15), [staff_1, staff_2])
 barline_end = Barline(Mm(30),
                       [staff_1, staff_2],
                       style=barline_style.END
