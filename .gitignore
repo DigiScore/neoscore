@@ -24,3 +24,6 @@ htmlcov
 
 # vtest output files
 vtests/output
+
+# Docs
+doc/_build
