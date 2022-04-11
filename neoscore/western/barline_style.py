@@ -15,8 +15,8 @@ class BarLineStyle(Enum):
     thinBarlineThickness
 
       """
+    # todo - cant get this to pass into enum dicts
     engraving_defaults = MusicFont.engraving_defaults
-
 
     SINGLE = {"pattern": PenPattern.SOLID,
               "lines": ["thinBarlineThickness"],
@@ -29,7 +29,7 @@ class BarLineStyle(Enum):
 
     THICK_DOUBLE = {"pattern": PenPattern.SOLID,
                     "lines": ["thickBarlineThickness",
-                             "thickBarlineThickness"],
+                              "thickBarlineThickness"],
                     "separation": "barlineSeparation"}
     """Think double bar line. Used for end of score."""
 
