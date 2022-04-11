@@ -51,7 +51,14 @@ class TestBarline(AppTest):
         assert barline.pen == Pen("#ff0000")
 
     def test_bar_line_style_enum(self):
-        barline = Barline(Mm(15),
-                          [self.staff_1, self.staff_2],
-                          style=BarLineStyle.SINGLE)
-        assert barline.style["pattern"] == 1
+        bar_style_single = BarLineStyle.SINGLE
+        bar_style_thick_double = BarLineStyle.THICK_DOUBLE
+        bar_style_end = BarLineStyle.END
+
+        assert bar_style_single.value["lines"][0] == "thinBarlineThickness"
+        assert bar_style_thick_double.value["separation"] == "barlineSeparation"
+        assert bar_style_thick_double.value["lines"][1] == "thickBarlineThickness"
+        assert bar_style_end.value["lines"][0] == "thinBarlineThickness"
+        assert bar_style_end.value["lines"][1] == "thickBarlineThickness"
+
+

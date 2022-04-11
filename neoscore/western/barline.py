@@ -49,12 +49,12 @@ class Barline(MusicPath, MultiStaffObject):
         bottom_x = pos_x + offset_x
         self.line_to(bottom_x, self.lowest.height, parent=self.lowest)
 
-
-    @property
-    def style(self):
-        if
-
-        self.thickness = self.engraving_defaults["thinBarlineThickness"]
-
-
-        return self.thickness
+    #
+    # @property
+    # def style(self):
+    #     if
+    #
+    #     self.thickness = self.engraving_defaults["thinBarlineThickness"]
+    #
+    #
+    #     return self.thickness
