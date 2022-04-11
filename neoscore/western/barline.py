@@ -38,10 +38,10 @@ class Barline(MusicPath, MultiStaffObject):
         """
         MultiStaffObject.__init__(self, staves)
         MusicPath.__init__(self, (pos_x, ZERO), self.highest, font)
-        self.engraving_defaults = self.music_font.engraving_defaults
+        engraving_defaults = self.music_font.engraving_defaults
 
         thickness = engraving_defaults["thinBarlineThickness"]
-        self.pen = Pen.from_def(pen) if pen else Pen(thickness=self.thickness)
+        self.pen = Pen.from_def(pen) if pen else Pen(thickness=thickness)
         # Draw the path
         # Calculate offset needed to make vertical line if top and
         # bottom staves are not horizontally aligned.

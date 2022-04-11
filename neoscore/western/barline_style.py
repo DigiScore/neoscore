@@ -15,29 +15,33 @@ class BarLineStyle(Enum):
     thinBarlineThickness
 
       """
-    engraving_defaults = MusicFont.engraving_defaults
+    # engraving_defaults = MusicFont.engraving_defaults
 
 
     SINGLE = {"pattern": PenPattern.SOLID,
-              "lines": [thickness = engraving_defaults["thinBarlineThickness"]]}
-
+              "lines": ["thinBarlineThickness"],
+              "separation": None}
     """Single line style. Used for normal bar separation."""
 
     THICK_DOUBLE = {"pattern": PenPattern.SOLID,
-              "lines": ["thickBarlineThickness"],
-                    "seperation": }
+                    "lines": ["thickBarlineThickness",
+                              "thickBarlineThickness"],
+                    "separation": "barlineSeparation"}
     """Think double bar line. Used for end of score."""
 
     THIN_DOUBLE = {"pattern": PenPattern.SOLID,
-              "lines": ["thinBarlineThickness",
-                        "thinBarlineThickness"]}
+                   "lines": ["thinBarlineThickness",
+                        "thinBarlineThickness"],
+                   "separation": "barlineSeparation"}
     """This double bar line. Used for section separation."""
 
     END = {"pattern": PenPattern.SOLID,
               "lines": ["thinBarlineThickness",
-                        "thinBarlineThickness"]}
-    """End barline, thin solid, then think solid"""
+                        "thinBarlineThickness"],
+           "separation": "thinThickBarlineSeparation"}
+    """End bar line, thin solid, then thick solid"""
 
     DASHED = {"pattern": PenPattern.DASH,
-              "lines": ["thinBarlineThickness"}
+              "lines": ["thinBarlineThickness"],
+              "separation": None}
     """Dashed single bar line."""
