@@ -393,7 +393,7 @@ class Chordrest(PositionedObject, StaffObject):
             + flag_offset
         )
         abs_height = max(min_abs_height, fitted_abs_height)
-        return abs_height * self.stem_direction.value
+        return abs_height
 
     ######## PRIVATE METHODS ########
 
@@ -498,6 +498,7 @@ class Chordrest(PositionedObject, StaffObject):
         self._stem = Stem(
             Point(self.staff.unit(0), self.furthest_notehead.y),
             self,
+            self.stem_direction,
             self.stem_height,
         )
 
