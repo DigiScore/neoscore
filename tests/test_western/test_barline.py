@@ -61,7 +61,6 @@ class TestBarline(AppTest):
         assert bar_style_end.lines[1] == "thickBarlineThickness"
 
     def test_bar_line_draw_coords(self):
-        # font = MusicFont("Bravura", Mm)
         barline_single = Barline(Mm(10),
                               [self.staff_1, self.staff_2],
                               style=barline_style.END)
