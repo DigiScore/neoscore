@@ -5,7 +5,7 @@ from neoscore.core.point import Point
 from neoscore.core.units import Mm
 from neoscore.western.barline import Barline
 from neoscore.western.staff import Staff
-from neoscore.western.barline_style import BarLineStyle
+from neoscore.western import barline_style
 
 from ..helpers import AppTest
 
@@ -50,15 +50,29 @@ class TestBarline(AppTest):
         barline = Barline(Mm(15), [self.staff_1, self.staff_2], pen="#ff0000")
         assert barline.pen == Pen("#ff0000")
 
-    def test_bar_line_style_enum(self):
-        bar_style_single = BarLineStyle.SINGLE
-        bar_style_thick_double = BarLineStyle.THICK_DOUBLE
-        bar_style_end = BarLineStyle.END
+    def test_bar_line_style_info(self):
+        bar_style_single = barline_style.SINGLE
+        bar_style_thick_double = barline_style.THICK_DOUBLE
+        bar_style_end = barline_style.END
 
-        assert bar_style_single.value["lines"][0] == "thinBarlineThickness"
-        assert bar_style_thick_double.value["separation"] == "barlineSeparation"
-        assert bar_style_thick_double.value["lines"][1] == "thickBarlineThickness"
-        assert bar_style_end.value["lines"][0] == "thinBarlineThickness"
-        assert bar_style_end.value["lines"][1] == "thickBarlineThickness"
+        assert bar_style_single.lines[0] == "thinBarlineThickness"
+        assert bar_style_thick_double.lines[1] == "thickBarlineThickness"
+        assert bar_style_end.lines[0] == "thinBarlineThickness"
+        assert bar_style_end.lines[1] == "thickBarlineThickness"
+
+    def test_bar_line_draw_coords(self):
+        # font = MusicFont("Bravura", Mm)
+        barline_single = Barline(Mm(10),
+                              [self.staff_1, self.staff_2],
+                              style=barline_style.END)
+        barline_end = Barline(Mm(15),
+                          [self.staff_1, self.staff_2],
+                          style=barline_style.END)
+
+        assert barline_single.bottom_x == Mm(10)
+        assert barline_end.bottom_x == Mm(15.8)
+
+
+
 
 
