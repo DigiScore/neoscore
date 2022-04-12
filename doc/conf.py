@@ -87,10 +87,10 @@ autodoc_typehints_format = "short"
 python_use_unqualified_type_names = True
 
 
-def all_python_src_files():
+def all_files_in_tree(extension: str):
     for root, dirs, files in os.walk(PROJECT_SRC_DIR):
         for filename in files:
-            if filename.endswith(".py"):
+            if filename.endswith(extension):
                 with open(os.path.join(root, filename), "r") as f:
                     src = f.read()
                 path = Path(root, filename)
@@ -109,7 +109,7 @@ def autogenerate_type_alias_mapping():
     """
     alias_re = re.compile("^(\w+): TypeAlias =", re.MULTILINE)
     result = {}
-    for path, src in all_python_src_files():
+    for path, src in all_files_in_tree(".py"):
         matches = alias_re.findall(src)
         for match in matches:
             # Convert file path to module import path
@@ -174,6 +174,39 @@ def autoapi_skip_member(app, what, name, obj, skip, options):
     return skip or exclude
 
 
+"""
+
+since sphinx seems to not auto-link type aliases, need to manually do this. i can do
+this in a post-processing step running on generated HTML files. use beautifulsoup to
+find unlinked references to type aliases (as enumerated now in autodoc_type_aliases),
+then automatically insert links.
+
+
+make the post processing function fairly modular so i can insert other post processing
+steps as will likely be needed.
+
+
+<span class="pre">PointDef</span>
+
+
+<a class="reference internal" href="neoscore.core.positioned_object.html#neoscore.core.positioned_object.PositionedObject" title="neoscore.core.positioned_object.PositionedObject"><span class="pre">PositionedObject</span></a>
+"""
+
+
+def post_process_html(app, exception):
+    if exception:
+        return
+    target_files = []
+    for doc in app.env.found_docs:
+        target_files.append(Path(app.outdir) / app.builder.get_target_uri(doc))
+
+    # use beautifulsoup for this
+
+    for html_file in target_files:
+        src = html_file.read_text()
+
+
 def setup(app):
     app.connect("builder-inited", run_apidoc)
     app.connect("autodoc-skip-member", autoapi_skip_member)
+    app.connect("build-finished", post_process_html)
