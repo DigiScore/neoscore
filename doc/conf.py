@@ -7,6 +7,7 @@
 # -- Path setup --------------------------------------------------------------
 
 import os
+import re
 import shutil
 import sys
 
@@ -80,13 +81,47 @@ napoleon_include_init_with_doc = True
 # autoclass_content = "both"
 autodoc_class_signature = "separated"
 autodoc_typehints_format = "short"
-autodoc_type_aliases = {
-    "PointDef": "neoscore.core.point.PointDef",
-}
 
 # Workaround for https://github.com/sphinx-doc/sphinx/issues/10290
 # autodoc_typehints_format doesn't work for all situation, including class properties
 python_use_unqualified_type_names = True
+
+
+def all_python_src_files():
+    for root, dirs, files in os.walk(PROJECT_SRC_DIR):
+        for filename in files:
+            if filename.endswith(".py"):
+                with open(os.path.join(root, filename), "r") as f:
+                    src = f.read()
+                path = Path(root, filename)
+                yield path, src
+
+
+def autogenerate_type_alias_mapping():
+    """
+    Sphinx currently requires you to explicitly copy out every type alias in
+    `autodoc_type_alias` to prevent it from automatically expanding them in docs. This
+    is not very maintainable, so we instead automatically gather and provide the
+    mappings here. For this to work, type aliases must be explicitly annotated and they
+    must be provided as top-level module members.
+
+    See https://github.com/sphinx-doc/sphinx/issues/8934
+    """
+    alias_re = re.compile("^(\w+): TypeAlias =", re.MULTILINE)
+    result = {}
+    for path, src in all_python_src_files():
+        matches = alias_re.findall(src)
+        for match in matches:
+            # Convert file path to module import path
+            path = path.with_suffix("")
+            import_path_parts = path.parts[path.parts.index("neoscore") + 1 :]
+            import_path = ".".join(import_path_parts)
+            full_alias_name = import_path + "." + match
+            result[match] = full_alias_name
+    return result
+
+
+autodoc_type_aliases = autogenerate_type_alias_mapping()
 
 
 def run_apidoc(_):
