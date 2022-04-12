@@ -153,3 +153,8 @@ class Pitch:
 
 
 PitchDef: TypeAlias = Union[Pitch, str, tuple]
+"""Shorthand for a `Pitch`
+
+May be either a `Pitch`, a pitch string shorthand (see `Pitch.from_str`), or a `Pitch`
+init arg tuple.
+"""

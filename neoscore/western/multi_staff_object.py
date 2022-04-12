@@ -6,6 +6,7 @@ from neoscore.western.staff import Staff
 from neoscore.western.tab_staff import TabStaff
 
 StaffLike: TypeAlias = Union[Staff, TabStaff]
+"""A known staff-like object"""
 
 
 class MultiStaffObject:

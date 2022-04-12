@@ -63,4 +63,4 @@ class Point(NamedTuple):
 ORIGIN = Point(ZERO, ZERO)
 
 PointDef: TypeAlias = Union[Point, tuple[Unit, Unit]]
-"""Test PointDef docstring"""
+"""A Point or an argument tuple for one"""

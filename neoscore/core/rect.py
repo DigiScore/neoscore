@@ -30,6 +30,7 @@ class Rect:
 
 
 RectDef: TypeAlias = Union[Rect, tuple[Unit, Unit, Unit, Unit]]
+"""A `Rect` or an init arg tuple for one."""
 
 
 # TODO HIGH Move into Rect classmethod
