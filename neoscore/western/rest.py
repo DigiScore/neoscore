@@ -14,14 +14,7 @@ if TYPE_CHECKING:
 
 class Rest(MusicText):
 
-    """A simple Rest glyph whose appearance is determined by a duration
-
-    Currently, the following rest types are not supported:
-        * restHalfLegerLine
-        * restWholeLegerLine
-        * restLonga
-        * restMaxima
-    """
+    """A simple Rest glyph whose appearance is determined by a duration"""
 
     _glyphnames = {
         1024: "rest1024th",
