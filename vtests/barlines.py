@@ -7,6 +7,8 @@ from neoscore.core.units import Mm
 from neoscore.western.barline import Barline
 from neoscore.western.staff import Staff
 from neoscore.western import barline_style
+from helpers import render_vtest
+
 
 neoscore.setup()
 
@@ -21,8 +23,8 @@ barline_end = Barline(Mm(30),
                       style=barline_style.END
                       )
 
-neoscore.show()
-
+# neoscore.show()
+render_vtest("barlines")
 
 
 
