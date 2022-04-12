@@ -1,17 +1,15 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional, cast
+from typing import Optional, cast
 
 from neoscore.core.brush import BrushDef
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicStringDef, MusicText
 from neoscore.core.pen import PenDef
 from neoscore.core.point import PointDef
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner_2d import Spanner2D
 from neoscore.core.units import ZERO, Unit
-
-if TYPE_CHECKING:
-    from neoscore.core.mapping import Parent
 
 
 class RepeatingMusicTextLine(MusicText, Spanner2D):
@@ -26,9 +24,9 @@ class RepeatingMusicTextLine(MusicText, Spanner2D):
     def __init__(
         self,
         start: PointDef,
-        start_parent: Optional[Parent],
+        start_parent: Optional[PositionedObject],
         end_pos: PointDef,
-        end_parent: Optional[Parent],
+        end_parent: Optional[PositionedObject],
         text: MusicStringDef,
         end_cap_text: Optional[MusicStringDef] = None,
         font: Optional[MusicFont] = None,

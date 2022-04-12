@@ -4,6 +4,8 @@ from collections.abc import Iterator
 from typing import TYPE_CHECKING, Any, Optional, Type, cast
 
 from neoscore.core import neoscore
+
+# from neoscore.core.document import Document
 from neoscore.core.mapping import (
     canvas_pos_of,
     descendant_pos,
@@ -16,7 +18,6 @@ from neoscore.interface.positioned_object_interface import PositionedObjectInter
 if TYPE_CHECKING:
     # Used in type annotations, imported here to avoid cyclic imports
     from neoscore.core.flowable import Flowable
-    from neoscore.core.mapping import Parent
 
 
 class PositionedObject:
@@ -44,7 +45,7 @@ class PositionedObject:
     def __init__(
         self,
         pos: PointDef,
-        parent: Optional[Parent] = None,
+        parent: Optional[PositionedObject] = None,
     ):
         """
         Args:
@@ -99,7 +100,7 @@ class PositionedObject:
         return ZERO
 
     @property
-    def parent(self) -> Parent:
+    def parent(self) -> PositionedObject:
         """The parent object.
 
         If this is set to None, it defaults to the first page of the document.
@@ -107,7 +108,7 @@ class PositionedObject:
         return self._parent
 
     @parent.setter
-    def parent(self, value: Optional[Parent]):
+    def parent(self, value: Optional[PositionedObject]):
         self._parent._unregister_child(self)
         self._set_parent_and_register_self(value)
 

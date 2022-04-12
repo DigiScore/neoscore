@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import math
-from typing import TYPE_CHECKING, Optional
+from typing import Optional
 
 from neoscore.core.brush import Brush
 from neoscore.core.directions import HorizontalDirection
@@ -13,9 +13,6 @@ from neoscore.core.point import Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner_2d import Spanner2D
 from neoscore.core.units import ZERO, Unit
-
-if TYPE_CHECKING:
-    from neoscore.core.mapping import Parent
 
 
 class Hairpin(MusicPath, Spanner2D):
@@ -29,9 +26,9 @@ class Hairpin(MusicPath, Spanner2D):
     def __init__(
         self,
         pos: PointDef,
-        parent: Parent,
+        parent: PositionedObject,
         end_pos: PointDef,
-        end_parent: Optional[Parent],
+        end_parent: Optional[PositionedObject],
         direction: HorizontalDirection,
         width: Optional[Unit] = None,
         font: Optional[MusicFont] = None,

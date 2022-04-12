@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional
+from typing import Optional
 
 from neoscore.core.directions import VerticalDirection
 from neoscore.core.music_font import MusicFont
@@ -8,10 +8,8 @@ from neoscore.core.music_path import MusicPath
 from neoscore.core.path_element import PathElement
 from neoscore.core.pen import Pen
 from neoscore.core.point import PointDef
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import ZERO, Unit
-
-if TYPE_CHECKING:
-    from neoscore.core.mapping import Parent
 
 
 class Stem(MusicPath):
@@ -25,7 +23,7 @@ class Stem(MusicPath):
     def __init__(
         self,
         start: PointDef,
-        parent: Parent,
+        parent: PositionedObject,
         direction: VerticalDirection,
         height: Unit,
         font: Optional[MusicFont] = None,

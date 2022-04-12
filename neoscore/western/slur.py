@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional
+from typing import Optional
 
 from neoscore.core.brush import BrushDef
 from neoscore.core.directions import VerticalDirection
@@ -8,10 +8,8 @@ from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
 from neoscore.core.pen import PenDef
 from neoscore.core.point import Point, PointDef
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner_2d import Spanner2D
-
-if TYPE_CHECKING:
-    from neoscore.core.mapping import Parent
 
 
 class Slur(MusicPath, Spanner2D):
@@ -25,9 +23,9 @@ class Slur(MusicPath, Spanner2D):
     def __init__(
         self,
         pos: PointDef,
-        parent: Parent,
+        parent: PositionedObject,
         end_pos: PointDef,
-        end_parent: Optional[Parent],
+        end_parent: Optional[PositionedObject],
         direction: VerticalDirection = VerticalDirection.UP,
         font: Optional[MusicFont] = None,
         brush: Optional[BrushDef] = None,

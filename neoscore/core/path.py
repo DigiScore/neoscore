@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from math import atan, cos, pi, sin, sqrt, tan
-from typing import TYPE_CHECKING, Optional, cast
+from typing import Optional, cast
 
 from neoscore.core.brush import Brush, BrushDef
 from neoscore.core.mapping import map_between, map_between_x
@@ -15,6 +15,7 @@ from neoscore.core.path_element import (
 )
 from neoscore.core.pen import Pen, PenDef
 from neoscore.core.point import Point, PointDef
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import ZERO, Mm, Unit
 from neoscore.interface.path_interface import (
     PathInterface,
@@ -23,9 +24,6 @@ from neoscore.interface.path_interface import (
     ResolvedMoveTo,
     ResolvedPathElement,
 )
-
-if TYPE_CHECKING:
-    from neoscore.core.mapping import Parent
 
 
 class Path(PaintedObject):
@@ -41,7 +39,7 @@ class Path(PaintedObject):
     def __init__(
         self,
         pos: PointDef,
-        parent: Optional[Parent],
+        parent: Optional[PositionedObject],
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,
         rotation: float = 0,
@@ -72,7 +70,7 @@ class Path(PaintedObject):
     def straight_line(
         cls,
         start: PointDef,
-        parent: Optional[Parent],
+        parent: Optional[PositionedObject],
         stop: PointDef,
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,
@@ -91,7 +89,7 @@ class Path(PaintedObject):
     def rect(
         cls,
         pos: PointDef,
-        parent: Optional[Parent],
+        parent: Optional[PositionedObject],
         width: Unit,
         height: Unit,
         brush: Optional[BrushDef] = None,
@@ -109,7 +107,7 @@ class Path(PaintedObject):
     def ellipse(
         cls,
         pos: PointDef,
-        parent: Optional[Parent],
+        parent: Optional[PositionedObject],
         width: Unit,
         height: Unit,
         brush: Optional[BrushDef] = None,
@@ -142,7 +140,7 @@ class Path(PaintedObject):
     def ellipse_from_center(
         cls,
         center_pos: PointDef,
-        parent: Optional[Parent],
+        parent: Optional[PositionedObject],
         width: Unit,
         height: Unit,
         brush: Optional[BrushDef] = None,
@@ -166,7 +164,7 @@ class Path(PaintedObject):
     def arc(
         cls,
         pos: PointDef,
-        parent: Optional[Parent],
+        parent: Optional[PositionedObject],
         width: Unit,
         height: Unit,
         start_angle: float,
@@ -305,9 +303,9 @@ class Path(PaintedObject):
     def arrow(
         cls,
         start: PointDef,
-        parent: Optional[Parent],
+        parent: Optional[PositionedObject],
         end: PointDef,
-        end_parent: Optional[Parent] = None,
+        end_parent: Optional[PositionedObject] = None,
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,
         line_width: Unit = Mm(0.35),
@@ -438,7 +436,7 @@ class Path(PaintedObject):
 
     ######## Public Methods ########
 
-    def line_to(self, x: Unit, y: Unit, parent: Optional[Parent] = None):
+    def line_to(self, x: Unit, y: Unit, parent: Optional[PositionedObject] = None):
         """Draw a path from the current position to a new point.
 
         A point parent may be passed as well, anchored the target
@@ -459,7 +457,7 @@ class Path(PaintedObject):
             self.move_to(ZERO, ZERO)
         self.elements.append(LineTo(Point(x, y), parent or self))
 
-    def move_to(self, x: Unit, y: Unit, parent: Optional[Parent] = None):
+    def move_to(self, x: Unit, y: Unit, parent: Optional[PositionedObject] = None):
         """Close the current sub-path and start a new one.
 
         A point parent may be passed as well, anchored the target point to
@@ -494,9 +492,9 @@ class Path(PaintedObject):
         control_2_y: Unit,
         end_x: Unit,
         end_y: Unit,
-        control_1_parent: Optional[Parent] = None,
-        control_2_parent: Optional[Parent] = None,
-        end_parent: Optional[Parent] = None,
+        control_1_parent: Optional[PositionedObject] = None,
+        control_2_parent: Optional[PositionedObject] = None,
+        end_parent: Optional[PositionedObject] = None,
     ):
         """Draw a cubic bezier curve from the current position to a new point.
 
@@ -530,7 +528,7 @@ class Path(PaintedObject):
             self.move_to(ZERO, ZERO)
         self.elements.append(CurveTo(Point(end_x, end_y), end_parent or self, c1, c2))
 
-    def _relative_element_pos(self, element: Parent) -> Point:
+    def _relative_element_pos(self, element: PositionedObject) -> Point:
         return map_between(self, element)
 
     def _resolve_path_elements(self) -> list[ResolvedPathElement]:

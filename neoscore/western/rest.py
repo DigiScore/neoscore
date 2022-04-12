@@ -1,15 +1,13 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional, cast
+from typing import Optional, cast
 
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.point import Point, PointDef
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.western.duration import Duration, DurationDef
 from neoscore.western.duration_display import DurationDisplay
-
-if TYPE_CHECKING:
-    from neoscore.core.mapping import Parent
 
 
 class Rest(MusicText):
@@ -33,7 +31,7 @@ class Rest(MusicText):
     def __init__(
         self,
         pos: PointDef,
-        parent: Parent,
+        parent: PositionedObject,
         duration: DurationDef,
         font: Optional[MusicFont] = None,
     ):

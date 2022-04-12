@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional
+from typing import Optional
 
 from neoscore.core import neoscore
 from neoscore.core.font import Font
@@ -8,9 +8,6 @@ from neoscore.core.point import Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import ZERO, Unit
 from neoscore.interface.rich_text_interface import RichTextInterface
-
-if TYPE_CHECKING:
-    from neoscore.core.mapping import Parent
 
 
 class RichText(PositionedObject):
@@ -26,7 +23,7 @@ class RichText(PositionedObject):
     def __init__(
         self,
         pos: PointDef,
-        parent: Optional[Parent],
+        parent: Optional[PositionedObject],
         html_text: str,
         width: Optional[Unit] = None,
         font: Optional[Font] = None,

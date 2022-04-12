@@ -1,15 +1,12 @@
 from __future__ import annotations
 
 import pathlib
-from typing import TYPE_CHECKING, Optional
+from typing import Optional
 
 from neoscore.core.point import Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import ZERO, Unit
 from neoscore.interface.image_interface import ImageInterface
-
-if TYPE_CHECKING:
-    from neoscore.core.mapping import Parent
 
 
 class Image(PositionedObject):
@@ -22,7 +19,7 @@ class Image(PositionedObject):
     def __init__(
         self,
         pos: PointDef,
-        parent: Optional[Parent],
+        parent: Optional[PositionedObject],
         file_path: str | pathlib.Path,
         scale: float = 1,
     ):

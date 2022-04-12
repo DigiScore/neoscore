@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional
+from typing import Optional
 
 from neoscore.core.brush import BrushDef
 from neoscore.core.has_music_font import HasMusicFont
@@ -8,9 +8,7 @@ from neoscore.core.music_font import MusicFont
 from neoscore.core.path import Path
 from neoscore.core.pen import PenDef
 from neoscore.core.point import PointDef
-
-if TYPE_CHECKING:
-    from neoscore.core.mapping import Parent
+from neoscore.core.positioned_object import PositionedObject
 
 
 class MusicPath(Path, HasMusicFont):
@@ -24,7 +22,7 @@ class MusicPath(Path, HasMusicFont):
     def __init__(
         self,
         pos: PointDef,
-        parent: Optional[Parent] = None,
+        parent: Optional[PositionedObject] = None,
         font: Optional[MusicFont] = None,
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,

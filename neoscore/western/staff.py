@@ -14,7 +14,6 @@ from neoscore.western.octave_line import OctaveLine
 from neoscore.western.transposition import Transposition
 
 if TYPE_CHECKING:
-    from neoscore.core.mapping import Parent
     from neoscore.western.clef import Clef
 
 
@@ -28,7 +27,7 @@ class Staff(MusicPath):
     def __init__(
         self,
         pos: PointDef,
-        parent: Optional[Parent],
+        parent: Optional[PositionedObject],
         length: Unit,
         line_spacing: Unit = Mm(1.75),
         line_count: int = 5,
