@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Union
+from typing import TypeAlias, Union
 
 from neoscore.core.exceptions import ColorBoundsError
 
@@ -135,5 +135,5 @@ class Color:
                 raise ColorBoundsError(value)
 
 
-ColorDef = Union[Color, str, tuple[int, int, int], tuple[int, int, int, int]]
+ColorDef: TypeAlias = Union[Color, str, tuple[int, int, int], tuple[int, int, int, int]]
 """A `Color` or a shorthand hex string or init argument tuple for one."""

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from typing import Optional, Union
+from typing import Optional, TypeAlias, Union
 
 from neoscore.core.exceptions import InvalidPitchDescriptionError
 from neoscore.western.accidental_type import AccidentalType
@@ -152,4 +152,4 @@ class Pitch:
             return position
 
 
-PitchDef = Union[Pitch, str, tuple]
+PitchDef: TypeAlias = Union[Pitch, str, tuple]

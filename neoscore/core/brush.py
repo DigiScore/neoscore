@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Optional, Union
+from typing import Any, Optional, TypeAlias, Union
 
 from neoscore.core.brush_pattern import BrushPattern
 from neoscore.core.color import Color, ColorDef
@@ -89,5 +89,5 @@ class Brush:
         )
 
 
-BrushDef = Union[Brush, str]
+BrushDef: TypeAlias = Union[Brush, str]
 """A `Brush` or a color hex string to be passed to an otherwise default `Brush`."""

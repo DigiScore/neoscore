@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import NamedTuple, Optional, Union
+from typing import NamedTuple, Optional, TypeAlias, Union
 
 from PyQt5.QtGui import QPainterPath
 
@@ -31,7 +31,7 @@ class ResolvedCurveTo(NamedTuple):
     end_y: Unit
 
 
-ResolvedPathElement = Union[ResolvedMoveTo, ResolvedLineTo, ResolvedCurveTo]
+ResolvedPathElement: TypeAlias = Union[ResolvedMoveTo, ResolvedLineTo, ResolvedCurveTo]
 """A path element whose position is relative to its path"""
 
 

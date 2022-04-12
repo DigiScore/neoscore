@@ -4,8 +4,6 @@ from collections.abc import Iterator
 from typing import TYPE_CHECKING, Any, Optional, Type, cast
 
 from neoscore.core import neoscore
-
-# from neoscore.core.document import Document
 from neoscore.core.mapping import (
     canvas_pos_of,
     descendant_pos,

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Union
+from typing import TypeAlias, Union
 
 from neoscore.core.units import Unit
 
@@ -29,7 +29,10 @@ class Rect:
         )
 
 
-RectDef = Union[Rect, tuple[Unit, Unit, Unit, Unit]]
+RectDef: TypeAlias = Union[Rect, tuple[Unit, Unit, Unit, Unit]]
+
+
+# TODO HIGH Move into Rect classmethod
 
 
 def rect_from_def(rect_def: RectDef) -> Rect:

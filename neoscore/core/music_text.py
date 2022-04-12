@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import NamedTuple, Optional, Type, Union, cast
+from typing import NamedTuple, Optional, Type, TypeAlias, Union, cast
 
 from neoscore.core.brush import BrushDef
 from neoscore.core.has_music_font import HasMusicFont
@@ -27,7 +27,7 @@ class _CachedTextGeometry(NamedTuple):
 _GEOMETRY_CACHE: dict[_CachedTextGeometryKey, _CachedTextGeometry] = {}
 
 
-MusicStringDef = Union[MusicCharDef, list[MusicCharDef]]
+MusicStringDef: TypeAlias = Union[MusicCharDef, list[MusicCharDef]]
 """Argument specifying SMuFL `MusicText` strings.
 
 This supports several forms for different use-cases. The most commonly

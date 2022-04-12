@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Dict, Optional, Union
+from typing import Dict, Optional, TypeAlias, Union
 
-KeySignatureLayout = Dict[str, tuple[float, float]]
+KeySignatureLayout: TypeAlias = Dict[str, tuple[float, float]]
 """A layout specification for accidentals in key signatures.
 
 Instances should have a key for every pitch letter a-g (lowercase),
@@ -13,7 +13,7 @@ to be plugged into a staff's unit.
 """
 
 
-StaffPosFunc = Callable[[int], float]
+StaffPosFunc: TypeAlias = Callable[[int], float]
 """A function which takes a number of staff lines and returns a staff position."""
 
 
@@ -162,7 +162,7 @@ CLEF_TYPE_SHORTHAND_NAMES = {
     "percussion_2": PERCUSSION_2,
 }
 
-ClefTypeDef = Union[ClefType, str]
+ClefTypeDef: TypeAlias = Union[ClefType, str]
 """ClefTypes can be given by the string name of any pre-defined ClefType in this module.
 
 String lookup is case-insensitive.

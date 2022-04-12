@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from functools import cached_property
-from typing import Optional, Union
+from typing import Optional, TypeAlias, Union
 
 from neoscore.core.glyph_info import GlyphInfo
 from neoscore.core.music_font import MusicFont
@@ -55,7 +55,7 @@ class MusicChar:
         return self.glyph_info.bounding_rect
 
 
-MusicCharDef = Union[MusicChar, str, tuple[str, int]]
+MusicCharDef: TypeAlias = Union[MusicChar, str, tuple[str, int]]
 """Shorthand for a MusicChar.
 
 Bare `str` values should be glyph names, while tuples should be of the form
