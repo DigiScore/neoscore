@@ -49,8 +49,7 @@ class Barline(MusicPath, MultiStaffObject):
         # do we need an over-ride pen?
         self.pen = pen
 
-        # Calculate offset needed to make vertical line if top and
-        # bottom staves are not horizontally aligned.
+        # Calculate offset
         self.offset_x = self.calculate_offset()
 
         if style:
@@ -62,32 +61,35 @@ class Barline(MusicPath, MultiStaffObject):
                                    thickness)
 
                 # move to next line to the right
-                # self.move_to(self.separation,
-                #              ZERO)
-                print(self.pos_x)
-                self.pos_x += Unit(100)
+                # separation = self.engraving_defaults["barlineSeparation"]
+                # self.pos_x += Unit(100) + separation
 
         else:
-            # MusicPath.__init__(self, (pos_x, ZERO), self.highest, font)
-            # thickness = engraving_defaults["thinBarlineThickness"]
-            # self.pen = Pen(thickness=thickness)
             self.draw_bar_line()
 
-    def draw_bar_line(self, pattern=PenPattern.SOLID, thickness="thinBarlineThickness"):
-        # Draw the path
+    def draw_bar_line(self,
+                      pattern=PenPattern.SOLID,
+                      thickness="thinBarlineThickness"
+                      ):
+        # Create the path
         MusicPath.__init__(self, (self.pos_x, ZERO), self.highest, self.font)
-        engraving_defaults = self.music_font.engraving_defaults
-        self.separation = engraving_defaults["barlineSeparation"]
-        thickness = engraving_defaults[thickness]
+        self.engraving_defaults = self.music_font.engraving_defaults
+        separation = self.engraving_defaults["barlineSeparation"]
+        thickness = self.engraving_defaults[thickness]
         print(thickness)
+
+        # declare the Pen and bottom x pos
         self.pen = Pen(pattern=pattern,
                        thickness=thickness)
+        bottom_x = self.pos_x + self.offset_x
 
-        self.bottom_x = self.pos_x + self.offset_x
-        self.line_to(self.bottom_x,
+        # Draw the path
+        self.line_to(bottom_x,
                      self.lowest.height,
                      parent=self.lowest)
-        self.close_subpath()
+
+        # move to next line to the right
+        self.pos_x += Unit(100) + separation
 
     def calculate_offset(self):
         # Calculate offset needed to make vertical line if top and

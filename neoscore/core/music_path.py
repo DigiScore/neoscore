@@ -56,3 +56,4 @@ class MusicPath(Path, HasMusicFont):
     @property
     def music_font(self) -> MusicFont:
         return self._music_font
+
