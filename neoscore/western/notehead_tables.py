@@ -1,13 +1,13 @@
 """Tables of glyphs for common notehead styles
 
-This module includes prebuilt `NoteheadTable`s for many notehead
+This module includes prebuilt ``NoteheadTable``\ s for many notehead
 flavors included in SMuFL. Custom tables using arbitrary SMuFL glyphs
-may also be created by simply instantiating a `NoteheadTable` and
+may also be created by simply instantiating a ``NoteheadTable`` and
 passing it wherever needed.
 
 Note that many of the more obscure glyph tables only have a solid and
-empty variant, for example `MOON`. In these cases, the empty glyph is
-used for all except the `short` key, for which the solid glyph is
+empty variant, for example ``MOON``. In these cases, the empty glyph is
+used for all except the ``short`` key, for which the solid glyph is
 used.
 """
 
@@ -32,7 +32,7 @@ class NoteheadTable:
     def lookup_duration(self, base_division: BaseDuration) -> str:
         """Given a base division, return the required glyph to represent it.
 
-        Assumes `base_division` is 0 or a power of 2.
+        Assumes ``base_division`` is 0 or a power of 2.
         """
         if base_division >= 4:
             return self.short
@@ -115,7 +115,7 @@ SLASH_OVERSIZED = NoteheadTable(
     "noteheadSlashWhiteHalfOversized",
     "noteheadSlashVerticalEndsOversized",
 )
-"""Like `SLASH` but with oversized variants.
+"""Like ``SLASH`` but with oversized variants.
 
 Not available in all fonts.
 """
@@ -126,7 +126,7 @@ MUTED_SLASH_OVERSIZED = NoteheadTable(
     "noteheadSlashWhiteMutedOversized",
     "noteheadSlashVerticalEndsMutedOversized",
 )
-"""Like `MUTED_SLASH` but with oversized variants.
+"""Like ``MUTED_SLASH`` but with oversized variants.
 
 Not available in all fonts.
 """
@@ -245,7 +245,7 @@ DIAMOND_WIDE = NoteheadTable(
     "noteheadDiamondHalfWide",
     "noteheadDiamondBlackWide",
 )
-"""Like `DIAMOND` but with wider half and short variants"""
+"""Like ``DIAMOND`` but with wider half and short variants"""
 
 DIAMOND_OLD = NoteheadTable(
     "noteheadDiamondDoubleWholeOld",
@@ -267,7 +267,7 @@ STANDARD_LARGE_CIRCLED = NoteheadTable(
     "noteheadCircledHalfLarge",
     "noteheadCircledBlackLarge",
 )
-"""Like `STANDARD_CIRCLED` but with a larger circle"""
+"""Like ``STANDARD_CIRCLED`` but with a larger circle"""
 
 LARGE_ARROW_UP = NoteheadTable(
     "noteheadLargeArrowUpDoubleWhole",
@@ -291,7 +291,7 @@ CLUSTER_SQUARE = NoteheadTable(
 )
 """Large tone clusters in square shapes
 
-This uses the same glyph for all durations except `short`.
+This uses the same glyph for all durations except ``short``.
 """
 
 CLUSTER_ROUND = NoteheadTable(
@@ -302,7 +302,7 @@ CLUSTER_ROUND = NoteheadTable(
 )
 """Large tone clusters in round shapes
 
-This uses the same glyph for all durations except `short`.
+This uses the same glyph for all durations except ``short``.
 """
 
 CLUSTER_SECOND = NoteheadTable(
@@ -329,7 +329,7 @@ CLUSTER_SECOND_DIAMOND = NoteheadTable(
 )
 """Tone cluster glyphs spanning a second using diamond glyphs
 
-This uses the same glyph for all durations except `short`.
+This uses the same glyph for all durations except ``short``.
 """
 
 CLUSTER_THIRD_DIAMOND = NoteheadTable(
@@ -340,7 +340,7 @@ CLUSTER_THIRD_DIAMOND = NoteheadTable(
 )
 """Tone cluster glyphs spanning a second using diamond glyphs
 
-This uses the same glyph for all durations except `short`.
+This uses the same glyph for all durations except ``short``.
 """
 
 INVISIBLE = NoteheadTable("", "", "", "")

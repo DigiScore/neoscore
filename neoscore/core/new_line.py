@@ -25,7 +25,7 @@ class NewLine(LayoutController):
                 line begins.
             height: The height of the line
             margin_bottom: The space between the bottom of the
-                current line and the top of the next. Defaults to `Unit(0)`
+                current line and the top of the next. Defaults to ``Unit(0)``
         """
         super().__init__(pos, page, flowable_x)
         self._margin_bottom = margin_bottom

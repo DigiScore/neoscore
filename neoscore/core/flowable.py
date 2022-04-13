@@ -20,10 +20,10 @@ class Flowable(PositionedObject):
     objects can be placed, and at render time be automatically
     flowed across line breaks and page breaks in the document.
 
-    To place an object in a `Flowable`, simply parent it
+    To place an object in a ``Flowable``, simply parent it
     to one, or to an object already in one.
 
-    In typical scores, there will be a single `Flowable`
+    In typical scores, there will be a single ``Flowable``
     placed in the first page of the document, and the vast
     majority of objects will be placed inside it.
     """
@@ -50,7 +50,7 @@ class Flowable(PositionedObject):
             height: height of the flowable
             y_padding: The vertical gap between flowable sections
             break_threshold: The maximum distance the flowable will shorten a line
-                to allow a break to occur on a `BreakOpportunity`
+                to allow a break to occur on a ``BreakOpportunity``
         """
         super().__init__(pos, parent)
         self._length = length
@@ -86,13 +86,14 @@ class Flowable(PositionedObject):
 
     @property
     def break_threshold(self) -> Unit:
-        """The threshold for `BreakOpportunity`-aware line breaks.
+        """The threshold for ``BreakOpportunity``-aware line breaks.
 
         This is the maximum distance the flowable will shorten a line to allow
-        a break to occur on a `BreakOpportunity`.
+        a break to occur on a ``BreakOpportunity``.
 
-        If set to `Unit(0)` (or in an equivalent unit), `BreakOpportunity`s
-        will be entirely ignored during layout.
+        If set to ``Unit(0)``, ``BreakOpportunity``\ s will be entirely ignored during
+        layout.
+
         """
         return self._break_threshold
 
@@ -112,13 +113,13 @@ class Flowable(PositionedObject):
     def _generate_layout_controllers(self) -> list[NewLine]:
         """Generate automatic layout controllers.
 
-        The generated controllers are stored in `self.layout_controllers`
+        The generated controllers are stored in ``self.layout_controllers``
         in sorted order according to ascending x position
         """
         live_page_width = neoscore.document.paper.live_width
         live_page_height = neoscore.document.paper.live_height
         # local progress of layout generation; when the entire flowable has
-        # been covered, this will be equal to `self.breakable_length`
+        # been covered, this will be equal to ``self.breakable_length``
         x_progress = ZERO
         # Current position on the page relative to the top left corner
         # of the live page area
@@ -192,9 +193,9 @@ class Flowable(PositionedObject):
         return self.dist_to_line_start(flowable_x) - neoscore.document.paper.live_width
 
     def last_break_at(self, flowable_x: Unit) -> NewLine:
-        """Find the last `NewLine` that occurred before a given local flowable_x-pos
+        """Find the last ``NewLine`` that occurred before a given local flowable_x-pos
 
-        The result of this function will be accurate within `Unit(1)`
+        The result of this function will be accurate within ``Unit(1)``
 
         Args:
             flowable_x: An x-axis location in the virtual flowable space.
@@ -202,9 +203,9 @@ class Flowable(PositionedObject):
         return self.layout_controllers[self.last_break_index_at(flowable_x)]
 
     def last_break_index_at(self, flowable_x: Unit) -> int:
-        """Like `last_break_at`, but returns an index.
+        """Like ``last_break_at``, but returns an index.
 
-        The result of this function will be accurate within `Unit(1)`
+        The result of this function will be accurate within ``Unit(1)``
 
         Args:
             flowable_x: An x-axis location in the virtual flowable space.

@@ -19,9 +19,9 @@ class Brace(MultiStaffObject, MusicText):
     A brace will be drawn on the first line it appears on
     if and only if it is placed *exactly* at the line beginning.
 
-    Consequently, `Brace(Mm(0), Mm(1000), some_staves)` will appear
+    Consequently, ``Brace(Mm(0), Mm(1000), some_staves)`` will appear
     on the first line of the flowable, while
-    `Brace(Mm(1), Mm(1000), some_staves)` will not begin drawing
+    ``Brace(Mm(1), Mm(1000), some_staves)`` will not begin drawing
     until the second line.
     """
 

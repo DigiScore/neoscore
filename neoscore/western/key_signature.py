@@ -18,9 +18,9 @@ class KeySignature(PositionedObject, StaffObject):
 
     """A logical and graphical key signature.
 
-    The signature will be rendered initially at the given `pos_x`,
+    The signature will be rendered initially at the given ``pos_x``,
     and at the beginning of subsequent lines until a new
-    `KeySignature` is encountered.
+    ``KeySignature`` is encountered.
     """
 
     def __init__(
@@ -55,7 +55,7 @@ class KeySignature(PositionedObject, StaffObject):
 
     @property
     def breakable_length(self) -> Unit:
-        """`KeySignature`s extend until another is found in the staff."""
+        """Key signatures extend until another is found in the staff."""
         return self.staff.distance_to_next_of_type(self)
 
     ######## PRIVATE METHODS ########
@@ -72,7 +72,7 @@ class KeySignature(PositionedObject, StaffObject):
 class _KeySignatureAccidental(MusicText, StaffObject):
     """A visual accidental.
 
-    This should only be used within `KeySignature`s.
+    This should only be used by ``KeySignature``.
     """
 
     def __init__(

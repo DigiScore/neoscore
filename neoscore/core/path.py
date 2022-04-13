@@ -30,10 +30,10 @@ class Path(PaintedObject):
 
     """A vector path whose points can be anchored to other objects.
 
-    If a Path is in a `Flowable`, any point anchors in the path
-    should be anchored to objects in the same `Flowable`, or
+    If a Path is in a ``Flowable``, any point anchors in the path
+    should be anchored to objects in the same ``Flowable``, or
     undefined behavior may occur. Likewise, if a Path is not
-    in a `Flowable`, all point anchors should not be in one either.
+    in a ``Flowable``, all point anchors should not be in one either.
     """
 
     def __init__(
@@ -77,7 +77,7 @@ class Path(PaintedObject):
     ) -> Path:
         """Convenience for drawing a single straight line.
 
-        `stop` is measured relative to the starting point.
+        ``stop`` is measured relative to the starting point.
         """
         line = cls(start, parent, brush, pen)
         if isinstance(stop, tuple):
@@ -115,8 +115,8 @@ class Path(PaintedObject):
     ):
         """Convenience for drawing an ellipse.
 
-        `pos` indicates the top left corner of the ellipse's bounding rect.
-        To create a path from a center point, use `Path.ellipse_from_center`.
+        ``pos`` indicates the top left corner of the ellipse's bounding rect.
+        To create a path from a center point, use ``Path.ellipse_from_center``.
 
         This can also be used for drawing circles by giving the same width and height.
         """
@@ -148,7 +148,7 @@ class Path(PaintedObject):
     ):
         """Convenience for drawing an ellipse from its center point.
 
-        See also `Path.ellipse`
+        See also ``Path.ellipse``
         """
         center_pos = Point.from_def(center_pos)
         return Path.ellipse(
@@ -187,22 +187,22 @@ class Path(PaintedObject):
             pen: The pen to draw outlines with.
 
         The arc definition can be most easily understood as tracing an
-        ellipse as defined in `Path.ellipse()`, where `pos` marks the
+        ellipse as defined in ``Path.ellipse()``, where ``pos`` marks the
         top-left corner of the ellipse bounding rect. Two angles are
         provided in clockwise radians relative to the 3 o'clock
-        position. The arc is traced from `start_angle` clockwise to
-        `stop_angle`. Consequently, depending on the provided angles
+        position. The arc is traced from ``start_angle`` clockwise to
+        ``stop_angle``. Consequently, depending on the provided angles
         the actually drawn path may be far from the Path's position.
 
-        The provided angles are interpreted mod `2*pi`. The angle
+        The provided angles are interpreted mod ``2*pi``. The angle
         between them must not be 0. This also means arc angles of
-        `2*pi`, (i.e. complete ellipses), are not supported as they
+        ``2*pi``, (i.e. complete ellipses), are not supported as they
         are interpreted as 0. Complete ellipses should instead be
-        drawn with `Path.ellipse()`.
+        drawn with ``Path.ellipse()``.
 
         Raises: ValueError: if invalid angles are given
         """
-        # This method and `_acute_arc_to_bezier` are adapted from Joe
+        # This method and ``_acute_arc_to_bezier`` are adapted from Joe
         # Cridge's algorithm and JS implementation found at
         # https://www.joecridge.me/bezier.pdf. Most of the original
         # comments have been left in place as well.
@@ -275,7 +275,7 @@ class Path(PaintedObject):
     def _acute_arc_to_bezier(start: float, size: float) -> dict:
         """
         Generate a cubic Bezier representing an arc on the unit circle of total
-        angle `size` radians, beginning `start` radians above the x-axis.
+        angle ``size`` radians, beginning ``start`` radians above the x-axis.
         """
         # Evaluate constants.
         alpha = size / 2.0
@@ -317,8 +317,8 @@ class Path(PaintedObject):
         Args:
             start: The position of the center of the arrow line's start
             parent: A parent object
-            end: The position of the arrow's tip, relative to `end_parent`
-                if provided or `start`
+            end: The position of the arrow's tip, relative to ``end_parent``
+                if provided or ``start``
             end_parent: An optional parent for the end point.
             brush: The brush to fill shapes with.
             pen: The pen to draw outlines with. Defaults to no pen.
@@ -327,8 +327,8 @@ class Path(PaintedObject):
                 from the line.
             arrow_head_length: The length of the arrow head parallel to the line.
 
-        Note that `end_parent` is only used for initially drawing the
-        path. If `end_parent` moves relative to the path after
+        Note that ``end_parent`` is only used for initially drawing the
+        path. If ``end_parent`` moves relative to the path after
         creation, the path shape will not be automatically updated.
         """
         # This algorithm is lightly adapted from
@@ -384,8 +384,8 @@ class Path(PaintedObject):
         """The breakable length of the path.
 
         This is calculated automatically from path contents. By extension,
-        this means that by default all `Path` objects will automatically
-        wrap in `Flowable`s.
+        this means that by default all ``Path`` objects will automatically
+        wrap in flowables.
         """
         # Find the positions of every path element relative to the path
         min_x = Unit(float("inf"))
@@ -444,7 +444,7 @@ class Path(PaintedObject):
         coordinates passed will be considered relative to the parent.
 
         If the path is empty, this will add two elements, an initial
-        `MoveTo(ORIGIN, self)` and the requested `LineTo`.
+        ``MoveTo(ORIGIN, self)`` and the requested ``LineTo``.
 
         Args:
             x: The end x position
@@ -461,7 +461,7 @@ class Path(PaintedObject):
         """Close the current sub-path and start a new one.
 
         A point parent may be passed as well, anchored the target point to
-        a separate `PositionedObject`. In this case, the coordinates passed will be
+        a separate ``PositionedObject``. In this case, the coordinates passed will be
         considered relative to the parent.
 
         Args:
@@ -475,12 +475,12 @@ class Path(PaintedObject):
     def close_subpath(self):
         """Close the current sub-path and start a new one at the local origin.
 
-        This is equivalent to `move_to(Unit(0), Unit(0))`
+        This is equivalent to ``move_to(Unit(0), Unit(0))``
 
         Note:
             This convenience method does not support point parentage.
             If you need to anchor the new point, use an explicit
-            `move_to(Unit(0), Unit(0), parent)` instead.
+            ``move_to(Unit(0), Unit(0), parent)`` instead.
         """
         self.move_to(ZERO, ZERO)
 
@@ -499,7 +499,7 @@ class Path(PaintedObject):
         """Draw a cubic bezier curve from the current position to a new point.
 
         If the path is empty, this will add two elements, an initial
-        `MoveTo(ORIGIN, self)` and the requested `CurveTo`.
+        ``MoveTo(ORIGIN, self)`` and the requested ``CurveTo``.
 
         Args:
             control_1_x: The x coordinate of the first control point.
@@ -509,11 +509,11 @@ class Path(PaintedObject):
             end_x: The x coordinate of the curve target.
             end_y: The y coordinate of the curve target.
             control_1_parent: An optional parent for
-                the first control point. Defaults to `self`.
+                the first control point. Defaults to ``self``.
             control_2_parent: An optional parent for
-                the second control point. Defaults to `self`.
+                the second control point. Defaults to ``self``.
             end_parent: An optional parent for the
-                curve target. Defaults to `self`.
+                curve target. Defaults to ``self``.
 
         """
         c1 = ControlPoint(

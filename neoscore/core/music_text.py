@@ -28,13 +28,13 @@ _GEOMETRY_CACHE: dict[_CachedTextGeometryKey, _CachedTextGeometry] = {}
 
 
 MusicStringDef: TypeAlias = Union[MusicCharDef, list[MusicCharDef]]
-"""Argument specifying SMuFL `MusicText` strings.
+"""Argument specifying SMuFL ``MusicText`` strings.
 
 This supports several forms for different use-cases. The most commonly
 used form is a simple SMuFL canonical glyph name.
 * A canonical SMuFL glyph name. This may be an empty string to indicate 0-length text.
 * A tuple of a glyph name and a SMuFL alternate number.
-* A fully defined `MusicChar`.
+* A fully defined ``MusicChar``.
 * A list of any of these, including an empty list.
 """
 
@@ -61,12 +61,12 @@ class MusicText(Text, HasMusicFont):
         """
         Args:
             pos: The position of the text.
-            parent: The parent of the glyph. If no `font` is given,
-                this or one of its ancestors must implement `HasMusicFont`.
+            parent: The parent of the glyph. If no ``font`` is given,
+                this or one of its ancestors must implement ``HasMusicFont``.
             text: The text to display. Can be given as a SMuFL glyph name,
-                or other shorthand forms. See `MusicStringDef` and `MusicCharDef`.
+                or other shorthand forms. See ``MusicStringDef`` and ``MusicCharDef``.
             font: The music font to be used. If not specified,
-                `parent` must be or have a `Staff` ancestor.
+                ``parent`` must be or have a ``Staff`` ancestor.
             brush: The brush to fill in text shapes with.
             pen: The pen to trace text outlines with. This defaults to no pen.
             scale: A scaling factor to be applied
@@ -104,7 +104,7 @@ class MusicText(Text, HasMusicFont):
     def music_chars(self) -> list[MusicChar]:
         """A list of the SMuFL characters in the string including metadata.
 
-        If set, this will also update `self.text`.
+        If set, this will also update ``self.text``.
         """
         return self._music_chars
 
@@ -117,7 +117,7 @@ class MusicText(Text, HasMusicFont):
     def text(self) -> str:
         """The raw unicode representation of the SMuFL text.
 
-        If set, this will also update `self.music_chars`
+        If set, this will also update ``self.music_chars``
         """
         return self._text
 
@@ -131,8 +131,8 @@ class MusicText(Text, HasMusicFont):
     def music_font(self) -> MusicFont:
         """The SMuFL font used in this text.
 
-        This is an expressive synonym for the `font` field which implements the
-        `HasMusicFont` mixin.
+        This is an expressive synonym for the ``font`` field which implements the
+        ``HasMusicFont`` mixin.
         """
         return cast(MusicFont, self._font)
 
@@ -148,7 +148,7 @@ class MusicText(Text, HasMusicFont):
     def bounding_rect(self) -> Rect:
         """The bounding rect for this text when rendered.
 
-        The rect x, y position is relative to the object's position (`pos`).
+        The rect x, y position is relative to the object's position (``pos``).
 
         Note that this currently accounts for scaling, but not rotation.
         """

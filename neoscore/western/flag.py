@@ -47,10 +47,10 @@ class Flag(MusicText):
     ):
         """
         Args:
-            pos: The position of this flag. When `parent` is a stem end point
-                this should typically be `ORIGIN`.
+            pos: The position of this flag. When ``parent`` is a stem end point
+                this should typically be ``ORIGIN``.
             parent: If no font is given, this or one of its ancestors must
-                implement `HasMusicFont`.
+                implement ``HasMusicFont``.
             duration: The duration corresponding to the flag. This controls the flag
                 glyph rendered.
             direction: The direction of the flag

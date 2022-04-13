@@ -6,13 +6,13 @@ from neoscore.western.accidental_type import AccidentalType
 class KeySignatureType(Enum):
     """Common key signatures.
 
-    Key signatures are specified as `dict`s between the 7 pitch letter names
-    and either an `AccidentalType` or `None`. They are enumerated here in
-    the form `[pitch letter][f|s]_[major|minor]`. For example:
+    Key signatures are specified as dicts between the 7 pitch letter names
+    and either an ``AccidentalType`` or ``None``. They are enumerated here in
+    the form ``[pitch letter][f|s]_[major|minor]``. For example:
 
-    * c major is `KeySignatureType.c_major`
-    * f-sharp minor is `KeySignatureType.fs_minor`
-    * d-flat major is `KeySignature.df_major`
+    * c major is ``KeySignatureType.c_major``
+    * f-sharp minor is ``KeySignatureType.fs_minor``
+    * d-flat major is ``KeySignature.df_major``
 
     This enum defines the entire circle of fifths - from 0 flats to 7,
     and 0 sharps to 7.

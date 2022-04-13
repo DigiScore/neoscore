@@ -15,14 +15,14 @@ from neoscore.western.chordrest import Chordrest
 
 
 class _BeamState(NamedTuple):
-    """The state of a beam group at a `Chordrest` position"""
+    """The state of a beam group at a ``Chordrest`` position"""
 
     flag_count: int
     break_depth: Optional[int] = None
     """Indicates a subgroup break after this position.
 
     This indicates the number of beams to cut a subdivision to after
-    this beam position. The value must be less than `flag_count` and
+    this beam position. The value must be less than ``flag_count`` and
     greater than 0.
 
     For example, `[_BeamState(3), _BeamState(3, break_depth=1),
@@ -93,8 +93,8 @@ class _BeamPathSpec(NamedTuple):
     
     1 represents the outermost beam, 2 represents 1 inward, and so
     on. For example, in a beam stack connecting sixteenth notes,
-    `depth=1` would represent the 8th note beam while `depth=2` would
-    represent the 16th note beam. In this way, `depth` corresponds to
+    ``depth=1`` would represent the 8th note beam while ``depth=2`` would
+    represent the 16th note beam. In this way, ``depth`` corresponds to
     the flag counts of represented durations.
     """
 
@@ -104,7 +104,7 @@ class _BeamPathSpec(NamedTuple):
     end: int | HorizontalDirection
     """Index of the ending position or a hook direction.
 
-    If this is an index, it should be greater than `start`.
+    If this is an index, it should be greater than ``start``.
     """
 
 
@@ -186,7 +186,7 @@ def _resolve_beam_group_line(
         cr_x = map_between_x(first, cr_with_closest_note)
         closest_y = cr_with_closest_note.highest_notehead.y
         nearest_beam_intersect = Point(cr_x, closest_y - unit(2.5) - beam_group_height)
-    # Given a beam intersect and a slope, find the beam y at `start`
+    # Given a beam intersect and a slope, find the beam y at ``start``
     # y = m(x - x1) + y1, where x = 0
     start_y = (slope * (-nearest_beam_intersect.x)) + nearest_beam_intersect.y
     return _BeamGroupLine(start_y, slope)
@@ -215,7 +215,7 @@ def _resolve_beam_direction(chordrests: list[Chordrest]) -> VerticalDirection:
 
     The algorithm works by determining the average y position of the
     outermost notes of each chord, then if that position lies above
-    the middle staff line, placing the beam below (`DOWN`), and vice
+    the middle staff line, placing the beam below (``DOWN``), and vice
     versa
     """
     middle_staff_pos = chordrests[0].staff.center_y
@@ -239,24 +239,24 @@ class BeamGroup(PositionedObject, HasMusicFont):
     layout. The beaming algorithm does not take into account metric
     subdivisions; instead it greedily tries to beam together as many
     notes as possible. Subdivisions can be specified by setting
-    `Chordrest.beam_break_depth`, which indicates a break after the
+    ``Chordrest.beam_break_depth``, which indicates a break after the
     chord to the given beam count.
 
     While in most situations beamlet "hooks" (as in a dotted 8th note
     followed by a 16th note) unambiguously must point right or left,
     there are some cases where it is ambiguous. For example, the a
     16th note between two 8th notes could have its beamlet point left
-    or right. In these situations, `BeamGroup` will point it left by
+    or right. In these situations, ``BeamGroup`` will point it left by
     default, but users can override this by setting
-    `Chordrest.beam_hook_dir`.
+    ``Chordrest.beam_hook_dir``.
 
     The beam direction and slant angle are determined automatically
     based on the given notes. The direction can be overridden in
-    `BeamGroup`'s constructor.
+    ``BeamGroup``'s constructor.
 
-    Beam layout automatically modifies spanned `Chordrests` by
+    Beam layout automatically modifies spanned ``Chordrests`` by
     snapping their stems to the beam line and, if this causes a stem
-    flip, correcting the `Chordrest` layout.
+    flip, correcting the ``Chordrest`` layout.
 
     This currently has some limitations:
     * It does not support beamed rests
@@ -283,7 +283,7 @@ class BeamGroup(PositionedObject, HasMusicFont):
             brush: The brush to fill shapes with.
             pen: The pen to draw outlines with. To ensure perfect overlaps with stems,
                 this should have the same thickness of stems, derived from the
-                `MusicFont` engraving default `"stemThickness`.
+                ``MusicFont`` engraving default ``"stemThickness``.
         """
         if len(chordrests) < 2:
             raise ValueError("BeamGroup must have at least 2 Chordrests.")

@@ -23,7 +23,7 @@ class MusicFont(Font):
         """
         Args:
             family_name: The font name
-            unit: A sizing unit, where `unit(1)` is the distance
+            unit: A sizing unit, where ``unit(1)`` is the distance
                 between two staff lines.
         """
         self._unit = unit
@@ -204,7 +204,7 @@ class MusicFont(Font):
         return (codepoint, description)
 
     def _load_glyph_anchors(self, glyph_name: str) -> Optional[dict[str, Point]]:
-        """Load any glyph anchors and convert coordinates to `Point`s."""
+        """Load any glyph anchors and convert coordinates to neoscore points."""
         anchors = self.metadata["glyphsWithAnchors"].get(glyph_name)
         if anchors is None:
             return None

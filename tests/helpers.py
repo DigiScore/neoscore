@@ -17,9 +17,9 @@ def assert_almost_equal(
     """Compare points or units for approximate equality
 
     This compares based on the arguments' unit base values
-    (corresponding to Qt pixels). If `epsilon` is given, compare
+    (corresponding to Qt pixels). If ``epsilon`` is given, compare
     equality within a difference of its value. Otherwise compare the
-    base values rounded to `places`.
+    base values rounded to ``places``.
     """
     if isinstance(left, Unit):
         _assert_units_almost_equal(left, right, places, epsilon)
@@ -69,7 +69,7 @@ def assert_path_els_equal(
     """Assert equality of the basic attributes of two PathElements
 
     This only checks position and parents, skipping their incidental
-    attributes inherited from PaintedObject like `children`.
+    attributes inherited from PaintedObject like ``children``.
     """
     if isinstance(left, list) and isinstance(right, list):
         assert len(left) == len(right)
@@ -99,7 +99,7 @@ def render_scene():
 class AppTest(unittest.TestCase):
     """Superclass for tests requiring neoscore application.
 
-    Tests using `setUp` and `tearDown` functions should make sure to
+    Tests using ``setUp`` and ``tearDown`` functions should make sure to
     run the super functions as well.
     """
 

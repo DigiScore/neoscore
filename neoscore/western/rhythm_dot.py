@@ -19,9 +19,9 @@ class RhythmDot(MusicText):
     ):
         """
         Args:
-            pos: Position relative to `parent`
+            pos: Position relative to ``parent``
             parent: If no font is given, this or one of its ancestors must
-                implement `HasMusicFont`.
+                implement ``HasMusicFont``.
             font: If provided, this overrides any font found in the ancestor chain.
         """
         MusicText.__init__(self, pos, parent, [self._glyph_name], font)

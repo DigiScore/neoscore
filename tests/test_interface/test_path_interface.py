@@ -70,16 +70,16 @@ class TestPathInterface(AppTest):
         """This test also helps document some poorly-documented
         quirks in Qt path construction.
 
-        `QPainterPath::ElementType` is ambiguous in differentiating
+        ``QPainterPath::ElementType`` is ambiguous in differentiating
         between curve control points and curve end points. They are
         stored sequentially in the path element list; the first
-        element in the sequence is a `CurveToElement`, all following
-        elements in the curve are `CurveToDataElement`. Despite this,
+        element in the sequence is a ``CurveToElement``, all following
+        elements in the curve are ``CurveToDataElement``. Despite this,
         all elements until the last in the sequence are control
         points; the final element is the curve end point.
 
         For instance, if a cubic line is drawn with two control points
-        - `cubicTo(0, 1, 2, 3, 4, 5)` - they are stored in the Qt
+        - ``cubicTo(0, 1, 2, 3, 4, 5)`` - they are stored in the Qt
         element list as `[<CurveToElement, 0, 1>, <CurveToDataElement,
         2, 3>, <CurveToDataElement, 4, 5>]` where the first two are
         control points and the last is the end point.

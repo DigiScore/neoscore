@@ -11,18 +11,18 @@ class QClippingPath(QGraphicsPathItem):
 
     """A QGraphicsPathItem extension supporting horizontal path clipping.
 
-    Works like a `QGraphicsPathItem` except that it renders a
+    Works like a ``QGraphicsPathItem`` except that it renders a
     horizontal slice of the path. Rather than rendering the entire
-    path, renders the region starting at a given `clip_start_x` and
-    extending for a given `clip_width`. This rendered region is
+    path, renders the region starting at a given ``clip_start_x`` and
+    extending for a given ``clip_width``. This rendered region is
     shifted leftward so it appears at the path's root position. This
     is useful for splitting a path into horizontal chunks and
     rendering them in different positions, for instance when drawing a
     staff which appears on multiple lines.
 
-    `clip_start_x` and `clip_width` should not take into account
+    ``clip_start_x`` and ``clip_width`` should not take into account
     scaling. For example if a rendered region of 50 points is required
-    on a path with a scale of 2, `clip_width=50` should be passed.
+    on a path with a scale of 2, ``clip_width=50`` should be passed.
 
     While the Qt superclass is mutable, this is intended to be treated
     immutably. Mutations after instantation will result unexpected
@@ -33,7 +33,7 @@ class QClippingPath(QGraphicsPathItem):
     integrates with Qt's coordinate and painter systems. The item's
     bounding rect is adjusted to match the requested clip region. At
     render time, the painter translates its coordinate system leftward
-    by the (internally scale-adjusted) `clip_start_x`. The painter's
+    by the (internally scale-adjusted) ``clip_start_x``. The painter's
     clip rect is then derived from the item's bounding rect, but
     shifted rightward to cancel out the painter's translation. These
     actions are all automatically scaled as necessary, since the scale
@@ -55,12 +55,12 @@ class QClippingPath(QGraphicsPathItem):
         """
         Args:
             qt_path: The path for the item. This value should
-                be the same as in `QGraphicsPathItem.__init__()`
+                be the same as in ``QGraphicsPathItem.__init__()``
             clip_start_x: The local starting position for the path clipping region.
                 This should not adjust for scaling, as that is performed
-                automatically. Use `None` to render from the start.
+                automatically. Use ``None`` to render from the start.
             clip_width: The width of the path clipping region. This should not adjust
-                for scaling, as that is performed automatically. Use `None` to render
+                for scaling, as that is performed automatically. Use ``None`` to render
                 to the end
             scale: A scaling factor on the object's coordinate system.
             rotation: Rotation about the path's origin given in degrees. Rotated path
@@ -85,7 +85,7 @@ class QClippingPath(QGraphicsPathItem):
     def paint(self, painter: QPainter, *args, **kwargs):
         """Paint with automatic clipping.
 
-        This is overridden from `QGraphicsPathItem.paint()`
+        This is overridden from ``QGraphicsPathItem.paint()``
         """
         if self.clip_start_x != 0:
             painter.translate(-self.clip_start_x, 0)
@@ -133,9 +133,9 @@ class QClippingPath(QGraphicsPathItem):
         Args:
             bounding_rect: The full shape's bounding rectangle
             clip_start_x: The local starting position for the
-                clipping region. Use `None` to render from the start.
+                clipping region. Use ``None`` to render from the start.
             clip_width: The width of the clipping region.
-                Use `None` to render to the end
+                Use ``None`` to render to the end
             padding: Extra area padding to be added to all sides of the clipping area.
                 This might be useful, for instance, for making sure thick pen strokes
                 render completely.

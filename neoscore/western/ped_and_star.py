@@ -24,11 +24,11 @@ class PedAndStar(PositionedObject, Spanner2D, HasMusicFont):
     ):
         """
         Args:
-            start: The position of the start-pedal mark relative to `start_parent`.
+            start: The position of the start-pedal mark relative to ``start_parent``.
             start_parent: Anchor for the start-pedal mark.
-            end_pos: The position of the release-pedal mark relative to `end_parent`.
+            end_pos: The position of the release-pedal mark relative to ``end_parent``.
             end_parent: An optional anchor for the release-pedal mark.
-                Defaults to `self`.
+                Defaults to ``self``.
             font: If provided, this overrides any font found in the ancestor chain.
         """
         PositionedObject.__init__(self, start, start_parent)

@@ -16,17 +16,17 @@ class Pitch:
     This class does not define an actual concert pitch, MIDI code,
     pitch class, etc associated with it. Users building notation
     systems on it can decide whether this represents a concert pitch
-    or a written one. Neoscore's `western` module treats it mostly as
+    or a written one. Neoscore's ``western`` module treats it mostly as
     a written pitch, unconditionally writing provided accidentals
     regardless of context and key signatures, only automatically
     transposing for octave lines.
 
     The class supports a helpful shorthand for standard Western 12-EDO
     pitches inspired by Lilypond's pitch notation; see
-    `Pitch.from_str`.
+    ``Pitch.from_str``.
 
     Extended accidentals are fully supported by passing arbitrary
-    SMuFL glyph names to the `accidental` attribute.
+    SMuFL glyph names to the ``accidental`` attribute.
 
     """
 
@@ -51,7 +51,7 @@ class Pitch:
     accidental: Optional[AccidentalType | str]
     """An accidental associated with the pitch.
 
-    For conventional accidentals, this can be an `AccidentalType`.
+    For conventional accidentals, this can be an ``AccidentalType``.
     Alternatively, this can be an arbitrary SMuFL glyph name string.
     """
 
@@ -59,30 +59,30 @@ class Pitch:
 
     @classmethod
     def from_str(cls, shorthand: str) -> Pitch:
-        """Create a conventional Western `Pitch` from a string shorthand.
+        """Create a conventional Western ``Pitch`` from a string shorthand.
 
         The pitch shorthand is inspired by Lilypond's. It consists of three parts:
         a pitch letter, an optional accidental, and an optional octave mark.
 
-        * Pitch letters are the standard `c` through `b` letters.
-        * The accidental may be `f` or `b` for flat, `s` or `#` for sharp, `n` for
-          natural, `ss` or `x` for double-sharp, and `ff` or `bb` for double-flat.
-        * The octave indication is given by a series of apostrophes (`'`)
-          or commas (`,`), where each apostrophe increases the pitch by an octave,
+        * Pitch letters are the standard ``c`` through ``b`` letters.
+        * The accidental may be ``f`` or ``b`` for flat, ``s`` or ``#`` for sharp, ``n`` for
+          natural, ``ss`` or ``x`` for double-sharp, and ``ff`` or ``bb`` for double-flat.
+        * The octave indication is given by a series of apostrophes (``'``)
+          or commas (``,``), where each apostrophe increases the pitch by an octave,
           and each comma decreases it. All octave transformations are relative to
           the octave below middle-C. The absence of an octave indicator means a
           pitch is within the octave below middle-C.
 
         Some examples:
 
-        * C below middle-C: `c`
-        * Middle-C: `c'`
-        * The B directly below that: `b`
-        * The C one octave below middle-C: `c`
-        * The E-flat above middle-C: `ef'` or `eb'`
-        * The F-sharp above middle-C: `fs'` or `f#'`
-        * The G-double-sharp above middle-C: `fx'` or `fss'`
-        * The A-double-flat above the treble staff: `aff''` or `abb''`
+        * C below middle-C: ``c``
+        * Middle-C: ``c'``
+        * The B directly below that: ``b``
+        * The C one octave below middle-C: ``c``
+        * The E-flat above middle-C: ``ef'`` or ``eb'``
+        * The F-sharp above middle-C: ``fs'`` or ``f#'``
+        * The G-double-sharp above middle-C: ``fx'`` or ``fss'``
+        * The A-double-flat above the treble staff: ``aff''`` or ``abb''``
 
         """
         match = Pitch._shorthand_regex.match(shorthand)
@@ -153,8 +153,8 @@ class Pitch:
 
 
 PitchDef: TypeAlias = Union[Pitch, str, tuple]
-"""Shorthand for a `Pitch`
+"""Shorthand for a ``Pitch``
 
-May be either a `Pitch`, a pitch string shorthand (see `Pitch.from_str`), or a `Pitch`
+May be either a ``Pitch``, a pitch string shorthand (see ``Pitch.from_str``), or a ``Pitch``
 init arg tuple.
 """

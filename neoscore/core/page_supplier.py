@@ -15,7 +15,7 @@ PageOverlayFunc: TypeAlias = Callable[[Page], None]
 The function takes one argument, the newly generated page. Functions will typically
 create objects with this page as their parent.
 
-See `simple_header_footer` for a ready-made implementation of a simple overlay function.
+See ``simple_header_footer`` for a ready-made implementation of a simple overlay function.
 """
 
 
@@ -36,7 +36,7 @@ class PageSupplier:
     unexpected behavior.
 
     This is an internal class meant to be created by the global Document
-    for its `pages` property.
+    for its ``pages`` property.
     """
 
     def __init__(

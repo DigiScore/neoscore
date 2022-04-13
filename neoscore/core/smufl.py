@@ -30,7 +30,7 @@ def get_basic_glyph_info(name):
         dict {"codepoint": str, "description": str}: Information on the glyph
 
     Raises:
-        KeyError: If no glyph with `name` can be found
+        KeyError: If no glyph with ``name`` can be found
     """
     try:
         return glyph_names[name]
@@ -51,7 +51,7 @@ def char_from_glyph_name(name):
         str: The unicode character corresponding to the glyph name
 
     Raises:
-        KeyError: If no glyph with `name` can be found
+        KeyError: If no glyph with ``name`` can be found
     """
     return get_basic_glyph_info(name)["codepoint"]
 
@@ -66,22 +66,22 @@ def description_from_glyph_name(name):
         str: The glyph's short description
 
     Raises:
-        KeyError: If no glyph with `name` can be found
+        KeyError: If no glyph with ``name`` can be found
     """
     return get_basic_glyph_info(name)["description"]
 
 
 def get_glyph_range_key(name):
-    """Find the range the glyph with `name` belongs to.
+    """Find the range the glyph with ``name`` belongs to.
 
     Args:
         name (str): The name of the glyph
 
     Returns:
-        str: The key for `ranges` of the range the glyph belongs in
+        str: The key for ``ranges`` of the range the glyph belongs in
 
     Raises:
-        KeyError: If no glyph with `name` can be found in `ranges`
+        KeyError: If no glyph with ``name`` can be found in ``ranges``
     """
     for range_name, value in ranges.items():
         if name in value["glyphs"]:
@@ -91,7 +91,7 @@ def get_glyph_range_key(name):
 
 
 def get_glyph_classes(name):
-    """Find all of the classes the glyph with `name` belongs in.
+    """Find all of the classes the glyph with ``name`` belongs in.
 
     Args:
         name (str): The name of the glyph
@@ -100,7 +100,7 @@ def get_glyph_classes(name):
         set[str]: The classes the glyph belongs in
 
     Raises:
-        KeyError: If no glyph with `name` can be found in `ranges`
+        KeyError: If no glyph with ``name`` can be found in ``ranges``
 
     Warning:
         This is potentially a slow function. If it starts being used a lot,

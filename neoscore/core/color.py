@@ -136,4 +136,4 @@ class Color:
 
 
 ColorDef: TypeAlias = Union[Color, str, tuple[int, int, int], tuple[int, int, int, int]]
-"""A `Color` or a shorthand hex string or init argument tuple for one."""
+"""A ``Color`` or a shorthand hex string or init argument tuple for one."""

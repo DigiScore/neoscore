@@ -1,4 +1,4 @@
-"""Helper methods for conversion between `neoscore.core` and Qt classes"""
+"""Helper methods for conversion between ``neoscore.core`` and Qt classes"""
 
 from typing import Union
 
@@ -93,10 +93,10 @@ def rect_to_qt_rect_f(rect: Rect) -> QRectF:
 
 
 def color_to_q_color(color: Color) -> QColor:
-    """Create a `QColor` from a `Color`
+    """Create a ``QColor`` from a ``Color``
 
     Args:
-        color (Color): The source `Color`
+        color (Color): The source ``Color``
 
     Returns: QColor
     """
@@ -104,10 +104,10 @@ def color_to_q_color(color: Color) -> QColor:
 
 
 def q_color_to_color(q_color: QColor) -> Color:
-    """Create a `Color` from a `QColor`
+    """Create a ``Color`` from a ``QColor``
 
     Args:
-        q_color (QColor): The source `QColor`
+        q_color (QColor): The source ``QColor``
 
     Returns: Color
     """

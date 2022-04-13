@@ -35,21 +35,21 @@ class Chordrest(PositionedObject, StaffObject):
 
     This is a general unified interface for conventionally notated
     musical notes/chords/rests. It can be given any number of pitches
-    to be used as notes in the chord, or `None` for a rest.
+    to be used as notes in the chord, or ``None`` for a rest.
 
     It will automatically generate and lay out:
-        * `Notehead`s if pitches are given
-        * a `Stem` if pitches are given and required by the given `Duration`
-        * a `Flag` if pitches are given and required by the given `Duration`
-        * `LedgerLine`s as needed (taking into consideration the given
-          pitches and their location on the `Staff`)
-        * `Accidental`s as needed by any given pitches
-        * a `Rest` if no pitches are given
-        * `RhythmDot`s if needed by the given `Duration`
+        * ``Notehead``\ s if pitches are given
+        * a ``Stem`` if pitches are given and required by the given ``Duration``
+        * a ``Flag`` if pitches are given and required by the given ``Duration``
+        * ``LedgerLine``\ s as needed (taking into consideration the given
+          pitches and their location on the ``Staff``)
+        * ``Accidental``\ s as needed by any given pitches
+        * a ``Rest`` if no pitches are given
+        * ``RhythmDot``\ s if needed by the given ``Duration``
 
     The given pitches are treated mostly as written pitches. The only
     transposition automatically applied to them is octave
-    transpositions from `OctaveLine`s.
+    transpositions from ``OctaveLine``\ s.
 
     Any accidentals given in pitches will be unconditionally drawn
     regardless of context and key signature.
@@ -71,23 +71,23 @@ class Chordrest(PositionedObject, StaffObject):
         Args:
             pos_x: The horizontal position
             staff: The staff the object is attached to
-            notes: A list of pitches and optional notehead-specific data. If `None`
+            notes: A list of pitches and optional notehead-specific data. If ``None``
                 this indicates a rest. For simple notes and chords, this can typically
-                be a list of pitch string shorthands (see `Pitch.from_str`). Pitches
+                be a list of pitch string shorthands (see ``Pitch.from_str``). Pitches
                 with extended accidentals can be given by passing fully constructed
-                `Pitch` objects. Individual notehead glyphs (by default taken from the
-                given `table`) can be overridden by passing a tuple of a pitch
+                ``Pitch`` objects. Individual notehead glyphs (by default taken from the
+                given ``table``) can be overridden by passing a tuple of a pitch
                 and a SMuFL glyph name string.
             duration: The duration of the Chordrest
             rest_y: The vertical position used by rests. This defaults to the center
                 of the staff.
             stem_direction: An optional stem direction override
-                where `1` points down and `-1` points up. If omitted, the
+                where ``1`` points down and ``-1`` points up. If omitted, the
                 direction is automatically calculated to point away from
                 the furthest-out notehead.
-            beam_break_depth: Break depth used if in a `BeamGroup`.
-            beam_hook_dir: Beamlet hook direction used in a `BeamGroup`.
-            table: The set of noteheads to use according to `duration`.
+            beam_break_depth: Break depth used if in a ``BeamGroup``.
+            beam_hook_dir: Beamlet hook direction used in a ``BeamGroup``.
+            table: The set of noteheads to use according to ``duration``.
         """
         StaffObject.__init__(self, staff)
         PositionedObject.__init__(self, Point(pos_x, ZERO), staff)
@@ -170,19 +170,19 @@ class Chordrest(PositionedObject, StaffObject):
 
     @property
     def beam_break_depth(self) -> Optional[int]:
-        """Break depth used if in a `BeamGroup`.
+        """Break depth used if in a ``BeamGroup``.
 
         If this Chordrest is within a beam group, this triggers a
         beam subdivision break at this point. The value indicates the
         number of beams to which the subdivision breaks. For example,
-        in run of 16th notes a `beam_break_depth` of `1` would
+        in run of 16th notes a ``beam_break_depth`` of ``1`` would
         indicate a subdivision break to 1 beam at this point.
         """
         return self._beam_break_depth
 
     @property
     def beam_hook_dir(self) -> Optional[HorizontalDirection]:
-        """Beamlet hook direction used in a `BeamGroup`.
+        """Beamlet hook direction used in a ``BeamGroup``.
 
         If this Chordrest is within a beam group and this position is
         one requiring a beamlet hook whose direction is ambiguous,
@@ -203,9 +203,9 @@ class Chordrest(PositionedObject, StaffObject):
     def duration(self) -> Duration:
         """The length of this event.
 
-        This is used to determine which (if any) `Flag`s, `RhythmDot`s,
-        and `Notehead`/`Rest` styles. Higher level managers may also
-        use this information to inform layout decisions and `Beam` groupings.
+        This is used to determine which (if any) ``Flag``\ s, ``RhythmDot``\ s,
+        and ``Notehead``/``Rest`` styles. Higher level managers may also
+        use this information to inform layout decisions and ``Beam`` groupings.
         """
         return self._duration
 
@@ -220,7 +220,7 @@ class Chordrest(PositionedObject, StaffObject):
             self._rebuild()
 
     # Note that most/all of these derived properties could be computed ahead of time or
-    # cached, they would just need to be reset on `rebuild()` calls.
+    # cached, they would just need to be reset on ``rebuild()`` calls.
     # Something to consider if these end up being performance hotspots.
 
     @property
@@ -234,7 +234,7 @@ class Chordrest(PositionedObject, StaffObject):
         highest = self.highest_notehead.y
         lowest = self.lowest_notehead.y
         # This could be optimized by only doing both ledger lookups if
-        # `highest` and `lowest` are on opposite sides of the staff,
+        # ``highest`` and ``lowest`` are on opposite sides of the staff,
         # in which case the check-then-append step can be done
         # unconditionally.
         ledgers = self.staff.ledgers_needed_for_y(lowest)
@@ -270,7 +270,7 @@ class Chordrest(PositionedObject, StaffObject):
 
     @property
     def furthest_notehead(self) -> Optional[Notehead]:
-        """The `Notehead` furthest from the staff center"""
+        """The notehead furthest from the staff center"""
         return max(
             self.noteheads,
             key=lambda n: abs(n.y - self.staff.center_y),
@@ -279,32 +279,32 @@ class Chordrest(PositionedObject, StaffObject):
 
     @property
     def highest_notehead(self) -> Optional[Notehead]:
-        """The highest `Notehead` in the chord."""
+        """The highest notehead in the chord."""
         return min(self.noteheads, key=lambda n: n.y, default=None)
 
     @property
     def lowest_notehead(self) -> Optional[Notehead]:
-        """The lowest `Notehead` in the chord."""
+        """The lowest notehead in the chord."""
         return max(self.noteheads, key=lambda n: n.y, default=None)
 
     @property
     def leftmost_notehead(self) -> Optional[Notehead]:
-        """The `Notehead` furthest to the left in the chord"""
+        """The notehead furthest to the left in the chord"""
         return min(self.noteheads, key=lambda n: n.x, default=None)
 
     @property
     def rightmost_notehead(self) -> Optional[Notehead]:
-        """The `Notehead` furthest to the right in the chord"""
+        """The notehead furthest to the right in the chord"""
         return max(self.noteheads, key=lambda n: n.x, default=None)
 
     @property
     def widest_notehead(self) -> Optional[Notehead]:
-        """The `Notehead` with the greatest `visual_width`"""
+        """The notehead with the greatest ``visual_width``"""
         return max(self.noteheads, key=lambda n: n.visual_width, default=None)
 
     @property
     def notehead_column_width(self) -> Unit:
-        """The total width of all `Notehead`s in the chord"""
+        """The width of the notehead column after layout"""
         leftmost_notehead = self.leftmost_notehead
         if not leftmost_notehead:
             return self.staff.unit(0)
@@ -318,18 +318,18 @@ class Chordrest(PositionedObject, StaffObject):
         return (
             note
             for note in self.noteheads
-            # Since `note.parent == self` and `self.y == 0`
+            # Since ``note.parent == self`` and ``self.y == 0``
             if not self.staff.y_inside_staff(note.y)
         )
 
     @property
     def leftmost_notehead_outside_staff(self) -> Optional[Notehead]:
-        """The `Notehead` furthest to the left outside the staff"""
+        """The notehead furthest to the left outside the staff"""
         return min(self.noteheads_outside_staff, key=lambda n: n.x, default=None)
 
     @property
     def rightmost_notehead_outside_staff(self) -> Optional[Notehead]:
-        """The `Notehead` furthest to the right outside the staff"""
+        """The notehead furthest to the right outside the staff"""
         return max(self.noteheads_outside_staff, key=lambda n: n.x, default=None)
 
     @property
@@ -350,16 +350,16 @@ class Chordrest(PositionedObject, StaffObject):
         and returns the opposite direction.
 
         If the furthest notehead is in the center of the staff, the
-        direction defaults to `VerticalDirection.DOWN`, unless the
+        direction defaults to ``VerticalDirection.DOWN``, unless the
         staff has only one line, in which case it defaults to
-        `VerticalDirection.UP` as a convenience for percussion staves.
+        ``VerticalDirection.UP`` as a convenience for percussion staves.
 
         This automatically calculated property may be overridden using
         its setter. To revert back to the automatically calculated value
-        set this property to `None`.
+        set this property to ``None``.
 
         If there are no noteheads (meaning this Chordrest is a rest),
-        this arbitrarily returns `VerticalDirection.UP`.
+        this arbitrarily returns ``VerticalDirection.UP``.
 
         """
         if self._stem_direction_override:
@@ -458,7 +458,7 @@ class Chordrest(PositionedObject, StaffObject):
         super()._render()
 
     def _create_ledgers(self):
-        """Create all required ledger lines and store them in `self.ledgers`
+        """Create all required ledger lines and store them in ``self.ledgers``
 
         This should be called after _position_noteheads_horizontally()
         as it relies on the position of noteheads in the chord to
@@ -492,7 +492,7 @@ class Chordrest(PositionedObject, StaffObject):
     # Fix after #4
 
     def _create_stem(self):
-        """If needed, create a Stem and store it in `self.stem`."""
+        """If needed, create a Stem and store it in ``self.stem``."""
         if not self.duration.display.requires_stem:
             return
         self._stem = Stem(
@@ -503,7 +503,7 @@ class Chordrest(PositionedObject, StaffObject):
         )
 
     def _create_flag(self):
-        """Create a Flag attached to self.stem and store it in `self.flag`"""
+        """Create a Flag attached to self.stem and store it in ``self.flag``"""
         if self.duration.display.flag_count:
             self._flag = Flag(
                 ORIGIN, self.stem.end_point, self.duration, self.stem.direction
@@ -520,8 +520,8 @@ class Chordrest(PositionedObject, StaffObject):
         default_side = self.stem_direction.value
         # Start last staff pos at sentinel infinity position.
         # Rather than working with staff positions, we can work with
-        # `Notehead.y` values directly because we know they all share
-        # `self` as a parent.
+        # ``Notehead.y`` values directly because we know they all share
+        # ``self`` as a parent.
         prev_y = Unit(float("inf"))
         # Start prev_side at wrong side so first note goes on the default side
         prev_side = -1 * default_side

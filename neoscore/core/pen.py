@@ -27,8 +27,8 @@ class Pen:
         """
         Args:
             color: The stroke color. Defaults to black unless changed globally by
-                `neoscore.set_default_color`.
-            thickness: The stroke thickness. A value of `0` (the default) indicates
+                ``neoscore.set_default_color``.
+            thickness: The stroke thickness. A value of ``0`` (the default) indicates
                 a display pixel width.
             pattern: The stroke pattern. Defaults to a solid line.
             join_style: Defaults to a bevel join
@@ -156,4 +156,4 @@ class Pen:
 
 
 PenDef: TypeAlias = Union[Pen, str]
-"""A `Pen` or a color hex string to be passed to an otherwise default `Pen`."""
+"""A ``Pen`` or a color hex string to be passed to an otherwise default ``Pen``."""

@@ -35,10 +35,10 @@ class Slur(MusicPath, Spanner2D):
         Args:
             pos: The starting point.
             parent: The parent for the starting position. If no font is given,
-                this or one of its ancestors must implement `HasMusicFont`.
+                this or one of its ancestors must implement ``HasMusicFont``.
             end_pos: The stopping point.
             end_parent: The parent for the ending position.
-                If `None`, defaults to `self`.
+                If ``None``, defaults to ``self``.
             direction: The vertical direction the slur arches.
             font: If provided, this overrides any font found in the ancestor chain.
             brush: The brush to fill shapes with.

@@ -175,25 +175,6 @@ def autoapi_skip_member(app, what, name, obj, skip, options):
     return skip or exclude
 
 
-"""
-
-since sphinx seems to not auto-link type aliases, need to manually do this. i can do
-this in a post-processing step running on generated HTML files. use beautifulsoup to
-find unlinked references to type aliases (as enumerated now in autodoc_type_aliases),
-then automatically insert links.
-
-
-make the post processing function fairly modular so i can insert other post processing
-steps as will likely be needed.
-
-
-<span class="pre">PointDef</span>
-
-
-<a class="reference internal" href="neoscore.core.positioned_object.html#neoscore.core.positioned_object.PositionedObject" title="neoscore.core.positioned_object.PositionedObject"><span class="pre">PositionedObject</span></a>
-"""
-
-
 def link_aliases(soup: BeautifulSoup) -> bool:
     """Insert cross-reference links to known TypeAlias names
 

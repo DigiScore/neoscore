@@ -17,7 +17,7 @@ class TabClef(MusicText):
     """A "TAB" clef.
 
     Unlike classical clefs, this is purely cosmetic. It must be placed
-    in a `TabStaff`, typically at the beginning. If the `TabStaff` is
+    in a ``TabStaff``, typically at the beginning. If the ``TabStaff`` is
     in a flowable, this automatically repeats at the beginning of
     every flowed staff line for the length of the staff. Because clef
     changes are generally inapplicable to tabs, clef changes are not

@@ -33,9 +33,9 @@ class Dynamic(MusicText):
     ):
         """
         Args:
-            pos: Position relative to `parent`
+            pos: Position relative to ``parent``
             parent: If no font is given, this or one of its ancestors must
-                implement `HasMusicFont`.
+                implement ``HasMusicFont``.
             text: A valid dynamic indicator string consisting
                 of the letters: 'p, m, f, r, s, z, n'
             font: If provided, this overrides any font found in the ancestor chain.

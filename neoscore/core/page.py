@@ -31,10 +31,10 @@ class Page(PositionedObject):
 
     """A document page.
 
-    All manually created `PositionedObject`s will have a `Page` as their
-    ancestor. All `Page`s are children of the global document.
+    All ``PositionedObject``\ s will have a ``Page`` as their
+    ancestor. All ``Page``\ s are direct children of the global document.
 
-    `Page` objects are automatically created by `Document` and should
+    ``Page`` objects are automatically created by ``Document`` and should
     not be manually created or manipulated.
     """
 
@@ -56,7 +56,7 @@ class Page(PositionedObject):
                 the Page object's parent.
             page_index: The index of this page. This should be
                 the same index this Page can be found at in the document's
-                `PageSupplier`. This should be a positive number.
+                ``PageSupplier``. This should be a positive number.
             page_side: The left/right side the page lies on when printed.
             paper: The type of paper this page uses.
         """
@@ -68,7 +68,7 @@ class Page(PositionedObject):
 
     @property
     def page_index(self):
-        """The index of this page in its managing `PageSupplier` object."""
+        """The index of this page in its managing ``PageSupplier`` object."""
         return self._page_index
 
     @property
@@ -125,7 +125,7 @@ class Page(PositionedObject):
     def left_margin_x(self) -> Unit:
         """The X position of the edge of the left margin.
 
-        This is always `ZERO`, given here as a convenience synonym.
+        This is always ``ZERO``, given here as a convenience synonym.
         """
         return ZERO
 
@@ -133,7 +133,7 @@ class Page(PositionedObject):
     def right_margin_x(self) -> Unit:
         """The X position of the edge of the right margin.
 
-        This is always `page.paper.live_width`, given here as a convenience synonym.
+        This is always ``page.paper.live_width``, given here as a convenience synonym.
         """
         return self.paper.live_width
 
@@ -141,7 +141,7 @@ class Page(PositionedObject):
     def top_margin_y(self) -> Unit:
         """The Y position of the edge of the top margin.
 
-        This is always `ZERO`, given here as a convenience synonym.
+        This is always ``ZERO``, given here as a convenience synonym.
         """
         return ZERO
 
@@ -149,7 +149,7 @@ class Page(PositionedObject):
     def bottom_margin_y(self) -> Unit:
         """The Y position of the edge of the top margin.
 
-        This is always `page.paper.live_height`, given here as a convenience synonym.
+        This is always ``page.paper.live_height``, given here as a convenience synonym.
         """
         return self.paper.live_height
 
@@ -157,7 +157,7 @@ class Page(PositionedObject):
     def center_x(self) -> Unit:
         """The X position of the center of the live page area.
 
-        This is a convenience method for `page.paper.live_width / 2`.
+        This is a convenience method for ``page.paper.live_width / 2``.
         """
         return self.paper.live_width / 2
 

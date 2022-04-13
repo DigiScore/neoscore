@@ -24,9 +24,9 @@ def interpolate(line_start: Point, line_end: Point, x: Unit) -> Unit:
 def clamp_value(value, minimum, maximum):
     """Clamp a value to fit within a range.
 
-    * If `value` is less than `minimum`, return `minimum`.
-    * If `value` is greater than `maximum`, return `maximum`
-    * Otherwise, return `value`
+    * If ``value`` is less than ``minimum``, return ``minimum``.
+    * If ``value`` is greater than ``maximum``, return ``maximum``
+    * Otherwise, return ``value``
 
     Args:
         value (number or Unit): The value to clamp
@@ -77,7 +77,7 @@ def sign(value: Unit) -> int:
     Args:
         value: The value to check
 
-    Returns: -1 if `value` is negative, and 1 if `value` is positive
+    Returns: -1 if ``value`` is negative, and 1 if ``value`` is positive
     """
     if value.base_value < 0:
         return -1
@@ -94,7 +94,7 @@ def point_angle(point: Point) -> float:
 
     The returned angle goes positive clockwise and is between pi and -pi.
 
-    Combine with the Python stdlib function `math.degrees()` to get
+    Combine with the Python stdlib function ``math.degrees()`` to get
     the angle in degrees.
     """
     return math.atan2(point.y.base_value, point.x.base_value)

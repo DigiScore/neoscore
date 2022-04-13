@@ -6,8 +6,8 @@ class AccidentalType(Enum):
 
     """A logical accidental descriptor covering standard 12-EDO western accidentals.
 
-    These are used both in `Pitch` manipulations and in
-    graphical `Accidental` objects.
+    These are used both in ``Pitch`` manipulations and in
+    graphical ``Accidental`` objects.
 
     The string values of each variant are their canonical SMuFL glyph names.
 
@@ -48,7 +48,7 @@ class AccidentalType(Enum):
     def pitch_class_offset(self) -> Optional[int]:
         """Return an integer pitch class offset if applicable.
 
-        This will return `None` for all accidental types except standard 12-EDO ones.
+        This will return ``None`` for all accidental types except standard 12-EDO ones.
         """
         return _offset_map.get(self, None)
 

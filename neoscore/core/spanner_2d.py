@@ -43,7 +43,7 @@ class Spanner2D(Spanner):
         """The 2d length of the spanner.
 
         Note: This takes into account both the x and y axis. For only
-            the horizontal length, use `spanner_x_length`.
+            the horizontal length, use ``spanner_x_length``.
         """
         relative_end_pos = self._relative_end_pos()
         distance = Unit(

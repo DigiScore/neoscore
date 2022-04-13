@@ -21,7 +21,7 @@ class TestMusicFont(AppTest):
 
     def test_modified(self):
         # Since only Bravura is currently provided, we can't really
-        # test different families used in `modified`, but we can at
+        # test different families used in ``modified``, but we can at
         # least run this branch on the same family.
         modifying_family_name = self.font.modified(family_name="Bravura")
         assert modifying_family_name.family_name == "Bravura"

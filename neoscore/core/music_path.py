@@ -34,7 +34,7 @@ class MusicPath(Path, HasMusicFont):
         Args:
             pos: The position of the path root.
             parent: The parent object. If no font is given, this or one of its
-                ancestors must implement `HasMusicFont`.
+                ancestors must implement ``HasMusicFont``.
             font: If provided, this overrides any font found in the ancestor chain.
             brush: The brush to fill shapes with.
             pen: The pen to draw outlines with.

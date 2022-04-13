@@ -30,14 +30,14 @@ class PositionedObject:
 
     The position of this object is relative to that of its parent.
     Each PositionedObject has another PositionedObject for a parent, except
-    `Page` objects, whose parent is always the global `Document`.
+    ``Page`` objects, whose parent is always the global ``Document``.
 
     For convenience, the parent may be initialized to None to indicate
     the first page of the document.
 
     To place objects directly in the scene on pages other than the first,
     simply set the parent to the desired page, accessed through the
-    global document with `neoscore.document.pages[n]`
+    global document with ``neoscore.document.pages[n]``
     """
 
     def __init__(
@@ -145,14 +145,14 @@ class PositionedObject:
     def interfaces(self) -> list[PositionedObjectInterface]:
         """The graphical backend binding interfaces for this object
 
-        Interface objects are created upon calling `PositionedObject.render()`
+        Interface objects are created upon calling ``PositionedObject.render()``
 
         Typically each PositionedObject will have one interface for each
         flowable line it appears in. Objects which fit completely
         in one visual line will typically have exactly one interface.
 
         If this is an empty set, the object has not been rendered yet
-        with the `render()` method.
+        with the ``render()`` method.
         """
         return self._interfaces
 
@@ -195,13 +195,13 @@ class PositionedObject:
         caching for expensive methods.
 
         Any data cached in this function must be cleared in a
-        corresponding `_post_render_hook`.
+        corresponding ``_post_render_hook``.
         """
 
     def _post_render_hook(self):
         """Run code once after document rendering completes.
 
-        Any cached data stored in `_pre_render_hook` must be cleared
+        Any cached data stored in ``_pre_render_hook`` must be cleared
         in this function.
         """
 
@@ -284,25 +284,25 @@ class PositionedObject:
     ):
         """Render the entire object.
 
-        This is used to render all objects outside of `Flowable`s,
-        as well as those inside flowables when they fit completely in
-        one line of the flowable.
+        This is used to render all objects outside of flowables, as well as those inside
+        flowables when they fit completely in one line of the flowable.
 
         This method should create a GraphicInterface and store it in
-        `self.interfaces`.
-
-        Args:
-            pos: The rendering position in document space for drawing.
-            dist_to_line_start: If in a `Flowable`,
-                the x-axis distance from the active `NewLine`s beginning.
-                Otherwise, this is always `None`. Subclasses may use this
-                information to perform basic position modifications at
-                render time, though in most cases this field can be ignored.
-            local_start_x: If this object is in a flowable, the local
-                starting position of this drawing segment.
+        ``self.interfaces``.
 
         Note: By default this is a no-op. Subclasses with with
         rendered appearances should override this.
+
+        Args:
+            pos: The rendering position in document space for drawing.
+            dist_to_line_start: If in a ``Flowable``, the x-axis distance from the
+                active ``NewLine`` beginning. Otherwise, this is always ``None``.
+                Subclasses may use this information to perform basic position
+                modifications at render time, though in most cases this field
+                can be ignored.
+            local_start_x: If this object is in a flowable, the local
+                starting position of this drawing segment.
+
         """
 
     def _render_before_break(
@@ -315,7 +315,7 @@ class PositionedObject:
         beginning portion of the object up to the break.
 
         This method should create a GraphicInterface and store it in
-        `self.interfaces`.
+        ``self.interfaces``.
 
         Args:
             local_start_x: The local starting position of this
@@ -323,7 +323,7 @@ class PositionedObject:
             start: The starting point in document space for drawing.
             stop: The stopping point in document space for drawing.
             dist_to_line_start: The x-axis distance from the active
-                `NewLine`s beginning. Subclasses may use this
+                ``NewLine`` beginning. Subclasses may use this
                 information to perform basic position modifications at
                 render time, though in most cases this field can be ignored.
 
@@ -339,7 +339,7 @@ class PositionedObject:
         ending portion of an object after a break.
 
         This method should create a GraphicInterface and store it in
-        `self.interfaces`.
+        ``self.interfaces``.
 
         Args:
             local_start_x: The local starting position of this
@@ -361,7 +361,7 @@ class PositionedObject:
         surrounded by breaks on either side.
 
         This method should create a GraphicInterface and store it in
-        `self.interfaces`.
+        ``self.interfaces``.
 
         Args:
             local_start_x: The local starting position of this
@@ -387,9 +387,9 @@ class PositionedObject:
             self._parent._register_child(self)
 
     def _register_child(self, child: PositionedObject):
-        """Add an object to `self.children`."""
+        """Add an object to ``self.children``."""
         self.children.append(child)
 
     def _unregister_child(self, child: PositionedObject):
-        """Remove an object from `self.children`."""
+        """Remove an object from ``self.children``."""
         self.children.remove(child)

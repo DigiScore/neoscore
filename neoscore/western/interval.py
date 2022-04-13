@@ -23,23 +23,23 @@ class Interval:
             specifier (str): A description of the interval.
 
         The interval specifier should be a string in the form:
-        `[direction][quality][distance]` where:
-            * `direction` is one of:
-              * `'a'` for ascending
-              * `'d'` for descending
-            * `quality` is one of:
-              * `'m'` for minor
-              * `'M'` for Major
-              * `'P'` for Perfect
-              * `'d'` for diminished
-              * `'A'` for Augmented
-            * `distance` is any positive integer indicating the
+        ``[direction][quality][distance]`` where:
+            * ``direction`` is one of:
+              * ``'a'`` for ascending
+              * ``'d'`` for descending
+            * ``quality`` is one of:
+              * ``'m'`` for minor
+              * ``'M'`` for Major
+              * ``'P'`` for Perfect
+              * ``'d'`` for diminished
+              * ``'A'`` for Augmented
+            * ``distance`` is any positive integer indicating the
               interval distance.
 
         Some examples:
 
-            * `Interval('aM3')` signifies an ascending major third
-            * `Interval('dA9')` signifies a descending augmented ninth
+            * ``Interval('aM3')`` signifies an ascending major third
+            * ``Interval('dA9')`` signifies a descending augmented ninth
         """
         match = Interval._shorthand_regex.match(specifier)
         if match is None:
@@ -70,7 +70,6 @@ class Interval:
         return f"Interval('{direction_str}{self.quality}{self.distance}')"
 
     def __hash__(self):
-        """`Duration`s equal to each other share the same hash."""
         return hash(self.direction) ^ hash(self.quality) ^ hash(self.distance)
 
     def __eq__(self, other):
@@ -120,7 +119,7 @@ class Interval:
     def simple_distance(self) -> float:
         """The simplified interval distance collapsing compound intervals.
 
-        This value is the simplified version of `self.distance` where intervals
+        This value is the simplified version of ``self.distance`` where intervals
         larger than an octave are moved to be within one octave.
 
         Examples:

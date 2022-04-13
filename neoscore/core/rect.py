@@ -10,8 +10,8 @@ from neoscore.core.units import Unit
 class Rect:
     """A rectangle data class.
 
-    The `x` and `y` coordinates represent the starting position,
-    typically the top left corner. `width` and `height` extend
+    The ``x`` and ``y`` coordinates represent the starting position,
+    typically the top left corner. ``width`` and ``height`` extend
     rightward and downward.
 
     The only math operation supported for rects is scalar
@@ -30,7 +30,7 @@ class Rect:
 
 
 RectDef: TypeAlias = Union[Rect, tuple[Unit, Unit, Unit, Unit]]
-"""A `Rect` or an init arg tuple for one."""
+"""A ``Rect`` or an init arg tuple for one."""
 
 
 # TODO HIGH Move into Rect classmethod

@@ -14,7 +14,7 @@ class RichText(PositionedObject):
 
     """A graphical rich text object.
 
-    Unlike its simpler counterpart in `Text`, this supports rich
+    Unlike its simpler counterpart in ``Text``, this supports rich
     formatting with HTML input. As neoscore is currently backed by Qt,
     this input supports Qt's HTML subset documented at
     https://doc.qt.io/qt-5/richtext-html-subset.html

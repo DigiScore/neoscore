@@ -9,35 +9,35 @@ from neoscore.core.units import Unit
 
 
 class Spanner:
-    """A mixin for `PositionedObject`s with starting and ending anchors.
+    """Mixin for a ``PositionedObject`` with starting and ending anchors.
 
-    If the spanner (main `PositionedObject`) is in a `Flowable`, the
+    If the spanner (main ``PositionedObject``) is in a ``Flowable``, the
     endpoint must be in the same one. Likewise, if the spanner is
     *not* in one, the endpoint must not be in one either.
 
     This mixin only provides a common interface for ending anchors.
     The starting position of this spanner should be the main object's
-    `PositionedObject.pos`, and the starting anchor should be the its
-    `PositionedObject.parent`. It is up to the implementing class to
+    ``PositionedObject.pos``, and the starting anchor should be the its
+    ``PositionedObject.parent``. It is up to the implementing class to
     decide how to use this information.
 
-    Simple `Spanner`s are horizontal relative to their starting
-    anchor. Arbitrary end-y positions can be set with `Spanner2D`.
+    Simple ``Spanner``\ s are horizontal relative to their starting
+    anchor. Arbitrary end-y positions can be set with ``Spanner2D``.
 
     """
 
     def __init__(self, end_x: Unit, end_parent: PositionedObject):
         """
         Args:
-            end_pos: The position of the endpoint. If a `Unit` is given, it will be
+            end_pos: The position of the endpoint. If a ``Unit`` is given, it will be
                 treated as the end X position, and the end Y position will be
                 calculated to be horizontal relative to the start.
-            end_parent: The parent of the endpoint. `end_pos` will be relative to
-                this object. If None, this defaults to `self`.
+            end_parent: The parent of the endpoint. ``end_pos`` will be relative to
+                this object. If None, this defaults to ``self``.
 
-        Warning: If the spanner is in a `Flowable`, `end_parent` must be
+        Warning: If the spanner is in a ``Flowable``, ``end_parent`` must be
             in the same one. Likewise, if the spanner is not in a
-            `Flowable`, this must not be either.
+            ``Flowable``, this must not be either.
         """
         self._end_x = end_x
         self._end_parent = end_parent
@@ -63,7 +63,7 @@ class Spanner:
 
     @property
     def end_parent(self) -> PositionedObject:
-        """The parent of the endpoint. This may be `self`."""
+        """The parent of the endpoint. This may be ``self``."""
         return self._end_parent
 
     @end_parent.setter
@@ -75,7 +75,7 @@ class Spanner:
         """The x-axis length of the spanner.
 
         Implementing subclasses will often want to override
-        `PositionedObject.length` to return this.
+        ``PositionedObject.length`` to return this.
         """
         if self.end_parent == self:
             return self.end_pos.x

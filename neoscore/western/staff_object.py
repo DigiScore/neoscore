@@ -45,14 +45,14 @@ class StaffObject:
 
     @property
     def pos_x_in_staff(self) -> Unit:
-        """A specialized version of `pos_in_staff` which only finds the x pos"""
+        """A specialized version of ``pos_in_staff`` which only finds the x pos"""
         return map_between_x(self.staff, cast(PositionedObject, self))
 
     ######## PRIVATE METHODS ########
 
     @staticmethod
     def find_staff(obj: PositionedObject) -> Optional[Staff]:
-        """Find the first staff which is an ancestor of `obj` or `obj` itself"""
+        """Find the first staff which is an ancestor of ``obj`` or ``obj`` itself"""
         marker = "_neoscore_staff_type_marker"
         if hasattr(obj, marker):
             return cast(Any, obj)

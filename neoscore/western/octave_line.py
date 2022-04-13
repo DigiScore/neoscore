@@ -72,12 +72,12 @@ class OctaveLine(PositionedObject, Spanner, HasMusicFont):
         Args:
             start: The starting point.
             start_parent: The parent for the starting position. If no font is given,
-                this or one of its ancestors must implement `HasMusicFont`.
+                this or one of its ancestors must implement ``HasMusicFont``.
             end_x: The spanner end x position. The y position will be
                 automatically calculated to be horizontal.
             end_parent: An object either in a Staff or
                 a staff itself. The root staff of this *must* be the same
-                as the root staff of `start_parent`. If omitted, the
+                as the root staff of ``start_parent``. If omitted, the
                 stop point is relative to the start point.
             indication: A valid octave indication.
                 currently supported indications are:

@@ -16,9 +16,9 @@ class Duration:
     The actual written denomination of duration is deduced
     from the reduced fraction. For instance:
 
-    * `Duration(1, 4)` indicates a quarter note value
-    * `Duration(1, 1)` indicates a whole note value
-    * `Duration(3, 8)` indicates a dotted quarter note value
+    * ``Duration(1, 4)`` indicates a quarter note value
+    * ``Duration(1, 1)`` indicates a whole note value
+    * ``Duration(3, 8)`` indicates a dotted quarter note value
 
     """
 
@@ -32,7 +32,7 @@ class Duration:
     display: Optional[DurationDisplay] = field(init=False, compare=False)
     """The appearance spec of the duration when written in notes or rests.
 
-    This is `None` if the duration cannot be represented without ties.
+    This is ``None`` if the duration cannot be represented without ties.
     """
 
     def __post_init__(self, numerator: int, denominator: int):
@@ -80,9 +80,9 @@ class Duration:
 
     @classmethod
     def from_description(cls, base_division: int, dots: int) -> Duration:
-        """Create a `Duration` from a base division and a number of dots.
+        """Create a ``Duration`` from a base division and a number of dots.
 
-        `Duration`s created with this will always have valid `DurationDisplay`s.
+        ``Duration``\ s created with this will always have a valid ``DurationDisplay``.
 
         Args:
             base_division: Must be 0 or a power of 2
@@ -112,7 +112,7 @@ class Duration:
     ######## SPECIAL METHODS ########
 
     def __float__(self):
-        """Reduce the fractional representation to a `float` and return it."""
+        """Reduce the fractional representation to a ``float`` and return it."""
         return float(self.fraction)
 
     def __add__(self, other: Duration):

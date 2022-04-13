@@ -29,18 +29,18 @@ def simple_header_footer(
     sided. The text items are positioned half along the margins. Center text is
     automatically center-aligned, and outside text is aligned to the outside.
 
-    All text items can include a magic template string `"%page"`, which will be
+    All text items can include a magic template string ``"%page"``, which will be
     automatically replaced by the overlaid page's number. For instance,
-    `simple_header_footer(centered_bottom_text="Page #%page)` will generate
+    ``simple_header_footer(centered_bottom_text="Page #%page)`` will generate
     footers with the text "Page #1", "Page #2", etc.
 
-    This generates and reutrns a `PageOverlayFunc` which should be passed to the
+    This generates and reutrns a ``PageOverlayFunc`` which should be passed to the
     document's page generator with:
 
     >>> neoscore.document.pages.overlay_func = simple_header_footer() # doctest: +SKIP
 
     This only affects pages created after set, so typically this should be done right
-    after `neoscore.setup()`.
+    after ``neoscore.setup()``.
 
     """
 

@@ -14,7 +14,7 @@ class ArpeggioLine(RepeatingMusicTextLine):
 
     """An arpeggio roll line, optionally with an arrow.
 
-    This is a thin convenience wrapper around `RepeatingMusicTextLine`.
+    This is a thin convenience wrapper around ``RepeatingMusicTextLine``.
     """
 
     _MAIN_GLYPH = "wiggleArpeggiatoUp"
@@ -36,10 +36,10 @@ class ArpeggioLine(RepeatingMusicTextLine):
         Args:
             start: The starting point.
             start_parent: If no font is given, this or one of its ancestors
-                must implement `HasMusicFont`.
+                must implement ``HasMusicFont``.
             end_pos: The stopping point.
             end_parent: The parent for the ending position.
-                If `None`, defaults to `self`.
+                If ``None``, defaults to ``self``.
             include_arrow: Whether to end the line with an arrow. This will be
                 attached to the end position pointing away from the starting position.
             font: If provided, this overrides any font found in the ancestor chain.

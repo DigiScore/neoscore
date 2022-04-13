@@ -37,7 +37,7 @@ class Paper:
     def make_rotation(self) -> Paper:
         """Create a 90 degree clockwise rotation of this paper.
 
-        The `gutter` field is left unchanged.
+        The ``gutter`` field is left unchanged.
         """
         return Paper(
             self.height,
@@ -59,7 +59,7 @@ class Paper:
         margin_left: Optional[Unit] = None,
         gutter: Optional[Unit] = None,
     ) -> Paper:
-        """Derive a new `Paper` from this one with any given changed attributes."""
+        """Derive a new ``Paper`` from this one with any given changed attributes."""
         return Paper(
             width if width is not None else self.width,
             height if height is not None else self.height,

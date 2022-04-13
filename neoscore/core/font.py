@@ -12,7 +12,7 @@ class Font:
     """A text font.
 
     All fonts are immutable. To get a modified version of a font, use
-    `Font.modified`."""
+    ``Font.modified``."""
 
     def __init__(
         self,
@@ -27,7 +27,7 @@ class Font:
             size: The size (height) of the font
             weight: The font weight on a 0-100 scale, where 50 is normal,
                 lower numbers are lighter, and higher are darker.
-                If `None` (the default), a normal weight will be used.
+                If ``None`` (the default), a normal weight will be used.
             italic: Whether or not the font is italicized
         """
         self._family_name = family_name
