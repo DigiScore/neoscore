@@ -44,6 +44,7 @@ class Barline(MusicPath, MultiStaffObject):
         MultiStaffObject.__init__(self, staves)
         MusicPath.__init__(self, (pos_x, ZERO), self.highest, font)
         self.engraving_defaults = self.music_font.engraving_defaults
+        # todo - some fonts have thinThick separation values!
         self.separation = self.engraving_defaults["barlineSeparation"]
         self.pos_x = pos_x
         self.font = font
@@ -61,14 +62,8 @@ class Barline(MusicPath, MultiStaffObject):
             for n, l in enumerate(style.lines):
                 pattern = style.pattern
                 thickness = style.lines[n]
-                print(n, l, pattern, thickness)
                 self.draw_bar_line(pattern,
                                    thickness)
-
-                # move to next line to the right
-                # separation = self.engraving_defaults["barlineSeparation"]
-                # self.pos_x += Unit(100) + separation
-
         else:
             self.draw_bar_line()
 
@@ -78,12 +73,7 @@ class Barline(MusicPath, MultiStaffObject):
                       ):
         # Create the path
         path = Path((self.pos_x, ZERO), self.highest, self.font)
-        # self.engraving_defaults = self.music_font.engraving_defaults
-        # separation = self.engraving_defaults["barlineSeparation"]
         thickness = self.engraving_defaults[thickness]
-        print(thickness)
-
-        # declare the Pen and bottom x pos
         path.pen = Pen(pattern=pattern,
                        thickness=thickness)
         bottom_x = self.pos_x + self.offset_x
@@ -94,7 +84,7 @@ class Barline(MusicPath, MultiStaffObject):
                      parent=self.lowest_stave)
 
         # move to next line to the right
-        self.pos_x += Unit(100) + self.separation
+        self.pos_x += self.separation
 
     def calculate_offset(self):
         # Calculate offset needed to make vertical line if top and
