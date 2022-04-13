@@ -5,7 +5,7 @@ from neoscore.core.music_font import MusicFont
 # NOTE: When creating a new style, be sure to add it to ALL_STYLES at
 # the end of this file.
 
-@dataclass(frozen=True)
+@dataclass #(frozen=True)
 class BarLineStyle:
     """Bar line styles
 
@@ -22,6 +22,8 @@ class BarLineStyle:
     lines: list
     """a list containing the number and type of lines that 
     make up a bar line style. Listed left to right."""
+
+    separation: str = "barlineSeparation"
 
 SINGLE = BarLineStyle(
     PenPattern.SOLID,
@@ -52,7 +54,8 @@ THIN_DOUBLE = BarLineStyle(
 END = BarLineStyle(
     PenPattern.SOLID,
     ["thinBarlineThickness",
-     "thickBarlineThickness"]
+     "thickBarlineThickness"],
+    "thinThickBarlineSeparation"
 )
 """End bar line, thin solid, then thick solid"""
 
@@ -71,4 +74,4 @@ ALL_STYLES: list[BarLineStyle] = [
     END,
     DASHED,
 ]
-"""A list of all the nar line tables in this module"""
+"""A list of all the bar line tables in this module"""
