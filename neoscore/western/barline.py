@@ -24,7 +24,7 @@ class Barline(MusicPath, MultiStaffObject):
         pos_x: Unit,
         staves: list[StaffLike],
         font: Optional[MusicFont] = None,
-        # todo - should this be deleted?
+        # todo - should pen be deleted?
         pen: Optional[PenDef] = None,
         style: Optional[BarLineStyle] = None,
         connected: Optional[bool] = True,
@@ -41,47 +41,41 @@ class Barline(MusicPath, MultiStaffObject):
         MultiStaffObject.__init__(self, staves)
         MusicPath.__init__(self, (pos_x, ZERO), self.highest, font)
         engraving_defaults = self.music_font.engraving_defaults
-        seperation = engraving_defaults["barlineSeparation"]
+        self.separation = engraving_defaults["barlineSeparation"]
         self.pos_x = pos_x
+
+        # do we need an over-ride pen?
+        self.pen = pen
+
+        # Calculate offset needed to make vertical line if top and
+        # bottom staves are not horizontally aligned.
+        self.offset_x = self.calculate_offset()
 
         if style:
             for n, l in enumerate(style.lines):
                 thickness = engraving_defaults[style.lines[n]]
-                pen = Pen(pattern=style.pattern,
+                self.pen = Pen(pattern=style.pattern,
                                thickness=thickness)
-                self.draw_bar_line(pen)
-                self.move_to(Unit(seperation * n),
-                             self.lowest.height,
-                             parent=self.lowest)
+                self.draw_bar_line()
+
+                # move to next line to the right
+                self.move_to(self.separation,
+                             ZERO)
+                self.pos_x += self.separation
 
         else:
             thickness = engraving_defaults["thinBarlineThickness"]
             self.pen = Pen(thickness=thickness)
-            self.draw_bar_line(pen)
+            self.draw_bar_line()
 
-    def draw_bar_line(self, pen, separation=Unit(0)):
+    def draw_bar_line(self):
         # Draw the path
-        # Calculate offset needed to make vertical line if top and
-        # bottom staves are not horizontally aligned.
-        offset_x = map_between_x(self.lowest, self.highest)
-        self.bottom_x = self.pos_x + offset_x + separation
+        self.bottom_x = self.pos_x + self.offset_x # + self.separation
         self.line_to(self.bottom_x,
                      self.lowest.height,
                      parent=self.lowest)
 
-    # @property
-    # def pos_x(self):
-    #     return self.pos_x
-
-
-    # @property
-    # def style(self):
-    #     self.pen ==
-    #
-    #
-    #     if self.style ==
-    #
-    #     self.thickness = self.engraving_defaults["thinBarlineThickness"]
-    #
-    #
-    #     return self.thickness
+    def calculate_offset(self):
+        # Calculate offset needed to make vertical line if top and
+        # bottom staves are not horizontally aligned.
+        return map_between_x(self.lowest, self.highest)
