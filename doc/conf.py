@@ -6,6 +6,7 @@
 
 # -- Path setup --------------------------------------------------------------
 
+import copy
 import os
 import re
 import shutil
@@ -201,7 +202,10 @@ def link_aliases(soup: BeautifulSoup) -> bool:
 
         for ref in soup.find_all(search_fn):
             modified = True
-            ref.replace_with(replacement_el)
+            if "BrushDef" in ref.string:
+                print(ref)
+                print(replacement_el)
+            ref.replace_with(copy.copy(replacement_el))
     return modified
 
 
