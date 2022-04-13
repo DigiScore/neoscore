@@ -55,6 +55,7 @@ class Barline(MusicPath, MultiStaffObject):
             get_separation = engraving_defaults.get(style.separation)
             # if thinThick separation value not listed in this font
             # open normal value up a bit
+            # else it remains "barlineSeperation" value from above
             if not get_separation and style.separation == "thinThickBarlineSeparation":
                 separation *= 1.5
                 print('here')
