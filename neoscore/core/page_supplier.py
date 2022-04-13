@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Callable, Optional
+from typing import TYPE_CHECKING, Callable, Optional, TypeAlias
 
 from neoscore.core.directions import HorizontalDirection
 from neoscore.core.page import Page
@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from neoscore.core.document import Document
 
 
-PageOverlayFunc = Callable[[Page], None]
+PageOverlayFunc: TypeAlias = Callable[[Page], None]
 """A function to run on every page after creation.
 
 The function takes one argument, the newly generated page. Functions will typically

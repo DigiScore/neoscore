@@ -17,6 +17,7 @@ import sys
 #
 from pathlib import Path
 
+from bs4 import BeautifulSoup
 from sphinx.ext import apidoc
 
 DOC_ROOT_DIR = Path(__file__).parent
@@ -193,17 +194,54 @@ steps as will likely be needed.
 """
 
 
+def link_aliases(soup: BeautifulSoup) -> bool:
+    """Insert cross-reference links to known TypeAlias names
+
+    Returns a bool whether any modifications were made
+    """
+    modified = False
+    for alias_short, alias_qualified in autodoc_type_aliases.items():
+        linked_file_name = alias_qualified.rsplit(".", 1)[0] + ".html"
+        href = linked_file_name + "#" + alias_qualified
+        replacement_el = soup.new_tag(
+            "a", class_="reference internal", href=href, title=alias_qualified
+        )
+        inner_el = soup.new_tag("span", class_="pre")
+        inner_el.append(alias_short)
+        replacement_el.append(inner_el)
+
+        def search_fn(tag):
+            return (
+                tag.name == "span"
+                and tag.get("class") == ["pre"]
+                and tag.string in [alias_short, alias_qualified]
+                and tag.parent.get("class") in [["n"], ["property"]]
+            )
+
+        for ref in soup.find_all(search_fn):
+            modified = True
+            ref.replace_with(replacement_el)
+    return modified
+
+
 def post_process_html(app, exception):
+    # Post-processing could potentially be done more elegantly by hooking into Sphinx's
+    # doc API and modifying it before HTML is written. The event for this would probably
+    # be `event.doctree-resolved`.
     if exception:
         return
     target_files = []
     for doc in app.env.found_docs:
         target_files.append(Path(app.outdir) / app.builder.get_target_uri(doc))
 
-    # use beautifulsoup for this
-
     for html_file in target_files:
         src = html_file.read_text()
+        soup = BeautifulSoup(src, "lxml")
+        modified = link_aliases(soup)
+        if modified:
+            print(f"{html_file.name} was modified in post-processing.")
+            with open(html_file, "w") as f:
+                f.write(str(soup))
 
 
 def setup(app):

@@ -6,7 +6,7 @@ import pathlib
 import tempfile
 import threading
 from time import time
-from typing import TYPE_CHECKING, Callable, Optional
+from typing import TYPE_CHECKING, Callable, Optional, TypeAlias
 from warnings import warn
 
 import img2pdf  # type: ignore
@@ -188,7 +188,7 @@ def register_music_font(font_file_path: str, metadata_path: str):
     registered_music_fonts[name] = metadata
 
 
-RefreshFunc = Callable[[float], None]
+RefreshFunc: TypeAlias = Callable[[float], None]
 """A user-providable function for updating the scene every frame(ish).
 
 The function should accept one argument - the current time in seconds.
