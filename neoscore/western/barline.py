@@ -27,8 +27,6 @@ class Barline(MusicPath, MultiStaffObject):
         pos_x: Unit,
         staves: list[StaffLike],
         font: Optional[MusicFont] = None,
-        # todo - should pen be deleted?
-        pen: Optional[PenDef] = None,
         style: Optional[BarLineStyle] = None,
         connected: Optional[bool] = True,
     ):
@@ -43,13 +41,10 @@ class Barline(MusicPath, MultiStaffObject):
         """
         MultiStaffObject.__init__(self, staves)
         MusicPath.__init__(self, (pos_x, ZERO), self.highest, font)
-        self.engraving_defaults = self.music_font.engraving_defaults
-        self.separation = self.engraving_defaults["barlineSeparation"]
+        engraving_defaults = self.music_font.engraving_defaults
+        separation = engraving_defaults["barlineSeparation"]
         self.pos_x = pos_x
         self.font = font
-
-        # do we need an over-ride pen?
-        self.pen = pen
 
         # Calculate offset
         self.offset_x = self._calculate_offset()
@@ -58,42 +53,45 @@ class Barline(MusicPath, MultiStaffObject):
         self.lowest_height = self.lowest.height
 
         if style:
-            get_separation = self.engraving_defaults.get(style.separation)
+            get_separation = engraving_defaults.get(style.separation)
 
             # if thinThick separation value not listed in this font
             # open normal value up a bit
             if get_separation == None and style.separation == "thinThickBarlineSeparation":
-                self.separation *= 1.5
+                separation *= 1.5
 
             # draw each of the bar lines in turn fro left to right
             for n, l in enumerate(style.lines):
                 pattern = style.pattern
-                thickness = style.lines[n]
-                self._draw_bar_line(pattern,
-                                    thickness)
+                thickness = engraving_defaults[style.lines[n]]
+                self._draw_barline(self.pos_x,
+                                   pattern,
+                                   thickness)
+                # # move to next line to the right
+                self.pos_x += separation
         else:
-            self._draw_bar_line()
-
+            self._draw_barline(self.pos_x,
+                                PenPattern.SOLID,
+                                engraving_defaults["thinBarlineThickness"]
+                                )
 
     #### PRIVATE METHODS ####
-    def _draw_bar_line(self,
-                       pattern=PenPattern.SOLID,
-                       thickness="thinBarlineThickness"
-                       ):
+    def _draw_barline(self,
+                      pos_x,
+                      pen_pattern: PenPattern,
+                      thickness: Unit
+                      ):
         # Create the path
-        path = Path((self.pos_x, ZERO), self.highest, self.font)
-        thickness = self.engraving_defaults[thickness]
-        path.pen = Pen(pattern=pattern,
-                       thickness=thickness)
-        bottom_x = self.pos_x + self.offset_x
+        pen = Pen(pattern=pen_pattern,
+                  thickness=thickness)
+        path = Path((pos_x, ZERO), self.highest, self.font, pen)
 
         # Draw the path
+        bottom_x = pos_x + self.offset_x
         path.line_to(bottom_x,
                      self.lowest_height,
                      parent=self.lowest_stave)
 
-        # move to next line to the right
-        self.pos_x += self.separation
 
     def _calculate_offset(self):
         # Calculate offset needed to make vertical line if top and
