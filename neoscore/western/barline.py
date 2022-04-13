@@ -4,6 +4,7 @@ from neoscore.core.mapping import map_between_x
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
 from neoscore.core.pen import Pen, PenDef
+from neoscore.core.pen_pattern import PenPattern
 from neoscore.core.units import ZERO, Unit
 from neoscore.western.multi_staff_object import MultiStaffObject, StaffLike
 from neoscore.western.barline_style import BarLineStyle
@@ -39,10 +40,11 @@ class Barline(MusicPath, MultiStaffObject):
             style:
         """
         MultiStaffObject.__init__(self, staves)
-        MusicPath.__init__(self, (pos_x, ZERO), self.highest, font)
-        engraving_defaults = self.music_font.engraving_defaults
-        self.separation = engraving_defaults["barlineSeparation"]
+        # MusicPath.__init__(self, (pos_x, ZERO), self.highest, font)
+        # engraving_defaults = self.music_font.engraving_defaults
+        # self.separation = engraving_defaults["barlineSeparation"]
         self.pos_x = pos_x
+        self.font = font
 
         # do we need an over-ride pen?
         self.pen = pen
@@ -53,24 +55,33 @@ class Barline(MusicPath, MultiStaffObject):
 
         if style:
             for n, l in enumerate(style.lines):
-                thickness = engraving_defaults[style.lines[n]]
-                self.pen = Pen(pattern=style.pattern,
-                               thickness=thickness)
-                self.draw_bar_line()
+                pattern = style.pattern
+                thickness = style.lines[n]
+                self.draw_bar_line(n,
+                                   pattern,
+                                   thickness)
 
                 # move to next line to the right
-                self.move_to(self.separation,
-                             ZERO)
-                self.pos_x += self.separation
+                # self.move_to(self.separation,
+                #              ZERO)
+                # self.pos_x += self.separation * 3
 
         else:
-            thickness = engraving_defaults["thinBarlineThickness"]
-            self.pen = Pen(thickness=thickness)
+            # MusicPath.__init__(self, (pos_x, ZERO), self.highest, font)
+            # thickness = engraving_defaults["thinBarlineThickness"]
+            # self.pen = Pen(thickness=thickness)
             self.draw_bar_line()
 
-    def draw_bar_line(self):
+    def draw_bar_line(self, line_number=0, pattern=PenPattern.SOLID, thickness="thinBarlineThickness"):
         # Draw the path
-        self.bottom_x = self.pos_x + self.offset_x # + self.separation
+        MusicPath.__init__(self, (self.pos_x, ZERO), self.highest, self.font)
+        engraving_defaults = self.music_font.engraving_defaults
+        self.separation = engraving_defaults["barlineSeparation"]
+        thickness = engraving_defaults[thickness]
+        self.pen = Pen(pattern=pattern,
+                       thickness=thickness)
+
+        self.bottom_x = self.pos_x + self.offset_x + (self.separation * line_number)
         self.line_to(self.bottom_x,
                      self.lowest.height,
                      parent=self.lowest)
