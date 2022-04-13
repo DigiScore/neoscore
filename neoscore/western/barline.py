@@ -35,9 +35,8 @@ class Barline(MusicPath, MultiStaffObject):
             pos_x: The barline X position relative to the highest staff.
             staves: The staves spanned. Must be in visually descending order.
             font: If provided, this overrides the font in the parent (top) staff.
-            pen: The pen used to draw the path. Defaults to a pen with
-                thickness from the music font's engraving default.
-            style:
+            style: If provided, this declares the style of bar line e.g. double, end.
+            connected: If provided, this declares if the bar lines are separated across a stave system
         """
         MultiStaffObject.__init__(self, staves)
         MusicPath.__init__(self, (pos_x, ZERO), self.highest, font)
@@ -54,13 +53,13 @@ class Barline(MusicPath, MultiStaffObject):
 
         if style:
             get_separation = engraving_defaults.get(style.separation)
-
             # if thinThick separation value not listed in this font
             # open normal value up a bit
-            if get_separation == None and style.separation == "thinThickBarlineSeparation":
+            if not get_separation and style.separation == "thinThickBarlineSeparation":
                 separation *= 1.5
+                print('here')
 
-            # draw each of the bar lines in turn fro left to right
+            # draw each of the bar lines in turn from left to right
             for n, l in enumerate(style.lines):
                 pattern = style.pattern
                 thickness = engraving_defaults[style.lines[n]]
@@ -71,13 +70,13 @@ class Barline(MusicPath, MultiStaffObject):
                 self.pos_x += separation
         else:
             self._draw_barline(self.pos_x,
-                                PenPattern.SOLID,
-                                engraving_defaults["thinBarlineThickness"]
-                                )
+                               PenPattern.SOLID,
+                               engraving_defaults["thinBarlineThickness"]
+                               )
 
     #### PRIVATE METHODS ####
     def _draw_barline(self,
-                      pos_x,
+                      pos_x: Unit,
                       pen_pattern: PenPattern,
                       thickness: Unit
                       ):
@@ -92,8 +91,7 @@ class Barline(MusicPath, MultiStaffObject):
                      self.lowest_height,
                      parent=self.lowest_stave)
 
-
-    def _calculate_offset(self):
+    def _calculate_offset(self) -> Unit:
         # Calculate offset needed to make vertical line if top and
         # bottom staves are not horizontally aligned.
         return map_between_x(self.lowest, self.highest)

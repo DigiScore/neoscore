@@ -24,6 +24,8 @@ class BarLineStyle:
     make up a bar line style. Listed left to right."""
 
     separation: str = "barlineSeparation"
+    """the default engraving value for separating double bar
+    lines. Default is barlineSeparation."""
 
 SINGLE = BarLineStyle(
     PenPattern.SOLID,
