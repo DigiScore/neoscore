@@ -4,7 +4,7 @@ import tempfile
 from pathlib import Path
 from typing import List
 
-from docutils.nodes import Node
+from docutils import nodes
 from sphinx.directives.code import CodeBlock
 
 DOC_ROOT_DIR = Path(__file__).parent
@@ -13,7 +13,7 @@ STATIC_RENDER_DIR = DOC_ROOT_DIR / "_build" / "html" / "_static" / "example_rend
 
 
 class RenderedCodeBlock(CodeBlock):
-    def run(self) -> List[Node]:
+    def run(self) -> List[nodes.Node]:
         # Run superclass first
         result = super().run()
         # Now render the code block to an image
@@ -30,11 +30,16 @@ class RenderedCodeBlock(CodeBlock):
         script_lines.append(
             f"neoscore.render_image("
             + "neoscore.document.pages[0].document_space_bounding_rect,"
-            + f"'{export_path}', 72, autocrop=True)"
+            + f"'{export_path}', 130, autocrop=True)"
         )
         script_text = "\n".join(script_lines)
         script_file.write(script_text)
         script_file.flush()
         os.fsync(script_file.fileno())
         subprocess.check_call(["python", script_file.name])
+
+        # This hackily assumes exported images live 2 dirs down from root
+        image_uri = "/".join(export_path.parts[-3:])
+        image_node = nodes.image(uri=image_uri, classes=["example-render"])
+        result.append(image_node)
         return result

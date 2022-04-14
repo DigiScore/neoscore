@@ -1,12 +1,10 @@
-.. neoscore documentation master file, created by
-   sphinx-quickstart on Sun Apr 10 21:59:46 2022.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
+testing example for auto-rendered examples
    
 .. rendered-code-block::
    
-   Text(ORIGIN, None, "hello world")
+   staff = Staff(ORIGIN, None, Mm(30))
+   Clef(ZERO, staff, 'treble')
+   Chordrest(staff.unit(6), staff, ["c'"], (1, 4))
 
 
 Welcome to neoscore's documentation!
