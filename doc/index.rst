@@ -4,7 +4,7 @@ neoscore
 .. role:: subtitle-slogan
    :class: subtitle-slogan
 
-:subtitle-slogan:`notation without limits`
+:subtitle-slogan:`notation without bars`
 
 Neoscore is a Python programming library for creating scores without limits. While other notation software assumes scores follow a narrow set of rules, neoscore treats scores as shapes and text with as few assumptions as possible. In neoscore, staves and noteheads are just one way of writing. In addition to conventional export formats, it features an experimental runtime allowing interactive live coding and animation.
 

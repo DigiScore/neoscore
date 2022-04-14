@@ -88,6 +88,8 @@ suppress_warnings = [
     "image.not_readable"
 ]
 
+todo_include_todos = True
+
 
 def resolve_bool_env_variable(var):
     value = os.environ.get(var)

@@ -84,6 +84,9 @@ class Flowable(PositionedObject):
     def y_padding(self, value: Unit):
         self._y_padding = value
 
+    # TODO MEDIUM either support break opportunities or delete references to them until
+    # they are supported.
+
     @property
     def break_threshold(self) -> Unit:
         """The threshold for ``BreakOpportunity``-aware line breaks.

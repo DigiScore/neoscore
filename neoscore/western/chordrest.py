@@ -59,6 +59,7 @@ class Chordrest(PositionedObject, StaffObject):
         self,
         pos_x: Unit,
         staff: Staff,
+        # TODO HIGH this PitchDef isn't patched correctly in docs
         notes: Optional[list[PitchDef | PitchAndGlyph]],
         duration: DurationDef,
         rest_y: Optional[Unit] = None,

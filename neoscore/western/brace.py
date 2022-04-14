@@ -8,6 +8,8 @@ from neoscore.core.point import Point
 from neoscore.core.units import ZERO, Unit
 from neoscore.western.multi_staff_object import MultiStaffObject, StaffLike
 
+# TODO MEDIUM these are positioned incorrectly
+
 
 class Brace(MultiStaffObject, MusicText):
 
