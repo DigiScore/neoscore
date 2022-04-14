@@ -3,6 +3,12 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+   
+.. rendered-code-block::
+   
+   Text(ORIGIN, None, "hello world")
+
+
 Welcome to neoscore's documentation!
 ====================================
 

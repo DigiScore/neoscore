@@ -315,6 +315,8 @@ def render_image(
             unknown reasons.
 
     """
+    # TODO HIGH add ability to render the entire doc contents here and autocrop. This will
+    # simplify writing rendered examples in docs.
     global document
     global _app_interface
 

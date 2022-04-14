@@ -4,7 +4,6 @@
 # list see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-# -- Path setup --------------------------------------------------------------
 
 import copy
 import os
@@ -26,12 +25,9 @@ PROJECT_ROOT_DIR = DOC_ROOT_DIR.parent
 PROJECT_SRC_DIR = PROJECT_ROOT_DIR / "neoscore"
 
 sys.path.insert(0, str(PROJECT_SRC_DIR))
-# sys.path.insert(0, str(PROJECT_SRC_DIR/'core'))
-# sys.path.insert(0, str(PROJECT_SRC_DIR/'western'))
-# sys.path.insert(0, str(PROJECT_SRC_DIR/'interface'))
-# Needed to let Sphinx import the `interface.qt` subpackage
-# sys.path.insert(0, str(PROJECT_SRC_DIR / "interface"))
+sys.path.insert(0, ".")
 
+from rendered_snippet import RenderedCodeBlock
 
 # -- Project information -----------------------------------------------------
 
@@ -233,3 +229,4 @@ def setup(app):
     app.connect("builder-inited", run_apidoc)
     app.connect("autodoc-skip-member", autoapi_skip_member)
     app.connect("build-finished", post_process_html)
+    app.add_directive("rendered-code-block", RenderedCodeBlock)
