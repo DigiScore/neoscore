@@ -12,6 +12,11 @@ DOC_ROOT_DIR = Path(__file__).parent
 STATIC_RENDER_DIR = DOC_ROOT_DIR / "_build" / "html" / "_static" / "rendered_examples"
 
 
+# TODO HIGH support early-docs variant where setup and show() calls are included in the
+# code sample. the setup call should be left in place, while the show() call is replaced
+# with the generated image export line
+
+
 class RenderedExample(CodeBlock):
     def run(self) -> List[nodes.Node]:
         # Run superclass first
