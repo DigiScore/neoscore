@@ -15,14 +15,16 @@ from neoscore.western.multi_staff_object import MultiStaffObject, StaffLike
 from neoscore.western.barline_style import BarLineStyle
 
 class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
+    """A bar line.
 
-    """A single bar line.
-
-    This is drawn as a single vertical line at a given x coordinate
+    This is drawn as vertical lines at a given x coordinate
     spanning the full height of a series of staves.
 
+    The style of the bar line is determined by the optional style
+    value. If none then will resort to default single thin line.
+
     The thickness of the line is determined by the engraving defaults
-    on the top staff.
+    on the top staff. Can be over-ridden by the font property.
     """
 
     def __init__(
@@ -42,7 +44,6 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
             connected: If provided, this declares if the bar lines are separated across a stave system
         """
         MultiStaffObject.__init__(self, staves)
-        # MusicPath.__init__(self, (pos_x, ZERO), self.highest, font)
         PositionedObject.__init__(self, (pos_x, ZERO),
                                   self.highest)
 
@@ -52,16 +53,13 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
 
         engraving_defaults = self.music_font.engraving_defaults
         separation = engraving_defaults["barlineSeparation"]
-        # self.pos_x = self.x
         self.font = font
         self.paths = []
 
-        # Calculate positions
-        self.offset_x = self._calculate_offset()
-        # self.highest_stave = self.highest
-        # self.lowest_stave = self.lowest
-        # self.lowest_height = self.lowest.height
+        # Calculate positions for this object
         start_x = ZERO
+        offset_x = self._calculate_offset()
+        bottom_x = self.x + offset_x
 
         if style:
             get_separation = engraving_defaults.get(style.separation)
@@ -69,20 +67,25 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
             # open normal value up a bit
             # else it remains "barlineSeperation" value from above
             if not get_separation and style.separation == "thinThickBarlineSeparation":
-                separation *= 1.5
+                separation *= 2
                 print('here')
 
             # draw each of the bar lines in turn from left to right
             for n, l in enumerate(style.lines):
+                if n > 0:
+                    # move to next line to the right
+                    start_x += separation
+                    bottom_x += separation
+
                 pattern = style.pattern
                 thickness = engraving_defaults[style.lines[n]]
                 self._draw_barline(start_x,
+                                   bottom_x,
                                    pattern,
                                    thickness)
-                # # move to next line to the right
-                start_x += separation
         else:
             self._draw_barline(start_x,
+                               bottom_x,
                                PenPattern.SOLID,
                                engraving_defaults["thinBarlineThickness"]
                                )
@@ -94,6 +97,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
     #### PRIVATE METHODS ####
     def _draw_barline(self,
                       top_x: Unit,
+                      bottom_x: Unit,
                       pen_pattern: PenPattern,
                       thickness: Unit
                       ):
@@ -105,9 +109,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
             pen=Pen(pattern=pen_pattern,
                     thickness=thickness)
         )
-
         # Draw the path
-        bottom_x = self.x + top_x + self.offset_x
         self.line_path.line_to(bottom_x,
                                self.lowest.height,
                                parent=self.lowest)

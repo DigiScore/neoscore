@@ -22,16 +22,16 @@ no_style = Barline(Mm(10), [staff_1, staff_2])
 
 for n, test_line in enumerate(barline_style.ALL_STYLES):
 
-    Barline(Mm(10*(n+1)),
+    Barline(Mm(10*(n+1) + 10),
             [staff_1, staff_2],
             style=test_line)
 
 # test bar lines between stave 1 and 3
-no_style = Barline(Mm(70), [staff_1, staff_3])
+no_style = Barline(Mm(80), [staff_1, staff_3])
 
 for n, test_line in enumerate(barline_style.ALL_STYLES):
 
-    Barline(Mm(10*(n+1) + 70),
+    Barline(Mm(10*(n+1) + 80),
             [staff_1, staff_3],
             style=test_line)
 
