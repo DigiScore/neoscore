@@ -8,6 +8,7 @@ from neoscore.core.music_path import MusicPath
 from neoscore.core.pen import Pen, PenDef
 from neoscore.core.pen_pattern import PenPattern
 from neoscore.core.path import Path
+from neoscore.core.point import Point
 
 from neoscore.core.units import ZERO, Unit
 from neoscore.western.multi_staff_object import MultiStaffObject, StaffLike
@@ -51,15 +52,16 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
 
         engraving_defaults = self.music_font.engraving_defaults
         separation = engraving_defaults["barlineSeparation"]
-        self.pos_x = pos_x
+        # self.pos_x = self.x
         self.font = font
         self.paths = []
 
-        # Calculate offset
+        # Calculate positions
         self.offset_x = self._calculate_offset()
-        self.highest_stave = self.highest
-        self.lowest_stave = self.lowest
-        self.lowest_height = self.lowest.height
+        # self.highest_stave = self.highest
+        # self.lowest_stave = self.lowest
+        # self.lowest_height = self.lowest.height
+        start_x = ZERO
 
         if style:
             get_separation = engraving_defaults.get(style.separation)
@@ -74,13 +76,13 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
             for n, l in enumerate(style.lines):
                 pattern = style.pattern
                 thickness = engraving_defaults[style.lines[n]]
-                self._draw_barline(self.pos_x,
+                self._draw_barline(start_x,
                                    pattern,
                                    thickness)
                 # # move to next line to the right
-                self.pos_x += separation
+                start_x += separation
         else:
-            self._draw_barline(self.pos_x,
+            self._draw_barline(start_x,
                                PenPattern.SOLID,
                                engraving_defaults["thinBarlineThickness"]
                                )
@@ -91,25 +93,28 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
 
     #### PRIVATE METHODS ####
     def _draw_barline(self,
-                      pos_x: Unit,
+                      top_x: Unit,
                       pen_pattern: PenPattern,
                       thickness: Unit
                       ):
         # Create the path
-        pen = Pen(pattern=pen_pattern,
-                  thickness=thickness)
-        self.line_path = Path((pos_x, ZERO),
-                              self,
-                              pen=pen)
+        print(top_x)
+        self.line_path = Path(
+            Point(top_x, ZERO),
+            self,
+            pen=Pen(pattern=pen_pattern,
+                    thickness=thickness)
+        )
 
         # Draw the path
-        bottom_x = pos_x + self.offset_x
+        bottom_x = self.x + top_x + self.offset_x
         self.line_path.line_to(bottom_x,
-                     self.lowest_height,
-                     parent=self.lowest_stave)
+                               self.lowest.height,
+                               parent=self.lowest)
         self.paths.append(self.line_path)
 
     def _calculate_offset(self) -> Unit:
         # Calculate offset needed to make vertical line if top and
         # bottom staves are not horizontally aligned.
         return map_between_x(self.lowest, self.highest)
+
