@@ -2,6 +2,8 @@ from typing import Optional
 
 from neoscore.core.mapping import map_between_x
 from neoscore.core.music_font import MusicFont
+from neoscore.core.has_music_font import HasMusicFont
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.music_path import MusicPath
 from neoscore.core.pen import Pen, PenDef
 from neoscore.core.pen_pattern import PenPattern
@@ -11,7 +13,7 @@ from neoscore.core.units import ZERO, Unit
 from neoscore.western.multi_staff_object import MultiStaffObject, StaffLike
 from neoscore.western.barline_style import BarLineStyle
 
-class Barline(MusicPath, MultiStaffObject):
+class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
 
     """A single bar line.
 
@@ -39,11 +41,19 @@ class Barline(MusicPath, MultiStaffObject):
             connected: If provided, this declares if the bar lines are separated across a stave system
         """
         MultiStaffObject.__init__(self, staves)
-        MusicPath.__init__(self, (pos_x, ZERO), self.highest, font)
+        # MusicPath.__init__(self, (pos_x, ZERO), self.highest, font)
+        PositionedObject.__init__(self, (pos_x, ZERO),
+                                  self.highest)
+
+        if font is None:
+            font = HasMusicFont.find_music_font(self.highest)
+        self._music_font = font
+
         engraving_defaults = self.music_font.engraving_defaults
         separation = engraving_defaults["barlineSeparation"]
         self.pos_x = pos_x
         self.font = font
+        self.paths = []
 
         # Calculate offset
         self.offset_x = self._calculate_offset()
@@ -75,6 +85,10 @@ class Barline(MusicPath, MultiStaffObject):
                                engraving_defaults["thinBarlineThickness"]
                                )
 
+    @property
+    def music_font(self) -> MusicFont:
+        return self._music_font
+
     #### PRIVATE METHODS ####
     def _draw_barline(self,
                       pos_x: Unit,
@@ -84,13 +98,16 @@ class Barline(MusicPath, MultiStaffObject):
         # Create the path
         pen = Pen(pattern=pen_pattern,
                   thickness=thickness)
-        path = Path((pos_x, ZERO), self.highest, self.font, pen)
+        self.line_path = Path((pos_x, ZERO),
+                              self,
+                              pen=pen)
 
         # Draw the path
         bottom_x = pos_x + self.offset_x
-        path.line_to(bottom_x,
+        self.line_path.line_to(bottom_x,
                      self.lowest_height,
                      parent=self.lowest_stave)
+        self.paths.append(self.line_path)
 
     def _calculate_offset(self) -> Unit:
         # Calculate offset needed to make vertical line if top and
