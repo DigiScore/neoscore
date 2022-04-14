@@ -17,22 +17,26 @@ class Interval:
     }
     _perfectable_distances = [1, 4, 5]
 
-    def __init__(self, specifier):
+    def __init__(self, specifier: str):
         """
         Args:
-            specifier (str): A description of the interval.
+            specifier: A description of the interval.
 
         The interval specifier should be a string in the form:
         ``[direction][quality][distance]`` where:
             * ``direction`` is one of:
+
               * ``'a'`` for ascending
               * ``'d'`` for descending
+
             * ``quality`` is one of:
+
               * ``'m'`` for minor
               * ``'M'`` for Major
               * ``'P'`` for Perfect
               * ``'d'`` for diminished
               * ``'A'`` for Augmented
+
             * ``distance`` is any positive integer indicating the
               interval distance.
 

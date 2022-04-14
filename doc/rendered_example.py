@@ -9,10 +9,10 @@ from sphinx.directives.code import CodeBlock
 
 DOC_ROOT_DIR = Path(__file__).parent
 # Note that these dirs don't respond automatically to config changes
-STATIC_RENDER_DIR = DOC_ROOT_DIR / "_build" / "html" / "_static" / "example_renders"
+STATIC_RENDER_DIR = DOC_ROOT_DIR / "_build" / "html" / "_static" / "rendered_examples"
 
 
-class RenderedCodeBlock(CodeBlock):
+class RenderedExample(CodeBlock):
     def run(self) -> List[nodes.Node]:
         # Run superclass first
         result = super().run()
@@ -40,6 +40,6 @@ class RenderedCodeBlock(CodeBlock):
 
         # This hackily assumes exported images live 2 dirs down from root
         image_uri = "/".join(export_path.parts[-3:])
-        image_node = nodes.image(uri=image_uri, classes=["example-render"])
+        image_node = nodes.image(uri=image_uri, classes=["rendered-example"])
         result.append(image_node)
         return result
