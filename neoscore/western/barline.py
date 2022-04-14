@@ -1,18 +1,17 @@
 from typing import Optional
 
+from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.mapping import map_between_x
 from neoscore.core.music_font import MusicFont
-from neoscore.core.has_music_font import HasMusicFont
-from neoscore.core.positioned_object import PositionedObject
-from neoscore.core.music_path import MusicPath
-from neoscore.core.pen import Pen, PenDef
-from neoscore.core.pen_pattern import PenPattern
 from neoscore.core.path import Path
+from neoscore.core.pen import Pen
+from neoscore.core.pen_pattern import PenPattern
 from neoscore.core.point import Point
-
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import ZERO, Unit
-from neoscore.western.multi_staff_object import MultiStaffObject, StaffLike
 from neoscore.western.barline_style import BarLineStyle
+from neoscore.western.multi_staff_object import MultiStaffObject, StaffLike
+
 
 class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
     """A bar line.
@@ -44,15 +43,15 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
             connected: If provided, this declares if the bar lines are separated across a stave system
         """
         MultiStaffObject.__init__(self, staves)
-        PositionedObject.__init__(self, (pos_x, ZERO),
-                                  self.highest)
+        PositionedObject.__init__(self, (pos_x, ZERO), self.highest)
 
         if font is None:
             font = HasMusicFont.find_music_font(self.highest)
         self._music_font = font
 
-        engraving_defaults = self.music_font.engraving_defaults
-        separation = engraving_defaults["barlineSeparation"]
+        self.engraving_defaults = self.music_font.engraving_defaults
+        self.separation = self.engraving_defaults["barlineSeparation"]
+        self.style = style
         self.font = font
         self.paths = []
 
@@ -62,57 +61,41 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         bottom_x = self.x + offset_x
 
         if style:
-            get_separation = engraving_defaults.get(style.separation)
-            # if thinThick separation value not listed in this font
-            # open normal value up a bit
-            # else it remains "barlineSeperation" value from above
-            if not get_separation and style.separation == "thinThickBarlineSeparation":
-                separation *= 2
-                print('here')
+            # determine a special case for separation
+            self._calculate_separation()
 
             # draw each of the bar lines in turn from left to right
             for n, l in enumerate(style.lines):
                 if n > 0:
                     # move to next line to the right
-                    start_x += separation
-                    bottom_x += separation
+                    start_x += self.separation
+                    bottom_x += self.separation
 
                 pattern = style.pattern
-                thickness = engraving_defaults[style.lines[n]]
-                self._draw_barline(start_x,
-                                   bottom_x,
-                                   pattern,
-                                   thickness)
+                thickness = self.engraving_defaults[style.lines[n]]
+                self._draw_barline(start_x, bottom_x, pattern, thickness)
         else:
-            self._draw_barline(start_x,
-                               bottom_x,
-                               PenPattern.SOLID,
-                               engraving_defaults["thinBarlineThickness"]
-                               )
+            self._draw_barline(
+                start_x,
+                bottom_x,
+                PenPattern.SOLID,
+                self.engraving_defaults["thinBarlineThickness"],
+            )
 
     @property
     def music_font(self) -> MusicFont:
         return self._music_font
 
     #### PRIVATE METHODS ####
-    def _draw_barline(self,
-                      top_x: Unit,
-                      bottom_x: Unit,
-                      pen_pattern: PenPattern,
-                      thickness: Unit
-                      ):
+    def _draw_barline(
+        self, top_x: Unit, bottom_x: Unit, pen_pattern: PenPattern, thickness: Unit
+    ):
         # Create the path
-        print(top_x)
         self.line_path = Path(
-            Point(top_x, ZERO),
-            self,
-            pen=Pen(pattern=pen_pattern,
-                    thickness=thickness)
+            Point(top_x, ZERO), self, pen=Pen(pattern=pen_pattern, thickness=thickness)
         )
         # Draw the path
-        self.line_path.line_to(bottom_x,
-                               self.lowest.height,
-                               parent=self.lowest)
+        self.line_path.line_to(bottom_x, self.lowest.height, parent=self.lowest)
         self.paths.append(self.line_path)
 
     def _calculate_offset(self) -> Unit:
@@ -120,3 +103,10 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         # bottom staves are not horizontally aligned.
         return map_between_x(self.lowest, self.highest)
 
+    def _calculate_separation(self):
+        get_separation = self.engraving_defaults.get(self.style.separation)
+        # if thinThick separation value not listed in this font
+        # open normal value up a bit
+        # else it remains "barlineSeperation" value from above
+        if not get_separation and self.style.separation == "thinThickBarlineSeparation":
+            self.separation *= 2

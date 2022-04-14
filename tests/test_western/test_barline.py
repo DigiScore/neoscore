@@ -3,9 +3,9 @@ from neoscore.core.music_font import MusicFont
 from neoscore.core.pen import Pen
 from neoscore.core.point import Point
 from neoscore.core.units import Mm
+from neoscore.western import barline_style
 from neoscore.western.barline import Barline
 from neoscore.western.staff import Staff
-from neoscore.western import barline_style
 
 from ..helpers import AppTest
 
@@ -61,17 +61,12 @@ class TestBarline(AppTest):
         assert bar_style_end.lines[1] == "thickBarlineThickness"
 
     def test_bar_line_draw_coords(self):
-        barline_single = Barline(Mm(10),
-                              [self.staff_1, self.staff_2],
-                              style=barline_style.END)
-        barline_end = Barline(Mm(15),
-                          [self.staff_1, self.staff_2],
-                          style=barline_style.END)
+        barline_single = Barline(
+            Mm(10), [self.staff_1, self.staff_2], style=barline_style.END
+        )
+        barline_end = Barline(
+            Mm(15), [self.staff_1, self.staff_2], style=barline_style.END
+        )
 
         assert barline_single.bottom_x == Mm(10)
         assert barline_end.bottom_x == Mm(15.8)
-
-
-
-
-
