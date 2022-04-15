@@ -1,11 +1,12 @@
-from typing import Union
+from typing import TypeAlias, Union
 
 from neoscore.core import mapping
 from neoscore.core.units import Unit
 from neoscore.western.staff import Staff
 from neoscore.western.tab_staff import TabStaff
 
-StaffLike = Union[Staff, TabStaff]
+StaffLike: TypeAlias = Union[Staff, TabStaff]
+"""A known staff-like object"""
 
 
 class MultiStaffObject:

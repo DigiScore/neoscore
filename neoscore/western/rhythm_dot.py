@@ -1,13 +1,11 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional
+from typing import Optional
 
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.point import PointDef
-
-if TYPE_CHECKING:
-    from neoscore.core.mapping import Parent
+from neoscore.core.positioned_object import PositionedObject
 
 
 class RhythmDot(MusicText):
@@ -16,7 +14,9 @@ class RhythmDot(MusicText):
 
     _glyph_name = "augmentationDot"
 
-    def __init__(self, pos: PointDef, parent: Parent, font: Optional[MusicFont] = None):
+    def __init__(
+        self, pos: PointDef, parent: PositionedObject, font: Optional[MusicFont] = None
+    ):
         """
         Args:
             pos: Position relative to `parent`

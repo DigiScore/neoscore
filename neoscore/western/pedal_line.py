@@ -1,17 +1,15 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional
+from typing import Optional
 
 from neoscore.core.brush import Brush
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
 from neoscore.core.pen import Pen
 from neoscore.core.point import PointDef
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner import Spanner
 from neoscore.core.units import Unit
-
-if TYPE_CHECKING:
-    from neoscore.core.mapping import Parent
 
 
 class PedalLine(Spanner, MusicPath):
@@ -50,9 +48,9 @@ class PedalLine(Spanner, MusicPath):
     def __init__(
         self,
         start: PointDef,
-        start_parent: Parent,
+        start_parent: PositionedObject,
         end_x: Unit,
-        end_parent: Optional[Parent] = None,
+        end_parent: Optional[PositionedObject] = None,
         half_lift_positions: list[Unit] = None,
         font: Optional[MusicFont] = None,
     ):

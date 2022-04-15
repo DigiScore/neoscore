@@ -1,14 +1,11 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional
+from typing import Optional
 
 from neoscore.core.brush import Brush, BrushDef
 from neoscore.core.pen import Pen, PenDef
 from neoscore.core.point import PointDef
 from neoscore.core.positioned_object import PositionedObject
-
-if TYPE_CHECKING:
-    from neoscore.core.mapping import Parent
 
 
 class PaintedObject(PositionedObject):
@@ -17,7 +14,7 @@ class PaintedObject(PositionedObject):
     def __init__(
         self,
         pos: PointDef,
-        parent: Optional[Parent] = None,
+        parent: Optional[PositionedObject] = None,
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,
     ):

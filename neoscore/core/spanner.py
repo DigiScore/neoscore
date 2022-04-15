@@ -1,14 +1,11 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, cast
+from typing import cast
 
 from neoscore.core.mapping import map_between, map_between_x
 from neoscore.core.point import Point
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import Unit
-
-if TYPE_CHECKING:
-    from neoscore.core.mapping import Parent
 
 
 class Spanner:
@@ -29,7 +26,7 @@ class Spanner:
 
     """
 
-    def __init__(self, end_x: Unit, end_parent: Parent):
+    def __init__(self, end_x: Unit, end_parent: PositionedObject):
         """
         Args:
             end_pos: The position of the endpoint. If a `Unit` is given, it will be
@@ -65,12 +62,12 @@ class Spanner:
         return Point(self.end_x, self.end_y)
 
     @property
-    def end_parent(self) -> Parent:
+    def end_parent(self) -> PositionedObject:
         """The parent of the endpoint. This may be `self`."""
         return self._end_parent
 
     @end_parent.setter
-    def end_parent(self, value: Parent):
+    def end_parent(self, value: PositionedObject):
         self._end_parent = value
 
     @property

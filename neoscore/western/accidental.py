@@ -1,14 +1,12 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional
+from typing import Optional
 
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.point import PointDef
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.western.accidental_type import AccidentalType
-
-if TYPE_CHECKING:
-    from neoscore.core.mapping import Parent
 
 
 class Accidental(MusicText):
@@ -18,7 +16,7 @@ class Accidental(MusicText):
     def __init__(
         self,
         pos: PointDef,
-        parent: Parent,
+        parent: PositionedObject,
         accidental_type: AccidentalType | str,
         font: Optional[MusicFont] = None,
     ):

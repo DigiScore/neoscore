@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import math
-from typing import TYPE_CHECKING, cast
+from typing import cast
 
 from neoscore.core.mapping import map_between
 from neoscore.core.math_helpers import point_angle
@@ -10,12 +10,9 @@ from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner import Spanner
 from neoscore.core.units import Unit
 
-if TYPE_CHECKING:
-    from neoscore.core.mapping import Parent
-
 
 class Spanner2D(Spanner):
-    def __init__(self, end_pos: PointDef, end_parent: Parent):
+    def __init__(self, end_pos: PointDef, end_parent: PositionedObject):
         end_pos = Point.from_def(end_pos)
         super().__init__(end_pos.x, end_parent)
         self._end_y = end_pos.y

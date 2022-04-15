@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional
+from typing import Optional
 
 from neoscore.core import neoscore
 from neoscore.core.brush import Brush, BrushDef
@@ -8,12 +8,10 @@ from neoscore.core.font import Font
 from neoscore.core.painted_object import PaintedObject
 from neoscore.core.pen import Pen, PenDef
 from neoscore.core.point import Point, PointDef
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.rect import Rect
 from neoscore.core.units import ZERO, Unit
 from neoscore.interface.text_interface import TextInterface
-
-if TYPE_CHECKING:
-    from neoscore.core.mapping import Parent
 
 
 class Text(PaintedObject):
@@ -23,7 +21,7 @@ class Text(PaintedObject):
     def __init__(
         self,
         pos: PointDef,
-        parent: Optional[Parent],
+        parent: Optional[PositionedObject],
         text: str,
         font: Optional[Font] = None,
         brush: Optional[BrushDef] = None,

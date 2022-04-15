@@ -1,16 +1,12 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Iterator, Optional, Union, cast
+from typing import TYPE_CHECKING, Any, Iterator, Optional, cast
 
 from neoscore.core.point import ORIGIN, Point
 from neoscore.core.units import Unit
 
 if TYPE_CHECKING:
-    from neoscore.core.document import Document
     from neoscore.core.positioned_object import PositionedObject
-
-    Parent = Union[Document, PositionedObject]
-    """Type alias only accessible when `typing.TYPE_CHECKING == True`"""
 
 
 def ancestors(obj: PositionedObject) -> Iterator[PositionedObject]:

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import NamedTuple, Type, Union, cast
+from typing import NamedTuple, Type, TypeAlias, Union, cast
 
 from neoscore.core.units import ZERO, Unit
 
@@ -62,4 +62,5 @@ class Point(NamedTuple):
 
 ORIGIN = Point(ZERO, ZERO)
 
-PointDef = Union[Point, tuple[Unit, Unit]]
+PointDef: TypeAlias = Union[Point, tuple[Unit, Unit]]
+"""A Point or an argument tuple for one"""

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional
+from typing import Optional
 
 from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.music_font import MusicFont
@@ -10,9 +10,6 @@ from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import ZERO, Unit
 from neoscore.western.meter import Meter, MeterDef
 
-if TYPE_CHECKING:
-    from neoscore.core.mapping import Parent
-
 
 class TimeSignature(PositionedObject, HasMusicFont):
 
@@ -21,7 +18,7 @@ class TimeSignature(PositionedObject, HasMusicFont):
     def __init__(
         self,
         pos_x: Unit,
-        parent: Parent,
+        parent: PositionedObject,
         meter: MeterDef,
         font: Optional[MusicFont] = None,
     ):

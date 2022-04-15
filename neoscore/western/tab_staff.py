@@ -1,16 +1,13 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional, cast
+from typing import Optional, cast
 
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
 from neoscore.core.pen import Pen
 from neoscore.core.point import PointDef
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import ZERO, Mm, Unit, make_unit_class
-
-if TYPE_CHECKING:
-    from neoscore.core.mapping import Parent
-
 
 _LINE_SPACE_TO_FONT_UNIT_RATIO: float = 2 / 3
 
@@ -31,7 +28,7 @@ class TabStaff(MusicPath):
     def __init__(
         self,
         pos: PointDef,
-        parent: Optional[Parent],
+        parent: Optional[PositionedObject],
         length: Unit,
         line_spacing: Unit = Mm(2.5),
         line_count: int = 6,

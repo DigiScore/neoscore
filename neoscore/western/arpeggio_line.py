@@ -1,15 +1,13 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional
+from typing import Optional
 
 from neoscore.core.brush import BrushDef
 from neoscore.core.music_font import MusicFont
 from neoscore.core.pen import PenDef
 from neoscore.core.point import PointDef
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.repeating_music_text_line import RepeatingMusicTextLine
-
-if TYPE_CHECKING:
-    from neoscore.core.mapping import Parent
 
 
 class ArpeggioLine(RepeatingMusicTextLine):
@@ -25,9 +23,9 @@ class ArpeggioLine(RepeatingMusicTextLine):
     def __init__(
         self,
         start: PointDef,
-        start_parent: Optional[Parent],
+        start_parent: Optional[PositionedObject],
         end_pos: PointDef,
-        end_parent: Optional[Parent],
+        end_parent: Optional[PositionedObject],
         include_arrow: bool = False,
         font: Optional[MusicFont] = None,
         brush: Optional[BrushDef] = None,

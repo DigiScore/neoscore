@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from functools import reduce
-from typing import Union, cast
+from typing import TypeAlias, Union, cast
 
 _glyph_names = {
     0: "timeSig0",
@@ -71,7 +71,7 @@ COMMON_TIME = Meter(["timeSigCommon"], [])
 CUT_TIME = Meter(["timeSigCutCommon"], [])
 
 
-MeterDef = Union[Meter, tuple[Union[int, list[int]], int]]
+MeterDef: TypeAlias = Union[Meter, tuple[Union[int, list[int]], int]]
 """Shorthand for Meter.
 
 Either a Meter, or an argument tuple for `Meter.numeric`.

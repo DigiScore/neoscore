@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Optional, Union
+from typing import Any, Optional, TypeAlias, Union
 
 from neoscore.core.color import Color, ColorDef
 from neoscore.core.pen_cap_style import PenCapStyle
@@ -155,5 +155,5 @@ class Pen:
         )
 
 
-PenDef = Union[Pen, str]
+PenDef: TypeAlias = Union[Pen, str]
 """A `Pen` or a color hex string to be passed to an otherwise default `Pen`."""

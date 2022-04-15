@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional, cast
+from typing import Optional, cast
 
 from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.music_font import MusicFont
@@ -8,9 +8,6 @@ from neoscore.core.music_text import MusicText
 from neoscore.core.point import ORIGIN, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner_2d import Spanner2D
-
-if TYPE_CHECKING:
-    from neoscore.core.mapping import Parent
 
 
 class PedAndStar(PositionedObject, Spanner2D, HasMusicFont):
@@ -20,9 +17,9 @@ class PedAndStar(PositionedObject, Spanner2D, HasMusicFont):
     def __init__(
         self,
         start: PointDef,
-        start_parent: Parent,
+        start_parent: PositionedObject,
         end_pos: PointDef,
-        end_parent: Optional[Parent] = None,
+        end_parent: Optional[PositionedObject] = None,
         font: Optional[MusicFont] = None,
     ):
         """

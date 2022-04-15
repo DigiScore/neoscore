@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, NamedTuple, Optional, Type, Union, cast
+from typing import NamedTuple, Optional, Type, TypeAlias, Union, cast
 
 from neoscore.core.brush import BrushDef
 from neoscore.core.has_music_font import HasMusicFont
@@ -8,12 +8,10 @@ from neoscore.core.music_char import MusicChar, MusicCharDef
 from neoscore.core.music_font import MusicFont
 from neoscore.core.pen import PenDef
 from neoscore.core.point import PointDef
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.rect import Rect
 from neoscore.core.text import Text
 from neoscore.core.units import Unit
-
-if TYPE_CHECKING:
-    from neoscore.core.mapping import Parent
 
 
 class _CachedTextGeometryKey(NamedTuple):
@@ -29,7 +27,7 @@ class _CachedTextGeometry(NamedTuple):
 _GEOMETRY_CACHE: dict[_CachedTextGeometryKey, _CachedTextGeometry] = {}
 
 
-MusicStringDef = Union[MusicCharDef, list[MusicCharDef]]
+MusicStringDef: TypeAlias = Union[MusicCharDef, list[MusicCharDef]]
 """Argument specifying SMuFL `MusicText` strings.
 
 This supports several forms for different use-cases. The most commonly
@@ -49,7 +47,7 @@ class MusicText(Text, HasMusicFont):
     def __init__(
         self,
         pos: PointDef,
-        parent: Optional[Parent],
+        parent: Optional[PositionedObject],
         text: MusicStringDef,
         font: Optional[MusicFont] = None,
         brush: Optional[BrushDef] = None,

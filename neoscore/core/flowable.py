@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional
+from typing import Optional
 
 from neoscore.core import neoscore
 from neoscore.core.exceptions import OutOfBoundsError
@@ -10,9 +10,6 @@ from neoscore.core.new_line import NewLine
 from neoscore.core.point import Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import ZERO, Mm, Unit
-
-if TYPE_CHECKING:
-    from neoscore.core.mapping import Parent
 
 
 class Flowable(PositionedObject):
@@ -36,7 +33,7 @@ class Flowable(PositionedObject):
     def __init__(
         self,
         pos: PointDef,
-        parent: Optional[Parent],
+        parent: Optional[PositionedObject],
         length: Unit,
         height: Unit,
         y_padding: Unit = Mm(5),

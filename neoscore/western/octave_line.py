@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional, cast
+from typing import Optional, cast
 
 from neoscore.core import neoscore
 from neoscore.core.brush import Brush
@@ -18,9 +18,6 @@ from neoscore.core.spanner import Spanner
 from neoscore.core.units import Unit
 from neoscore.western.interval import Interval
 from neoscore.western.transposition import Transposition
-
-if TYPE_CHECKING:
-    from neoscore.core.mapping import Parent
 
 
 class OctaveLine(PositionedObject, Spanner, HasMusicFont):
@@ -64,9 +61,9 @@ class OctaveLine(PositionedObject, Spanner, HasMusicFont):
     def __init__(
         self,
         start: PointDef,
-        start_parent: Parent,
+        start_parent: PositionedObject,
         end_x: Unit,
-        end_parent: Optional[Parent] = None,
+        end_parent: Optional[PositionedObject] = None,
         indication: str = "8va",
         direction: VerticalDirection = VerticalDirection.DOWN,
         font: Optional[MusicFont] = None,

@@ -1,0 +1,11 @@
+
+
+{%- if show_headings %}
+{{- basename | e | heading }}
+
+{% endif -%}
+.. automodule:: {{ qualname }}
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :special-members:
