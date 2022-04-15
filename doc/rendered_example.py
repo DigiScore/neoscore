@@ -12,11 +12,6 @@ DOC_ROOT_DIR = Path(__file__).parent
 STATIC_RENDER_DIR = DOC_ROOT_DIR / "_build" / "html" / "_static" / "rendered_examples"
 
 
-# TODO HIGH support early-docs variant where setup and show() calls are included in the
-# code sample. the setup call should be left in place, while the show() call is replaced
-# with the generated image export line
-
-
 class RenderedExample(CodeBlock):
     def run(self) -> List[nodes.Node]:
         # Run superclass first
@@ -30,13 +25,7 @@ class RenderedExample(CodeBlock):
         export_path = STATIC_RENDER_DIR / (script_id + ".png")
         # Add setup and render code to script
         script_lines = list(self.content)
-        script_lines.insert(0, "from neoscore.common import *")
-        script_lines.insert(1, "neoscore.setup()")
-        script_lines.append(
-            f"neoscore.render_image("
-            + "neoscore.document.pages[0].document_space_bounding_rect,"
-            + f"'{export_path}', 130, autocrop=True)"
-        )
+        RenderedExample.post_process_script(script_lines, export_path)
         script_text = "\n".join(script_lines)
         script_file.write(script_text)
         script_file.flush()
@@ -48,3 +37,22 @@ class RenderedExample(CodeBlock):
         image_node = nodes.image(uri=image_uri, classes=["rendered-example"])
         result.append(image_node)
         return result
+
+    @staticmethod
+    def post_process_script(script: list[str], export_path: Path):
+        """Modify `script` in-place preparing it for render"""
+        render_line = (
+            f"neoscore.render_image("
+            + "neoscore.document.pages[0].document_space_bounding_rect,"
+            + f"'{export_path}', 130, autocrop=True)"
+        )
+
+        if any(("neoscore.show()" in line for line in script)):
+            # Assume script includes setup code too
+            # Just overwrite the `show` line with image export
+            for i in range(len(script)):
+                script[i] = script[i].replace("neoscore.show()", render_line)
+        else:
+            script.insert(0, "from neoscore.common import *")
+            script.insert(1, "neoscore.setup()")
+            script.append(render_line)

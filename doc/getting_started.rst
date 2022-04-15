@@ -13,9 +13,12 @@ Installation
 
 Neoscore can be installed using pip with ``pip install neoscore``.
 
+Once installed, check your setup by running this "hello world" program!
 
-Once installed 
+.. rendered-example::
+   
+   from neoscore.common import *
+   neoscore.setup()
+   Text(ORIGIN, None, "Hello, neoscore!")
+   neoscore.show()
   
-.. todo::
-
-   Add a hello world example, including setup/show calls
