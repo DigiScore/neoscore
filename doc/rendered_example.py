@@ -13,6 +13,20 @@ STATIC_RENDER_DIR = DOC_ROOT_DIR / "_build" / "html" / "_static" / "rendered_exa
 
 
 class RenderedExample(CodeBlock):
+    """Directive for auto-rendering doc examples
+
+    Code examples in ``rendered-example`` RST blocks will automatically be rendered in
+    images, identified by their code hashes, and included in the generated HTML below
+    the code.
+
+    Neoscore import, setup, and render code is automatically added to examples. Examples
+    which need to include these setup bits (useful early in docs for full "hello
+    world"-type programs) can disable this behavior by including a ``neoscore.show()``
+    call anywhere in the example. When that snippet is detected, this directive only
+    replaces that line with an appropriate image export call and leaves the rest of the
+    code unchanged.
+    """
+
     def run(self) -> List[nodes.Node]:
         # Run superclass first
         result = super().run()

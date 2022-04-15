@@ -1,0 +1,10 @@
+A Graphical Approach to Notation
+================================
+
+Virtually all existing music notation software takes a *structured* approach to notation. Scores are defined in terms of their abstract qualities—instruments, meters, notes, beats—and the software transforms these into scores according to the rules of conventional western notation. This allows users to focus on their musical intentions while leaving the complex and often-tedious work of placing glyphs and lines to the program.
+
+These programs often allow a certain degree of customization, things like overriding stem directions and adjusting note spacing, but such discretions are limited by the key assumptions of the program behind its structured notation model. Score-writers which automatically beam and tie notes to fit a given meter will struggle to write `proportional notation <https://en.wikipedia.org/wiki/Etudes_Australes>`_. Software which uses staves as a fundamental canvas can't hope to write `music using graph paper grids <https://duckduckgo.com/?q=feldman+graph+notation&t=h_&iar=images>`_ insead. If you've tried to convince Sibelius to do something unusual, you probably know what we're talking about, and you've probably given up and used pen and paper more than once.
+
+Neoscore takes a fundamentally different *graphical* approach to notation. In neoscore, everything is shapes and text and you are empowered to build notation systems with them. The library includes a collection of decent primitives for writing conventional western notation, but these are strictly opt-in and separate from the core graphics capabilities. By striving to embed as few assumptions as possible about what music looks like into the library, we hope to significantly expand the universe of what notation is possible with computers.
+
+This section of the guide describes the core concepts of neoscore's graphical document model. Later on we'll get into the higher level pre-built tools for more conveniently drawing conventional western notation (if you're into that kind of thing).

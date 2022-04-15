@@ -16,9 +16,23 @@ Neoscore can be installed using pip with ``pip install neoscore``.
 Once installed, check your setup by running this "hello world" program!
 
 .. rendered-example::
-   
+
    from neoscore.common import *
    neoscore.setup()
    Text(ORIGIN, None, "Hello, neoscore!")
    neoscore.show()
-  
+
+How these docs are organized
+----------------------------
+
+These docs are broken broadly into three sections:
+
+1. An overview of core concepts and fundamental classes
+2. An overview of the pre-made primitives for conventional western-like notation (built on those fundamental classes)
+3. Exhaustive API documentation generated from docstrings
+
+We also have `a large collection of example scores <https://github.com/DigiScore/neoscore/tree/main/vtests>`_ you can check out and play around with. Depending on your learning style, you may want to start there to get a feel for the library, or you can go straight into this guide.
+
+.. todo::
+
+   Update link to examples once vtests are moved to examples dir
