@@ -73,11 +73,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
 
                 pattern = style.pattern
                 thickness = self.engraving_defaults[style.lines[n]]
-                self._draw_barline(start_x,
-                                   bottom_x,
-                                   pattern,
-                                   thickness
-                                   )
+                self._draw_barline(start_x, bottom_x, pattern, thickness)
         else:
             self._draw_barline(
                 start_x,
@@ -92,26 +88,16 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
 
     #### PRIVATE METHODS ####
     def _draw_barline(
-        self, top_x: Unit,
-            bottom_x: Unit,
-            pen_pattern: PenPattern,
-            thickness: Unit
+        self, top_x: Unit, bottom_x: Unit, pen_pattern: PenPattern, thickness: Unit
     ):
         # Create the path
         self.line_path = Path(
-            Point(top_x, ZERO),
+            Point(top_x, self.y),
             self,
-            pen=Pen(
-                pattern=pen_pattern,
-                thickness=thickness
-            )
+            pen=Pen(pattern=pen_pattern, thickness=thickness),
         )
         # Draw the path
-        self.line_path.line_to(
-            bottom_x,
-            self.lowest.height,
-            parent=self.lowest
-        )
+        self.line_path.line_to(bottom_x, self.lowest.height, parent=self.lowest)
         self.paths.append(self.line_path)
 
     def _calculate_offset(self) -> Unit:
@@ -126,9 +112,10 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
             return get_separation
         # but if thinThick separation value not listed in this font
         # return home-made thinThick = normal default value * 2
-        elif not get_separation and self.style.separation == "thinThickBarlineSeparation":
+        elif (
+            not get_separation and self.style.separation == "thinThickBarlineSeparation"
+        ):
             return self.engraving_defaults["barlineSeparation"] * 2
         # else return normal "barlineSeparation"
         else:
             return self.engraving_defaults["barlineSeparation"]
-
