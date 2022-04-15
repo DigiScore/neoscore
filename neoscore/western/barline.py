@@ -50,9 +50,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         self._music_font = font
 
         self.engraving_defaults = self.music_font.engraving_defaults
-        # self.separation = self.engraving_defaults["barlineSeparation"]
         self.style = style
-        # self.font = font
         self.paths = []
 
         # Calculate positions for this object
@@ -106,7 +104,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         return map_between_x(self.lowest, self.highest)
 
     def _calculate_separation(self) -> Unit:
-        # Get separtion value from engraving defaults if listed
+        # Get separation value from engraving defaults if listed
         get_separation = self.engraving_defaults.get(self.style.separation)
         if get_separation:
             return get_separation
