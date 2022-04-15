@@ -5,7 +5,7 @@ from neoscore.core.flowable import Flowable
 from neoscore.core.paper import Paper
 from neoscore.core.pen import Pen
 from neoscore.core.point import ORIGIN, Point
-from neoscore.core.units import Mm
+from neoscore.core.units import ZERO, Mm
 from neoscore.western import clef_type
 from neoscore.western.clef import Clef
 from neoscore.western.octave_line import OctaveLine
@@ -78,6 +78,14 @@ class TestStaff(AppTest):
     def test_center_y(self):
         staff = Staff(ORIGIN, None, Mm(100), line_count=4)
         assert staff.center_y == staff.unit(1.5)
+
+    def test_barline_extend_multi_line(self):
+        staff = Staff(ORIGIN, None, Mm(100), line_count=4)
+        assert staff.barline_extent == (ZERO, staff.unit(3))
+
+    def test_barline_extend_single_line(self):
+        staff = Staff(ORIGIN, None, Mm(100), line_count=1)
+        assert staff.barline_extent == (staff.unit(-1), staff.unit(1))
 
     def test_distance_to_next_of_type(self):
         staff = Staff((Mm(10), Mm(0)), self.flowable, Mm(100))
