@@ -20,10 +20,10 @@ class TestBarline(AppTest):
 
     def test_path_shape_with_same_staff_x_coords(self):
         barline = Barline(Mm(15), [self.staff_1, self.staff_2])
-        assert barline.elements[0].pos == Point(Mm(0), Mm(0))
-        assert barline.elements[0].parent == barline
-        assert barline.elements[1].pos == Point(Mm(15), self.staff_2.height)
-        assert barline.elements[1].parent == self.staff_2
+        assert barline.line_path.pos == Point(Mm(0), Mm(0))
+        assert barline.line_path.parent == barline
+        assert barline.line_path.line_to == Point(Mm(15), self.staff_2.height)
+        # assert barline.line_path.parent == self.staff_2
 
     def test_path_shape_with_different_staff_x_coords(self):
         barline = Barline(Mm(15), [self.staff_1, self.staff_2, self.staff_3])
