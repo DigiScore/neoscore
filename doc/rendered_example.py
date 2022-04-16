@@ -47,7 +47,9 @@ class RenderedExample(CodeBlock):
         subprocess.check_call(["python", script_file.name])
 
         # This hackily assumes exported images live 2 dirs down from root
-        image_uri = "/".join(export_path.parts[-3:])
+        # Need to prefix absolute path with TWO slashes due to Sphinx quirk
+        # https://github.com/sphinx-doc/sphinx/issues/7772
+        image_uri = "//" + "/".join(export_path.parts[-3:])
         image_node = nodes.image(uri=image_uri, classes=["rendered-example"])
         result.append(image_node)
         return result
