@@ -30,12 +30,16 @@ The document and its pages are automatically managed through the global :obj:`ne
 
   from neoscore.core import neoscore
   neoscore.setup()
-  
+
+
 .. note::
 
    You can also use ``from neoscore.common import *`` to import the library's most commonly used modules and classes all at once, but `this is considered bad practice <https://stackoverflow.com/questions/2386714/why-is-import-bad>`_ outside of prototypes and live-coding situations.
 
-Every object has a 2D **position** in the document, and this position is always measured relative to the object's parent. In neoscore coordinates, the X-axis increases to the right and the Y-axis increases downward. Every object must be given a parent when created; for convenience ``parent=None`` may be given as a shorthand for the first page.
+Parents and Coordinates
+-----------------------
+
+Every object has a 2D **position** in the document, and this position is always measured relative to the object's parent. In neoscore coordinates, the X-axis increases to the right and the Y-axis increases downward. Every object must be given a parent when created; for convenience ``parent=None`` may be given as a shorthand for the first page. Coordinates are expressed in :obj:`units <neoscore.core.units>`, typically in 2D :obj:`.Point`\ s, which can usually be given as ``(x, y)`` tuples.
 
 .. rendered-example::
 
@@ -43,19 +47,21 @@ Every object has a 2D **position** in the document, and this position is always 
    from neoscore.core.text import Text
    from neoscore.core.units import Mm
    neoscore.setup()
+   # text_1 is given parent None, implicitly the first page,
+   # and positioned at the page origin (0, 0)
    text_1 = Text((Mm(0), Mm(0)), None, "text 1")
+   # text_2 is given text_1 as its parent, so its position is relative to text_1
    text_2 = Text((Mm(15), Mm(30)), text_1, "text 2")
+   # text_3 is given text_2 as its parent, so its positition is relative to text_2
+   # Notice how text_3's position includes a negative Y value, meaning it is
+   # positioned above its parent.
    text_3 = Text((Mm(5), Mm(-10)), text_2, "text 3")
    neoscore.show()
 
-   
-Coordinates are expressed in :obj:`units <neoscore.core.units>`, typically in 2D :obj:`.Point`\ s, which can usually be given as ``(x, y)`` tuples::
 
-  >>> Text((Mm(1), Mm(2)), None, "").pos == \
-  ... Text(Point(Mm(1), Mm(2)), None, "").pos
-  True
+Pages
+-----
 
+Pages are stored in :obj:`neoscore.document.pages <.Document.pages>`, a list-like object which creates pages on demand. Pages are abstract rectangular areas in the global document canvas that are used in print-oriented exports. Pages have geometry defined by an associated :obj:`.Paper`; by default neoscore uses A4 paper but this can be overriden when calling :obj:`.neoscore.setup`. Through its paper type, each page has an associated size, margins, and a gutter placed on the inside edge in double-sided printing.
 
-Pages are stored in :obj:`neoscore.document.pages <.Document.pages>`, a list-like object which creates pages on demand.
-
-
+For many use-cases, pages and paper are not necessary. While all objects must be a child of a page, this needn't have an effect on the output. You can work in a pageless canvas by simply parenting all "root" objects to ``None``, then disabling the interactive page preview with ``neoscore.show(display_page_geometry=False)``.
