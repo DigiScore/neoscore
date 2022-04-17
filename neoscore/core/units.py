@@ -147,6 +147,7 @@ class Unit:
         return type(self)(None, _raw_base_value=abs(self.base_value))
 
 
+# TODO HIGH delete this????
 class GraphicUnit(Unit):
     """A unit with a 1:1 ratio with Qt units.
 

@@ -39,7 +39,7 @@ The document and its pages are automatically managed through the global :obj:`ne
 Parents and Coordinates
 -----------------------
 
-Every object has a 2D **position** in the document, and this position is always measured relative to the object's parent. In neoscore coordinates, the X-axis increases to the right and the Y-axis increases downward. Every object must be given a parent when created; for convenience ``parent=None`` may be given as a shorthand for the first page. Coordinates are expressed in :obj:`units <neoscore.core.units>`, typically in 2D :obj:`.Point`\ s, which can usually be given as ``(x, y)`` tuples.
+Every object has a 2D **position** in the document, and this position is always measured relative to the object's parent. In neoscore coordinates, the X-axis increases to the right and the Y-axis increases downward. Every object must be given a parent when created; for convenience ``parent=None`` may be given as a shorthand for the first page.
 
 .. rendered-example::
 
@@ -57,6 +57,33 @@ Every object has a 2D **position** in the document, and this position is always 
    # positioned above its parent.
    text_3 = Text((Mm(5), Mm(-10)), text_2, "text 3")
    neoscore.show()
+   
+
+Units and Points
+----------------
+
+Neoscore uses a system of interoperable :obj:`.units` to express coordinates. The main units are :obj:`.Unit`, :obj:`.Inch`, and :obj:`.Mm`. :obj:`.Unit` represents one screen pixel, which is ``1/72`` inches (regardless of export and device DPI).
+
+Units can be used much like numbers: they can be added, subtracted, and compared with each other, including between different unit types. ::
+
+  >>> Unit(1) + Unit(1)
+  Unit(2)
+  >>> Mm(1) + Inch(1)
+  Mm(26.4)
+  >>> Mm(25.4) == Inch(1)
+  True
+  
+.. note::
+   Units are considered equal if they are within ``Unit(0.001)`` of each other. This is necessary for performance reasons.
+
+2D coordinates are expressed with :obj:`.Point`\ s. Like units, points can be added, subtracted, and compared with each other. ::
+
+  >>> Point(Mm(1), Mm(2)) + Point(Mm(5), Mm(10))
+  Point(x=Mm(6.0), y=Mm(12.0))
+  >>> Point(Mm(25.4), Mm(0)) == Point(Inch(1), Inch(0))
+  True
+
+In most places Neoscore requires a :obj:`.Point`, you can pass it a tuple for convenience as demonstrated in the above "text 1.." example. Additionally, :obj:`units.ZERO <.ZERO>` and :obj:`point.ORIGIN <.ORIGIN>` are provided as shorthands for ``Unit(0)`` and ``Point(Unit(0), Unit(0))`` respectively.
 
 
 Pages
@@ -65,3 +92,4 @@ Pages
 Pages are stored in :obj:`neoscore.document.pages <.Document.pages>`, a list-like object which creates pages on demand. Pages are abstract rectangular areas in the global document canvas that are used in print-oriented exports. Pages have geometry defined by an associated :obj:`.Paper`; by default neoscore uses A4 paper but this can be overriden when calling :obj:`.neoscore.setup`. Through its paper type, each page has an associated size, margins, and a gutter placed on the inside edge in double-sided printing.
 
 For many use-cases, pages and paper are not necessary. While all objects must be a child of a page, this needn't have an effect on the output. You can work in a pageless canvas by simply parenting all "root" objects to ``None``, then disabling the interactive page preview with ``neoscore.show(display_page_geometry=False)``.
+
