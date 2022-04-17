@@ -20,6 +20,7 @@ We differ from traditional score-writing systems in many important aspects. Neos
 
    core_concepts/graphical_notation.rst
    core_concepts/document_tree.rst
+   core_concepts/text_and_fonts.rst
    
 .. toctree::
    :caption: API Reference

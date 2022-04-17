@@ -57,7 +57,8 @@ Every object has a 2D **position** in the document, and this position is always 
    # positioned above its parent.
    text_3 = Text((Mm(5), Mm(-10)), text_2, "text 3")
    neoscore.show()
-   
+
+Objects are added and tracked in the document tree automatically when created, so you don't need to assign created objects to variables unless you need to refer to them later.
 
 Units and Points
 ----------------
@@ -91,5 +92,5 @@ Pages
 
 Pages are stored in :obj:`neoscore.document.pages <.Document.pages>`, a list-like object which creates pages on demand. Pages are abstract rectangular areas in the global document canvas that are used in print-oriented exports. Pages have geometry defined by an associated :obj:`.Paper`; by default neoscore uses A4 paper but this can be overriden when calling :obj:`.neoscore.setup`. Through its paper type, each page has an associated size, margins, and a gutter placed on the inside edge in double-sided printing.
 
-For many use-cases, pages and paper are not necessary. While all objects must be a child of a page, this needn't have an effect on the output. You can work in a pageless canvas by simply parenting all "root" objects to ``None``, then disabling the interactive page preview with ``neoscore.show(display_page_geometry=False)``.
+For many use-cases, pages and paper are not necessary. While all objects must be a descendant of a page, this needn't have an effect on the output. You can work in a pageless canvas by simply parenting all top-level objects to ``None``, then disabling the interactive page preview with ``neoscore.show(display_page_geometry=False)``.
 

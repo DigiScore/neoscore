@@ -103,6 +103,8 @@ class Path(PaintedObject):
         path.line_to(ZERO, ZERO)
         return path
 
+    # TODO MEDIUM It seems like the origin/center point of these ellipse methods is wrong.
+
     @classmethod
     def ellipse(
         cls,
