@@ -35,3 +35,45 @@ If you want your document to be portable or if you want to use a font not instal
   >>> neoscore.register_font('path/to/Arial.ttf')
   ['Arial']
 
+Rich Text
+---------
+
+:obj:`.Text` can only be used for fairly simple, single-line text. Long-form text with line wrapping and rich formatting is available with the :obj:`.RichText` class. Instead of taking a plain string, :obj:`.RichText` takes a string of HTML-like markup. An optional text-area width controls automatic line wrapping and text justification.
+
+.. rendered-example::
+
+   html = """
+   <p align=justify>
+     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+     eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+     ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+     aliquip ex ea commodo consequat.
+   </p>
+   <p align=right>
+     another paragraph aligned right
+     and <span style="color: red">with inline coloring</span>!
+   </p>
+   """
+   RichText(ORIGIN, None, html, Inch(4))
+   
+     
+The HTML-like markup supported is documented extensively at `the upstream Qt docs <https://doc.qt.io/qt-5/richtext-html-subset.html>`_.
+
+:obj:`.RichText` also takes a ``font`` argument which controls its default font family and style. Font styles, and even families, can be changed within the text using markup.
+
+.. rendered-example::
+
+   html = """
+   <p align=justify>
+     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+     eiusmod tempor incididunt
+     <span style="font-family: Arial">
+       ut labore et dolore magna aliqua.
+     </span>
+     <span style="font-style: normal; font-weight: normal;">
+       Ut enim ad minim veniam
+     </span>
+   </p>
+   """
+   default_font = neoscore.default_font.modified(weight=80, italic=True)
+   RichText(ORIGIN, None, html, Inch(4), default_font)
