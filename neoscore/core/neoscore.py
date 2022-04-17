@@ -65,10 +65,8 @@ _FONTS_DIR = pathlib.Path(__file__).parent / ".." / "resources" / "fonts"
 _LORA_DIR = _FONTS_DIR / "lora"
 _DEFAULT_LORA_FONT_FAMILY_NAME = "Lora"
 _DEFAULT_LORA_FONT_SIZE = GraphicUnit(12)
-_LORA_REGULAR_PATH = _LORA_DIR / "Lora-Regular.ttf"
-_LORA_BOLD_PATH = _LORA_DIR / "Lora-Bold.ttf"
-_LORA_ITALIC_PATH = _LORA_DIR / "Lora-Italic.ttf"
-_LORA_BOLD_ITALIC_PATH = _LORA_DIR / "Lora-BoldItalic.ttf"
+_LORA_REGULAR_PATH = _LORA_DIR / "Lora-VariableFont_wght.ttf"
+_LORA_ITALIC_PATH = _LORA_DIR / "Lora-Italic-VariableFont_wght.ttf"
 
 # Music Text Font
 _BRAVURA_DIR = _FONTS_DIR / "bravura"
@@ -382,9 +380,7 @@ def _register_default_fonts():
         _BRAVURA_METADATA_PATH,
     )
     register_font(_LORA_REGULAR_PATH)
-    register_font(_LORA_BOLD_PATH)
     register_font(_LORA_ITALIC_PATH)
-    register_font(_LORA_BOLD_ITALIC_PATH)
 
 
 def shutdown():
