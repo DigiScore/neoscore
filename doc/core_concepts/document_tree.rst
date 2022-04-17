@@ -4,6 +4,7 @@ The Document Tree
 Neoscore documents are organized in a `tree structure <https://en.wikipedia.org/wiki/Tree_(data_structure)>`_ where each node is represented by an object with a parent and any number of children. The root node is a :obj:`.Document`, its direct children are :obj:`.Page`\ s, and the children of pages may be any :obj:`.PositionedObject`.
 
 .. graphviz::
+   :align: center
 
    digraph g{
        bgcolor="transparent"
@@ -42,10 +43,17 @@ Every object has a 2D **position** in the document, and this position is always 
    from neoscore.core.text import Text
    from neoscore.core.units import Mm
    neoscore.setup()
-   text_1 = Text((Mm(0), Mm(0)), None, "text_1")
-   text_2 = Text((Mm(15), Mm(30)), text_1, "text_2")
-   text_3 = Text((Mm(5), Mm(-10)), text_2, "text_3")
+   text_1 = Text((Mm(0), Mm(0)), None, "text 1")
+   text_2 = Text((Mm(15), Mm(30)), text_1, "text 2")
+   text_3 = Text((Mm(5), Mm(-10)), text_2, "text 3")
    neoscore.show()
+
+   
+Coordinates are expressed in :obj:`units <neoscore.core.units>`, typically in 2D :obj:`.Point`\ s, which can usually be given as ``(x, y)`` tuples::
+
+  >>> Text((Mm(1), Mm(2)), None, "").pos == \
+  ... Text(Point(Mm(1), Mm(2)), None, "").pos
+  True
 
 
 Pages are stored in :obj:`neoscore.document.pages <.Document.pages>`, a list-like object which creates pages on demand.

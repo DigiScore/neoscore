@@ -1,6 +1,8 @@
+import base64
 import os
 import subprocess
 import tempfile
+from hashlib import sha1
 from pathlib import Path
 from typing import List
 
@@ -33,8 +35,7 @@ class RenderedExample(CodeBlock):
         # Now render the code block to an image
         script_file = tempfile.NamedTemporaryFile("w", suffix=".py")
         # Script ID should be stable across builds for unchanged scripts
-        # use the hex of the script's hash (stripping leading '0x')
-        script_id = hex(hash(tuple(self.content)))[2:]
+        script_id = RenderedExample.hash_script(self.content)
         STATIC_RENDER_DIR.mkdir(parents=True, exist_ok=True)
         export_path = STATIC_RENDER_DIR / (script_id + ".png")
         # Add setup and render code to script
@@ -53,6 +54,16 @@ class RenderedExample(CodeBlock):
         image_node = nodes.image(uri=image_uri, classes=["rendered-example"])
         result.append(image_node)
         return result
+
+    @staticmethod
+    def hash_script(script: list[str]) -> str:
+        """Get a stable hash string unique to a script.
+
+        The given hash string is suitable for use in file paths and URLs.
+        """
+        merged_script = "\n".join(script)
+        h = sha1(merged_script.encode("utf-8")).digest()
+        return base64.b32encode(h).decode()
 
     @staticmethod
     def post_process_script(script: list[str], export_path: Path):
