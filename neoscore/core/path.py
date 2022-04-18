@@ -71,18 +71,18 @@ class Path(PaintedObject):
         cls,
         start: PointDef,
         parent: Optional[PositionedObject],
-        stop: PointDef,
+        end: PointDef,
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,
     ) -> Path:
         """Convenience for drawing a single straight line.
 
-        ``stop`` is measured relative to the starting point.
+        ``end`` is measured relative to the starting point.
         """
         line = cls(start, parent, brush, pen)
-        if isinstance(stop, tuple):
-            stop = Point(*stop)
-        line.line_to(stop.x, stop.y)
+        if isinstance(end, tuple):
+            end = Point(*end)
+        line.line_to(end.x, end.y)
         return line
 
     @classmethod
