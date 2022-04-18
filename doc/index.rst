@@ -22,6 +22,7 @@ We differ from traditional score-writing systems in many important aspects. Neos
    core_concepts/document_tree.rst
    core_concepts/text_and_fonts.rst
    core_concepts/paths.rst
+   core_concepts/brushes_and_pens.rst
    
 .. toctree::
    :caption: API Reference

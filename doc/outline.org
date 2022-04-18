@@ -9,9 +9,9 @@
 *** Parents and positions
 *** Pages
 ** Unit, Point, Rect
-** Paths
 ** Text
 *** RichText
+** Paths
 ** Pens and Brushes
 ** SMuFL
 ** MusicText

@@ -15,6 +15,8 @@ from neoscore.core.page import Page
 from neoscore.core.paper import Paper
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
+from neoscore.core.pen_cap_style import PenCapStyle
+from neoscore.core.pen_join_style import PenJoinStyle
 from neoscore.core.pen_pattern import PenPattern
 from neoscore.core.point import ORIGIN, Point
 from neoscore.core.positioned_object import PositionedObject
