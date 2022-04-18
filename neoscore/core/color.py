@@ -93,7 +93,10 @@ class Color:
         self._red = int(hex_value[0:2], 16)
         self._green = int(hex_value[2:4], 16)
         self._blue = int(hex_value[4:6], 16)
-        self._alpha = 255
+        if len(hex_value) == 8:
+            self._alpha = int(hex_value[6:8], 16)
+        else:
+            self._alpha = 255
         self._validate_channel_values()
 
     def _set_with_rgb(self, red, green, blue):
@@ -136,4 +139,7 @@ class Color:
 
 
 ColorDef: TypeAlias = Union[Color, str, tuple[int, int, int], tuple[int, int, int, int]]
-"""A ``Color`` or a shorthand hex string or init argument tuple for one."""
+"""A ``Color`` or a shorthand hex string or init argument tuple for one.
+
+Hex strings may have 3 channels (#RRGGBB) or 4 (#RRGGBBAA).
+"""

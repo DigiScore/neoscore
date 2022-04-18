@@ -13,12 +13,26 @@ class TestColor(unittest.TestCase):
         assert color.blue == 204
         assert color.alpha == 255
 
-    def test_init_with_hex_string_with_leading_pound(self):
+    def test_init_with_hex_string_with_leading_hash(self):
         color = Color("#eeddcc")
         assert color.red == 238
         assert color.green == 221
         assert color.blue == 204
         assert color.alpha == 255
+
+    def test_init_with_8_digit_hex_string(self):
+        color = Color("eeddcc11")
+        assert color.red == 238
+        assert color.green == 221
+        assert color.blue == 204
+        assert color.alpha == 17
+
+    def test_init_with_8_digit_hex_string_and_leading_hash(self):
+        color = Color("#eeddcc11")
+        assert color.red == 238
+        assert color.green == 221
+        assert color.blue == 204
+        assert color.alpha == 17
 
     def test_init_with_rgb(self):
         color = Color(0, 100, 200)
