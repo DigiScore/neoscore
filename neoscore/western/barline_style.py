@@ -1,67 +1,101 @@
 from dataclasses import dataclass
 
 from neoscore.core.pen_pattern import PenPattern
+from neoscore.core.units import Unit, Union
+from neoscore.core.color import ColorDef
+
+from typing import Optional
 
 # NOTE: When creating a new style, be sure to add it to ALL_STYLES at
 # the end of this file.
 
 
-@dataclass  # (frozen=True)
-class BarLineStyle:
-    """Bar line styles
+@dataclass(frozen=True)
+class BarlineStyle:
+    """Style for an individual sub-barline.
 
-    This dataclass outlines the default engraving for
-    a number of bar line styles.
-
-    Using this model it is possible to define costume
-    bar line styles.
+    Use multiple of these to specify multi-part lines like double barlines.
     """
 
-    pattern: PenPattern
-    """The line type such as solid or dashed"""
-
-    lines: list
-    """a list containing the number and type of lines that 
-    make up a bar line style. Listed left to right."""
-
-    separation: str = "barlineSeparation"
-    """the default engraving value for separating double bar
-    lines. Default is barlineSeparation."""
+    thickness: Union[str, float, Unit]
+    gap_right: Union[str, float, Unit] = 0.25
+    color: Optional[ColorDef] = None
+    pattern: PenPattern=PenPattern.SOLID
 
 
-SINGLE = BarLineStyle(PenPattern.SOLID, ["thinBarlineThickness"])
-"""Single line style. Used for normal bar separation."""
+SINGLE = (BarlineStyle("thinBarlineThickness"),)
 
-THICK = BarLineStyle(PenPattern.SOLID, ["thickBarlineThickness"])
-"""Single thick line style."""
-
-THICK_DOUBLE = BarLineStyle(
-    PenPattern.SOLID, ["thickBarlineThickness", "thickBarlineThickness"]
+THIN_DOUBLE = (
+    BarlineStyle("thinBarlineThickness"),
+    BarlineStyle("thinBarlineThickness"),
 )
-"""Think double bar line. Used for end of score."""
 
-THIN_DOUBLE = BarLineStyle(
-    PenPattern.SOLID, ["thinBarlineThickness", "thinBarlineThickness"]
+END = (
+    BarlineStyle("thinBarlineThickness", "thinThickBarlineSeparation"),
+    BarlineStyle("thickBarlineThickness"),
 )
-"""This double bar line. Used for section separation."""
 
-END = BarLineStyle(
-    PenPattern.SOLID,
-    ["thinBarlineThickness", "thickBarlineThickness"],
-    "thinThickBarlineSeparation",
-)
-"""End bar line, thin solid, then thick solid"""
-
-DASHED = BarLineStyle(PenPattern.DASH, ["thinBarlineThickness"])
-"""Dashed single bar line."""
-
-
-ALL_STYLES: list[BarLineStyle] = [
-    SINGLE,
-    THICK,
-    THICK_DOUBLE,
-    THIN_DOUBLE,
-    END,
-    DASHED,
+ALL_STYLES: list[tuple[BarlineStyle]] = [
+    SINGLE, THIN_DOUBLE, END
 ]
-"""A list of all the bar line tables in this module"""
+
+
+# @dataclass(frozen=True)
+# class BarlineStyle:
+#     """Barline styles
+#
+#     This dataclass outlines the default engraving for
+#     a number of barline styles.
+#
+#     Using this model it is possible to define costume
+#     barline styles.
+#     """
+#
+#     pattern: PenPattern
+#     """The line type such as solid or dashed"""
+#
+#     lines: list
+#     """a list containing the number and type of lines that
+#     make up a bar line style. Listed left to right."""
+#
+#     separation: str = "barlineSeparation"
+#     """the default engraving value for separating double bar
+#     lines. Default is barlineSeparation."""
+#
+#
+# SINGLE = BarlineStyle(PenPattern.SOLID, ["thinBarlineThickness"])
+# """Single line style. Used for normal bar separation."""
+#
+# THICK = BarlineStyle(PenPattern.SOLID, ["thickBarlineThickness"])
+# """Single thick line style."""
+#
+# THICK_DOUBLE = BarlineStyle(
+#     PenPattern.SOLID, ["thickBarlineThickness", "thickBarlineThickness"]
+# )
+# """Think double bar line. Used for end of score."""
+#
+# THIN_DOUBLE = BarlineStyle(
+#     PenPattern.SOLID, ["thinBarlineThickness", "thinBarlineThickness"]
+# )
+# """This double bar line. Used for section separation."""
+#
+# END = BarlineStyle(
+#     PenPattern.SOLID,
+#     ["thinBarlineThickness", "thickBarlineThickness"],
+#     "thinThickBarlineSeparation",
+# )
+# """End bar line, thin solid, then thick solid"""
+#
+# DASHED = BarlineStyle(PenPattern.DASH, ["thinBarlineThickness"])
+# """Dashed single bar line."""
+#
+#
+# ALL_STYLES: list[BarlineStyle] = [
+#     SINGLE,
+#     THICK,
+#     THICK_DOUBLE,
+#     THIN_DOUBLE,
+#     END,
+#     DASHED,
+# ]
+# """A list of all the bar line tables in this module"""
