@@ -61,6 +61,8 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
             print(n, style)
             if type(bl.thickness) == str:
                 thickness = self.engraving_defaults[bl.thickness]
+            elif type(bl.thickness) == float:
+                thickness = Unit(bl.thickness)
             else:
                 thickness = bl.thickness
 

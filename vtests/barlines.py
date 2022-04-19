@@ -22,13 +22,10 @@ for n, test_line in enumerate(barline_style.ALL_STYLES):
 
     Barline(Mm(10 * (n + 1) + 10), [staff_1, staff_2], style=test_line)
 
-# test bar lines between stave 1 and 3
-# dashed = Barline(Mm(50), [staff_1, staff_3], BarlineStyle(0.2, 0.5, PenPattern.DASH),
-#     BarlineStyle(1, 0.2, PenPattern.DASHDOT))
-
-# dashed = Barline(Unit(75), [staff_1, staff_3], style=[(BarlineStyle("thinBarlineThickness"),
-#     BarlineStyle("thinBarlineThickness"),]
-#                                                        )
+test_double_dash = Barline(Mm(50), [staff_1, staff_3], (
+    BarlineStyle(0.5, 1.0, pattern=PenPattern.DASH),
+    BarlineStyle(0.5),
+))
 
 for n, test_line in enumerate(barline_style.ALL_STYLES):
 
