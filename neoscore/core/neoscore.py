@@ -6,7 +6,7 @@ import pathlib
 import tempfile
 import threading
 from time import time
-from typing import TYPE_CHECKING, Callable, Optional
+from typing import TYPE_CHECKING, Callable, Optional, TypeAlias
 from warnings import warn
 
 import img2pdf  # type: ignore
@@ -30,7 +30,7 @@ if TYPE_CHECKING:
 _app_interface: AppInterface
 
 default_font: Font
-"""Font: The default font to be used in `Text` objects."""
+"""Font: The default font to be used in ``Text`` objects."""
 
 document: Document
 
@@ -43,7 +43,7 @@ registered_font_family_names: set[str] = set()
 background_brush = Brush("#ffffff")
 """The scene's background color.
 
-Defaults to white. Set this using `set_background_brush`.
+Defaults to white. Set this using ``set_background_brush``.
 """
 
 _supported_image_extensions = {
@@ -65,10 +65,8 @@ _FONTS_DIR = pathlib.Path(__file__).parent / ".." / "resources" / "fonts"
 _LORA_DIR = _FONTS_DIR / "lora"
 _DEFAULT_LORA_FONT_FAMILY_NAME = "Lora"
 _DEFAULT_LORA_FONT_SIZE = GraphicUnit(12)
-_LORA_REGULAR_PATH = _LORA_DIR / "Lora-Regular.ttf"
-_LORA_BOLD_PATH = _LORA_DIR / "Lora-Bold.ttf"
-_LORA_ITALIC_PATH = _LORA_DIR / "Lora-Italic.ttf"
-_LORA_BOLD_ITALIC_PATH = _LORA_DIR / "Lora-BoldItalic.ttf"
+_LORA_REGULAR_PATH = _LORA_DIR / "Lora-VariableFont_wght.ttf"
+_LORA_ITALIC_PATH = _LORA_DIR / "Lora-Italic-VariableFont_wght.ttf"
 
 # Music Text Font
 _BRAVURA_DIR = _FONTS_DIR / "bravura"
@@ -79,10 +77,10 @@ _BRAVURA_METADATA_PATH = _BRAVURA_DIR / "bravura_metadata.json"
 def setup(paper: Paper = A4):
     """Initialize the application and set up the global state.
 
-    This initializes the global `Document` and a back-end
+    This initializes the global ``Document`` and a back-end
     AppInterface instance.
 
-    This should be called once at the beginning of every script using `neoscore`;
+    This should be called once at the beginning of every script using ``neoscore``;
     calling this multiple times in one script will cause unexpected behavior.
 
     Args:
@@ -129,7 +127,7 @@ def set_background_brush(brush: BrushDef):
 def register_font(font_file_path: str) -> list[str]:
     """Register a font file with the application.
 
-    If successful, this makes the font available for use in `Font` objects,
+    If successful, this makes the font available for use in ``Font`` objects,
     to be referenced by the family name embedded in the font file.
 
     Args:
@@ -188,7 +186,7 @@ def register_music_font(font_file_path: str, metadata_path: str):
     registered_music_fonts[name] = metadata
 
 
-RefreshFunc = Callable[[float], None]
+RefreshFunc: TypeAlias = Callable[[float], None]
 """A user-providable function for updating the scene every frame(ish).
 
 The function should accept one argument - the current time in seconds.
@@ -199,7 +197,7 @@ def show(refresh_func: Optional[RefreshFunc] = None, display_page_geometry=True)
     """Show a preview of the score in a GUI window.
 
     An update function can be provided (or otherwise set with
-    `set_refresh_func`) which is run on a timer approximating the
+    ``set_refresh_func``) which is run on a timer approximating the
     frame rate.
 
     The current implementation is pretty limited in features,
@@ -281,18 +279,18 @@ def render_image(
     """Render a section of the document to an image.
 
     The following file extensions are supported:
-        * `.bmp`
-        * `.jpg`
-        * `.png`
-        * `.pbm`
-        * `.pgm`
-        * `.ppm`
-        * `.xbm`
-        * `.xpm`
+        * ``.bmp``
+        * ``.jpg``
+        * ``.png``
+        * ``.pbm``
+        * ``.pgm``
+        * ``.ppm``
+        * ``.xbm``
+        * ``.xpm``
 
     This renders on the main thread but autocrops and saves the image
     on a spawned thread which is returned to allow efficient rendering
-    of many images in parallel. `render_image` will block if too many
+    of many images in parallel. ``render_image`` will block if too many
     render threads are already running.
 
     Args:
@@ -301,20 +299,22 @@ def render_image(
             This must be a valid path relative to the current working directory.
         dpi: The pixels per inch of the rendered image.
         quality: The quality of the output image for compressed
-            image formats. Must be either `-1` (default compression) or
-            between `0` (most compressed) and `100` (least compressed).
+            image formats. Must be either ``-1`` (default compression) or
+            between ``0`` (most compressed) and ``100`` (least compressed).
         autocrop: Whether or not to crop the output image to tightly
             fit the contents of the frame.
         preserve_alpha: Whether to preserve the alpha channel. If false,
-            `neoscore.background_brush` will be used to flatten any transparency.
+            ``neoscore.background_brush`` will be used to flatten any transparency.
 
     Raises:
-        InvalidImageFormatError: If the given `image_path` does not have a
+        InvalidImageFormatError: If the given ``image_path`` does not have a
             supported image format file extension.
         ImageExportError: If low level Qt image export fails for
             unknown reasons.
 
     """
+    # TODO HIGH add ability to render the entire doc contents here and autocrop. This will
+    # simplify writing rendered examples in docs.
     global document
     global _app_interface
 
@@ -380,9 +380,7 @@ def _register_default_fonts():
         _BRAVURA_METADATA_PATH,
     )
     register_font(_LORA_REGULAR_PATH)
-    register_font(_LORA_BOLD_PATH)
     register_font(_LORA_ITALIC_PATH)
-    register_font(_LORA_BOLD_ITALIC_PATH)
 
 
 def shutdown():

@@ -39,8 +39,8 @@ class Rest(MusicText):
         Args:
             pos: The position of the rest from its SMuFL anchor point
             parent: The parent of the rest. If no font is provided,
-                this parent or one of its ancestors must implement `HasStaffUnit`.
-            duration: `Duration` determining the particular rest glyph used.
+                this parent or one of its ancestors must implement ``HasStaffUnit``.
+            duration: ``Duration`` determining the particular rest glyph used.
             font: If provided, this overrides any font inherited from an ancestor.
         """
         pos = Point.from_def(pos)

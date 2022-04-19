@@ -20,6 +20,6 @@ mt = MusicText((Mm(165), staff.unit(4)), staff, ("gClef", 1), scale=4)
 
 w = MusicText((Mm(240), staff.unit(2)), staff, ["gClef"] * 100)
 
-p = Path.straight_line((ZERO, Mm(-10)), w, stop=(w.breakable_length, ZERO))
+p = Path.straight_line((ZERO, Mm(-10)), w, end=(w.breakable_length, ZERO))
 
 render_vtest("clipping")

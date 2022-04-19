@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Callable, Optional
+from typing import TYPE_CHECKING, Callable, Optional, TypeAlias
 
 from neoscore.core.directions import HorizontalDirection
 from neoscore.core.page import Page
@@ -9,13 +9,13 @@ if TYPE_CHECKING:
     from neoscore.core.document import Document
 
 
-PageOverlayFunc = Callable[[Page], None]
+PageOverlayFunc: TypeAlias = Callable[[Page], None]
 """A function to run on every page after creation.
 
 The function takes one argument, the newly generated page. Functions will typically
 create objects with this page as their parent.
 
-See `simple_header_footer` for a ready-made implementation of a simple overlay function.
+See ``simple_header_footer`` for a ready-made implementation of a simple overlay function.
 """
 
 
@@ -36,7 +36,7 @@ class PageSupplier:
     unexpected behavior.
 
     This is an internal class meant to be created by the global Document
-    for its `pages` property.
+    for its ``pages`` property.
     """
 
     def __init__(

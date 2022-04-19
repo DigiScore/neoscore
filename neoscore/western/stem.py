@@ -32,7 +32,7 @@ class Stem(MusicPath):
         Args:
             start: Starting point for the stem
             parent: If no font is given, this or one of its ancestors must
-                implement `HasMusicFont`.
+                implement ``HasMusicFont``.
             direction: The direction a stem points
             height: The height/ length of the stem.
             font: If provided, this overrides any font found in the ancestor chain.
@@ -60,5 +60,5 @@ class Stem(MusicPath):
 
     @property
     def end_point(self) -> PathElement:
-        """The outer point; not attached to a `Notehead`."""
+        """The outer point; not attached to a ``Notehead``."""
         return self.elements[1]

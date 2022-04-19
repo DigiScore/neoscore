@@ -27,13 +27,13 @@ class LayoutController(PositionedObject):
     def page(self) -> Page:
         """The page this controller appears on.
 
-        This is identical to `self.parent`.
+        This is identical to ``self.parent``.
         """
         return cast(Page, self.parent)
 
     @property
     def flowable_x(self) -> Unit:
-        """Unit: The x position in `self.flowable`s local space."""
+        """The x position in the flowable's local space."""
         return self._flowable_x
 
     @flowable_x.setter

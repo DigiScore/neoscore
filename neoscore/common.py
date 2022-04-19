@@ -15,6 +15,8 @@ from neoscore.core.page import Page
 from neoscore.core.paper import Paper
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
+from neoscore.core.pen_cap_style import PenCapStyle
+from neoscore.core.pen_join_style import PenJoinStyle
 from neoscore.core.pen_pattern import PenPattern
 from neoscore.core.point import ORIGIN, Point
 from neoscore.core.positioned_object import PositionedObject
@@ -23,7 +25,7 @@ from neoscore.core.repeating_music_text_line import RepeatingMusicTextLine
 from neoscore.core.rich_text import RichText
 from neoscore.core.simple_header_footer import simple_header_footer
 from neoscore.core.text import Text
-from neoscore.core.units import ZERO, GraphicUnit, Inch, Mm
+from neoscore.core.units import ZERO, GraphicUnit, Inch, Mm, Unit
 from neoscore.western import notehead_tables
 from neoscore.western.accidental import Accidental
 from neoscore.western.accidental_type import AccidentalType

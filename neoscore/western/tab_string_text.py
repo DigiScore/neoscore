@@ -35,7 +35,7 @@ class TabStringText(MusicText):
             staff: The parent staff
             string: The 1-indexed string number this should appear on
             text: The text to display. Can be given as a SMuFL glyph name,
-                or other shorthand forms. See `MusicStringDef` and `MusicCharDef`.
+                or other shorthand forms. See ``MusicStringDef`` and ``MusicCharDef``.
             font: The font to use. Defaults to the staff's font.
             brush: The brush to fill in text shapes with.
             pen: The pen to trace text outlines with. This defaults to no pen.

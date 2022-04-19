@@ -12,7 +12,7 @@ class Unit:
     Unit objects enable easy conversion from one unit to another and
     convenient operations between them.
 
-    Common operators (`+`, `-`, `/`, etc.) are supported between them.
+    Common operators (``+``, ``-``, ``/``, etc.) are supported between them.
     Return values from these operations are given in the type on the left.
 
         >>> from neoscore.core.units import Inch, Mm
@@ -21,7 +21,7 @@ class Unit:
 
     To facilitate easy comparison between equivalent values in
     different units, equality is checked with a tolerance of
-    `Unit(0.001)`.
+    ``Unit(0.001)``.
 
         >>> from neoscore.core.units import Inch, Mm
         >>> assert Inch(Mm(1)) == Mm(1)
@@ -33,7 +33,7 @@ class Unit:
     __slots__ = ("base_value", "_display_value")
 
     CONVERSION_RATE: float = 1
-    """The ratio of this class to `Unit`s.
+    """The ratio of this class to fundamental ``Unit``\ s.
 
     Subclasses should override this.
     """
@@ -147,10 +147,11 @@ class Unit:
         return type(self)(None, _raw_base_value=abs(self.base_value))
 
 
+# TODO HIGH delete this????
 class GraphicUnit(Unit):
     """A unit with a 1:1 ratio with Qt units.
 
-    This will typically be the size of a pixel in `neoscore.show()` preview mode.
+    This will typically be the size of a pixel in ``neoscore.show()`` preview mode.
 
     In most cases, you probably want to use a more descriptive unit type.
     """
@@ -173,6 +174,7 @@ class Mm(Unit):
 # Constants
 
 ZERO = Unit(0)
+"""Shorthand for a zero unit"""
 
 # Utilities
 
@@ -197,7 +199,7 @@ def convert_all_to_unit(collection: Union[list, dict], unit: Type[Unit]):
     """Recursively convert all numbers found in a list or dict to a unit in place.
 
     This function works in place. Tuples and sets found
-    within `collection` will be replaced.
+    within ``collection`` will be replaced.
 
     In dictionaries, only values are converted.
     """

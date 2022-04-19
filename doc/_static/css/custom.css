@@ -1,0 +1,13 @@
+.rendered-example {
+  border: 1px solid #e1e4e5;
+  padding: 12px;
+  background-color: #fff;
+  margin: 1px 0 24px;
+}
+
+.subtitle-slogan {
+  font-style: italic;
+  font-weight: bold;
+  font-size: 125%;
+  text-align: right;
+}

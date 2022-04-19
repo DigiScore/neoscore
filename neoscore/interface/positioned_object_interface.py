@@ -10,10 +10,9 @@ class PositionedObjectInterface:
     All graphic interfaces for renderable objects should descend from
     this and also be immutable dataclasses.
 
-    `PositionedObjectInterface` classes have no concept of parentage, or,
-    by extension, page numbers. The `PositionedObject`s responsible for
-    creating these interface objects should pass only document-space
-    positions to these.
+    ``PositionedObjectInterface`` classes have no concept of parentage, or, by
+    extension, page numbers. Objects creating these interfaces should pass only
+    document-space positions to these.
     """
 
     pos: Point
@@ -24,6 +23,6 @@ class PositionedObjectInterface:
 
         This is typically done by constructing a QGraphicsItem
         subclass and adding it to the scene with
-        `neoscore._app_interface.scene.addItem(qt_object)`.
+        ``neoscore._app_interface.scene.addItem(qt_object)``.
         """
         raise NotImplementedError

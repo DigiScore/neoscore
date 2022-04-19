@@ -17,7 +17,7 @@ class HasMusicFont:
     This is useful for integration with SMuFL fonts, where glyphs and
     their metadata are measured relative to a staff space.
 
-    A naive and slow implementation of `music_font` is provided which
+    A naive and slow implementation of ``music_font`` is provided which
     returns the nearest music found in the object's
     ancestors. Subclasses will often want to override this.
     """
@@ -28,17 +28,17 @@ class HasMusicFont:
 
     @property
     def unit(self) -> Type[Unit]:
-        """A unit type where `self.unit(1)` is the size of a staff space."""
+        """A unit type where ``self.unit(1)`` is the size of a staff space."""
         return self.music_font.unit
 
     @staticmethod
     def find_music_font(obj: PositionedObject) -> MusicFont:
-        """Return the music font from `obj` or its nearest ancestor with one.
+        """Return the music font from ``obj`` or its nearest ancestor with one.
 
-        This checks `obj` and then its ancestors for whether they have
-        a `music_font` attribute, returning the first value found. If
+        This checks ``obj`` and then its ancestors for whether they have
+        a ``music_font`` attribute, returning the first value found. If
         no font is found, this raises a
-        `NoAncestorWithMusicFontError`.
+        ``NoAncestorWithMusicFontError``.
         """
         if hasattr(obj, "music_font"):
             return cast(HasMusicFont, obj).music_font

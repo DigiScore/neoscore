@@ -40,6 +40,21 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 pytz = ">=2015.7"
 
 [[package]]
+name = "beautifulsoup4"
+version = "4.11.1"
+description = "Screen-scraping library"
+category = "dev"
+optional = false
+python-versions = ">=3.6.0"
+
+[package.dependencies]
+soupsieve = ">1.2"
+
+[package.extras]
+html5lib = ["html5lib"]
+lxml = ["lxml"]
+
+[[package]]
 name = "certifi"
 version = "2021.10.8"
 description = "Python package for providing Mozilla's CA Bundle."
@@ -354,6 +369,14 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "soupsieve"
+version = "2.3.2"
+description = "A modern CSS selector implementation for Beautiful Soup."
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
 name = "sphinx"
 version = "4.5.0"
 description = "Python documentation generator"
@@ -383,21 +406,6 @@ sphinxcontrib-serializinghtml = ">=1.1.5"
 docs = ["sphinxcontrib-websupport"]
 lint = ["flake8 (>=3.5.0)", "isort", "mypy (>=0.931)", "docutils-stubs", "types-typed-ast", "types-requests"]
 test = ["pytest", "pytest-cov", "html5lib", "cython", "typed-ast"]
-
-[[package]]
-name = "sphinx-autodoc-typehints"
-version = "1.17.0"
-description = "Type hints (PEP 484) support for the Sphinx autodoc extension"
-category = "dev"
-optional = false
-python-versions = ">=3.7"
-
-[package.dependencies]
-Sphinx = ">=4"
-
-[package.extras]
-testing = ["covdefaults (>=2)", "coverage (>=6)", "diff-cover (>=6.4)", "nptyping (>=1)", "pytest (>=6)", "pytest-cov (>=3)", "sphobjinv (>=2)", "typing-extensions (>=3.5)"]
-type_comments = ["typed-ast (>=1.4.0)"]
 
 [[package]]
 name = "sphinx-rtd-theme"
@@ -509,7 +517,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "16f6f0fe6c254f7622f3341647afb9c91af13fac4dee3f4c7bdd17adefc02c7e"
+content-hash = "1078c218a2d3b1266ad7833c8ce4e98a2c4a40e3955090771fcb8a2fff298d6f"
 
 [metadata.files]
 alabaster = [
@@ -527,6 +535,10 @@ attrs = [
 babel = [
     {file = "Babel-2.9.1-py2.py3-none-any.whl", hash = "sha256:ab49e12b91d937cd11f0b67cb259a57ab4ad2b59ac7a3b41d6c06c0ac5b0def9"},
     {file = "Babel-2.9.1.tar.gz", hash = "sha256:bc0c176f9f6a994582230df350aa6e05ba2ebe4b3ac317eab29d9be5d2768da0"},
+]
+beautifulsoup4 = [
+    {file = "beautifulsoup4-4.11.1-py3-none-any.whl", hash = "sha256:58d5c3d29f5a36ffeb94f02f0d786cd53014cf9b3b3951d42e0080d8a9498d30"},
+    {file = "beautifulsoup4-4.11.1.tar.gz", hash = "sha256:ad9aa55b65ef2808eb405f46cf74df7fcb7044d5cbc26487f96eb2ef2e436693"},
 ]
 certifi = [
     {file = "certifi-2021.10.8-py2.py3-none-any.whl", hash = "sha256:d62a0163eb4c2344ac042ab2bdf75399a71a2d8c7d47eac2e2ee91b9d6339569"},
@@ -821,13 +833,13 @@ snowballstemmer = [
     {file = "snowballstemmer-2.2.0-py2.py3-none-any.whl", hash = "sha256:c8e1716e83cc398ae16824e5572ae04e0d9fc2c6b985fb0f900f5f0c96ecba1a"},
     {file = "snowballstemmer-2.2.0.tar.gz", hash = "sha256:09b16deb8547d3412ad7b590689584cd0fe25ec8db3be37788be3810cbf19cb1"},
 ]
+soupsieve = [
+    {file = "soupsieve-2.3.2-py3-none-any.whl", hash = "sha256:a714129d3021ec17ce5be346b1007300558b378332c289a1a20e7d4de6ff18a5"},
+    {file = "soupsieve-2.3.2.tar.gz", hash = "sha256:0bcc6d7432153063e3df09c3ac9442af3eba488715bfcad6a4c38ccb2a523124"},
+]
 sphinx = [
     {file = "Sphinx-4.5.0-py3-none-any.whl", hash = "sha256:ebf612653238bcc8f4359627a9b7ce44ede6fdd75d9d30f68255c7383d3a6226"},
     {file = "Sphinx-4.5.0.tar.gz", hash = "sha256:7bf8ca9637a4ee15af412d1a1d9689fec70523a68ca9bb9127c2f3eeb344e2e6"},
-]
-sphinx-autodoc-typehints = [
-    {file = "sphinx_autodoc_typehints-1.17.0-py3-none-any.whl", hash = "sha256:081daf53077b4ae1c28347d6d858e13e63aefe3b4aacef79fd717dd60687b470"},
-    {file = "sphinx_autodoc_typehints-1.17.0.tar.gz", hash = "sha256:51c7b3f5cb9ccd15d0b52088c62df3094f1abd9612930340365c26def8629a14"},
 ]
 sphinx-rtd-theme = [
     {file = "sphinx_rtd_theme-1.0.0-py2.py3-none-any.whl", hash = "sha256:4d35a56f4508cfee4c4fb604373ede6feae2a306731d533f409ef5c3496fdbd8"},

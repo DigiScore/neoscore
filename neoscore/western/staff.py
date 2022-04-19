@@ -37,7 +37,7 @@ class Staff(MusicPath):
         """
         Args:
             pos: The position of the top-left corner of the staff
-            parent: The parent for the staff. Make this a `Flowable`
+            parent: The parent for the staff. Make this a ``Flowable``
                 to allow the staff to run across line and page breaks.
             length: The horizontal width of the staff
             line_spacing: The distance between two lines in the staff.
@@ -81,8 +81,21 @@ class Staff(MusicPath):
         return self.height / 2
 
     @property
+    def barline_extent(self) -> tuple[Unit, Unit]:
+        """The starting and stopping Y positions of barlines in this staff.
+
+        For staves with more than 1 line, this extends from the top line to bottom
+        line. For single-line staves, this extends from 1 unit above and below the
+        staff.
+        """
+        if self.line_count == 1:
+            return self.unit(-1), self.unit(1)
+        else:
+            return self.unit(0), self.height
+
+    @property
     def breakable_length(self) -> Unit:
-        # Override expensive `Path.length` since the staff length here
+        # Override expensive ``Path.length`` since the staff length here
         # is already known.
         return self._length
 
@@ -94,9 +107,9 @@ class Staff(MusicPath):
         If the object is the last of its type, this gives the remaining length
         of the staff after the object.
 
-        This is useful for determining rendering behavior of `StaffObject`s
-        who are active until another of their type occurs,
-        such as `KeySignature`s, or `Clef`s.
+        This is useful for determining rendering behavior of staff objects
+        which are active until another of their type occurs,
+        such as ``KeySignature`` and ``Clef``.
         """
         start_x = map_between_x(self, cast(PositionedObject, staff_object))
         all_others_of_class = (
@@ -142,7 +155,7 @@ class Staff(MusicPath):
         Looks for clefs and other transposing modifiers to determine
         the position of middle-c.
 
-        If no clef is present, a `NoClefError` is raised.
+        If no clef is present, a ``NoClefError`` is raised.
         """
         clef = self.active_clef_at(pos_x)
         if clef is None:

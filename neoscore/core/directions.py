@@ -17,7 +17,7 @@ class VerticalDirection(Enum):
 
     @classmethod
     def from_sign(cls, value: float | Unit) -> VerticalDirection:
-        """Get a VerticalDirection from the sign of a number or `Unit` value."""
+        """Get a VerticalDirection from the sign of a number or ``Unit`` value."""
         if isinstance(value, Unit):
             sign = -1 if value.base_value < 0 else 1
         else:
@@ -40,7 +40,7 @@ class HorizontalDirection(Enum):
 
     @classmethod
     def from_sign(cls, value: float | Unit) -> HorizontalDirection:
-        """Get a HorizontalDirection from the sign of a number or `Unit` value."""
+        """Get a HorizontalDirection from the sign of a number or ``Unit`` value."""
         if isinstance(value, Unit):
             sign = -1 if value.base_value < 0 else 1
         else:

@@ -15,7 +15,7 @@ class MultiStaffObject:
 
     This is a Mixin class, meant to be combined with PositionedObject classes.
 
-    `MultiStaffObject`s must have their visually highest staff as their parent.
+    These must have their visually highest staff as their parent.
     """
 
     def __init__(self, staves: list[StaffLike]):
@@ -38,12 +38,12 @@ class MultiStaffObject:
 
     @property
     def highest(self) -> StaffLike:
-        """Shorthand for `staves[0]`"""
+        """Shorthand for ``staves[0]``"""
         return self.staves[0]
 
     @property
     def lowest(self) -> StaffLike:
-        """Shorthand for `staves[-1]`"""
+        """Shorthand for ``staves[-1]``"""
         return self.staves[-1]
 
     @property

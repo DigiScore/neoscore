@@ -61,6 +61,7 @@ class Point(NamedTuple):
 
 
 ORIGIN = Point(ZERO, ZERO)
+"""Shorthand for a point at 0, 0"""
 
 PointDef: TypeAlias = Union[Point, tuple[Unit, Unit]]
 """A Point or an argument tuple for one"""

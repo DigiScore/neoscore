@@ -37,12 +37,12 @@ class Hairpin(MusicPath, Spanner2D):
         Args:
             pos: The starting point.
             parent: The parent for the starting position. If no font is given,
-                this or one of its ancestors must implement `HasMusicFont`.
+                this or one of its ancestors must implement ``HasMusicFont``.
             end_pos: The stopping point.
             end_parent: The parent for the ending position.
-                If `None`, defaults to `self`.
-            direction: The direction of the hairpin, where `LEFT` means diminuendo (>)
-                and `RIGHT` means crescendo (<).
+                If ``None``, defaults to ``self``.
+            direction: The direction of the hairpin, where ``LEFT`` means diminuendo (>)
+                and ``RIGHT`` means crescendo (<).
             width: The width of the wide hairpin. Defaults to 1 staff unit.
             font: If provided, this overrides any font found in the ancestor chain.
         """
@@ -64,7 +64,7 @@ class Hairpin(MusicPath, Spanner2D):
     def direction(self) -> HorizontalDirection:
         """The direction of the hairpin.
 
-        `LEFT` means diminuendo (>) and `RIGHT` means crescendo (<).
+        ``LEFT`` means diminuendo (>) and ``RIGHT`` means crescendo (<).
         """
         return self._direction
 

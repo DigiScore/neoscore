@@ -27,7 +27,7 @@ class TimeSignature(PositionedObject, HasMusicFont):
             pos_x: The x position relative to the
                 parent staff
             parent: If no font is given, this or one of its ancestors must
-                implement `HasMusicFont`.
+                implement ``HasMusicFont``.
             meter: The meter represented.
             font: If provided, this overrides any font found in the ancestor chain.
         """

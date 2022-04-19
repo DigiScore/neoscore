@@ -9,7 +9,7 @@ QT_PRECISE_TIMER = 0
 class MainWindow(QtWidgets.QMainWindow):
     """The primary entry point for all UI code.
 
-    This bootstraps the `main_window.ui` structure.
+    This bootstraps the ``main_window.ui`` structure.
     """
 
     _ui_path = os.path.join(os.path.dirname(__file__), "main_window.ui")

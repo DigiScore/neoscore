@@ -14,7 +14,7 @@ class RichText(PositionedObject):
 
     """A graphical rich text object.
 
-    Unlike its simpler counterpart in `Text`, this supports rich
+    Unlike its simpler counterpart in ``Text``, this supports rich
     formatting with HTML input. As neoscore is currently backed by Qt,
     this input supports Qt's HTML subset documented at
     https://doc.qt.io/qt-5/richtext-html-subset.html
@@ -38,7 +38,7 @@ class RichText(PositionedObject):
             html_text: The text to be displayed, written in HTML.
             width: The maximum width for the displayed text. If omitted,
                 lines will only break when explicitly called for by the HTML.
-            font: The font to display the text in.
+            font: The default font to display the text in.
             scale: A scaling factor relative to the font size.
             rotation: Rotation angle in degrees.
             z_index: Controls draw order with higher values drawn first.
@@ -87,7 +87,10 @@ class RichText(PositionedObject):
 
     @property
     def font(self) -> Font:
-        """The text font"""
+        """The default font used to display the text.
+
+        HTML markup can override this to different styles and famililes.
+        """
         return self._font
 
     @font.setter

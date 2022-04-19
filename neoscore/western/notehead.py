@@ -31,19 +31,19 @@ class Notehead(MusicText, StaffObject):
     ):
         """
         Args:
-            pos_x: The x-axis position relative to `parent`.
+            pos_x: The x-axis position relative to ``parent``.
                 The y-axis position is calculated automatically based
-                on `pitch` and contextual information in `self.staff`.
-            parent: Must either be a `Staff` or an object
-                with an ancestor `Staff`.
-            pitch: May be a `str` pitch representation.
-                See `Pitch` for valid signatures.
+                on ``pitch`` and contextual information in ``self.staff``.
+            parent: Must either be a ``Staff`` or an object
+                with an ancestor ``Staff``.
+            pitch: May be a ``str`` pitch representation.
+                See ``Pitch`` for valid signatures.
             duration: The logical duration of
                 the notehead. This is used to determine the glyph style.
             font: If provided, this overrides any font found in the ancestor chain.
-            table: The set of noteheads to use according to `duration`.
+            table: The set of noteheads to use according to ``duration``.
             glyph_override: A SMuFL glyph name. If given, this overrides
-                the glyph normally looked up with `duration` from `table`.
+                the glyph normally looked up with ``duration`` from ``table``.
         """
         self.pitch = pitch
         self.duration = duration

@@ -38,16 +38,16 @@ class RepeatingMusicTextLine(MusicText, Spanner2D):
         Args:
             start: The starting point.
             start_parent: If no font is given, this or one of its ancestors
-                must implement `HasMusicFont`.
+                must implement ``HasMusicFont``.
             end_pos: The stopping point.
             end_parent: The parent for the ending position.
-                If `None`, defaults to `self`.
+                If ``None``, defaults to ``self``.
             text: The text to be repeated over the spanner. Can be given as a SMuFL
-                glyph name, or other shorthand forms. See `MusicStringDef` and
-                `MusicCharDef`.
+                glyph name, or other shorthand forms. See ``MusicStringDef`` and
+                ``MusicCharDef``.
             end_cap_text: A text specifier for the end of text. Especially useful
                 for line terminators like arrows at the end of arppeggio lines.
-                This can be provided in the same form as `text`.
+                This can be provided in the same form as ``text``.
             font: If provided, this overrides any font found in the ancestor chain.
             brush: The brush to fill in text shapes with.
             pen: The pen to trace text outlines with. This defaults to no pen.
@@ -56,7 +56,7 @@ class RepeatingMusicTextLine(MusicText, Spanner2D):
         """
         # Start the MusicText with a single repetition, then after
         # superclasses are set up figure out how many repetitions are
-        # needed to cover `self.length` and update the text
+        # needed to cover ``self.length`` and update the text
         # accordingly.
         MusicText.__init__(
             self,

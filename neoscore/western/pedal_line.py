@@ -58,7 +58,7 @@ class PedalLine(Spanner, MusicPath):
         Args:
             start: The starting position of the pedal line.
             start_parent: The parent for the starting position. If no font is given,
-                this or one of its ancestors must implement `HasMusicFont`.
+                this or one of its ancestors must implement ``HasMusicFont``.
             end_x: x position of the end point relative to end_parent
             end_parent: parent for end_x
             half_lift_positions: A list of x-axis positions along the line

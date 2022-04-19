@@ -22,14 +22,14 @@ _glyph_names = {
 class Meter:
     """A time signature textual meter comprising two lists of glyphs.
 
-    Users are recommended to use the `Meter.numeric()` constructor,
+    Users are recommended to use the ``Meter.numeric()`` constructor,
     which provides a convenient way to create standard meters. The
     direct constructor is mostly useful for writing more exotic
     meters, supporting arbitrary glyphs.
 
     If only a single line of text is needed for the meter (as with the
-    common time "C"), it should go in `upper_text_glyph_names` and
-    `lower_text_glyph_names` should be left empty.
+    common time "C"), it should go in ``upper_text_glyph_names`` and
+    ``lower_text_glyph_names`` should be left empty.
 
     """
 
@@ -74,5 +74,5 @@ CUT_TIME = Meter(["timeSigCutCommon"], [])
 MeterDef: TypeAlias = Union[Meter, tuple[Union[int, list[int]], int]]
 """Shorthand for Meter.
 
-Either a Meter, or an argument tuple for `Meter.numeric`.
+Either a Meter, or an argument tuple for ``Meter.numeric``.
 """

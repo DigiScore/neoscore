@@ -14,7 +14,7 @@ def ancestors(obj: PositionedObject) -> Iterator[PositionedObject]:
 
     Follows the chain of parents up to the document root.
 
-    The order begins with `self.parent` and traverses upward in the document tree.
+    The order begins with ``self.parent`` and traverses upward in the document tree.
     """
     ancestor = obj.parent
     while True:
@@ -30,9 +30,9 @@ def map_between(src: PositionedObject, dst: PositionedObject) -> Point:
 
     This calculates the position in *logical* space, which differs
     from canvas space in that it doesn't account for repositioning of
-    objects inside `Flowable` containers. For example, this function
+    objects inside ``Flowable`` containers. For example, this function
     will return the same relative position for two objects in a
-    `Flowable` container whether or not they are separated by a line
+    ``Flowable`` container whether or not they are separated by a line
     break.
 
     Args:
@@ -77,7 +77,7 @@ def descendant_pos(descendant: PositionedObject, ancestor: PositionedObject) -> 
     """Find the position of a descendant relative to one of its ancestors.
 
     Raises:
-        ValueError: If `ancestor` is not an ancestor of `descendant`
+        ValueError: If ``ancestor`` is not an ancestor of ``descendant``
     """
     pos = descendant.pos
     for parent in ancestors(descendant):
@@ -90,10 +90,10 @@ def descendant_pos(descendant: PositionedObject, ancestor: PositionedObject) -> 
 def descendant_pos_x(descendant: PositionedObject, ancestor: PositionedObject) -> Unit:
     """Find the x position of a descendant relative to one of its ancestors.
 
-    This is a specialized version of `descendant_pos` provided for optimization.
+    This is a specialized version of ``descendant_pos`` provided for optimization.
 
     Raises:
-        ValueError: If `ancestor` is not an ancestor of `descendant`
+        ValueError: If ``ancestor`` is not an ancestor of ``descendant``
     """
     pos_x = descendant.pos.x
     for parent in ancestors(descendant):
@@ -129,7 +129,7 @@ def canvas_pos_of(obj: PositionedObject) -> Point:
 def first_ancestor_with_attr(
     positioned: PositionedObject, attr: str
 ) -> Optional[Parent]:
-    """Get a `Positioned` object's nearest ancestor with an attribute"""
+    """Get a ``Positioned`` object's nearest ancestor with an attribute"""
     return next(
         (item for item in ancestors(positioned) if hasattr(item, attr)),
         None,

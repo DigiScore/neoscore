@@ -1,0 +1,55 @@
+* Introduction
+* Getting started
+** Pre-requisites
+** Installation
+** Hello-world example
+* Core concepts
+** A graphical approach to notation
+** Document tree
+*** Parents and positions
+*** Pages
+** Unit, Point, Rect
+** Text
+*** RichText
+** Paths
+** Pens and Brushes
+** SMuFL
+** MusicText
+** Flowables
+** Headers and footers
+** Export 
+*** Images
+*** PDF
+* Western notation
+** Staff and staff units
+*** Clefs
+*** Time signatures
+** Chordrests
+*** Pitch shorthand
+*** Duration
+*** Beams
+** Expressive text
+*** Dynamics
+*** Ornaments and articulations
+*** Other expressive text
+** Spanners
+*** Slurs and ties
+*** Hairpins
+*** Octave lines
+** Multi-staff objects
+*** Barlines
+*** Braces
+** Tabs
+* Interactivity
+** Event loop
+** Live coding
+** Animation
+* Building new objects and systems
+  note that we are open to upstreaming contributions. users should be
+  aware that the API remains somewhat unstable, so they should take
+  care to pin their projects to specific neoscore releases.
+** Architecture
+   Core/interface/qt
+** Examples
+* API docs
+* Other topics needing homes

@@ -10,7 +10,7 @@ class LedgerLine(Path, HasMusicFont):
 
     """A horizontal ledger line.
 
-    These are generated automatically by `Chordrest` objects,
+    These are generated automatically by ``Chordrest`` objects,
     but can be manually instantiated as well.
     """
 
@@ -21,7 +21,7 @@ class LedgerLine(Path, HasMusicFont):
             parent: The parent, which must be a staff or in one.
             base_length: The of the notehead this line is related to.
                 The real length will be this plus a small extension defined in the
-                `MusicFont`s engraving defaults.
+                ``MusicFont``'s engraving defaults.
         """
         Path.__init__(self, pos, parent=parent)
         font = self.music_font

@@ -68,13 +68,13 @@ class TextInterface(PositionedObjectInterface):
     clip_start_x: Optional[Unit] = None
     """The local starting position of the drawn region in the glyph.
 
-    Use `None` to render from the start
+    Use ``None`` to render from the start
     """
 
     clip_width: Optional[Unit] = None
     """The width of the visible region.
 
-    Use `None` to render to the end.
+    Use ``None`` to render to the end.
     """
 
     ######## PUBLIC METHODS ########

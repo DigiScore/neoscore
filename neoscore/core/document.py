@@ -14,8 +14,8 @@ class Document:
     """The document root object.
 
     This object should not be created directly by users - it is instantiated
-    by `neoscore.setup()`, which creates a global instance of this class which
-    can be then accessed as `neoscore.document`.
+    by ``neoscore.setup()``, which creates a global instance of this class which
+    can be then accessed as ``neoscore.document``.
     """
 
     def __init__(self, paper: Paper, overlay_func: Optional[PageOverlayFunc] = None):
@@ -39,7 +39,7 @@ class Document:
 
     @property
     def pages(self) -> PageSupplier:
-        """PageSupplier: The `Page`s in the document.
+        """The document's pages.
 
         Pages are created on-demand by accessing this property.
 
@@ -60,7 +60,7 @@ class Document:
             >>> assert(sixth_page == neoscore.document.pages[-1])
             >>> neoscore.shutdown()
 
-        For more information on this object, see `PageSupplier`.
+        For more information on this object, see ``PageSupplier``.
         """
         return self._pages
 

@@ -37,7 +37,7 @@ class MusicChar:
     def canonical_name(self):
         """The canonical SMuFL glyph name.
 
-        This is a convenience property for `glyph_info.canonical_name`
+        This is a convenience property for ``glyph_info.canonical_name``
         """
         return self.glyph_info.canonical_name
 
@@ -58,6 +58,6 @@ class MusicChar:
 MusicCharDef: TypeAlias = Union[MusicChar, str, tuple[str, int]]
 """Shorthand for a MusicChar.
 
-Bare `str` values should be glyph names, while tuples should be of the form
-(`glyph_name, alternate_number`)
+Bare ``str`` values should be glyph names, while tuples should be of the form
+(``glyph_name, alternate_number``)
 """

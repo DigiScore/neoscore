@@ -39,7 +39,7 @@ class AppInterface:
     """The primary interface to the application state.
 
     This holds much of the global state for interacting with the API,
-    and must be created (and `create_document()` must be called) before
+    and must be created (and ``create_document()`` must be called) before
     working with the API.
     """
 
@@ -99,7 +99,7 @@ class AppInterface:
 
         This renders on the main thread but autocrops and saves the image
         on a spawned thread which is returned to allow efficient rendering
-        of many images in parallel. `render_image` will block if too many
+        of many images in parallel. ``render_image`` will block if too many
         render threads are already running.
 
         Args:
@@ -110,15 +110,15 @@ class AppInterface:
                 working directory.
             dpi: The pixels per inch of the rendered image.
             quality: The quality of the output image for compressed
-                image formats. Must be either `-1` (default compression) or
-                between `0` (most compressed) and `100` (least compressed).
+                image formats. Must be either ``-1`` (default compression) or
+                between ``0`` (most compressed) and ``100`` (least compressed).
             bg_color: The background color for the image.
             autocrop: Whether or not to crop the output image to tightly
                 fit the contents of the frame. If true, the image will be
                 cropped such that all 4 edges have at least one pixel not of
-                `bg_color`.
+                ``bg_color``.
             preserve_alpha: Whether to preserve the alpha channel. If false,
-                some non-transparent `bg_color` should be provided.
+                some non-transparent ``bg_color`` should be provided.
 
         Raises:
             ImageExportError: If Qt image export fails for unknown reasons.
@@ -207,7 +207,7 @@ class AppInterface:
     ######## PRIVATE METHODS ########
 
     def _remove_all_loaded_fonts(self):
-        """Remove all fonts registered with `register_font()`.
+        """Remove all fonts registered with ``register_font()``.
 
         This is primarily useful for testing purposes.
         """

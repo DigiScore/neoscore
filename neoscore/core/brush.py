@@ -21,7 +21,7 @@ class Brush:
         """
         Args:
             color: The brush color. Defaults to black unless changed globally by
-                `neoscore.set_default_color`.
+                ``neoscore.set_default_color``.
             pattern: The brush fill pattern.
         """
         if color is None:
@@ -90,4 +90,4 @@ class Brush:
 
 
 BrushDef: TypeAlias = Union[Brush, str]
-"""A `Brush` or a color hex string to be passed to an otherwise default `Brush`."""
+"""A ``Brush`` or a color hex string to be passed to an otherwise default ``Brush``."""

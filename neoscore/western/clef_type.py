@@ -8,7 +8,7 @@ KeySignatureLayout: TypeAlias = Dict[str, tuple[float, float]]
 """A layout specification for accidentals in key signatures.
 
 Instances should have a key for every pitch letter a-g (lowercase),
-and each value should be an `(x, y)` tuple of pseudo staff positions
+and each value should be an ``(x, y)`` tuple of pseudo staff positions
 to be plugged into a staff's unit.
 """
 
@@ -44,17 +44,17 @@ class ClefType:
     staff's unit to find the appropriate y position.
     
     For clefs whose position depends on the number of staff lines,
-    this can be a `StaffPosFunc`.
+    this can be a ``StaffPosFunc``.
     """
 
     middle_c_staff_pos: float | StaffPosFunc
     """Where this clef places middle C in a staff.
 
-    Like `staff_pos`, this is given in pseudo staff units relative to
+    Like ``staff_pos``, this is given in pseudo staff units relative to
     the staff's top line.
     
     For clefs whose middle C position depends on the number of staff
-    lines, this can be a `StaffPosFunc`.
+    lines, this can be a ``StaffPosFunc``.
     """
 
     key_signature_flat_layout: Optional[KeySignatureLayout]
@@ -148,7 +148,7 @@ PERCUSSION_2 = ClefType(
 )
 """Percussion clef consisting of an open rectangle.
 
-See also `PERCUSSION_1`
+See also ``PERCUSSION_1``
 """
 
 CLEF_TYPE_SHORTHAND_NAMES = {
