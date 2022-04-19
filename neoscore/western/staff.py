@@ -91,7 +91,7 @@ class Staff(MusicPath):
         if self.line_count == 1:
             return self.unit(-1), self.unit(1)
         else:
-            return self.unit(0), self.height
+            return self.unit(0), self.unit(0) # self.height
 
     @property
     def breakable_length(self) -> Unit:
