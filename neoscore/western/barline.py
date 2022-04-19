@@ -49,36 +49,14 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         if font is None:
             font = HasMusicFont.find_music_font(self.highest)
         self._music_font = font
-
         self.engraving_defaults = self.music_font.engraving_defaults
-        # self.style = style
         self.paths = []
 
-        # Calculate positions for this object relative to self
+        # State x position for this object relative to self
         start_x = ZERO
-        # offset_x = self._calculate_offset()
-        # bottom_x = start_x # self.x + offset_x
 
-        # if style:
-            # determine a special case for separation
-            # separation = self._calculate_separation()
-
-            # draw each of the bar lines in turn from left to right
+        # draw each of the bar lines in turn from left to right
         for n, bl in enumerate(style):
-            if n > 0:
-                # move to next line to the right
-                # todo - this is not elegant, but Union is complaining
-                if type(bl.gap_right) == str:
-                    start_x += self.engraving_defaults[bl.gap_right]
-                elif type(bl.gap_right) == float:
-                    start_x += Unit(bl.gap_right)
-                else:
-                    start_x += bl.gap_right
-            # todo - start_x aint right either
-            start_x *= 10
-            print(n, bl.gap_right, start_x)
-
-            # todo - this is not elegant, but Union is complaining
             if type(bl.thickness) == str:
                 thickness = self.engraving_defaults[bl.thickness]
             else:
@@ -89,6 +67,18 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
                                bl.pattern,
                                bl.color
                                )
+
+
+            # move to next line to the right
+            if len(style) > 1:
+                # todo - this is not elegant, but Union is complaining
+                if type(bl.gap_right) == str:
+                    start_x += self._calculate_separation(bl.gap_right)    # self.engraving_defaults[bl.gap_right]
+                    print(n, start_x)
+                elif type(bl.gap_right) == float:
+                    start_x += Unit(bl.gap_right)
+                else:
+                    start_x += bl.gap_right
         # else:
         #     self._draw_barline(
         #         start_x,
@@ -103,14 +93,14 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
 
     #### PRIVATE METHODS ####
     def _draw_barline(
-        self, x: Unit,
+        self, start_x: Unit,
             thickness: Unit,
             pen_pattern: PenPattern,
             color: ColorDef
     ):
         # Create the path
         line_path = Path(
-            Point(x, ZERO),
+            Point(start_x, ZERO),
             self,
             pen=Pen(pattern=pen_pattern, thickness=thickness, color=color),
         )
@@ -119,8 +109,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
 
         # Draw the path
         line_path.line_to(ZERO,
-                          self.vertical_span + self.lowest.barline_extent[1])
-        # line_path.line_to(x, self.lowest.height, parent=self.lowest)
+                          self.vertical_span - self.lowest.height + self.lowest.barline_extent[1])
         self.paths.append(line_path)
 
     # def _calculate_offset(self) -> Unit:
@@ -128,17 +117,10 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
     #     # bottom staves are not horizontally aligned.
     #     return map_between_x(self.lowest, self.highest)
 
-    # def _calculate_separation(self) -> Unit:
-    #     # Get separation value from engraving defaults if listed
-    #     get_separation = self.engraving_defaults.get(self.style.gap_right)
-    #     if get_separation:
-    #         return get_separation
-    #     # but if thinThick separation value not listed in this font
-    #     # return home-made thinThick = normal default value * 2
-    #     elif (
-    #         not get_separation and self.style.separation == "thinThickBarlineSeparation"
-    #     ):
-    #         return self.engraving_defaults["barlineSeparation"] * 2
-    #     # else return normal "barlineSeparation"
-    #     else:
-    #         return self.engraving_defaults["barlineSeparation"]
+    def _calculate_separation(self, gap_right) -> Unit:
+        # Get separation value from engraving defaults if listed
+        get_separation = self.engraving_defaults.get(gap_right)
+        if get_separation:
+            return get_separation
+        else:
+            return self.engraving_defaults["barlineSeparation"]

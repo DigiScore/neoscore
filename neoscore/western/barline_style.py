@@ -18,7 +18,7 @@ class BarlineStyle:
     """
 
     thickness: Union[str, float, Unit]
-    gap_right: Union[str, float, Unit] = 0.25
+    gap_right: Union[str, float, Unit] = 0.4
     pattern: PenPattern = PenPattern.SOLID
     color: Optional[ColorDef] = None
 
