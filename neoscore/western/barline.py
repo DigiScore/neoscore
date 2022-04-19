@@ -10,7 +10,8 @@ from neoscore.core.color import ColorDef
 from neoscore.core.point import Point
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import ZERO, Unit, Union
-from neoscore.western.barline_style import BarlineStyle, SINGLE
+from neoscore.western import barline_style
+from neoscore.western.barline_style import BarlineStyle
 from neoscore.western.multi_staff_object import MultiStaffObject, StaffLike
 
 
@@ -31,7 +32,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         self,
         pos_x: Unit,
         staves: list[StaffLike],
-        style: tuple[BarlineStyle] = SINGLE,
+        style: tuple[BarlineStyle] = barline_style.SINGLE,
         font: Optional[MusicFont] = None,
         connected: Optional[bool] = True,
     ):
@@ -57,6 +58,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
 
         # draw each of the bar lines in turn from left to right
         for n, bl in enumerate(style):
+            print(n, style)
             if type(bl.thickness) == str:
                 thickness = self.engraving_defaults[bl.thickness]
             else:
@@ -68,24 +70,15 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
                                bl.color
                                )
 
-
             # move to next line to the right
             if len(style) > 1:
                 # todo - this is not elegant, but Union is complaining
                 if type(bl.gap_right) == str:
                     start_x += self._calculate_separation(bl.gap_right)    # self.engraving_defaults[bl.gap_right]
-                    print(n, start_x)
                 elif type(bl.gap_right) == float:
                     start_x += Unit(bl.gap_right)
                 else:
                     start_x += bl.gap_right
-        # else:
-        #     self._draw_barline(
-        #         start_x,
-        #         bottom_x,
-        #         PenPattern.SOLID,
-        #         self.engraving_defaults["thinBarlineThickness"],
-        #     )
 
     @property
     def music_font(self) -> MusicFont:

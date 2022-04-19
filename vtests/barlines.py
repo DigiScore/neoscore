@@ -5,6 +5,7 @@ from neoscore.core.flowable import Flowable
 from neoscore.core.units import Mm
 from neoscore.western import barline_style
 from neoscore.western.barline import Barline
+from neoscore.western.barline_style import BarlineStyle
 from neoscore.western.staff import Staff
 
 neoscore.setup()
@@ -22,7 +23,12 @@ for n, test_line in enumerate(barline_style.ALL_STYLES):
     Barline(Mm(10 * (n + 1) + 10), [staff_1, staff_2], style=test_line)
 
 # test bar lines between stave 1 and 3
-# no_style = Barline(Mm(80), [staff_1, staff_3])
+# dashed = Barline(Mm(50), [staff_1, staff_3], BarlineStyle(0.2, 0.5, PenPattern.DASH),
+#     BarlineStyle(1, 0.2, PenPattern.DASHDOT))
+
+# dashed = Barline(Unit(75), [staff_1, staff_3], style=[(BarlineStyle("thinBarlineThickness"),
+#     BarlineStyle("thinBarlineThickness"),]
+#                                                        )
 
 for n, test_line in enumerate(barline_style.ALL_STYLES):
 
