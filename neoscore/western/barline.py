@@ -1,7 +1,6 @@
 from typing import Optional
 
 from neoscore.core.has_music_font import HasMusicFont
-from neoscore.core.mapping import map_between_x
 from neoscore.core.music_font import MusicFont
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
@@ -9,14 +8,14 @@ from neoscore.core.pen_pattern import PenPattern
 from neoscore.core.color import ColorDef
 from neoscore.core.point import Point
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.core.units import ZERO, Unit, Union
+from neoscore.core.units import ZERO, Unit
 from neoscore.western import barline_style
 from neoscore.western.barline_style import BarlineStyle
 from neoscore.western.multi_staff_object import MultiStaffObject, StaffLike
 
 
 class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
-    """A bar line.
+    """A barline.
 
     This is drawn as vertical lines at a given x coordinate
     spanning the full height of a series of staves.
@@ -50,7 +49,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         if font is None:
             font = HasMusicFont.find_music_font(self.highest)
         self._music_font = font
-        self.engraving_defaults = self.music_font.engraving_defaults
+        self.engraving_defaults = self._music_font.engraving_defaults
         self.paths = []
 
         # State x position for this object relative to self
@@ -58,13 +57,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
 
         # draw each of the bar lines in turn from left to right
         for n, bl in enumerate(style):
-            print(n, style)
-            if type(bl.thickness) == str:
-                thickness = self.engraving_defaults[bl.thickness]
-            elif type(bl.thickness) == float:
-                thickness = Unit(bl.thickness)
-            else:
-                thickness = bl.thickness
+            thickness = bl.thickness if type(bl.thickness) == Unit else self._union_unpack(bl.thickness)
 
             self._draw_barline(start_x,
                                thickness,
@@ -74,13 +67,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
 
             # move to next line to the right
             if len(style) > 1:
-                # todo - this is not elegant, but Union is complaining
-                if type(bl.gap_right) == str:
-                    start_x += self._calculate_separation(bl.gap_right)    # self.engraving_defaults[bl.gap_right]
-                elif type(bl.gap_right) == float:
-                    start_x += Unit(bl.gap_right)
-                else:
-                    start_x += bl.gap_right
+                start_x += bl.gap_right if type(bl.gap_right) == Unit else self._union_unpack(bl.gap_right)
 
     @property
     def music_font(self) -> MusicFont:
@@ -107,11 +94,6 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
                           self.vertical_span - self.lowest.height + self.lowest.barline_extent[1])
         self.paths.append(line_path)
 
-    # def _calculate_offset(self) -> Unit:
-    #     # Calculate offset needed to make vertical line if top and
-    #     # bottom staves are not horizontally aligned.
-    #     return map_between_x(self.lowest, self.highest)
-
     def _calculate_separation(self, gap_right) -> Unit:
         # Get separation value from engraving defaults if listed
         get_separation = self.engraving_defaults.get(gap_right)
@@ -119,3 +101,11 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
             return get_separation
         else:
             return self.engraving_defaults["barlineSeparation"]
+
+    def _union_unpack(self, incoming) -> Unit:
+        if type(incoming) == str:
+            return self._calculate_separation(incoming)
+        elif type(incoming) == float:
+            return Unit(incoming)
+        else:
+            return incoming
