@@ -85,6 +85,19 @@ class TabStaff(MusicPath):
         return self.line_spacing * (self.line_count - 1)
 
     @property
+    def barline_extent(self) -> tuple[Unit, Unit]:
+        """The starting and stopping Y positions of barlines in this staff.
+
+        For staves with more than 1 line, this extends from the top line to bottom
+        line. For single-line staves, this extends from 1 unit above and below the
+        staff.
+        """
+        if self.line_count == 1:
+            return self.unit(-1), self.unit(1)
+        else:
+            return self.unit(0), self.height
+
+    @property
     def line_count(self) -> int:
         """The number of lines in the staff"""
         return self._line_count
