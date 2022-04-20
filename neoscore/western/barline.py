@@ -1,11 +1,11 @@
 from typing import Optional
 
+from neoscore.core.color import ColorDef
 from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.music_font import MusicFont
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
 from neoscore.core.pen_pattern import PenPattern
-from neoscore.core.color import ColorDef
 from neoscore.core.point import Point
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import ZERO, Unit
@@ -57,17 +57,21 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
 
         # draw each of the bar lines in turn from left to right
         for n, bl in enumerate(style):
-            thickness = bl.thickness if type(bl.thickness) == Unit else self._union_unpack(bl.thickness)
+            thickness = (
+                bl.thickness
+                if type(bl.thickness) == Unit
+                else self._union_unpack(bl.thickness)
+            )
 
-            self._draw_barline(start_x,
-                               thickness,
-                               bl.pattern,
-                               bl.color
-                               )
+            self._draw_barline(start_x, thickness, bl.pattern, bl.color)
 
             # move to next line to the right
             if len(style) > 1:
-                start_x += bl.gap_right if type(bl.gap_right) == Unit else self._union_unpack(bl.gap_right)
+                start_x += (
+                    bl.gap_right
+                    if type(bl.gap_right) == Unit
+                    else self._union_unpack(bl.gap_right)
+                )
 
     @property
     def music_font(self) -> MusicFont:
@@ -75,10 +79,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
 
     #### PRIVATE METHODS ####
     def _draw_barline(
-        self, start_x: Unit,
-            thickness: Unit,
-            pen_pattern: PenPattern,
-            color: ColorDef
+        self, start_x: Unit, thickness: Unit, pen_pattern: PenPattern, color: ColorDef
     ):
         # Create the path
         line_path = Path(
@@ -90,8 +91,10 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         line_path.move_to(ZERO, self.highest.barline_extent[0])
 
         # Draw the path
-        line_path.line_to(ZERO,
-                          self.vertical_span - self.lowest.height + self.lowest.barline_extent[1])
+        line_path.line_to(
+            ZERO,
+            self.vertical_span - self.lowest.height + self.lowest.barline_extent[1],
+        )
         self.paths.append(line_path)
 
     def _calculate_separation(self, gap_right) -> Unit:

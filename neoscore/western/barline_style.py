@@ -1,10 +1,9 @@
 from dataclasses import dataclass
-
-from neoscore.core.pen_pattern import PenPattern
-from neoscore.core.units import Unit, Union
-from neoscore.core.color import ColorDef
-
 from typing import Optional
+
+from neoscore.core.color import ColorDef
+from neoscore.core.pen_pattern import PenPattern
+from neoscore.core.units import Union, Unit
 
 # NOTE: When creating a new style, be sure to add it to ALL_STYLES at
 # the end of this file.
@@ -22,6 +21,7 @@ class BarlineStyle:
     pattern: PenPattern = PenPattern.SOLID
     color: Optional[ColorDef] = None
 
+
 SINGLE = (BarlineStyle("thinBarlineThickness"),)
 
 THIN_DOUBLE = (
@@ -34,9 +34,7 @@ END = (
     BarlineStyle("thickBarlineThickness"),
 )
 
-ALL_STYLES: list[tuple[BarlineStyle]] = [
-    SINGLE, THIN_DOUBLE, END
-]
+ALL_STYLES: list[tuple[BarlineStyle]] = [SINGLE, THIN_DOUBLE, END]
 
 
 # @dataclass(frozen=True)
