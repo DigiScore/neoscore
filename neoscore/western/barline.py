@@ -34,7 +34,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         staves: list[StaffLike],
         styles: tuple[BarlineStyle] = (barline_style.SINGLE),
         font: Optional[MusicFont] = None,
-        connected: Optional[bool] = False,
+        connected: Optional[bool] = True,
     ):
         """
         Args:
@@ -61,20 +61,10 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         # draw each of the bar lines in turn from left to right
         for style in styles:
             thickness = self._resolve_style_measurement(style.thickness)
-            #     (
-            #     style.thickness
-            #     if type(style.thickness) == Unit
-            #     else self._resolve_style_measurement(style.thickness)
-            # )
-
             self._draw_barline(start_x, thickness, style.pattern, style.color)
 
             # move to next line to the right
-            start_x += self._look_up_engraving_default(style.gap_right) # (
-            #     style.gap_right
-            #     if type(style.gap_right) == Unit
-            #     else self._look_up_engraving_default(style.gap_right)
-            # )
+            start_x += self._look_up_engraving_default(style.gap_right)
 
     @property
     def music_font(self) -> MusicFont:
@@ -98,10 +88,9 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
             line_path.line_to(ZERO, map_between(self, self.lowest).y + self.lowest.barline_extent[1])
         else:
             for staff in self.staves:
-                x = Unit(0)
-                print(staff.pos.y, staff.height, staff.barline_extent)
-                line_path.move_to(x+Unit(10), staff.pos.y + staff.barline_extent[0])
-                line_path.line_to(x+Unit(10), (staff.height / 2) + staff.barline_extent[1])
+                print(staff, staff.pos.y, staff.height, staff.barline_extent)
+                line_path.move_to(ZERO, staff.pos.y + staff.barline_extent[0])
+                line_path.line_to(ZERO, staff.height + staff.barline_extent[1])
 
         self.paths.append(line_path)
 
