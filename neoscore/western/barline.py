@@ -31,7 +31,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         self,
         pos_x: Unit,
         staves: list[StaffLike],
-        style: tuple[BarlineStyle] = barline_style.SINGLE,
+        styles: tuple[BarlineStyle] = (barline_style.SINGLE),
         font: Optional[MusicFont] = None,
         connected: Optional[bool] = True,
     ):
@@ -40,7 +40,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
             pos_x: The barline X position relative to the highest staff.
             staves: The staves spanned. Must be in visually descending order.
             font: If provided, this overrides the font in the parent (top) staff.
-            style: If provided, this declares the style of bar line e.g. double, end.
+            styles: If provided, this declares the style of bar line e.g. double, end.
             connected: If provided, this declares if the bar lines are separated across a stave system
         """
         MultiStaffObject.__init__(self, staves)
@@ -52,26 +52,26 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         self.engraving_defaults = self._music_font.engraving_defaults
         self.paths = []
 
-        # State x position for this object relative to self
+        # Start x position for this object relative to self
         start_x = ZERO
 
         # draw each of the bar lines in turn from left to right
-        for n, bl in enumerate(style):
-            thickness = (
-                bl.thickness
-                if type(bl.thickness) == Unit
-                else self._union_unpack(bl.thickness)
-            )
+        for style in styles:
+            thickness = self._resolve_style_measurement(style.thickness)
+            #     (
+            #     style.thickness
+            #     if type(style.thickness) == Unit
+            #     else self._resolve_style_measurement(style.thickness)
+            # )
 
-            self._draw_barline(start_x, thickness, bl.pattern, bl.color)
+            self._draw_barline(start_x, thickness, style.pattern, style.color)
 
             # move to next line to the right
-            if len(style) > 1:
-                start_x += (
-                    bl.gap_right
-                    if type(bl.gap_right) == Unit
-                    else self._union_unpack(bl.gap_right)
-                )
+            start_x += self._look_up_engraving_default(style.gap_right) # (
+            #     style.gap_right
+            #     if type(style.gap_right) == Unit
+            #     else self._look_up_engraving_default(style.gap_right)
+            # )
 
     @property
     def music_font(self) -> MusicFont:
@@ -91,24 +91,30 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         line_path.move_to(ZERO, self.highest.barline_extent[0])
 
         # Draw the path
+        # todo - line_path.line_to(ZERO, mapping.map_between(self, self.lowest).y + self.lowest.barline_extent[1]
         line_path.line_to(
             ZERO,
             self.vertical_span - self.lowest.height + self.lowest.barline_extent[1],
         )
         self.paths.append(line_path)
 
-    def _calculate_separation(self, gap_right) -> Unit:
-        # Get separation value from engraving defaults if listed
-        get_separation = self.engraving_defaults.get(gap_right)
-        if get_separation:
-            return get_separation
-        else:
-            return self.engraving_defaults["barlineSeparation"]
+    def _resolve_style_measurement(self, thickness: (str, float, Unit)) -> Unit:
+        if type(thickness) == Unit:
+            return thickness
+        elif type(thickness) == str:
+            return self.engraving_defaults[thickness]
+        elif type(thickness) == float:
+            return Unit(thickness)
 
-    def _union_unpack(self, incoming) -> Unit:
-        if type(incoming) == str:
-            return self._calculate_separation(incoming)
-        elif type(incoming) == float:
-            return Unit(incoming)
+    def _look_up_engraving_default(self, gap: (str, float, Unit)) -> Unit:
+        # Get separation value from engraving defaults if listed
+        if type(gap) == Unit:
+            return gap
+        elif type(gap) == float:
+            return Unit(gap)
         else:
-            return incoming
+            value = self.engraving_defaults.get(gap)
+            if value:
+                return value
+            else:
+                return self.engraving_defaults["barlineSeparation"]

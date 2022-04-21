@@ -20,19 +20,18 @@ test_style = Barline(Mm(10), [staff_1, staff_2], barline_style.SINGLE)
 
 for n, test_line in enumerate(barline_style.ALL_STYLES):
 
-    Barline(Mm(10 * (n + 1) + 10), [staff_1, staff_2], style=test_line)
+    Barline(Mm(10 * (n + 1) + 10), [staff_1, staff_2], styles=test_line)
 
 test_double_dash = Barline(
     Mm(50),
     [staff_1, staff_3],
-    (
-        BarlineStyle(0.5, 1.0, pattern=PenPattern.DASH),
+    (BarlineStyle(0.5, 1.0, pattern=PenPattern.DASH),
         BarlineStyle(0.5),
     ),
 )
 
 for n, test_line in enumerate(barline_style.ALL_STYLES):
 
-    Barline(Mm(10 * (n + 1) + 80), [staff_1, staff_3], style=test_line)
+    Barline(Mm(10 * (n + 1) + 80), [staff_1, staff_3], styles=test_line)
 
 render_vtest("barlines")
