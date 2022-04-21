@@ -34,7 +34,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         staves: list[StaffLike],
         styles: tuple[BarlineStyle] = (barline_style.SINGLE),
         font: Optional[MusicFont] = None,
-        connected: Optional[bool] = True,
+        connected: Optional[bool] = False,
     ):
         """
         Args:
@@ -52,6 +52,8 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         self._music_font = font
         self.engraving_defaults = self._music_font.engraving_defaults
         self.paths = []
+        self.connected = connected
+        self.staves = staves
 
         # Start x position for this object relative to self
         start_x = ZERO
@@ -88,11 +90,19 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
             self,
             pen=Pen(pattern=pen_pattern, thickness=thickness, color=color),
         )
-        # move to counter the barline extant offset
-        line_path.move_to(ZERO, self.highest.barline_extent[0])
 
         # Draw the path
-        line_path.line_to(ZERO, map_between(self, self.lowest).y + self.lowest.barline_extent[1])
+        if self.connected:
+            # move to counter the barline extant offset
+            line_path.move_to(ZERO, self.highest.barline_extent[0])
+            line_path.line_to(ZERO, map_between(self, self.lowest).y + self.lowest.barline_extent[1])
+        else:
+            for staff in self.staves:
+                x = Unit(0)
+                print(staff.pos.y, staff.height, staff.barline_extent)
+                line_path.move_to(x+Unit(10), staff.pos.y + staff.barline_extent[0])
+                line_path.line_to(x+Unit(10), (staff.height / 2) + staff.barline_extent[1])
+
         self.paths.append(line_path)
 
     def _resolve_style_measurement(self, thickness: (str, float, Unit)) -> Unit:
