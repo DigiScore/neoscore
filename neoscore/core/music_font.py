@@ -12,21 +12,24 @@ from neoscore.core.font import Font
 from neoscore.core.glyph_info import GlyphInfo
 from neoscore.core.point import Point
 from neoscore.core.rect import Rect
-from neoscore.core.units import Mm, Unit, convert_all_to_unit
+from neoscore.core.units import Mm, Unit, convert_all_to_unit, make_unit_class
 
 
 class MusicFont(Font):
 
     """A SMuFL compliant music font"""
 
-    def __init__(self, family_name: str, unit: Type[Unit]):
+    def __init__(self, family_name: str, size: Union[Unit, Type[Unit]]):
         """
         Args:
             family_name: The font name
-            unit: A sizing unit, where ``unit(1)`` is the distance
-                between two staff lines.
+            size: The font size, given either as the distance between two staff lines,
+                or a unit type ``unit(1)`` is that distance.
         """
-        self._unit = unit
+        if isinstance(size, Unit):
+            self._unit = make_unit_class("StaffUnit", size.base_value)
+        else:
+            self._unit = size
         try:
             self.metadata = neoscore.registered_music_fonts[family_name]
         except KeyError:

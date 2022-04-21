@@ -26,4 +26,5 @@ def refresh_func(time):
     n4.x = center + Mm(math.sin((time / 2) + 2.3) * 15)
 
 
-neoscore.show(refresh_func)
+if __name__ == "__main__":
+    neoscore.show(refresh_func)
