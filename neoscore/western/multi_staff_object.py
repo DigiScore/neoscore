@@ -5,6 +5,8 @@ from neoscore.core.units import Unit
 from neoscore.western.staff import Staff
 from neoscore.western.tab_staff import TabStaff
 
+# TODO MEDIUM make this an actual abstract metaclass
+
 StaffLike: TypeAlias = Union[Staff, TabStaff]
 """A known staff-like object"""
 

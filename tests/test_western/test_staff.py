@@ -79,11 +79,11 @@ class TestStaff(AppTest):
         staff = Staff(ORIGIN, None, Mm(100), line_count=4)
         assert staff.center_y == staff.unit(1.5)
 
-    def test_barline_extend_multi_line(self):
+    def test_barline_extent_multi_line(self):
         staff = Staff(ORIGIN, None, Mm(100), line_count=4)
         assert staff.barline_extent == (ZERO, staff.unit(3))
 
-    def test_barline_extend_single_line(self):
+    def test_barline_extent_single_line(self):
         staff = Staff(ORIGIN, None, Mm(100), line_count=1)
         assert staff.barline_extent == (staff.unit(-1), staff.unit(1))
 

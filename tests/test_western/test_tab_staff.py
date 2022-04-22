@@ -66,3 +66,11 @@ class TestTabStaff(AppTest):
     def test_center_y(self):
         staff = TabStaff(ORIGIN, None, Mm(100))
         assert staff.center_y == staff.height / 2
+
+    def test_barline_extent_multi_line(self):
+        staff = TabStaff(ORIGIN, None, Mm(100), line_spacing=Mm(1), line_count=4)
+        assert staff.barline_extent == (ZERO, Mm(3))
+
+    def test_barline_extent_single_line(self):
+        staff = TabStaff(ORIGIN, None, Mm(100), line_spacing=Mm(1), line_count=1)
+        assert staff.barline_extent == (Mm(-1), Mm(1))

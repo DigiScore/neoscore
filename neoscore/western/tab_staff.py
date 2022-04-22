@@ -111,3 +111,16 @@ class TabStaff(MusicPath):
     @property
     def font_to_staff_space_ratio(self) -> float:
         return cast(float, self.unit(1) / self.line_spacing)
+
+    @property
+    def barline_extent(self) -> tuple[Unit, Unit]:
+        """The starting and stopping Y positions of barlines in this staff.
+
+        For staves with more than 1 line, this extends from the top line to bottom
+        line. For single-line staves, this extends from 1 unit above and below the
+        staff.
+        """
+        if self.line_count == 1:
+            return -self.line_spacing, self.line_spacing
+        else:
+            return ZERO, self.height
