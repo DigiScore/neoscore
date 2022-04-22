@@ -26,6 +26,8 @@ We differ from traditional score-writing systems in many important aspects. Neos
    core_concepts/music_text.rst
    core_concepts/flowables.rst
    core_concepts/headers_and_footers.rst
+   core_concepts/export.rst
+   core_concepts/interactivity.rst
 
 .. toctree::
    :caption: API Reference
