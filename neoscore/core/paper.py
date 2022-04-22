@@ -13,10 +13,10 @@ class Paper:
 
     width: Unit
     height: Unit
-    margin_top: Unit
-    margin_right: Unit
-    margin_bottom: Unit
-    margin_left: Unit
+    margin_top: Unit = ZERO
+    margin_right: Unit = ZERO
+    margin_bottom: Unit = ZERO
+    margin_left: Unit = ZERO
     gutter: Unit = ZERO
     live_width: Unit = field(init=False)
     live_height: Unit = field(init=False)
