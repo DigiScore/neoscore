@@ -62,7 +62,7 @@ Each resolved :obj:`.MusicChar` is placed in :obj:`.MusicText.music_chars`, thro
         bounding_rect=Rect(x=Mm(0.0), y=Mm(-4.392), width=Mm(2.684), height=Mm(7.024)),
         advance_width=Mm(2.684), anchors=None)
 
-If you expect to use music text often, we strongly recommend getting familiar with `the SMuFL documentation <https://w3c.github.io/smufl/latest/index.html>`_, both to understand how it works and what metadata it offers and to get a sense of what kinds of glyphs it offers.
+If you expect to use music text often, we strongly recommend getting familiar with `the SMuFL documentation <https://w3c.github.io/smufl/latest/index.html>`_, both to understand how it works and what metadata it offers, and to get a sense of what kinds of glyphs it offers.
 
 .. todo::
 
