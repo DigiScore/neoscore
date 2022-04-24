@@ -51,36 +51,36 @@ def create_example(
 
 create_example(
     [
-        TestChord(["f'"], (1, 8)),
-        TestChord(["f'"], (1, 8)),
+        TestChord(["f"], (1, 8)),
+        TestChord(["f"], (1, 8)),
     ]
 )
 
 create_example(
     [
-        TestChord(["f'"], (1, 8)),
-        TestChord(["f'"], (1, 8)),
+        TestChord(["f"], (1, 8)),
+        TestChord(["f"], (1, 8)),
+        TestChord(["f"], (1, 16)),
+        TestChord(["f"], (1, 16)),
+        TestChord(["f"], (1, 32)),
+        TestChord(["f"], (1, 32)),
+    ]
+)
+
+create_example(
+    [
+        TestChord(["f'"], (3, 16)),
         TestChord(["f'"], (1, 16)),
-        TestChord(["f'"], (1, 16)),
-        TestChord(["f'"], (1, 32)),
-        TestChord(["f'"], (1, 32)),
-    ]
-)
-
-create_example(
-    [
-        TestChord(["f''"], (3, 16)),
-        TestChord(["f''"], (1, 16)),
     ]
 )
 
 
 create_example(
     [
-        TestChord(["f'"], (1, 32)),
-        TestChord(["f'"], (1, 32), beam_break_depth=1),
-        TestChord(["f'"], (1, 32)),
-        TestChord(["f'"], (1, 32)),
+        TestChord(["f"], (1, 32)),
+        TestChord(["f"], (1, 32), beam_break_depth=1),
+        TestChord(["f"], (1, 32)),
+        TestChord(["f"], (1, 32)),
     ]
 )
 
@@ -88,17 +88,17 @@ create_example(
 
 create_example(
     [
-        TestChord(["f'"], (1, 8)),
-        TestChord(["f'"], (1, 16)),
-        TestChord(["f'"], (1, 8)),
+        TestChord(["f"], (1, 8)),
+        TestChord(["f"], (1, 16)),
+        TestChord(["f"], (1, 8)),
     ]
 )
 
 create_example(
     [
-        TestChord(["f'"], (1, 8)),
-        TestChord(["f'"], (1, 16), beam_hook_dir=HorizontalDirection.RIGHT),
-        TestChord(["f'"], (1, 8)),
+        TestChord(["f"], (1, 8)),
+        TestChord(["f"], (1, 16), beam_hook_dir=HorizontalDirection.RIGHT),
+        TestChord(["f"], (1, 8)),
     ]
 )
 
@@ -106,9 +106,9 @@ create_example(
 
 create_example(
     [
-        TestChord(["a'"], (1, 8)),
-        TestChord(["a'"], (1, 16)),
-        TestChord(["a'"], (1, 8)),
+        TestChord(["a"], (1, 8)),
+        TestChord(["a"], (1, 16)),
+        TestChord(["a"], (1, 8)),
     ],
     VerticalDirection.DOWN,
 )
@@ -118,25 +118,25 @@ create_example(
 
 create_example(
     [
-        TestChord(["f'"], (1, 32)),
-        TestChord(["f'"], (1, 32), beam_break_depth=1),
-        TestChord(["f'"], (1, 32)),
-        TestChord(["g''"], (1, 32)),
-        TestChord(["c#'"], (3, 16)),
-        TestChord(["d'"], (1, 16)),
+        TestChord(["f"], (1, 32)),
+        TestChord(["f"], (1, 32), beam_break_depth=1),
+        TestChord(["f"], (1, 32)),
+        TestChord(["g'"], (1, 32)),
+        TestChord(["c#"], (3, 16)),
+        TestChord(["d"], (1, 16)),
     ]
 )
 
 create_example(
     [
-        TestChord(["bb''", "e''"], (1, 32)),
-        TestChord(["f'"], (1, 32), beam_break_depth=2),
-        TestChord(["f'"], (1, 32)),
-        TestChord(["g''"], (1, 32)),
-        TestChord(["c#'"], (3, 16)),
-        TestChord(["e''"], (1, 32)),
-        TestChord(["eb''"], (1, 32)),
-        TestChord(["d''"], (1, 8)),
+        TestChord(["bb'", "e'"], (1, 32)),
+        TestChord(["f"], (1, 32), beam_break_depth=2),
+        TestChord(["f"], (1, 32)),
+        TestChord(["g'"], (1, 32)),
+        TestChord(["c#"], (3, 16)),
+        TestChord(["e'"], (1, 32)),
+        TestChord(["eb'"], (1, 32)),
+        TestChord(["d'"], (1, 8)),
     ]
 )
 

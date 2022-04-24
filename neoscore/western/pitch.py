@@ -70,19 +70,19 @@ class Pitch:
         * The octave indication is given by a series of apostrophes (``'``)
           or commas (``,``), where each apostrophe increases the pitch by an octave,
           and each comma decreases it. All octave transformations are relative to
-          the octave below middle-C. The absence of an octave indicator means a
-          pitch is within the octave below middle-C.
+          the octave starting at middle-C. The absence of an octave indicator means a
+          pitch is within the octave starting at middle-C. (Note that this differs from
+          Lilypond's notation, which starts at the octave *below* middle-C.)
 
         Some examples:
 
-        * C below middle-C: ``c``
-        * Middle-C: ``c'``
-        * The B directly below that: ``b``
-        * The C one octave below middle-C: ``c``
-        * The E-flat above middle-C: ``ef'`` or ``eb'``
-        * The F-sharp above middle-C: ``fs'`` or ``f#'``
-        * The G-double-sharp above middle-C: ``fx'`` or ``fss'``
-        * The A-double-flat above the treble staff: ``aff''`` or ``abb''``
+        * Middle-C: ``c``
+        * The B directly below that: ``b,``
+        * The C one octave below middle-C: ``c,``
+        * The E-flat above middle-C: ``ef`` or ``eb``
+        * The F-sharp above middle-C: ``fs`` or ``f#``
+        * The G-double-sharp above middle-C: ``fx`` or ``fss``
+        * The A-double-flat above the treble staff: ``aff'`` or ``abb'``
 
         """
         match = Pitch._shorthand_regex.match(shorthand)
@@ -96,7 +96,7 @@ class Pitch:
             accidental = Pitch._accidental_shorthands[accidental_str.lower()]
         else:
             accidental = None
-        octave = 3
+        octave = 4
         if ticks:
             octave += len(ticks) * (-1 if ticks[0] == "," else 1)
         return Pitch(letter, accidental, octave)
@@ -132,15 +132,15 @@ class Pitch:
         values mean positions below middle C, and negative values
         mean positions above it.
 
-        >>> Pitch.from_str("c'").staff_pos_from_middle_c
+        >>> Pitch.from_str("c").staff_pos_from_middle_c
         0
-        >>> Pitch.from_str("cs'").staff_pos_from_middle_c
+        >>> Pitch.from_str("cs").staff_pos_from_middle_c
         0
-        >>> Pitch.from_str("d'").staff_pos_from_middle_c
+        >>> Pitch.from_str("d").staff_pos_from_middle_c
         -0.5
-        >>> Pitch.from_str("d''").staff_pos_from_middle_c
+        >>> Pitch.from_str("d'").staff_pos_from_middle_c
         -4
-        >>> Pitch.from_str("cn,").staff_pos_from_middle_c
+        >>> Pitch.from_str("cn,,").staff_pos_from_middle_c
         7
         """
         middle_c = (4 * 7) + 1  # C at octave 4

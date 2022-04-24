@@ -31,16 +31,16 @@ Dynamic((unit(7), unit(6)), upper_staff, "p")
 Text((unit(10), unit(6)), upper_staff, "dolce", expressive_font)
 
 # Upper staff notes
-Chordrest(unit(8), upper_staff, ["g''"], Duration(1, 4))
-Chordrest(unit(12), upper_staff, ["g''"], Duration(1, 4))
-a = Chordrest(unit(16), upper_staff, ["a''"], Duration(3, 16))
+Chordrest(unit(8), upper_staff, ["g'"], Duration(1, 4))
+Chordrest(unit(12), upper_staff, ["g'"], Duration(1, 4))
+a = Chordrest(unit(16), upper_staff, ["a'"], Duration(3, 16))
 MusicText((unit(-1), unit(-2)), a, "ornamentMordent")
-Chordrest(unit(19), upper_staff, ["b''"], Duration(1, 16))
+Chordrest(unit(19), upper_staff, ["b'"], Duration(1, 16))
 
 # Lower staff notes - upper voice
 Chordrest(unit(10), lower_staff, None, (1, 4), unit(-3))
 Chordrest(
-    unit(16), lower_staff, ["d'"], Duration(1, 4), stem_direction=VerticalDirection.UP
+    unit(16), lower_staff, ["d"], Duration(1, 4), stem_direction=VerticalDirection.UP
 )
 
 # Lower staff notes - middle voice
@@ -48,11 +48,11 @@ Chordrest(
 # currently support explicit vertical positioning of rests.
 Rest(Point(unit(8), unit(-2)), lower_staff, Duration(1, 4))
 Chordrest(
-    unit(12), lower_staff, ["b"], Duration(2, 4), stem_direction=VerticalDirection.UP
+    unit(12), lower_staff, ["b,"], Duration(2, 4), stem_direction=VerticalDirection.UP
 )
 
 # Lower staff notes - lower voice
-Chordrest(unit(8), lower_staff, ["g"], Duration(3, 4))
+Chordrest(unit(8), lower_staff, ["g,"], Duration(3, 4))
 
 Barline(unit(22), [upper_staff, lower_staff])
 

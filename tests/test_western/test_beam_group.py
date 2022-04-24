@@ -189,8 +189,8 @@ class TestResolveBeamDirection(AppTest):
         assert (
             _resolve_beam_direction(
                 [
-                    Chordrest(Mm(1), self.staff, ["c,,"], (1, 8)),
-                    Chordrest(Mm(10), self.staff, ["f'"], (1, 8)),
+                    Chordrest(Mm(1), self.staff, ["c,,,"], (1, 8)),
+                    Chordrest(Mm(10), self.staff, ["f"], (1, 8)),
                 ]
             )
             == VerticalDirection.UP
@@ -200,10 +200,8 @@ class TestResolveBeamDirection(AppTest):
         assert (
             _resolve_beam_direction(
                 [
-                    Chordrest(
-                        Mm(1), self.staff, ["c,,", "c'", "c'", "c'", "c'"], (1, 8)
-                    ),
-                    Chordrest(Mm(10), self.staff, ["f'", "e'", "e'", "e'"], (1, 8)),
+                    Chordrest(Mm(1), self.staff, ["c,,,", "c", "c", "c", "c"], (1, 8)),
+                    Chordrest(Mm(10), self.staff, ["f", "e", "e", "e"], (1, 8)),
                 ]
             )
             == VerticalDirection.UP
@@ -213,7 +211,7 @@ class TestResolveBeamDirection(AppTest):
         assert (
             _resolve_beam_direction(
                 [
-                    Chordrest(Mm(10), self.staff, ["c''"], (1, 8)),
+                    Chordrest(Mm(10), self.staff, ["c'"], (1, 8)),
                     Chordrest(Mm(10), self.staff, [], (1, 8)),
                 ]
             )
@@ -225,7 +223,7 @@ class TestResolveBeamDirection(AppTest):
             _resolve_beam_direction(
                 [
                     Chordrest(Mm(10), self.staff, [], (1, 8)),
-                    Chordrest(Mm(10), self.staff, ["b'"], (1, 8)),
+                    Chordrest(Mm(10), self.staff, ["b"], (1, 8)),
                 ]
             )
             == VerticalDirection.DOWN
@@ -244,7 +242,7 @@ class TestResolveBeamGroupHeight(AppTest):
         )
 
         def cr(numerator, denominator):
-            return Chordrest(Mm(1), staff, ["c"], (numerator, denominator))
+            return Chordrest(Mm(1), staff, ["c,"], (numerator, denominator))
 
         assert _resolve_beam_group_height([cr(1, 8), cr(1, 8)], font) == layer_height
         assert (
@@ -274,8 +272,8 @@ class TestResolveBeamGroupLine(AppTest):
 
     def test_beam_group_line_flat_above(self):
         crs = [
-            Chordrest(Mm(10), self.staff, ["g'"], (1, 8)),
-            Chordrest(Mm(20), self.staff, ["g'"], (1, 8)),
+            Chordrest(Mm(10), self.staff, ["g"], (1, 8)),
+            Chordrest(Mm(20), self.staff, ["g"], (1, 8)),
         ]
         assert _resolve_beam_group_line(
             crs, VerticalDirection.UP, self.font
@@ -285,8 +283,8 @@ class TestResolveBeamGroupLine(AppTest):
 
     def test_beam_group_line_flat_below(self):
         crs = [
-            Chordrest(Mm(10), self.staff, ["g'"], (1, 8)),
-            Chordrest(Mm(20), self.staff, ["g'"], (1, 8)),
+            Chordrest(Mm(10), self.staff, ["g"], (1, 8)),
+            Chordrest(Mm(20), self.staff, ["g"], (1, 8)),
         ]
         assert _resolve_beam_group_line(
             crs, VerticalDirection.DOWN, self.font
@@ -296,9 +294,9 @@ class TestResolveBeamGroupLine(AppTest):
 
     def test_beam_group_line_flat_above_with_higher_notes(self):
         crs = [
-            Chordrest(Mm(10), self.staff, ["g'"], (1, 8)),
-            Chordrest(Mm(20), self.staff, ["f'", "c''"], (1, 8)),
-            Chordrest(Mm(30), self.staff, ["g'"], (1, 8)),
+            Chordrest(Mm(10), self.staff, ["g"], (1, 8)),
+            Chordrest(Mm(20), self.staff, ["f", "c'"], (1, 8)),
+            Chordrest(Mm(30), self.staff, ["g"], (1, 8)),
         ]
         assert _resolve_beam_group_line(
             crs, VerticalDirection.UP, self.font
@@ -308,8 +306,8 @@ class TestResolveBeamGroupLine(AppTest):
 
     def test_beam_group_line_flat_below_with_many_beams(self):
         crs = [
-            Chordrest(Mm(10), self.staff, ["g'"], (1, 32)),
-            Chordrest(Mm(20), self.staff, ["g'"], (1, 64)),
+            Chordrest(Mm(10), self.staff, ["g"], (1, 32)),
+            Chordrest(Mm(20), self.staff, ["g"], (1, 64)),
         ]
         assert _resolve_beam_group_line(
             crs, VerticalDirection.DOWN, self.font
@@ -319,8 +317,8 @@ class TestResolveBeamGroupLine(AppTest):
 
     def test_beam_group_line_slanted_upward(self):
         crs = [
-            Chordrest(Mm(10), self.staff, ["g'"], (1, 8)),
-            Chordrest(Mm(20), self.staff, ["a'"], (1, 8)),
+            Chordrest(Mm(10), self.staff, ["g"], (1, 8)),
+            Chordrest(Mm(20), self.staff, ["a"], (1, 8)),
         ]
         self.assert_lines_eq(
             _resolve_beam_group_line(crs, VerticalDirection.UP, self.font),
@@ -329,9 +327,9 @@ class TestResolveBeamGroupLine(AppTest):
 
     def test_beam_group_line_slanted_upward_with_closer_notes(self):
         crs = [
-            Chordrest(Mm(10), self.staff, ["g'"], (1, 8)),
-            Chordrest(Mm(20), self.staff, ["f''"], (1, 8)),
-            Chordrest(Mm(30), self.staff, ["a'"], (1, 8)),
+            Chordrest(Mm(10), self.staff, ["g"], (1, 8)),
+            Chordrest(Mm(20), self.staff, ["f'"], (1, 8)),
+            Chordrest(Mm(30), self.staff, ["a"], (1, 8)),
         ]
         self.assert_lines_eq(
             _resolve_beam_group_line(crs, VerticalDirection.UP, self.font),
@@ -340,8 +338,8 @@ class TestResolveBeamGroupLine(AppTest):
 
     def test_beam_group_line_slanted_downward(self):
         crs = [
-            Chordrest(Mm(10), self.staff, ["a'"], (1, 8)),
-            Chordrest(Mm(20), self.staff, ["g'"], (1, 8)),
+            Chordrest(Mm(10), self.staff, ["a"], (1, 8)),
+            Chordrest(Mm(20), self.staff, ["g"], (1, 8)),
         ]
         self.assert_lines_eq(
             _resolve_beam_group_line(crs, VerticalDirection.DOWN, self.font),
@@ -350,9 +348,9 @@ class TestResolveBeamGroupLine(AppTest):
 
     def test_beam_group_line_slanted_downward_with_closer_notes(self):
         crs = [
-            Chordrest(Mm(10), self.staff, ["a'"], (1, 8)),
-            Chordrest(Mm(20), self.staff, ["b'", "c,"], (1, 8)),
-            Chordrest(Mm(30), self.staff, ["g'"], (1, 8)),
+            Chordrest(Mm(10), self.staff, ["a"], (1, 8)),
+            Chordrest(Mm(20), self.staff, ["b", "c,,"], (1, 8)),
+            Chordrest(Mm(30), self.staff, ["g"], (1, 8)),
         ]
         self.assert_lines_eq(
             _resolve_beam_group_line(crs, VerticalDirection.DOWN, self.font),
@@ -368,8 +366,8 @@ class TestBeamGroup(AppTest):
 
     def test_beam_direction_override(self):
         crs = [
-            Chordrest(Mm(10), self.staff, ["a'"], (1, 8)),
-            Chordrest(Mm(20), self.staff, ["g'"], (1, 8)),
+            Chordrest(Mm(10), self.staff, ["a"], (1, 8)),
+            Chordrest(Mm(20), self.staff, ["g"], (1, 8)),
         ]
         bg = BeamGroup(crs)
         assert bg.direction == VerticalDirection.UP
@@ -378,13 +376,13 @@ class TestBeamGroup(AppTest):
 
     def test_end_to_end(self):
         crs = [
-            Chordrest(Mm(10), self.staff, ["bb''", "e''"], (1, 32)),
-            Chordrest(Mm(20), self.staff, ["f'"], (1, 32), beam_break_depth=2),
-            Chordrest(Mm(30), self.staff, ["f'"], (1, 32)),
-            Chordrest(Mm(40), self.staff, ["g''"], (1, 32)),
-            Chordrest(Mm(50), self.staff, ["c#'"], (3, 16)),
-            Chordrest(Mm(60), self.staff, ["e''"], (1, 32)),
-            Chordrest(Mm(70), self.staff, ["eb''"], (1, 32)),
-            Chordrest(Mm(80), self.staff, ["d''"], (1, 8)),
+            Chordrest(Mm(10), self.staff, ["bb'", "e'"], (1, 32)),
+            Chordrest(Mm(20), self.staff, ["f"], (1, 32), beam_break_depth=2),
+            Chordrest(Mm(30), self.staff, ["f"], (1, 32)),
+            Chordrest(Mm(40), self.staff, ["g'"], (1, 32)),
+            Chordrest(Mm(50), self.staff, ["c#"], (3, 16)),
+            Chordrest(Mm(60), self.staff, ["e'"], (1, 32)),
+            Chordrest(Mm(70), self.staff, ["eb'"], (1, 32)),
+            Chordrest(Mm(80), self.staff, ["d'"], (1, 8)),
         ]
         render_scene()

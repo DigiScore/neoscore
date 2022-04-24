@@ -20,73 +20,65 @@ class TestNotehead(AppTest):
         Clef(Mm(0), self.staff, "treble")
 
     def test_staff_position_middle_c_treble(self):
-        assert Notehead(Mm(10), self.staff, "c'", (1, 4)).staff_pos == self.staff.unit(
-            5
-        )
+        assert Notehead(Mm(10), self.staff, "c", (1, 4)).staff_pos == self.staff.unit(5)
 
     def test_staff_position_low_octaves(self):
-        assert Notehead(Mm(10), self.staff, "c", (1, 4)).staff_pos == self.staff.unit(
+        assert Notehead(Mm(10), self.staff, "c,", (1, 4)).staff_pos == self.staff.unit(
             8.5
         )
-        assert Notehead(Mm(10), self.staff, "c,", (1, 4)).staff_pos == self.staff.unit(
-            12
-        )
         assert Notehead(Mm(10), self.staff, "c,,", (1, 4)).staff_pos == self.staff.unit(
-            15.5
+            12
         )
         assert Notehead(
             Mm(10), self.staff, "c,,,", (1, 4)
+        ).staff_pos == self.staff.unit(15.5)
+        assert Notehead(
+            Mm(10), self.staff, "c,,,,", (1, 4)
         ).staff_pos == self.staff.unit(19)
 
     def test_staff_position_high_octaves(self):
-        assert Notehead(Mm(10), self.staff, "c''", (1, 4)).staff_pos == self.staff.unit(
+        assert Notehead(Mm(10), self.staff, "c'", (1, 4)).staff_pos == self.staff.unit(
             1.5
+        )
+        assert Notehead(Mm(10), self.staff, "c''", (1, 4)).staff_pos == self.staff.unit(
+            -2
         )
         assert Notehead(
             Mm(10), self.staff, "c'''", (1, 4)
-        ).staff_pos == self.staff.unit(-2)
-        assert Notehead(
-            Mm(10), self.staff, "c''''", (1, 4)
         ).staff_pos == self.staff.unit(-5.5)
         assert Notehead(
-            Mm(10), self.staff, "c'''''", (1, 4)
+            Mm(10), self.staff, "c''''", (1, 4)
         ).staff_pos == self.staff.unit(-9)
 
     def test_staff_position_with_accidentals(self):
-        assert Notehead(Mm(10), self.staff, "cf'", (1, 4)).staff_pos == self.staff.unit(
+        assert Notehead(Mm(10), self.staff, "cf", (1, 4)).staff_pos == self.staff.unit(
             5
         )
-        assert Notehead(Mm(10), self.staff, "cn'", (1, 4)).staff_pos == self.staff.unit(
+        assert Notehead(Mm(10), self.staff, "cn", (1, 4)).staff_pos == self.staff.unit(
             5
         )
-        assert Notehead(Mm(10), self.staff, "cs'", (1, 4)).staff_pos == self.staff.unit(
+        assert Notehead(Mm(10), self.staff, "cs", (1, 4)).staff_pos == self.staff.unit(
             5
         )
 
     def test_staff_position_with_all_letter_names(self):
-        assert Notehead(Mm(10), self.staff, "d'", (1, 4)).staff_pos == self.staff.unit(
+        assert Notehead(Mm(10), self.staff, "d", (1, 4)).staff_pos == self.staff.unit(
             4.5
         )
-        assert Notehead(Mm(10), self.staff, "e'", (1, 4)).staff_pos == self.staff.unit(
-            4
-        )
-        assert Notehead(Mm(10), self.staff, "f'", (1, 4)).staff_pos == self.staff.unit(
+        assert Notehead(Mm(10), self.staff, "e", (1, 4)).staff_pos == self.staff.unit(4)
+        assert Notehead(Mm(10), self.staff, "f", (1, 4)).staff_pos == self.staff.unit(
             3.5
         )
-        assert Notehead(Mm(10), self.staff, "g'", (1, 4)).staff_pos == self.staff.unit(
-            3
-        )
-        assert Notehead(Mm(10), self.staff, "a'", (1, 4)).staff_pos == self.staff.unit(
+        assert Notehead(Mm(10), self.staff, "g", (1, 4)).staff_pos == self.staff.unit(3)
+        assert Notehead(Mm(10), self.staff, "a", (1, 4)).staff_pos == self.staff.unit(
             2.5
         )
-        assert Notehead(Mm(10), self.staff, "b'", (1, 4)).staff_pos == self.staff.unit(
-            2
-        )
+        assert Notehead(Mm(10), self.staff, "b", (1, 4)).staff_pos == self.staff.unit(2)
 
     def test_staff_position_on_later_flowable_line(self):
-        assert Notehead(Mm(1000), self.staff, "c", (1, 4)).staff_pos == self.staff.unit(
-            8.5
-        )
+        assert Notehead(
+            Mm(1000), self.staff, "c,", (1, 4)
+        ).staff_pos == self.staff.unit(8.5)
 
     def assert_glyph_lookup(
         self,
@@ -95,9 +87,9 @@ class TestNotehead(AppTest):
         table: Optional[notehead_tables.NoteheadTable] = None,
     ):
         if table:
-            notehead = Notehead(Mm(10), self.staff, "c'", duration, table=table)
+            notehead = Notehead(Mm(10), self.staff, "c", duration, table=table)
         else:
-            notehead = Notehead(Mm(10), self.staff, "c'", duration)
+            notehead = Notehead(Mm(10), self.staff, "c", duration)
         assert notehead.music_chars == [MusicChar(self.staff.music_font, glyph_name)]
 
     def test_glyph_lookup(self):
@@ -131,19 +123,19 @@ class TestNotehead(AppTest):
         ]
 
     def test_pitch_setter_updates_position(self):
-        note = Notehead(Mm(10), self.staff, "c''", (1, 4))
+        note = Notehead(Mm(10), self.staff, "c'", (1, 4))
         assert note.y == self.staff.unit(1.5)
-        note.pitch = "d''"
+        note.pitch = "d'"
         assert note.y == self.staff.unit(1)
 
     def test_duration_setter_updates_glyph(self):
-        note = Notehead(Mm(10), self.staff, "c''", (1, 4))
+        note = Notehead(Mm(10), self.staff, "c'", (1, 4))
         assert note.music_chars == [MusicChar(self.staff.music_font, "noteheadBlack")]
         note.duration = (1, 1)
         assert note.music_chars == [MusicChar(self.staff.music_font, "noteheadWhole")]
 
     def test_table_setter_updates_glyph(self):
-        note = Notehead(Mm(10), self.staff, "c''", (1, 4))
+        note = Notehead(Mm(10), self.staff, "c'", (1, 4))
         assert note.music_chars == [MusicChar(self.staff.music_font, "noteheadBlack")]
         note.table = notehead_tables.DIAMOND
         assert note.music_chars == [
@@ -151,7 +143,7 @@ class TestNotehead(AppTest):
         ]
 
     def test_glyph_overrisde_setter_updates_glyph(self):
-        note = Notehead(Mm(10), self.staff, "c''", (1, 4))
+        note = Notehead(Mm(10), self.staff, "c'", (1, 4))
         assert note.music_chars == [MusicChar(self.staff.music_font, "noteheadBlack")]
         note.glyph_override = "gClef"
         assert note.music_chars == [MusicChar(self.staff.music_font, "gClef")]

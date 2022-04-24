@@ -93,7 +93,7 @@ class TestChordrest(AppTest):
         assert chord.noteheads[0].music_chars == []
 
     def test_ledger_line_positions(self):
-        pitches = ["c'", "b'", "f'''"]
+        pitches = ["c", "b", "f''"]
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
         assert chord.ledger_line_positions == [
             self.staff.unit(5),
@@ -104,7 +104,7 @@ class TestChordrest(AppTest):
 
     def test_ledger_line_positions_with_different_clef(self):
         Clef(Mm(10), self.staff, "bass")
-        pitches = ["e,", "d", "e'"]
+        pitches = ["e,,", "d,", "e"]
         chord = Chordrest(Mm(15), self.staff, pitches, Duration(1, 4))
         assert chord.ledger_line_positions == [
             self.staff.unit(5),
@@ -125,7 +125,7 @@ class TestChordrest(AppTest):
         )
 
     def test_rhythm_dot_positions_with_noteheads(self):
-        pitches = ["e,", "d", "e'''"]
+        pitches = ["e,,", "d,", "e''"]
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(7, 16))
         dots = list(chord.rhythm_dot_positions)
         dots.sort(key=lambda d: d.x)
@@ -150,69 +150,69 @@ class TestChordrest(AppTest):
         )
 
     def test_furthest_notehead_with_one_note(self):
-        pitches = ["b'"]
+        pitches = ["b"]
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
-        assert chord.furthest_notehead.pitch == Pitch.from_str("b'")
-        pitches = ["f'''"]
+        assert chord.furthest_notehead.pitch == Pitch.from_str("b")
+        pitches = ["f''"]
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
-        assert chord.furthest_notehead.pitch == Pitch.from_str("f'''")
-        pitches = ["c,,,,"]
+        assert chord.furthest_notehead.pitch == Pitch.from_str("f''")
+        pitches = ["c,,,,,"]
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
-        assert chord.furthest_notehead.pitch == Pitch.from_str("c,,,,")
+        assert chord.furthest_notehead.pitch == Pitch.from_str("c,,,,,")
 
     def test_furthest_notehead_with_many_notes(self):
-        pitches = ["b''", "bs'"]
+        pitches = ["b'", "bs"]
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
-        assert chord.furthest_notehead.pitch == Pitch.from_str("b''")
-        pitches = ["b'", "b,,,"]
+        assert chord.furthest_notehead.pitch == Pitch.from_str("b'")
+        pitches = ["b", "b,,,,"]
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
-        assert chord.furthest_notehead.pitch == Pitch.from_str("b,,,")
-        pitches = ["f''''", "b"]
+        assert chord.furthest_notehead.pitch == Pitch.from_str("b,,,,")
+        pitches = ["f'''", "b,"]
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
-        assert chord.furthest_notehead.pitch == Pitch.from_str("f''''")
-        pitches = ["c'", "c,,,,", "b'", "c'''"]
+        assert chord.furthest_notehead.pitch == Pitch.from_str("f'''")
+        pitches = ["c", "c,,,,,", "b", "c''"]
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
-        assert chord.furthest_notehead.pitch == Pitch.from_str("c,,,,")
+        assert chord.furthest_notehead.pitch == Pitch.from_str("c,,,,,")
 
     def test_highest_notehead(self):
-        pitches = ["c'", "b'", "c'''"]
+        pitches = ["c", "b", "c''"]
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
-        assert chord.highest_notehead.pitch == Pitch.from_str("c'''")
+        assert chord.highest_notehead.pitch == Pitch.from_str("c''")
 
     def test_lowest_notehead(self):
-        pitches = ["c'", "b'", "c'''"]
+        pitches = ["c", "b", "c''"]
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
-        assert chord.lowest_notehead.pitch == Pitch.from_str("c'")
+        assert chord.lowest_notehead.pitch == Pitch.from_str("c")
 
     def test_highest_and_lowest_notehead_same_with_one_note(self):
-        pitches = ["c'"]
+        pitches = ["c"]
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
         assert chord.highest_notehead == chord.lowest_notehead
 
     def test_stem_direction_down(self):
-        pitches = ["c'", "b'", "c''''"]
+        pitches = ["c", "b", "c'''"]
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
         assert chord.stem_direction == VerticalDirection.DOWN
 
     def test_stem_direction_up(self):
-        pitches = ["c,,,,,", "b'", "c'''"]
+        pitches = ["c,,,,,,", "b", "c''"]
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
         assert chord.stem_direction == VerticalDirection.UP
 
     def test_stem_direction_down_with_one_note_at_staff_center(self):
-        pitches = ["b'"]
+        pitches = ["b"]
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
         assert chord.stem_direction == VerticalDirection.DOWN
 
     def test_stem_direction_at_center_with_one_line_staff(self):
         staff = Staff(Point(Mm(0), Mm(0)), None, Mm(100), line_count=1)
         Clef(Mm(0), staff, "percussion_2")
-        pitches = ["c'"]
+        pitches = ["c"]
         chord = Chordrest(Mm(1), staff, pitches, Duration(1, 4))
         assert chord.stem_direction == VerticalDirection.UP
 
     def test_stem_direction_override(self):
-        pitches = ["b'"]
+        pitches = ["b"]
         chord = Chordrest(
             Mm(1),
             self.staff,
@@ -226,12 +226,12 @@ class TestChordrest(AppTest):
         assert chord.stem_direction == VerticalDirection.DOWN
 
     def test_stem_height_min(self):
-        pitches = ["b'"]
+        pitches = ["b"]
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
         assert_almost_equal(chord.stem_height, self.staff.unit(3))
 
     def test_stem_height_fitted(self):
-        pitches = ["c'''", "g"]
+        pitches = ["c''", "g,"]
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
         assert_almost_equal(chord.stem_height, self.staff.unit(10.5))
 
@@ -241,7 +241,7 @@ class TestChordrest(AppTest):
         clef = Clef(unit(0), staff, "treble")
         KeySignature(clef.bounding_rect.width + unit(0.5), staff, "g_major")
         # Chord with ledgers, dots, flags, and accidentals
-        Chordrest(unit(8), staff, ["gs'''", "cf'", "a,,,"], Duration(3, 64))
+        Chordrest(unit(8), staff, ["gs''", "cf", "a,,,,"], Duration(3, 64))
         # Rest with dots
         Chordrest(unit(20), staff, None, Duration(7, 128))
         render_scene()

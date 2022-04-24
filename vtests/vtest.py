@@ -49,9 +49,9 @@ lowest_staff_key_signature = KeySignature(
 
 octave_line = OctaveLine((Mm(20), staff.unit(-3)), staff, Mm(1000), indication="8vb")
 
-Chordrest(Mm(10), staff, ["a'", "bs"], Duration(2, 4))
-Chordrest(Mm(40), staff, ["a'", "bs"], Duration(2, 4))
-Chordrest(Mm(60), staff, ["b'", "bff"], Duration(2, 4))
+Chordrest(Mm(10), staff, ["a", "bs,"], Duration(2, 4))
+Chordrest(Mm(40), staff, ["a", "bs,"], Duration(2, 4))
+Chordrest(Mm(60), staff, ["b", "bff,"], Duration(2, 4))
 
 Chordrest(Mm(10), lowest_staff, [("a", "accidentalQuarterToneSharpStein", 2)], (3, 4))
 Chordrest(
@@ -63,7 +63,7 @@ Chordrest(
 c = Chordrest(
     Mm(25),
     lowest_staff,
-    ["b", "c", ("g'", notehead_tables.DIAMOND.short)],
+    ["b,", "c,", ("g", notehead_tables.DIAMOND.short)],
     (1, 16),
 )
 trill = RepeatingMusicTextLine(
@@ -78,10 +78,10 @@ trill = RepeatingMusicTextLine(
 table = notehead_tables.INVISIBLE
 BeamGroup(
     [
-        Chordrest(Mm(50), lowest_staff, ["c'"], (1, 32), table=table),
-        Chordrest(Mm(53), lowest_staff, ["ab"], (1, 32), table=table),
-        Chordrest(Mm(55), lowest_staff, ["g"], (3, 16), table=table),
-        Chordrest(Mm(57), lowest_staff, ["d"], (1, 64), table=table),
+        Chordrest(Mm(50), lowest_staff, ["c"], (1, 32), table=table),
+        Chordrest(Mm(53), lowest_staff, ["ab,"], (1, 32), table=table),
+        Chordrest(Mm(55), lowest_staff, ["g,"], (3, 16), table=table),
+        Chordrest(Mm(57), lowest_staff, ["d,"], (1, 64), table=table),
     ]
 )
 
