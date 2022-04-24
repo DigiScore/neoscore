@@ -38,6 +38,10 @@ class RenderedExample(CodeBlock):
         script_id = RenderedExample.hash_script(self.content)
         STATIC_RENDER_DIR.mkdir(parents=True, exist_ok=True)
         export_path = STATIC_RENDER_DIR / (script_id + ".png")
+        if export_path.exists():
+            # If file exists already, that means this code example hasn't
+            # changed since last build, so no need to re-render it.
+            return result
         # Add setup and render code to script
         script_lines = list(self.content)
         RenderedExample.post_process_script(script_lines, export_path)

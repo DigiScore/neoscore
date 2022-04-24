@@ -25,7 +25,7 @@ You can integrate neoscore applications with a Python `REPL <https://en.wikipedi
 
     In [6]: text.text = 'changing text!'
 
-You can also write starting code in a python script as usual, then run it interactively with ``ipython --gui=qt5 -i [your_script.py]``.
+You can also write starting code in a python script as usual, then run it interactively with ``ipython --gui=qt5 -i your_script.py``.
 
 Animation
 ---------
@@ -48,7 +48,7 @@ This callback will be automatically executed at up to 60 times per second. The r
 
 .. note::
 
-    You may notice dropped frames in stuttering and animated scenes. This is a limitation of neoscore's animation system with no current solution beside simplifying scenes, running at lower target framerates (see below), and running on faster hardware.
+    You may notice dropped frames and stuttering in animated scenes. This is a limitation of neoscore's animation system with no current solution beside simplifying scenes, running at lower target framerates (see below), and running on faster hardware.
 
 You can also change the refresh function on the fly (live-coded animations!) with :obj:`.neoscore.set_refresh_func`. This function also allows overriding the target framerate.
 

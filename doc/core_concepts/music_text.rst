@@ -3,7 +3,7 @@ Music Text
 
 Congratulations on making it to the first mention of music in these docs!
 
-Neoscore is able to draw thousands of common and uncommon musical characters by writing them as text in musical fonts.
+Neoscore is able to draw thousands of common and uncommon musical glyphs by writing them as text in musical fonts.
 
 .. rendered-example::
 
