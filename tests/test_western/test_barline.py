@@ -1,9 +1,11 @@
+from neoscore.core.color import Color
 from neoscore.core.flowable import Flowable
 from neoscore.core.music_font import MusicFont
 from neoscore.core.point import Point
 from neoscore.core.units import Mm, Unit
 from neoscore.western import barline_style
 from neoscore.western.barline import Barline
+from neoscore.western.barline_style import BarlineStyle
 from neoscore.western.staff import Staff
 from neoscore.western.tab_staff import TabStaff
 
@@ -56,10 +58,13 @@ class TestBarline(AppTest):
         )
         assert barline.music_font == font
 
-    # def test_pen_colour(self):
-    #     barline = Barline(Mm(15), [self.staff_1, self.staff_2])
-    #     assert barline.paths[0].pen.color == Color(0, 0, 0, 255)
-    #     pen_color = Color(255, 0, 0)
-    #     barline = Barline(Mm(15), [self.staff_1, self.staff_2], styles=(BarlineStyle(thickness="thinBarlineThickness",
-    #                                                                                  color=pen_color)))
-    #     assert barline.paths[0].pen.color == Color(255, 0, 0, 255)
+    def test_pen_colour(self):
+        barline = Barline(Mm(15), [self.staff_1, self.staff_2])
+        assert barline.paths[0].pen.color == Color(0, 0, 0, 255)
+        pen_color = Color(255, 0, 0)
+        barline = Barline(
+            Mm(15),
+            [self.staff_1, self.staff_2],
+            styles=(BarlineStyle(thickness="thinBarlineThickness", color=pen_color)),
+        )
+        assert barline.paths[0].pen.color == Color(255, 0, 0, 255)
