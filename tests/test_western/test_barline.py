@@ -40,22 +40,14 @@ class TestBarline(AppTest):
         barline = Barline(
             Mm(15), [self.staff_1, self.staff_2], barline_style.THIN_DOUBLE
         )
-        # first line
-        assert barline.paths[0].elements[0].pos == Point(Mm(0), Mm(0))
-        assert barline.paths[0].elements[0].parent == barline.paths[0]
-        assert barline.paths[0].elements[1].pos == Point(
-            Unit(0), self.staff_2.height + self.staff_2.y
+        assert barline.paths[0].pos == Point(Mm(0), Mm(0))
+        assert barline.paths[1].pos == Point(Unit(1.307), Mm(0))
+        barline = Barline(
+            Mm(15), [self.staff_1, self.staff_2], barline_style.END
         )
-        assert barline.paths[0].elements[1].parent == barline.paths[0]
-
-        # second line
-        # todo - this is not showing a gap
-        assert barline.paths[1].elements[0].pos == Point(Unit(0), Mm(0))
-        assert barline.paths[1].elements[0].parent == barline.paths[1]
-        assert barline.paths[1].elements[1].pos == Point(
-            Unit(0), self.staff_2.height + self.staff_2.y
-        )
-        assert barline.paths[1].elements[1].parent == barline.paths[1]
+        assert barline.paths[0].pos == Point(Mm(0), Mm(0))
+        # todo - not sure what 3.175 is
+        assert barline.paths[1].pos == Point(Unit(3.175), Mm(0))
 
     def test_font_override(self):
         barline = Barline(Mm(15), [self.staff_1, self.staff_2, self.tab_staff_3])
