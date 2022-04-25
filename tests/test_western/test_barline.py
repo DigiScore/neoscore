@@ -42,9 +42,7 @@ class TestBarline(AppTest):
         )
         assert barline.paths[0].pos == Point(Mm(0), Mm(0))
         assert barline.paths[1].pos == Point(Unit(1.307), Mm(0))
-        barline = Barline(
-            Mm(15), [self.staff_1, self.staff_2], barline_style.END
-        )
+        barline = Barline(Mm(15), [self.staff_1, self.staff_2], barline_style.END)
         assert barline.paths[0].pos == Point(Mm(0), Mm(0))
         # todo - not sure what 3.175 is
         assert barline.paths[1].pos == Point(Unit(3.175), Mm(0))

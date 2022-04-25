@@ -41,7 +41,6 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
             staves: The staves spanned. Must be in visually descending order.
             font: If provided, this overrides the font in the parent (top) staff.
             styles: If provided, this declares the style of bar line e.g. double, end.
-            connected: If provided, this declares if the bar lines are separated across a stave system
         """
         MultiStaffObject.__init__(self, staves)
         PositionedObject.__init__(self, (pos_x, ZERO), self.highest)
