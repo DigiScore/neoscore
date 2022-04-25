@@ -13,7 +13,11 @@ from neoscore.western.meter import Meter, MeterDef
 
 class TimeSignature(PositionedObject, HasMusicFont):
 
-    """A logical and graphical time signature"""
+    """A graphical time signature.
+
+    Note that these time signatures are purely cosmetic; they have no effect on
+    automatic engraving since ``neoscore.western`` has no internal concept of measures.
+    """
 
     def __init__(
         self,

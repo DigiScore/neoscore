@@ -1,5 +1,5 @@
 import warnings
-from typing import Optional, Union
+from typing import Optional, Union, cast
 
 from neoscore.core.mapping import map_between
 from neoscore.core.music_text import MusicText
@@ -106,7 +106,7 @@ class _KeySignatureAccidental(MusicText, StaffObject):
         return clef.bounding_rect.width + self.staff.unit(0.5)
 
     def _render_occurrence(
-        self, pos: Point, local_start_x: Optional[Unit], shift_for_clef: bool
+        self, pos: Point, local_start_x: Optional[Unit], dist_to_line_start: Unit
     ):
         """Render one appearance of one key signature accidental.
 
@@ -139,7 +139,10 @@ class _KeySignatureAccidental(MusicText, StaffObject):
             return
         visual_pos_x = self.staff.unit(pos_tuple[0]) + pos.x
         visual_pos_y = self.staff.unit(pos_tuple[1]) + pos.y
-        if shift_for_clef:
+        if dist_to_line_start == ZERO:
+            # Note that this doesn't work on the first line if the key sign isn't placed
+            # at x=0. We really need proper staff-left-margin handling for this kind of
+            # thing.
             visual_pos_x += self._padded_clef_width(clef)
         self._render_slice(Point(visual_pos_x, visual_pos_y))
 
@@ -149,17 +152,17 @@ class _KeySignatureAccidental(MusicText, StaffObject):
         dist_to_line_start: Optional[Unit] = None,
         local_start_x: Optional[Unit] = None,
     ):
-        self._render_occurrence(pos, local_start_x, False)
+        self._render_occurrence(pos, local_start_x, cast(Unit, dist_to_line_start))
 
     def _render_before_break(
         self, local_start_x: Unit, start: Point, stop: Point, dist_to_line_start: Unit
     ):
-        self._render_occurrence(start, local_start_x, False)
+        self._render_occurrence(start, local_start_x, dist_to_line_start)
 
     def _render_after_break(self, local_start_x: Unit, start: Point):
-        self._render_occurrence(start, local_start_x, True)
+        self._render_occurrence(start, local_start_x, ZERO)
 
     def _render_spanning_continuation(
         self, local_start_x: Unit, start: Point, stop: Point
     ):
-        self._render_occurrence(start, local_start_x, True)
+        self._render_occurrence(start, local_start_x, ZERO)
