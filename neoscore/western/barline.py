@@ -35,6 +35,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         staves: list[StaffLike],
         styles: BarlineStyle | Iterable[BarlineStyle] = barline_style.SINGLE,
         font: Optional[MusicFont] = None,
+        connected: Optional[bool] = False,
     ):
         """
         Args:
@@ -53,6 +54,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         self.engraving_defaults = self._music_font.engraving_defaults
         self.paths = []
         self.staves = staves
+        self.connected = connected
 
         # Start x position for first barline relative to self
         start_x = ZERO
@@ -85,10 +87,18 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
 
         # Draw the path
         # move to counter the barline extant offset
-        line_path.move_to(ZERO, self.highest.barline_extent[0])
-        line_path.line_to(
-            ZERO, map_between(self, self.lowest).y + self.lowest.barline_extent[1]
-        )
+        if self.connected:
+            line_path.move_to(ZERO, self.highest.barline_extent[0])
+            line_path.line_to(
+                ZERO, map_between(self, self.lowest).y + self.lowest.barline_extent[1]
+            )
+        else:
+            for stave in self.staves:
+                print (stave.pos.y)
+                line_path.move_to(ZERO, stave.pos.y + stave.barline_extent[0])
+                line_path.line_to(
+                    ZERO, stave.pos.y + stave.barline_extent[1]
+                )
 
         self.paths.append(line_path)
 
