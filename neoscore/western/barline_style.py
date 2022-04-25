@@ -35,4 +35,3 @@ END = (
 )
 
 ALL_STYLES: list[tuple[BarlineStyle]] = [SINGLE, THIN_DOUBLE, END]
-

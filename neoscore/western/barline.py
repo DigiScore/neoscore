@@ -2,10 +2,10 @@ from typing import Optional
 
 from neoscore.core.color import ColorDef
 from neoscore.core.has_music_font import HasMusicFont
+from neoscore.core.mapping import map_between
 from neoscore.core.music_font import MusicFont
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
-from neoscore.core.mapping import map_between
 from neoscore.core.pen_pattern import PenPattern
 from neoscore.core.point import Point
 from neoscore.core.positioned_object import PositionedObject
@@ -82,7 +82,9 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         # Draw the path
         # move to counter the barline extant offset
         line_path.move_to(ZERO, self.highest.barline_extent[0])
-        line_path.line_to(ZERO, map_between(self, self.lowest).y + self.lowest.barline_extent[1])
+        line_path.line_to(
+            ZERO, map_between(self, self.lowest).y + self.lowest.barline_extent[1]
+        )
 
         self.paths.append(line_path)
 
