@@ -16,7 +16,7 @@ percussion_staff = Staff((Mm(0), Mm(30)), flowable, Mm(150), line_count=1)
 offset_staff = Staff((Mm(10), Mm(50)), flowable, Mm(150))
 
 # test bar lines between stave 1 and 2
-test_style = Barline(Mm(10), [normal_staff, percussion_staff], barline_style.SINGLE)
+test_style = Barline(Mm(10), [normal_staff, percussion_staff])
 
 test_double_dash = Barline(
     Mm(50),

@@ -22,16 +22,16 @@ class BarlineStyle:
     color: Optional[ColorDef] = None
 
 
-SINGLE = (BarlineStyle("thinBarlineThickness"),)
+SINGLE = [BarlineStyle("thinBarlineThickness")]
 
-THIN_DOUBLE = (
+THIN_DOUBLE = [
     BarlineStyle("thinBarlineThickness"),
     BarlineStyle("thinBarlineThickness"),
-)
+]
 
-END = (
+END = [
     BarlineStyle("thinBarlineThickness", "thinThickBarlineSeparation"),
     BarlineStyle("thickBarlineThickness"),
-)
+]
 
-ALL_STYLES: list[tuple[BarlineStyle]] = [SINGLE, THIN_DOUBLE, END]
+ALL_STYLES: list[list[BarlineStyle]] = [SINGLE, THIN_DOUBLE, END]

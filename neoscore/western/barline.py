@@ -1,3 +1,4 @@
+from collections.abc import Iterable
 from typing import Optional
 
 from neoscore.core.color import ColorDef
@@ -32,7 +33,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         self,
         pos_x: Unit,
         staves: list[StaffLike],
-        styles: tuple[BarlineStyle] = barline_style.SINGLE,
+        styles: BarlineStyle | Iterable[BarlineStyle] = barline_style.SINGLE,
         font: Optional[MusicFont] = None,
     ):
         """
@@ -54,6 +55,9 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
 
         # Start x position for this object relative to self
         start_x = ZERO
+
+        if isinstance(styles, BarlineStyle):
+            styles = [styles]
 
         # draw each of the bar lines in turn from left to right
         for style in styles:
