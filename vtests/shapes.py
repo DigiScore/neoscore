@@ -27,7 +27,7 @@ Path.rect(
     Pen(thickness=Mm(0.5)),
 )
 
-arcs_parent = PositionedObject((Mm(1), Mm(60)))
+arcs_parent = PositionedObject((Mm(1), Mm(60)), None)
 
 t = Text(ORIGIN, arcs_parent, "arc start angles:")
 print(t.font.size)

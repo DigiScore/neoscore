@@ -14,7 +14,7 @@ class TestRichText(AppTest):
 
     def test_init(self):
         font = neoscore.default_font.modified(size=Unit(20))
-        parent = PositionedObject(ORIGIN)
+        parent = PositionedObject(ORIGIN, None)
         obj = RichText((Unit(5), Unit(6)), parent, self.html, Unit(100), font, 2, 15)
         assert obj.pos == Point(Unit(5), Unit(6))
         assert obj.parent == parent

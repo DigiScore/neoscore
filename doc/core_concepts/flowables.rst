@@ -13,7 +13,27 @@ Neoscore has fairly good support for such notation systems via the :obj:`.Flowab
     Text((Mm(300), ZERO), flow, "text spanning line break")
 
 Objects placed within a flowable are automatically rendered in the flowed space. When an object fits entirely in a given flowed line, it's rendered like usual, just in a different place. Things get more interesting when objects span line breaks. Simple classes like :obj:`.Path` and :obj:`.Text` simply break across the line (clipping at the line edges), but other classes can support special rendering behavior as an object appears in different places relative to flowable breaks by implementing :obj:`.PositionedObject._render_complete`, :obj:`.PositionedObject._render_before_break`, :obj:`.PositionedObject._render_after_break`, and :obj:`.PositionedObject._render_spanning_continuation`. These render calls are dispatched over the span of an object's :obj:`breakable_length <.PositionedObject.breakable_length>`.
-    
-.. todo::
 
-   Once break hints are implemented updates these docs
+By default, flowable lines run as far as they can within the live page area and break at page margins. Flowables can also be made to respect break opportunities by proactively breaking when one is encountered within its :obj:`break_threshold <.Flowable.break_threshold>`. When calculating its layout, ``Flowable`` finds all descendents which subclass :obj:`.BreakOpportunity`; it then checks at every line break whether any opportunity is placed between the page margin and ``break_threshold`` to the left of it. If such opportunities exist, it will break at the last one encountered.
+
+.. rendered-example::
+
+   from neoscore.core.break_opportunity import BreakOpportunity
+
+   class BreakHintText(Text, BreakOpportunity):
+       pass
+
+   flow = Flowable(ORIGIN, None, Mm(500), Mm(15), break_threshold=Mm(50))
+   paper = neoscore.document.pages[0].paper
+   # Outline the flowable for visualization
+   Path.rect(ORIGIN, flow, Mm(500), Mm(15), brush=Brush.no_brush())
+   # And draw a line over the break threshold
+   Path.straight_line((paper.live_width - Mm(50), ZERO), None, (ZERO, Mm(75)), 
+       pen=Pen("#ff0000", pattern=PenPattern.DASH))
+   BreakHintText((Mm(100), Mm(8)), flow, "opp 1")
+   BreakHintText((Mm(200), Mm(8)), flow, "opp 2")
+   BreakHintText((Mm(300), Mm(8)), flow, "opp 3")
+   BreakHintText((Mm(430), Mm(6)), flow, "opp 4")
+   BreakHintText((Mm(440), Mm(12)), flow, "opp 5")
+
+:obj:`.Flowable.break_threshold` is zero by default, meaning break opportunities are always ignored. You can also set it to some value larger than the live page width to make it break at every opportunity.

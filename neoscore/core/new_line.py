@@ -1,7 +1,7 @@
 from neoscore.core.layout_controller import LayoutController
 from neoscore.core.page import Page
 from neoscore.core.point import Point
-from neoscore.core.units import ZERO, Unit
+from neoscore.core.units import Unit
 
 
 class NewLine(LayoutController):
@@ -12,8 +12,8 @@ class NewLine(LayoutController):
         pos: Point,
         page: Page,
         flowable_x: Unit,
+        length: Unit,
         height: Unit,
-        margin_bottom: Unit = ZERO,
     ):
         """
         Args:
@@ -23,24 +23,14 @@ class NewLine(LayoutController):
                 the object's parent.
             flowable_x: The x position in the flowable's local space where this
                 line begins.
-            height: The height of the line
-            margin_bottom: The space between the bottom of the
-                current line and the top of the next. Defaults to ``Unit(0)``
+            length: The line length
+            height: The line height
         """
         super().__init__(pos, page, flowable_x)
-        self._margin_bottom = margin_bottom
+        self._length = length
         self._height = height
 
     ######## PUBLIC PROPERTIES ########
-
-    @property
-    def margin_bottom(self) -> Unit:
-        """The space before the next line."""
-        return self._margin_bottom
-
-    @margin_bottom.setter
-    def margin_bottom(self, value: Unit):
-        self._margin_bottom = value
 
     @property
     def doc_end_pos(self) -> Point:
@@ -48,14 +38,22 @@ class NewLine(LayoutController):
 
         This position is relative to the page.
         """
-        return Point(self.pos.x + self.breakable_length, self.pos.y + self.height)
+        return Point(self.pos.x + self.length, self.pos.y + self.height)
 
     @property
-    def breakable_length(self) -> Unit:
+    def length(self) -> Unit:
         """The length of the line."""
-        return self.page.paper.live_width - self.pos.x
+        return self._length
+
+    @length.setter
+    def length(self, value: Unit):
+        self._length = value
 
     @property
     def height(self) -> Unit:
         """The height of the line."""
         return self._height
+
+    @height.setter
+    def height(self, value: Unit):
+        self._height = value

@@ -8,4 +8,5 @@ class BreakOpportunity:
     This mixin is only useful when used inside a ``Flowable``.
     """
 
-    pass
+    # Type sentinel for faster type lookups
+    _neoscore_break_opportunity_type_marker = True

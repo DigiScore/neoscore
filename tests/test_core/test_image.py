@@ -18,7 +18,7 @@ svg_image_path = img_dir / "svg_image.svg"
 
 class TestImage(AppTest):
     def test_init(self):
-        parent = PositionedObject(ORIGIN)
+        parent = PositionedObject(ORIGIN, None)
         image = Image((Unit(5), Unit(6)), parent, fake_path, 2)
         assert image.pos == Point(Unit(5), Unit(6))
         assert image.parent == parent

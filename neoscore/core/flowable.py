@@ -5,7 +5,12 @@ from typing import Optional
 from neoscore.core import neoscore
 from neoscore.core.exceptions import OutOfBoundsError
 from neoscore.core.layout_controller import LayoutController
-from neoscore.core.mapping import canvas_pos_of
+from neoscore.core.mapping import (
+    canvas_pos_of,
+    first_ancestor_with_attr,
+    map_between,
+    map_between_x,
+)
 from neoscore.core.new_line import NewLine
 from neoscore.core.point import Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
@@ -24,8 +29,8 @@ class Flowable(PositionedObject):
     to one, or to an object already in one.
 
     In typical scores, there will be a single ``Flowable``
-    placed in the first page of the document, and the vast
-    majority of objects will be placed inside it.
+    placed in the first page of the document, and most objects
+    will be placed inside it.
     """
 
     _neoscore_flowable_type_marker = True
@@ -57,12 +62,12 @@ class Flowable(PositionedObject):
         self._height = height
         self._y_padding = y_padding
         self._break_threshold = break_threshold
-        self._layout_controllers = self._generate_layout_controllers()
+        self._layout_controllers = []
 
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def breakable_length(self) -> Unit:
+    def length(self) -> Unit:
         """The length of the unwrapped flowable"""
         return self._length
 
@@ -84,9 +89,6 @@ class Flowable(PositionedObject):
     def y_padding(self, value: Unit):
         self._y_padding = value
 
-    # TODO MEDIUM either support break opportunities or delete references to them until
-    # they are supported.
-
     @property
     def break_threshold(self) -> Unit:
         """The threshold for ``BreakOpportunity``-aware line breaks.
@@ -94,9 +96,9 @@ class Flowable(PositionedObject):
         This is the maximum distance the flowable will shorten a line to allow
         a break to occur on a ``BreakOpportunity``.
 
-        If set to ``Unit(0)``, ``BreakOpportunity``\ s will be entirely ignored during
-        layout.
-
+        If set to ``ZERO``, ``BreakOpportunity``\ s will be entirely ignored during
+        layout. On the other hand, if set to a value larger than the live page width,
+        all break opportunities will be taken.
         """
         return self._break_threshold
 
@@ -113,7 +115,7 @@ class Flowable(PositionedObject):
     def layout_controllers(self, value: list[LayoutController]):
         self._layout_controllers = value
 
-    def _generate_layout_controllers(self) -> list[NewLine]:
+    def _generate_layout_controllers(self):
         """Generate automatic layout controllers.
 
         The generated controllers are stored in ``self.layout_controllers``
@@ -121,55 +123,65 @@ class Flowable(PositionedObject):
         """
         live_page_width = neoscore.document.paper.live_width
         live_page_height = neoscore.document.paper.live_height
-        # local progress of layout generation; when the entire flowable has
-        # been covered, this will be equal to ``self.breakable_length``
-        x_progress = ZERO
-        # Current position on the page relative to the top left corner
-        # of the live page area
-        pos_x = self.pos.x
-        pos_y = self.pos.y
-        current_page = 0
-        # Attach initial line controller
-        layout_controllers = [
-            NewLine(
-                self.pos, neoscore.document.pages[current_page], x_progress, self.height
-            )
-        ]
+        break_opps = self._find_break_opportunities()
+        self.layout_controllers = []
         while True:
-            x_progress += live_page_width - pos_x
-            pos_y = pos_y + self.height + self.y_padding
-            if x_progress >= self.breakable_length:
-                # End of breakable length - Done.
-                break
-            if pos_y > live_page_height:
-                # Page break - No y offset
-                pos_x = ZERO
-                pos_y = ZERO
-                current_page += 1
-                layout_controllers.append(
-                    NewLine(
-                        Point(pos_x, pos_y),
-                        neoscore.document.pages[current_page],
-                        x_progress,
-                        self.height,
-                    )
-                )
+            if not self.layout_controllers:
+                flowable_start_x = ZERO
+                page = first_ancestor_with_attr(self, "_neoscore_page_type_marker")
+                flowable_page_pos = map_between(page, self)
+                controller_x = flowable_page_pos.x
+                controller_y = flowable_page_pos.y
             else:
-                # Line break - self.y_padding as y offset
-                pos_x = ZERO
-                layout_controllers.append(
-                    NewLine(
-                        Point(pos_x, pos_y),
-                        neoscore.document.pages[current_page],
-                        x_progress,
-                        self.height,
-                        self.y_padding,
-                    )
+                last = self.layout_controllers[-1]
+                flowable_start_x = last.flowable_x + last.length
+                page = last.page
+                controller_x = ZERO
+                controller_y = last.y + self.height + self.y_padding
+                if controller_y > live_page_height:
+                    page = neoscore.document.pages[page.page_index + 1]
+                    controller_y = ZERO
+            # Now determine this line's length
+            max_length = live_page_width - controller_x
+            max_line_end_flowable_x = flowable_start_x + live_page_width
+            nearest_break_opp = next(
+                (opp for opp in reversed(break_opps) if opp < max_line_end_flowable_x),
+                None,
+            )
+            if (
+                nearest_break_opp
+                and max_line_end_flowable_x - nearest_break_opp < self.break_threshold
+            ):
+                length = nearest_break_opp - flowable_start_x
+            else:
+                length = max_length
+            self.layout_controllers.append(
+                NewLine(
+                    (controller_x, controller_y),
+                    page,
+                    flowable_start_x,
+                    length,
+                    self.height,
                 )
-        return layout_controllers
+            )
+            if flowable_start_x + length > self.length:
+                break
+
+    def _find_break_opportunities(self) -> list[Unit]:
+        """Find the relative X positions of every break hint in this flowable.
+
+        The returned positions will be sorted.
+        """
+        opps = self.descendants_with_attribute(
+            "_neoscore_break_opportunity_type_marker"
+        )
+        return sorted((map_between_x(self, opp) for opp in opps))
 
     def map_to_canvas(self, local_point: Point) -> Point:
         """Convert a local point to its position in the canvas.
+
+        Note that this should only be called at render-time, since it depends on layout
+        controllers only generated once the flowable has started rendering.
 
         Args:
             local_point: A position in the flowable's local space.
@@ -217,7 +229,7 @@ class Flowable(PositionedObject):
         # breaks, and will not work if/when other types are added
         remaining_x = flowable_x
         for i, controller in enumerate(self.layout_controllers):
-            remaining_x -= controller.breakable_length
+            remaining_x -= controller.length
             # Allow error of Unit(1) to compensate for repeated subtraction
             # rounding errors.
             if remaining_x.base_value < -1:
@@ -226,3 +238,7 @@ class Flowable(PositionedObject):
             raise OutOfBoundsError(
                 "flowable_x={} lies outside of this Flowable".format(flowable_x)
             )
+
+    def _render(self):
+        self._generate_layout_controllers()
+        super()._render()

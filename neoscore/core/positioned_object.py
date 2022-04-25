@@ -43,13 +43,11 @@ class PositionedObject:
     def __init__(
         self,
         pos: PointDef,
-        parent: Optional[PositionedObject] = None,
+        parent: Optional[PositionedObject],
     ):
         """
         Args:
             pos: The position of the object relative to its parent
-            pen: The pen to draw outlines with.
-            brush: The brush to fill shapes with.
             parent: The parent object or None
         """
         self.pos = pos
@@ -252,12 +250,12 @@ class PositionedObject:
             first_line_i + 1, len(self.flowable.layout_controllers)
         ):
             current_line = self.flowable.layout_controllers[current_line_i]
-            if remaining_x > current_line.breakable_length:
+            if remaining_x > current_line.length:
                 # Render spanning continuation
                 line_pos = canvas_pos_of(current_line)
                 render_start_pos = Point(line_pos.x, line_pos.y + pos_in_flowable.y)
                 render_end_pos = Point(
-                    render_start_pos.x + current_line.breakable_length,
+                    render_start_pos.x + current_line.length,
                     render_start_pos.y,
                 )
                 self._render_spanning_continuation(
@@ -265,7 +263,7 @@ class PositionedObject:
                     render_start_pos,
                     render_end_pos,
                 )
-                remaining_x -= current_line.breakable_length
+                remaining_x -= current_line.length
             else:
                 break
 

@@ -74,7 +74,7 @@ class TestPath(AppTest):
 
     def test_line_to_with_parent(self):
         path = Path((Unit(5), Unit(6)), None)
-        parent = PositionedObject((Unit(100), Unit(50)))
+        parent = PositionedObject((Unit(100), Unit(50)), None)
         path.line_to(Unit(1), Unit(3), parent)
         assert path.elements[-1].parent == parent
         resolved_els = path._resolve_path_elements()
@@ -105,9 +105,9 @@ class TestPath(AppTest):
 
     def test_cubic_to_with_parents(self):
         path = Path((Unit(100), Unit(200)), None)
-        parent_1 = PositionedObject((Unit(10), Unit(20)))
-        parent_2 = PositionedObject((Unit(30), Unit(40)))
-        parent_3 = PositionedObject((Unit(50), Unit(60)))
+        parent_1 = PositionedObject((Unit(10), Unit(20)), None)
+        parent_2 = PositionedObject((Unit(30), Unit(40)), None)
+        parent_3 = PositionedObject((Unit(50), Unit(60)), None)
         path.cubic_to(
             Unit(1),
             Unit(2),
@@ -151,7 +151,7 @@ class TestPath(AppTest):
 
     def test_move_to_with_parent(self):
         path = Path(ORIGIN, None)
-        parent = PositionedObject((Unit(100), Unit(50)))
+        parent = PositionedObject((Unit(100), Unit(50)), None)
         path.move_to(Unit(10), Unit(11), parent)
         assert len(path.elements) == 1
         assert_path_els_equal(

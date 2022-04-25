@@ -38,19 +38,17 @@ class RenderedExample(CodeBlock):
         script_id = RenderedExample.hash_script(self.content)
         STATIC_RENDER_DIR.mkdir(parents=True, exist_ok=True)
         export_path = STATIC_RENDER_DIR / (script_id + ".png")
-        if export_path.exists():
-            # If file exists already, that means this code example hasn't
-            # changed since last build, so no need to re-render it.
-            return result
-        # Add setup and render code to script
-        script_lines = list(self.content)
-        RenderedExample.post_process_script(script_lines, export_path)
-        script_text = "\n".join(script_lines)
-        script_file.write(script_text)
-        script_file.flush()
-        os.fsync(script_file.fileno())
-        subprocess.check_call(["python", script_file.name])
-
+        # If file exists already, that means this code example hasn't
+        # changed since last build, so no need to re-render it.
+        if not export_path.exists():
+            # Add setup and render code to script
+            script_lines = list(self.content)
+            RenderedExample.post_process_script(script_lines, export_path)
+            script_text = "\n".join(script_lines)
+            script_file.write(script_text)
+            script_file.flush()
+            os.fsync(script_file.fileno())
+            subprocess.check_call(["python", script_file.name])
         # This hackily assumes exported images live 2 dirs down from root
         # Need to prefix absolute path with TWO slashes due to Sphinx quirk
         # https://github.com/sphinx-doc/sphinx/issues/7772

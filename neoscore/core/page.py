@@ -38,6 +38,8 @@ class Page(PositionedObject):
     not be manually created or manipulated.
     """
 
+    _neoscore_page_type_marker = True
+
     def __init__(
         self,
         pos: PointDef,

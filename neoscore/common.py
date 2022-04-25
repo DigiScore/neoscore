@@ -1,4 +1,5 @@
 from neoscore.core import neoscore
+from neoscore.core.break_hint import BreakHint
 from neoscore.core.brush import Brush
 from neoscore.core.brush_pattern import BrushPattern
 from neoscore.core.color import Color
