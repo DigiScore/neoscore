@@ -442,11 +442,11 @@ class Chordrest(PositionedObject, StaffObject):
                     )
                 )
             self._rest = None
+            self._create_stem()
             self._position_noteheads_horizontally()
             self._create_accidentals()
             self._position_accidentals_horizontally()
             self._create_ledgers()
-            self._create_stem()
             self._create_flag()
         else:
             rest_y = self.rest_y or self.staff.center_y
@@ -488,16 +488,26 @@ class Chordrest(PositionedObject, StaffObject):
         for dot_pos in self.rhythm_dot_positions:
             self.dots.append(RhythmDot(dot_pos, self))
 
-    # TODO HIGH this y attachment point is wrong Should be the
-    # furthest in the direction opposite of stem direction.
-    # Fix after #4
-
     def _create_stem(self):
         """If needed, create a Stem and store it in ``self.stem``."""
         if not self.duration.display.requires_stem:
             return
+        if self.stem_direction == VerticalDirection.UP:
+            attached_notehead = self.lowest_notehead
+            anchor_key = "stemUpSE"
+        else:
+            attached_notehead = self.highest_notehead
+            anchor_key = "stemDownNW"
+        resolved_anchor_y = ZERO
+        # Special case guard needed for invisible noteheads without music chars
+        if attached_notehead.text:
+            anchors = attached_notehead.music_chars[0].glyph_info.anchors
+            if anchors:
+                resolved_anchor = anchors.get(anchor_key)
+                if resolved_anchor:
+                    resolved_anchor_y = resolved_anchor.y
         self._stem = Stem(
-            Point(self.staff.unit(0), self.furthest_notehead.y),
+            Point(ZERO, attached_notehead.y + resolved_anchor_y),
             self,
             self.stem_direction,
             self.stem_height,
