@@ -4,6 +4,9 @@ from neoscore.core.point import Point
 from neoscore.core.units import Mm, Unit
 from neoscore.western.barline import Barline
 from neoscore.western.staff import Staff
+from neoscore.western.tab_staff import TabStaff
+from neoscore.western.barline_style import BarlineStyle
+from neoscore.core.color import Color
 
 from ..helpers import AppTest
 
@@ -14,7 +17,7 @@ class TestBarline(AppTest):
         self.flowable = Flowable((Mm(0), Mm(0)), None, Mm(10000), Mm(30), Mm(5))
         self.staff_1 = Staff((Mm(0), Mm(0)), self.flowable, Mm(100), Mm(2))
         self.staff_2 = Staff((Mm(0), Mm(30)), self.flowable, Mm(100))
-        self.staff_3 = Staff((Mm(10), Mm(50)), self.flowable, Mm(100))
+        self.tab_staff_3 = TabStaff((Mm(10), Mm(50)), self.flowable, Mm(100))
 
     def test_path_shape_with_same_staff_x_coords(self):
         barline = Barline(Mm(15), [self.staff_1, self.staff_2])
@@ -26,27 +29,36 @@ class TestBarline(AppTest):
         assert barline.paths[0].elements[1].parent == barline.paths[0]
 
     def test_path_shape_with_different_staff_x_coords(self):
-        barline = Barline(Mm(15), [self.staff_1, self.staff_2, self.staff_3])
+        barline = Barline(Mm(15), [self.staff_1, self.staff_2, self.tab_staff_3])
         assert barline.paths[0].elements[0].pos == Point(Mm(0), Mm(0))
         assert barline.paths[0].elements[0].parent == barline.paths[0]
         assert barline.paths[0].elements[1].pos == Point(
-            Unit(0), self.staff_3.height + self.staff_3.y
+            Unit(0), self.tab_staff_3.height + self.tab_staff_3.y
+        )
+        assert barline.paths[0].elements[1].parent == barline.paths[0]
+
+    def test_multi_bar_barline_positions_with_same_staff_x_coords(self):
+        barline = Barline(Mm(15), [self.staff_1, self.staff_2, self.tab_staff_3], (BarlineStyle("thinBarlineThickness"),
+                                                                                   BarlineStyle("thinBarlineThickness"),
+                                                                                   ))
+        assert barline.paths[0].elements[0].pos == Point(Mm(0), Mm(0))
+        assert barline.paths[0].elements[0].parent == barline.paths[0]
+        assert barline.paths[0].elements[1].pos == Point(
+            Unit(0), self.staff_2.height + self.staff_2.y
         )
         assert barline.paths[0].elements[1].parent == barline.paths[0]
 
     def test_font_override(self):
-        barline = Barline(Mm(15), [self.staff_1, self.staff_2, self.staff_3])
+        barline = Barline(Mm(15), [self.staff_1, self.staff_2, self.tab_staff_3])
         assert barline.music_font == self.staff_1.music_font
         font = MusicFont("Bravura", Mm)
-        barline = Barline(Mm(15), [self.staff_1, self.staff_2, self.staff_3], font=font)
+        barline = Barline(Mm(15), [self.staff_1, self.staff_2, self.tab_staff_3], font=font)
         assert barline.music_font == font
 
-    # def test_barline_style_info(self):
-    #     bar_style_single = barline_style.SINGLE
-    #     # bar_style_thick_double = barline_style.THICK_DOUBLE
-    #     bar_style_end = barline_style.END
-    #
-    #     assert bar_style_single.style[0] == "thinBarlineThickness"
-    #     # assert bar_style_thick_double.lines[1] == "thickBarlineThickness"
-    #     assert bar_style_end.lines[0] == "thinBarlineThickness"
-    #     assert bar_style_end.lines[1] == "thickBarlineThickness"
+    def test_pen_colour(self):
+        barline = Barline(Mm(15), [self.staff_1, self.staff_2])
+        assert barline.paths[0].pen.color == Color(0, 0, 0, 255)
+        pen_color = Color(255, 0, 0)
+        barline = Barline(Mm(15), [self.staff_1, self.staff_2], styles=(BarlineStyle(thickness="thinBarlineThickness",
+                                                                                     color=pen_color)))
+        assert barline.paths[0].pen.color == Color(255, 0, 0, 255)

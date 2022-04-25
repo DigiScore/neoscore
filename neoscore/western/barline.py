@@ -32,9 +32,8 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         self,
         pos_x: Unit,
         staves: list[StaffLike],
-        styles: tuple[BarlineStyle] = (barline_style.SINGLE),
+        styles: tuple[BarlineStyle] = barline_style.SINGLE,
         font: Optional[MusicFont] = None,
-        connected: Optional[bool] = True,
     ):
         """
         Args:
@@ -52,7 +51,6 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         self._music_font = font
         self.engraving_defaults = self._music_font.engraving_defaults
         self.paths = []
-        self.connected = connected
         self.staves = staves
 
         # Start x position for this object relative to self
@@ -64,7 +62,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
             self._draw_barline(start_x, thickness, style.pattern, style.color)
 
             # move to next line to the right
-            start_x += self._look_up_engraving_default(style.gap_right)
+            start_x += thickness + self._look_up_engraving_default(style.gap_right)
 
     @property
     def music_font(self) -> MusicFont:
@@ -82,15 +80,9 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         )
 
         # Draw the path
-        if self.connected:
-            # move to counter the barline extant offset
-            line_path.move_to(ZERO, self.highest.barline_extent[0])
-            line_path.line_to(ZERO, map_between(self, self.lowest).y + self.lowest.barline_extent[1])
-        else:
-            for staff in self.staves:
-                print(staff, staff.pos.y, staff.height, staff.barline_extent)
-                line_path.move_to(ZERO, staff.pos.y + staff.barline_extent[0])
-                line_path.line_to(ZERO, staff.height + staff.barline_extent[1])
+        # move to counter the barline extant offset
+        line_path.move_to(ZERO, self.highest.barline_extent[0])
+        line_path.line_to(ZERO, map_between(self, self.lowest).y + self.lowest.barline_extent[1])
 
         self.paths.append(line_path)
 
