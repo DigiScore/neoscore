@@ -1,47 +1,114 @@
+from collections.abc import Iterable
 from typing import Optional
 
-from neoscore.core.mapping import map_between_x
+from neoscore.core.color import ColorDef
+from neoscore.core.has_music_font import HasMusicFont
+from neoscore.core.mapping import map_between
 from neoscore.core.music_font import MusicFont
-from neoscore.core.music_path import MusicPath
-from neoscore.core.pen import Pen, PenDef
-from neoscore.core.units import ZERO, Unit
+from neoscore.core.path import Path
+from neoscore.core.pen import Pen
+from neoscore.core.pen_pattern import PenPattern
+from neoscore.core.point import Point
+from neoscore.core.positioned_object import PositionedObject
+from neoscore.core.units import ZERO, Union, Unit
+from neoscore.western import barline_style
+from neoscore.western.barline_style import BarlineStyle
 from neoscore.western.multi_staff_object import MultiStaffObject, StaffLike
 
 
-class Barline(MusicPath, MultiStaffObject):
+class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
+    """A barline.
 
-    """A single bar line.
-
-    This is drawn as a single vertical line at a given x coordinate
+    This is drawn as vertical lines at a given x coordinate
     spanning the full height of a series of staves.
 
+    The style of the bar line is determined by the optional style
+    value. If none then will resort to default single thin line.
+
     The thickness of the line is determined by the engraving defaults
-    on the top staff.
+    on the top staff. Can be over-ridden by the font property.
     """
 
     def __init__(
         self,
         pos_x: Unit,
         staves: list[StaffLike],
+        styles: BarlineStyle | Iterable[BarlineStyle] = barline_style.SINGLE,
         font: Optional[MusicFont] = None,
-        pen: Optional[PenDef] = None,
     ):
         """
         Args:
             pos_x: The barline X position relative to the highest staff.
             staves: The staves spanned. Must be in visually descending order.
+            styles: If provided, this declares the style of bar line e.g. double, end.
+                Can also be self-designed using barline_style format.
             font: If provided, this overrides the font in the parent (top) staff.
-            pen: The pen used to draw the path. Defaults to a pen with
-                thickness from the music font's engraving default.
         """
         MultiStaffObject.__init__(self, staves)
-        MusicPath.__init__(self, (pos_x, ZERO), self.highest, font)
-        engraving_defaults = self.music_font.engraving_defaults
-        thickness = engraving_defaults["thinBarlineThickness"]
-        self.pen = Pen.from_def(pen) if pen else Pen(thickness=thickness)
+        PositionedObject.__init__(self, (pos_x, ZERO), self.highest)
+
+        if font is None:
+            font = HasMusicFont.find_music_font(self.highest)
+        self._music_font = font
+        self.engraving_defaults = self._music_font.engraving_defaults
+        self.paths = []
+        self.staves = staves
+
+        # Start x position for first barline relative to self
+        start_x = ZERO
+
+        if isinstance(styles, BarlineStyle):
+            styles = [styles]
+
+        # draw each of the bar lines in turn from left to right
+        for style in styles:
+            thickness = self._resolve_style_measurement(style.thickness)
+            self._draw_barline(start_x, thickness, style.pattern, style.color)
+
+            # move to next line to the right
+            start_x += thickness + self._look_up_engraving_default(style.gap_right)
+
+    @property
+    def music_font(self) -> MusicFont:
+        return self._music_font
+
+    #### PRIVATE METHODS ####
+    def _draw_barline(
+        self, start_x: Unit, thickness: Unit, pen_pattern: PenPattern, color: ColorDef
+    ):
+        # Create the path
+        line_path = Path(
+            Point(start_x, ZERO),
+            self,
+            pen=Pen(pattern=pen_pattern, thickness=thickness, color=color),
+        )
+
         # Draw the path
-        # Calculate offset needed to make vertical line if top and
-        # bottom staves are not horizontally aligned.
-        offset_x = map_between_x(self.lowest, self.highest)
-        bottom_x = pos_x + offset_x
-        self.line_to(bottom_x, self.lowest.height, parent=self.lowest)
+        # move to counter the barline extant offset
+        line_path.move_to(ZERO, self.highest.barline_extent[0])
+        line_path.line_to(
+            ZERO, map_between(self, self.lowest).y + self.lowest.barline_extent[1]
+        )
+
+        self.paths.append(line_path)
+
+    def _resolve_style_measurement(self, thickness: Union[str, float, Unit]) -> Unit:
+        if type(thickness) == Unit:
+            return thickness
+        elif type(thickness) == str:
+            return self.engraving_defaults[thickness]
+        else:
+            return Unit(thickness)
+
+    def _look_up_engraving_default(self, gap: Union[str, float, Unit]) -> Unit:
+        # Get separation value from engraving defaults if listed
+        if type(gap) == Unit:
+            return gap
+        elif type(gap) == float:
+            return Unit(gap)
+        else:
+            value = self.engraving_defaults.get(gap)
+            if value:
+                return value
+            else:
+                return self.engraving_defaults["barlineSeparation"]
