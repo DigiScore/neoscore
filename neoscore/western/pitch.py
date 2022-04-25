@@ -56,6 +56,7 @@ class Pitch:
     """
 
     octave: int
+    """The octave number, where 4 is the octave starting with middle-C."""
 
     @classmethod
     def from_str(cls, shorthand: str) -> Pitch:
