@@ -35,7 +35,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         staves: list[StaffLike],
         styles: BarlineStyle | Iterable[BarlineStyle] = barline_style.SINGLE,
         font: Optional[MusicFont] = None,
-        connected: Optional[bool] = False,
+        connected: Optional[bool] = True,
     ):
         """
         Args:
@@ -94,7 +94,8 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
             )
         else:
             for stave in self.staves:
-                print (stave.pos.y)
+
+                print(stave.pos, stave.height)
                 line_path.move_to(ZERO, stave.pos.y + stave.barline_extent[0])
                 line_path.line_to(
                     ZERO, stave.pos.y + stave.barline_extent[1]
