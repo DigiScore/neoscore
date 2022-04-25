@@ -17,9 +17,18 @@ class BarlineStyle:
     """
 
     thickness: Union[str, float, Unit]
+    """Thickness of the barline can be 
+    engraving default key / pseudo-staff-units / units"""
+
     gap_right: Union[str, float, Unit] = 0.4
+    """Separation gap between grouped barlines, can be 
+     engraving default key / pseudo-staff-units / units"""
+
     pattern: PenPattern = PenPattern.SOLID
+    """Line pattern of a barline"""
+
     color: Optional[ColorDef] = None
+    """Colour of a barline"""
 
 
 SINGLE = [BarlineStyle("thinBarlineThickness")]
