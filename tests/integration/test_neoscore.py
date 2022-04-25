@@ -13,7 +13,7 @@ class TestNeoscore(AppTest):
         text_created_before_set = Text(ORIGIN, None, "Test")
         path_created_before_set = Path(ORIGIN, None)
 
-        neoscore.set_default_color(Color(255, 0, 0))
+        neoscore.set_default_color(Color(1, 2, 3))
 
         text_created_after_set = Text(ORIGIN, None, "Test")
         path_created_after_set = Path(ORIGIN, None)
@@ -22,9 +22,9 @@ class TestNeoscore(AppTest):
         assert path_created_before_set.brush.color == Color(0, 0, 0)
         assert path_created_before_set.pen.color == Color(0, 0, 0)
 
-        assert text_created_after_set.brush.color == Color(255, 0, 0)
-        assert path_created_after_set.brush.color == Color(255, 0, 0)
-        assert path_created_after_set.pen.color == Color(255, 0, 0)
+        assert text_created_after_set.brush.color == Color(1, 2, 3)
+        assert path_created_after_set.brush.color == Color(1, 2, 3)
+        assert path_created_after_set.pen.color == Color(1, 2, 3)
 
     def test_set_background_brush(self):
         assert neoscore.background_brush == Brush("#ffffff")
