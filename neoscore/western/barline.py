@@ -93,12 +93,12 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
                 ZERO, map_between(self, self.lowest).y + self.lowest.barline_extent[1]
             )
         else:
+            y_offset = self.highest.y
             for stave in self.staves:
-
-                print(stave.pos, stave.height)
-                line_path.move_to(ZERO, stave.pos.y + stave.barline_extent[0])
+                new_y = stave.pos.y - y_offset
+                line_path.move_to(ZERO, new_y + stave.barline_extent[0])
                 line_path.line_to(
-                    ZERO, stave.pos.y + stave.barline_extent[1]
+                    ZERO, new_y + stave.barline_extent[1]
                 )
 
         self.paths.append(line_path)
