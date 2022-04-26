@@ -443,7 +443,8 @@ class Chordrest(PositionedObject, StaffObject):
                 )
             self._rest = None
             self._create_stem()
-            self._position_noteheads_horizontally()
+            if self.stem:
+                self._position_noteheads_around_stem()
             self._create_accidentals()
             self._position_accidentals_horizontally()
             self._create_ledgers()
@@ -520,22 +521,24 @@ class Chordrest(PositionedObject, StaffObject):
                 ORIGIN, self.stem.end_point, self.duration, self.stem.direction
             )
 
-    def _position_noteheads_horizontally(self):
-        """Reposition noteheads so that they are laid out correctly
+    def _position_noteheads_around_stem(self):
+        """Reposition noteheads so that they are laid out correctly around the stem.
 
-        Decides which noteheads lie on which side of the stem,
-        and modifies positions when needed.
+        This should only be run if a stem exists.
         """
         # Find the preferred side of the stem for noteheads,
-        # where 1 means right and -1 means left
-        default_side = self.stem_direction.value
+        default_side = (
+            HorizontalDirection.LEFT
+            if self.stem_direction == VerticalDirection.UP
+            else HorizontalDirection.RIGHT
+        )
         # Start last staff pos at sentinel infinity position.
         # Rather than working with staff positions, we can work with
         # ``Notehead.y`` values directly because we know they all share
         # ``self`` as a parent.
         prev_y = Unit(float("inf"))
         # Start prev_side at wrong side so first note goes on the default side
-        prev_side = -1 * default_side
+        prev_side = default_side.flip()
         for note in sorted(
             self.noteheads,
             key=lambda n: n.y,
@@ -543,14 +546,29 @@ class Chordrest(PositionedObject, StaffObject):
         ):
             if abs(prev_y - note.y) < self.staff.unit(1):
                 # This note collides with previous, use switch sides
-                prev_side = -1 * prev_side
+                prev_side = prev_side.flip()
             else:
                 prev_side = default_side
-            # Reposition, using prev_side (here) as the chosen side for this note
-            if prev_side == -1:
-                note.x -= note.visual_width
-            # Lastly, update prev_y
+            note.x = self._resolve_notehead_x_pos(note, prev_side)
             prev_y = note.y
+
+    def _resolve_notehead_x_pos(
+        self, notehead: Notehead, stem_side: HorizontalDirection
+    ) -> Unit:
+        if not notehead.text:
+            return ZERO
+        anchors = notehead.music_chars[0].glyph_info.anchors
+        if not anchors:
+            if stem_side == HorizontalDirection.LEFT:
+                return -notehead.visual_width
+            return ZERO
+        stem_offset = self.stem.pen.thickness / 2
+        if stem_side == HorizontalDirection.LEFT:
+            anchor_key = "stemUpSE"
+            stem_offset *= -1
+        else:
+            anchor_key = "stemDownNW"
+        return -(anchors[anchor_key].x + stem_offset)
 
     def _position_accidentals_horizontally(self):
         """Reposition accidentals so that they are laid out correctly
