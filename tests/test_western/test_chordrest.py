@@ -131,22 +131,22 @@ class TestChordrest(AppTest):
         dots.sort(key=lambda d: d.x)
         dots.sort(key=lambda d: d.y)
         assert_almost_equal(
-            dots[0], Point(self.staff.unit(0.25), self.staff.unit(-3.5)), epsilon=2
+            dots[0], Point(self.staff.unit(0.743), self.staff.unit(-3.5)), epsilon=2
         )
         assert_almost_equal(
-            dots[1], Point(self.staff.unit(0.75), self.staff.unit(-3.5)), epsilon=2
+            dots[1], Point(self.staff.unit(1.243), self.staff.unit(-3.5)), epsilon=2
         )
         assert_almost_equal(
-            dots[2], Point(self.staff.unit(0.25), self.staff.unit(7.5)), epsilon=2
+            dots[2], Point(self.staff.unit(0.743), self.staff.unit(7.5)), epsilon=2
         )
         assert_almost_equal(
-            dots[3], Point(self.staff.unit(0.75), self.staff.unit(7.5)), epsilon=2
+            dots[3], Point(self.staff.unit(1.243), self.staff.unit(7.5)), epsilon=2
         )
         assert_almost_equal(
-            dots[4], Point(self.staff.unit(0.25), self.staff.unit(10.5)), epsilon=2
+            dots[4], Point(self.staff.unit(0.743), self.staff.unit(10.5)), epsilon=2
         )
         assert_almost_equal(
-            dots[5], Point(self.staff.unit(0.75), self.staff.unit(10.5)), epsilon=2
+            dots[5], Point(self.staff.unit(1.243), self.staff.unit(10.5)), epsilon=2
         )
 
     def test_furthest_notehead_with_one_note(self):
@@ -234,6 +234,20 @@ class TestChordrest(AppTest):
         pitches = ["c''", "g,"]
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
         assert_almost_equal(chord.stem_height, self.staff.unit(10.5))
+
+    def test_stem_vertical_attachment_pos(self):
+        pitches = ["c''", "g,"]
+        chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
+        assert chord.stem.y == self.staff.unit(6.332)
+        chord.stem_direction = VerticalDirection.DOWN
+        assert chord.stem.y == self.staff.unit(-1.832)
+
+    def test_position_noteheads_around_stem(self):
+        pitches = ["c", "d", "e", "f", "c''", "e''"]
+        chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
+        assert chord.noteheads[0].x == self.staff.unit(-1.12)
+        assert chord.noteheads[1].x == self.staff.unit(-0.06)
+        assert chord.noteheads[2].x == self.staff.unit(-1.12)
 
     def test_end_to_end(self):
         staff = Staff((Mm(0), Mm(0)), None, Mm(100), Mm(1))

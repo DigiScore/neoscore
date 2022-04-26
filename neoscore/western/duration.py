@@ -85,7 +85,7 @@ class Duration:
         ``Duration``\ s created with this will always have a valid ``DurationDisplay``.
 
         Args:
-            base_division: Must be 0 or a power of 2
+            base_division: Must be 0 (double whole note) or a power of 2
             dots: Must be >= 0
         """
         if base_division == 0:

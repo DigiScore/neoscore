@@ -19,10 +19,6 @@ from neoscore.western.staff import Staff
 from neoscore.western.staff_object import StaffObject
 from neoscore.western.stem import Stem
 
-# TODO MEDIUM align noteheads and stems properly using glyph anchor metadata
-# see https://w3c.github.io/smufl/latest/specification/glyph-registration-notes-flags.html
-# do this once #2 (glyph info refactor) is finished
-
 
 class PitchAndGlyph(NamedTuple):
     pitch: PitchDef
@@ -442,11 +438,12 @@ class Chordrest(PositionedObject, StaffObject):
                     )
                 )
             self._rest = None
-            self._position_noteheads_horizontally()
+            self._create_stem()
+            if self.stem:
+                self._position_noteheads_around_stem()
             self._create_accidentals()
             self._position_accidentals_horizontally()
             self._create_ledgers()
-            self._create_stem()
             self._create_flag()
         else:
             rest_y = self.rest_y or self.staff.center_y
@@ -488,16 +485,26 @@ class Chordrest(PositionedObject, StaffObject):
         for dot_pos in self.rhythm_dot_positions:
             self.dots.append(RhythmDot(dot_pos, self))
 
-    # TODO HIGH this y attachment point is wrong Should be the
-    # furthest in the direction opposite of stem direction.
-    # Fix after #4
-
     def _create_stem(self):
         """If needed, create a Stem and store it in ``self.stem``."""
         if not self.duration.display.requires_stem:
             return
+        if self.stem_direction == VerticalDirection.UP:
+            attached_notehead = self.lowest_notehead
+            anchor_key = "stemUpSE"
+        else:
+            attached_notehead = self.highest_notehead
+            anchor_key = "stemDownNW"
+        resolved_anchor_y = ZERO
+        # Special case guard needed for invisible noteheads without music chars
+        if attached_notehead.text:
+            anchors = attached_notehead.music_chars[0].glyph_info.anchors
+            if anchors:
+                resolved_anchor = anchors.get(anchor_key)
+                if resolved_anchor:
+                    resolved_anchor_y = resolved_anchor.y
         self._stem = Stem(
-            Point(self.staff.unit(0), self.furthest_notehead.y),
+            Point(ZERO, attached_notehead.y + resolved_anchor_y),
             self,
             self.stem_direction,
             self.stem_height,
@@ -510,22 +517,24 @@ class Chordrest(PositionedObject, StaffObject):
                 ORIGIN, self.stem.end_point, self.duration, self.stem.direction
             )
 
-    def _position_noteheads_horizontally(self):
-        """Reposition noteheads so that they are laid out correctly
+    def _position_noteheads_around_stem(self):
+        """Reposition noteheads so that they are laid out correctly around the stem.
 
-        Decides which noteheads lie on which side of the stem,
-        and modifies positions when needed.
+        This should only be run if a stem exists.
         """
         # Find the preferred side of the stem for noteheads,
-        # where 1 means right and -1 means left
-        default_side = self.stem_direction.value
+        default_side = (
+            HorizontalDirection.LEFT
+            if self.stem_direction == VerticalDirection.UP
+            else HorizontalDirection.RIGHT
+        )
         # Start last staff pos at sentinel infinity position.
         # Rather than working with staff positions, we can work with
         # ``Notehead.y`` values directly because we know they all share
         # ``self`` as a parent.
         prev_y = Unit(float("inf"))
         # Start prev_side at wrong side so first note goes on the default side
-        prev_side = -1 * default_side
+        prev_side = default_side.flip()
         for note in sorted(
             self.noteheads,
             key=lambda n: n.y,
@@ -533,14 +542,29 @@ class Chordrest(PositionedObject, StaffObject):
         ):
             if abs(prev_y - note.y) < self.staff.unit(1):
                 # This note collides with previous, use switch sides
-                prev_side = -1 * prev_side
+                prev_side = prev_side.flip()
             else:
                 prev_side = default_side
-            # Reposition, using prev_side (here) as the chosen side for this note
-            if prev_side == -1:
-                note.x -= note.visual_width
-            # Lastly, update prev_y
+            note.x = self._resolve_notehead_x_pos(note, prev_side)
             prev_y = note.y
+
+    def _resolve_notehead_x_pos(
+        self, notehead: Notehead, stem_side: HorizontalDirection
+    ) -> Unit:
+        if not notehead.text:
+            return ZERO
+        anchors = notehead.music_chars[0].glyph_info.anchors
+        if not anchors:
+            if stem_side == HorizontalDirection.LEFT:
+                return -notehead.visual_width
+            return ZERO
+        stem_offset = self.stem.pen.thickness / 2
+        if stem_side == HorizontalDirection.LEFT:
+            anchor_key = "stemUpSE"
+            stem_offset *= -1
+        else:
+            anchor_key = "stemDownNW"
+        return -(anchors[anchor_key].x + stem_offset)
 
     def _position_accidentals_horizontally(self):
         """Reposition accidentals so that they are laid out correctly

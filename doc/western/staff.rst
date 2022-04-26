@@ -1,5 +1,5 @@
-Staves, Clefs, Signatures
-=========================
+Staves, Clefs, and Signatures
+=============================
 
 Staves can be created just like any other object.
 
@@ -60,7 +60,7 @@ Custom clefs can also be defined using arbitrary glyphs and pitch offsets using 
 Key Signatures
 --------------
 
-Standard key signatures are supported out of the box. Like clefs, they are automatically drawn once were placed and then at every subsequent line until canceled by another. They're also automatically offset to be placed after clefs.
+Cosmetic standard key signatures are supported out of the box. Like clefs, they are automatically drawn once were placed and then at every subsequent line until canceled by another. They're also automatically offset to be placed after clefs.
 
 .. rendered-example::
 
@@ -71,7 +71,7 @@ Standard key signatures are supported out of the box. Like clefs, they are autom
 
 .. note::
 
-   Key signatures must be placed at a point in the staff with an active clef.
+   Key signatures must be placed at a point in the staff with an active clef. Note also that key signatures are purely cosmetic and have no effect on how note accidentals are written.
 
 Key signature types can be given as string shorthands of the form ``[pitch letter][f|s]_[major|minor]``, for example ``'c_major'``, ``'fs_minor'``, or ``'df_major'``. You can also specify enum variants of :obj:`.KeySignatureType`.
 
