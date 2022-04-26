@@ -35,7 +35,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         staves: list[StaffLike],
         styles: BarlineStyle | Iterable[BarlineStyle] = barline_style.SINGLE,
         font: Optional[MusicFont] = None,
-        connected: Optional[bool] = True
+        connected: Optional[bool] = True,
     ):
         """
         Args:
@@ -76,7 +76,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
 
     #### PRIVATE METHODS ####
     def _draw_barline(
-            self, start_x: Unit, thickness: Unit, pen_pattern: PenPattern, color: ColorDef
+        self, start_x: Unit, thickness: Unit, pen_pattern: PenPattern, color: ColorDef
     ):
         # Create the path
         line_path = Path(
@@ -97,9 +97,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
             for stave in self.staves:
                 new_y = stave.pos.y - y_offset
                 line_path.move_to(ZERO, new_y + stave.barline_extent[0])
-                line_path.line_to(
-                    ZERO, new_y + stave.barline_extent[1]
-                )
+                line_path.line_to(ZERO, new_y + stave.barline_extent[1])
 
         self.paths.append(line_path)
 
