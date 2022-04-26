@@ -45,6 +45,7 @@ class TestPositionedObject(AppTest):
         child_2 = PositionedObject(ORIGIN, root)
         subchild_1 = PositionedObject(ORIGIN, child_2)
         subchild_2 = PositionedObject(ORIGIN, child_2)
+        subsubchild_1 = PositionedObject(ORIGIN, subchild_1)
         descendants = list(root.descendants)
         descendants_set = set(descendants)
         # Assert no duplicates were yielded
@@ -52,7 +53,13 @@ class TestPositionedObject(AppTest):
         # Assert root itself was not in the descendants list
         assert root not in descendants_set
         # Assert descendants content
-        assert {child_1, child_2, subchild_1, subchild_2} == descendants_set
+        assert {
+            child_1,
+            child_2,
+            subchild_1,
+            subchild_2,
+            subsubchild_1,
+        } == descendants_set
 
     def test_descendants_of_class_or_subclass(self):
         # Use two new mock classes for type filter testing

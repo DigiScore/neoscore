@@ -128,7 +128,7 @@ class PositionedObject:
         the tree, and has the potential to be rather slow.
         """
         for child in self.children:
-            for subchild in child.children:
+            for subchild in child.descendants:
                 yield subchild
             yield child
 
