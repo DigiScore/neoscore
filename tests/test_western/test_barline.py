@@ -1,8 +1,9 @@
+from neoscore.core.break_opportunity import BreakOpportunity
 from neoscore.core.color import Color
 from neoscore.core.flowable import Flowable
 from neoscore.core.music_font import MusicFont
 from neoscore.core.point import Point
-from neoscore.core.units import Mm, Unit
+from neoscore.core.units import ZERO, Mm, Unit
 from neoscore.western import barline_style
 from neoscore.western.barline import Barline
 from neoscore.western.barline_style import BarlineStyle
@@ -67,3 +68,11 @@ class TestBarline(AppTest):
             styles=(BarlineStyle(thickness="thinBarlineThickness", color=pen_color)),
         )
         assert barline.paths[0].pen.color == Color(255, 0, 0, 255)
+
+    def test_break_hint_insertion(self):
+        barline = Barline(
+            Mm(15), [self.staff_1, self.staff_2], barline_style.THIN_DOUBLE
+        )
+        assert isinstance(barline._break_hint, BreakOpportunity)
+        assert barline._break_hint.parent == barline.paths[-1]
+        assert barline._break_hint.pos == Point(self.staff_1.unit(0.08), ZERO)

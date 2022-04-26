@@ -1,6 +1,7 @@
 from collections.abc import Iterable
 from typing import Optional
 
+from neoscore.core.break_hint import BreakHint
 from neoscore.core.color import ColorDef
 from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.mapping import map_between
@@ -27,6 +28,8 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
 
     The thickness of the line is determined by the engraving defaults
     on the top staff. Can be over-ridden by the font property.
+
+    A ``BreakHint`` is automatically attached to the end of the barline.
     """
 
     def __init__(
@@ -67,6 +70,9 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
 
             # move to next line to the right
             start_x += thickness + self._look_up_engraving_default(style.gap_right)
+        # Attach a break hint at the edge of the rightmost barline
+        last_path = self.paths[-1]
+        self._break_hint = BreakHint((last_path.pen.thickness / 2, ZERO), last_path)
 
     @property
     def music_font(self) -> MusicFont:
@@ -84,7 +90,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         )
 
         # Draw the path
-        # move to counter the barline extant offset
+        # move to counter the barline extent offset
         line_path.move_to(ZERO, self.highest.barline_extent[0])
         line_path.line_to(
             ZERO, map_between(self, self.lowest).y + self.lowest.barline_extent[1]

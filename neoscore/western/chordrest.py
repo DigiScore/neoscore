@@ -19,10 +19,6 @@ from neoscore.western.staff import Staff
 from neoscore.western.staff_object import StaffObject
 from neoscore.western.stem import Stem
 
-# TODO MEDIUM align noteheads and stems properly using glyph anchor metadata
-# see https://w3c.github.io/smufl/latest/specification/glyph-registration-notes-flags.html
-# do this once #2 (glyph info refactor) is finished
-
 
 class PitchAndGlyph(NamedTuple):
     pitch: PitchDef
