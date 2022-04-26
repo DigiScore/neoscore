@@ -104,7 +104,6 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
                 new_y = stave.pos.y - y_offset
                 line_path.move_to(ZERO, new_y + stave.barline_extent[0])
                 line_path.line_to(ZERO, new_y + stave.barline_extent[1])
-                line_path.line_to(ZERO, new_y + stave.barline_extent[1])
 
         self.paths.append(line_path)
 
