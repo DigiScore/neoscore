@@ -81,10 +81,10 @@ class TestBarline(AppTest):
         barline = Barline(
             Mm(15), [self.staff_1, self.staff_2, self.tab_staff_3], connected=False
         )
-        assert len(barline.paths[0].elements) == 9
+        assert len(barline.paths[0].elements) == 6
         assert barline.paths[0].elements[0].pos.y == Mm(0.0)
-        assert barline.paths[0].elements[2].pos.y == Mm(8.0)
-        assert barline.paths[0].elements[3].pos.y == Mm(30)
-        assert barline.paths[0].elements[4].pos.y == Mm(37)
-        assert barline.paths[0].elements[6].pos.y == Mm(50)
-        assert barline.paths[0].elements[7].pos.y == Mm(62.5)
+        assert barline.paths[0].elements[1].pos.y == Mm(8.0)
+        assert barline.paths[0].elements[2].pos.y == Mm(30)
+        assert barline.paths[0].elements[3].pos.y == Mm(37)
+        assert barline.paths[0].elements[4].pos.y == Mm(50)
+        assert barline.paths[0].elements[5].pos.y == Mm(62.5)
