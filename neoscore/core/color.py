@@ -100,14 +100,13 @@ class Color:
             else:
                 self._alpha = 255
         else:
-            if len(hex_value) >= 6:
-                self._red = int(hex_value[0:2], 16)
-                self._green = int(hex_value[2:4], 16)
-                self._blue = int(hex_value[4:6], 16)
-                if len(hex_value) == 8:
-                    self._alpha = int(hex_value[6:8], 16)
-                else:
-                    self._alpha = 255
+            self._red = int(hex_value[0:2], 16)
+            self._green = int(hex_value[2:4], 16)
+            self._blue = int(hex_value[4:6], 16)
+            if len(hex_value) == 8:
+                self._alpha = int(hex_value[6:8], 16)
+            else:
+                self._alpha = 255
 
         self._validate_channel_values()
 
