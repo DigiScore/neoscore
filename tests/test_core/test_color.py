@@ -118,6 +118,7 @@ class TestColor(unittest.TestCase):
         assert Color.from_def("#ffffff") == Color("#ffffff")
         assert Color.from_def(Color("#ffffff")) == Color("#ffffff")
         assert Color.from_def((255, 255, 255)) == Color("#ffffff")
+        assert Color.from_def("#fff") == Color("#ffffff")
 
     def test_color_is_immutable(self):
         color = Color("#ffffff")
