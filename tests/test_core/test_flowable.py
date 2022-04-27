@@ -1,8 +1,6 @@
-import pytest
-
 from neoscore.core import neoscore
 from neoscore.core.break_hint import BreakHint
-from neoscore.core.flowable import Flowable, OutOfBoundsError
+from neoscore.core.flowable import Flowable
 from neoscore.core.paper import Paper
 from neoscore.core.point import ORIGIN, Point
 from neoscore.core.positioned_object import PositionedObject
@@ -122,8 +120,8 @@ class TestFlowable(AppTest):
     def test_dist_to_line_end(self):
         flowable = Flowable((Mm(10), Mm(0)), None, Mm(500), Mm(90), Mm(5))
         flowable._generate_layout_controllers()
-        assert flowable.dist_to_line_end(Mm(170)) == Mm(-140)
-        assert flowable.dist_to_line_end(Mm(320)) == Mm(-150)
+        assert flowable.dist_to_line_end(Mm(170)) == Mm(140)
+        assert flowable.dist_to_line_end(Mm(320)) == Mm(150)
 
     def test_last_break_at(self):
         flowable = Flowable((Mm(10), Mm(0)), None, Mm(500), Mm(90), Mm(5))
@@ -134,5 +132,4 @@ class TestFlowable(AppTest):
     def test_last_break_at_raises_out_of_bounds_when_needed(self):
         flowable = Flowable((Mm(10), Mm(0)), None, Mm(10000), Mm(90), Mm(5))
         flowable._generate_layout_controllers()
-        with pytest.raises(OutOfBoundsError):
-            flowable.last_break_at(Mm(10000000))
+        assert flowable.last_break_at(Mm(10000000)) == flowable.layout_controllers[-1]

@@ -218,10 +218,8 @@ class PositionedObject:
         """
         # Calculate position within flowable
         pos_in_flowable = descendant_pos(self, self.flowable)
-
-        remaining_x = self.breakable_length + self.flowable.dist_to_line_end(
-            pos_in_flowable.x
-        )
+        dist_to_first_line_end = self.flowable.dist_to_line_end(pos_in_flowable.x)
+        remaining_x = self.breakable_length - dist_to_first_line_end
         if remaining_x < ZERO:
             self._render_complete(
                 canvas_pos_of(self),
@@ -234,7 +232,7 @@ class PositionedObject:
         first_line_i = self.flowable.last_break_index_at(pos_in_flowable.x)
         current_line = self.flowable.layout_controllers[first_line_i]
         render_start_pos = canvas_pos_of(self)
-        first_line_length = -self.flowable.dist_to_line_end(pos_in_flowable.x)
+        first_line_length = dist_to_first_line_end
         render_end_pos = Point(
             render_start_pos.x + first_line_length, render_start_pos.y
         )

@@ -13,10 +13,6 @@ class NoClefError(Exception):
     """Exception raised when no clef is present in a Staff where needed"""
 
 
-class OutOfBoundsError(Exception):
-    """Exception raised when a point lies outside of a Flowable"""
-
-
 class NoAncestorStaffError(Exception):
     """Exception raised when a StaffObject does not have an ancestor Staff"""
 

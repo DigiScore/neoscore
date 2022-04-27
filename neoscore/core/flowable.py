@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import Optional
 
 from neoscore.core import neoscore
-from neoscore.core.exceptions import OutOfBoundsError
 from neoscore.core.layout_controller import LayoutController
 from neoscore.core.mapping import (
     canvas_pos_of,
@@ -124,6 +123,8 @@ class Flowable(PositionedObject):
         live_page_width = neoscore.document.paper.live_width
         live_page_height = neoscore.document.paper.live_height
         break_opps = self._find_break_opportunities()
+        for c in self.layout_controllers:
+            c.remove()
         self.layout_controllers = []
         while True:
             if not self.layout_controllers:
@@ -196,8 +197,8 @@ class Flowable(PositionedObject):
         Args:
             flowable_x: An x-axis location in the virtual flowable space.
         """
-        line_start = self.last_break_at(flowable_x)
-        return flowable_x - line_start.flowable_x
+        line = self.last_break_at(flowable_x)
+        return flowable_x - line.flowable_x
 
     def dist_to_line_end(self, flowable_x: Unit) -> Unit:
         """Find the distance of an x-pos to the right edge of its laid-out line.
@@ -205,7 +206,8 @@ class Flowable(PositionedObject):
         Args:
             flowable_x: An x-axis location in the virtual flowable space.
         """
-        return self.dist_to_line_start(flowable_x) - neoscore.document.paper.live_width
+        line = self.last_break_at(flowable_x)
+        return (line.flowable_x + line.length) - flowable_x
 
     def last_break_at(self, flowable_x: Unit) -> NewLine:
         """Find the last ``NewLine`` that occurred before a given local flowable_x-pos
@@ -235,9 +237,7 @@ class Flowable(PositionedObject):
             if remaining_x.base_value < -1:
                 return i
         else:
-            raise OutOfBoundsError(
-                "flowable_x={} lies outside of this Flowable".format(flowable_x)
-            )
+            return len(self.layout_controllers) - 1
 
     def _render(self):
         self._generate_layout_controllers()
