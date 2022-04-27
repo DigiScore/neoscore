@@ -14,7 +14,7 @@ Staves can be made to wrap around page edges by placing them in flowable contain
    flowable = Flowable(ORIGIN, None, Mm(300), Mm(30))
    Staff(ORIGIN, flowable, Mm(300))
 
-Each staff has an associated :obj:`.MusicFont` whose :obj:`unit <.MusicFont.unit>` encodes the distance between two staff lines.
+Each staff has an associated :obj:`unit <.Staff.unit>` type which encodes the distance between two staff lines.
 
 .. rendered-example::
 

@@ -93,5 +93,5 @@ By default rests are placed in the middle of the staff, but you can override the
 
    staff = Staff(ORIGIN, None, Mm(100))
    Clef(ZERO, staff, 'treble')
-   Chordrest(Mm(10), staff, None, (1, 4), rest_y=staff.music_font.unit(-2))
+   Chordrest(Mm(10), staff, None, (1, 4), rest_y=staff.unit(-2))
    
