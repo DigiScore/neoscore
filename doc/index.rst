@@ -37,6 +37,7 @@ We differ from traditional score-writing systems in many important aspects. Neos
    western/notes_chords_rests.rst
    western/chordrests_advanced.rst
    western/beams.rst
+   western/expressive_text.rst
 
 .. toctree::
    :caption: API Reference
