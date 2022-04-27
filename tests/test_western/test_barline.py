@@ -43,11 +43,11 @@ class TestBarline(AppTest):
         barline = Barline(
             Mm(15), [self.staff_1, self.staff_2], barline_style.THIN_DOUBLE
         )
-        assert barline.paths[0].pos == Point(Mm(0), Mm(0))
-        assert barline.paths[1].pos == Point(Unit(1.307), Mm(0))
+        assert barline.paths[0].pos == Point(Unit(-0.454), Mm(0))
+        assert barline.paths[1].pos == Point(Unit(-2.214), Mm(0))
         barline = Barline(Mm(15), [self.staff_1, self.staff_2], barline_style.END)
-        assert barline.paths[0].pos == Point(Mm(0), Mm(0))
-        assert barline.paths[1].pos == Point(Unit(3.175), Mm(0))
+        assert barline.paths[0].pos == Point(Unit(-1.417), Mm(0))
+        assert barline.paths[1].pos == Point(Unit(-5.106), Mm(0))
 
     def test_font_override(self):
         barline = Barline(Mm(15), [self.staff_1, self.staff_2, self.tab_staff_3])
@@ -74,7 +74,7 @@ class TestBarline(AppTest):
             Mm(15), [self.staff_1, self.staff_2], barline_style.THIN_DOUBLE
         )
         assert isinstance(barline._break_hint, BreakOpportunity)
-        assert barline._break_hint.parent == barline.paths[-1]
+        assert barline._break_hint.parent == barline.paths[0]
         assert barline._break_hint.pos == Point(self.staff_1.unit(0.08), ZERO)
 
     def test_barline_separation(self):

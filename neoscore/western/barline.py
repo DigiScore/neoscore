@@ -25,6 +25,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
 
     The style of the bar line is determined by the optional style
     value. If none then will resort to default single thin line.
+    Will accept multiple lines, format is right to left.
 
     The thickness of the line is determined by the engraving defaults
     on the top staff. Can be over-ridden by the font property.
@@ -68,12 +69,14 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         # draw each of the bar lines in turn from left to right
         for style in styles:
             thickness = self._resolve_style_measurement(style.thickness)
+            # adjust start x to accomodate pen thickness
+            start_x -= thickness / 2
             self._draw_barline(start_x, thickness, style.pattern, style.color)
+            # move to next line to the left
+            start_x -= thickness + self._look_up_engraving_default(style.gap_right)
 
-            # move to next line to the right
-            start_x += thickness + self._look_up_engraving_default(style.gap_right)
         # Attach a break hint at the edge of the rightmost barline
-        last_path = self.paths[-1]
+        last_path = self.paths[0]
         self._break_hint = BreakHint((last_path.pen.thickness / 2, ZERO), last_path)
 
     @property

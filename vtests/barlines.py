@@ -29,13 +29,13 @@ test_double_dash = Barline(
     Mm(20),
     all_staves,
     (
-        BarlineStyle(0.5, 1.0, pattern=PenPattern.DASH),
         BarlineStyle(0.5),
+        BarlineStyle(0.5, 1.0, pattern=PenPattern.DASH),
     ),
     connected=False,
 )
 
-# test barline with DIY style and color change
+# test barline with DIY style and color change (right to left)
 test_double_color = Barline(
     Mm(30),
     all_staves,
@@ -46,7 +46,7 @@ test_double_color = Barline(
 )
 
 # end barline
-end_line = Barline(Mm(148.5), all_staves, barline_style.END)
+end_line = Barline(Mm(150), all_staves, barline_style.END)
 
 for n, test_line in enumerate(barline_style.ALL_STYLES):
     Barline(Mm(10 * (n + 1) + 30), all_staves, styles=test_line)
