@@ -67,7 +67,7 @@ class TestColor(unittest.TestCase):
         assert color.red == 238
         assert color.green == 221
         assert color.blue == 204
-        assert color.alpha == 255
+        assert color.alpha == 17
 
     def test_bad_red_color_value(self):
         with pytest.raises(ColorBoundsError):

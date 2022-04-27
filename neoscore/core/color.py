@@ -11,8 +11,7 @@ class Color:
     def __init__(self, *args):
         """
         Valid signatures:
-            * Color(hex_string)
-            * Colour(short_hex_string)
+            * Color(css_hex_string)
             * Color(red, green, blue)
             * Color(red, green, blue, alpha)
         """
@@ -84,30 +83,31 @@ class Color:
         """Set properties from an #rrggbb hex string
 
         Args:
-            hex_value (str): A hexadecimal color string with 6 characters
-            (eeddcc) or 8 if using alpha channel (eeddcc11)
-            Alternatively a short hexadecimal color string with 3 characters (edc)
-            or 4 if using alpha channel (edc1).
-            (All formats can use a leading "#").
+            hex_value (str): A CSS hex color string, with or without a leading '#'
 
         Returns: None
         """
         if hex_value.startswith("#"):
             hex_value = hex_value[1:]
+
+        # Short or long form Hex
         if 3 <= len(hex_value) <= 4:
             self._red = int(hex_value[0] + (hex_value[0]), 16)
             self._green = int(hex_value[1] + (hex_value[1]), 16)
             self._blue = int(hex_value[2] + (hex_value[2]), 16)
-        if len(hex_value) == 4:
-            self._alpha = int(hex_value[3] + (hex_value[3]), 16)
-        if len(hex_value) >= 6:
-            self._red = int(hex_value[0:2], 16)
-            self._green = int(hex_value[2:4], 16)
-            self._blue = int(hex_value[4:6], 16)
-        if len(hex_value) == 8:
-            self._alpha = int(hex_value[6:8], 16)
+            if len(hex_value) == 4:
+                self._alpha = int(hex_value[3] + (hex_value[3]), 16)
+            else:
+                self._alpha = 255
         else:
-            self._alpha = 255
+            if len(hex_value) >= 6:
+                self._red = int(hex_value[0:2], 16)
+                self._green = int(hex_value[2:4], 16)
+                self._blue = int(hex_value[4:6], 16)
+                if len(hex_value) == 8:
+                    self._alpha = int(hex_value[6:8], 16)
+                else:
+                    self._alpha = 255
 
         self._validate_channel_values()
 
