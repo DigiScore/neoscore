@@ -47,7 +47,6 @@ class _BeamState(NamedTuple):
 
 def _resolve_beam_hooks(specs: list[_BeamState]) -> list[_BeamState]:
     """Determine which states need hooks, accounting for overrides where sensible."""
-
     if len(specs) < 2:
         raise ValueError("Beam groups must have at least 2 members")
     states: list[_BeamState] = []
@@ -65,7 +64,7 @@ def _resolve_beam_hooks(specs: list[_BeamState]) -> list[_BeamState]:
             next_count = cast(int, next_count)
             if current_count > next_count:
                 hook = HorizontalDirection.RIGHT
-        elif next_count is None:
+        elif next_count is None or (break_depth and break_depth < current_count):
             # Last item in group
             prev_count = cast(int, prev_count)
             if current_count > prev_count:
@@ -244,7 +243,7 @@ class BeamGroup(PositionedObject, HasMusicFont):
 
     While in most situations beamlet "hooks" (as in a dotted 8th note
     followed by a 16th note) unambiguously must point right or left,
-    there are some cases where it is ambiguous. For example, the a
+    there are some cases where it is ambiguous. For example, a
     16th note between two 8th notes could have its beamlet point left
     or right. In these situations, ``BeamGroup`` will point it left by
     default, but users can override this by setting

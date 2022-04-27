@@ -63,6 +63,17 @@ def test_resolve_beam_hooks():
     ]
 
 
+def test_resolve_beam_hooks_with_break_depth():
+    assert _resolve_beam_hooks(
+        [_BeamState(1), _BeamState(2, 1), _BeamState(3), _BeamState(3)]
+    ) == [
+        _BeamState(1),
+        _BeamState(2, 1, HorizontalDirection.LEFT),
+        _BeamState(3),
+        _BeamState(3),
+    ]
+
+
 def test_resolve_beam_hooks_with_hook_hints():
     assert _resolve_beam_hooks(
         [_BeamState(2), _BeamState(2, hook=HorizontalDirection.LEFT), _BeamState(1)]
