@@ -14,7 +14,6 @@ class BarlineStyle:
     """Style for an individual sub-barline.
 
     Use multiple of these to specify multi-part lines like double barlines.
-    Format is right to left.
     """
 
     thickness: Union[str, float, Unit]
@@ -40,8 +39,8 @@ THIN_DOUBLE = [
 ]
 
 END = [
+    BarlineStyle("thinBarlineThickness", "thickBarlineSeparation"),
     BarlineStyle("thickBarlineThickness"),
-    BarlineStyle("thinBarlineThickness", "thinThickBarlineSeparation"),
 ]
 
 ALL_STYLES: list[list[BarlineStyle]] = [SINGLE, THIN_DOUBLE, END]

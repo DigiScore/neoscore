@@ -25,7 +25,6 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
 
     The style of the bar line is determined by the optional style
     value. If none then will resort to default single thin line.
-    Will accept multiple lines, format is right to left.
 
     The thickness of the line is determined by the engraving defaults
     on the top staff. Can be over-ridden by the font property.
@@ -44,10 +43,12 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         """
         Args:
             pos_x: The barline X position relative to the highest staff.
+                Specifies right edge of the barline group.
             staves: The staves spanned. Must be in visually descending order.
-            styles: If provided, this declares the style of bar line e.g. double, end.
+            styles: If provided, this declares the style of bar line e.g. single, double, end.
                 Can also be self-designed using barline_style format.
             font: If provided, this overrides the font in the parent (top) staff.
+            connected: If provided, connects all barlines across the staves span (True)
         """
         MultiStaffObject.__init__(self, staves)
         PositionedObject.__init__(self, (pos_x, ZERO), self.highest)
@@ -67,9 +68,9 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
             styles = [styles]
 
         # draw each of the bar lines in turn from left to right
-        for style in styles:
+        for style in reversed(styles):
             thickness = self._resolve_style_measurement(style.thickness)
-            # adjust start x to accomodate pen thickness
+            # adjust start x to accommodate pen thickness
             start_x -= thickness / 2
             self._draw_barline(start_x, thickness, style.pattern, style.color)
             # move to next line to the left
