@@ -28,7 +28,7 @@ class _BeamState(NamedTuple):
     For example, `[_BeamState(3), _BeamState(3, break_depth=1),
     _BeamState(3), _BeamState(3)]` encodes four 32nd notes subdivided into
     2 groups of 2 connected by a single beam.
-    
+
     Because the beam resolver is not meter-aware, it does not perform
     subdivision breaks unless explicitly requested with this field.
     """
@@ -90,7 +90,7 @@ class _BeamPathSpec(NamedTuple):
 
     depth: int
     """The beam's 1-indexed vertical position in the beam stack.
-    
+
     1 represents the outermost beam, 2 represents 1 inward, and so
     on. For example, in a beam stack connecting sixteenth notes,
     ``depth=1`` would represent the 8th note beam while ``depth=2`` would
@@ -315,9 +315,10 @@ class BeamGroup(PositionedObject, HasMusicFont):
             c_relative_x = map_between_x(c, self._chordrests[0])
             y = (beam_group_line.slope * c_relative_x) + beam_group_line.start_y
             original_stem_sign = sign(c.stem.end_point.y)
+            # (This direction checking approach will not work for kneed beams)
+            if self.direction != c.stem.direction:
+                c.stem_direction = self.direction
             adjusted_stem_end_y = map_between(c.stem, self).y + y
-            if sign(adjusted_stem_end_y) != original_stem_sign:
-                c.stem_direction = VerticalDirection.from_sign(adjusted_stem_end_y)
             c.stem.end_point.y = adjusted_stem_end_y
             c.flag.remove()
             c._flag = None
