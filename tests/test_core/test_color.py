@@ -48,6 +48,27 @@ class TestColor(unittest.TestCase):
         assert color.blue == 200
         assert color.alpha == 250
 
+    def test_init_with_short_hex_string_and_leading_hash(self):
+        color = Color("#edc")
+        assert color.red == 238
+        assert color.green == 221
+        assert color.blue == 204
+        assert color.alpha == 255
+
+    def test_init_with_short_hex_string_and_no_leading_hash(self):
+        color = Color("edc")
+        assert color.red == 238
+        assert color.green == 221
+        assert color.blue == 204
+        assert color.alpha == 255
+
+    def test_init_with_4_digit_short_hex_string_and_leading_hash(self):
+        color = Color("#edc1")
+        assert color.red == 238
+        assert color.green == 221
+        assert color.blue == 204
+        assert color.alpha == 255
+
     def test_bad_red_color_value(self):
         with pytest.raises(ColorBoundsError):
             Color(256, 0, 0, 0)
