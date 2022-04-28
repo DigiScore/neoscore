@@ -9,7 +9,7 @@ from neoscore.core.music_font import MusicFont
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
 from neoscore.core.pen_pattern import PenPattern
-from neoscore.core.point import Point
+from neoscore.core.point import ORIGIN, Point
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import ZERO, Union, Unit
 from neoscore.western import barline_style
@@ -38,14 +38,17 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         staves: list[StaffLike],
         styles: BarlineStyle | Iterable[BarlineStyle] = barline_style.SINGLE,
         font: Optional[MusicFont] = None,
+        connected: Optional[bool] = True,
     ):
         """
         Args:
             pos_x: The barline X position relative to the highest staff.
+                Specifies right edge of the barline group and offsets 'thickness'.
             staves: The staves spanned. Must be in visually descending order.
-            styles: If provided, this declares the style of bar line e.g. double, end.
-                Can also be self-designed using barline_style format.
+            styles: If provided, this accepts any of the premade styles provided in
+                barline_style, in addition to custom styles created with BarlineStyle.
             font: If provided, this overrides the font in the parent (top) staff.
+            connected: If provided, connects all barlines across the staves span (True)
         """
         MultiStaffObject.__init__(self, staves)
         PositionedObject.__init__(self, (pos_x, ZERO), self.highest)
@@ -56,6 +59,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         self.engraving_defaults = self._music_font.engraving_defaults
         self.paths = []
         self.staves = staves
+        self.connected = connected
 
         # Start x position for first barline relative to self
         start_x = ZERO
@@ -64,15 +68,16 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
             styles = [styles]
 
         # draw each of the bar lines in turn from left to right
-        for style in styles:
+        for style in reversed(styles):
             thickness = self._resolve_style_measurement(style.thickness)
+            # adjust start x to accommodate pen thickness
+            start_x -= thickness / 2
             self._draw_barline(start_x, thickness, style.pattern, style.color)
+            # move to next line to the left
+            start_x -= thickness + self._look_up_engraving_default(style.gap_right)
 
-            # move to next line to the right
-            start_x += thickness + self._look_up_engraving_default(style.gap_right)
         # Attach a break hint at the edge of the rightmost barline
-        last_path = self.paths[-1]
-        self._break_hint = BreakHint((last_path.pen.thickness / 2, ZERO), last_path)
+        self._break_hint = BreakHint(ORIGIN, self)
 
     @property
     def music_font(self) -> MusicFont:
@@ -90,11 +95,18 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         )
 
         # Draw the path
-        # move to counter the barline extent offset
-        line_path.move_to(ZERO, self.highest.barline_extent[0])
-        line_path.line_to(
-            ZERO, map_between(self, self.lowest).y + self.lowest.barline_extent[1]
-        )
+        if self.connected:
+            line_path.move_to(ZERO, self.highest.barline_extent[0])
+            line_path.line_to(
+                ZERO, map_between(self, self.lowest).y + self.lowest.barline_extent[1]
+            )
+
+        else:
+            y_offset = self.highest.y
+            for stave in self.staves:
+                new_y = stave.pos.y - y_offset
+                line_path.move_to(ZERO, new_y + stave.barline_extent[0])
+                line_path.line_to(ZERO, new_y + stave.barline_extent[1])
 
         self.paths.append(line_path)
 

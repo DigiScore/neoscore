@@ -39,7 +39,7 @@ THIN_DOUBLE = [
 ]
 
 END = [
-    BarlineStyle("thinBarlineThickness", "thinThickBarlineSeparation"),
+    BarlineStyle("thinBarlineThickness", "thickBarlineSeparation"),
     BarlineStyle("thickBarlineThickness"),
 ]
 
