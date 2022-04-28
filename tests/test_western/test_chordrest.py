@@ -189,6 +189,30 @@ class TestChordrest(AppTest):
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
         assert chord.highest_notehead == chord.lowest_notehead
 
+    def test_extra_attachment_point_with_rest(self):
+        chord = Chordrest(Mm(1), self.staff, None, Duration(1, 4))
+        assert_almost_equal(
+            chord.extra_attachment_point,
+            Point(self.staff.unit(0.504), self.staff.unit(-0.613)),
+            2,
+        )
+
+    def test_extra_attachment_point_with_upward_stem(self):
+        chord = Chordrest(Mm(1), self.staff, ["c"], Duration(1, 4))
+        assert_almost_equal(
+            chord.extra_attachment_point,
+            Point(self.staff.unit(-0.515), self.staff.unit(6.605)),
+            2,
+        )
+
+    def test_extra_attachment_point_with_upward_stem(self):
+        chord = Chordrest(Mm(1), self.staff, ["f'"], Duration(1, 4))
+        assert_almost_equal(
+            chord.extra_attachment_point,
+            Point(self.staff.unit(0.545), self.staff.unit(-1.605)),
+            2,
+        )
+
     def test_stem_direction_down(self):
         pitches = ["c", "b", "c'''"]
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))

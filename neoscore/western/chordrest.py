@@ -300,6 +300,33 @@ class Chordrest(PositionedObject, StaffObject):
         return max(self.noteheads, key=lambda n: n.visual_width, default=None)
 
     @property
+    def extra_attachment_point(self) -> Point:
+        """A point where common attachments like ornaments could go.
+
+        For chords, this is a point centered above or below the outermost notehead
+        opposite of the stem direction.
+
+        For rests, this is a point centered above the rest.
+
+        The returned point is relative to the Chordrest.
+        """
+        if self.rest:
+            bounding_rect = self.rest.bounding_rect
+            x = self.rest.x + bounding_rect.x + (bounding_rect.width / 2)
+            y = self.rest.y + bounding_rect.y - self.staff.unit(1)
+            return Point(x, y)
+        if self.stem_direction == VerticalDirection.UP:
+            notehead = self.lowest_notehead
+            bounding_rect = notehead.bounding_rect
+            y = notehead.y + bounding_rect.y + bounding_rect.height + self.staff.unit(1)
+        else:
+            notehead = self.highest_notehead
+            bounding_rect = notehead.bounding_rect
+            y = notehead.y + bounding_rect.y - self.staff.unit(1)
+        x = notehead.x + bounding_rect.x + (bounding_rect.width / 2)
+        return Point(x, y)
+
+    @property
     def notehead_column_width(self) -> Unit:
         """The width of the notehead column after layout"""
         leftmost_notehead = self.leftmost_notehead
