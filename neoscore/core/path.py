@@ -71,7 +71,7 @@ class Path(PaintedObject):
         cls,
         start: PointDef,
         parent: Optional[PositionedObject],
-        end: PointDef,
+        end: PointDef | PositionedObject,
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,
     ) -> Path:
@@ -82,6 +82,8 @@ class Path(PaintedObject):
         line = cls(start, parent, brush, pen)
         if isinstance(end, tuple):
             end = Point(*end)
+        elif isinstance(end, PositionedObject):
+            end = PositionedObject.pos
         line.line_to(end.x, end.y)
         return line
 

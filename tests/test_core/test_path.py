@@ -60,6 +60,14 @@ class TestPath(AppTest):
         assert_path_els_equal(path.elements[0], MoveTo(ORIGIN, path))
         assert_path_els_equal(path.elements[1], LineTo(Point(Unit(10), Unit(11)), path))
 
+    def test_straight_line_with_parent_end(self):
+        end_parent = Path((Unit(50), Unit(60)), None)
+        path = Path.straight_line((Unit(5), Unit(6)), None, end_parent.pos)
+        assert path.pos == Point(Unit(5), Unit(6))
+        assert len(path.elements) == 2
+        assert_path_els_equal(path.elements[0], MoveTo(ORIGIN, path))
+        assert_path_els_equal(path.elements[1], LineTo(Point(Unit(50), Unit(60)), path))
+
     def test_line_to(self):
         path = Path((Unit(5), Unit(6)), None)
         path.line_to(Unit(10), Unit(12))
