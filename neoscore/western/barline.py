@@ -9,7 +9,7 @@ from neoscore.core.music_font import MusicFont
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
 from neoscore.core.pen_pattern import PenPattern
-from neoscore.core.point import Point
+from neoscore.core.point import Point, ORIGIN
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import ZERO, Union, Unit
 from neoscore.western import barline_style
@@ -43,10 +43,10 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         """
         Args:
             pos_x: The barline X position relative to the highest staff.
-                Specifies right edge of the barline group.
+                Specifies right edge of the barline group and offsets 'thickness'.
             staves: The staves spanned. Must be in visually descending order.
-            styles: If provided, this declares the style of bar line e.g. single, double, end.
-                Can also be self-designed using barline_style format.
+            styles: If provided, this accepts any of the premade styles provided in
+                barline_style, in addition to custom styles created with BarlineStyle.
             font: If provided, this overrides the font in the parent (top) staff.
             connected: If provided, connects all barlines across the staves span (True)
         """
@@ -77,8 +77,8 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
             start_x -= thickness + self._look_up_engraving_default(style.gap_right)
 
         # Attach a break hint at the edge of the rightmost barline
-        last_path = self.paths[0]
-        self._break_hint = BreakHint((last_path.pen.thickness / 2, ZERO), last_path)
+        # last_path = self.paths[0]
+        self._break_hint = BreakHint(ORIGIN, self)
 
     @property
     def music_font(self) -> MusicFont:

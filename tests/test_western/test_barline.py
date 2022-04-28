@@ -74,8 +74,8 @@ class TestBarline(AppTest):
             Mm(15), [self.staff_1, self.staff_2], barline_style.THIN_DOUBLE
         )
         assert isinstance(barline._break_hint, BreakOpportunity)
-        assert barline._break_hint.parent == barline.paths[0]
-        assert barline._break_hint.pos == Point(self.staff_1.unit(0.08), ZERO)
+        assert barline._break_hint.parent == barline
+        assert barline._break_hint.pos == Point(ZERO, ZERO)
 
     def test_barline_separation(self):
         barline = Barline(
