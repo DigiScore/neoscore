@@ -9,7 +9,7 @@ from neoscore.core.music_font import MusicFont
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
 from neoscore.core.pen_pattern import PenPattern
-from neoscore.core.point import Point, ORIGIN
+from neoscore.core.point import ORIGIN, Point
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import ZERO, Union, Unit
 from neoscore.western import barline_style
@@ -77,7 +77,6 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
             start_x -= thickness + self._look_up_engraving_default(style.gap_right)
 
         # Attach a break hint at the edge of the rightmost barline
-        # last_path = self.paths[0]
         self._break_hint = BreakHint(ORIGIN, self)
 
     @property
