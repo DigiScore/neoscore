@@ -7,7 +7,7 @@ from neoscore.core.brush import Brush, BrushDef
 from neoscore.core.font import Font
 from neoscore.core.painted_object import PaintedObject
 from neoscore.core.pen import Pen, PenDef
-from neoscore.core.point import Point, PointDef
+from neoscore.core.point import ORIGIN, Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.rect import Rect
 from neoscore.core.units import ZERO, Unit
@@ -31,6 +31,8 @@ class Text(PaintedObject):
         background_brush: Optional[BrushDef] = None,
         z_index: int = 0,
         breakable: bool = True,
+        centered_x: bool = False,
+        centered_y: bool = False,
     ):
         """
         Args:
@@ -48,6 +50,10 @@ class Text(PaintedObject):
             z_index: Controls draw order with higher values drawn first.
             breakable: Whether this object should break across lines in
                 Flowable containers.
+            centered_x: Whether to horizontally center the text at the given position.
+                Note that centered text which breaks across flowable lines is not yet
+                supported and will display incorrectly.
+            centered_y: Whether to vertically center the text at the given position.
         """
         if font:
             self._font = font
@@ -59,6 +65,8 @@ class Text(PaintedObject):
         self.background_brush = background_brush
         self._z_index = z_index
         self._breakable = breakable
+        self._centered_x = centered_x
+        self._centered_y = centered_y
         super().__init__(pos, parent, brush, pen or Pen.no_pen())
 
     ######## PUBLIC PROPERTIES ########
@@ -72,7 +80,7 @@ class Text(PaintedObject):
         This is derived from other properties and cannot be set directly.
         """
         if self.breakable:
-            return self.bounding_rect.width
+            return self.bounding_rect.width + self._centering_offset.x
         else:
             return ZERO
 
@@ -148,9 +156,52 @@ class Text(PaintedObject):
         self._breakable = value
 
     @property
+    def centered_x(self) -> bool:
+        """Whether to horizontally sent to the text at ``pos``"""
+        return self._centered_x
+
+    @centered_x.setter
+    def centered_x(self, value: bool):
+        self._centered_x = value
+
+    @property
+    def centered_y(self) -> bool:
+        """Whether to vertically sent to the text at ``pos``"""
+        return self._centered_y
+
+    @centered_y.setter
+    def centered_y(self, value: bool):
+        self._centered_y = value
+
+    @property
+    def _centering_offset(self) -> Point:
+        if not (self.centered_x or self.centered_y):
+            return ORIGIN
+        x = ZERO
+        y = ZERO
+        bounding_rect = self._raw_scaled_bounding_rect
+        if self.centered_x:
+            x = (bounding_rect.width / -2) - bounding_rect.x
+        if self.centered_y:
+            y = (bounding_rect.height / -2) - bounding_rect.y
+        return Point(x, y)
+
+    @property
+    def _raw_scaled_bounding_rect(self) -> Rect:
+        """The text bounding rect without centering adjustment"""
+        return self.font.bounding_rect_of(self.text) * self.scale
+
+    @property
     def bounding_rect(self) -> Rect:
-        """The bounding rect override for this text."""
-        return self.font.bounding_rect_of(self.text)
+        """The bounding rect for this text positioned relative to ``pos``."""
+        raw_rect = self._raw_scaled_bounding_rect
+        centering_offset = self._centering_offset
+        return Rect(
+            raw_rect.x + centering_offset.x,
+            raw_rect.y + centering_offset.y,
+            raw_rect.width,
+            raw_rect.height,
+        )
 
     ######## PRIVATE METHODS ########
 
@@ -170,7 +221,7 @@ class Text(PaintedObject):
                 be rendered
         """
         slice_interface = TextInterface(
-            pos,
+            pos + self._centering_offset,
             self.brush.interface,
             self.pen.interface,
             self.text,
