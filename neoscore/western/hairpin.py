@@ -28,8 +28,8 @@ class Hairpin(MusicPath, Spanner2D):
         pos: PointDef,
         parent: PositionedObject,
         end_pos: PointDef,
-        end_parent: Optional[PositionedObject],
-        direction: HorizontalDirection,
+        end_parent: Optional[PositionedObject] = None,
+        direction: HorizontalDirection = HorizontalDirection.RIGHT,
         width: Optional[Unit] = None,
         font: Optional[MusicFont] = None,
     ):

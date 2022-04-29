@@ -41,7 +41,9 @@ class RepeatingMusicTextLine(MusicText, Spanner2D):
                 must implement ``HasMusicFont``.
             end_pos: The stopping point.
             end_parent: The parent for the ending position.
-                If ``None``, defaults to ``self``.
+                If ``None``, defaults to ``self``. (Please note the lack of a default
+                argument here, unlike with most other spanners, ``None`` must be given
+                explicitly.)
             text: The text to be repeated over the spanner. Can be given as a SMuFL
                 glyph name, or other shorthand forms. See ``MusicStringDef`` and
                 ``MusicCharDef``.
