@@ -1,7 +1,7 @@
 from neoscore.core.flowable import Flowable
 from neoscore.core.path_element import ControlPoint, CurveTo, LineTo, MoveTo
-from neoscore.core.point import Point
-from neoscore.core.units import Mm, Unit
+from neoscore.core.point import Point, ORIGIN
+from neoscore.core.units import Mm, Unit, ZERO
 from neoscore.western.slur import Slur
 from neoscore.western.staff import Staff
 from tests.mocks.mock_staff_object import MockStaffObject
@@ -27,16 +27,16 @@ class TestSlur(AppTest):
                 CurveTo(
                     Point(Mm(3), Mm(3.825)),
                     self.right_parent,
-                    ControlPoint(Point(unit(1), unit(-2.22)), slur),
-                    ControlPoint(Point(Mm(1.25), Mm(0.115)), self.right_parent),
+                    ControlPoint(Point(unit(0), unit(-0.97)), slur),
+                    ControlPoint(Point(Mm(3), Mm(2.302)), self.right_parent),
                 ),
                 LineTo(Point(Mm(3), Mm(4)), self.right_parent),
                 CurveTo(
-                    Point(Mm(1), Mm(2)),
+                    ORIGIN,
                     slur,
-                    ControlPoint(Point(Mm(1.25), Mm(0.5)), self.right_parent),
-                    ControlPoint(Point(Mm(2.75), Mm(-1.5)), slur),
+                    ControlPoint(Point(Mm(3), Mm(2.688)), self.right_parent),
+                    ControlPoint(Point(ZERO, unit(-0.75)), slur),
                 ),
-                MoveTo(Point(Unit(0.0), Unit(0.0)), slur),
             ],
+            epsilon=0.5,
         )
