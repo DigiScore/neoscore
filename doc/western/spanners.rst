@@ -77,12 +77,49 @@ Cosmetic :obj:`.OctaveLine`\ s can be drawn with a common variety of octave indi
 Repeating Music Text Lines
 --------------------------
 
-todo
+:obj:`.RepeatingMusicTextLine` allows you to repeat some music text over a spanner. This is useful for things like trill lines.
+
+.. rendered-example::
+
+   staff = Staff(ORIGIN, None, Mm(40))
+   Clef(ZERO, staff, 'treble')
+   c = Chordrest(Mm(10), staff, ["c'"], (1, 1))
+   RepeatingMusicTextLine((ZERO, staff.unit(-1)), c, (Mm(20), ZERO), None, "wiggleTrill")
+
+You can optionally provide a glyph to use as an end cap.
+
+.. rendered-example::
+
+   staff = Staff(ORIGIN, None, Mm(40))
+   Clef(ZERO, staff, 'treble')
+   start = Chordrest(Mm(10), staff, ["c'"], (1, 1))
+   end = Chordrest(Mm(35), staff, ["c''"], (1, 4))
+   RepeatingMusicTextLine((staff.unit(2), ZERO), start.highest_notehead,
+      (staff.unit(-1), ZERO), end.highest_notehead, "wiggleGlissando", "wiggleArpeggiatoUpArrow")
+
+See `SMuFL's collection of multi-segment line glyphs here <https://w3c.github.io/smufl/latest/tables/multi-segment-lines.html>`_ for common applications.
 
 Arpeggio Lines
 --------------
 
-todo
+Arpeggio lines can be built with :obj:`.RepeatingMusicTextLine`, but for convenience we provide one out of the box with :obj:`.ArpeggioLine`.
+
+.. rendered-example::
+
+   staff = Staff(ORIGIN, None, Mm(40))
+   Clef(ZERO, staff, 'treble')
+   c = Chordrest(Mm(15), staff, ["c", "g", "eb"], (1, 16))
+   ArpeggioLine((staff.unit(-2), staff.unit(-1)), c.highest_notehead,
+       (staff.unit(-2), staff.unit(2)), c.lowest_notehead, include_arrow=True)
+
+For chordrests specifically, the dedicated :obj:`.ArpeggioLine.for_chord` can automatically work out the line positions for you.
+
+.. rendered-example::
+
+   staff = Staff(ORIGIN, None, Mm(40))
+   Clef(ZERO, staff, 'treble')
+   c = Chordrest(Mm(15), staff, ["c", "g", "eb'"], (1, 16))
+   ArpeggioLine.for_chord(c, VerticalDirection.UP)
 
 Other Spanners
 --------------
