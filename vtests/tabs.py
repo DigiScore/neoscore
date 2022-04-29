@@ -31,7 +31,7 @@ chord_notes = [
     TabNumber(Mm(40), staff_1, 5, 3),
 ]
 u = staff_1.unit
-arp = ArpeggioLine((u(-1), u(-1)), chord_notes[0], (u(-1), u(2)), chord_notes[-1], True)
+arp = ArpeggioLine((u(-1), u(-1)), chord_notes[0], (u(-1), u(1)), chord_notes[-1], True)
 
 
 # 4 line tab
