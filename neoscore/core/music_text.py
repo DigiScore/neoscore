@@ -57,6 +57,8 @@ class MusicText(Text, HasMusicFont):
         background_brush: Optional[BrushDef] = None,
         z_index: int = 0,
         breakable: bool = True,
+        centered_x: bool = False,
+        centered_y: bool = False,
     ):
         """
         Args:
@@ -78,6 +80,10 @@ class MusicText(Text, HasMusicFont):
             z_index: Controls draw order with higher values drawn first.
             breakable: Whether this object should break across lines in
                 Flowable containers.
+            centered_x: Whether to horizontally center the text at the given position.
+                Note that centered text which breaks across flowable lines is not yet
+                supported and will display incorrectly.
+            centered_y: Whether to vertically center the text at the given position.
         """
         if font is None:
             font = HasMusicFont.find_music_font(parent)
@@ -96,6 +102,8 @@ class MusicText(Text, HasMusicFont):
             background_brush,
             z_index,
             breakable,
+            centered_x,
+            centered_y,
         )
 
     ######## PUBLIC PROPERTIES ########
@@ -145,13 +153,7 @@ class MusicText(Text, HasMusicFont):
         return self.music_font.unit
 
     @property
-    def bounding_rect(self) -> Rect:
-        """The bounding rect for this text when rendered.
-
-        The rect x, y position is relative to the object's position (``pos``).
-
-        Note that this currently accounts for scaling, but not rotation.
-        """
+    def _raw_scaled_bounding_rect(self) -> Rect:
         key = _CachedTextGeometryKey(self.text, self.music_font, self.scale)
         cached_result = _GEOMETRY_CACHE.get(key)
         if cached_result:

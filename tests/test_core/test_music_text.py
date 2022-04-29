@@ -11,7 +11,7 @@ from neoscore.core.rect import Rect
 from neoscore.core.units import ZERO, Mm, Unit
 from neoscore.western.staff import Staff
 
-from ..helpers import AppTest
+from ..helpers import AppTest, assert_almost_equal
 
 
 class TestMusicText(AppTest):
@@ -32,7 +32,12 @@ class TestMusicText(AppTest):
             brush,
             pen,
             2,
+            123,
+            "#00f",
+            5,
             False,
+            True,
+            True,
         )
         assert mtext.pos == Point(Unit(5), Unit(6))
         assert mtext.parent == mock_parent
@@ -40,6 +45,13 @@ class TestMusicText(AppTest):
         assert mtext.font == self.font
         assert mtext.brush == brush
         assert mtext.pen == pen
+        assert mtext.scale == 2
+        assert mtext.rotation == 123
+        assert mtext.background_brush == Brush("#00f")
+        assert mtext.z_index == 5
+        assert mtext.breakable == False
+        assert mtext.centered_x == True
+        assert mtext.centered_y == True
 
     def test_init_with_one_tuple(self):
         mtext = MusicText((Unit(5), Unit(6)), self.staff, ("brace", 1))
@@ -94,3 +106,14 @@ class TestMusicText(AppTest):
         rotated = mtext.bounding_rect
         assert rotated.width == original.height
         assert rotated.height == original.width
+
+    def test_bounding_rect_with_centering(self):
+        obj = MusicText(ORIGIN, self.staff, "accidentalSharp")
+        uncentered_rect = obj.bounding_rect
+        obj.centered_x = True
+        obj.centered_y = True
+        centered_rect = obj.bounding_rect
+        assert centered_rect.width == uncentered_rect.width
+        assert centered_rect.height == uncentered_rect.height
+        assert_almost_equal(centered_rect.x, Unit(-2), epsilon=2)
+        assert_almost_equal(centered_rect.y, Unit(-4), epsilon=2)

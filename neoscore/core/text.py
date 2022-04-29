@@ -157,7 +157,11 @@ class Text(PaintedObject):
 
     @property
     def centered_x(self) -> bool:
-        """Whether to horizontally sent to the text at ``pos``"""
+        """Whether to horizontally center the text at ``pos``.
+
+        Note that centered text which breaks across flowable lines is not yet
+        supported and will display incorrectly.
+        """
         return self._centered_x
 
     @centered_x.setter
@@ -166,7 +170,7 @@ class Text(PaintedObject):
 
     @property
     def centered_y(self) -> bool:
-        """Whether to vertically sent to the text at ``pos``"""
+        """Whether to vertically center the text at ``pos``."""
         return self._centered_y
 
     @centered_y.setter
@@ -193,7 +197,12 @@ class Text(PaintedObject):
 
     @property
     def bounding_rect(self) -> Rect:
-        """The bounding rect for this text positioned relative to ``pos``."""
+        """The bounding rect for this text positioned relative to ``pos``.
+
+        The rect x, y position is relative to the object's position (``pos``).
+
+        Note that this currently accounts for scaling, but not rotation.
+        """
         raw_rect = self._raw_scaled_bounding_rect
         centering_offset = self._centering_offset
         return Rect(
