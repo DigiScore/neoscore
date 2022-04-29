@@ -1,13 +1,18 @@
-Text and Fonts
-==============
+Text
+====
 
-:obj:`.Text` is a fundamental neoscore class. As we've seen in previous examples, it is fairly straightforward to work with: 
+:obj:`.Text` is a fundamental neoscore class. As we've seen in previous examples, it is fairly straightforward to work with:
 
 .. rendered-example::
 
    Text(ORIGIN, None, "Lorem ipsum")
 
-Text objects are positioned by the left edge of the text baseline. Here, the given position is approximately at the left corner of the "L". Every text object is drawn in a :obj:`.Font`. If no font is given, the neoscore default `12-pt Lora <https://fonts.google.com/specimen/Lora>`_ is used.
+By default, text objects are positioned by the left edge of the text baseline. Here, the given position is approximately at the left corner of the "L". Text can be horizontally or vertically centered using the :obj:`centered_x <.Text.centered_x>` and :obj:`centered_y <.Text.centered_y>` properties (with some caveats in flowable containers).
+
+Fonts
+-----
+
+Every text object is drawn in a :obj:`.Font`. If no font is given, the neoscore default `12-pt Lora <https://fonts.google.com/specimen/Lora>`_ is used.
 
 :obj:`.Font`\ s specify a family name ("Lora", "Arial", etc), a size, a weight, and whether to use italics. Font sizes are specified in units, where the base :obj:`.Unit` pixel value corresponds to "points" used in other other applications. ``Unit(12)`` should match 12-point fonts used in Microsoft Word, Google Docs, and so on. Weights (boldness and lightness) are given in a number between 0 and 100, where 50 is regular and larger numbers are more bold. For fonts which do not support variable weight, the exact mapping between numeric weight and font styles varies. The default Lora is variable weight so any value can be given, but ``70`` corresponds to standard "bold".
 
@@ -55,8 +60,8 @@ Rich Text
    </p>
    """
    RichText(ORIGIN, None, html, Inch(4))
-   
-     
+
+
 The HTML-like markup supported is documented extensively at `the upstream Qt docs <https://doc.qt.io/qt-5/richtext-html-subset.html>`_.
 
 :obj:`.RichText` also takes a ``font`` argument which controls its default font family and style. Font styles, and even families, can be changed within the text using markup.
