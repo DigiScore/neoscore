@@ -4,14 +4,14 @@ from typing import Optional
 
 from neoscore.core.brush import BrushDef
 from neoscore.core.directions import VerticalDirection
-from neoscore.core.units import ZERO
+from neoscore.core.math_helpers import interpolate
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
 from neoscore.core.pen import PenDef
-from neoscore.core.point import Point, PointDef, ORIGIN
+from neoscore.core.point import ORIGIN, Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner_2d import Spanner2D
-from neoscore.core.math_helpers import interpolate
+from neoscore.core.units import ZERO
 
 
 class Slur(MusicPath, Spanner2D):

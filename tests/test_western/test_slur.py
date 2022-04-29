@@ -1,7 +1,7 @@
 from neoscore.core.flowable import Flowable
 from neoscore.core.path_element import ControlPoint, CurveTo, LineTo, MoveTo
-from neoscore.core.point import Point, ORIGIN
-from neoscore.core.units import Mm, Unit, ZERO
+from neoscore.core.point import ORIGIN, Point
+from neoscore.core.units import ZERO, Mm, Unit
 from neoscore.western.slur import Slur
 from neoscore.western.staff import Staff
 from tests.mocks.mock_staff_object import MockStaffObject
