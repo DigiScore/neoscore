@@ -500,8 +500,8 @@ class Chordrest(PositionedObject, StaffObject):
             if notehead.pitch.accidental is None:
                 continue
             accidental = Accidental(
-                ORIGIN,
-                notehead,
+                notehead.pos,
+                self,
                 notehead.pitch.accidental,
             )
             accidental.x -= accidental.bounding_rect.width + padding

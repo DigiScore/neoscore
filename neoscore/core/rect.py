@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TypeAlias, Union
 
+from neoscore.core.point import Point
 from neoscore.core.units import Unit
 
 
@@ -22,6 +23,21 @@ class Rect:
     y: Unit
     width: Unit
     height: Unit
+
+    def offset(self, offset: Point) -> Rect:
+        """Translate a rect by a point."""
+        return Rect(self.x + offset.x, self.y + offset.y, self.width, self.height)
+
+    def merge(self, other: Rect) -> Rect:
+        """Find the rect encompassing both ``self`` and ``other``.
+
+        Note: This assumes ``width`` and ``height`` in both rects are positive.
+        """
+        x = min(self.x, other.x)
+        y = min(self.y, other.y)
+        right_edge = max(self.x + self.width, other.x + other.width)
+        bottom_edge = max(self.y + self.height, other.y + other.height)
+        return Rect(x, y, right_edge - x, bottom_edge - y)
 
     def __mul__(self, other: float) -> Rect:
         return Rect(
