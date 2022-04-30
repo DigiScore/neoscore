@@ -1,7 +1,6 @@
 from helpers import render_vtest
 
 from neoscore.common import *
-from neoscore.core.color import Color
 from neoscore.core.flowable import Flowable
 from neoscore.core.units import Mm
 from neoscore.western import barline_style
@@ -29,19 +28,19 @@ test_double_dash = Barline(
     Mm(20),
     all_staves,
     (
-        BarlineStyle(0.5),
-        BarlineStyle(0.5, 1.0, pattern=PenPattern.DASH),
+        BarlineStyle(0.3, 0.8),
+        BarlineStyle(0.2, pattern=PenPattern.DASH),
     ),
     connected=False,
 )
 
-# test barline with DIY style and color change (right to left)
+# test barline with DIY style and color change
 test_double_color = Barline(
     Mm(30),
     all_staves,
     (
-        BarlineStyle(0.5, 1.0, PenPattern.DASH, Color(255, 0, 0)),
-        BarlineStyle(1.0, 1.0, PenPattern.DASHDOTDOT, Color(0, 100, 50)),
+        BarlineStyle(0.2, 0.5, PenPattern.DASH, "#ff0000"),
+        BarlineStyle(0.3, pattern=PenPattern.DASHDOTDOT, color="#006432"),
     ),
 )
 

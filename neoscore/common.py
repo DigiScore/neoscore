@@ -27,11 +27,12 @@ from neoscore.core.rich_text import RichText
 from neoscore.core.simple_header_footer import simple_header_footer
 from neoscore.core.text import Text
 from neoscore.core.units import ZERO, GraphicUnit, Inch, Mm, Unit
-from neoscore.western import notehead_tables
+from neoscore.western import barline_style, notehead_tables
 from neoscore.western.accidental import Accidental
 from neoscore.western.accidental_type import AccidentalType
 from neoscore.western.arpeggio_line import ArpeggioLine
 from neoscore.western.barline import Barline
+from neoscore.western.barline_style import BarlineStyle
 from neoscore.western.beam_group import BeamGroup
 from neoscore.western.brace import Brace
 from neoscore.western.chordrest import Chordrest

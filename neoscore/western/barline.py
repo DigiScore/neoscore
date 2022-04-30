@@ -16,6 +16,8 @@ from neoscore.western import barline_style
 from neoscore.western.barline_style import BarlineStyle
 from neoscore.western.multi_staff_object import MultiStaffObject, StaffLike
 
+_DEFAULT_BARLINE_STYLE = BarlineStyle()
+
 
 class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
     """A barline.
@@ -67,14 +69,23 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         if isinstance(styles, BarlineStyle):
             styles = [styles]
 
+        fallback_thickness = self.unit(_DEFAULT_BARLINE_STYLE.thickness)
+        fallback_gap_right = self.unit(_DEFAULT_BARLINE_STYLE.gap_right)
+
         # draw each of the bar lines in turn from left to right
-        for style in reversed(styles):
-            thickness = self._resolve_style_measurement(style.thickness)
+        for i in reversed(range(len(styles))):
+            style = styles[i]
+            thickness = self._resolve_style_measurement(
+                style.thickness, fallback_thickness
+            )
             # adjust start x to accommodate pen thickness
             start_x -= thickness / 2
             self._draw_barline(start_x, thickness, style.pattern, style.color)
             # move to next line to the left
-            start_x -= thickness + self._look_up_engraving_default(style.gap_right)
+            if i != 0:
+                start_x -= thickness + self._resolve_style_measurement(
+                    styles[i - 1].gap_right, fallback_gap_right
+                )
 
         # Attach a break hint at the edge of the rightmost barline
         self._break_hint = BreakHint(ORIGIN, self)
@@ -110,23 +121,12 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
 
         self.paths.append(line_path)
 
-    def _resolve_style_measurement(self, thickness: Union[str, float, Unit]) -> Unit:
-        if type(thickness) == Unit:
-            return thickness
-        elif type(thickness) == str:
-            return self.engraving_defaults[thickness]
+    def _resolve_style_measurement(
+        self, value: Union[str, float, Unit], fallback: Unit
+    ) -> Unit:
+        if isinstance(value, Unit):
+            return value
+        elif isinstance(value, (int, float)):
+            return self.unit(value)
         else:
-            return Unit(thickness)
-
-    def _look_up_engraving_default(self, gap: Union[str, float, Unit]) -> Unit:
-        # Get separation value from engraving defaults if listed
-        if type(gap) == Unit:
-            return gap
-        elif type(gap) == float:
-            return Unit(gap)
-        else:
-            value = self.engraving_defaults.get(gap)
-            if value:
-                return value
-            else:
-                return self.engraving_defaults["barlineSeparation"]
+            return self.engraving_defaults.get(value, fallback)
