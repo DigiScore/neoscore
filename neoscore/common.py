@@ -26,6 +26,7 @@ from neoscore.core.repeating_music_text_line import RepeatingMusicTextLine
 from neoscore.core.rich_text import RichText
 from neoscore.core.simple_header_footer import simple_header_footer
 from neoscore.core.text import Text
+from neoscore.core.text_alignment import HorizontalAlignment, VerticalAlignment
 from neoscore.core.units import ZERO, GraphicUnit, Inch, Mm, Unit
 from neoscore.western import barline_style, notehead_tables
 from neoscore.western.accidental import Accidental

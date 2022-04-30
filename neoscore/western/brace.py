@@ -5,7 +5,7 @@ from neoscore.core.music_font import MusicFont, MusicFontGlyphNotFoundError
 from neoscore.core.music_text import MusicText
 from neoscore.core.pen import PenDef
 from neoscore.core.point import Point
-from neoscore.core.units import ZERO, Unit
+from neoscore.core.units import Unit
 from neoscore.western.multi_staff_object import MultiStaffObject, StaffLike
 
 # TODO MEDIUM these are positioned incorrectly
@@ -15,16 +15,8 @@ class Brace(MultiStaffObject, MusicText):
 
     """A brace spanning staves, recurring at line beginnings.
 
-    The brace is drawn at the beginning of every line
-    after its initial x position until the end of the staff.
-
-    A brace will be drawn on the first line it appears on
-    if and only if it is placed *exactly* at the line beginning.
-
-    Consequently, ``Brace(Mm(0), Mm(1000), some_staves)`` will appear
-    on the first line of the flowable, while
-    ``Brace(Mm(1), Mm(1000), some_staves)`` will not begin drawing
-    until the second line.
+    The brace is drawn at the beginning of every line starting at the line containing
+    its initial x position until the end of the staff.
     """
 
     def __init__(
@@ -94,9 +86,16 @@ class Brace(MultiStaffObject, MusicText):
 
     ######## PRIVATE METHODS ########
 
+    def _render_complete(
+        self,
+        pos: Point,
+        dist_to_line_start: Optional[Unit] = None,
+        local_start_x: Optional[Unit] = None,
+    ):
+        pass
+
     def _render_before_break(self, local_start_x, start, stop, dist_to_line_start):
-        if start.x == ZERO:
-            self._render_complete(Point(start.x - self.bounding_rect.width, start.y))
+        self._render_complete(Point(start.x - self.bounding_rect.width, start.y))
 
     def _render_after_break(self, local_start_x, start):
         self._render_complete(Point(start.x - self.bounding_rect.width, start.y))

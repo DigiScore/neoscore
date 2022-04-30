@@ -8,6 +8,7 @@ from neoscore.core.pen import Pen
 from neoscore.core.point import ORIGIN, Point
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.rect import Rect
+from neoscore.core.text_alignment import HorizontalAlignment, VerticalAlignment
 from neoscore.core.units import ZERO, Mm, Unit
 from neoscore.western.staff import Staff
 
@@ -36,8 +37,8 @@ class TestMusicText(AppTest):
             "#00f",
             5,
             False,
-            True,
-            True,
+            HorizontalAlignment.RIGHT,
+            VerticalAlignment.CENTER,
         )
         assert mtext.pos == Point(Unit(5), Unit(6))
         assert mtext.parent == mock_parent
@@ -50,8 +51,8 @@ class TestMusicText(AppTest):
         assert mtext.background_brush == Brush("#00f")
         assert mtext.z_index == 5
         assert mtext.breakable == False
-        assert mtext.centered_x == True
-        assert mtext.centered_y == True
+        assert mtext.horizontal_alignment == HorizontalAlignment.RIGHT
+        assert mtext.vertical_alignment == VerticalAlignment.CENTER
 
     def test_init_with_one_tuple(self):
         mtext = MusicText((Unit(5), Unit(6)), self.staff, ("brace", 1))
@@ -110,8 +111,8 @@ class TestMusicText(AppTest):
     def test_bounding_rect_with_centering(self):
         obj = MusicText(ORIGIN, self.staff, "accidentalSharp")
         uncentered_rect = obj.bounding_rect
-        obj.centered_x = True
-        obj.centered_y = True
+        obj.horizontal_alignment = HorizontalAlignment.CENTER
+        obj.vertical_alignment = VerticalAlignment.CENTER
         centered_rect = obj.bounding_rect
         assert centered_rect.width == uncentered_rect.width
         assert centered_rect.height == uncentered_rect.height

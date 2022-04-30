@@ -7,7 +7,7 @@ Text
 
    Text(ORIGIN, None, "Lorem ipsum")
 
-By default, text objects are positioned by the left edge of the text baseline. Here, the given position is approximately at the left corner of the "L". Text can be horizontally or vertically centered using the :obj:`centered_x <.Text.centered_x>` and :obj:`centered_y <.Text.centered_y>` properties (with some caveats in flowable containers).
+By default, text objects are positioned by the left edge of the text baseline. Here, the given position is approximately at the left corner of the "L". Text can be horizontally and vertically aligned with the :obj:`horizontal_alignment <.Text.horizontal_alignment>` and :obj:`vertical_alignment <.Text.vertical_alignment>` properties (with some caveats in flowable containers).
 
 Fonts
 -----
