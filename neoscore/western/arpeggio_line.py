@@ -4,7 +4,7 @@ from functools import reduce
 from typing import Optional
 
 from neoscore.core.brush import BrushDef
-from neoscore.core.directions import VerticalDirection
+from neoscore.core.directions import DirectionY
 from neoscore.core.music_font import MusicFont
 from neoscore.core.pen import PenDef
 from neoscore.core.point import Point, PointDef
@@ -70,7 +70,7 @@ class ArpeggioLine(RepeatingMusicTextLine):
     def for_chord(
         cls,
         chordrest: Chordrest,
-        arrow_direction: Optional[VerticalDirection] = None,
+        arrow_direction: Optional[DirectionY] = None,
         font: Optional[MusicFont] = None,
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,
@@ -108,7 +108,7 @@ class ArpeggioLine(RepeatingMusicTextLine):
         top = Point(guide_rect.x - unit(0.5), guide_rect.y - unit(0.25))
         bottom = Point(top.x, top.y + guide_rect.height + unit(0.5))
         include_arrow = arrow_direction is not None
-        if arrow_direction == VerticalDirection.UP:
+        if arrow_direction == DirectionY.UP:
             start = bottom
             end = top
         else:

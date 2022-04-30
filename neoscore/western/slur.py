@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Optional
 
 from neoscore.core.brush import BrushDef
-from neoscore.core.directions import VerticalDirection
+from neoscore.core.directions import DirectionY
 from neoscore.core.math_helpers import interpolate
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
@@ -28,7 +28,7 @@ class Slur(MusicPath, Spanner2D):
         parent: PositionedObject,
         end_pos: PointDef,
         end_parent: Optional[PositionedObject] = None,
-        direction: VerticalDirection = VerticalDirection.UP,
+        direction: DirectionY = DirectionY.UP,
         height: Optional[Unit] = None,
         arch_length: Optional[Unit] = None,
         font: Optional[MusicFont] = None,

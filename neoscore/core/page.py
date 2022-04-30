@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 
 from neoscore.core.brush import Brush
 from neoscore.core.color import Color
-from neoscore.core.directions import HorizontalDirection
+from neoscore.core.directions import DirectionX
 from neoscore.core.paper import Paper
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
@@ -45,7 +45,7 @@ class Page(PositionedObject):
         pos: PointDef,
         document: Document,
         page_index: int,
-        page_side: HorizontalDirection,
+        page_side: DirectionX,
         paper: Paper,
     ):
         """
@@ -84,7 +84,7 @@ class Page(PositionedObject):
     @property
     def bounding_rect(self) -> Rect:
         """The page bounding rect, positioned relative to the page."""
-        if self.page_side == HorizontalDirection.RIGHT:
+        if self.page_side == DirectionX.RIGHT:
             # Page is on right side, apply gutter on left side
             rect_x = -(self.paper.gutter + self.paper.margin_left)
         else:
@@ -110,7 +110,7 @@ class Page(PositionedObject):
     @property
     def full_margin_left(self) -> Unit:
         """The left margin, including any gutter if the gutter is on the left."""
-        if self.page_side == HorizontalDirection.RIGHT:
+        if self.page_side == DirectionX.RIGHT:
             return self.paper.margin_left + self.paper.gutter
         else:
             return self.paper.margin_left
@@ -118,7 +118,7 @@ class Page(PositionedObject):
     @property
     def full_margin_right(self) -> Unit:
         """The right margin, including any gutter if the gutter is on the right."""
-        if self.page_side == HorizontalDirection.RIGHT:
+        if self.page_side == DirectionX.RIGHT:
             return self.paper.margin_right
         else:
             return self.paper.margin_right + self.paper.gutter

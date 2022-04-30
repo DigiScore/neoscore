@@ -1,7 +1,7 @@
 from typing import NamedTuple, Optional, cast
 
 from neoscore.core.brush import Brush, BrushDef
-from neoscore.core.directions import HorizontalDirection, VerticalDirection
+from neoscore.core.directions import DirectionX, DirectionY
 from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.mapping import map_between, map_between_x
 from neoscore.core.math_helpers import sign
@@ -33,7 +33,7 @@ class _BeamState(NamedTuple):
     subdivision breaks unless explicitly requested with this field.
     """
 
-    hook: Optional[HorizontalDirection] = None
+    hook: Optional[DirectionX] = None
     """Direction for beamlet hooks.
 
     If provided as an override, this only has an effect if the beam
@@ -63,23 +63,23 @@ def _resolve_beam_hooks(specs: list[_BeamState]) -> list[_BeamState]:
             # First item in group or subgroup
             next_count = cast(int, next_count)
             if current_count > next_count:
-                hook = HorizontalDirection.RIGHT
+                hook = DirectionX.RIGHT
         elif next_count is None or (break_depth and break_depth < current_count):
             # Last item in group
             prev_count = cast(int, prev_count)
             if current_count > prev_count:
-                hook = HorizontalDirection.LEFT
+                hook = DirectionX.LEFT
         else:
             # Item in middle of group
             if current_count > prev_count and current_count > next_count:
                 if prev_count < next_count:
-                    hook = HorizontalDirection.RIGHT
+                    hook = DirectionX.RIGHT
                 elif prev_count > next_count:
-                    hook = HorizontalDirection.LEFT
+                    hook = DirectionX.LEFT
                 else:
                     # Surrounding positions flag counts are equal, so
                     # hook direction is ambiguous. Allow override.
-                    hook = current_hint_hook or HorizontalDirection.LEFT
+                    hook = current_hint_hook or DirectionX.LEFT
         states.append(_BeamState(current_count, break_depth, hook))
     return states
 
@@ -100,7 +100,7 @@ class _BeamPathSpec(NamedTuple):
     start: int
     """Index of the starting position"""
 
-    end: int | HorizontalDirection
+    end: int | DirectionX
     """Index of the ending position or a hook direction.
 
     If this is an index, it should be greater than ``start``.
@@ -152,7 +152,7 @@ class _BeamGroupLine(NamedTuple):
 
 
 def _resolve_beam_group_line(
-    chordrests: list[Chordrest], direction: VerticalDirection, font: MusicFont
+    chordrests: list[Chordrest], direction: DirectionY, font: MusicFont
 ) -> _BeamGroupLine:
     unit = chordrests[0].staff.unit
     first = chordrests[0]
@@ -160,7 +160,7 @@ def _resolve_beam_group_line(
     beam_thickness = font.engraving_defaults["beamThickness"]
     beam_group_height = _resolve_beam_group_height(chordrests, font)
     # Determine slope from first and last noteheads furthest on side opposite of beam
-    if direction == VerticalDirection.DOWN:
+    if direction == DirectionY.DOWN:
         slope_start_ref_note = first.highest_notehead
         slope_end_ref_note = last.highest_notehead
     else:
@@ -175,7 +175,7 @@ def _resolve_beam_group_line(
     delta_x = map_between(last, first).x
     slope = delta_y / delta_x
     # Now find the note closest to the beam's side
-    if direction == VerticalDirection.DOWN:
+    if direction == DirectionY.DOWN:
         cr_with_closest_note = max(chordrests, key=lambda c: c.lowest_notehead.y)
         cr_x = map_between_x(first, cr_with_closest_note)
         closest_y = cr_with_closest_note.lowest_notehead.y
@@ -209,7 +209,7 @@ def _resolve_beam_group_height(chordrests: list[Chordrest], font: MusicFont) -> 
     return max_depth * _beam_layer_height(font)
 
 
-def _resolve_beam_direction(chordrests: list[Chordrest]) -> VerticalDirection:
+def _resolve_beam_direction(chordrests: list[Chordrest]) -> DirectionY:
     """Try to determine the best direction a beam group should go in.
 
     The algorithm works by determining the average y position of the
@@ -226,9 +226,9 @@ def _resolve_beam_direction(chordrests: list[Chordrest]) -> VerticalDirection:
         start=ZERO,
     ) / len(chordrests)
     if center > middle_staff_pos:
-        return VerticalDirection.UP
+        return DirectionY.UP
     else:
-        return VerticalDirection.DOWN
+        return DirectionY.DOWN
 
 
 class BeamGroup(PositionedObject, HasMusicFont):
@@ -268,7 +268,7 @@ class BeamGroup(PositionedObject, HasMusicFont):
     def __init__(
         self,
         chordrests: list[Chordrest],
-        direction: Optional[VerticalDirection] = None,
+        direction: Optional[DirectionY] = None,
         font: Optional[MusicFont] = None,
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,
@@ -324,9 +324,7 @@ class BeamGroup(PositionedObject, HasMusicFont):
         # Now create the beams!
         layer_step = _beam_layer_height(self.music_font) * -self.direction.value
         specs = BeamGroup._resolve_chordrest_beam_layout(self._chordrests)
-        base_y = (
-            -self._beam_thickness if self.direction == VerticalDirection.DOWN else ZERO
-        )
+        base_y = -self._beam_thickness if self.direction == DirectionY.DOWN else ZERO
         for spec in specs:
             start_parent = self._chordrests[spec.start].stem.end_point
             start_y = base_y + ((spec.depth - 1) * layer_step)
@@ -365,7 +363,7 @@ class BeamGroup(PositionedObject, HasMusicFont):
         return _resolve_beam_layout(states)
 
     @property
-    def direction(self) -> VerticalDirection:
+    def direction(self) -> DirectionY:
         return self._direction
 
     @property

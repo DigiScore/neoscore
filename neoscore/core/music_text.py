@@ -11,7 +11,7 @@ from neoscore.core.point import PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.rect import Rect
 from neoscore.core.text import Text
-from neoscore.core.text_alignment import HorizontalAlignment, VerticalAlignment
+from neoscore.core.text_alignment import AlignmentX, AlignmentY
 from neoscore.core.units import Unit
 
 
@@ -58,8 +58,8 @@ class MusicText(Text, HasMusicFont):
         background_brush: Optional[BrushDef] = None,
         z_index: int = 0,
         breakable: bool = True,
-        horizontal_alignment: HorizontalAlignment = HorizontalAlignment.LEFT,
-        vertical_alignment: VerticalAlignment = VerticalAlignment.BASELINE,
+        alignment_x: AlignmentX = AlignmentX.LEFT,
+        alignment_y: AlignmentY = AlignmentY.BASELINE,
     ):
         """
         Args:
@@ -81,10 +81,10 @@ class MusicText(Text, HasMusicFont):
             z_index: Controls draw order with higher values drawn first.
             breakable: Whether this object should break across lines in
                 Flowable containers.
-            horizontal_alignment: The text's horizontal alignment relative to ``pos``.
+            alignment_x: The text's horizontal alignment relative to ``pos``.
                 Note that text which is not ``LEFT`` aligned does not currently display
                 correctly when breaking across flowable lines.
-            vertical_alignment: The text's vertical alignment relative to ``pos``.
+            alignment_y: The text's vertical alignment relative to ``pos``.
         """
         if font is None:
             font = HasMusicFont.find_music_font(parent)
@@ -103,8 +103,8 @@ class MusicText(Text, HasMusicFont):
             background_brush,
             z_index,
             breakable,
-            horizontal_alignment,
-            vertical_alignment,
+            alignment_x,
+            alignment_y,
         )
 
     ######## PUBLIC PROPERTIES ########

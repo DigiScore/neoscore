@@ -58,7 +58,7 @@ default, but users can override this by setting
    BeamGroup(chords)
    chords_2 = [
        Chordrest(Mm(40), staff, ["c"], (1, 8)),
-       Chordrest(Mm(50), staff, ["eb"], (1, 16), beam_hook_dir=HorizontalDirection.RIGHT),
+       Chordrest(Mm(50), staff, ["eb"], (1, 16), beam_hook_dir=DirectionX.RIGHT),
        Chordrest(Mm(60), staff, ["g"], (1, 8))
    ]
    BeamGroup(chords_2)

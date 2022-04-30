@@ -10,7 +10,7 @@ from neoscore.core.pen import Pen, PenDef
 from neoscore.core.point import ORIGIN, Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.rect import Rect
-from neoscore.core.text_alignment import HorizontalAlignment, VerticalAlignment
+from neoscore.core.text_alignment import AlignmentX, AlignmentY
 from neoscore.core.units import ZERO, Unit
 from neoscore.interface.text_interface import TextInterface
 
@@ -32,8 +32,8 @@ class Text(PaintedObject):
         background_brush: Optional[BrushDef] = None,
         z_index: int = 0,
         breakable: bool = True,
-        horizontal_alignment: HorizontalAlignment = HorizontalAlignment.LEFT,
-        vertical_alignment: VerticalAlignment = VerticalAlignment.BASELINE,
+        alignment_x: AlignmentX = AlignmentX.LEFT,
+        alignment_y: AlignmentY = AlignmentY.BASELINE,
     ):
         """
         Args:
@@ -51,10 +51,10 @@ class Text(PaintedObject):
             z_index: Controls draw order with higher values drawn first.
             breakable: Whether this object should break across lines in
                 Flowable containers.
-            horizontal_alignment: The text's horizontal alignment relative to ``pos``.
+            alignment_x: The text's horizontal alignment relative to ``pos``.
                 Note that text which is not ``LEFT`` aligned does not currently display
                 correctly when breaking across flowable lines.
-            vertical_alignment: The text's vertical alignment relative to ``pos``.
+            alignment_y: The text's vertical alignment relative to ``pos``.
         """
         if font:
             self._font = font
@@ -66,8 +66,8 @@ class Text(PaintedObject):
         self.background_brush = background_brush
         self._z_index = z_index
         self._breakable = breakable
-        self._horizontal_alignment = horizontal_alignment
-        self._vertical_alignment = vertical_alignment
+        self._alignment_x = alignment_x
+        self._alignment_y = alignment_y
         super().__init__(pos, parent, brush, pen or Pen.no_pen())
 
     ######## PUBLIC PROPERTIES ########
@@ -157,42 +157,42 @@ class Text(PaintedObject):
         self._breakable = value
 
     @property
-    def horizontal_alignment(self) -> bool:
+    def alignment_x(self) -> bool:
         """The text's horizontal alignment relative to ``pos``.
 
         Note that text which is not ``LEFT`` aligned does not currently display
         correctly when breaking across flowable lines.
         """
-        return self._horizontal_alignment
+        return self._alignment_x
 
-    @horizontal_alignment.setter
-    def horizontal_alignment(self, value: bool):
-        self._horizontal_alignment = value
+    @alignment_x.setter
+    def alignment_x(self, value: bool):
+        self._alignment_x = value
 
     @property
-    def vertical_alignment(self) -> bool:
+    def alignment_y(self) -> bool:
         """The text's vertical alignment relative to ``pos``."""
-        return self._vertical_alignment
+        return self._alignment_y
 
-    @vertical_alignment.setter
-    def vertical_alignment(self, value: bool):
-        self._vertical_alignment = value
+    @alignment_y.setter
+    def alignment_y(self, value: bool):
+        self._alignment_y = value
 
     @property
     def _alignment_offset(self) -> Point:
         if (
-            self.horizontal_alignment == HorizontalAlignment.LEFT
-            and self.vertical_alignment == VerticalAlignment.BASELINE
+            self.alignment_x == AlignmentX.LEFT
+            and self.alignment_y == AlignmentY.BASELINE
         ):
             return ORIGIN
         x = ZERO
         y = ZERO
         bounding_rect = self._raw_scaled_bounding_rect
-        if self.horizontal_alignment == HorizontalAlignment.CENTER:
+        if self.alignment_x == AlignmentX.CENTER:
             x = (bounding_rect.width / -2) - bounding_rect.x
-        elif self.horizontal_alignment == HorizontalAlignment.RIGHT:
+        elif self.alignment_x == AlignmentX.RIGHT:
             x = -bounding_rect.width - bounding_rect.x
-        if self.vertical_alignment == VerticalAlignment.CENTER:
+        if self.alignment_y == AlignmentY.CENTER:
             y = (bounding_rect.height / -2) - bounding_rect.y
         return Point(x, y)
 

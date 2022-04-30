@@ -43,15 +43,11 @@ BeamGroup([a, b])
 
 # Lower staff notes - upper voice
 Chordrest(unit(10), lower_staff, None, (1, 4), unit(-3))
-Chordrest(
-    unit(16), lower_staff, ["d"], Duration(1, 4), stem_direction=VerticalDirection.UP
-)
+Chordrest(unit(16), lower_staff, ["d"], Duration(1, 4), stem_direction=DirectionY.UP)
 
 # Lower staff notes - middle voice
 Chordrest(unit(8), lower_staff, None, (1, 4), rest_y=unit(-2))
-Chordrest(
-    unit(12), lower_staff, ["b,"], Duration(2, 4), stem_direction=VerticalDirection.UP
-)
+Chordrest(unit(12), lower_staff, ["b,"], Duration(2, 4), stem_direction=DirectionY.UP)
 
 # Lower staff notes - lower voice
 Chordrest(unit(8), lower_staff, ["g,"], Duration(3, 4))
@@ -78,7 +74,7 @@ Chordrest(
     lower_staff,
     ["d"],
     Duration(1, 4),
-    stem_direction=VerticalDirection.UP,
+    stem_direction=DirectionY.UP,
 )
 
 # Lower staff notes - middle voice
@@ -88,7 +84,7 @@ Chordrest(
     lower_staff,
     ["a,"],
     Duration(2, 4),
-    stem_direction=VerticalDirection.UP,
+    stem_direction=DirectionY.UP,
 )
 
 # Lower staff notes - lower voice

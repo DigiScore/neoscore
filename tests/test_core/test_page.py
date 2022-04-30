@@ -1,5 +1,5 @@
 from neoscore.core import neoscore, paper
-from neoscore.core.directions import HorizontalDirection
+from neoscore.core.directions import DirectionX
 from neoscore.core.page import Page
 from neoscore.core.point import ORIGIN, Point
 from neoscore.core.rect import Rect
@@ -14,12 +14,12 @@ class TestPageSupplier(AppTest):
             (Unit(1), Unit(2)),
             neoscore.document,
             1,
-            HorizontalDirection.LEFT,
+            DirectionX.LEFT,
             paper.LETTER,
         )
         assert pg.pos == Point(Unit(1), Unit(2))
         assert pg.page_index == 1
-        assert pg.page_side == HorizontalDirection.LEFT
+        assert pg.page_side == DirectionX.LEFT
         assert pg.paper == paper.LETTER
 
     def test_bounding_rect_for_left_page_with_gutter(self):
@@ -28,7 +28,7 @@ class TestPageSupplier(AppTest):
             (Unit(1), Unit(2)),
             neoscore.document,
             0,
-            HorizontalDirection.LEFT,
+            DirectionX.LEFT,
             test_paper,
         )
         assert pg.bounding_rect == Rect(Inch(-1), Inch(-1), Inch(8.5), Inch(11))
@@ -39,7 +39,7 @@ class TestPageSupplier(AppTest):
             (Unit(1), Unit(2)),
             neoscore.document,
             0,
-            HorizontalDirection.RIGHT,
+            DirectionX.RIGHT,
             test_paper,
         )
         assert pg.bounding_rect == Rect(
@@ -51,7 +51,7 @@ class TestPageSupplier(AppTest):
             (Unit(1), Unit(2)),
             neoscore.document,
             0,
-            HorizontalDirection.RIGHT,
+            DirectionX.RIGHT,
             paper.LETTER,
         )
         assert pg.bounding_rect == Rect(Inch(-1), Inch(-1), Inch(8.5), Inch(11))
@@ -61,7 +61,7 @@ class TestPageSupplier(AppTest):
             (Unit(1), Unit(2)),
             neoscore.document,
             0,
-            HorizontalDirection.RIGHT,
+            DirectionX.RIGHT,
             paper.LETTER,
         )
         assert pg.document_space_bounding_rect == Rect(
@@ -71,23 +71,23 @@ class TestPageSupplier(AppTest):
     def test_full_margin_left(self):
         test_paper = paper.A4.modified(gutter=Mm(7))
         assert Page(
-            ORIGIN, neoscore.document, 0, HorizontalDirection.RIGHT, test_paper
+            ORIGIN, neoscore.document, 0, DirectionX.RIGHT, test_paper
         ).full_margin_left == Mm(27)
         assert Page(
-            ORIGIN, neoscore.document, 0, HorizontalDirection.LEFT, test_paper
+            ORIGIN, neoscore.document, 0, DirectionX.LEFT, test_paper
         ).full_margin_left == Mm(20)
 
     def test_full_margin_right(self):
         test_paper = paper.A4.modified(gutter=Mm(7))
         assert Page(
-            ORIGIN, neoscore.document, 0, HorizontalDirection.RIGHT, test_paper
+            ORIGIN, neoscore.document, 0, DirectionX.RIGHT, test_paper
         ).full_margin_right == Mm(20)
         assert Page(
-            ORIGIN, neoscore.document, 0, HorizontalDirection.LEFT, test_paper
+            ORIGIN, neoscore.document, 0, DirectionX.LEFT, test_paper
         ).full_margin_right == Mm(27)
 
     def test_left_margin_x(self):
-        page = Page(ORIGIN, neoscore.document, 0, HorizontalDirection.RIGHT, paper.A4)
+        page = Page(ORIGIN, neoscore.document, 0, DirectionX.RIGHT, paper.A4)
         assert page.left_margin_x == ZERO
         assert page.right_margin_x == paper.A4.live_width
         assert page.top_margin_y == ZERO

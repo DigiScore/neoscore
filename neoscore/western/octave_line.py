@@ -4,7 +4,7 @@ from typing import Optional, cast
 
 from neoscore.core import neoscore
 from neoscore.core.brush import Brush
-from neoscore.core.directions import VerticalDirection
+from neoscore.core.directions import DirectionY
 from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
@@ -53,7 +53,7 @@ class OctaveLine(PositionedObject, Spanner, HasMusicFont):
         end_x: Unit,
         end_parent: Optional[PositionedObject] = None,
         indication: str = "8va",
-        direction: VerticalDirection = VerticalDirection.DOWN,
+        direction: DirectionY = DirectionY.DOWN,
         font: Optional[MusicFont] = None,
     ):
         """

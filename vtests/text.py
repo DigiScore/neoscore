@@ -10,21 +10,21 @@ x_centered = Text(
     (Mm(100), Mm(100)),
     None,
     "Horizontally centered",
-    horizontal_alignment=HorizontalAlignment.CENTER,
+    alignment_x=AlignmentX.CENTER,
 )
 
 left_aligned = Text(
     (Mm(100), Mm(110)),
     None,
     "Left aligned",
-    horizontal_alignment=HorizontalAlignment.LEFT,
+    alignment_x=AlignmentX.LEFT,
 )
 
 right_aligned = Text(
     (Mm(100), Mm(120)),
     None,
     "Right aligned",
-    horizontal_alignment=HorizontalAlignment.RIGHT,
+    alignment_x=AlignmentX.RIGHT,
 )
 
 Path.straight_line((ZERO, Mm(-5)), x_centered, (ZERO, Mm(30)))
@@ -33,7 +33,7 @@ y_centered = Text(
     (Mm(100), Mm(200)),
     None,
     "Vertically centered",
-    vertical_alignment=VerticalAlignment.CENTER,
+    alignment_y=AlignmentY.CENTER,
 )
 Path.straight_line((Mm(-15), ZERO), y_centered, (Mm(30), ZERO))
 
@@ -45,7 +45,7 @@ flowable_x_centered = Text(
     (Mm(145), Mm(25)),
     flowable,
     "Centered text doesn't work across flowable lines :(",
-    horizontal_alignment=HorizontalAlignment.CENTER,
+    alignment_x=AlignmentX.CENTER,
 )
 Path.straight_line((ZERO, Mm(-5)), flowable_x_centered, (ZERO, Mm(10)))
 

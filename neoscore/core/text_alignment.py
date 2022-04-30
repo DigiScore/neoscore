@@ -1,7 +1,7 @@
 from enum import Enum, auto
 
 
-class HorizontalAlignment(Enum):
+class AlignmentX(Enum):
     """Enum defining horizontal text alignments."""
 
     LEFT = auto()
@@ -9,7 +9,7 @@ class HorizontalAlignment(Enum):
     RIGHT = auto()
 
 
-class VerticalAlignment(Enum):
+class AlignmentY(Enum):
     """Enum defining vertical text alignments.
 
     Only baseline and center alignments are currently supported.

@@ -32,7 +32,7 @@ Crescendo and diminuendo :obj:`.Hairpin`\ s, demonstrated above, can be configur
    Clef(ZERO, staff, 'treble')
    start = Chordrest(Mm(10), staff, ["f"], (1, 4))
    Hairpin((ZERO, staff.unit(6)), start, (staff.unit(3), staff.unit(-4)),
-       direction=HorizontalDirection.LEFT, width=staff.unit(1))
+       direction=DirectionX.LEFT, width=staff.unit(1))
 
 Slurs and Ties
 --------------
@@ -55,7 +55,7 @@ Ties are just horizontal slurs. (`Though we're open to contributions making this
    staff = Staff(ORIGIN, None, Mm(40))
    Clef(ZERO, staff, 'treble')
    start = Chordrest(Mm(10), staff, ["f"], (1, 4))
-   Slur(start.extra_attachment_point, start, (Mm(10), ZERO), direction=VerticalDirection.DOWN)
+   Slur(start.extra_attachment_point, start, (Mm(10), ZERO), direction=DirectionY.DOWN)
 
 A reasonable curvature is automatically derived from the spanner length, but this can be overridden with the ``height`` and ``arch_length`` arguments.
 
@@ -119,7 +119,7 @@ For chordrests specifically, the dedicated :obj:`.ArpeggioLine.for_chord` can au
    staff = Staff(ORIGIN, None, Mm(40))
    Clef(ZERO, staff, 'treble')
    c = Chordrest(Mm(15), staff, ["c", "g", "eb'"], (1, 16))
-   ArpeggioLine.for_chord(c, VerticalDirection.UP)
+   ArpeggioLine.for_chord(c, DirectionY.UP)
 
 Other Spanners
 --------------

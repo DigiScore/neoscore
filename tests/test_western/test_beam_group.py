@@ -1,4 +1,4 @@
-from neoscore.core.directions import HorizontalDirection, VerticalDirection
+from neoscore.core.directions import DirectionX, DirectionY
 from neoscore.core.point import Point
 from neoscore.core.units import Mm
 from neoscore.western.beam_group import (
@@ -21,43 +21,43 @@ from ..helpers import AppTest, assert_almost_equal, render_scene
 
 def test_resolve_beam_hooks():
     assert _resolve_beam_hooks([_BeamState(3), _BeamState(2), _BeamState(1)]) == [
-        _BeamState(3, hook=HorizontalDirection.RIGHT),
+        _BeamState(3, hook=DirectionX.RIGHT),
         _BeamState(2),
         _BeamState(1),
     ]
 
     assert _resolve_beam_hooks([_BeamState(1), _BeamState(3), _BeamState(2)]) == [
         _BeamState(1),
-        _BeamState(3, hook=HorizontalDirection.RIGHT),
+        _BeamState(3, hook=DirectionX.RIGHT),
         _BeamState(2),
     ]
 
     assert _resolve_beam_hooks([_BeamState(1), _BeamState(2), _BeamState(1)]) == [
         _BeamState(1),
-        _BeamState(2, hook=HorizontalDirection.LEFT),
+        _BeamState(2, hook=DirectionX.LEFT),
         _BeamState(1),
     ]
 
     assert _resolve_beam_hooks([_BeamState(2), _BeamState(3), _BeamState(1)]) == [
         _BeamState(2),
-        _BeamState(3, hook=HorizontalDirection.LEFT),
+        _BeamState(3, hook=DirectionX.LEFT),
         _BeamState(1),
     ]
 
     assert _resolve_beam_hooks([_BeamState(3), _BeamState(2), _BeamState(3)]) == [
-        _BeamState(3, hook=HorizontalDirection.RIGHT),
+        _BeamState(3, hook=DirectionX.RIGHT),
         _BeamState(2),
-        _BeamState(3, hook=HorizontalDirection.LEFT),
+        _BeamState(3, hook=DirectionX.LEFT),
     ]
 
     assert _resolve_beam_hooks([_BeamState(1), _BeamState(2), _BeamState(3)]) == [
         _BeamState(1),
         _BeamState(2),
-        _BeamState(3, hook=HorizontalDirection.LEFT),
+        _BeamState(3, hook=DirectionX.LEFT),
     ]
 
     assert _resolve_beam_hooks([_BeamState(3), _BeamState(2), _BeamState(2)]) == [
-        _BeamState(3, hook=HorizontalDirection.RIGHT),
+        _BeamState(3, hook=DirectionX.RIGHT),
         _BeamState(2),
         _BeamState(2),
     ]
@@ -68,7 +68,7 @@ def test_resolve_beam_hooks_with_break_depth():
         [_BeamState(1), _BeamState(2, 1), _BeamState(3), _BeamState(3)]
     ) == [
         _BeamState(1),
-        _BeamState(2, 1, HorizontalDirection.LEFT),
+        _BeamState(2, 1, DirectionX.LEFT),
         _BeamState(3),
         _BeamState(3),
     ]
@@ -76,7 +76,7 @@ def test_resolve_beam_hooks_with_break_depth():
 
 def test_resolve_beam_hooks_with_hook_hints():
     assert _resolve_beam_hooks(
-        [_BeamState(2), _BeamState(2, hook=HorizontalDirection.LEFT), _BeamState(1)]
+        [_BeamState(2), _BeamState(2, hook=DirectionX.LEFT), _BeamState(1)]
     ) == [
         _BeamState(2),  # Invalid hook hint is ignored
         _BeamState(2),
@@ -84,7 +84,7 @@ def test_resolve_beam_hooks_with_hook_hints():
     ]
 
     assert _resolve_beam_hooks(
-        [_BeamState(2, hook=HorizontalDirection.RIGHT), _BeamState(2), _BeamState(1)]
+        [_BeamState(2, hook=DirectionX.RIGHT), _BeamState(2), _BeamState(1)]
     ) == [
         _BeamState(2),
         _BeamState(2),  # Invalid hook hint is ignored
@@ -92,10 +92,10 @@ def test_resolve_beam_hooks_with_hook_hints():
     ]
 
     assert _resolve_beam_hooks(
-        [_BeamState(1), _BeamState(2, hook=HorizontalDirection.RIGHT), _BeamState(1)]
+        [_BeamState(1), _BeamState(2, hook=DirectionX.RIGHT), _BeamState(1)]
     ) == [
         _BeamState(1),
-        _BeamState(2, hook=HorizontalDirection.RIGHT),
+        _BeamState(2, hook=DirectionX.RIGHT),
         _BeamState(1),
     ]
 
@@ -124,7 +124,7 @@ def test_resolve_beam_hooks_with_break_depths_affecting_flags():
     ) == [
         _BeamState(2),
         _BeamState(2, 1),
-        _BeamState(3, None, HorizontalDirection.RIGHT),
+        _BeamState(3, None, DirectionX.RIGHT),
         _BeamState(2),
     ]
 
@@ -163,15 +163,15 @@ def test_resolve_beam_layout():
     # Starting and ending hooks
     assert _resolve_beam_layout(
         [
-            _BeamState(3, hook=HorizontalDirection.RIGHT),
+            _BeamState(3, hook=DirectionX.RIGHT),
             _BeamState(2),
-            _BeamState(3, hook=HorizontalDirection.LEFT),
+            _BeamState(3, hook=DirectionX.LEFT),
         ]
     ) == [
         _BeamPathSpec(1, 0, 2),
         _BeamPathSpec(2, 0, 2),
-        _BeamPathSpec(3, 0, HorizontalDirection.RIGHT),
-        _BeamPathSpec(3, 2, HorizontalDirection.LEFT),
+        _BeamPathSpec(3, 0, DirectionX.RIGHT),
+        _BeamPathSpec(3, 2, DirectionX.LEFT),
     ]
 
     # Subgroups and a hook
@@ -179,14 +179,14 @@ def test_resolve_beam_layout():
         [
             _BeamState(2),
             _BeamState(2, 1),
-            _BeamState(3, None, HorizontalDirection.RIGHT),
+            _BeamState(3, None, DirectionX.RIGHT),
             _BeamState(2),
         ]
     ) == [
         _BeamPathSpec(1, 0, 3),
         _BeamPathSpec(2, 0, 1),
         _BeamPathSpec(2, 2, 3),
-        _BeamPathSpec(3, 2, HorizontalDirection.RIGHT),
+        _BeamPathSpec(3, 2, DirectionX.RIGHT),
     ]
 
 
@@ -204,7 +204,7 @@ class TestResolveBeamDirection(AppTest):
                     Chordrest(Mm(10), self.staff, ["f"], (1, 8)),
                 ]
             )
-            == VerticalDirection.UP
+            == DirectionY.UP
         )
 
     def test_resolve_beam_direction_with_chords_only_uses_furthest(self):
@@ -215,7 +215,7 @@ class TestResolveBeamDirection(AppTest):
                     Chordrest(Mm(10), self.staff, ["f", "e", "e", "e"], (1, 8)),
                 ]
             )
-            == VerticalDirection.UP
+            == DirectionY.UP
         )
 
     def test_resolve_beam_direction_with_rests(self):
@@ -226,7 +226,7 @@ class TestResolveBeamDirection(AppTest):
                     Chordrest(Mm(10), self.staff, [], (1, 8)),
                 ]
             )
-            == VerticalDirection.DOWN
+            == DirectionY.DOWN
         )
 
     def test_resolve_beam_direction_at_center_goes_down(self):
@@ -237,7 +237,7 @@ class TestResolveBeamDirection(AppTest):
                     Chordrest(Mm(10), self.staff, ["b"], (1, 8)),
                 ]
             )
-            == VerticalDirection.DOWN
+            == DirectionY.DOWN
         )
 
 
@@ -287,7 +287,7 @@ class TestResolveBeamGroupLine(AppTest):
             Chordrest(Mm(20), self.staff, ["g"], (1, 8)),
         ]
         assert _resolve_beam_group_line(
-            crs, VerticalDirection.UP, self.font
+            crs, DirectionY.UP, self.font
         ) == _BeamGroupLine(
             crs[0].highest_notehead.y - self.unit(2.5) - self.beam_layer_height, 0
         )
@@ -298,7 +298,7 @@ class TestResolveBeamGroupLine(AppTest):
             Chordrest(Mm(20), self.staff, ["g"], (1, 8)),
         ]
         assert _resolve_beam_group_line(
-            crs, VerticalDirection.DOWN, self.font
+            crs, DirectionY.DOWN, self.font
         ) == _BeamGroupLine(
             crs[0].lowest_notehead.y + self.unit(2.5) + self.beam_layer_height, 0
         )
@@ -310,7 +310,7 @@ class TestResolveBeamGroupLine(AppTest):
             Chordrest(Mm(30), self.staff, ["g"], (1, 8)),
         ]
         assert _resolve_beam_group_line(
-            crs, VerticalDirection.UP, self.font
+            crs, DirectionY.UP, self.font
         ) == _BeamGroupLine(
             crs[1].highest_notehead.y - self.unit(2.5) - self.beam_layer_height, 0
         )
@@ -321,7 +321,7 @@ class TestResolveBeamGroupLine(AppTest):
             Chordrest(Mm(20), self.staff, ["g"], (1, 64)),
         ]
         assert _resolve_beam_group_line(
-            crs, VerticalDirection.DOWN, self.font
+            crs, DirectionY.DOWN, self.font
         ) == _BeamGroupLine(
             crs[0].lowest_notehead.y + self.unit(2.5) + self.beam_layer_height * 4, 0
         )
@@ -332,7 +332,7 @@ class TestResolveBeamGroupLine(AppTest):
             Chordrest(Mm(20), self.staff, ["a"], (1, 8)),
         ]
         self.assert_lines_eq(
-            _resolve_beam_group_line(crs, VerticalDirection.UP, self.font),
+            _resolve_beam_group_line(crs, DirectionY.UP, self.font),
             _BeamGroupLine(Mm(-3.063), 0.175),
         )
 
@@ -343,7 +343,7 @@ class TestResolveBeamGroupLine(AppTest):
             Chordrest(Mm(30), self.staff, ["a"], (1, 8)),
         ]
         self.assert_lines_eq(
-            _resolve_beam_group_line(crs, VerticalDirection.UP, self.font),
+            _resolve_beam_group_line(crs, DirectionY.UP, self.font),
             _BeamGroupLine(Mm(-6.562), 0.0875),
         )
 
@@ -353,7 +353,7 @@ class TestResolveBeamGroupLine(AppTest):
             Chordrest(Mm(20), self.staff, ["g"], (1, 8)),
         ]
         self.assert_lines_eq(
-            _resolve_beam_group_line(crs, VerticalDirection.DOWN, self.font),
+            _resolve_beam_group_line(crs, DirectionY.DOWN, self.font),
             _BeamGroupLine(Mm(12.688), -0.175),
         )
 
@@ -364,7 +364,7 @@ class TestResolveBeamGroupLine(AppTest):
             Chordrest(Mm(30), self.staff, ["g"], (1, 8)),
         ]
         self.assert_lines_eq(
-            _resolve_beam_group_line(crs, VerticalDirection.DOWN, self.font),
+            _resolve_beam_group_line(crs, DirectionY.DOWN, self.font),
             _BeamGroupLine(Mm(27.562), -0.0875),
         )
 
@@ -381,9 +381,9 @@ class TestBeamGroup(AppTest):
             Chordrest(Mm(20), self.staff, ["g"], (1, 8)),
         ]
         bg = BeamGroup(crs)
-        assert bg.direction == VerticalDirection.UP
-        bg = BeamGroup(crs, VerticalDirection.DOWN)
-        assert bg.direction == VerticalDirection.DOWN
+        assert bg.direction == DirectionY.UP
+        bg = BeamGroup(crs, DirectionY.DOWN)
+        assert bg.direction == DirectionY.DOWN
 
     def test_end_to_end(self):
         crs = [

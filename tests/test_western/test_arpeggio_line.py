@@ -1,5 +1,5 @@
 from neoscore.core.brush import Brush
-from neoscore.core.directions import VerticalDirection
+from neoscore.core.directions import DirectionY
 from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
 from neoscore.core.pen import Pen
@@ -44,7 +44,7 @@ class TestRepeatingMusicTextLine(AppTest):
         staff = Staff(ORIGIN, None, Mm(40))
         Clef(ZERO, staff, "treble")
         c = Chordrest(Mm(15), staff, ["c", "g", "eb'"], (1, 16))
-        line = ArpeggioLine.for_chord(c, VerticalDirection.UP)
+        line = ArpeggioLine.for_chord(c, DirectionY.UP)
         assert line.parent == c
         assert line.end_parent == c
         assert line.pos == Point(Unit(-15.681), Unit(29.043))
@@ -55,7 +55,7 @@ class TestRepeatingMusicTextLine(AppTest):
         staff = Staff(ORIGIN, None, Mm(40))
         Clef(ZERO, staff, "treble")
         c = Chordrest(Mm(15), staff, ["c", "g", "eb'"], (1, 16))
-        line = ArpeggioLine.for_chord(c, VerticalDirection.DOWN)
+        line = ArpeggioLine.for_chord(c, DirectionY.DOWN)
         assert line.parent == c
         assert line.end_parent == c
         assert line.pos == Point(Unit(-15.681), Unit(-1.76))

@@ -5,7 +5,7 @@ from neoscore.core.pen import Pen
 from neoscore.core.point import ORIGIN, Point
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.text import Text
-from neoscore.core.text_alignment import HorizontalAlignment, VerticalAlignment
+from neoscore.core.text_alignment import AlignmentX, AlignmentY
 from neoscore.core.units import ZERO, Unit
 
 from ..helpers import AppTest, assert_almost_equal
@@ -47,8 +47,8 @@ class TestText(AppTest):
         assert obj.background_brush == Brush("#00f")
         assert obj.z_index == 3
         assert obj.breakable == False
-        assert obj.horizontal_alignment == True
-        assert obj.vertical_alignment == True
+        assert obj.alignment_x == True
+        assert obj.alignment_y == True
 
     def test_default_init_values(self):
         obj = Text((Unit(5), Unit(6)), None, "testing")
@@ -96,27 +96,25 @@ class TestText(AppTest):
         assert obj.z_index == 123
         assert Text((Unit(5), Unit(6)), None, "testing", z_index=123).z_index == 123
 
-    def test_horizontal_alignment_setter(self):
-        obj = Text(
-            ORIGIN, None, "testing", horizontal_alignment=HorizontalAlignment.CENTER
-        )
-        assert obj.horizontal_alignment == HorizontalAlignment.CENTER
-        obj.horizontal_alignment = HorizontalAlignment.RIGHT
-        assert obj.horizontal_alignment == HorizontalAlignment.RIGHT
+    def test_alignment_x_setter(self):
+        obj = Text(ORIGIN, None, "testing", alignment_x=AlignmentX.CENTER)
+        assert obj.alignment_x == AlignmentX.CENTER
+        obj.alignment_x = AlignmentX.RIGHT
+        assert obj.alignment_x == AlignmentX.RIGHT
 
-    def test_vertical_alignment_setter(self):
-        obj = Text(ORIGIN, None, "testing", vertical_alignment=VerticalAlignment.CENTER)
-        assert obj.vertical_alignment == VerticalAlignment.CENTER
-        obj.vertical_alignment = VerticalAlignment.BASELINE
-        assert obj.vertical_alignment == VerticalAlignment.BASELINE
+    def test_alignment_y_setter(self):
+        obj = Text(ORIGIN, None, "testing", alignment_y=AlignmentY.CENTER)
+        assert obj.alignment_y == AlignmentY.CENTER
+        obj.alignment_y = AlignmentY.BASELINE
+        assert obj.alignment_y == AlignmentY.BASELINE
 
     def test_alignment_offset_with_centering(self):
         obj = Text(
             ORIGIN,
             None,
             "testing",
-            horizontal_alignment=HorizontalAlignment.CENTER,
-            vertical_alignment=VerticalAlignment.CENTER,
+            alignment_x=AlignmentX.CENTER,
+            alignment_y=AlignmentY.CENTER,
         )
         offset = obj._alignment_offset
         # Generous epsilon is needed due to flaky font sizing
@@ -124,9 +122,7 @@ class TestText(AppTest):
         assert_almost_equal(offset.y, Unit(2.5), epsilon=0.75)
 
     def test_alignment_offset_with_right_alignment(self):
-        obj = Text(
-            ORIGIN, None, "testing", horizontal_alignment=HorizontalAlignment.RIGHT
-        )
+        obj = Text(ORIGIN, None, "testing", alignment_x=AlignmentX.RIGHT)
         offset = obj._alignment_offset
         # Generous epsilon is needed due to flaky font sizing
         assert_almost_equal(offset.x, Unit(-40), epsilon=2)
@@ -141,8 +137,8 @@ class TestText(AppTest):
     def test_bounding_rect_with_offset(self):
         obj = Text(ORIGIN, None, "testing")
         uncentered_rect = obj.bounding_rect
-        obj.horizontal_alignment = HorizontalAlignment.CENTER
-        obj.vertical_alignment = VerticalAlignment.CENTER
+        obj.alignment_x = AlignmentX.CENTER
+        obj.alignment_y = AlignmentY.CENTER
         centered_rect = obj.bounding_rect
         assert centered_rect.width == uncentered_rect.width
         assert centered_rect.height == uncentered_rect.height
@@ -154,8 +150,8 @@ class TestText(AppTest):
             ORIGIN,
             None,
             "testing",
-            horizontal_alignment=HorizontalAlignment.CENTER,
-            vertical_alignment=VerticalAlignment.CENTER,
+            alignment_x=AlignmentX.CENTER,
+            alignment_y=AlignmentY.CENTER,
         )
         obj._render()
         rendered_pos = obj.interfaces[0].pos

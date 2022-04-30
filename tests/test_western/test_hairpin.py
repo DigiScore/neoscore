@@ -1,4 +1,4 @@
-from neoscore.core.directions import HorizontalDirection
+from neoscore.core.directions import DirectionX
 from neoscore.core.flowable import Flowable
 from neoscore.core.point import Point
 from neoscore.core.units import Mm, Unit
@@ -24,7 +24,7 @@ class TestHairpin(AppTest):
             self.left_parent,
             (Unit(10), Unit(0)),
             self.left_parent,
-            HorizontalDirection.RIGHT,
+            DirectionX.RIGHT,
             Unit(2),
         )
         points = cresc._find_hairpin_points()
@@ -42,7 +42,7 @@ class TestHairpin(AppTest):
             self.left_parent,
             (Unit(10), Unit(0)),
             self.left_parent,
-            HorizontalDirection.LEFT,
+            DirectionX.LEFT,
             Unit(2),
         )
         points = dim._find_hairpin_points()
@@ -61,7 +61,7 @@ class TestHairpin(AppTest):
             self.left_parent,
             (Unit(1), Unit(0)),
             self.right_parent,
-            HorizontalDirection.RIGHT,
+            DirectionX.RIGHT,
             Unit(2),
         )
         points = cresc._find_hairpin_points()
@@ -79,7 +79,7 @@ class TestHairpin(AppTest):
             self.left_parent,
             (Unit(1), Unit(0)),
             self.right_parent,
-            HorizontalDirection.LEFT,
+            DirectionX.LEFT,
             Unit(2),
         )
         points = dim._find_hairpin_points()
@@ -98,7 +98,7 @@ class TestHairpin(AppTest):
             self.left_parent,
             (Unit(0), Unit(10)),
             self.left_parent,
-            HorizontalDirection.RIGHT,
+            DirectionX.RIGHT,
             Unit(2),
         )
         points = cresc._find_hairpin_points()
@@ -116,7 +116,7 @@ class TestHairpin(AppTest):
             self.left_parent,
             (Unit(0), Unit(10)),
             self.left_parent,
-            HorizontalDirection.LEFT,
+            DirectionX.LEFT,
             Unit(2),
         )
         points = dim._find_hairpin_points()
@@ -138,7 +138,7 @@ class TestHairpin(AppTest):
             self.left_parent,
             (Unit(-10), Unit(1)),
             self.right_parent,
-            HorizontalDirection.RIGHT,
+            DirectionX.RIGHT,
             Unit(2),
         )
         points = cresc._find_hairpin_points()
@@ -156,7 +156,7 @@ class TestHairpin(AppTest):
             self.left_parent,
             (Unit(-10), Unit(1)),
             self.right_parent,
-            HorizontalDirection.LEFT,
+            DirectionX.LEFT,
             Unit(2),
         )
         points = dim._find_hairpin_points()
@@ -178,7 +178,7 @@ class TestHairpin(AppTest):
             self.left_parent,
             (Unit(4), Unit(4)),
             self.left_parent,
-            HorizontalDirection.RIGHT,
+            DirectionX.RIGHT,
             Unit(2),
         )
         # Spanner line slope should be Unit(1)
@@ -193,7 +193,7 @@ class TestHairpin(AppTest):
             self.left_parent,
             (Unit(4), Unit(4)),
             self.left_parent,
-            HorizontalDirection.LEFT,
+            DirectionX.LEFT,
             Unit(2),
         )
         # Spanner line slope should be Unit(1)
@@ -212,7 +212,7 @@ class TestHairpin(AppTest):
             self.left_parent,
             (Unit(4), Unit(4)),
             self.right_parent,
-            HorizontalDirection.RIGHT,
+            DirectionX.RIGHT,
             Unit(2),
         )
         # Spanner line slope should be Unit(1)
@@ -227,7 +227,7 @@ class TestHairpin(AppTest):
             self.left_parent,
             (Unit(-6), Unit(2)),
             self.right_parent,
-            HorizontalDirection.LEFT,
+            DirectionX.LEFT,
             Unit(2),
         )
         # Spanner line slope should be Unit(1)
