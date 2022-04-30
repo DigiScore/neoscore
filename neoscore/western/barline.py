@@ -39,8 +39,8 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         pos_x: Unit,
         staves: list[StaffLike],
         styles: BarlineStyle | Iterable[BarlineStyle] = barline_style.SINGLE,
-        font: Optional[MusicFont] = None,
         connected: Optional[bool] = True,
+        font: Optional[MusicFont] = None,
     ):
         """
         Args:
@@ -49,8 +49,8 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
             staves: The staves spanned. Must be in visually descending order.
             styles: If provided, this accepts any of the premade styles provided in
                 barline_style, in addition to custom styles created with BarlineStyle.
-            font: If provided, this overrides the font in the parent (top) staff.
             connected: If provided, connects all barlines across the staves span (True)
+            font: If provided, this overrides the font in the parent (top) staff.
         """
         MultiStaffObject.__init__(self, staves)
         PositionedObject.__init__(self, (pos_x, ZERO), self.highest)
