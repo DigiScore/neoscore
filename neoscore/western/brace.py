@@ -31,7 +31,6 @@ class Brace(MultiStaffObject, MusicText):
             staves: The staves spanned. Must be in visually descending order.
             font: If provided, this overrides the font in the parent (top) staff.
             brush: The brush to fill shapes with.
-            brush: The brush to fill shapes with.
             pen: The pen to draw outlines with.
         """
         MultiStaffObject.__init__(self, staves)

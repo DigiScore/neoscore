@@ -57,6 +57,7 @@ from neoscore.western.rest import Rest
 from neoscore.western.slur import Slur
 from neoscore.western.staff import Staff
 from neoscore.western.stem import Stem
+from neoscore.western.system_line import SystemLine
 from neoscore.western.tab_clef import TabClef
 from neoscore.western.tab_number import TabNumber
 from neoscore.western.tab_staff import TabStaff
