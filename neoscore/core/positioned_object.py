@@ -212,12 +212,6 @@ class PositionedObject:
         for child in self.children:
             child._render()
 
-    # TODO HIGH - Some kind of small error seems to accumulate over the length of
-    # flowables, causing things like SystemLine and BarLine alignment to drift. I would
-    # guess Unit rounding errors are accumulating somewhere. Need to fix this before
-    # release since it makes some things look really bad, for example see "System Lines"
-    # doc section.
-
     def _render_in_flowable(self):
         """Render the object to the scene, dispatching partial rendering calls
         when needed if an object flows across a break in the flowable.
