@@ -4,7 +4,7 @@ from neoscore.core.brush import BrushDef
 from neoscore.core.music_font import MusicFont, MusicFontGlyphNotFoundError
 from neoscore.core.music_text import MusicText
 from neoscore.core.pen import PenDef
-from neoscore.core.point import Point
+from neoscore.core.text_alignment import AlignmentX
 from neoscore.core.units import Unit
 from neoscore.western.multi_staff_object import MultiStaffObject, StaffLike
 
@@ -60,6 +60,7 @@ class Brace(MultiStaffObject, MusicText):
                 brush,
                 pen,
                 scale,
+                alignment_x=AlignmentX.RIGHT,
             )
         except MusicFontGlyphNotFoundError:
             # Default to non-optional glyph
@@ -72,6 +73,7 @@ class Brace(MultiStaffObject, MusicText):
                 brush,
                 pen,
                 scale,
+                alignment_x=AlignmentX.RIGHT,
             )
 
     ######## PUBLIC PROPERTIES ########
@@ -86,19 +88,11 @@ class Brace(MultiStaffObject, MusicText):
 
     ######## PRIVATE METHODS ########
 
-    def _render_complete(
-        self,
-        pos: Point,
-        dist_to_line_start: Optional[Unit] = None,
-        local_start_x: Optional[Unit] = None,
-    ):
-        pass
-
     def _render_before_break(self, local_start_x, start, stop, dist_to_line_start):
-        self._render_complete(Point(start.x - self.bounding_rect.width, start.y))
+        self._render_complete(start)
 
     def _render_after_break(self, local_start_x, start):
-        self._render_complete(Point(start.x - self.bounding_rect.width, start.y))
+        self._render_complete(start)
 
     def _render_spanning_continuation(self, local_start_x, start, stop):
-        self._render_complete(Point(start.x - self.bounding_rect.width, start.y))
+        self._render_complete(start)
