@@ -71,10 +71,30 @@ Barlines automatically attach a :obj:`.BreakHint` immediately after them, so if 
 
     This currently doesn't work well, but should be fixed before release
 
+
+System Lines
+------------
+
+A line connecting a system's staves at the start of every line can be easily drawn with the :obj:`.SystemLine` class.
+
+.. rendered-example::
+
+   staff_1 = Staff(ORIGIN, None, Mm(40))
+   staff_2 = Staff((ZERO, Mm(15)), None, Mm(40))
+   staves = [staff_1, staff_2]
+   SystemLine(ZERO, staves)
+
+.. rendered-example::
+
+   flowable = Flowable(ORIGIN, None, Mm(400), Mm(30))
+   staff_1 = Staff(ORIGIN, flowable, Mm(400))
+   staff_2 = Staff((ZERO, Mm(15)), flowable, Mm(400))
+   SystemLine(ZERO, [staff_1, staff_2])
+
 Braces
 ------
 
-Staff system braces can be created with the :obj:`.Brace` class. Braces are automatically right-aligned to their given position and they appear at the beginning of every staff system after their placement.
+Staff system braces can be created with the :obj:`.Brace` class. Braces are automatically right-aligned to their given position and, like :obj:`.SystemLine`\ s, they appear at the beginning of every staff system after their placement.
 
 .. rendered-example::
 
@@ -89,4 +109,3 @@ Staff system braces can be created with the :obj:`.Brace` class. Braces are auto
    staff_1 = Staff(ORIGIN, flowable, Mm(400))
    staff_2 = Staff((ZERO, Mm(15)), flowable, Mm(400))
    Brace(ZERO, [staff_1, staff_2])
-
