@@ -1,10 +1,11 @@
-from typing import Optional, cast
+from typing import Optional
 
 from neoscore.core import neoscore
 from neoscore.core.brush import BrushDef
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicStringDef, MusicText
 from neoscore.core.pen import PenDef
+from neoscore.core.text_alignment import AlignmentX, AlignmentY
 from neoscore.core.units import Unit
 from neoscore.western.tab_staff import TabStaff
 
@@ -31,7 +32,8 @@ class TabStringText(MusicText):
     ):
         """
         Args:
-            pos_x: The x position relative to the parent
+            pos_x: The x position relative to the parent. The text will be
+                centered around this position.
             staff: The parent staff
             string: The 1-indexed string number this should appear on
             text: The text to display. Can be given as a SMuFL glyph name,
@@ -61,5 +63,6 @@ class TabStringText(MusicText):
             background_brush,
             z_index if z_index is not None else staff.z_index + 1,
             breakable,
+            alignment_x=AlignmentX.CENTER,
+            alignment_y=AlignmentY.CENTER,
         )
-        self.y = pos_y + cast(Unit, self.bounding_rect.height / 2)
