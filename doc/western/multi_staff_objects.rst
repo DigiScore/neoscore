@@ -60,12 +60,12 @@ Barlines automatically attach a :obj:`.BreakHint` immediately after them, so if 
 .. rendered-example::
 
    import random
-   flowable = Flowable(ORIGIN, None, Mm(400), Mm(15), break_threshold=Mm(30))
+   flowable = Flowable(ORIGIN, None, Mm(400), Mm(15), break_threshold=Mm(40))
    staff = Staff(ORIGIN, flowable, Mm(400))
    x = Mm(20)
    while x < Mm(400):
        Barline(x, [staff])
-       x += Mm(random.randint(20, 50))
+       x += Mm(random.randint(10, 40))
 
 .. todo::
 

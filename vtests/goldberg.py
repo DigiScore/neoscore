@@ -12,6 +12,7 @@ upper_staff = Staff((Mm(0), Mm(0)), flowable, Mm(500))
 lower_staff = Staff((Mm(0), Mm(20)), flowable, Mm(500))
 staves = [upper_staff, lower_staff]
 Brace(Mm(0), staves)
+SystemLine(Mm(0), staves)
 
 # We can use the same unit in the upper and lower staves since they
 # are the same size
@@ -92,5 +93,5 @@ Chordrest(b2, lower_staff, ["f,"], Duration(3, 4))
 
 
 # Barline to test line breaking
-Barline(Mm(150), staves)
+Barline(Mm(155), staves)
 render_vtest("goldberg")

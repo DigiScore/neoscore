@@ -220,7 +220,7 @@ class PositionedObject:
         pos_in_flowable = descendant_pos(self, self.flowable)
         dist_to_first_line_end = self.flowable.dist_to_line_end(pos_in_flowable.x)
         remaining_x = self.breakable_length - dist_to_first_line_end
-        if remaining_x < ZERO:
+        if remaining_x <= ZERO:
             self._render_complete(
                 canvas_pos_of(self),
                 self.flowable.dist_to_line_start(pos_in_flowable.x),
