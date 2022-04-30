@@ -41,6 +41,7 @@ We differ from traditional score-writing systems in many important aspects. Neos
    western/expressive_text.rst
    western/spanners.rst
    western/multi_staff_objects.rst
+   western/tablature.rst
 
 .. toctree::
    :caption: API Reference
