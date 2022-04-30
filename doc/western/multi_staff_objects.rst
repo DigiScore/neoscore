@@ -70,3 +70,23 @@ Barlines automatically attach a :obj:`.BreakHint` immediately after them, so if 
 .. todo::
 
     This currently doesn't work well, but should be fixed before release
+
+Braces
+------
+
+Staff system braces can be created with the :obj:`.Brace` class. Braces are automatically right-aligned to their given position and they appear at the beginning of every staff system after their placement.
+
+.. rendered-example::
+
+   staff_1 = Staff(ORIGIN, None, Mm(40))
+   staff_2 = Staff((ZERO, Mm(15)), None, Mm(40))
+   staves = [staff_1, staff_2]
+   Brace(ZERO, staves)
+
+.. rendered-example::
+
+   flowable = Flowable(ORIGIN, None, Mm(400), Mm(30))
+   staff_1 = Staff(ORIGIN, flowable, Mm(400))
+   staff_2 = Staff((ZERO, Mm(15)), flowable, Mm(400))
+   Brace(ZERO, [staff_1, staff_2])
+
