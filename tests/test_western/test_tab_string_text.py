@@ -3,6 +3,7 @@ from neoscore.core.brush import Brush
 from neoscore.core.music_font import MusicFont
 from neoscore.core.pen import Pen
 from neoscore.core.point import ORIGIN
+from neoscore.core.text_alignment import AlignmentX, AlignmentY
 from neoscore.core.units import Inch, Mm
 from neoscore.western.tab_staff import TabStaff
 from neoscore.western.tab_string_text import TabStringText
@@ -15,10 +16,10 @@ class TestTabStringText(AppTest):
         super().setUp()
         self.staff = TabStaff(ORIGIN, None, Mm(200))
 
-    def test_y_position_centered_on_string(self):
+    def test_alignment(self):
         text = TabStringText(Mm(10), self.staff, 1, "fingering1")
-        # Because font sizes flake, can't hard-code expected values here
-        assert text.y == self.staff.string_y(1) + (text.bounding_rect.height / 2)
+        assert text.alignment_x == AlignmentX.CENTER
+        assert text.alignment_y == AlignmentY.CENTER
 
     def test_font_defaults_to_staff(self):
         text = TabStringText(Mm(10), self.staff, 1, "fingering1")
