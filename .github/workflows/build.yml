@@ -72,8 +72,7 @@ jobs:
       - name: Build docs site
         working-directory: doc
         run: |
-          echo $PATH
-          which python
+          poetry shell
           make html
       - name: Deploy docs site
         if: github.ref == 'refs/heads/doc-build-testing'
