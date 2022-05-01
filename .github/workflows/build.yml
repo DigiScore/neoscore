@@ -71,6 +71,8 @@ jobs:
       #     unimport --check --exclude "neoscore/common.py|.venv"
       - name: Build docs site
         working-directory: doc
+        env:
+          NEOSCORE_HEADLESS: True
         run: |
           source ../.venv/bin/activate
           echo $PATH
