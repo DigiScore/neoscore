@@ -63,15 +63,15 @@ class TabClef(MusicText):
     def breakable_length(self) -> Unit:
         return self.parent.breakable_length - self.x
 
-    def _render_before_break(
+    def render_before_break(
         self, local_start_x: Unit, start: Point, stop: Point, dist_to_line_start: Unit
     ):
-        super()._render_complete(start)
+        super().render_complete(start)
 
-    def _render_after_break(self, local_start_x: Unit, start: Point):
-        super()._render_complete(start)
+    def render_after_break(self, local_start_x: Unit, start: Point):
+        super().render_complete(start)
 
-    def _render_spanning_continuation(
+    def render_spanning_continuation(
         self, local_start_x: Unit, start: Point, stop: Point
     ):
-        super()._render_complete(start)
+        super().render_complete(start)

@@ -237,6 +237,6 @@ class Flowable(PositionedObject):
         else:
             return len(self.layout_controllers) - 1
 
-    def _render(self):
+    def render(self):
         self._generate_layout_controllers()
-        super()._render()
+        super().render()

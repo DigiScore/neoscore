@@ -182,7 +182,7 @@ class TestStaff(AppTest):
         staff = Staff(
             (Mm(2), Mm(3)), self.flowable, Mm(10), line_spacing=Mm(1), line_count=5
         )
-        self.flowable._render()
+        self.flowable.render()
         # Top line
         assert staff.elements[0].pos == Point(Mm(0), Mm(0))
         assert staff.elements[0].parent == staff
@@ -196,4 +196,4 @@ class TestStaff(AppTest):
 
     def test_staff_outside_flowable(self):
         staff = Staff((Mm(2), Mm(3)), None, Mm(10), line_spacing=Mm(1), line_count=5)
-        staff._render()
+        staff.render()

@@ -210,7 +210,7 @@ def show(refresh_func: Optional[RefreshFunc] = None, display_page_geometry=True)
     _app_interface._clear_scene()
     if display_page_geometry:
         _display_page_geometry()
-    document._render()
+    document.render()
     if refresh_func:
         set_refresh_func(refresh_func)
     _app_interface.show()
@@ -244,7 +244,7 @@ def render_pdf(pdf_path: str | pathlib.Path, dpi: int = 300):
     global document
     global _app_interface
     _clear_interfaces()
-    document._render()
+    document.render()
     # Render all pages to temp files
     page_imgs = []
     render_threads = []
@@ -331,7 +331,7 @@ def render_image(
 
     rect = rect_from_def(rect)
     bg_color = background_brush.color
-    document._render()
+    document.render()
 
     return _app_interface.render_image(
         rect,
@@ -350,7 +350,7 @@ def _repl_refresh_func(_: float) -> float:
     Refreshes at a rate of 5 FPS.
     """
     _clear_interfaces()
-    document._render()
+    document.render()
     return 0.2
 
 
@@ -367,7 +367,7 @@ def set_refresh_func(refresh_func: RefreshFunc, target_fps: int = 60):
     def wrapped_refresh_func(frame_time: float) -> float:
         _clear_interfaces()
         refresh_func(frame_time)
-        document._render()
+        document.render()
         elapsed_time = time() - frame_time
         return max(frame_wait - elapsed_time, 0)
 

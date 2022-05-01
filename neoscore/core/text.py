@@ -220,7 +220,7 @@ class Text(PaintedObject):
 
     ######## PRIVATE METHODS ########
 
-    def _render_slice(
+    def render_slice(
         self,
         pos: Point,
         clip_start_x: Optional[Unit] = None,
@@ -251,23 +251,23 @@ class Text(PaintedObject):
         slice_interface.render()
         self.interfaces.append(slice_interface)
 
-    def _render_complete(
+    def render_complete(
         self,
         pos: Point,
         dist_to_line_start: Optional[Unit] = None,
         local_start_x: Optional[Unit] = None,
     ):
-        self._render_slice(pos, None, None)
+        self.render_slice(pos, None, None)
 
-    def _render_before_break(
+    def render_before_break(
         self, local_start_x: Unit, start: Point, stop: Point, dist_to_line_start: Unit
     ):
-        self._render_slice(start, ZERO, stop.x - start.x)
+        self.render_slice(start, ZERO, stop.x - start.x)
 
-    def _render_after_break(self, local_start_x: Unit, start: Point):
-        self._render_slice(start, local_start_x, None)
+    def render_after_break(self, local_start_x: Unit, start: Point):
+        self.render_slice(start, local_start_x, None)
 
-    def _render_spanning_continuation(
+    def render_spanning_continuation(
         self, local_start_x: Unit, start: Point, stop: Point
     ):
-        self._render_slice(start, local_start_x, stop.x - start.x)
+        self.render_slice(start, local_start_x, stop.x - start.x)

@@ -62,7 +62,7 @@ class AppInterface:
         self.registered_music_fonts = {}
         self.font_database = QFontDatabase()
         self.repl_refresh_func = repl_refresh_func
-        self._render_image_thread_semaphore = threading.Semaphore(
+        self.render_image_thread_semaphore = threading.Semaphore(
             _RENDER_IMAGE_THREAD_MAX
         )
 
@@ -153,7 +153,7 @@ class AppInterface:
         painter.end()
 
         def finalize():
-            with self._render_image_thread_semaphore:
+            with self.render_image_thread_semaphore:
                 final_image = (
                     AppInterface._autocrop(q_image, q_color) if autocrop else q_image
                 )

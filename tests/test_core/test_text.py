@@ -153,6 +153,6 @@ class TestText(AppTest):
             alignment_x=AlignmentX.CENTER,
             alignment_y=AlignmentY.CENTER,
         )
-        obj._render()
+        obj.render()
         rendered_pos = obj.interfaces[0].pos
         assert_almost_equal(rendered_pos, Point(Unit(-20), Unit(2.5)), epsilon=1.5)

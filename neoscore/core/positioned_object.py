@@ -203,16 +203,16 @@ class PositionedObject:
         in this function.
         """
 
-    def _render(self):
+    def render(self):
         """Render the object and all its children."""
         if self.breakable_length != ZERO and self.flowable is not None:
-            self._render_in_flowable()
+            self.render_in_flowable()
         else:
-            self._render_complete(canvas_pos_of(self))
+            self.render_complete(canvas_pos_of(self))
         for child in self.children:
-            child._render()
+            child.render()
 
-    def _render_in_flowable(self):
+    def render_in_flowable(self):
         """Render the object to the scene, dispatching partial rendering calls
         when needed if an object flows across a break in the flowable.
         """
@@ -221,7 +221,7 @@ class PositionedObject:
         dist_to_first_line_end = self.flowable.dist_to_line_end(pos_in_flowable.x)
         remaining_x = self.breakable_length - dist_to_first_line_end
         if remaining_x <= ZERO:
-            self._render_complete(
+            self.render_complete(
                 canvas_pos_of(self),
                 self.flowable.dist_to_line_start(pos_in_flowable.x),
                 pos_in_flowable.x,
@@ -236,7 +236,7 @@ class PositionedObject:
         render_end_pos = Point(
             render_start_pos.x + first_line_length, render_start_pos.y
         )
-        self._render_before_break(
+        self.render_before_break(
             pos_in_flowable.x,
             render_start_pos,
             render_end_pos,
@@ -256,7 +256,7 @@ class PositionedObject:
                     render_start_pos.x + current_line.length,
                     render_start_pos.y,
                 )
-                self._render_spanning_continuation(
+                self.render_spanning_continuation(
                     self.breakable_length - remaining_x,
                     render_start_pos,
                     render_end_pos,
@@ -270,9 +270,9 @@ class PositionedObject:
             Point(current_line.flowable_x, pos_in_flowable.y)
         )
         render_end_pos = Point(render_start_pos.x + remaining_x, render_start_pos.y)
-        self._render_after_break(self.breakable_length - remaining_x, render_start_pos)
+        self.render_after_break(self.breakable_length - remaining_x, render_start_pos)
 
-    def _render_complete(
+    def render_complete(
         self,
         pos: Point,
         dist_to_line_start: Optional[Unit] = None,
@@ -301,7 +301,7 @@ class PositionedObject:
 
         """
 
-    def _render_before_break(
+    def render_before_break(
         self, local_start_x: Unit, start: Point, stop: Point, dist_to_line_start: Unit
     ):
         """Render the beginning of the object up to a stopping point.
@@ -327,7 +327,7 @@ class PositionedObject:
             rendered appearances should override this.
         """
 
-    def _render_after_break(self, local_start_x: Unit, start: Point):
+    def render_after_break(self, local_start_x: Unit, start: Point):
         """Render the continuation of an object after a break.
 
         For use in flowable containers when rendering an object that
@@ -346,7 +346,7 @@ class PositionedObject:
             rendered appearances should override this.
         """
 
-    def _render_spanning_continuation(
+    def render_spanning_continuation(
         self, local_start_x: Unit, start: Point, stop: Point
     ):
         """

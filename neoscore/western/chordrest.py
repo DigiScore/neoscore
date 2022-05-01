@@ -479,8 +479,8 @@ class Chordrest(PositionedObject, StaffObject):
         self._create_dots()
         pass
 
-    def _render(self):
-        super()._render()
+    def render(self):
+        super().render()
 
     def _create_ledgers(self):
         """Create all required ledger lines and store them in ``self.ledgers``

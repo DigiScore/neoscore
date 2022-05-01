@@ -105,7 +105,7 @@ class _KeySignatureAccidental(MusicText, StaffObject):
     def _padded_clef_width(self, clef):
         return clef.bounding_rect.width + self.staff.unit(0.5)
 
-    def _render_occurrence(
+    def render_occurrence(
         self, pos: Point, local_start_x: Optional[Unit], dist_to_line_start: Unit
     ):
         """Render one appearance of one key signature accidental.
@@ -144,25 +144,25 @@ class _KeySignatureAccidental(MusicText, StaffObject):
             # at x=0. We really need proper staff-left-margin handling for this kind of
             # thing.
             visual_pos_x += self._padded_clef_width(clef)
-        self._render_slice(Point(visual_pos_x, visual_pos_y))
+        self.render_slice(Point(visual_pos_x, visual_pos_y))
 
-    def _render_complete(
+    def render_complete(
         self,
         pos: Point,
         dist_to_line_start: Optional[Unit] = None,
         local_start_x: Optional[Unit] = None,
     ):
-        self._render_occurrence(pos, local_start_x, cast(Unit, dist_to_line_start))
+        self.render_occurrence(pos, local_start_x, cast(Unit, dist_to_line_start))
 
-    def _render_before_break(
+    def render_before_break(
         self, local_start_x: Unit, start: Point, stop: Point, dist_to_line_start: Unit
     ):
-        self._render_occurrence(start, local_start_x, dist_to_line_start)
+        self.render_occurrence(start, local_start_x, dist_to_line_start)
 
-    def _render_after_break(self, local_start_x: Unit, start: Point):
-        self._render_occurrence(start, local_start_x, ZERO)
+    def render_after_break(self, local_start_x: Unit, start: Point):
+        self.render_occurrence(start, local_start_x, ZERO)
 
-    def _render_spanning_continuation(
+    def render_spanning_continuation(
         self, local_start_x: Unit, start: Point, stop: Point
     ):
-        self._render_occurrence(start, local_start_x, ZERO)
+        self.render_occurrence(start, local_start_x, ZERO)

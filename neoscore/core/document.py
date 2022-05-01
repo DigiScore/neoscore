@@ -71,14 +71,14 @@ class Document:
             for obj in page.descendants:
                 func(obj)
 
-    def _render(self):
+    def render(self):
         """Render all items in the document.
 
         Returns: None
         """
         self._run_on_all_descendants(lambda g: g._pre_render_hook())
         for page in self.pages:
-            page._render()
+            page.render()
         self._run_on_all_descendants(lambda g: g._post_render_hook())
 
     ######## PUBLIC METHODS ########

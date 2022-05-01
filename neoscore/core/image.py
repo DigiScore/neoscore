@@ -67,7 +67,7 @@ class Image(PositionedObject):
 
     # Since Image isn't breakable (for now?), we only need to
     # implement complete rendering
-    def _render_complete(
+    def render_complete(
         self,
         pos: Point,
         dist_to_line_start: Optional[Unit] = None,
