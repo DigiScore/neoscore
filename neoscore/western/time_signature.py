@@ -92,6 +92,9 @@ class TimeSignature(PositionedObject, HasMusicFont):
         self.lower_text.text = self._meter.lower_text_glyph_names
         self._position_glyphs()
 
+    # TODO MEDIUM these glyph positions can probably be simplified now with proper
+    # center-alignment support now
+
     def _position_glyphs(self):
         """This must be called after any modification to the glyph text"""
         # Vertically position

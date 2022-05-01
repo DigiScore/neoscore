@@ -1,7 +1,7 @@
 Tablature
 =========
 
-Neoscore offers a classes to facilitate writing tabs. The built-in functionality was mostly written with guitar tabs in mind, but should serve other tablature needs as well.
+Neoscore offers a few classes to facilitate writing tabs. The built-in functionality was mostly written with guitar tabs in mind, but should serve other tablature needs as well.
 
 Tabs can be written with the dedicated staff and clef types, :obj:`.TabStaff` and :obj:`.TabClef`.
 
@@ -10,7 +10,7 @@ Tabs can be written with the dedicated staff and clef types, :obj:`.TabStaff` an
    staff = TabStaff(ORIGIN, None, Mm(50))
    TabClef(ZERO, staff)  # Tab clefs are purely cosmetic
 
-Tab staves have a few important differences from conventionaly ones. Tab staves typically have a wider line spacing than conventionally staves, and by default their font is sized such that ``tab_staff.unit(1)`` is 2/3 the line spacing.
+Significantly, tab staves typically have a wider line spacing than conventionally staves, and by default their font is sized such that ``tab_staff.unit(1)`` is 2/3 the line spacing.
 
 .. rendered-example::
 
@@ -34,15 +34,15 @@ In this system, staff positions no longer neatly correspond to multiples of ``st
    TabClef(ZERO, staff)
    MusicText((Mm(10), staff.string_y(5)), staff, 'noteheadBlack')
 
-Of course, you probably won't be using noteheads in your tablature! Like any other context, you can place most neoscore objects in tabs. For the common use-case of placing musical text on staff lines we provide :obj:`.TabStringText`, a centered :obj:`.MusicText` which by default hides its background.
+Of course, you probably won't be using noteheads in your tablature! As in any other context, you can place most neoscore objects in tab staves. For the common use-case of placing musical text on staff lines we provide :obj:`.TabStringText`, a :obj:`.MusicText` centered on a line number which by default hides its background.
 
 .. rendered-example::
 
    staff = TabStaff(ORIGIN, None, Mm(50))
    TabClef(ZERO, staff)
-   TabStringText(Mm(10), staff, 2, "guitarShake")  # 2 is the string number
+   TabStringText(Mm(10), staff, 2, "guitarShake")  # 2 is the line/string number
 
-For the common use-case of putting numbers on lines, like fret numbers in guitar tabs, we provide a specialized :obj:`.TabNumber` class which just takes a string and a number to write.
+For the common use-case of putting numbers on lines, like fret numbers in guitar tabs, we provide a specialized :obj:`.TabNumber` class which just takes a string/line number and a number to write.
 
 .. rendered-example::
 

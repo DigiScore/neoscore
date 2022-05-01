@@ -67,9 +67,6 @@ Barlines automatically attach a :obj:`.BreakHint` immediately after them, so if 
        Barline(x, [staff])
        x += Mm(random.randint(10, 40))
 
-.. todo::
-
-    This currently doesn't work well, but should be fixed before release
 
 
 System Lines

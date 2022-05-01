@@ -19,7 +19,7 @@ Each staff has an associated :obj:`unit <.Staff.unit>` type which encodes the di
 .. rendered-example::
 
    staff = Staff(ORIGIN, None, Mm(100))
-   Text((Mm(0), staff.music_font.unit(1)), staff, "text on second staff line")
+   Text((Mm(0), staff.unit(1)), staff, "text on second staff line")
 
 Staves support customization out of the box; they can be any size, have any number of lines, and they can be drawn with different pens.
 
@@ -44,7 +44,7 @@ Clefs
     Clef(Mm(20), staff, 'treble')
     Clef(Mm(200), staff, 'bass')
 
-Several common clef types are built in, and for convenience these can be passed in by their string names. These include:
+Several common clef types are built in, and for convenience these can be specified by their string names. These include:
 
 * ``'treble'``
 * ``'treble_8vb'``
