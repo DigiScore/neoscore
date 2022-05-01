@@ -1,5 +1,5 @@
 [build]
-publish = "_build/html"
+publish = "doc/_build/html"
 command = """
 pip install -q poetry &&
 poetry export --dev --without-hashes > requirements.txt &&
