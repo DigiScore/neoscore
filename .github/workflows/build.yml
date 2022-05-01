@@ -72,7 +72,7 @@ jobs:
       - name: Build docs site
         working-directory: doc
         run: |
-          source .venv/bin/activate
+          source ../.venv/bin/activate
           echo $PATH
           which python
           make html
