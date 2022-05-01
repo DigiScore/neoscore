@@ -121,6 +121,28 @@ class TestPositionedObject(AppTest):
         # Assert descendants content
         assert {child_2} == descendants_set
 
+    def test_ancestors(self):
+        root = PositionedObject(ORIGIN, None)
+        child_1 = PositionedObject(ORIGIN, root)
+        child_2 = PositionedObject(ORIGIN, child_1)
+        ancestors = list(child_2.ancestors)
+        assert ancestors == [
+            child_1,
+            root,
+            neoscore.document.pages[0],
+            neoscore.document,
+        ]
+
+    def test_first_ancestor_with_attr(self):
+        class MockDifferentClass(PositionedObject):
+            test_attr = 1
+
+        root = MockDifferentClass(ORIGIN, None)
+        child_1 = PositionedObject(ORIGIN, root)
+        child_2 = PositionedObject(ORIGIN, child_1)
+        assert child_2.first_ancestor_with_attr("test_attr") == root
+        assert child_2.first_ancestor_with_attr("not_found") == None
+
     def test_length_is_zero(self):
         obj = PositionedObject((Unit(5), Unit(6)), None)
         assert obj.breakable_length == ZERO

@@ -4,11 +4,7 @@ from collections.abc import Iterator
 from typing import TYPE_CHECKING, Any, Optional, Type, cast
 
 from neoscore.core import neoscore
-from neoscore.core.mapping import (
-    canvas_pos_of,
-    descendant_pos,
-    first_ancestor_with_attr,
-)
+from neoscore.core.mapping import canvas_pos_of, descendant_pos
 from neoscore.core.point import Point, PointDef
 from neoscore.core.units import ZERO, Unit
 from neoscore.interface.positioned_object_interface import PositionedObjectInterface
@@ -136,7 +132,7 @@ class PositionedObject:
     def flowable(self) -> Optional[Flowable]:
         """The flowable this object belongs in."""
         return cast(
-            Any, first_ancestor_with_attr(self, "_neoscore_flowable_type_marker")
+            Any, self.first_ancestor_with_attr("_neoscore_flowable_type_marker")
         )
 
     @property
@@ -178,6 +174,29 @@ class PositionedObject:
         for descendant in self.descendants:
             if hasattr(descendant, attribute):
                 yield descendant
+
+    @property
+    def ancestors(self) -> Iterator[PositionedObject]:
+        """All ancestors of this object.
+
+        Follows the chain of parents up to the document root.
+
+        The order begins with ``self.parent`` and traverses upward in the document tree.
+        """
+        ancestor = self.parent
+        while True:
+            yield (ancestor)
+            if not hasattr(ancestor, "parent"):
+                # Document root found
+                break
+            ancestor = ancestor.parent
+
+    def first_ancestor_with_attr(self, attr: str) -> Optional[PositionedObject]:
+        """Get a ``Positioned`` object's nearest ancestor with an attribute"""
+        return next(
+            (item for item in self.ancestors if hasattr(item, attr)),
+            None,
+        )
 
     def remove(self):
         """Remove this object from the document."""

@@ -4,12 +4,7 @@ from typing import Optional
 
 from neoscore.core import neoscore
 from neoscore.core.layout_controller import LayoutController
-from neoscore.core.mapping import (
-    canvas_pos_of,
-    first_ancestor_with_attr,
-    map_between,
-    map_between_x,
-)
+from neoscore.core.mapping import canvas_pos_of, map_between, map_between_x
 from neoscore.core.new_line import NewLine
 from neoscore.core.point import Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
@@ -129,7 +124,7 @@ class Flowable(PositionedObject):
         while True:
             if not self.layout_controllers:
                 flowable_start_x = ZERO
-                page = first_ancestor_with_attr(self, "_neoscore_page_type_marker")
+                page = self.first_ancestor_with_attr("_neoscore_page_type_marker")
                 flowable_page_pos = map_between(page, self)
                 controller_x = flowable_page_pos.x
                 controller_y = flowable_page_pos.y

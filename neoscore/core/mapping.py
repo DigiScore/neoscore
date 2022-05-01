@@ -1,28 +1,12 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Iterator, Optional, cast
+from typing import TYPE_CHECKING, Any, cast
 
 from neoscore.core.point import ORIGIN, Point
 from neoscore.core.units import Unit
 
 if TYPE_CHECKING:
     from neoscore.core.positioned_object import PositionedObject
-
-
-def ancestors(obj: PositionedObject) -> Iterator[PositionedObject]:
-    """All ancestors of this object.
-
-    Follows the chain of parents up to the document root.
-
-    The order begins with ``self.parent`` and traverses upward in the document tree.
-    """
-    ancestor = obj.parent
-    while True:
-        yield (ancestor)
-        if not hasattr(ancestor, "parent"):
-            # Document root found
-            break
-        ancestor = ancestor.parent
 
 
 def map_between(src: PositionedObject, dst: PositionedObject) -> Point:
@@ -49,15 +33,15 @@ def map_between(src: PositionedObject, dst: PositionedObject) -> Point:
     if src.parent == dst:
         return -src.pos
     # Start by collecting all ancestor using IDs because they're hashable
-    src_ancestor_ids = set(id(obj) for obj in ancestors(src))
+    src_ancestor_ids = set(id(obj) for obj in src.ancestors)
     relative_dst_pos = dst.pos
-    for dst_ancestor in ancestors(dst):
+    for dst_ancestor in dst.ancestors:
         if hasattr(dst_ancestor, "parent"):
             relative_dst_pos += dst_ancestor.pos
         if id(dst_ancestor) in src_ancestor_ids:
             # Now find relative_src_pos and return relative_dst_pos - relative_src_pos
             relative_src_pos = src.pos
-            for src_ancestor in ancestors(src):
+            for src_ancestor in src.ancestors:
                 if hasattr(src_ancestor, "parent"):
                     relative_src_pos += src_ancestor.pos
                 if src_ancestor == dst_ancestor:
@@ -80,7 +64,7 @@ def descendant_pos(descendant: PositionedObject, ancestor: PositionedObject) -> 
         ValueError: If ``ancestor`` is not an ancestor of ``descendant``
     """
     pos = descendant.pos
-    for parent in ancestors(descendant):
+    for parent in descendant.ancestors:
         if parent == ancestor:
             return pos
         pos += parent.pos
@@ -96,7 +80,7 @@ def descendant_pos_x(descendant: PositionedObject, ancestor: PositionedObject) -
         ValueError: If ``ancestor`` is not an ancestor of ``descendant``
     """
     pos_x = descendant.pos.x
-    for parent in ancestors(descendant):
+    for parent in descendant.ancestors:
         if parent == ancestor:
             return pos_x
         pos_x += parent.pos.x
@@ -121,16 +105,3 @@ def canvas_pos_of(obj: PositionedObject) -> Point:
             # so let it decide where the point goes.
             return cast(Any, current).map_to_canvas(pos)
     return pos
-
-
-# this doesn't really belong here...
-
-
-def first_ancestor_with_attr(
-    positioned: PositionedObject, attr: str
-) -> Optional[Parent]:
-    """Get a ``Positioned`` object's nearest ancestor with an attribute"""
-    return next(
-        (item for item in ancestors(positioned) if hasattr(item, attr)),
-        None,
-    )

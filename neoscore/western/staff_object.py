@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, Optional, cast
 
 from neoscore.core.exceptions import NoAncestorStaffError
-from neoscore.core.mapping import first_ancestor_with_attr, map_between, map_between_x
+from neoscore.core.mapping import map_between, map_between_x
 from neoscore.core.point import Point
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import Unit
@@ -56,4 +56,4 @@ class StaffObject:
         marker = "_neoscore_staff_type_marker"
         if hasattr(obj, marker):
             return cast(Any, obj)
-        return first_ancestor_with_attr(obj, marker)
+        return obj.first_ancestor_with_attr(marker)
