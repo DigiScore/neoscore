@@ -72,6 +72,8 @@ jobs:
       - name: Build docs site
         working-directory: doc
         run: |
+          echo $PATH
+          which python
           make html
       - name: Deploy docs site
         if: github.ref == 'refs/heads/doc-build-testing'
@@ -79,4 +81,5 @@ jobs:
         env:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        run: netlify deploy --dir=_build/html --prod
+        run:
+          netlify deploy --dir=_build/html --prod
