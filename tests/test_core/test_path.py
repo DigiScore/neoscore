@@ -67,6 +67,7 @@ class TestPath(AppTest):
         assert len(path.elements) == 2
         assert_path_els_equal(path.elements[0], MoveTo(ORIGIN, path))
         assert_path_els_equal(path.elements[1], LineTo(Point(Unit(50), Unit(60)), path))
+        assert path.elements[1].pos != Point(Unit(5), Unit(6))
 
     def test_line_to(self):
         path = Path((Unit(5), Unit(6)), None)
