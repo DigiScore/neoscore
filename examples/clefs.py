@@ -2,7 +2,7 @@ from neoscore.common import *
 from neoscore.western.clef_type import CLEF_TYPE_SHORTHAND_NAMES
 
 neoscore.setup()
-from helpers import render_vtest
+from helpers import render_example
 
 staves = []
 
@@ -22,4 +22,4 @@ for (i, clef_type) in enumerate(CLEF_TYPE_SHORTHAND_NAMES.values()):
 Barline(unit(35), staves)
 Barline(unit(35.5), staves)
 
-render_vtest("clefs")
+render_example("clefs")

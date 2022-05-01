@@ -1,6 +1,6 @@
 import pathlib
 
-from helpers import render_vtest
+from helpers import render_example
 
 from neoscore.common import *
 
@@ -13,4 +13,4 @@ Image(ORIGIN, None, resources_dir / "pixmap_image.png", 2)
 
 Image((Mm(10), Mm(10)), None, resources_dir / "svg_image.svg", 2)
 
-render_vtest("images")
+render_example("images")

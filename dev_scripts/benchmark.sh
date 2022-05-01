@@ -1,3 +1,3 @@
-# Benchmark the vtest with https://github.com/sharkdp/hyperfine
+# Benchmark the example with https://github.com/sharkdp/hyperfine
 
-hyperfine 'python vtests/vtest.py --image'
+hyperfine 'python examples/kitchen_sink.py --image'

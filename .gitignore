@@ -22,8 +22,8 @@ htmlcov
 # pytest
 .pytest_cache
 
-# vtest output files
-vtests/output
+# example output files
+examples/output
 
 # Docs
 doc/_build

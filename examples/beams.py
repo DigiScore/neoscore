@@ -1,6 +1,6 @@
 from typing import NamedTuple, Optional
 
-from helpers import render_vtest
+from helpers import render_example
 
 from neoscore.common import *
 from neoscore.core.directions import DirectionY
@@ -138,4 +138,4 @@ create_example(
     ]
 )
 
-render_vtest("beams")
+render_example("beams")

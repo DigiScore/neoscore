@@ -1,4 +1,4 @@
-from helpers import render_vtest
+from helpers import render_example
 
 from neoscore.common import *
 
@@ -16,4 +16,4 @@ and <span style="color: red">with coloring</span>!
 
 rt = RichText((Mm(0), Mm(0)), None, text, Mm(80))
 
-render_vtest("rich_text")
+render_example("rich_text")

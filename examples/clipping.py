@@ -1,4 +1,4 @@
-from helpers import render_vtest
+from helpers import render_example
 
 from neoscore.common import *
 from neoscore.core.units import ZERO
@@ -22,4 +22,4 @@ w = MusicText((Mm(240), staff.unit(2)), staff, ["gClef"] * 100)
 
 p = Path.straight_line((ZERO, Mm(-10)), w, end=(w.breakable_length, ZERO))
 
-render_vtest("clipping")
+render_example("clipping")

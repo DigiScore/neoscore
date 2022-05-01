@@ -1,4 +1,4 @@
-from helpers import render_vtest
+from helpers import render_example
 
 from neoscore.common import *
 
@@ -17,4 +17,4 @@ staff_2 = Staff((ZERO, Mm(30)), None, Mm(100), line_count=3)
 clef = Clef(Mm(0), staff_2, "percussion_2")
 Chordrest(Mm(10), staff_2, ["c"], (1, 8), table=notehead_tables.X)
 
-render_vtest("percussion")
+render_example("percussion")

@@ -1,6 +1,6 @@
 import math
 
-from helpers import render_vtest
+from helpers import render_example
 
 from neoscore.common import *
 
@@ -45,4 +45,4 @@ for i in range(1, 10):
     Text((ZERO, Mm(-4)), arc, f"θ={angle:.2f}")
 
 
-render_vtest("shapes")
+render_example("shapes")

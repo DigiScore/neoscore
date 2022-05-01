@@ -1,4 +1,4 @@
-from helpers import render_vtest
+from helpers import render_example
 
 from neoscore.common import *
 
@@ -45,4 +45,4 @@ arp = RepeatingMusicTextLine(
 )
 
 
-render_vtest("rotation")
+render_example("rotation")

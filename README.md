@@ -75,7 +75,7 @@ And you can run the visual test / development sandbox to see a lot more
 of the API in action with:
 
 ```sh
-$ python vtests/vtest.py
+$ python examples/kitchen_sink.py
 ```
 
 ### documentation

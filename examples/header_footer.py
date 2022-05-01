@@ -1,4 +1,4 @@
-from helpers import render_vtest
+from helpers import render_example
 
 from neoscore.common import *
 from neoscore.core import paper
@@ -18,4 +18,4 @@ flowable = Flowable((Mm(0), Mm(0)), None, Mm(5000), Mm(15), Mm(5))
 staff = Staff((Mm(0), Mm(0)), flowable, Mm(5000), Mm(1))
 
 
-render_vtest("header_footer")
+render_example("header_footer")

@@ -1,4 +1,4 @@
-from helpers import render_vtest
+from helpers import render_example
 
 from neoscore.common import *
 
@@ -50,4 +50,4 @@ flowable_x_centered = Text(
 Path.straight_line((ZERO, Mm(-5)), flowable_x_centered, (ZERO, Mm(10)))
 
 
-render_vtest("text")
+render_example("text")

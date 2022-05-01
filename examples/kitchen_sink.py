@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 
-"""A development sandbox used for manually checking visual outputs."""
+
+"""A development sandbox with a large mess of objects in it.
+
+This is not a good example for learning from - it will probably be deleted soon.
+"""
 import random
 
-from helpers import render_vtest
+from helpers import render_example
 
 from neoscore.common import *
 
@@ -147,4 +151,4 @@ Path.rect(
     "#ff0000",
 )
 
-render_vtest("vtest")
+render_example("example")

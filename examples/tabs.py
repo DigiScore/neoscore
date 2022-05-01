@@ -1,4 +1,4 @@
-from helpers import render_vtest
+from helpers import render_example
 
 from neoscore.common import *
 
@@ -49,4 +49,4 @@ all_staves = [staff_1, staff_2, regular_staff]
 
 Barline(Mm(22), all_staves)
 
-render_vtest("tabs")
+render_example("tabs")

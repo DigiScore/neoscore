@@ -5,10 +5,12 @@ import tempfile
 
 from neoscore.core import neoscore
 
+"""Scaffolding for example execution"""
+
 output_dir = pathlib.Path(__file__).parent / "output"
 
 
-def render_vtest(name: str):
+def render_example(name: str):
     tmp_mode = "--tmp" in sys.argv
     if not output_dir.exists() and not tmp_mode:
         os.mkdir(output_dir)

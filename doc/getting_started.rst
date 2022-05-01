@@ -35,4 +35,4 @@ We also have `a large collection of example scores <https://github.com/DigiScore
 
 .. todo::
 
-   Update link to examples once vtests are moved to examples dir
+   Update link to examples once examples are moved to examples dir

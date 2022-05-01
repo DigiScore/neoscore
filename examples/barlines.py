@@ -1,4 +1,4 @@
-from helpers import render_vtest
+from helpers import render_example
 
 from neoscore.common import *
 from neoscore.core.flowable import Flowable
@@ -67,4 +67,4 @@ test_tab = Barline(Mm(10), all_tabs, barline_style.THIN_DOUBLE)
 for n, test_line in enumerate(barline_style.ALL_STYLES):
     Barline(Mm(10 * (n + 1) + 10), all_tabs, styles=test_line)
 
-render_vtest("barlines")
+render_example("barlines")

@@ -1,4 +1,4 @@
-from helpers import render_vtest
+from helpers import render_example
 
 from neoscore.common import *
 
@@ -94,4 +94,4 @@ Chordrest(b2, lower_staff, ["f,"], Duration(3, 4))
 
 # Barline to test line breaking
 Barline(Mm(155), staves)
-render_vtest("goldberg")
+render_example("goldberg")

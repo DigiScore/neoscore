@@ -28,7 +28,7 @@ By default neoscore uses the standard set of noteheads, automatically selecting 
    Chordrest(Mm(30), staff, ["c"], (1, 4), table=notehead_tables.SLASH)
    Chordrest(Mm(40), staff, ["c"], (1, 4), table=notehead_tables.INVISIBLE)
 
-You can check out the complete set of built-in notehead tables in `the noteheads example <https://github.com/DigiScore/neoscore/blob/main/vtests/noteheads.py>`_.
+You can check out the complete set of built-in notehead tables in `the noteheads example <https://github.com/DigiScore/neoscore/blob/main/examples/noteheads.py>`_.
 
 Individual Notehead Glyphs
 --------------------------

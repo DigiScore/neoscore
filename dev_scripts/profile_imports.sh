@@ -1,3 +1,3 @@
 set +x
 export PYTHONPROFILEIMPORTTIME=1
-python vtests/vtest.py --image 2>&1 | less
+python examples/kitchen_sink.py --image 2>&1 | less

@@ -1,4 +1,4 @@
-from helpers import render_vtest
+from helpers import render_example
 
 from neoscore.common import *
 from neoscore.western.meter import MeterDef
@@ -22,4 +22,4 @@ meters: list[MeterDef] = [
 for (i, meter) in enumerate(meters):
     TimeSignature(Mm(i * 15), staff, meter)
 
-render_vtest("time_signature")
+render_example("time_signature")

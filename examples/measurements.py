@@ -1,4 +1,4 @@
-from helpers import render_vtest
+from helpers import render_example
 
 from neoscore.common import *
 from neoscore.core import paper
@@ -19,4 +19,4 @@ size_12_pt_text = Text(
 Path.straight_line((Mm(-2), ZERO), size_12_pt_text, (ZERO, GraphicUnit(-12)))
 Path.straight_line((Mm(-4), ZERO), size_12_pt_text, (ZERO, Mm(-4.2333)))
 
-render_vtest("measurements")
+render_example("measurements")

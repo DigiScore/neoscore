@@ -2,7 +2,7 @@
 # Also uses Eye of Gnome (eog) as an image viewer
 
 Help() {
-    echo "Generate and display a vtest.py callgraph"
+    echo "Generate and display a kitchen_sink.py callgraph"
     echo
     echo "Usage: sh dev_scripts/make_callgraph.sh [root_func]"
     echo
@@ -20,7 +20,7 @@ done
 
 set -o xtrace
 mkdir tmp
-python -m cProfile -o tmp/out.pstats vtests/vtest.py --image
+python -m cProfile -o tmp/out.pstats examples/kitchen_sink.py --image
 gprof2dot -f pstats --root="$1" tmp/out.pstats | dot -Tpng -o tmp/graph.png
 eog tmp/graph.png
 rm -r tmp
