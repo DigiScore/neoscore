@@ -1,10 +1,7 @@
 [build]
-publish = "doc/_build/html"
+publish = "_build/html"
 command = """
 pip install -q poetry &&
 poetry export --dev --without-hashes > requirements.txt &&
 pip install -r requirements.txt &&
 """
-
-[build.environment]
-PYTHON_VERSION = "3.10"
