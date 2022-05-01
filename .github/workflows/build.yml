@@ -50,31 +50,31 @@ jobs:
       # install your root project, if required
       #----------------------------------------------
       - name: Install neoscore
-        run: poetry install --no-interaction --dev
+        run: poetry install --no-interaction
       #----------------------------------------------
       #              run test suite
       #----------------------------------------------
-      - name: Run tests
-        run: |
-          source .venv/bin/activate
-          pytest -n auto
-        env:
-          NEOSCORE_HEADLESS: True
-      - name: Check formatting conforms to Black
-        uses: psf/black@stable
-      - name: Check import sorting with isort
-        uses: isort/isort-action@master
-      - name: Check for unused imports with unimport
-        run: |
-          source .venv/bin/activate
-          pip install unimport
-          unimport --check --exclude "neoscore/common.py|.venv"
+      # - name: Run tests
+      #   run: |
+      #     source .venv/bin/activate
+      #     pytest -n auto
+      #   env:
+      #     NEOSCORE_HEADLESS: True
+      # - name: Check formatting conforms to Black
+      #   uses: psf/black@stable
+      # - name: Check import sorting with isort
+      #   uses: isort/isort-action@master
+      # - name: Check for unused imports with unimport
+      #   run: |
+      #     source .venv/bin/activate
+      #     pip install unimport
+      #     unimport --check --exclude "neoscore/common.py|.venv"
       - name: Build docs site
         working-directory: doc
         run: |
           make html
       - name: Deploy docs site
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/doc-build-testing'
         working-directory: doc
         env:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
