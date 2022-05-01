@@ -1,4 +1,4 @@
-name: Python application
+name: Build neoscore
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -69,3 +69,14 @@ jobs:
           source .venv/bin/activate
           pip install unimport
           unimport --check --exclude "neoscore/common.py|.venv"
+      - name: Build docs site
+        working-directory: doc
+        run: |
+          make html
+      - name: Deploy docs site
+        if: github.ref == 'refs/heads/main'
+        working-directory: doc
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        run: netlify deploy --dir=_build/html --prod
