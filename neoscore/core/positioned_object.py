@@ -4,7 +4,7 @@ from collections.abc import Iterator
 from typing import TYPE_CHECKING, Any, Optional, Type, cast
 
 from neoscore.core import neoscore
-from neoscore.core.mapping import canvas_pos_of, descendant_pos
+from neoscore.core.mapping import canvas_pos_of
 from neoscore.core.point import Point, PointDef
 from neoscore.core.units import ZERO, Unit
 from neoscore.interface.positioned_object_interface import PositionedObjectInterface
@@ -192,18 +192,44 @@ class PositionedObject:
             ancestor = ancestor.parent
 
     def first_ancestor_with_attr(self, attr: str) -> Optional[PositionedObject]:
-        """Get a ``Positioned`` object's nearest ancestor with an attribute"""
+        """Find this object's closest ancestor with an attribute"""
         return next(
             (item for item in self.ancestors if hasattr(item, attr)),
             None,
         )
 
+    def descendant_pos(self, descendant: PositionedObject) -> Point:
+        """Find the position of a descendant relative to this object.
+
+        Raises:
+            ValueError: if ``descendant`` is not a descendant of this object.
+        """
+        pos = descendant.pos
+        for parent in descendant.ancestors:
+            if parent == self:
+                return pos
+            pos += parent.pos
+        raise ValueError(f"{self} is not an ancestor of {descendant}")
+
+    def descendant_pos_x(self, descendant: PositionedObject) -> Unit:
+        """Find the x position of a descendant relative to this object.
+
+        This is a specialized version of ``descendant_pos`` provided for optimization.
+
+        Raises:
+            ValueError: if ``descendant`` is not a descendant of this object.
+        """
+        pos_x = descendant.pos.x
+        for parent in descendant.ancestors:
+            if parent == self:
+                return pos_x
+            pos_x += parent.pos.x
+        raise ValueError(f"{self} is not an ancestor of {descendant}")
+
     def remove(self):
         """Remove this object from the document."""
         if self.parent:
             self.parent.children.remove(self)
-
-    ######## PRIVATE METHODS ########
 
     def pre_render_hook(self):
         """Run code once just before document rendering begins.
@@ -236,7 +262,7 @@ class PositionedObject:
         when needed if an object flows across a break in the flowable.
         """
         # Calculate position within flowable
-        pos_in_flowable = descendant_pos(self, self.flowable)
+        pos_in_flowable = self.flowable.descendant_pos(self)
         dist_to_first_line_end = self.flowable.dist_to_line_end(pos_in_flowable.x)
         remaining_x = self.breakable_length - dist_to_first_line_end
         if remaining_x <= ZERO:

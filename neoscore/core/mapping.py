@@ -57,36 +57,6 @@ def map_between_x(src: PositionedObject, dst: PositionedObject) -> Unit:
     return map_between(src, dst).x
 
 
-def descendant_pos(descendant: PositionedObject, ancestor: PositionedObject) -> Point:
-    """Find the position of a descendant relative to one of its ancestors.
-
-    Raises:
-        ValueError: If ``ancestor`` is not an ancestor of ``descendant``
-    """
-    pos = descendant.pos
-    for parent in descendant.ancestors:
-        if parent == ancestor:
-            return pos
-        pos += parent.pos
-    raise ValueError(f"{ancestor} is not an ancestor of {descendant}")
-
-
-def descendant_pos_x(descendant: PositionedObject, ancestor: PositionedObject) -> Unit:
-    """Find the x position of a descendant relative to one of its ancestors.
-
-    This is a specialized version of ``descendant_pos`` provided for optimization.
-
-    Raises:
-        ValueError: If ``ancestor`` is not an ancestor of ``descendant``
-    """
-    pos_x = descendant.pos.x
-    for parent in descendant.ancestors:
-        if parent == ancestor:
-            return pos_x
-        pos_x += parent.pos.x
-    raise ValueError(f"{ancestor} is not an ancestor of {descendant}")
-
-
 def canvas_pos_of(obj: PositionedObject) -> Point:
     """Find the paged document position of a PositionedObject.
 
