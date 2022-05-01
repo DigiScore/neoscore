@@ -50,7 +50,7 @@ jobs:
       # install your root project, if required
       #----------------------------------------------
       - name: Install neoscore
-        run: poetry install --no-interaction --dev
+        run: poetry install --no-interaction
       #----------------------------------------------
       #              run test suite
       #----------------------------------------------
@@ -71,7 +71,11 @@ jobs:
           unimport --check --exclude "neoscore/common.py|.venv"
       - name: Build docs site
         working-directory: doc
+        env:
+          NEOSCORE_HEADLESS: True
         run: |
+          sudo apt install graphviz
+          source ../.venv/bin/activate
           make html
       - name: Deploy docs site
         if: github.ref == 'refs/heads/main'
@@ -79,4 +83,5 @@ jobs:
         env:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        run: netlify deploy --dir=_build/html --prod
+        run:
+          netlify deploy --dir=_build/html --prod
