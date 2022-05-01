@@ -1,6 +1,5 @@
 from typing import Optional
 
-from neoscore.core.mapping import map_between
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
 from neoscore.core.pen import Pen, PenDef
@@ -36,9 +35,7 @@ class SystemLine(MultiStaffObject, MusicPath):
             pen = Pen(thickness=font.engraving_defaults["staffLineThickness"])
         MusicPath.__init__(self, (pos_x, ZERO), self.highest, font, pen=pen)
         self.move_to(ZERO, self.highest.barline_extent[0])
-        self.line_to(
-            ZERO, map_between(self, self.lowest).y + self.lowest.barline_extent[1]
-        )
+        self.line_to(ZERO, self.map_to(self.lowest).y + self.lowest.barline_extent[1])
 
     @property
     def breakable_length(self) -> Unit:

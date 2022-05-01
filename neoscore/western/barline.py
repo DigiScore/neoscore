@@ -4,7 +4,6 @@ from typing import Optional
 from neoscore.core.break_hint import BreakHint
 from neoscore.core.color import ColorDef
 from neoscore.core.has_music_font import HasMusicFont
-from neoscore.core.mapping import map_between
 from neoscore.core.music_font import MusicFont
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
@@ -109,7 +108,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         if self.connected:
             line_path.move_to(ZERO, self.highest.barline_extent[0])
             line_path.line_to(
-                ZERO, map_between(self, self.lowest).y + self.lowest.barline_extent[1]
+                ZERO, self.map_to(self.lowest).y + self.lowest.barline_extent[1]
             )
 
         else:

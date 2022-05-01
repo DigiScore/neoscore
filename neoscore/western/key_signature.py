@@ -1,7 +1,6 @@
 import warnings
 from typing import Optional, Union, cast
 
-from neoscore.core.mapping import map_between
 from neoscore.core.music_text import MusicText
 from neoscore.core.point import ORIGIN, Point
 from neoscore.core.positioned_object import PositionedObject
@@ -119,10 +118,10 @@ class _KeySignatureAccidental(MusicText, StaffObject):
 
         """
         if local_start_x is not None:
-            staff_pos_in_flowable = map_between(self.flowable, self.staff)
+            staff_pos_in_flowable = self.flowable.map_to(self.staff)
             pos_x_in_staff = local_start_x - staff_pos_in_flowable.x
         else:
-            pos_x_in_staff = map_between(self.staff, self).x
+            pos_x_in_staff = self.staff.map_to(self).x
         clef = self.staff.active_clef_at(pos_x_in_staff)
         if clef is None:
             return

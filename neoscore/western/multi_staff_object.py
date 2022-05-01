@@ -1,6 +1,5 @@
 from typing import TypeAlias, Union
 
-from neoscore.core import mapping
 from neoscore.core.units import Unit
 from neoscore.western.staff import Staff
 from neoscore.western.tab_staff import TabStaff
@@ -57,4 +56,4 @@ class MultiStaffObject:
         """
         highest = self.staves[0]
         lowest = self.staves[-1]
-        return highest.unit(mapping.map_between(highest, lowest).y + lowest.height)
+        return highest.unit(highest.map_to(lowest).y + lowest.height)

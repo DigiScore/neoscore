@@ -3,7 +3,6 @@ from typing import NamedTuple, Optional, cast
 from neoscore.core.brush import Brush, BrushDef
 from neoscore.core.directions import DirectionX, DirectionY
 from neoscore.core.has_music_font import HasMusicFont
-from neoscore.core.mapping import map_between, map_between_x
 from neoscore.core.math_helpers import sign
 from neoscore.core.music_font import MusicFont
 from neoscore.core.pen import Pen, PenDef
@@ -172,17 +171,17 @@ def _resolve_beam_group_line(
         delta_y = ZERO
     else:
         delta_y = unit(1)
-    delta_x = map_between(last, first).x
+    delta_x = last.map_to(first).x
     slope = delta_y / delta_x
     # Now find the note closest to the beam's side
     if direction == DirectionY.DOWN:
         cr_with_closest_note = max(chordrests, key=lambda c: c.lowest_notehead.y)
-        cr_x = map_between_x(first, cr_with_closest_note)
+        cr_x = first.map_x_to(cr_with_closest_note)
         closest_y = cr_with_closest_note.lowest_notehead.y
         nearest_beam_intersect = Point(cr_x, closest_y + unit(2.5) + beam_group_height)
     else:
         cr_with_closest_note = min(chordrests, key=lambda c: c.highest_notehead.y)
-        cr_x = map_between_x(first, cr_with_closest_note)
+        cr_x = first.map_x_to(cr_with_closest_note)
         closest_y = cr_with_closest_note.highest_notehead.y
         nearest_beam_intersect = Point(cr_x, closest_y - unit(2.5) - beam_group_height)
     # Given a beam intersect and a slope, find the beam y at ``start``
@@ -311,13 +310,13 @@ class BeamGroup(PositionedObject, HasMusicFont):
         # Adjust stems to follow group line
         for c in self._chordrests:
             # y = m(x - x1) - y1, where x = 0
-            c_relative_x = map_between_x(c, self._chordrests[0])
+            c_relative_x = c.map_x_to(self._chordrests[0])
             y = (beam_group_line.slope * c_relative_x) + beam_group_line.start_y
             original_stem_sign = sign(c.stem.end_point.y)
             # (This direction checking approach will not work for kneed beams)
             if self.direction != c.stem.direction:
                 c.stem_direction = self.direction
-            adjusted_stem_end_y = map_between(c.stem, self).y + y
+            adjusted_stem_end_y = c.stem.map_to(self).y + y
             c.stem.end_point.y = adjusted_stem_end_y
             c.flag.remove()
             c._flag = None

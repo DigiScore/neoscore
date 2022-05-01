@@ -3,7 +3,6 @@ from __future__ import annotations
 import math
 from typing import cast
 
-from neoscore.core.mapping import map_between
 from neoscore.core.math_helpers import point_angle
 from neoscore.core.point import Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
@@ -63,7 +62,4 @@ class Spanner2D(Spanner):
         if self.end_parent == self:
             return self.end_pos
         else:
-            return (
-                map_between(cast(PositionedObject, self), self.end_parent)
-                + self.end_pos
-            )
+            return cast(PositionedObject, self).map_to(self.end_parent) + self.end_pos

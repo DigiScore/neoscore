@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Type, cast
 
 from neoscore.core.exceptions import NoClefError
-from neoscore.core.mapping import map_between_x
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
 from neoscore.core.pen import Pen
@@ -109,7 +108,7 @@ class Staff(MusicPath):
         which are active until another of their type occurs,
         such as ``KeySignature`` and ``Clef``.
         """
-        start_x = map_between_x(self, cast(PositionedObject, staff_object))
+        start_x = self.map_x_to(cast(PositionedObject, staff_object))
         all_others_of_class = (
             item
             for item in self.descendants_of_exact_class(type(staff_object))
@@ -117,7 +116,7 @@ class Staff(MusicPath):
         )
         closest_x = Unit(float("inf"))
         for item in all_others_of_class:
-            relative_x = map_between_x(self, item)
+            relative_x = self.map_x_to(item)
             if start_x < relative_x < closest_x:
                 closest_x = relative_x
         if closest_x == Unit(float("inf")):

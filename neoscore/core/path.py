@@ -4,7 +4,6 @@ from math import atan, cos, pi, sin, sqrt, tan
 from typing import Optional, cast
 
 from neoscore.core.brush import Brush, BrushDef
-from neoscore.core.mapping import map_between, map_between_x
 from neoscore.core.painted_object import PaintedObject
 from neoscore.core.path_element import (
     ControlPoint,
@@ -339,7 +338,7 @@ class Path(PaintedObject):
         path = cls(start, parent, brush, pen or Pen.no_pen())
         end = Point.from_def(end)
         if end_parent:
-            end = map_between(path, end_parent) + end
+            end = path.map_to(end_parent) + end
         # The original algorithm supports diverse shapes, including
         # things like double-headed arrows, using this system of a
         # variable numbers of control points. We don't use them right
@@ -394,7 +393,7 @@ class Path(PaintedObject):
         max_x = Unit(-float("inf"))
         for element in self.elements:
             # Determine element X relative to self
-            relative_x = map_between_x(self, element)
+            relative_x = self.map_x_to(element)
             # Now update min/max accordingly
             if relative_x > max_x:
                 max_x = relative_x
@@ -531,7 +530,7 @@ class Path(PaintedObject):
         self.elements.append(CurveTo(Point(end_x, end_y), end_parent or self, c1, c2))
 
     def _relative_element_pos(self, element: PositionedObject) -> Point:
-        return map_between(self, element)
+        return self.map_to(element)
 
     def _resolve_path_elements(self) -> list[ResolvedPathElement]:
         resolved: list[ResolvedPathElement] = []

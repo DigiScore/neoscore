@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from typing import cast
 
-from neoscore.core.mapping import map_between, map_between_x
 from neoscore.core.point import Point
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import Unit
@@ -54,7 +53,7 @@ class Spanner:
     @property
     def end_y(self) -> Unit:
         """The y position of the endpoint"""
-        return map_between(self.end_parent, cast(PositionedObject, self)).y
+        return self.end_parent.map_to(cast(PositionedObject, self)).y
 
     @property
     def end_pos(self) -> Point:
@@ -81,6 +80,5 @@ class Spanner:
             return self.end_pos.x
         else:
             return (
-                map_between_x(cast(PositionedObject, self), self.end_parent)
-                + self.end_pos.x
+                cast(PositionedObject, self).map_x_to(self.end_parent) + self.end_pos.x
             )

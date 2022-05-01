@@ -5,7 +5,6 @@ from typing import Optional
 
 from neoscore.core.brush import Brush
 from neoscore.core.directions import DirectionX
-from neoscore.core.mapping import map_between
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
 from neoscore.core.pen import Pen
@@ -97,7 +96,7 @@ class Hairpin(MusicPath, Spanner2D):
             end_center_parent = self.end_parent
         dist = self.width / 2
         # Find relative distance from joint to end_center_pos
-        parent_distance = map_between(joint_parent, end_center_parent)
+        parent_distance = joint_parent.map_to(end_center_parent)
         relative_stop = parent_distance + end_center_pos - joint_pos
         if relative_stop.y == ZERO:
             return (

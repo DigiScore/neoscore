@@ -5,7 +5,7 @@ from neoscore.core.point import ORIGIN, Point
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import ZERO, Mm, Unit
 
-from ..helpers import AppTest
+from ..helpers import AppTest, assert_almost_equal
 
 
 class TestPositionedObject(AppTest):
@@ -146,3 +146,49 @@ class TestPositionedObject(AppTest):
     def test_length_is_zero(self):
         obj = PositionedObject((Unit(5), Unit(6)), None)
         assert obj.breakable_length == ZERO
+
+    def test_map_to(self):
+        source = PositionedObject((Unit(5), Unit(6)), neoscore.document.pages[1])
+        destination = PositionedObject((Unit(99), Unit(90)), neoscore.document.pages[4])
+        relative_pos = source.map_to(destination)
+
+        page_1_pos = neoscore.document.pages[1].canvas_pos
+        page_4_pos = neoscore.document.pages[4].canvas_pos
+
+        expected = (page_4_pos + Point(Unit(99), Unit(90))) - (
+            page_1_pos + Point(Unit(5), Unit(6))
+        )
+        assert_almost_equal(relative_pos, expected)
+
+    def test_map_to_with_same_source_and_dest(self):
+        obj = PositionedObject((Unit(5), Unit(6)), neoscore.document.pages[0])
+        assert_almost_equal(obj.map_to(obj), Point(Unit(0), Unit(0)))
+
+    def test_map_to_with_common_parent(self):
+        parent = PositionedObject((Unit(5), Unit(6)), neoscore.document.pages[0])
+        source = PositionedObject((Unit(1), Unit(2)), parent)
+        destination = PositionedObject((Unit(3), Unit(10)), parent)
+        relative_pos = source.map_to(destination)
+        expected = Point(Unit(2), Unit(8))
+        assert_almost_equal(relative_pos, expected)
+
+    def test_map_to_where_dest_parent_is_src(self):
+        source = PositionedObject((Unit(1), Unit(2)), neoscore.document.pages[0])
+        destination = PositionedObject((Unit(3), Unit(10)), source)
+        relative_pos = source.map_to(destination)
+        expected = Point(Unit(3), Unit(10))
+        assert_almost_equal(relative_pos, expected)
+
+    def test_map_to_where_src_parent_is_dest(self):
+        destination = PositionedObject((Unit(3), Unit(10)), neoscore.document.pages[0])
+        source = PositionedObject((Unit(1), Unit(2)), destination)
+        relative_pos = source.map_to(destination)
+        expected = Point(Unit(-1), Unit(-2))
+        assert_almost_equal(relative_pos, expected)
+
+    def test_canvas_pos(self):
+        item = PositionedObject((Mm(5), Mm(6)), neoscore.document.pages[2])
+        canvas_pos = item.canvas_pos
+        page_pos = neoscore.document.pages[2].canvas_pos
+        relative_pos = canvas_pos - page_pos
+        assert_almost_equal(relative_pos, Point(Mm(5), Mm(6)))

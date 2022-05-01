@@ -4,7 +4,6 @@ from typing import Optional
 
 from neoscore.core import neoscore
 from neoscore.core.layout_controller import LayoutController
-from neoscore.core.mapping import canvas_pos_of, map_between, map_between_x
 from neoscore.core.new_line import NewLine
 from neoscore.core.point import Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
@@ -125,7 +124,7 @@ class Flowable(PositionedObject):
             if not self.layout_controllers:
                 flowable_start_x = ZERO
                 page = self.first_ancestor_with_attr("_neoscore_page_type_marker")
-                flowable_page_pos = map_between(page, self)
+                flowable_page_pos = page.map_to(self)
                 controller_x = flowable_page_pos.x
                 controller_y = flowable_page_pos.y
             else:
@@ -171,7 +170,7 @@ class Flowable(PositionedObject):
         opps = self.descendants_with_attribute(
             "_neoscore_break_opportunity_type_marker"
         )
-        return sorted((map_between_x(self, opp) for opp in opps))
+        return sorted((self.map_x_to(opp) for opp in opps))
 
     def map_to_canvas(self, local_point: Point) -> Point:
         """Convert a local point to its position in the canvas.
@@ -183,7 +182,7 @@ class Flowable(PositionedObject):
             local_point: A position in the flowable's local space.
         """
         line = self.last_break_at(local_point.x)
-        line_canvas_pos = canvas_pos_of(line)
+        line_canvas_pos = line.canvas_pos
         return line_canvas_pos + Point(local_point.x - line.flowable_x, local_point.y)
 
     def dist_to_line_start(self, flowable_x: Unit) -> Unit:

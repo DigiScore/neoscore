@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from typing import Optional, cast
 
-from neoscore.core.mapping import map_between
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.positioned_object import PositionedObject
@@ -131,4 +130,4 @@ class Notehead(MusicText, StaffObject):
         else:
             glyph = self._table.lookup_duration(duration_display.base_duration)
         self.text = glyph
-        self.y = self.staff_pos - map_between(self.staff, self.parent).y
+        self.y = self.staff_pos - self.staff.map_to(self.parent).y

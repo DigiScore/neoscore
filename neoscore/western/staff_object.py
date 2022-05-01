@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, Optional, cast
 
 from neoscore.core.exceptions import NoAncestorStaffError
-from neoscore.core.mapping import map_between, map_between_x
 from neoscore.core.point import Point
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import Unit
@@ -41,12 +40,12 @@ class StaffObject:
     @property
     def pos_in_staff(self) -> Point:
         """The logical position of this object relative to the staff."""
-        return map_between(self.staff, cast(PositionedObject, self))
+        return self.staff.map_to(cast(PositionedObject, self))
 
     @property
     def pos_x_in_staff(self) -> Unit:
         """A specialized version of ``pos_in_staff`` which only finds the x pos"""
-        return map_between_x(self.staff, cast(PositionedObject, self))
+        return self.staff.map_x_to(cast(PositionedObject, self))
 
     ######## PRIVATE METHODS ########
 

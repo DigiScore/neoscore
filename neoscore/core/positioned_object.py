@@ -4,8 +4,7 @@ from collections.abc import Iterator
 from typing import TYPE_CHECKING, Any, Optional, Type, cast
 
 from neoscore.core import neoscore
-from neoscore.core.mapping import canvas_pos_of
-from neoscore.core.point import Point, PointDef
+from neoscore.core.point import ORIGIN, Point, PointDef
 from neoscore.core.units import ZERO, Unit
 from neoscore.interface.positioned_object_interface import PositionedObjectInterface
 
@@ -226,6 +225,70 @@ class PositionedObject:
             pos_x += parent.pos.x
         raise ValueError(f"{self} is not an ancestor of {descendant}")
 
+    def map_to(self, dst: PositionedObject) -> Point:
+        """Find an object's logical position relative to this one
+
+        This calculates the position in *logical* space, which differs from canvas space
+        in that it doesn't account for repositioning of objects inside ``Flowable``
+        containers. For example, this function will return the same relative position
+        for two objects in a ``Flowable`` container whether or not they are separated by
+        a line break.
+
+        Args:
+            dst: The object to map to
+        """
+        # Handle easy cases
+        if self == dst:
+            return ORIGIN
+        if self.parent == dst.parent:
+            return dst.pos - self.pos
+        if dst.parent == self:
+            return dst.pos
+        if self.parent == dst:
+            return -self.pos
+        # Start by collecting all ancestor using IDs because they're hashable
+        self_ancestor_ids = set(id(obj) for obj in self.ancestors)
+        relative_dst_pos = dst.pos
+        for dst_ancestor in dst.ancestors:
+            if hasattr(dst_ancestor, "parent"):
+                relative_dst_pos += dst_ancestor.pos
+            if id(dst_ancestor) in self_ancestor_ids:
+                # Now find relative_self_pos and return relative_dst_pos - relative_self_pos
+                relative_self_pos = self.pos
+                for self_ancestor in self.ancestors:
+                    if hasattr(self_ancestor, "parent"):
+                        relative_self_pos += self_ancestor.pos
+                    if self_ancestor == dst_ancestor:
+                        return relative_dst_pos - relative_self_pos
+                # Since we've already determined there is a common
+                # ancestor, this should never happen
+                assert False, "Unreachable"
+        raise ValueError(f"{self} and {dst} have no common ancestor")
+
+    def map_x_to(self, dst: PositionedObject) -> Unit:
+        # TODO once main function is shown to work, copy here and edit as needed
+        return self.map_to(dst).x
+
+    @property
+    def canvas_pos(self) -> Point:
+        """Find the paged document position of a PositionedObject.
+
+        Args:
+            obj: Any object in the document.
+
+        Returns: The object's paged position relative to the document.
+        """
+        pos = ORIGIN
+        current = self
+        while hasattr(current, "parent"):
+            pos += current.pos
+            current = current.parent
+            if hasattr(current, "map_to_canvas"):
+                # Parent appears to be a flowable,
+                # so let it decide where the point goes.
+                return cast(Any, current).map_to_canvas(pos)
+        return pos
+
     def remove(self):
         """Remove this object from the document."""
         if self.parent:
@@ -253,7 +316,7 @@ class PositionedObject:
         if self.breakable_length != ZERO and self.flowable is not None:
             self.render_in_flowable()
         else:
-            self.render_complete(canvas_pos_of(self))
+            self.render_complete(self.canvas_pos)
         for child in self.children:
             child.render()
 
@@ -267,7 +330,7 @@ class PositionedObject:
         remaining_x = self.breakable_length - dist_to_first_line_end
         if remaining_x <= ZERO:
             self.render_complete(
-                canvas_pos_of(self),
+                self.canvas_pos,
                 self.flowable.dist_to_line_start(pos_in_flowable.x),
                 pos_in_flowable.x,
             )
@@ -276,7 +339,7 @@ class PositionedObject:
         # Render before break
         first_line_i = self.flowable.last_break_index_at(pos_in_flowable.x)
         current_line = self.flowable.layout_controllers[first_line_i]
-        render_start_pos = canvas_pos_of(self)
+        render_start_pos = self.canvas_pos
         first_line_length = dist_to_first_line_end
         render_end_pos = Point(
             render_start_pos.x + first_line_length, render_start_pos.y
@@ -295,7 +358,7 @@ class PositionedObject:
             current_line = self.flowable.layout_controllers[current_line_i]
             if remaining_x > current_line.length:
                 # Render spanning continuation
-                line_pos = canvas_pos_of(current_line)
+                line_pos = current_line.canvas_pos
                 render_start_pos = Point(line_pos.x, line_pos.y + pos_in_flowable.y)
                 render_end_pos = Point(
                     render_start_pos.x + current_line.length,
