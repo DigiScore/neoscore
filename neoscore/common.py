@@ -3,7 +3,7 @@ from neoscore.core.break_hint import BreakHint
 from neoscore.core.brush import Brush
 from neoscore.core.brush_pattern import BrushPattern
 from neoscore.core.color import Color
-from neoscore.core.directions import HorizontalDirection, VerticalDirection
+from neoscore.core.directions import DirectionX, DirectionY
 from neoscore.core.document import Document
 from neoscore.core.flowable import Flowable
 from neoscore.core.font import Font
@@ -26,12 +26,14 @@ from neoscore.core.repeating_music_text_line import RepeatingMusicTextLine
 from neoscore.core.rich_text import RichText
 from neoscore.core.simple_header_footer import simple_header_footer
 from neoscore.core.text import Text
+from neoscore.core.text_alignment import AlignmentX, AlignmentY
 from neoscore.core.units import ZERO, GraphicUnit, Inch, Mm, Unit
-from neoscore.western import notehead_tables
+from neoscore.western import barline_style, notehead_tables
 from neoscore.western.accidental import Accidental
 from neoscore.western.accidental_type import AccidentalType
 from neoscore.western.arpeggio_line import ArpeggioLine
 from neoscore.western.barline import Barline
+from neoscore.western.barline_style import BarlineStyle
 from neoscore.western.beam_group import BeamGroup
 from neoscore.western.brace import Brace
 from neoscore.western.chordrest import Chordrest
@@ -55,6 +57,7 @@ from neoscore.western.rest import Rest
 from neoscore.western.slur import Slur
 from neoscore.western.staff import Staff
 from neoscore.western.stem import Stem
+from neoscore.western.system_line import SystemLine
 from neoscore.western.tab_clef import TabClef
 from neoscore.western.tab_number import TabNumber
 from neoscore.western.tab_staff import TabStaff

@@ -1,7 +1,6 @@
 from helpers import render_vtest
 
 from neoscore.common import *
-from neoscore.core.color import Color
 from neoscore.core.flowable import Flowable
 from neoscore.core.units import Mm
 from neoscore.western import barline_style
@@ -11,39 +10,53 @@ from neoscore.western.staff import Staff
 
 neoscore.setup()
 
-flowable = Flowable((Mm(0), Mm(0)), None, Mm(10000), Mm(30), Mm(5))
+flowable = Flowable((Mm(0), Mm(0)), None, Mm(200), Mm(30), Mm(5))
 normal_staff = Staff((Mm(0), Mm(0)), flowable, Mm(150), Mm(2))
 percussion_staff = Staff((Mm(0), Mm(30)), flowable, Mm(150), line_count=1)
-offset_staff = Staff((Mm(10), Mm(50)), flowable, Mm(150))
+offset_staff = Staff((Mm(10), Mm(50)), flowable, Mm(140))
 
 all_staves = [normal_staff, percussion_staff, offset_staff]
 
-# test bar lines between stave 1 and 2
-test_style = Barline(Mm(10), [normal_staff, percussion_staff])
+# test barline across all staves
+test_barline = Barline(Mm(10), all_staves)
 
+# test barline spanning all staves
+test_barline_2 = Barline(Mm(15), [normal_staff, offset_staff])
+
+# test barline with DIY style unconnected
 test_double_dash = Barline(
     Mm(20),
-    [percussion_staff, offset_staff],
+    all_staves,
     (
-        BarlineStyle(0.5, 1.0, pattern=PenPattern.DASH),
-        BarlineStyle(0.5),
+        BarlineStyle(0.3, 0.8),
+        BarlineStyle(0.2, pattern=PenPattern.DASH),
     ),
+    connected=False,
 )
 
+# test barline with DIY style and color change
 test_double_color = Barline(
     Mm(30),
     all_staves,
     (
-        BarlineStyle(0.5, 1.0, PenPattern.DASH, Color(255, 0, 0)),
-        BarlineStyle(1.0, 1.0, PenPattern.DASHDOTDOT, Color(200, 100, 50)),
+        BarlineStyle(0.2, 0.5, PenPattern.DASH, "#ff0000"),
+        BarlineStyle(0.3, pattern=PenPattern.DASHDOTDOT, color="#006432"),
     ),
 )
+
+# end barline
+end_line = Barline(Mm(150), all_staves, barline_style.END)
 
 for n, test_line in enumerate(barline_style.ALL_STYLES):
     Barline(Mm(10 * (n + 1) + 30), all_staves, styles=test_line)
 
 for n, test_line in enumerate(barline_style.ALL_STYLES):
-    Barline(Mm(10 * (n + 1) + 60), [percussion_staff, offset_staff], styles=test_line)
+    Barline(
+        Mm(10 * (n + 1) + 60),
+        [percussion_staff, offset_staff],
+        styles=test_line,
+        connected=False,
+    )
 
 # Tabs
 tab_staff_1 = TabStaff((Mm(0), Mm(100)), flowable, Mm(150))

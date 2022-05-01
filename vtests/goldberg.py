@@ -12,6 +12,7 @@ upper_staff = Staff((Mm(0), Mm(0)), flowable, Mm(500))
 lower_staff = Staff((Mm(0), Mm(20)), flowable, Mm(500))
 staves = [upper_staff, lower_staff]
 Brace(Mm(0), staves)
+SystemLine(Mm(0), staves)
 
 # We can use the same unit in the upper and lower staves since they
 # are the same size
@@ -43,15 +44,11 @@ BeamGroup([a, b])
 
 # Lower staff notes - upper voice
 Chordrest(unit(10), lower_staff, None, (1, 4), unit(-3))
-Chordrest(
-    unit(16), lower_staff, ["d"], Duration(1, 4), stem_direction=VerticalDirection.UP
-)
+Chordrest(unit(16), lower_staff, ["d"], Duration(1, 4), stem_direction=DirectionY.UP)
 
 # Lower staff notes - middle voice
 Chordrest(unit(8), lower_staff, None, (1, 4), rest_y=unit(-2))
-Chordrest(
-    unit(12), lower_staff, ["b,"], Duration(2, 4), stem_direction=VerticalDirection.UP
-)
+Chordrest(unit(12), lower_staff, ["b,"], Duration(2, 4), stem_direction=DirectionY.UP)
 
 # Lower staff notes - lower voice
 Chordrest(unit(8), lower_staff, ["g,"], Duration(3, 4))
@@ -78,7 +75,7 @@ Chordrest(
     lower_staff,
     ["d"],
     Duration(1, 4),
-    stem_direction=VerticalDirection.UP,
+    stem_direction=DirectionY.UP,
 )
 
 # Lower staff notes - middle voice
@@ -88,7 +85,7 @@ Chordrest(
     lower_staff,
     ["a,"],
     Duration(2, 4),
-    stem_direction=VerticalDirection.UP,
+    stem_direction=DirectionY.UP,
 )
 
 # Lower staff notes - lower voice
@@ -96,5 +93,5 @@ Chordrest(b2, lower_staff, ["f,"], Duration(3, 4))
 
 
 # Barline to test line breaking
-Barline(Mm(150), staves)
+Barline(Mm(155), staves)
 render_vtest("goldberg")

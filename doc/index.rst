@@ -24,6 +24,7 @@ We differ from traditional score-writing systems in many important aspects. Neos
    core_concepts/paths.rst
    core_concepts/brushes_and_pens.rst
    core_concepts/music_text.rst
+   core_concepts/images.rst
    core_concepts/flowables.rst
    core_concepts/headers_and_footers.rst
    core_concepts/export.rst
@@ -38,6 +39,9 @@ We differ from traditional score-writing systems in many important aspects. Neos
    western/chordrests_advanced.rst
    western/beams.rst
    western/expressive_text.rst
+   western/spanners.rst
+   western/multi_staff_objects.rst
+   western/tablature.rst
 
 .. toctree::
    :caption: API Reference

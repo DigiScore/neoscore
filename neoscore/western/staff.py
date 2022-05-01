@@ -10,8 +10,6 @@ from neoscore.core.pen import Pen
 from neoscore.core.point import PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import ZERO, Mm, Unit, make_unit_class
-from neoscore.western.octave_line import OctaveLine
-from neoscore.western.transposition import Transposition
 
 if TYPE_CHECKING:
     from neoscore.western.clef import Clef
@@ -141,14 +139,6 @@ class Staff(MusicPath):
             None,
         )
 
-    def active_transposition_at(self, pos_x: Unit) -> Optional[Transposition]:
-        """Return the active transposition at a given x position, if any."""
-        for item in self.descendants_of_class_or_subclass(OctaveLine):
-            line_pos = map_between_x(self, item)
-            if line_pos <= pos_x <= line_pos + item.breakable_length:
-                return item.transposition
-        return None
-
     def middle_c_at(self, pos_x: Unit) -> Unit:
         """Find the y-axis staff position of middle-c at a given point.
 
@@ -160,13 +150,7 @@ class Staff(MusicPath):
         clef = self.active_clef_at(pos_x)
         if clef is None:
             raise NoClefError
-        transposition = self.active_transposition_at(pos_x)
-        if transposition:
-            return clef.middle_c_staff_position - self.unit(
-                transposition.interval.staff_distance
-            )
-        else:
-            return clef.middle_c_staff_position
+        return clef.middle_c_staff_position
 
     def y_inside_staff(self, pos_y: Unit) -> bool:
         """Determine if a y-axis position is inside the staff.

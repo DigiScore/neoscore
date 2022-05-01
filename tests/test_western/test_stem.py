@@ -1,4 +1,4 @@
-from neoscore.core.directions import VerticalDirection
+from neoscore.core.directions import DirectionY
 from neoscore.core.flowable import Flowable
 from neoscore.core.path_element import LineTo, MoveTo
 from neoscore.core.point import Point
@@ -16,16 +16,16 @@ class TestStem(AppTest):
         self.staff = Staff((Mm(0), Mm(0)), self.flowable, Mm(100))
 
     def test_stem_direction(self):
-        stem = Stem((Mm(0), Mm(0)), self.staff, VerticalDirection.UP, Mm(10))
-        assert stem.direction == VerticalDirection.UP
+        stem = Stem((Mm(0), Mm(0)), self.staff, DirectionY.UP, Mm(10))
+        assert stem.direction == DirectionY.UP
         assert stem.direction.value == -1
 
-        stem = Stem((Mm(0), Mm(0)), self.staff, VerticalDirection.DOWN, Mm(10))
-        assert stem.direction == VerticalDirection.DOWN
+        stem = Stem((Mm(0), Mm(0)), self.staff, DirectionY.DOWN, Mm(10))
+        assert stem.direction == DirectionY.DOWN
         assert stem.direction.value == 1
 
     def test_default_pen_uses_engraving_default_thickness(self):
-        stem = Stem((Mm(0), Mm(0)), self.staff, VerticalDirection.UP, Mm(10))
+        stem = Stem((Mm(0), Mm(0)), self.staff, DirectionY.UP, Mm(10))
         assert (
             stem.pen.thickness
             == self.staff.music_font.engraving_defaults["stemThickness"]
@@ -33,7 +33,7 @@ class TestStem(AppTest):
 
     def test_stem_line_respects_stem_direction(self):
         # stem direction UP
-        stem = Stem((Mm(0), Mm(0)), self.staff, VerticalDirection.UP, Mm(10))
+        stem = Stem((Mm(0), Mm(0)), self.staff, DirectionY.UP, Mm(10))
         assert stem.pos == Point(Mm(0), Mm(0))
         assert len(stem.elements) == 2
 
@@ -44,7 +44,7 @@ class TestStem(AppTest):
         assert_path_els_equal(stem.elements[1], LineTo(Point(Mm(0), Mm(-10)), stem))
 
         # stem direction DOWN
-        stem = Stem((Mm(10), Mm(10)), self.staff, VerticalDirection.DOWN, Mm(10))
+        stem = Stem((Mm(10), Mm(10)), self.staff, DirectionY.DOWN, Mm(10))
         assert stem.pos == Point(Mm(10), Mm(10))
         assert len(stem.elements) == 2
 

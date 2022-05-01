@@ -136,18 +136,23 @@ class QClippingPath(QGraphicsPathItem):
                 clipping region. Use ``None`` to render from the start.
             clip_width: The width of the clipping region.
                 Use ``None`` to render to the end
-            padding: Extra area padding to be added to all sides of the clipping area.
-                This might be useful, for instance, for making sure thick pen strokes
-                render completely.
+            padding: Extra area padding to be added to all non-clipped sides
+                of the rect.
         """
         if clip_width is None:
             resolved_clip_width = bounding_rect.width() - clip_start_x
+            padding_right = padding
         else:
             resolved_clip_width = clip_width
+            padding_right = 0
+        if not clip_start_x:
+            padding_left = padding
+        else:
+            padding_left = 0
         # i think this assumes bounding rect starts at 0,0??
         return QRectF(
-            bounding_rect.x() - padding,
+            bounding_rect.x() - padding_left,
             bounding_rect.y() - padding,
-            resolved_clip_width + (padding * 2),
+            resolved_clip_width + padding_left + padding_right,
             bounding_rect.height() + (padding * 2),
         )

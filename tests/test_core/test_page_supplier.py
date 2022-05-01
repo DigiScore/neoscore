@@ -1,7 +1,7 @@
 import pytest
 
 from neoscore.core import neoscore
-from neoscore.core.directions import HorizontalDirection
+from neoscore.core.directions import DirectionX
 from neoscore.core.page import Page
 from neoscore.core.page_supplier import PageSupplier
 from neoscore.core.point import Point
@@ -52,10 +52,10 @@ class TestPageSupplier(AppTest):
 
     def test_page_side_selection(self):
         supplier = PageSupplier(neoscore.document)
-        assert supplier[0].page_side == HorizontalDirection.RIGHT
-        assert supplier[1].page_side == HorizontalDirection.LEFT
-        assert supplier[2].page_side == HorizontalDirection.RIGHT
-        assert supplier[3].page_side == HorizontalDirection.LEFT
+        assert supplier[0].page_side == DirectionX.RIGHT
+        assert supplier[1].page_side == DirectionX.LEFT
+        assert supplier[2].page_side == DirectionX.RIGHT
+        assert supplier[3].page_side == DirectionX.LEFT
 
     def test_overlay_func(self):
         # Use an overlay func passed in supplier init

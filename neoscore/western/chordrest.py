@@ -1,7 +1,7 @@
 from collections.abc import Iterable
 from typing import NamedTuple, Optional
 
-from neoscore.core.directions import HorizontalDirection, VerticalDirection
+from neoscore.core.directions import DirectionX, DirectionY
 from neoscore.core.point import ORIGIN, Point
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import ZERO, Unit
@@ -59,9 +59,9 @@ class Chordrest(PositionedObject, StaffObject):
         notes: Optional[list[PitchDef | PitchAndGlyph]],
         duration: DurationDef,
         rest_y: Optional[Unit] = None,
-        stem_direction: Optional[VerticalDirection] = None,
+        stem_direction: Optional[DirectionY] = None,
         beam_break_depth: Optional[int] = None,
-        beam_hook_dir: Optional[HorizontalDirection] = None,
+        beam_hook_dir: Optional[DirectionX] = None,
         table: NoteheadTable = notehead_tables.STANDARD,
     ):
         """
@@ -178,7 +178,7 @@ class Chordrest(PositionedObject, StaffObject):
         return self._beam_break_depth
 
     @property
-    def beam_hook_dir(self) -> Optional[HorizontalDirection]:
+    def beam_hook_dir(self) -> Optional[DirectionX]:
         """Beamlet hook direction used in a ``BeamGroup``.
 
         If this Chordrest is within a beam group and this position is
@@ -315,7 +315,7 @@ class Chordrest(PositionedObject, StaffObject):
             x = self.rest.x + bounding_rect.x + (bounding_rect.width / 2)
             y = self.rest.y + bounding_rect.y - self.staff.unit(1)
             return Point(x, y)
-        if self.stem_direction == VerticalDirection.UP:
+        if self.stem_direction == DirectionY.UP:
             notehead = self.lowest_notehead
             bounding_rect = notehead.bounding_rect
             y = notehead.y + bounding_rect.y + bounding_rect.height + self.staff.unit(1)
@@ -367,42 +367,42 @@ class Chordrest(PositionedObject, StaffObject):
             return extent - left_bounding_note.x
 
     @property
-    def stem_direction(self) -> VerticalDirection:
+    def stem_direction(self) -> DirectionY:
         """The direction of the stem
 
         Takes the notehead furthest from the center of the staff,
         and returns the opposite direction.
 
         If the furthest notehead is in the center of the staff, the
-        direction defaults to ``VerticalDirection.DOWN``, unless the
+        direction defaults to ``DirectionY.DOWN``, unless the
         staff has only one line, in which case it defaults to
-        ``VerticalDirection.UP`` as a convenience for percussion staves.
+        ``DirectionY.UP`` as a convenience for percussion staves.
 
         This automatically calculated property may be overridden using
         its setter. To revert back to the automatically calculated value
         set this property to ``None``.
 
         If there are no noteheads (meaning this Chordrest is a rest),
-        this arbitrarily returns ``VerticalDirection.UP``.
+        this arbitrarily returns ``DirectionY.UP``.
 
         """
         if self._stem_direction_override:
             return self._stem_direction_override
         furthest = self.furthest_notehead
         if furthest is None:
-            return VerticalDirection.UP
+            return DirectionY.UP
         if furthest.y < self.staff.center_y:
-            return VerticalDirection.DOWN
+            return DirectionY.DOWN
         elif furthest.y == self.staff.center_y:
             if self.staff.line_count == 1:
-                return VerticalDirection.UP
+                return DirectionY.UP
             else:
-                return VerticalDirection.DOWN
+                return DirectionY.DOWN
         else:
-            return VerticalDirection.UP
+            return DirectionY.UP
 
     @stem_direction.setter
-    def stem_direction(self, value: Optional[VerticalDirection]):
+    def stem_direction(self, value: Optional[DirectionY]):
         self._stem_direction_override = value
         self._rebuild()
 
@@ -500,8 +500,8 @@ class Chordrest(PositionedObject, StaffObject):
             if notehead.pitch.accidental is None:
                 continue
             accidental = Accidental(
-                ORIGIN,
-                notehead,
+                notehead.pos,
+                self,
                 notehead.pitch.accidental,
             )
             accidental.x -= accidental.bounding_rect.width + padding
@@ -516,7 +516,7 @@ class Chordrest(PositionedObject, StaffObject):
         """If needed, create a Stem and store it in ``self.stem``."""
         if not self.duration.display.requires_stem:
             return
-        if self.stem_direction == VerticalDirection.UP:
+        if self.stem_direction == DirectionY.UP:
             attached_notehead = self.lowest_notehead
             anchor_key = "stemUpSE"
         else:
@@ -551,9 +551,9 @@ class Chordrest(PositionedObject, StaffObject):
         """
         # Find the preferred side of the stem for noteheads,
         default_side = (
-            HorizontalDirection.LEFT
-            if self.stem_direction == VerticalDirection.UP
-            else HorizontalDirection.RIGHT
+            DirectionX.LEFT
+            if self.stem_direction == DirectionY.UP
+            else DirectionX.RIGHT
         )
         # Start last staff pos at sentinel infinity position.
         # Rather than working with staff positions, we can work with
@@ -565,7 +565,7 @@ class Chordrest(PositionedObject, StaffObject):
         for note in sorted(
             self.noteheads,
             key=lambda n: n.y,
-            reverse=(self.stem_direction == VerticalDirection.UP),
+            reverse=(self.stem_direction == DirectionY.UP),
         ):
             if abs(prev_y - note.y) < self.staff.unit(1):
                 # This note collides with previous, use switch sides
@@ -576,17 +576,17 @@ class Chordrest(PositionedObject, StaffObject):
             prev_y = note.y
 
     def _resolve_notehead_x_pos(
-        self, notehead: Notehead, stem_side: HorizontalDirection
+        self, notehead: Notehead, stem_side: DirectionX
     ) -> Unit:
         if not notehead.text:
             return ZERO
         anchors = notehead.music_chars[0].glyph_info.anchors
         if not anchors:
-            if stem_side == HorizontalDirection.LEFT:
+            if stem_side == DirectionX.LEFT:
                 return -notehead.visual_width
             return ZERO
         stem_offset = self.stem.pen.thickness / 2
-        if stem_side == HorizontalDirection.LEFT:
+        if stem_side == DirectionX.LEFT:
             anchor_key = "stemUpSE"
             stem_offset *= -1
         else:

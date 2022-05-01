@@ -1,7 +1,7 @@
 from typing import Optional
 
 from neoscore.core import neoscore
-from neoscore.core.directions import HorizontalDirection
+from neoscore.core.directions import DirectionX
 from neoscore.core.font import Font
 from neoscore.core.page import Page
 from neoscore.core.page_supplier import PageOverlayFunc
@@ -62,7 +62,7 @@ def simple_header_footer(
         text_font = font or neoscore.default_font.modified(
             size=neoscore.default_font.size * 0.9
         )
-        if page.page_side == HorizontalDirection.LEFT:
+        if page.page_side == DirectionX.LEFT:
             outside_x = page.left_margin_x - (page.full_margin_left / 2)
         else:
             outside_x = page.right_margin_x + (page.full_margin_right / 2)
@@ -71,14 +71,14 @@ def simple_header_footer(
         bottom_y = page.bottom_margin_y + (page.paper.margin_bottom / 2)
         if top_corner_text:
             t = Text((outside_x, top_y), page, top_corner_text, text_font)
-            if page.page_side == HorizontalDirection.RIGHT:
+            if page.page_side == DirectionX.RIGHT:
                 t.x -= t.bounding_rect.width
         if top_center_text:
             t = Text((center_x, top_y), page, top_center_text, text_font)
             t.x -= t.bounding_rect.width / 2
         if bottom_corner_text:
             t = Text((outside_x, bottom_y), page, bottom_corner_text, text_font)
-            if page.page_side == HorizontalDirection.RIGHT:
+            if page.page_side == DirectionX.RIGHT:
                 t.x -= t.bounding_rect.width
         if bottom_center_text:
             t = Text((center_x, bottom_y), page, bottom_center_text, text_font)

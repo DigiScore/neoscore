@@ -1,4 +1,4 @@
-from neoscore.core.directions import VerticalDirection
+from neoscore.core.directions import DirectionY
 from neoscore.core.flowable import Flowable
 from neoscore.core.music_char import MusicChar
 from neoscore.core.point import ORIGIN, Point
@@ -216,24 +216,24 @@ class TestChordrest(AppTest):
     def test_stem_direction_down(self):
         pitches = ["c", "b", "c'''"]
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
-        assert chord.stem_direction == VerticalDirection.DOWN
+        assert chord.stem_direction == DirectionY.DOWN
 
     def test_stem_direction_up(self):
         pitches = ["c,,,,,,", "b", "c''"]
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
-        assert chord.stem_direction == VerticalDirection.UP
+        assert chord.stem_direction == DirectionY.UP
 
     def test_stem_direction_down_with_one_note_at_staff_center(self):
         pitches = ["b"]
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
-        assert chord.stem_direction == VerticalDirection.DOWN
+        assert chord.stem_direction == DirectionY.DOWN
 
     def test_stem_direction_at_center_with_one_line_staff(self):
         staff = Staff(Point(Mm(0), Mm(0)), None, Mm(100), line_count=1)
         Clef(Mm(0), staff, "percussion_2")
         pitches = ["c"]
         chord = Chordrest(Mm(1), staff, pitches, Duration(1, 4))
-        assert chord.stem_direction == VerticalDirection.UP
+        assert chord.stem_direction == DirectionY.UP
 
     def test_stem_direction_override(self):
         pitches = ["b"]
@@ -242,12 +242,12 @@ class TestChordrest(AppTest):
             self.staff,
             pitches,
             Duration(1, 4),
-            stem_direction=VerticalDirection.UP,
+            stem_direction=DirectionY.UP,
         )
-        assert chord.stem_direction == VerticalDirection.UP
+        assert chord.stem_direction == DirectionY.UP
         # Setting stem_direction = None should revert to default 1
         chord.stem_direction = None
-        assert chord.stem_direction == VerticalDirection.DOWN
+        assert chord.stem_direction == DirectionY.DOWN
 
     def test_stem_height_min(self):
         pitches = ["b"]
@@ -263,7 +263,7 @@ class TestChordrest(AppTest):
         pitches = ["c''", "g,"]
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
         assert chord.stem.y == self.staff.unit(6.332)
-        chord.stem_direction = VerticalDirection.DOWN
+        chord.stem_direction = DirectionY.DOWN
         assert chord.stem.y == self.staff.unit(-1.832)
 
     def test_position_noteheads_around_stem(self):

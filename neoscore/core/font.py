@@ -125,4 +125,5 @@ class Font:
         Args:
             string: The string to derive the rect from
         """
+        # TODO MEDIUM: Add caching for this
         return self._interface.bounding_rect_of(string)

@@ -3,7 +3,7 @@ from typing import NamedTuple, Optional
 from helpers import render_vtest
 
 from neoscore.common import *
-from neoscore.core.directions import VerticalDirection
+from neoscore.core.directions import DirectionY
 from neoscore.western.duration import DurationDef
 from neoscore.western.pitch import PitchDef
 
@@ -13,17 +13,15 @@ neoscore.setup()
 class TestChord(NamedTuple):
     pitches: Optional[list[PitchDef]]
     duration: DurationDef
-    stem_direction: Optional[VerticalDirection] = None
+    stem_direction: Optional[DirectionY] = None
     beam_break_depth: Optional[int] = None
-    beam_hook_dir: Optional[HorizontalDirection] = None
+    beam_hook_dir: Optional[DirectionX] = None
 
 
 staff_y = ZERO
 
 
-def create_example(
-    chords: list[TestChord], direction: Optional[VerticalDirection] = None
-):
+def create_example(chords: list[TestChord], direction: Optional[DirectionY] = None):
     global staff_y
     staff = Staff((ZERO, staff_y), None, Mm(150))
     staff_y = staff.y
@@ -97,7 +95,7 @@ create_example(
 create_example(
     [
         TestChord(["f"], (1, 8)),
-        TestChord(["f"], (1, 16), beam_hook_dir=HorizontalDirection.RIGHT),
+        TestChord(["f"], (1, 16), beam_hook_dir=DirectionX.RIGHT),
         TestChord(["f"], (1, 8)),
     ]
 )
@@ -110,7 +108,7 @@ create_example(
         TestChord(["a"], (1, 16)),
         TestChord(["a"], (1, 8)),
     ],
-    VerticalDirection.DOWN,
+    DirectionY.DOWN,
 )
 
 

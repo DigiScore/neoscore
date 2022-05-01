@@ -4,7 +4,7 @@ import math
 from typing import Optional
 
 from neoscore.core.brush import Brush
-from neoscore.core.directions import HorizontalDirection
+from neoscore.core.directions import DirectionX
 from neoscore.core.mapping import map_between
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
@@ -28,8 +28,8 @@ class Hairpin(MusicPath, Spanner2D):
         pos: PointDef,
         parent: PositionedObject,
         end_pos: PointDef,
-        end_parent: Optional[PositionedObject],
-        direction: HorizontalDirection,
+        end_parent: Optional[PositionedObject] = None,
+        direction: DirectionX = DirectionX.RIGHT,
         width: Optional[Unit] = None,
         font: Optional[MusicFont] = None,
     ):
@@ -61,7 +61,7 @@ class Hairpin(MusicPath, Spanner2D):
         return self._music_font
 
     @property
-    def direction(self) -> HorizontalDirection:
+    def direction(self) -> DirectionX:
         """The direction of the hairpin.
 
         ``LEFT`` means diminuendo (>) and ``RIGHT`` means crescendo (<).
@@ -69,7 +69,7 @@ class Hairpin(MusicPath, Spanner2D):
         return self._direction
 
     @direction.setter
-    def direction(self, value: HorizontalDirection):
+    def direction(self, value: DirectionX):
         self._direction = value
 
     ######## PRIVATE METHODS ########
@@ -85,7 +85,7 @@ class Hairpin(MusicPath, Spanner2D):
         outer 2 represent the wide ends of the hairpin and the middle
         represents the small end joint.
         """
-        if self.direction == HorizontalDirection.LEFT:
+        if self.direction == DirectionX.LEFT:
             joint_pos = self.end_pos
             joint_parent = self.end_parent
             end_center_pos = self.pos

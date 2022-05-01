@@ -1,3 +1,4 @@
+from neoscore.core.point import Point
 from neoscore.core.rect import Rect, rect_from_def
 from neoscore.core.units import Mm
 
@@ -11,3 +12,15 @@ def test_rect_from_def():
     rect = Rect(*args)
     assert rect_from_def(rect) == rect
     assert rect_from_def(args) == rect
+
+
+def test_rect_offset():
+    assert Rect(Mm(2), Mm(3), Mm(10), Mm(20)).offset(Point(Mm(1), Mm(1))) == Rect(
+        Mm(3), Mm(4), Mm(10), Mm(20)
+    )
+
+
+def test_rect_merge():
+    r1 = Rect(Mm(2), Mm(-10), Mm(1), Mm(30))
+    r2 = Rect(Mm(-5), Mm(10), Mm(15), Mm(2))
+    assert r1.merge(r2) == Rect(Mm(-5), Mm(-10), Mm(15), Mm(30))

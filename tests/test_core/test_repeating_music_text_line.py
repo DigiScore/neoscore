@@ -1,7 +1,6 @@
 from neoscore.core.brush import Brush
 from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
-from neoscore.core.music_text import MusicText
 from neoscore.core.pen import Pen
 from neoscore.core.point import ORIGIN
 from neoscore.core.repeating_music_text_line import RepeatingMusicTextLine
@@ -20,9 +19,6 @@ class TestRepeatingMusicTextLine(AppTest):
         left_parent = MockStaffObject((Mm(0), Mm(0)), self.staff)
         right_parent = MockStaffObject((Mm(10), Mm(2)), self.staff)
         char = "gClef"
-        single_repetition_width = MusicText(
-            (Mm(0), Mm(0)), self.staff, char
-        ).bounding_rect.width
         line = RepeatingMusicTextLine(
             (Mm(1), Mm(2)),
             left_parent,
@@ -30,8 +26,7 @@ class TestRepeatingMusicTextLine(AppTest):
             right_parent,
             char,
         )
-        expected_reps = round(Mm(12) / single_repetition_width)
-        assert len(line.music_chars) == expected_reps
+        assert len(line.music_chars) == 3
         self.assertAlmostEqual(line.rotation, -9.462322208025618)
         assert line.rotation == line.angle
 
@@ -44,7 +39,7 @@ class TestRepeatingMusicTextLine(AppTest):
             "wiggleArpeggiatoUp",
             "wiggleArpeggiatoUpArrow",
         )
-        assert len(line.music_chars) == 3
+        assert len(line.music_chars) == 5
         for char in line.music_chars[:-1]:
             assert char == MusicChar(self.staff.music_font, "wiggleArpeggiatoUp")
         assert line.music_chars[-1] == MusicChar(

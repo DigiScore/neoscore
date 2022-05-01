@@ -232,9 +232,7 @@ class Flowable(PositionedObject):
         remaining_x = flowable_x
         for i, controller in enumerate(self.layout_controllers):
             remaining_x -= controller.length
-            # Allow error of Unit(1) to compensate for repeated subtraction
-            # rounding errors.
-            if remaining_x.base_value < -1:
+            if remaining_x.base_value < 0:
                 return i
         else:
             return len(self.layout_controllers) - 1

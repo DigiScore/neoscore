@@ -11,6 +11,8 @@ from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner_2d import Spanner2D
 from neoscore.core.units import ZERO, Unit
 
+# TODO MEDIUM support start_cap_text here
+
 
 class RepeatingMusicTextLine(MusicText, Spanner2D):
 
@@ -41,7 +43,9 @@ class RepeatingMusicTextLine(MusicText, Spanner2D):
                 must implement ``HasMusicFont``.
             end_pos: The stopping point.
             end_parent: The parent for the ending position.
-                If ``None``, defaults to ``self``.
+                If ``None``, defaults to ``self``. (Please note the lack of a default
+                argument here, unlike with most other spanners, ``None`` must be given
+                explicitly.)
             text: The text to be repeated over the spanner. Can be given as a SMuFL
                 glyph name, or other shorthand forms. See ``MusicStringDef`` and
                 ``MusicCharDef``.
@@ -71,7 +75,8 @@ class RepeatingMusicTextLine(MusicText, Spanner2D):
         Spanner2D.__init__(self, end_pos, end_parent or self)
         self.rotation = self.angle
         single_repetition_chars = self.music_chars
-        main_char_width = self.font.bounding_rect_of(self.text).width
+        main_char_width = self._approx_width(single_repetition_chars)
+
         if end_cap_text:
             # Again need to hackily set temporary text value to work out the width
             self.text = end_cap_text
@@ -84,6 +89,16 @@ class RepeatingMusicTextLine(MusicText, Spanner2D):
             cast(float, (self.spanner_2d_length - end_cap_width) / main_char_width)
         )
         self.music_chars = (single_repetition_chars * main_reps_needed) + end_cap_chars
+
+    def _approx_width(self, chars: list[MusicChar]) -> Unit:
+        width = ZERO
+        for c in chars:
+            glyph_info = c.glyph_info
+            if glyph_info.advance_width:
+                width += glyph_info.advance_width
+            else:
+                width += self.font.bounding_rect_of(c.codepoint).width
+        return width
 
     ######## PUBLIC PROPERTIES ########
 

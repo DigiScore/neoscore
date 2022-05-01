@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Optional
 
-from neoscore.core.directions import VerticalDirection
+from neoscore.core.directions import DirectionY
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
 from neoscore.core.path_element import PathElement
@@ -24,7 +24,7 @@ class Stem(MusicPath):
         self,
         start: PointDef,
         parent: PositionedObject,
-        direction: VerticalDirection,
+        direction: DirectionY,
         height: Unit,
         font: Optional[MusicFont] = None,
     ):
@@ -54,7 +54,7 @@ class Stem(MusicPath):
         return self._height
 
     @property
-    def direction(self) -> VerticalDirection:
+    def direction(self) -> DirectionY:
         """The direction the stem points, where -1 is up and 1 is down"""
         return self._direction
 

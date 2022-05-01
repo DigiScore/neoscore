@@ -5,47 +5,47 @@ from enum import Enum
 from neoscore.core.units import Unit
 
 
-class VerticalDirection(Enum):
+class DirectionY(Enum):
     UP = -1
     DOWN = 1
 
     def flip(self):
-        if self == VerticalDirection.UP:
-            return VerticalDirection.DOWN
+        if self == DirectionY.UP:
+            return DirectionY.DOWN
         else:
-            return VerticalDirection.UP
+            return DirectionY.UP
 
     @classmethod
-    def from_sign(cls, value: float | Unit) -> VerticalDirection:
-        """Get a VerticalDirection from the sign of a number or ``Unit`` value."""
+    def from_sign(cls, value: float | Unit) -> DirectionY:
+        """Get a DirectionY from the sign of a number or ``Unit`` value."""
         if isinstance(value, Unit):
             sign = -1 if value.base_value < 0 else 1
         else:
             sign = -1 if value < 0 else 1
         if sign == -1:
-            return VerticalDirection.UP
+            return DirectionY.UP
         else:
-            return VerticalDirection.DOWN
+            return DirectionY.DOWN
 
 
-class HorizontalDirection(Enum):
+class DirectionX(Enum):
     LEFT = -1
     RIGHT = 1
 
     def flip(self):
-        if self == HorizontalDirection.LEFT:
-            return HorizontalDirection.RIGHT
+        if self == DirectionX.LEFT:
+            return DirectionX.RIGHT
         else:
-            return HorizontalDirection.LEFT
+            return DirectionX.LEFT
 
     @classmethod
-    def from_sign(cls, value: float | Unit) -> HorizontalDirection:
-        """Get a HorizontalDirection from the sign of a number or ``Unit`` value."""
+    def from_sign(cls, value: float | Unit) -> DirectionX:
+        """Get a DirectionX from the sign of a number or ``Unit`` value."""
         if isinstance(value, Unit):
             sign = -1 if value.base_value < 0 else 1
         else:
             sign = -1 if value < 0 else 1
         if sign == -1:
-            return HorizontalDirection.LEFT
+            return DirectionX.LEFT
         else:
-            return HorizontalDirection.RIGHT
+            return DirectionX.RIGHT

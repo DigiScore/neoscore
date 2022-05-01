@@ -1,6 +1,6 @@
 import pytest
 
-from neoscore.core.directions import VerticalDirection
+from neoscore.core.directions import DirectionY
 from neoscore.western.interval import Interval, InvalidIntervalError
 
 
@@ -23,8 +23,8 @@ def test__hash__():
 
 
 def test_interval_direction():
-    assert Interval("am2").direction == VerticalDirection.UP
-    assert Interval("dm2").direction == VerticalDirection.DOWN
+    assert Interval("am2").direction == DirectionY.UP
+    assert Interval("dm2").direction == DirectionY.DOWN
 
 
 def test_interval_quality():

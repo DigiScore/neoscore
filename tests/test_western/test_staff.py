@@ -8,7 +8,6 @@ from neoscore.core.point import ORIGIN, Point
 from neoscore.core.units import ZERO, Mm
 from neoscore.western import clef_type
 from neoscore.western.clef import Clef
-from neoscore.western.octave_line import OctaveLine
 from neoscore.western.staff import NoClefError, Staff
 from tests.helpers import assert_almost_equal
 
@@ -107,14 +106,6 @@ class TestStaff(AppTest):
         staff = Staff((Mm(0), Mm(0)), self.flowable, Mm(100))
         assert staff.active_clef_at(Mm(5)) is None
 
-    def test_active_transposition_at_with_octave_line_with_staff_parent(self):
-        staff = Staff((Mm(0), Mm(0)), self.flowable, Mm(100))
-        octave_line = OctaveLine((Mm(20), Mm(0)), staff, Mm(80), indication="8va")
-        assert staff.active_transposition_at(Mm(0)) is None
-        assert staff.active_transposition_at(Mm(20)) == octave_line.transposition
-        assert staff.active_transposition_at(Mm(100)) == octave_line.transposition
-        assert staff.active_transposition_at(Mm(101)) is None
-
     def test_middle_c_at_with_explicit_clefs(self):
         staff = Staff((Mm(0), Mm(0)), self.flowable, Mm(100))
         Clef(Mm(0), staff, "treble")
@@ -128,18 +119,6 @@ class TestStaff(AppTest):
         staff = Staff((Mm(0), Mm(0)), self.flowable, Mm(100))
         with pytest.raises(NoClefError):
             staff.middle_c_at(Mm(5))
-
-    def test_middle_c_at_with_active_octave_line(self):
-        staff = Staff((Mm(0), Mm(0)), self.flowable, Mm(100))
-        Clef(Mm(0), staff, "treble")
-        octave_line = OctaveLine((Mm(20), Mm(0)), staff, Mm(80), indication="8va")
-        # Before octave_line goes into effect
-        assert staff.middle_c_at(Mm(0)) == staff.unit(5)
-        # While octave_line is in effect
-        assert staff.middle_c_at(Mm(20)) == staff.unit(8.5)
-        assert staff.middle_c_at(Mm(100)) == staff.unit(8.5)
-        # After octave_line ends
-        assert staff.middle_c_at(Mm(101)) == staff.unit(5)
 
     def test_position_inside_staff_with_odd_line_count(self):
         staff = Staff((Mm(0), Mm(0)), self.flowable, Mm(100), line_count=5)

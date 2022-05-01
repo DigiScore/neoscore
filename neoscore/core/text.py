@@ -7,9 +7,10 @@ from neoscore.core.brush import Brush, BrushDef
 from neoscore.core.font import Font
 from neoscore.core.painted_object import PaintedObject
 from neoscore.core.pen import Pen, PenDef
-from neoscore.core.point import Point, PointDef
+from neoscore.core.point import ORIGIN, Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.rect import Rect
+from neoscore.core.text_alignment import AlignmentX, AlignmentY
 from neoscore.core.units import ZERO, Unit
 from neoscore.interface.text_interface import TextInterface
 
@@ -31,6 +32,8 @@ class Text(PaintedObject):
         background_brush: Optional[BrushDef] = None,
         z_index: int = 0,
         breakable: bool = True,
+        alignment_x: AlignmentX = AlignmentX.LEFT,
+        alignment_y: AlignmentY = AlignmentY.BASELINE,
     ):
         """
         Args:
@@ -48,6 +51,10 @@ class Text(PaintedObject):
             z_index: Controls draw order with higher values drawn first.
             breakable: Whether this object should break across lines in
                 Flowable containers.
+            alignment_x: The text's horizontal alignment relative to ``pos``.
+                Note that text which is not ``LEFT`` aligned does not currently display
+                correctly when breaking across flowable lines.
+            alignment_y: The text's vertical alignment relative to ``pos``.
         """
         if font:
             self._font = font
@@ -59,6 +66,8 @@ class Text(PaintedObject):
         self.background_brush = background_brush
         self._z_index = z_index
         self._breakable = breakable
+        self._alignment_x = alignment_x
+        self._alignment_y = alignment_y
         super().__init__(pos, parent, brush, pen or Pen.no_pen())
 
     ######## PUBLIC PROPERTIES ########
@@ -72,7 +81,7 @@ class Text(PaintedObject):
         This is derived from other properties and cannot be set directly.
         """
         if self.breakable:
-            return self.bounding_rect.width
+            return self.bounding_rect.width + self._alignment_offset.x
         else:
             return ZERO
 
@@ -148,9 +157,66 @@ class Text(PaintedObject):
         self._breakable = value
 
     @property
+    def alignment_x(self) -> bool:
+        """The text's horizontal alignment relative to ``pos``.
+
+        Note that text which is not ``LEFT`` aligned does not currently display
+        correctly when breaking across flowable lines.
+        """
+        return self._alignment_x
+
+    @alignment_x.setter
+    def alignment_x(self, value: bool):
+        self._alignment_x = value
+
+    @property
+    def alignment_y(self) -> bool:
+        """The text's vertical alignment relative to ``pos``."""
+        return self._alignment_y
+
+    @alignment_y.setter
+    def alignment_y(self, value: bool):
+        self._alignment_y = value
+
+    @property
+    def _alignment_offset(self) -> Point:
+        if (
+            self.alignment_x == AlignmentX.LEFT
+            and self.alignment_y == AlignmentY.BASELINE
+        ):
+            return ORIGIN
+        x = ZERO
+        y = ZERO
+        bounding_rect = self._raw_scaled_bounding_rect
+        if self.alignment_x == AlignmentX.CENTER:
+            x = (bounding_rect.width / -2) - bounding_rect.x
+        elif self.alignment_x == AlignmentX.RIGHT:
+            x = -bounding_rect.width - bounding_rect.x
+        if self.alignment_y == AlignmentY.CENTER:
+            y = (bounding_rect.height / -2) - bounding_rect.y
+        return Point(x, y)
+
+    @property
+    def _raw_scaled_bounding_rect(self) -> Rect:
+        """The text bounding rect without centering adjustment"""
+        return self.font.bounding_rect_of(self.text) * self.scale
+
+    @property
     def bounding_rect(self) -> Rect:
-        """The bounding rect override for this text."""
-        return self.font.bounding_rect_of(self.text)
+        """The bounding rect for this text positioned relative to ``pos``.
+
+        The rect x, y position is relative to the object's position (``pos``).
+
+        Note that this currently accounts for scaling, but not rotation.
+        """
+        raw_rect = self._raw_scaled_bounding_rect
+        alignment_offset = self._alignment_offset
+        return Rect(
+            raw_rect.x + alignment_offset.x,
+            raw_rect.y + alignment_offset.y,
+            raw_rect.width,
+            raw_rect.height,
+        )
 
     ######## PRIVATE METHODS ########
 
@@ -170,7 +236,7 @@ class Text(PaintedObject):
                 be rendered
         """
         slice_interface = TextInterface(
-            pos,
+            pos + self._alignment_offset,
             self.brush.interface,
             self.pen.interface,
             self.text,

@@ -4,7 +4,7 @@ from typing import Optional, cast
 
 from neoscore.core import neoscore
 from neoscore.core.brush import Brush
-from neoscore.core.directions import VerticalDirection
+from neoscore.core.directions import DirectionY
 from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
@@ -16,19 +16,14 @@ from neoscore.core.point import ORIGIN, Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner import Spanner
 from neoscore.core.units import Unit
-from neoscore.western.interval import Interval
-from neoscore.western.transposition import Transposition
 
 
 class OctaveLine(PositionedObject, Spanner, HasMusicFont):
 
     """An octave indication with a dashed line.
 
-    When placed in the context of a Staff, pitched content under the spanner
-    is automatically transposed accordingly. Care should be taken to ensure
-    OctaveLines do not overlap with one another. If this occurs,
-    the transposition reflected in the staff will be an undefined choice
-    among those active.
+    This octave line is purely cosmetic, and does not result in
+    any automatic transpositions.
 
     Supported octave indications are:
         - '15ma' (two octaves higher)
@@ -41,13 +36,6 @@ class OctaveLine(PositionedObject, Spanner, HasMusicFont):
     If the spanner goes across line breaks, the octave text is repeated
     in parenthesis at the line beginning.
     """
-
-    intervals = {
-        "15ma": Interval("aP15"),
-        "8va": Interval("aP8"),
-        "8vb": Interval("dP8"),
-        "15mb": Interval("dP15"),
-    }
 
     glyphs = {
         "15ma": "quindicesimaAlta",
@@ -65,7 +53,7 @@ class OctaveLine(PositionedObject, Spanner, HasMusicFont):
         end_x: Unit,
         end_parent: Optional[PositionedObject] = None,
         indication: str = "8va",
-        direction: VerticalDirection = VerticalDirection.DOWN,
+        direction: DirectionY = DirectionY.DOWN,
         font: Optional[MusicFont] = None,
     ):
         """
@@ -96,7 +84,6 @@ class OctaveLine(PositionedObject, Spanner, HasMusicFont):
             font = HasMusicFont.find_music_font(start_parent)
         self._music_font = font
         self.direction = direction
-        self.transposition = Transposition(OctaveLine.intervals[indication])
         self.line_text = _OctaveLineText(
             ORIGIN, self, self.breakable_length, indication, font
         )

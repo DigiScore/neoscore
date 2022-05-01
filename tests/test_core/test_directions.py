@@ -1,30 +1,30 @@
 import unittest
 
-from neoscore.core.directions import HorizontalDirection, VerticalDirection
+from neoscore.core.directions import DirectionX, DirectionY
 from neoscore.core.units import Unit
 
 
-class TestVerticalDirection(unittest.TestCase):
-    def test_vertical_direction_flip(self):
-        assert VerticalDirection.DOWN.flip() == VerticalDirection.UP
-        assert VerticalDirection.UP.flip() == VerticalDirection.DOWN
+class TestDirectionY(unittest.TestCase):
+    def test_direction_y_flip(self):
+        assert DirectionY.DOWN.flip() == DirectionY.UP
+        assert DirectionY.UP.flip() == DirectionY.DOWN
 
-    def test_vertical_direction_from_sign(self):
-        assert VerticalDirection.from_sign(-2) == VerticalDirection.UP
-        assert VerticalDirection.from_sign(1) == VerticalDirection.DOWN
-        assert VerticalDirection.from_sign(0) == VerticalDirection.DOWN
-        assert VerticalDirection.from_sign(Unit(-1)) == VerticalDirection.UP
-        assert VerticalDirection.from_sign(Unit(1)) == VerticalDirection.DOWN
+    def test_direction_y_from_sign(self):
+        assert DirectionY.from_sign(-2) == DirectionY.UP
+        assert DirectionY.from_sign(1) == DirectionY.DOWN
+        assert DirectionY.from_sign(0) == DirectionY.DOWN
+        assert DirectionY.from_sign(Unit(-1)) == DirectionY.UP
+        assert DirectionY.from_sign(Unit(1)) == DirectionY.DOWN
 
 
-class TestHorizontalDirection(unittest.TestCase):
-    def test_horizontal_direction_flip(self):
-        assert HorizontalDirection.RIGHT.flip() == HorizontalDirection.LEFT
-        assert HorizontalDirection.LEFT.flip() == HorizontalDirection.RIGHT
+class TestDirectionX(unittest.TestCase):
+    def test_direction_x_flip(self):
+        assert DirectionX.RIGHT.flip() == DirectionX.LEFT
+        assert DirectionX.LEFT.flip() == DirectionX.RIGHT
 
-    def test_horizontal_direction_from_sign(self):
-        assert HorizontalDirection.from_sign(-2) == HorizontalDirection.LEFT
-        assert HorizontalDirection.from_sign(1) == HorizontalDirection.RIGHT
-        assert HorizontalDirection.from_sign(0) == HorizontalDirection.RIGHT
-        assert HorizontalDirection.from_sign(Unit(-1)) == HorizontalDirection.LEFT
-        assert HorizontalDirection.from_sign(Unit(1)) == HorizontalDirection.RIGHT
+    def test_direction_x_from_sign(self):
+        assert DirectionX.from_sign(-2) == DirectionX.LEFT
+        assert DirectionX.from_sign(1) == DirectionX.RIGHT
+        assert DirectionX.from_sign(0) == DirectionX.RIGHT
+        assert DirectionX.from_sign(Unit(-1)) == DirectionX.LEFT
+        assert DirectionX.from_sign(Unit(1)) == DirectionX.RIGHT

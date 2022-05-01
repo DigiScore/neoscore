@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Optional, cast
 
-from neoscore.core.directions import VerticalDirection
+from neoscore.core.directions import DirectionY
 from neoscore.core.exceptions import NoFlagNeededError
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
@@ -42,7 +42,7 @@ class Flag(MusicText):
         pos: PointDef,
         parent: PositionedObject,
         duration: Duration,
-        direction: VerticalDirection,
+        direction: DirectionY,
         font: Optional[MusicFont] = None,
     ):
         """
@@ -61,7 +61,7 @@ class Flag(MusicText):
         duration_display = cast(DurationDisplay, self.duration.display)
         if duration_display.flag_count == 0:
             raise NoFlagNeededError(self.duration)
-        if self.direction == VerticalDirection.DOWN:
+        if self.direction == DirectionY.DOWN:
             glyph_name = self._down_glyphnames[duration_display.flag_count]
         else:
             glyph_name = self._up_glyphnames[duration_display.flag_count]
@@ -82,12 +82,12 @@ class Flag(MusicText):
         self._duration = value
 
     @property
-    def direction(self) -> VerticalDirection:
+    def direction(self) -> DirectionY:
         """The flag direction"""
         return self._direction
 
     @direction.setter
-    def direction(self, value: VerticalDirection):
+    def direction(self, value: DirectionY):
         self._direction = value
 
     ######## PUBLIC CLASS METHODS ########

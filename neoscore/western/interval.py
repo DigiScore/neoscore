@@ -1,6 +1,6 @@
 import re
 
-from neoscore.core.directions import VerticalDirection
+from neoscore.core.directions import DirectionY
 from neoscore.core.exceptions import InvalidIntervalError
 
 
@@ -48,9 +48,7 @@ class Interval:
         match = Interval._shorthand_regex.match(specifier)
         if match is None:
             raise InvalidIntervalError
-        self._direction = (
-            VerticalDirection.UP if match.group(1) == "a" else VerticalDirection.DOWN
-        )
+        self._direction = DirectionY.UP if match.group(1) == "a" else DirectionY.DOWN
         self._quality = match.group(2)
         self._distance = int(match.group(3))
         # Check against invalid edge case intervals
@@ -70,7 +68,7 @@ class Interval:
     ######## SPECIAL METHODS ########
 
     def __repr__(self):
-        direction_str = "a" if self.direction == VerticalDirection.UP else "d"
+        direction_str = "a" if self.direction == DirectionY.UP else "d"
         return f"Interval('{direction_str}{self.quality}{self.distance}')"
 
     def __hash__(self):
@@ -87,7 +85,7 @@ class Interval:
     ######## PUBLIC PROPERTIES ########
 
     @property
-    def direction(self) -> VerticalDirection:
+    def direction(self) -> DirectionY:
         return self._direction
 
     @property

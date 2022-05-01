@@ -5,9 +5,6 @@ from neoscore.core.color import ColorDef
 from neoscore.core.pen_pattern import PenPattern
 from neoscore.core.units import Union, Unit
 
-# NOTE: When creating a new style, be sure to add it to ALL_STYLES at
-# the end of this file.
-
 
 @dataclass(frozen=True)
 class BarlineStyle:
@@ -16,31 +13,43 @@ class BarlineStyle:
     Use multiple of these to specify multi-part lines like double barlines.
     """
 
-    thickness: Union[str, float, Unit]
-    """Thickness of the barline can be 
-    engraving default key / pseudo-staff-units / units"""
+    thickness: Union[str, float, Unit] = 0.16
+    """Thickness for this line
+
+    This can be defined either as a SMuFL engraving default key, a float value of
+    pseudo-staff-units, or a plain unit value.
+    """
 
     gap_right: Union[str, float, Unit] = 0.4
-    """Separation gap between grouped barlines, can be 
-     engraving default key / pseudo-staff-units / units"""
+    """The gap to the right of this line, if another follows.
+
+    Like ``thickness``, this can be defined either as a SMuFL engraving default key, a
+    float value of pseudo-staff-units, or a plain unit value.
+    """
 
     pattern: PenPattern = PenPattern.SOLID
-    """Line pattern of a barline"""
+    """Line pattern of a line"""
 
     color: Optional[ColorDef] = None
-    """Colour of a barline"""
+    """Color of a line"""
 
+
+# NOTE: When adding a new style, be sure to add it to ALL_STYLES below
 
 SINGLE = [BarlineStyle("thinBarlineThickness")]
 
+DASH = [BarlineStyle("thinBarlineThickness", pattern=PenPattern.DASH)]
+
+DOT = [BarlineStyle("thinBarlineThickness", pattern=PenPattern.DOT)]
+
 THIN_DOUBLE = [
-    BarlineStyle("thinBarlineThickness"),
+    BarlineStyle("thinBarlineThickness", "barlineSeparation"),
     BarlineStyle("thinBarlineThickness"),
 ]
 
 END = [
-    BarlineStyle("thinBarlineThickness", "thinThickBarlineSeparation"),
+    BarlineStyle("thinBarlineThickness", "thickBarlineSeparation"),
     BarlineStyle("thickBarlineThickness"),
 ]
 
-ALL_STYLES: list[list[BarlineStyle]] = [SINGLE, THIN_DOUBLE, END]
+ALL_STYLES: list[list[BarlineStyle]] = [SINGLE, DASH, DOT, THIN_DOUBLE, END]
