@@ -186,20 +186,20 @@ class PositionedObject:
 
     ######## PRIVATE METHODS ########
 
-    def _pre_render_hook(self):
+    def pre_render_hook(self):
         """Run code once just before document rendering begins.
 
         This is an experimental feature to support precomputation and
         caching for expensive methods.
 
         Any data cached in this function must be cleared in a
-        corresponding ``_post_render_hook``.
+        corresponding ``post_render_hook``.
         """
 
-    def _post_render_hook(self):
+    def post_render_hook(self):
         """Run code once after document rendering completes.
 
-        Any cached data stored in ``_pre_render_hook`` must be cleared
+        Any cached data stored in ``pre_render_hook`` must be cleared
         in this function.
         """
 

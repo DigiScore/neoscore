@@ -202,8 +202,8 @@ class Staff(MusicPath):
         result.sort(key=lambda tup: tup[0])
         return result
 
-    def _pre_render_hook(self):
+    def pre_render_hook(self):
         self._clef_x_positions = self._compute_clef_x_positions()
 
-    def _post_render_hook(self):
+    def post_render_hook(self):
         self._clef_x_positions = None
