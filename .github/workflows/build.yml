@@ -74,9 +74,9 @@ jobs:
         env:
           NEOSCORE_HEADLESS: True
         run: |
+          echo ${{github.ref}}
+          sudo apt install graphviz
           source ../.venv/bin/activate
-          echo $PATH
-          which python
           make html
       - name: Deploy docs site
         if: github.ref == 'refs/heads/doc-build-testing'
