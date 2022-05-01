@@ -78,14 +78,24 @@ class Path(PaintedObject):
     ) -> Path:
         """Convenience for drawing a single straight line.
 
-        ``end`` is measured relative to the starting point.
+        Args:
+            start: The position of the center of the arrow line's start
+            parent: A parent object
+            end: The position of the end of the line, relative to ``end_parent``
+                if provided or ``start``
+            end_parent: An optional parent for the end point.
+            brush: The brush to fill shapes with.
+            pen: The pen to draw outlines with. Defaults to no pen.
 
-        ''end_parent'' explicitly parents line to another object.
+        Note that ``end_parent`` is only used for initially drawing the
+        path. If ``end_parent`` moves relative to the path after
+        creation, the path shape will not be automatically updated.
         """
         line = cls(start, parent, brush, pen)
-        end = Point.from_def(end)
         if end_parent:
-            end = map_between(line, end_parent) + end
+            end = end_parent.pos + Point.from_def(end)
+        else:
+            end = Point.from_def(end)
         line.line_to(end.x, end.y)
         return line
 
