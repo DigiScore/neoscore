@@ -133,7 +133,11 @@ class Flowable(PositionedObject):
                 page = last.page
                 controller_x = ZERO
                 controller_y = last.y + self.height + self.y_padding
-                if controller_y > live_page_height:
+                controller_bottom_y = controller_y + self.height
+                if (
+                    controller_y > live_page_height
+                    or controller_bottom_y > live_page_height
+                ):
                     page = neoscore.document.pages[page.page_index + 1]
                     controller_y = ZERO
             # Now determine this line's length
