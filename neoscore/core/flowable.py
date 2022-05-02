@@ -217,6 +217,8 @@ class Flowable(PositionedObject):
         """
         return self.layout_controllers[self.last_break_index_at(flowable_x)]
 
+    # TODO HIGH Maybe provide an "affinity" switch with objects to state how they should be drawn when they lie almost exactly at a break - could render in first break, second break, or both. current behavior is to only return the second i think, which causes weird behavior with things like barlines.
+
     def last_break_index_at(self, flowable_x: Unit) -> int:
         """Like ``last_break_at``, but returns an index.
 

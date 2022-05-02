@@ -21,8 +21,8 @@ class Score(PositionedObject):
     _TEXT_FONT_SIZE = GridUnit(0.6)
     _MUSIC_FONT_SIZE = GridUnit(0.5)
 
-    _barline_pen = Pen(thickness=GridUnit(0.05), pattern=PenPattern.DOT)
-    _instrument_divider_pen = Pen(thickness=GridUnit(0.05))
+    _barline_pen = Pen(thickness=GridUnit(0.08), pattern=PenPattern.DOT)
+    _instrument_divider_pen = Pen(thickness=GridUnit(0.08))
 
     def __init__(self, pos, parent, instruments):
         super().__init__(pos, parent)
@@ -135,14 +135,16 @@ class Score(PositionedObject):
                         drawing = False
 
     def draw_barlines(self):
+        pen = Score._barline_pen
         for measure_num in range(self.measure_count + 1):
+            measure_x = Measure(measure_num)
             current_path = Path(
-                (Measure(measure_num), GridUnit(0)),
-                parent=self,
-                pen=Score._barline_pen,
+                (measure_x - (pen.thickness / 2), GridUnit(0)),
+                self,
+                pen=pen,
             )
             # Attach break hint after barline
-            BreakHint((current_path.pen.thickness / 2, ZERO), current_path)
+            BreakHint((measure_x, ZERO), self)
             drawing = False
             for divider_num in range(len(self.instruments) + 1):
                 if self._barline_extends_below(measure_num, divider_num):

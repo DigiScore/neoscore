@@ -15,8 +15,8 @@ flowable = Flowable(
     Measure(20),
     GridUnit(18),
     GridUnit(6),
-    Measure(1),
+    Measure(2),
 )
 score = Score(ORIGIN, flowable, instruments)
 
-neoscore.show()
+neoscore.show(display_page_geometry=False)
