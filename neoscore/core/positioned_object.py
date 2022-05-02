@@ -326,8 +326,12 @@ class PositionedObject:
         """
         # Calculate position within flowable
         pos_in_flowable = self.flowable.descendant_pos(self)
-        dist_to_first_line_end = self.flowable.dist_to_line_end(pos_in_flowable.x)
-        remaining_x = self.breakable_length - dist_to_first_line_end
+        first_line_i = self.flowable.last_break_index_at(pos_in_flowable.x)
+        first_line = self.flowable.layout_controllers[first_line_i]
+        first_line_length = (
+            first_line.flowable_x + first_line.length - pos_in_flowable.x
+        )
+        remaining_x = self.breakable_length - first_line_length
         if remaining_x <= ZERO:
             self.render_complete(
                 self.canvas_pos,
@@ -337,10 +341,17 @@ class PositionedObject:
             return
 
         # Render before break
-        first_line_i = self.flowable.last_break_index_at(pos_in_flowable.x)
-        current_line = self.flowable.layout_controllers[first_line_i]
-        render_start_pos = self.canvas_pos
-        first_line_length = dist_to_first_line_end
+        if first_line_length < Unit(1):
+            # If a break-spanning object starts very close to its first line end,
+            # skip that line.
+            first_line_i += 1
+            first_line = self.flowable.layout_controllers[first_line_i]
+            first_line_length = (
+                first_line.flowable_x + first_line.length - pos_in_flowable.x
+            )
+            remaining_x = self.breakable_length - first_line_length
+        line_pos = first_line.canvas_pos
+        render_start_pos = Point(line_pos.x, line_pos.y + pos_in_flowable.y)
         render_end_pos = Point(
             render_start_pos.x + first_line_length, render_start_pos.y
         )
@@ -348,7 +359,7 @@ class PositionedObject:
             pos_in_flowable.x,
             render_start_pos,
             render_end_pos,
-            self.flowable.dist_to_line_start(pos_in_flowable.x),
+            pos_in_flowable.x - first_line.flowable_x,
         )
 
         # Iterate through remaining length
@@ -356,10 +367,10 @@ class PositionedObject:
             first_line_i + 1, len(self.flowable.layout_controllers)
         ):
             current_line = self.flowable.layout_controllers[current_line_i]
+            line_pos = current_line.canvas_pos
+            render_start_pos = Point(line_pos.x, line_pos.y + pos_in_flowable.y)
             if remaining_x > current_line.length:
                 # Render spanning continuation
-                line_pos = current_line.canvas_pos
-                render_start_pos = Point(line_pos.x, line_pos.y + pos_in_flowable.y)
                 render_end_pos = Point(
                     render_start_pos.x + current_line.length,
                     render_start_pos.y,
@@ -371,14 +382,14 @@ class PositionedObject:
                 )
                 remaining_x -= current_line.length
             else:
+                # Render end
+                render_end_pos = Point(
+                    render_start_pos.x + remaining_x, render_start_pos.y
+                )
+                self.render_after_break(
+                    self.breakable_length - remaining_x, render_start_pos
+                )
                 break
-
-        # Render end
-        render_start_pos = self.flowable.map_to_canvas(
-            Point(current_line.flowable_x, pos_in_flowable.y)
-        )
-        render_end_pos = Point(render_start_pos.x + remaining_x, render_start_pos.y)
-        self.render_after_break(self.breakable_length - remaining_x, render_start_pos)
 
     def render_complete(
         self,
@@ -390,9 +401,6 @@ class PositionedObject:
 
         This is used to render all objects outside of flowables, as well as those inside
         flowables when they fit completely in one line of the flowable.
-
-        This method should create a GraphicInterface and store it in
-        ``self.interfaces``.
 
         Note: By default this is a no-op. Subclasses with with
         rendered appearances should override this.
@@ -418,9 +426,6 @@ class PositionedObject:
         crosses a line or page break. This function should render the
         beginning portion of the object up to the break.
 
-        This method should create a GraphicInterface and store it in
-        ``self.interfaces``.
-
         Args:
             local_start_x: The local starting position of this
                 drawing segment.
@@ -442,9 +447,6 @@ class PositionedObject:
         crosses a line or page break. This function should render the
         ending portion of an object after a break.
 
-        This method should create a GraphicInterface and store it in
-        ``self.interfaces``.
-
         Args:
             local_start_x: The local starting position of this
                 drawing segment.
@@ -463,9 +465,6 @@ class PositionedObject:
         For use in flowable containers when rendering an object that crosses
         two breaks. This function should render the portion of the object
         surrounded by breaks on either side.
-
-        This method should create a GraphicInterface and store it in
-        ``self.interfaces``.
 
         Args:
             local_start_x: The local starting position of this

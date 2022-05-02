@@ -210,19 +210,13 @@ class Flowable(PositionedObject):
     def last_break_at(self, flowable_x: Unit) -> NewLine:
         """Find the last ``NewLine`` that occurred before a given local flowable_x-pos
 
-        The result of this function will be accurate within ``Unit(1)``
-
         Args:
             flowable_x: An x-axis location in the virtual flowable space.
         """
         return self.layout_controllers[self.last_break_index_at(flowable_x)]
 
-    # TODO HIGH Maybe provide an "affinity" switch with objects to state how they should be drawn when they lie almost exactly at a break - could render in first break, second break, or both. current behavior is to only return the second i think, which causes weird behavior with things like barlines.
-
     def last_break_index_at(self, flowable_x: Unit) -> int:
         """Like ``last_break_at``, but returns an index.
-
-        The result of this function will be accurate within ``Unit(1)``
 
         Args:
             flowable_x: An x-axis location in the virtual flowable space.
@@ -232,7 +226,7 @@ class Flowable(PositionedObject):
         remaining_x = flowable_x
         for i, controller in enumerate(self.layout_controllers):
             remaining_x -= controller.length
-            if remaining_x.base_value < 0:
+            if remaining_x <= ZERO:
                 return i
         else:
             return len(self.layout_controllers) - 1
