@@ -142,7 +142,7 @@ class Flowable(PositionedObject):
                     controller_y = ZERO
             # Now determine this line's length
             max_length = live_page_width - controller_x
-            max_line_end_flowable_x = flowable_start_x + live_page_width
+            max_line_end_flowable_x = flowable_start_x + max_length
             nearest_break_opp = next(
                 (opp for opp in reversed(break_opps) if opp < max_line_end_flowable_x),
                 None,
