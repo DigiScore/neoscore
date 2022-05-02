@@ -71,17 +71,24 @@ class Path(PaintedObject):
         start: PointDef,
         parent: Optional[PositionedObject],
         end: PointDef,
+        end_parent: Optional[PositionedObject] = None,
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,
     ) -> Path:
         """Convenience for drawing a single straight line.
 
-        ``end`` is measured relative to the starting point.
+        Args:
+            start: The position of the center of the arrow line's start
+            parent: A parent object
+            end: The position of the end of the line, relative to ``end_parent``
+                if provided or ``start``
+            end_parent: An optional parent for the end point.
+            brush: The brush to fill shapes with.
+            pen: The pen to draw outlines with. Defaults to no pen.
         """
         line = cls(start, parent, brush, pen)
-        if isinstance(end, tuple):
-            end = Point(*end)
-        line.line_to(end.x, end.y)
+        end = Point.from_def(end)
+        line.line_to(end.x, end.y, end_parent)
         return line
 
     @classmethod
