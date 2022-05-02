@@ -7,18 +7,19 @@ from examples.feldman_projections_2.measure import Measure
 from examples.feldman_projections_2.music_text_event import MusicTextEvent
 from examples.feldman_projections_2.text_event import TextEvent
 from neoscore.core import neoscore
+from neoscore.core.break_hint import BreakHint
 from neoscore.core.music_font import MusicFont
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
 from neoscore.core.pen_pattern import PenPattern
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.western.staff import Staff
+from neoscore.core.units import ZERO
 
 
 class Score(PositionedObject):
 
-    _TEXT_FONT_SIZE = GridUnit(0.6).base_value
-    _MUSIC_FONT_SIZE = Staff._make_unit_class(GridUnit(0.5))
+    _TEXT_FONT_SIZE = GridUnit(0.6)
+    _MUSIC_FONT_SIZE = GridUnit(0.5)
 
     _barline_pen = Pen(thickness=GridUnit(0.05), pattern=PenPattern.DOT)
     _instrument_divider_pen = Pen(thickness=GridUnit(0.05))
@@ -52,7 +53,7 @@ class Score(PositionedObject):
                 (Score._instrument_pos_y(instrument_index) + event_data.register.value),
             ),
             self,
-            event_data.breakable_length,
+            event_data.length,
             event_data.text,
             self.text_font,
         )
@@ -64,7 +65,7 @@ class Score(PositionedObject):
                 (Score._instrument_pos_y(instrument_index) + event_data.register.value),
             ),
             self,
-            event_data.breakable_length,
+            event_data.length,
             event_data.text,
             self.music_font,
         )
@@ -140,6 +141,8 @@ class Score(PositionedObject):
                 parent=self,
                 pen=Score._barline_pen,
             )
+            # Attach break hint after barline
+            BreakHint((current_path.pen.thickness / 2, ZERO), current_path)
             drawing = False
             for divider_num in range(len(self.instruments) + 1):
                 if self._barline_extends_below(measure_num, divider_num):
