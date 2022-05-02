@@ -89,7 +89,7 @@ class QClippingPath(QGraphicsPathItem):
         """
         if self.clip_start_x != 0:
             painter.translate(-self.clip_start_x, 0)
-        if self.clip_width is not None:
+        if self.clip_rect is not None:
             painter.setClipRect(self.clip_rect)
         if env.DEBUG or self.background_brush:
             bounding_rect = self.bounding_rect
@@ -140,10 +140,12 @@ class QClippingPath(QGraphicsPathItem):
                 of the rect.
         """
         if clip_width is None:
-            resolved_clip_width = bounding_rect.width() - clip_start_x
+            resolved_clip_width = (
+                bounding_rect.width() - bounding_rect.x() - clip_start_x
+            )
             padding_right = padding
         else:
-            resolved_clip_width = clip_width
+            resolved_clip_width = clip_width - bounding_rect.x()
             padding_right = 0
         if not clip_start_x:
             padding_left = padding
