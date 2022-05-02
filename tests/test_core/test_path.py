@@ -70,7 +70,7 @@ class TestPath(AppTest):
         assert len(path.elements) == 2
         assert_path_els_equal(path.elements[0], MoveTo(ORIGIN, path))
         assert_path_els_equal(
-            path.elements[1], LineTo(Point(Unit(510), Unit(610)), path)
+            path.elements[1], LineTo(Point(Unit(10), Unit(10)), end_parent)
         )
 
     def test_line_to(self):

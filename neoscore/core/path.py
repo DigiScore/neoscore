@@ -92,11 +92,11 @@ class Path(PaintedObject):
         creation, the path shape will not be automatically updated.
         """
         line = cls(start, parent, brush, pen)
+        end = Point.from_def(end)
         if end_parent:
-            end = end_parent.pos + Point.from_def(end)
+            line.line_to(end.x, end.y, end_parent)
         else:
-            end = Point.from_def(end)
-        line.line_to(end.x, end.y)
+            line.line_to(end.x, end.y)
         return line
 
     @classmethod
