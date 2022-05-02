@@ -163,8 +163,11 @@ class Page(PositionedObject):
         """
         return self.paper.live_width / 2
 
-    def display_geometry(self, background_brush: Brush):
-        """Create child objects which graphically show the page geometry.
+    def render_geometry_preview(self, background_brush: Brush):
+        """Create and render child objects which show the page geometry.
+
+        This shouldn't be called directly; use the setting
+        in ``neoscore.show()`` instead.
 
         This is useful for interactive views, but should typically not
         be called in PDF and image export contexts.
@@ -200,3 +203,9 @@ class Page(PositionedObject):
             Brush.no_brush(),
             pen=Pen(_PREVIEW_OUTLINE_COLOR, pattern=PenPattern.DOT),
         )
+        for obj in [
+            page_preview_rect,
+            page_drop_shadow_rect,
+            live_area_preview_rect,
+        ]:
+            obj.render()

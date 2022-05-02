@@ -208,9 +208,9 @@ def show(refresh_func: Optional[RefreshFunc] = None, display_page_geometry=True)
     global document
     global _app_interface
     _app_interface._clear_scene()
-    if display_page_geometry:
-        _display_page_geometry()
     document.render()
+    if display_page_geometry:
+        _render_geometry_preview()
     if refresh_func:
         set_refresh_func(refresh_func)
     _app_interface.show()
@@ -227,11 +227,11 @@ def _clear_interfaces():
                 interfaces.clear()
 
 
-def _display_page_geometry():
+def _render_geometry_preview():
     global document
     global background_brush
     for page in document.pages:
-        page.display_geometry(background_brush)
+        page.render_geometry_preview(background_brush)
 
 
 def render_pdf(pdf_path: str | pathlib.Path, dpi: int = 300):
