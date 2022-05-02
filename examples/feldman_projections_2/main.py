@@ -4,10 +4,10 @@ from examples.feldman_projections_2.measure import Measure
 from examples.feldman_projections_2.score import Score
 from neoscore.core import neoscore
 from neoscore.core.flowable import Flowable
-from neoscore.core.paper import A4
+from neoscore.core.paper import LETTER
 from neoscore.core.point import ORIGIN
 
-neoscore.setup(A4)
+neoscore.setup(LETTER.make_rotation())
 
 flowable = Flowable(
     ORIGIN,
@@ -19,4 +19,4 @@ flowable = Flowable(
 )
 score = Score(ORIGIN, flowable, instruments)
 
-neoscore.show(display_page_geometry=False)
+neoscore.show(display_page_geometry=True)

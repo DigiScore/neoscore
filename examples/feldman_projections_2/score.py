@@ -139,7 +139,7 @@ class Score(PositionedObject):
         for measure_num in range(self.measure_count + 1):
             measure_x = Measure(measure_num)
             current_path = Path(
-                (measure_x - (pen.thickness / 2), GridUnit(0)),
+                (measure_x, GridUnit(0)),
                 self,
                 pen=pen,
             )

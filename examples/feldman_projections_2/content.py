@@ -8,8 +8,8 @@ fl = "Flute"
 tpt = "Trumpet"
 vln = "Violin"
 vc = "Cello"
-pnoR = "PianoR"
-pnoL = "PianoL"
+pnoR = "PianoNorm"
+pnoL = "PianoHarm"
 
 
 DIAMOND = GlyphName("noteheadDiamondWhite")
