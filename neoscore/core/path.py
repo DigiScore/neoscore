@@ -86,17 +86,10 @@ class Path(PaintedObject):
             end_parent: An optional parent for the end point.
             brush: The brush to fill shapes with.
             pen: The pen to draw outlines with. Defaults to no pen.
-
-        Note that ``end_parent`` is only used for initially drawing the
-        path. If ``end_parent`` moves relative to the path after
-        creation, the path shape will not be automatically updated.
         """
         line = cls(start, parent, brush, pen)
         end = Point.from_def(end)
-        if end_parent:
-            line.line_to(end.x, end.y, end_parent)
-        else:
-            line.line_to(end.x, end.y)
+        line.line_to(end.x, end.y, end_parent)
         return line
 
     @classmethod
