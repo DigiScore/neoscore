@@ -195,12 +195,12 @@ class Flowable(PositionedObject):
         return sorted((self.map_x_to(opp) for opp in opps))
 
     def _active_margin_at(self, flowable_x: Unit) -> Unit:
-        active_margin = ZERO
+        active_margin_layers: dict[str, Unit] = {}
         for controller in self.provided_controllers:
             if controller.flowable_x > flowable_x:
-                return active_margin
-            active_margin = controller.margin_left
-        return active_margin
+                break
+            active_margin_layers[controller.layer_key] = controller.margin_left
+        return sum(active_margin_layers.values(), ZERO)
 
     def map_to_canvas(self, local_point: Point) -> Point:
         """Convert a local point to its position in the canvas.

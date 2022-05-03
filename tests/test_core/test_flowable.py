@@ -114,10 +114,15 @@ class TestFlowable(AppTest):
         flowable.provided_controllers.add(MarginController(ZERO, Mm(20)))
         second_controller_x = Mm(160)
         flowable.provided_controllers.add(MarginController(second_controller_x, Mm(50)))
+        other_layer_controller_x = Mm(300)
+        flowable.provided_controllers.add(
+            MarginController(other_layer_controller_x, Mm(10), "other layer")
+        )
         flowable._generate_lines()
         assert flowable.lines[0].x == Mm(30)
         assert flowable.lines[1].x == Mm(20)
         assert flowable.lines[2].x == Mm(50)
+        assert flowable.lines[3].x == Mm(60)
 
     # For reference
     # page live width == Mm(160)

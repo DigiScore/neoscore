@@ -95,11 +95,32 @@ class NewLine(LayoutController, PositionedObject):
 
 
 class MarginController(LayoutController):
-    def __init__(self, flowable_x: Unit, margin_left: Unit):
+    """A controller defining flowable line margins.
+
+    A flowable can have any number of different margin layers identified by a given
+    ``layer_key``. A margin controller overrides the active margin values only for the
+    specified layer. When a the flowable generates its layout, it sums the margin values
+    from all layers at the point of each new line to determine its margins.
+
+    This layered margin system is useful for situations like staves, where different
+    object states will change the required margins. For example, instrument names call
+    for a margin size that will often be longer on the first system than later ones,
+    while clefs and key signatures contribute their own margin amounts which can vary
+    between systems. In this case, one might create separate margin controllers for each
+    of these layers.
+    """
+
+    def __init__(self, flowable_x: Unit, margin_left: Unit, layer_key: str = ""):
+        """ """
         super().__init__(flowable_x)
         self._margin_left = margin_left
+        self._layer_key = layer_key
 
     @property
     def margin_left(self) -> Unit:
         """The left margin for generated lines while this controller is active"""
         return self._margin_left
+
+    @property
+    def layer_key(self) -> str:
+        return self._layer_key
