@@ -11,7 +11,7 @@ from neoscore.core.image import Image
 from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
-from neoscore.core.new_line import NewLine
+from neoscore.core.layout_controllers import NewLine
 from neoscore.core.page import Page
 from neoscore.core.paper import Paper
 from neoscore.core.path import Path

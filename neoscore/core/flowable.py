@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Optional
 
 from neoscore.core import neoscore
-from neoscore.core.new_line import NewLine
+from neoscore.core.layout_controllers import NewLine
 from neoscore.core.point import Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import ZERO, Mm, Unit
