@@ -333,9 +333,10 @@ class PositionedObject:
         )
         remaining_x = self.breakable_length - first_line_length
         if remaining_x <= ZERO:
+
             self.render_complete(
                 self.canvas_pos,
-                self.flowable.dist_to_line_start(pos_in_flowable.x),
+                pos_in_flowable.x - first_line.flowable_x,
                 pos_in_flowable.x,
             )
             return

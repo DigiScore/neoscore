@@ -189,24 +189,6 @@ class Flowable(PositionedObject):
         line_canvas_pos = line.canvas_pos
         return line_canvas_pos + Point(local_point.x - line.flowable_x, local_point.y)
 
-    def dist_to_line_start(self, flowable_x: Unit) -> Unit:
-        """Find the distance of an x-pos to the left edge of its laid-out line.
-
-        Args:
-            flowable_x: An x-axis location in the virtual flowable space.
-        """
-        line = self.last_break_at(flowable_x)
-        return flowable_x - line.flowable_x
-
-    def dist_to_line_end(self, flowable_x: Unit) -> Unit:
-        """Find the distance of an x-pos to the right edge of its laid-out line.
-
-        Args:
-            flowable_x: An x-axis location in the virtual flowable space.
-        """
-        line = self.last_break_at(flowable_x)
-        return (line.flowable_x + line.length) - flowable_x
-
     def last_break_at(self, flowable_x: Unit) -> NewLine:
         """Find the last ``NewLine`` that occurred before a given local flowable_x-pos
 

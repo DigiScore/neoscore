@@ -111,18 +111,6 @@ class TestFlowable(AppTest):
     # page live width == Mm(160)
     # page live height == Mm(257)
 
-    def test_x_pos_rel_to_line_start(self):
-        flowable = Flowable((Mm(10), Mm(0)), None, Mm(500), Mm(90), Mm(5))
-        flowable._generate_layout_controllers()
-        assert flowable.dist_to_line_start(Mm(170)) == Mm(20)
-        assert flowable.dist_to_line_start(Mm(320)) == Mm(10)
-
-    def test_dist_to_line_end(self):
-        flowable = Flowable((Mm(10), Mm(0)), None, Mm(500), Mm(90), Mm(5))
-        flowable._generate_layout_controllers()
-        assert flowable.dist_to_line_end(Mm(170)) == Mm(140)
-        assert flowable.dist_to_line_end(Mm(320)) == Mm(150)
-
     def test_last_break_at(self):
         flowable = Flowable((Mm(10), Mm(0)), None, Mm(500), Mm(90), Mm(5))
         flowable._generate_layout_controllers()
