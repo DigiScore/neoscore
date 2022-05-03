@@ -2,8 +2,10 @@ from __future__ import annotations
 
 from typing import Optional
 
+from sortedcontainers import SortedKeyList
+
 from neoscore.core import neoscore
-from neoscore.core.layout_controllers import NewLine
+from neoscore.core.layout_controllers import MarginController, NewLine
 from neoscore.core.point import Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import ZERO, Mm, Unit
@@ -55,6 +57,7 @@ class Flowable(PositionedObject):
         self._y_padding = y_padding
         self._break_threshold = break_threshold
         self._lines = []
+        self._provided_controllers = SortedKeyList(key=lambda c: c.flowable_x)
 
     ######## PUBLIC PROPERTIES ########
 
@@ -100,12 +103,26 @@ class Flowable(PositionedObject):
 
     @property
     def lines(self) -> list[NewLine]:
-        """The generated lines of this flowable"""
+        """The generated lines of this flowable.
+
+        This property is managed and should not be modified."""
         return self._lines
 
     @lines.setter
     def lines(self, value: list[NewLine]):
         self._lines = value
+
+    @property
+    def provided_controllers(self) -> SortedKeyList[MarginController]:
+        """Layout controllers provided by users.
+
+        Currently, this only supports margin controllers. Eventually on we may expand
+        this to allow things like explicit user-defined ``NewLine``\ s.
+
+        Controllers can be added to this automatically sorted list using
+        ``provided_controllers.add(your_controller)``.
+        """
+        return self._provided_controllers
 
     def _generate_lines(self):
         """Generate automatic layout controllers.
@@ -124,13 +141,15 @@ class Flowable(PositionedObject):
                 flowable_start_x = ZERO
                 page = self.first_ancestor_with_attr("_neoscore_page_type_marker")
                 flowable_page_pos = page.map_to(self)
-                new_line_x = flowable_page_pos.x
+                new_line_x = flowable_page_pos.x + self._active_margin_at(
+                    flowable_start_x
+                )
                 new_line_y = flowable_page_pos.y
             else:
                 last = self.lines[-1]
                 flowable_start_x = last.flowable_x + last.length
                 page = last.page
-                new_line_x = ZERO
+                new_line_x = self._active_margin_at(flowable_start_x)
                 new_line_y = last.y + self.height + self.y_padding
                 new_line_bottom_y = new_line_y + self.height
                 if (
@@ -174,6 +193,14 @@ class Flowable(PositionedObject):
             "_neoscore_break_opportunity_type_marker"
         )
         return sorted((self.map_x_to(opp) for opp in opps))
+
+    def _active_margin_at(self, flowable_x: Unit) -> Unit:
+        active_margin = ZERO
+        for controller in self.provided_controllers:
+            if controller.flowable_x > flowable_x:
+                return active_margin
+            active_margin = controller.margin_left
+        return active_margin
 
     def map_to_canvas(self, local_point: Point) -> Point:
         """Convert a local point to its position in the canvas.

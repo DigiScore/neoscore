@@ -8,6 +8,7 @@ authors = ["Andrew Yoon <andrew@nothing-to-say.org>"]
 python = "^3.10"
 PyQt5 = "^5.15.6"
 img2pdf = "0.4.3"
+sortedcontainers = "2.4.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1"

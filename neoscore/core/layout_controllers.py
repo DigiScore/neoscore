@@ -4,7 +4,6 @@ from typing import cast
 from neoscore.core.page import Page
 from neoscore.core.point import Point
 from neoscore.core.positioned_object import PositionedObject
-
 from neoscore.core.units import Unit
 
 
@@ -93,3 +92,14 @@ class NewLine(LayoutController, PositionedObject):
     @height.setter
     def height(self, value: Unit):
         self._height = value
+
+
+class MarginController(LayoutController):
+    def __init__(self, flowable_x: Unit, margin_left: Unit):
+        super().__init__(flowable_x)
+        self._margin_left = margin_left
+
+    @property
+    def margin_left(self) -> Unit:
+        """The left margin for generated lines while this controller is active"""
+        return self._margin_left

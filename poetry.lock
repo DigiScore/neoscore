@@ -30,11 +30,11 @@ tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>
 
 [[package]]
 name = "babel"
-version = "2.9.1"
+version = "2.10.1"
 description = "Internationalization utilities"
 category = "dev"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+python-versions = ">=3.6"
 
 [package.dependencies]
 pytz = ">=2015.7"
@@ -141,7 +141,7 @@ python-versions = "*"
 
 [[package]]
 name = "jinja2"
-version = "3.1.1"
+version = "3.1.2"
 description = "A very fast and expressive template engine."
 category = "dev"
 optional = false
@@ -188,11 +188,11 @@ pyparsing = ">=2.0.2,<3.0.5 || >3.0.5"
 
 [[package]]
 name = "pikepdf"
-version = "5.1.1"
+version = "5.1.2"
 description = "Read and write PDFs with Python, powered by qpdf"
 category = "main"
 optional = false
-python-versions = "~=3.7"
+python-versions = ">=3.7"
 
 [package.dependencies]
 lxml = ">=4.0"
@@ -202,7 +202,7 @@ Pillow = ">=6.0,<10"
 [package.extras]
 docs = ["gitpython", "pygithub", "Sphinx (>=3)", "ipython", "matplotlib", "pybind11", "requests", "setuptools-scm", "sphinx-issues", "sphinx-panels", "sphinx-rtd-theme", "tomli"]
 mypy = ["lxml-stubs", "types-pillow", "types-requests", "types-setuptools"]
-test = ["Pillow (>=9,<10)", "attrs (>=20.2.0)", "coverage", "hypothesis (>=5,<7)", "psutil (>=5,<6)", "pybind11", "pytest (>=6,<8)", "pytest-cov (>=2.10.1,<3)", "pytest-timeout (>=1.4.2)", "pytest-xdist (>=1.28,<3)", "python-dateutil (>=2.8.0)", "tomli", "python-xmp-toolkit (>=2.0.1)"]
+test = ["Pillow (>=9,<10)", "attrs (>=20.2.0)", "coverage", "hypothesis (>=5,<7)", "psutil (>=5,<6)", "pybind11", "pytest (>=6,<8)", "pytest-cov (>=2.10.1,<3)", "pytest-timeout (>=1.4.2)", "pytest-xdist (>=1.28,<3)", "python-dateutil (>=2.8.0)", "tomli", "Pillow (!=9.1.0)", "python-xmp-toolkit (>=2.0.1)"]
 
 [[package]]
 name = "pillow"
@@ -238,11 +238,11 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "pygments"
-version = "2.11.2"
+version = "2.12.0"
 description = "Pygments is a syntax highlighting package written in Python."
 category = "dev"
 optional = false
-python-versions = ">=3.5"
+python-versions = ">=3.6"
 
 [[package]]
 name = "pyparsing"
@@ -277,15 +277,15 @@ python-versions = "*"
 
 [[package]]
 name = "pyqt5-sip"
-version = "12.9.1"
+version = "12.10.1"
 description = "The sip module support for PyQt5"
 category = "main"
 optional = false
-python-versions = ">=3.5"
+python-versions = ">=3.7"
 
 [[package]]
 name = "pytest"
-version = "7.1.1"
+version = "7.1.2"
 description = "pytest: simple powerful testing with Python"
 category = "dev"
 optional = false
@@ -369,8 +369,16 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "sortedcontainers"
+version = "2.4.0"
+description = "Sorted Containers -- Sorted List, Sorted Dict, Sorted Set"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "soupsieve"
-version = "2.3.2"
+version = "2.3.2.post1"
 description = "A modern CSS selector implementation for Beautiful Soup."
 category = "dev"
 optional = false
@@ -517,7 +525,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "1078c218a2d3b1266ad7833c8ce4e98a2c4a40e3955090771fcb8a2fff298d6f"
+content-hash = "823ed7d1c16db79f80ba67b925c60174ef9a056771e0bb24ce714019c03b7fdc"
 
 [metadata.files]
 alabaster = [
@@ -533,8 +541,8 @@ attrs = [
     {file = "attrs-21.4.0.tar.gz", hash = "sha256:626ba8234211db98e869df76230a137c4c40a12d72445c45d5f5b716f076e2fd"},
 ]
 babel = [
-    {file = "Babel-2.9.1-py2.py3-none-any.whl", hash = "sha256:ab49e12b91d937cd11f0b67cb259a57ab4ad2b59ac7a3b41d6c06c0ac5b0def9"},
-    {file = "Babel-2.9.1.tar.gz", hash = "sha256:bc0c176f9f6a994582230df350aa6e05ba2ebe4b3ac317eab29d9be5d2768da0"},
+    {file = "Babel-2.10.1-py3-none-any.whl", hash = "sha256:3f349e85ad3154559ac4930c3918247d319f21910d5ce4b25d439ed8693b98d2"},
+    {file = "Babel-2.10.1.tar.gz", hash = "sha256:98aeaca086133efb3e1e2aad0396987490c8425929ddbcfe0550184fdc54cd13"},
 ]
 beautifulsoup4 = [
     {file = "beautifulsoup4-4.11.1-py3-none-any.whl", hash = "sha256:58d5c3d29f5a36ffeb94f02f0d786cd53014cf9b3b3951d42e0080d8a9498d30"},
@@ -576,8 +584,8 @@ iniconfig = [
     {file = "iniconfig-1.1.1.tar.gz", hash = "sha256:bc3af051d7d14b2ee5ef9969666def0cd1a000e121eaea580d4a313df4b37f32"},
 ]
 jinja2 = [
-    {file = "Jinja2-3.1.1-py3-none-any.whl", hash = "sha256:539835f51a74a69f41b848a9645dbdc35b4f20a3b601e2d9a7e22947b15ff119"},
-    {file = "Jinja2-3.1.1.tar.gz", hash = "sha256:640bed4bb501cbd17194b3cace1dc2126f5b619cf068a726b98192a0fde74ae9"},
+    {file = "Jinja2-3.1.2-py3-none-any.whl", hash = "sha256:6088930bfe239f0e6710546ab9c19c9ef35e29792895fed6e6e31a023a182a61"},
+    {file = "Jinja2-3.1.2.tar.gz", hash = "sha256:31351a702a408a9e7595a8fc6150fc3f43bb6bf7e319770cbc0db9df9437e852"},
 ]
 lxml = [
     {file = "lxml-4.8.0-cp27-cp27m-macosx_10_14_x86_64.whl", hash = "sha256:e1ab2fac607842ac36864e358c42feb0960ae62c34aa4caaf12ada0a1fb5d99b"},
@@ -689,33 +697,33 @@ packaging = [
     {file = "packaging-21.3.tar.gz", hash = "sha256:dd47c42927d89ab911e606518907cc2d3a1f38bbd026385970643f9c5b8ecfeb"},
 ]
 pikepdf = [
-    {file = "pikepdf-5.1.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:978b6388ae99a024bdcae5a322c68e90c187cb568d09d43e6586b3479267121d"},
-    {file = "pikepdf-5.1.1-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:9917a03d500aab72715a9236136af7a5c8c7b26c034bf71ebdf028e177f0d25f"},
-    {file = "pikepdf-5.1.1-cp310-cp310-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:e0b635d6d9faefb4d0d32722279b8eb4e4d5d7b596c426f3433343de65e0c772"},
-    {file = "pikepdf-5.1.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:996faa6b119488f96d7271672a22af86e56e5544ec6b8eae6cd7d4432c70ae2d"},
-    {file = "pikepdf-5.1.1-cp310-cp310-win32.whl", hash = "sha256:c64e7905ec438b7a6c12626f2859df87f471892fab75b65b1441d9e1b38b4dde"},
-    {file = "pikepdf-5.1.1-cp310-cp310-win_amd64.whl", hash = "sha256:f85d309bcfeeb3e2d344346a5050bfc41e332f19d390f79c20e4fc7de4b10a17"},
-    {file = "pikepdf-5.1.1-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:2f62e6c7bcf5d631e6ea74cf861f3e816f587c6ccb4ecbf6ac862e088ba2e4ac"},
-    {file = "pikepdf-5.1.1-cp37-cp37m-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:680d47377bb9fd6a36b6a81464ee269b4b29cbf29a84ae4f2ab8f6ea3665bf69"},
-    {file = "pikepdf-5.1.1-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:13e72d0aeeb3fc452569a3f7994acdd007de9aad804ced734d57cec269261b8b"},
-    {file = "pikepdf-5.1.1-cp37-cp37m-win32.whl", hash = "sha256:5c23cbd7ae71f08fb5b5d9660eb0bc61abf345ada01bea6e1b6884c4261e17d6"},
-    {file = "pikepdf-5.1.1-cp37-cp37m-win_amd64.whl", hash = "sha256:fe3fc2efe498aba6204b85c17c6a5d54ab7303354ecc5c3da624a6b6af0b3406"},
-    {file = "pikepdf-5.1.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:01be838a44430c4be84b748a33950fed09892472934a8041596c11189f365f7f"},
-    {file = "pikepdf-5.1.1-cp38-cp38-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:ad5361c3669fc0c8dbaf8fa0a590bddf59fad256bb2c527d5ce5cf991743a240"},
-    {file = "pikepdf-5.1.1-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:2d5d6d3248b33ca5961d84bc3121a299cd27237fad56868d815e381c9a98d3d1"},
-    {file = "pikepdf-5.1.1-cp38-cp38-win32.whl", hash = "sha256:51694d3d2f90510da6a8d7a4d07313ca868b373fffec6de270d9bbff1ce37180"},
-    {file = "pikepdf-5.1.1-cp38-cp38-win_amd64.whl", hash = "sha256:d4db409b21a8ec0d3a79d2bbd894b997b13223c9ccf341cdc31b64360f1ee4c7"},
-    {file = "pikepdf-5.1.1-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:657293b74af8c7cf03f9905218a7935b26a4f3006803016b40b3db78e04cb35c"},
-    {file = "pikepdf-5.1.1-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:bd9faae19787a5d05b9fcbe84d7cfe4d44e318068e06eca18906b9dba45425b6"},
-    {file = "pikepdf-5.1.1-cp39-cp39-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:0cc95ef470169dfa5acc9196299bdba236716234a0d8b2746e2a563bc6f1f456"},
-    {file = "pikepdf-5.1.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:aac14061de06843759ea6f5777fd8d7b71af808ed9264f57483a3311a09788ab"},
-    {file = "pikepdf-5.1.1-cp39-cp39-win32.whl", hash = "sha256:6371bf02a436be2b7c63322b83a8e47523f2cd16438b2e93d546c7caf9ae308d"},
-    {file = "pikepdf-5.1.1-cp39-cp39-win_amd64.whl", hash = "sha256:9bac9e9d6b28dc0cc5a554051f183fbd070d0f9fe63c4e9aca939b8c44a5bb4d"},
-    {file = "pikepdf-5.1.1-pp37-pypy37_pp73-macosx_10_9_x86_64.whl", hash = "sha256:e62e9e8afe77fe2f06715faf10f38a4810d282d66f1e9e05208bb8d9723e6acf"},
-    {file = "pikepdf-5.1.1-pp37-pypy37_pp73-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:2873503522ef26a09a6020c29c2efd221fa2ddc31e83bd902be27d317144cf63"},
-    {file = "pikepdf-5.1.1-pp37-pypy37_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7b4d7c09036d863915cb01007ca183d6fe64e2d57c0472453097bc9e029a58fb"},
-    {file = "pikepdf-5.1.1-pp38-pypy38_pp73-macosx_10_9_x86_64.whl", hash = "sha256:bc40b30c37f8f7c5bef873eca1f04e91ce34b6b74507d8d0019238a17d281fdc"},
-    {file = "pikepdf-5.1.1.tar.gz", hash = "sha256:710535c679ab0d7b8249f72247832773e7a9a121dfbe9cad7f6465bd9bb45fae"},
+    {file = "pikepdf-5.1.2-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:1d3141916dc9efc433fd22beba544f67a53a805800c3ff902baffa398ef4c85e"},
+    {file = "pikepdf-5.1.2-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:c277066938ca0ddb2bfe75874ef8dd3aa259936fe15c4cf7d4282f89ba82ab3a"},
+    {file = "pikepdf-5.1.2-cp310-cp310-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:5626312990a894c5db3a269455f7eb98df5f59188dde1797c0e352d60fdf89af"},
+    {file = "pikepdf-5.1.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:1bef3512be59fe0f481375b7eb415ca51ee7c80555031401f5f17ee3392e4add"},
+    {file = "pikepdf-5.1.2-cp310-cp310-win32.whl", hash = "sha256:a8f3e2229e2683497fe4ccc4af06050c125160a11bb3562b6c4ddaee4d0cc5c5"},
+    {file = "pikepdf-5.1.2-cp310-cp310-win_amd64.whl", hash = "sha256:fe386d93345c9b5a9690f7a7bfb789a5ec5467c34402628e10bda8a4f5bac73e"},
+    {file = "pikepdf-5.1.2-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:3052df8514d26b676c50e65afc49a1d260c43a08c322c75cc2592c10a9a5b26d"},
+    {file = "pikepdf-5.1.2-cp37-cp37m-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:12b5b3cfc649e2542576a7e55c11e245278f14f727f116904893e54329102867"},
+    {file = "pikepdf-5.1.2-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:55330c24b8e04ee09f1bc514c2b6107bb03a5eeb0b74929a61100cd6be22ae29"},
+    {file = "pikepdf-5.1.2-cp37-cp37m-win32.whl", hash = "sha256:f40703b6267aa43d7f72468fa0a3b505ffff74ece2a4c69cfd3c90e023c41381"},
+    {file = "pikepdf-5.1.2-cp37-cp37m-win_amd64.whl", hash = "sha256:553cf11933fdfe07fdd357ab40b9732db102e921b27c1065239308d42b7b858f"},
+    {file = "pikepdf-5.1.2-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:1b8f68a75c0a6f6d4d102d0821365ae2aaa9ab635c6eb6c840569a56b1a266f4"},
+    {file = "pikepdf-5.1.2-cp38-cp38-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:f45cc4544bbd4c308a525a6bb8e2e29b3f849803ee557c6e35c684447f0a92e5"},
+    {file = "pikepdf-5.1.2-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:607deb1181a7cf5369cf70edfc41574d46c0a17c0cac1f6234272bd4cb3487e4"},
+    {file = "pikepdf-5.1.2-cp38-cp38-win32.whl", hash = "sha256:356d5554516a295fc10db3f25cfde4e92326f6d015da55d71b84f5ced2a07a5a"},
+    {file = "pikepdf-5.1.2-cp38-cp38-win_amd64.whl", hash = "sha256:92ca9191680eccc21697e9e9c218e600ab31e7c24f6125749738c10ae2dc7c07"},
+    {file = "pikepdf-5.1.2-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:9bcaf96e2f571f0fc7e3178cdf1bcca7c13e5c68128e8246031226d47ecf23f1"},
+    {file = "pikepdf-5.1.2-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:f8ccda5ee992c73f647bcd96c9aa30f5eb9e8a6c5bdd6e3dcb29ebbffbe01a69"},
+    {file = "pikepdf-5.1.2-cp39-cp39-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:60bdd49e6251f8c99989e6769d4ad29b209c1eaf88090f49d4b30fba98442e40"},
+    {file = "pikepdf-5.1.2-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:73a7cc3c42609e00393b9d4e1b9ee132f528060254a174bf18ef31a154be0386"},
+    {file = "pikepdf-5.1.2-cp39-cp39-win32.whl", hash = "sha256:ea927afe7cb04cc7ade30b961f528ef53e8d9cf467dcc4639cf944fef872a1a1"},
+    {file = "pikepdf-5.1.2-cp39-cp39-win_amd64.whl", hash = "sha256:101ec256a8d312c17decae52226cf32a3e7dc834583134300c2f4e60b70e6e91"},
+    {file = "pikepdf-5.1.2-pp37-pypy37_pp73-macosx_10_9_x86_64.whl", hash = "sha256:59c24a65c94693ab4a7e92f4809f847b57461120256c083054e61c99c4952e84"},
+    {file = "pikepdf-5.1.2-pp37-pypy37_pp73-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:e064010b733b0a2ec4ec97982cd2887f9025292f2d228c6d5e6eca9d84851e53"},
+    {file = "pikepdf-5.1.2-pp37-pypy37_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:75f1e2917b4d2d6573fe3d1c3b2ec70829b64515b2f723f5c3bebcdd65761e6c"},
+    {file = "pikepdf-5.1.2-pp38-pypy38_pp73-macosx_10_9_x86_64.whl", hash = "sha256:c532542a99757d9f41df0cf1fc8f64a044d0eb822822cc069c80be35731df275"},
+    {file = "pikepdf-5.1.2.tar.gz", hash = "sha256:dfa89bd86e01413531c1d7d201fb01f0e62b52ea926a8e8ca6f99f86ed761e95"},
 ]
 pillow = [
     {file = "Pillow-9.1.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:af79d3fde1fc2e33561166d62e3b63f0cc3e47b5a3a2e5fea40d4917754734ea"},
@@ -766,8 +774,8 @@ py = [
     {file = "py-1.11.0.tar.gz", hash = "sha256:51c75c4126074b472f746a24399ad32f6053d1b34b68d2fa41e558e6f4a98719"},
 ]
 pygments = [
-    {file = "Pygments-2.11.2-py3-none-any.whl", hash = "sha256:44238f1b60a76d78fc8ca0528ee429702aae011c265fe6a8dd8b63049ae41c65"},
-    {file = "Pygments-2.11.2.tar.gz", hash = "sha256:4e426f72023d88d03b2fa258de560726ce890ff3b630f88c21cbb8b2503b8c6a"},
+    {file = "Pygments-2.12.0-py3-none-any.whl", hash = "sha256:dc9c10fb40944260f6ed4c688ece0cd2048414940f1cea51b8b226318411c519"},
+    {file = "Pygments-2.12.0.tar.gz", hash = "sha256:5eb116118f9612ff1ee89ac96437bb6b49e8f04d8a13b514ba26f620208e26eb"},
 ]
 pyparsing = [
     {file = "pyparsing-3.0.8-py3-none-any.whl", hash = "sha256:ef7b523f6356f763771559412c0d7134753f037822dad1b16945b7b846f7ad06"},
@@ -787,31 +795,27 @@ pyqt5-qt5 = [
     {file = "PyQt5_Qt5-5.15.2-py3-none-win_amd64.whl", hash = "sha256:750b78e4dba6bdf1607febedc08738e318ea09e9b10aea9ff0d73073f11f6962"},
 ]
 pyqt5-sip = [
-    {file = "PyQt5_sip-12.9.1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:6b2e553e21b7ff124007a6b9168f8bb8c171fdf230d31ca0588df180f10bacbe"},
-    {file = "PyQt5_sip-12.9.1-cp310-cp310-manylinux1_x86_64.whl", hash = "sha256:5740a1770d6b92a5dca8bb0bda4620baf0d7a726beb864f69c667ddac91d6f64"},
-    {file = "PyQt5_sip-12.9.1-cp310-cp310-win32.whl", hash = "sha256:9699286fcdf4f75a4b91c7e4832c0f926af18d648c62a4ed72dd294c1a93705a"},
-    {file = "PyQt5_sip-12.9.1-cp310-cp310-win_amd64.whl", hash = "sha256:e2792af660da7479799f53028da88190ae8b4a0ad5acc2acbfd6c7bbfe110d58"},
-    {file = "PyQt5_sip-12.9.1-cp36-cp36m-macosx_10_6_intel.whl", hash = "sha256:7ee08ad0ebf85b935f5d8d38306f8665fff9a6026c14fc0a7d780649e889c096"},
-    {file = "PyQt5_sip-12.9.1-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:2d21420b0739df2607864e2c80ca01994bc40cb116da6ad024ea8d9f407b0356"},
-    {file = "PyQt5_sip-12.9.1-cp36-cp36m-win32.whl", hash = "sha256:ffd25051962c593d1c3c30188b9fbd8589ba17acd23a0202dc987bd3552fa611"},
-    {file = "PyQt5_sip-12.9.1-cp36-cp36m-win_amd64.whl", hash = "sha256:78ef8f1f41819661aa8e3117d6c1cd76fa14aef265e5bfd515dbfc64d412416b"},
-    {file = "PyQt5_sip-12.9.1-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:5e641182bfee0501267c55e687832e4efe05becdae9e555d3695d706009b6598"},
-    {file = "PyQt5_sip-12.9.1-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:c9a977d2835a5fbf250b00d61267dc228bdec9e20c7420d4e8d54d6f20410f87"},
-    {file = "PyQt5_sip-12.9.1-cp37-cp37m-win32.whl", hash = "sha256:cec6ebf0b1163b18f09bc523160c467a9528b6dca129753827ac0bc432b332ae"},
-    {file = "PyQt5_sip-12.9.1-cp37-cp37m-win_amd64.whl", hash = "sha256:82c1b3080db7634fa318fddbb3cfaa30e63a67bca1001a76958c31f30b774a9d"},
-    {file = "PyQt5_sip-12.9.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:cfaad4a773c18b963092589b1a98153d36624601de8597a4dc287e5a295d5625"},
-    {file = "PyQt5_sip-12.9.1-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:ce7a8b3af9db378c46b345d9809d481a74c4bfcd3129486c054fbdbc6a3503f9"},
-    {file = "PyQt5_sip-12.9.1-cp38-cp38-win32.whl", hash = "sha256:8fe5b3e4bbb8b472d05631cad21028d073f9f8eda770041449514cb3824a867f"},
-    {file = "PyQt5_sip-12.9.1-cp38-cp38-win_amd64.whl", hash = "sha256:5d59c4a5e856a35c41b47f5a23e1635b38cd1672f4f0122a68ebcb6889523ff2"},
-    {file = "PyQt5_sip-12.9.1-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:b56aedf7b0a496e4a8bd6087566888cea448aa01c76126cdb8b140e3ff3f5d93"},
-    {file = "PyQt5_sip-12.9.1-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:53e23dcc0fc3857204abd47660e383b930941bd1aeaf3c78ed59c5c12dd48010"},
-    {file = "PyQt5_sip-12.9.1-cp39-cp39-win32.whl", hash = "sha256:ee188eac5fd94dfe8d9e04a9e7fbda65c3535d5709278d8b7367ebd54f00e27f"},
-    {file = "PyQt5_sip-12.9.1-cp39-cp39-win_amd64.whl", hash = "sha256:989d51c41456cc496cb96f0b341464932b957040d26561f0bb4cf5a0914d6b36"},
-    {file = "PyQt5_sip-12.9.1.tar.gz", hash = "sha256:2f24f299b44c511c23796aafbbb581bfdebf78d0905657b7cee2141b4982030e"},
+    {file = "PyQt5_sip-12.10.1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:b2852df169f349e37999fc425f2d0abd004d09219354a55d3b4c6dd574b3fe84"},
+    {file = "PyQt5_sip-12.10.1-cp310-cp310-manylinux1_x86_64.whl", hash = "sha256:2378bda30ee2b7a568086952658ba8daad8f0f71fc335f696423ee9b3b4028db"},
+    {file = "PyQt5_sip-12.10.1-cp310-cp310-win32.whl", hash = "sha256:e70c961eb982cfc866a988cfe4fab16741d480d885203e04b539ecf32b53c6b7"},
+    {file = "PyQt5_sip-12.10.1-cp310-cp310-win_amd64.whl", hash = "sha256:0ba8c0751b46561542b5a6bb1b703faad10a205d9375ebc607b1c9f858bfe5b1"},
+    {file = "PyQt5_sip-12.10.1-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:023de82b23a7e97369588dd6e411dd2bfbedbbcfb4c7f9c2ecaa9e29fc46a81e"},
+    {file = "PyQt5_sip-12.10.1-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:5e8472a959ec85f94d4810326505076b55eb4d8b2e08dbd5d87bd1907c59680c"},
+    {file = "PyQt5_sip-12.10.1-cp37-cp37m-win32.whl", hash = "sha256:3a92bd103dad59c2bfbb1062420c2e7bcf134dfce800f6a8c9964c99a590162d"},
+    {file = "PyQt5_sip-12.10.1-cp37-cp37m-win_amd64.whl", hash = "sha256:dda92bfaee40fd612c6b1e2614570d6acc8ec63032c6fd45d5e66badd18d387c"},
+    {file = "PyQt5_sip-12.10.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:d31f6f05777c8ee0828daeb5cb4a15d4124c63d94cacb07faa2dbc79f72209ea"},
+    {file = "PyQt5_sip-12.10.1-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:ba89547fc54403bbdcb7ee6066098d02d18d813f29b7de2434043a357bb79f6b"},
+    {file = "PyQt5_sip-12.10.1-cp38-cp38-win32.whl", hash = "sha256:90f8cde3b446799800bc7c2d89a4fef5d8316d9f4c2f06daf4f6976d1c68fdfa"},
+    {file = "PyQt5_sip-12.10.1-cp38-cp38-win_amd64.whl", hash = "sha256:a83c7ba53e04e05cf1bcd18639080dd44196cf248773f34b1e9b831c11a1e198"},
+    {file = "PyQt5_sip-12.10.1-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:087a7c0ebff00bca73788588b61b50063e17fcdb26977317d1785cb241a66a56"},
+    {file = "PyQt5_sip-12.10.1-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:8024347c865a7f0c6581b460cc18dbea1c401733300bc3cb76f74c9432a2b0ae"},
+    {file = "PyQt5_sip-12.10.1-cp39-cp39-win32.whl", hash = "sha256:a345bed4112d44705340e4033a2abc66d8dbd4afd62f3a9aa69253f15718df53"},
+    {file = "PyQt5_sip-12.10.1-cp39-cp39-win_amd64.whl", hash = "sha256:8504991216ff94ca1eaba39a6e6497e6ed860f1fc659f6c14ebfccf43733c02f"},
+    {file = "PyQt5_sip-12.10.1.tar.gz", hash = "sha256:97e008795c453488f51a5c97dbff29cda7841afb1ca842c9e819d8e6cc0ae724"},
 ]
 pytest = [
-    {file = "pytest-7.1.1-py3-none-any.whl", hash = "sha256:92f723789a8fdd7180b6b06483874feca4c48a5c76968e03bb3e7f806a1869ea"},
-    {file = "pytest-7.1.1.tar.gz", hash = "sha256:841132caef6b1ad17a9afde46dc4f6cfa59a05f9555aae5151f73bdf2820ca63"},
+    {file = "pytest-7.1.2-py3-none-any.whl", hash = "sha256:13d0e3ccfc2b6e26be000cb6568c832ba67ba32e719443bfe725814d3c42433c"},
+    {file = "pytest-7.1.2.tar.gz", hash = "sha256:a06a0425453864a270bc45e71f783330a7428defb4230fb5e6a731fde06ecd45"},
 ]
 pytest-forked = [
     {file = "pytest-forked-1.4.0.tar.gz", hash = "sha256:8b67587c8f98cbbadfdd804539ed5455b6ed03802203485dd2f53c1422d7440e"},
@@ -833,9 +837,13 @@ snowballstemmer = [
     {file = "snowballstemmer-2.2.0-py2.py3-none-any.whl", hash = "sha256:c8e1716e83cc398ae16824e5572ae04e0d9fc2c6b985fb0f900f5f0c96ecba1a"},
     {file = "snowballstemmer-2.2.0.tar.gz", hash = "sha256:09b16deb8547d3412ad7b590689584cd0fe25ec8db3be37788be3810cbf19cb1"},
 ]
+sortedcontainers = [
+    {file = "sortedcontainers-2.4.0-py2.py3-none-any.whl", hash = "sha256:a163dcaede0f1c021485e957a39245190e74249897e2ae4b2aa38595db237ee0"},
+    {file = "sortedcontainers-2.4.0.tar.gz", hash = "sha256:25caa5a06cc30b6b83d11423433f65d1f9d76c4c6a0c90e3379eaa43b9bfdb88"},
+]
 soupsieve = [
-    {file = "soupsieve-2.3.2-py3-none-any.whl", hash = "sha256:a714129d3021ec17ce5be346b1007300558b378332c289a1a20e7d4de6ff18a5"},
-    {file = "soupsieve-2.3.2.tar.gz", hash = "sha256:0bcc6d7432153063e3df09c3ac9442af3eba488715bfcad6a4c38ccb2a523124"},
+    {file = "soupsieve-2.3.2.post1-py3-none-any.whl", hash = "sha256:3b2503d3c7084a42b1ebd08116e5f81aadfaea95863628c80a3b774a11b7c759"},
+    {file = "soupsieve-2.3.2.post1.tar.gz", hash = "sha256:fc53893b3da2c33de295667a0e19f078c14bf86544af307354de5fcf12a3f30d"},
 ]
 sphinx = [
     {file = "Sphinx-4.5.0-py3-none-any.whl", hash = "sha256:ebf612653238bcc8f4359627a9b7ce44ede6fdd75d9d30f68255c7383d3a6226"},

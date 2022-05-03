@@ -7,6 +7,9 @@ neoscore.setup()
 expressive_font = Font("Lora", Mm(4), italic=True)
 
 flowable = Flowable((Mm(0), Mm(0)), None, Mm(500), Mm(30), Mm(10), Mm(20))
+# Indent first line
+flowable.provided_controllers.add(MarginController(ZERO, Mm(20)))
+flowable.provided_controllers.add(MarginController(Mm(1), ZERO))
 
 upper_staff = Staff((Mm(0), Mm(0)), flowable, Mm(500))
 lower_staff = Staff((Mm(0), Mm(20)), flowable, Mm(500))
@@ -93,5 +96,5 @@ Chordrest(b2, lower_staff, ["f,"], Duration(3, 4))
 
 
 # Barline to test line breaking
-Barline(Mm(155), staves)
+Barline(Mm(140), staves)
 render_example("goldberg")
