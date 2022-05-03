@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import Optional
 
 from neoscore.core import neoscore
-from neoscore.core.layout_controller import LayoutController
 from neoscore.core.new_line import NewLine
 from neoscore.core.point import Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
@@ -55,7 +54,7 @@ class Flowable(PositionedObject):
         self._height = height
         self._y_padding = y_padding
         self._break_threshold = break_threshold
-        self._layout_controllers = []
+        self._lines = []
 
     ######## PUBLIC PROPERTIES ########
 
@@ -100,15 +99,15 @@ class Flowable(PositionedObject):
         self._break_threshold = value
 
     @property
-    def layout_controllers(self) -> list[LayoutController]:
-        """Controllers affecting flowable layout"""
-        return self._layout_controllers
+    def lines(self) -> list[NewLine]:
+        """The generated lines of this flowable"""
+        return self._lines
 
-    @layout_controllers.setter
-    def layout_controllers(self, value: list[LayoutController]):
-        self._layout_controllers = value
+    @lines.setter
+    def lines(self, value: list[NewLine]):
+        self._lines = value
 
-    def _generate_layout_controllers(self):
+    def _generate_lines(self):
         """Generate automatic layout controllers.
 
         The generated controllers are stored in ``self.layout_controllers``
@@ -117,31 +116,31 @@ class Flowable(PositionedObject):
         live_page_width = neoscore.document.paper.live_width
         live_page_height = neoscore.document.paper.live_height
         break_opps = self._find_break_opportunities()
-        for c in self.layout_controllers:
+        for c in self.lines:
             c.remove()
-        self.layout_controllers = []
+        self.lines = []
         while True:
-            if not self.layout_controllers:
+            if not self.lines:
                 flowable_start_x = ZERO
                 page = self.first_ancestor_with_attr("_neoscore_page_type_marker")
                 flowable_page_pos = page.map_to(self)
-                controller_x = flowable_page_pos.x
-                controller_y = flowable_page_pos.y
+                new_line_x = flowable_page_pos.x
+                new_line_y = flowable_page_pos.y
             else:
-                last = self.layout_controllers[-1]
+                last = self.lines[-1]
                 flowable_start_x = last.flowable_x + last.length
                 page = last.page
-                controller_x = ZERO
-                controller_y = last.y + self.height + self.y_padding
-                controller_bottom_y = controller_y + self.height
+                new_line_x = ZERO
+                new_line_y = last.y + self.height + self.y_padding
+                new_line_bottom_y = new_line_y + self.height
                 if (
-                    controller_y > live_page_height
-                    or controller_bottom_y > live_page_height
+                    new_line_y > live_page_height
+                    or new_line_bottom_y > live_page_height
                 ):
                     page = neoscore.document.pages[page.page_index + 1]
-                    controller_y = ZERO
+                    new_line_y = ZERO
             # Now determine this line's length
-            max_length = live_page_width - controller_x
+            max_length = live_page_width - new_line_x
             max_line_end_flowable_x = flowable_start_x + max_length
             nearest_break_opp = next(
                 (opp for opp in reversed(break_opps) if opp < max_line_end_flowable_x),
@@ -154,9 +153,9 @@ class Flowable(PositionedObject):
                 length = nearest_break_opp - flowable_start_x
             else:
                 length = max_length
-            self.layout_controllers.append(
+            self.lines.append(
                 NewLine(
-                    (controller_x, controller_y),
+                    (new_line_x, new_line_y),
                     page,
                     flowable_start_x,
                     length,
@@ -195,7 +194,7 @@ class Flowable(PositionedObject):
         Args:
             flowable_x: An x-axis location in the virtual flowable space.
         """
-        return self.layout_controllers[self.last_break_index_at(flowable_x)]
+        return self.lines[self.last_break_index_at(flowable_x)]
 
     def last_break_index_at(self, flowable_x: Unit) -> int:
         """Like ``last_break_at``, but returns an index.
@@ -206,13 +205,13 @@ class Flowable(PositionedObject):
         # Note that this assumes that all layout controllers are line
         # breaks, and will not work if/when other types are added
         remaining_x = flowable_x
-        for i, controller in enumerate(self.layout_controllers):
+        for i, controller in enumerate(self.lines):
             remaining_x -= controller.length
             if remaining_x <= ZERO:
                 return i
         else:
-            return len(self.layout_controllers) - 1
+            return len(self.lines) - 1
 
     def render(self):
-        self._generate_layout_controllers()
+        self._generate_lines()
         super().render()

@@ -1,10 +1,13 @@
+from typing import cast
+
 from neoscore.core.layout_controller import LayoutController
 from neoscore.core.page import Page
 from neoscore.core.point import Point
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import Unit
 
 
-class NewLine(LayoutController):
+class NewLine(LayoutController, PositionedObject):
     """A line break controller."""
 
     def __init__(
@@ -26,11 +29,20 @@ class NewLine(LayoutController):
             length: The line length
             height: The line height
         """
-        super().__init__(pos, page, flowable_x)
+        LayoutController.__init__(self, flowable_x)
+        PositionedObject.__init__(self, pos, page)
         self._length = length
         self._height = height
 
     ######## PUBLIC PROPERTIES ########
+
+    @property
+    def page(self) -> Page:
+        """The page this controller appears on.
+
+        This is identical to ``self.parent``.
+        """
+        return cast(Page, self.parent)
 
     @property
     def doc_end_pos(self) -> Point:
