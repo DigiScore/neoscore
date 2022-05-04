@@ -327,15 +327,16 @@ class PositionedObject:
         # Calculate position within flowable
         pos_in_flowable = self.flowable.descendant_pos(self)
         first_line_i = self.flowable.last_break_index_at(pos_in_flowable.x)
-        first_line = self.flowable.layout_controllers[first_line_i]
+        first_line = self.flowable.lines[first_line_i]
         first_line_length = (
             first_line.flowable_x + first_line.length - pos_in_flowable.x
         )
         remaining_x = self.breakable_length - first_line_length
         if remaining_x <= ZERO:
+
             self.render_complete(
                 self.canvas_pos,
-                self.flowable.dist_to_line_start(pos_in_flowable.x),
+                pos_in_flowable.x - first_line.flowable_x,
                 pos_in_flowable.x,
             )
             return
@@ -345,7 +346,7 @@ class PositionedObject:
             # If a break-spanning object starts very close to its first line end,
             # skip that line.
             first_line_i += 1
-            first_line = self.flowable.layout_controllers[first_line_i]
+            first_line = self.flowable.lines[first_line_i]
             first_line_length = (
                 first_line.flowable_x + first_line.length - pos_in_flowable.x
             )
@@ -363,10 +364,8 @@ class PositionedObject:
         )
 
         # Iterate through remaining length
-        for current_line_i in range(
-            first_line_i + 1, len(self.flowable.layout_controllers)
-        ):
-            current_line = self.flowable.layout_controllers[current_line_i]
+        for current_line_i in range(first_line_i + 1, len(self.flowable.lines)):
+            current_line = self.flowable.lines[current_line_i]
             line_pos = current_line.canvas_pos
             render_start_pos = Point(line_pos.x, line_pos.y + pos_in_flowable.y)
             if remaining_x > current_line.length:
