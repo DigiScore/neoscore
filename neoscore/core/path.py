@@ -497,9 +497,11 @@ class Path(PaintedObject):
         """
         # self.move_to(ZERO, ZERO)
         # this is clumsy, but couldnt get from_def to work.
-        self.line_to(self._current_subpath_start[0].x,
-                     self._current_subpath_start[0].y,
-                     self._current_subpath_start[1])
+        self.line_to(
+            self._current_subpath_start[0].x,
+            self._current_subpath_start[0].y,
+            self._current_subpath_start[1],
+        )
 
     def cubic_to(
         self,
