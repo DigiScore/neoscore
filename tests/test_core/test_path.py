@@ -177,7 +177,26 @@ class TestPath(AppTest):
         path.line_to(Unit(10), Unit(100))
         path.close_subpath()
         assert len(path.elements) == 4
-        assert_path_els_equal(path.elements[3], MoveTo(ORIGIN, path))
+        assert_path_els_equal(path.elements[3], LineTo(ORIGIN, path))
+
+    def test_close_subpath_with_move_to(self):
+        path = Path((Unit(5), Unit(6)), None)
+        path.line_to(Unit(10), Unit(10))
+        path.move_to(Unit(100), Unit(100))
+        path.line_to(Unit(10), Unit(100))
+        path.close_subpath()
+        assert len(path.elements) == 5
+        assert_path_els_equal(path.elements[4], LineTo(Point(Unit(100), Unit(100)), path))
+
+    def test_close_subpath_with_move_to_and_new_parent(self):
+        start_parent = Path((Unit(5), Unit(6)), None)
+        end_parent = Path ((Unit(50), Unit(60)), None)
+        start_parent.line_to(Unit(10), Unit(10))
+        start_parent.move_to(Unit(100), Unit(100), end_parent)
+        start_parent.line_to(Unit(10), Unit(100))
+        start_parent.close_subpath()
+        assert len(start_parent.elements) == 5
+        assert_path_els_equal(start_parent.elements[4], LineTo(Point(Unit(100), Unit(100)), end_parent))
 
     def test_rect(self):
         path = Path.rect(ORIGIN, None, Unit(5), Unit(6), self.brush, self.pen)

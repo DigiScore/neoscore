@@ -62,6 +62,10 @@ class Path(PaintedObject):
         self._z_index = z_index
         self._rotation = rotation
         self.elements: list[PathElement] = []
+        # I assumed that this needed declaring at the start in order for a close_sub_path to close
+        # even on a minor Path command. Especially as the docs state that close_path should
+        # draw a line back to ORIGIN. But this goes against the issue ticket.
+        self._current_subpath_start: tuple[Point, parent] = (pos, self)
 
     ######## CLASSMETHODS ########
 
@@ -478,6 +482,7 @@ class Path(PaintedObject):
             parent: An optional parent, whose position the target coordinate will
                 be relative to.
         """
+        self._current_subpath_start = (Point(x, y), parent or self)
         self.elements.append(MoveTo(Point(x, y), parent or self))
 
     def close_subpath(self):
@@ -490,7 +495,11 @@ class Path(PaintedObject):
             If you need to anchor the new point, use an explicit
             ``move_to(Unit(0), Unit(0), parent)`` instead.
         """
-        self.move_to(ZERO, ZERO)
+        # self.move_to(ZERO, ZERO)
+        # this is clumsy, but couldnt get from_def to work.
+        self.line_to(self._current_subpath_start[0].x,
+                     self._current_subpath_start[0].y,
+                     self._current_subpath_start[1])
 
     def cubic_to(
         self,
