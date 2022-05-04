@@ -119,10 +119,30 @@ class Flowable(PositionedObject):
         Currently, this only supports margin controllers. Eventually on we may expand
         this to allow things like explicit user-defined ``NewLine``\ s.
 
-        Controllers can be added to this automatically sorted list using
-        ``provided_controllers.add(your_controller)``.
+        Controllers should not be added directly to this list; use
+        :obj:`.add_margin_controller` instead.
         """
         return self._provided_controllers
+
+    def add_margin_controller(self, controller: MarginController):
+        """Add a margin controller if applicable.
+
+        If ``provided_controllers`` already has a margin controller at the given
+        ``controller.flowable_x`` with the same ``layer_key``, the controller is only
+        inserted if its margin is larger than the existing one.
+        """
+        idx = self._provided_controllers.bisect_left(controller)
+        if idx < len(self._provided_controllers):
+            maybe_existing_val = self._provided_controllers[idx]
+            if (
+                maybe_existing_val.flowable_x == controller.flowable_x
+                and maybe_existing_val.layer_key == controller.layer_key
+            ):
+                if maybe_existing_val.margin_left >= controller.margin_left:
+                    return
+                else:
+                    self._provided_controllers.pop(idx)
+        self._provided_controllers.add(controller)
 
     def _generate_lines(self):
         """Generate automatic layout controllers.

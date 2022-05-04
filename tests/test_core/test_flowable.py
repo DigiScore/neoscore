@@ -124,6 +124,21 @@ class TestFlowable(AppTest):
         assert flowable.lines[2].x == Mm(50)
         assert flowable.lines[3].x == Mm(60)
 
+    def test_add_margin_controller_with_no_collision(self):
+        flowable = Flowable((Mm(10), ZERO), None, Mm(500), Mm(50))
+        flowable.add_margin_controller(MarginController(ZERO, Mm(20)))
+        flowable.add_margin_controller(MarginController(ZERO, Mm(20), "other layer"))
+        assert len(flowable.provided_controllers) == 2
+
+    def test_add_margin_controller_with_collision(self):
+        flowable = Flowable((Mm(10), ZERO), None, Mm(500), Mm(50))
+        flowable.add_margin_controller(MarginController(ZERO, Mm(20)))
+        flowable.add_margin_controller(MarginController(ZERO, Mm(20)))
+        assert len(flowable.provided_controllers) == 1
+        flowable.add_margin_controller(MarginController(ZERO, Mm(40)))
+        assert len(flowable.provided_controllers) == 1
+        assert flowable.provided_controllers[0].margin_left == Mm(40)
+
     # For reference
     # page live width == Mm(160)
     # page live height == Mm(257)
