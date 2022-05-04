@@ -65,7 +65,7 @@ class Path(PaintedObject):
         # I assumed that this needed declaring at the start in order for a close_sub_path to close
         # even on a minor Path command. Especially as the docs state that close_path should
         # draw a line back to ORIGIN. But this goes against the issue ticket.
-        self._current_subpath_start: tuple[Point, parent] = (pos, self)
+        self._current_subpath_start: tuple[Point, parent] = (pos, parent or self)
 
     ######## CLASSMETHODS ########
 
@@ -496,7 +496,6 @@ class Path(PaintedObject):
             ``move_to(Unit(0), Unit(0), parent)`` instead.
         """
         # self.move_to(ZERO, ZERO)
-        # this is clumsy, but couldnt get from_def to work.
         end_pos = Point.from_def(self._current_subpath_start[0])
         end_parent = self._current_subpath_start[1]
         self.line_to(
