@@ -62,10 +62,7 @@ class Path(PaintedObject):
         self._z_index = z_index
         self._rotation = rotation
         self.elements: list[PathElement] = []
-        # I assumed that this needed declaring at the start in order for a close_sub_path to close
-        # even on a minor Path command. Especially as the docs state that close_path should
-        # draw a line back to ORIGIN. But this goes against the issue ticket.
-        self._current_subpath_start: tuple[Point, parent] = (pos, parent or self)
+        self._current_subpath_start: Optional[tuple[Point, Optional[parent]]] = None
 
     ######## CLASSMETHODS ########
 
@@ -488,14 +485,10 @@ class Path(PaintedObject):
     def close_subpath(self):
         """Close the current sub-path and start a new one at the local origin.
 
-        This is equivalent to ``move_to(Unit(0), Unit(0))``
-
-        Note:
-            This convenience method does not support point parentage.
-            If you need to anchor the new point, use an explicit
-            ``move_to(Unit(0), Unit(0), parent)`` instead.
+        This is equivalent to ``line_to(Unit(0), Unit(0))``
+        drawing a line back to the local origin
+        relative to the parent of the current sub_path.
         """
-        # self.move_to(ZERO, ZERO)
         end_pos = Point.from_def(self._current_subpath_start[0])
         end_parent = self._current_subpath_start[1]
         self.line_to(
