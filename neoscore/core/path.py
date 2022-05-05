@@ -483,7 +483,9 @@ class Path(PaintedObject):
         self.elements.append(MoveTo(Point(x, y), parent or self))
 
     def close_subpath(self):
-        """Draw a line back to the starting position
+        """Close the current sub-path with a line.
+
+        Draw a line back to the starting position
         (including any parent) of the current subpath.
         """
         end_pos = Point.from_def(self._current_subpath_start[0])
