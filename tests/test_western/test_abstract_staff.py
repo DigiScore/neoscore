@@ -3,6 +3,7 @@ from neoscore.core.flowable import Flowable
 from neoscore.core.music_font import MusicFont
 from neoscore.core.paper import Paper
 from neoscore.core.point import ORIGIN
+from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import ZERO, Mm
 from neoscore.western.abstract_staff import AbstractStaff
 from neoscore.western.staff_group import StaffGroup
@@ -80,6 +81,20 @@ class TestTabStaff(AppTest):
     def test_barline_extent_single_line(self):
         staff = AbstractStaff(ORIGIN, None, Mm(100), None, Mm(1), 1, self.font, None)
         assert staff.barline_extent == (staff.unit(-1), staff.unit(1))
+
+    def test_find_ordered_descendants_with_attr(self):
+        staff = AbstractStaff(ORIGIN, None, Mm(100), None, Mm(1), 5, self.font, None)
+
+        class TestObj(PositionedObject):
+            _test_attr = True
+
+        obj_1 = TestObj((Mm(20), Mm(0)), staff)
+        parent = PositionedObject((Mm(30), Mm(0)), staff)
+        obj_2 = TestObj((Mm(30), Mm(0)), parent)
+        assert staff.find_ordered_descendants_with_attr("_test_attr") == [
+            (Mm(20), obj_1),
+            (Mm(60), obj_2),
+        ]
 
     def test_y_inside_staff_with_odd_line_count(self):
         staff = AbstractStaff(

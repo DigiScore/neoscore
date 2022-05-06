@@ -87,14 +87,7 @@ class TabStaff(AbstractStaff):
     @render_cached_property
     def clefs(self) -> list[tuple[Unit, TabClef]]:
         """All the clefs in this staff, ordered by their relative x pos."""
-        result = [
-            (self.descendant_pos_x(clef), clef)
-            for clef in self.descendants_with_attribute(
-                "_neoscore_tab_clef_type_marker"
-            )
-        ]
-        result.sort(key=lambda tup: tup[0])
-        return result
+        return self.find_ordered_descendants_with_attr("_neoscore_tab_clef_type_marker")
 
     def active_clef_at(self, pos_x: Unit) -> Optional[TabClef]:
         """Return the active clef at a given x position, if any."""

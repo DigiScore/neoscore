@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Optional
+from typing import Any, Optional
 
 from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.layout_controllers import NewLine
@@ -107,6 +107,15 @@ class AbstractStaff(PaintedObject, HasMusicFont):
     @z_index.setter
     def z_index(self, value: int):
         self._z_index = value
+
+    def find_ordered_descendants_with_attr(self, attr: str) -> list[tuple[Unit, Any]]:
+        """Find all descendants with an attribute, sorted with their staff x positions"""
+        result = [
+            (self.descendant_pos_x(obj), obj)
+            for obj in self.descendants_with_attribute(attr)
+        ]
+        result.sort(key=lambda tup: tup[0])
+        return result
 
     def y_inside_staff(self, pos_y: Unit) -> bool:
         """Determine if a y-axis position is inside the staff.

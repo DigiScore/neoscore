@@ -85,12 +85,7 @@ class Staff(AbstractStaff):
     @render_cached_property
     def clefs(self) -> list[tuple[Unit, Clef]]:
         """All the clefs in this staff, ordered by their relative x pos."""
-        result = [
-            (clef.pos_x_in_staff, clef)
-            for clef in self.descendants_with_attribute("middle_c_staff_position")
-        ]
-        result.sort(key=lambda tup: tup[0])
-        return result
+        return self.find_ordered_descendants_with_attr("middle_c_staff_position")
 
     def active_clef_at(self, pos_x: Unit) -> Optional[Clef]:
         """Return the active clef at a given x position, if any."""
@@ -102,28 +97,16 @@ class Staff(AbstractStaff):
     @render_cached_property
     def key_signatures(self) -> list[tuple[Unit, KeySignature]]:
         """All the key signatures in this staff, ordered by their relative x pos."""
-        result = [
-            (sig.pos_x_in_staff, sig)
-            for sig in self.descendants_with_attribute(
-                "_neoscore_key_signature_type_marker"
-            )
-        ]
-        result.sort(key=lambda tup: tup[0])
-        return result
-
-    # TODO HIGH - DRY these methods
+        return self.find_ordered_descendants_with_attr(
+            "_neoscore_key_signature_type_marker"
+        )
 
     @render_cached_property
     def time_signatures(self) -> list[tuple[Unit, KeySignature]]:
         """All the time signatures in this staff, ordered by their relative x pos."""
-        result = [
-            (self.descendant_pos_x(sig), sig)
-            for sig in self.descendants_with_attribute(
-                "_neoscore_time_signature_type_marker"
-            )
-        ]
-        result.sort(key=lambda tup: tup[0])
-        return result
+        return self.find_ordered_descendants_with_attr(
+            "_neoscore_time_signature_type_marker"
+        )
 
     def active_key_signature_at(self, pos_x: Unit) -> Optional[KeySignature]:
         """Return the active key signature at a given x position, if any."""
