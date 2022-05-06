@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-
-
 """A development sandbox with a large mess of objects in it.
 
 This is not a good example for learning from - it will probably be deleted soon.
@@ -20,11 +17,10 @@ counting_string = "    ".join(str(x) for x in range(200))
 counting_text = Text((Mm(0), Mm(0)), parent=flow, text=counting_string)
 counting_text._length = Mm(10000)
 
-staff = Staff((Mm(0), Mm(0)), flow, Mm(10000), Mm(1))
-
-lower_staff = Staff((Mm(0), Mm(9)), flow, Mm(7000), Mm(1))
-
-lowest_staff = Staff((Mm(10), Mm(18)), flow, Mm(2000), Mm(1))
+staff_group = StaffGroup()
+staff = Staff((Mm(0), Mm(0)), flow, Mm(10000), staff_group, Mm(1))
+lower_staff = Staff((Mm(0), Mm(9)), flow, Mm(7000), staff_group, Mm(1))
+lowest_staff = Staff((Mm(10), Mm(18)), flow, Mm(2000), staff_group, Mm(1))
 
 barline = Barline(Mm(30), [staff, lower_staff, lowest_staff])
 
@@ -37,19 +33,9 @@ later_lowest_staff_clef = Clef(Mm(100), lowest_staff, "treble")
 
 # Once flowable gutters are implemented, this explicit offsets for
 # key/time sigs will not be needed
-upper_staff_key_signature = KeySignature(
-    upper_staff_clef.bounding_rect.width + staff.unit(0.5), staff, "af_major"
-)
-lower_staff_key_signature = KeySignature(
-    lower_staff_clef.bounding_rect.width + lower_staff.unit(0.5),
-    lower_staff,
-    "cs_major",
-)
-lowest_staff_key_signature = KeySignature(
-    lowest_staff_clef.bounding_rect.width + lowest_staff.unit(0.5),
-    lowest_staff,
-    "d_minor",
-)
+upper_staff_key_signature = KeySignature(ZERO, staff, "af_major")
+lower_staff_key_signature = KeySignature(ZERO, lower_staff, "cs_major")
+lowest_staff_key_signature = KeySignature(ZERO, lowest_staff, "d_minor")
 
 octave_line = OctaveLine((Mm(20), staff.unit(-3)), staff, Mm(1000), indication="8vb")
 
@@ -151,4 +137,4 @@ Path.rect(
     "#ff0000",
 )
 
-render_example("example")
+render_example("kitchen_sink")

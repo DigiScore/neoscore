@@ -131,17 +131,24 @@ class Flowable(PositionedObject):
         ``controller.flowable_x`` with the same ``layer_key``, the controller is only
         inserted if its margin is larger than the existing one.
         """
+        if not self._provided_controllers:
+            self._provided_controllers.add(controller)
         idx = self._provided_controllers.bisect_left(controller)
-        if idx < len(self._provided_controllers):
-            maybe_existing_val = self._provided_controllers[idx]
-            if (
-                maybe_existing_val.flowable_x == controller.flowable_x
-                and maybe_existing_val.layer_key == controller.layer_key
-            ):
-                if maybe_existing_val.margin_left >= controller.margin_left:
+
+        for i in range(idx, len(self._provided_controllers)):
+            existing_controller = self._provided_controllers[i]
+            if existing_controller.flowable_x > controller.flowable_x:
+                # No existing controllers at this flowable_x and layer found
+                break
+            if existing_controller.layer_key == controller.layer_key:
+                # Existing controller at this flowable_x and layer found
+                if existing_controller.margin_left >= controller.margin_left:
+                    # Existing controller margin is larger than one being added; skip it
                     return
                 else:
+                    # Existing controller margin is smaller than one being added; replace it
                     self._provided_controllers.pop(idx)
+                    break
         self._provided_controllers.add(controller)
 
     def _generate_lines(self):

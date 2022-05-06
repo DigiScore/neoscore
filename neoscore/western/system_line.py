@@ -1,10 +1,13 @@
 from typing import Optional
 
+from neoscore.core.layout_controllers import NewLine
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
 from neoscore.core.pen import Pen, PenDef
+from neoscore.core.point import Point
 from neoscore.core.units import ZERO, Unit
-from neoscore.western.multi_staff_object import MultiStaffObject, StaffLike
+from neoscore.western.abstract_staff import AbstractStaff
+from neoscore.western.multi_staff_object import MultiStaffObject
 
 
 class SystemLine(MultiStaffObject, MusicPath):
@@ -18,7 +21,7 @@ class SystemLine(MultiStaffObject, MusicPath):
     def __init__(
         self,
         pos_x: Unit,
-        staves: list[StaffLike],
+        staves: list[AbstractStaff],
         font: Optional[MusicFont] = None,
         pen: Optional[PenDef] = None,
     ):
@@ -45,11 +48,25 @@ class SystemLine(MultiStaffObject, MusicPath):
         """
         return self.parent.breakable_length - self.x
 
-    def render_before_break(self, local_start_x, start, stop, dist_to_line_start):
-        self.render_complete(start)
+    def render_complete(
+        self,
+        pos: Point,
+        flowable_line: Optional[NewLine] = None,
+        flowable_x: Optional[Unit] = None,
+    ):
+        fringe_layout = self.highest.fringe_layout_at(flowable_line)
+        super().render_complete(Point(pos.x + fringe_layout.staff, pos.y))
 
-    def render_after_break(self, local_start_x, start):
-        self.render_complete(start)
+    def render_before_break(self, pos: Point, flowable_line: NewLine, flowable_x: Unit):
+        fringe_layout = self.highest.fringe_layout_at(flowable_line)
+        super().render_complete(Point(pos.x + fringe_layout.staff, pos.y))
 
-    def render_spanning_continuation(self, local_start_x, start, stop):
-        self.render_complete(start)
+    def render_spanning_continuation(
+        self, pos: Point, flowable_line: NewLine, object_x: Unit
+    ):
+        fringe_layout = self.highest.fringe_layout_at(flowable_line)
+        super().render_complete(Point(pos.x + fringe_layout.staff, pos.y))
+
+    def render_after_break(self, pos: Point, flowable_line: NewLine, object_x: Unit):
+        fringe_layout = self.highest.fringe_layout_at(flowable_line)
+        super().render_complete(Point(pos.x + fringe_layout.staff, pos.y))

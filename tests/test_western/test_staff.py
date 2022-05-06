@@ -5,7 +5,7 @@ from neoscore.core.flowable import Flowable
 from neoscore.core.paper import Paper
 from neoscore.core.pen import Pen
 from neoscore.core.point import ORIGIN, Point
-from neoscore.core.units import ZERO, Mm
+from neoscore.core.units import Mm
 from neoscore.western import clef_type
 from neoscore.western.clef import Clef
 from neoscore.western.staff import NoClefError, Staff
@@ -22,42 +22,6 @@ class TestStaff(AppTest):
         )
         self.flowable = Flowable((Mm(0), Mm(0)), None, Mm(10000), Mm(30), Mm(5))
 
-    def test_height(self):
-        # 5 lines
-        assert_almost_equal(
-            Staff(
-                (Mm(0), Mm(0)),
-                self.flowable,
-                Mm(100),
-                line_spacing=Mm(1.5),
-                line_count=5,
-            ).height,
-            Mm(6),
-        )
-        assert_almost_equal(
-            Staff(
-                (Mm(0), Mm(0)), self.flowable, Mm(100), line_spacing=Mm(1), line_count=5
-            ).height,
-            Mm(4),
-        )
-        # 4 lines
-        assert_almost_equal(
-            Staff(
-                (Mm(0), Mm(0)),
-                self.flowable,
-                Mm(100),
-                line_spacing=Mm(1.5),
-                line_count=4,
-            ).height,
-            Mm(4.5),
-        )
-        assert_almost_equal(
-            Staff(
-                (Mm(0), Mm(0)), self.flowable, Mm(100), line_spacing=Mm(1), line_count=4
-            ).height,
-            Mm(3),
-        )
-
     def test_allows_pen_override(self):
         pen = Pen("#ff0000")
         staff = Staff(ORIGIN, self.flowable, Mm(100), pen=pen)
@@ -69,22 +33,6 @@ class TestStaff(AppTest):
             staff.pen.thickness
             == staff.music_font.engraving_defaults["staffLineThickness"]
         )
-
-    def test_height(self):
-        staff = Staff(ORIGIN, None, Mm(100), line_count=3)
-        assert staff.height == staff.unit(2)
-
-    def test_center_y(self):
-        staff = Staff(ORIGIN, None, Mm(100), line_count=4)
-        assert staff.center_y == staff.unit(1.5)
-
-    def test_barline_extent_multi_line(self):
-        staff = Staff(ORIGIN, None, Mm(100), line_count=4)
-        assert staff.barline_extent == (ZERO, staff.unit(3))
-
-    def test_barline_extent_single_line(self):
-        staff = Staff(ORIGIN, None, Mm(100), line_count=1)
-        assert staff.barline_extent == (staff.unit(-1), staff.unit(1))
 
     def test_distance_to_next_of_type(self):
         staff = Staff((Mm(10), Mm(0)), self.flowable, Mm(100))
@@ -119,20 +67,6 @@ class TestStaff(AppTest):
         staff = Staff((Mm(0), Mm(0)), self.flowable, Mm(100))
         with pytest.raises(NoClefError):
             staff.middle_c_at(Mm(5))
-
-    def test_position_inside_staff_with_odd_line_count(self):
-        staff = Staff((Mm(0), Mm(0)), self.flowable, Mm(100), line_count=5)
-        assert staff.y_inside_staff(staff.unit(0)) is True
-        assert staff.y_inside_staff(staff.unit(4)) is True
-        assert staff.y_inside_staff(staff.unit(5)) is False
-        assert staff.y_inside_staff(staff.unit(-5)) is False
-
-    def test_position_inside_staff_with_even_line_count(self):
-        staff = Staff((Mm(0), Mm(0)), self.flowable, Mm(100), line_count=4)
-        assert staff.y_inside_staff(staff.unit(0)) is True
-        assert staff.y_inside_staff(staff.unit(3)) is True
-        assert staff.y_inside_staff(staff.unit(4)) is False
-        assert staff.y_inside_staff(staff.unit(-4)) is False
 
     def test_position_on_ledger_with_odd_line_count(self):
         staff = Staff((Mm(0), Mm(0)), self.flowable, Mm(100), line_count=5)
@@ -173,27 +107,17 @@ class TestStaff(AppTest):
             staff.unit(-1),
         ]
 
-    def test_elements_when_not_located_at_origin(self):
-        """Regression test
-
-        Ensure lines are drawn at the correct locations when staff is not
-        positioned at (0, 0)
-        """
-        staff = Staff(
-            (Mm(2), Mm(3)), self.flowable, Mm(10), line_spacing=Mm(1), line_count=5
-        )
+    def test_path_drawing(self):
+        staff = Staff((Mm(2), Mm(3)), self.flowable, Mm(10), None, Mm(1))
+        path = staff._create_staff_segment_path(Point(Mm(2), Mm(3)), Mm(10))
         self.flowable.render()
         # Top line
-        assert staff.elements[0].pos == Point(Mm(0), Mm(0))
-        assert staff.elements[0].parent == staff
-        assert staff.elements[1].pos == Point(Mm(10), Mm(0))
-        assert staff.elements[1].parent == staff
+        assert path.elements[0].pos == Point(Mm(0), Mm(0))
+        assert path.elements[0].parent == path
+        assert path.elements[1].pos == Point(Mm(10), Mm(0))
+        assert path.elements[1].parent == path
         # Second line
-        assert staff.elements[2].pos == Point(Mm(0), Mm(1))
-        assert staff.elements[2].parent == staff
-        assert staff.elements[3].pos == Point(Mm(10), Mm(1))
-        assert staff.elements[3].parent == staff
-
-    def test_staff_outside_flowable(self):
-        staff = Staff((Mm(2), Mm(3)), None, Mm(10), line_spacing=Mm(1), line_count=5)
-        staff.render()
+        assert path.elements[2].pos == Point(Mm(0), Mm(1))
+        assert path.elements[2].parent == path
+        assert path.elements[3].pos == Point(Mm(10), Mm(1))
+        assert path.elements[3].parent == path

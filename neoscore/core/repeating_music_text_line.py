@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Optional, cast
 
 from neoscore.core.brush import BrushDef
+from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicStringDef, MusicText
 from neoscore.core.pen import PenDef

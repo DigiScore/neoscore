@@ -1,18 +1,24 @@
 from __future__ import annotations
 
-from typing import Optional, cast
+from typing import TYPE_CHECKING, Optional, cast
 
+from neoscore.core.layout_controllers import MarginController, NewLine
 from neoscore.core.music_font import MusicFont
-from neoscore.core.music_path import MusicPath
 from neoscore.core.pen import Pen
 from neoscore.core.point import PointDef
-from neoscore.core.positioned_object import PositionedObject
+from neoscore.core.positioned_object import PositionedObject, render_cached_property
 from neoscore.core.units import ZERO, Mm, Unit, make_unit_class
+from neoscore.western.abstract_staff import AbstractStaff
+from neoscore.western.staff_fringe_layout import StaffFringeLayout
+from neoscore.western.staff_group import StaffGroup
+
+if TYPE_CHECKING:
+    from neoscore.western.tab_clef import TabClef
 
 _LINE_SPACE_TO_FONT_UNIT_RATIO: float = 2 / 3
 
 
-class TabStaff(MusicPath):
+class TabStaff(AbstractStaff):
     """A staff for writing guitar tablature with any number of strings.
 
     This class is not suitable for use with ``Chordrest``, ``Clef``,
@@ -30,6 +36,7 @@ class TabStaff(MusicPath):
         pos: PointDef,
         parent: Optional[PositionedObject],
         length: Unit,
+        group: Optional[StaffGroup] = None,
         line_spacing: Unit = Mm(2.5),
         line_count: int = 6,
         music_font: Optional[MusicFont] = None,
@@ -41,6 +48,8 @@ class TabStaff(MusicPath):
             parent: The parent for the staff. Make this a ``Flowable``
                 to allow the staff to run across line and page breaks.
             length: The horizontal width of the staff
+            group: The staff group this belongs to. Set this if being used in a system
+                of multiple staves.
             line_spacing: The distance between two lines in the staff.
             line_count: The number of lines in the staff.
             music_font: The font to use for ``MusicText`` objects in the staff.
@@ -59,14 +68,9 @@ class TabStaff(MusicPath):
             ),
         )
         pen = pen or Pen(thickness=music_font.engraving_defaults["staffLineThickness"])
-        super().__init__(pos, parent, font=music_font, pen=pen)
-        self._line_spacing = line_spacing
-        self._line_count = line_count
-        self._length = length
-        for i in range(self.line_count):
-            y_offset = self.line_spacing * i
-            self.move_to(ZERO, y_offset)
-            self.line_to(length, y_offset)
+        super().__init__(
+            pos, parent, length, group, line_spacing, line_count, music_font, pen
+        )
 
     def string_y(self, string: int) -> Unit:
         """Return the Y position of a given string's line.
@@ -77,63 +81,78 @@ class TabStaff(MusicPath):
         return self.line_spacing * (string - 1)
 
     @property
-    def height(self) -> Unit:
-        """The height of the staff from top to bottom line.
-
-        If the staff only has one line, its height is defined as 0.
-        """
-        return self.line_spacing * (self.line_count - 1)
-
-    @property
-    def barline_extent(self) -> tuple[Unit, Unit]:
-        """The starting and stopping Y positions of barlines in this staff.
-
-        For staves with more than 1 line, this extends from the top line to bottom
-        line. For single-line staves, this extends from 1 unit above and below the
-        staff.
-        """
-        if self.line_count == 1:
-            return self.unit(-1), self.unit(1)
-        else:
-            return self.unit(0), self.height
-
-    @property
-    def line_count(self) -> int:
-        """The number of lines in the staff"""
-        return self._line_count
-
-    @property
-    def line_spacing(self) -> Unit:
-        """The distance between two lines in the staff.
-
-        Note that this is typically *not* ``TabStaff.unit(1)``.
-        """
-        return self._line_spacing
-
-    @property
-    def center_y(self) -> Unit:
-        """The position of the center staff position"""
-        return cast(Unit, self.height / 2)
-
-    @property
-    def breakable_length(self) -> Unit:
-        # Override expensive ``Path.length`` since the staff length here
-        # is already known.
-        return self._length
-
-    @property
     def font_to_staff_space_ratio(self) -> float:
         return cast(float, self.unit(1) / self.line_spacing)
 
-    @property
-    def barline_extent(self) -> tuple[Unit, Unit]:
-        """The starting and stopping Y positions of barlines in this staff.
+    @render_cached_property
+    def clefs(self) -> list[tuple[Unit, TabClef]]:
+        """All the clefs in this staff, ordered by their relative x pos."""
+        result = [
+            (self.descendant_pos_x(clef), clef)
+            for clef in self.descendants_with_attribute(
+                "_neoscore_tab_clef_type_marker"
+            )
+        ]
+        result.sort(key=lambda tup: tup[0])
+        return result
 
-        For staves with more than 1 line, this extends from the top line to bottom
-        line. For single-line staves, this extends from 1 unit above and below the
-        staff.
+    def active_clef_at(self, pos_x: Unit) -> Optional[TabClef]:
+        """Return the active clef at a given x position, if any."""
+        return next(
+            (clef for (clef_x, clef) in reversed(self.clefs) if clef_x <= pos_x),
+            None,
+        )
+
+    def _register_layout_controllers(self):
+        """Register any flowable margin controllers needed by the staff.
+
+        Staff subclasses must implement this.
         """
-        if self.line_count == 1:
-            return -self.line_spacing, self.line_spacing
+        flowable = self.flowable
+        if not flowable:
+            return
+        staff_flowable_x = flowable.descendant_pos_x(self)
+        flowable.add_margin_controller(
+            MarginController(
+                staff_flowable_x, self.unit(StaffGroup.RIGHT_PADDING), "neoscore_staff"
+            )
+        )
+        for clef_x, clef in self.clefs:
+            flowable_x = staff_flowable_x + clef_x
+            margin_needed = clef.bounding_rect.width + self.unit(
+                StaffGroup.CLEF_LEFT_PADDING
+            )
+            flowable.add_margin_controller(
+                MarginController(flowable_x, margin_needed, "neoscore_clef")
+            )
+
+    def _fringe_layout_for_isolated_staff(
+        self, location: Optional[NewLine]
+    ) -> StaffFringeLayout:
+        """Determine the staff fringe layout of this staff in isolation.
+
+        This is the layout needed if this staff was alone in a staff system.
+        ``StaffGroup`` uses this as a starting point in its fringe layout logic.
+
+        Staff subclasses must implement this.
+        """
+        if location:
+            staff_pos_x = location.flowable_x - self.flowable.descendant_pos_x(self)
+            if staff_pos_x < ZERO:
+                # This happens on the first line of a staff positioned at x>0 relative
+                # to its flowable.
+                staff_pos_x = ZERO
         else:
-            return ZERO, self.height
+            staff_pos_x = ZERO
+        # Work right-to-left through different fringe layers
+        current_x = -self.unit(StaffGroup.RIGHT_PADDING)
+        clef_fringe_pos = current_x
+        clef = self.active_clef_at(staff_pos_x)
+        if clef:
+            current_x -= clef.bounding_rect.width
+            clef_fringe_pos = current_x
+            current_x -= self.unit(StaffGroup.CLEF_LEFT_PADDING)
+        staff_fringe_pos = current_x
+        return StaffFringeLayout(
+            staff_pos_x, staff_fringe_pos, clef_fringe_pos, ZERO, ZERO
+        )

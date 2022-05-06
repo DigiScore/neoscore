@@ -11,6 +11,31 @@ from neoscore.interface.positioned_object_interface import PositionedObjectInter
 if TYPE_CHECKING:
     # Used in type annotations, imported here to avoid cyclic imports
     from neoscore.core.flowable import Flowable
+    from neoscore.core.layout_controllers import NewLine
+
+
+class render_cached_property:
+
+    """A ``PositionedObject`` property which is cached only at render time.
+
+    You can annotate any ``PositionedObject`` property to get this behavior, including
+    on inheriting classes.
+    """
+
+    def __init__(self, func):
+        self.__doc__ = getattr(func, "__doc__")
+        self.func = func
+
+    def __get__(self, obj, cls):
+        if obj is None:
+            return self
+        result = self.func(obj)
+        if not getattr(obj, "__currently_rendering", None):
+            return result
+        property_name = self.func.__name__
+        value = obj.__dict__[property_name] = result
+        obj._render_cached_properties.add(property_name)
+        return value
 
 
 class PositionedObject:
@@ -49,6 +74,7 @@ class PositionedObject:
         self._children: list[PositionedObject] = []
         self._parent = PositionedObject._resolve_parent(parent)
         self._set_parent_and_register_self(parent)
+        self._render_cached_properties: set[str] = set()
         self._interfaces = []
 
     @property
@@ -297,19 +323,18 @@ class PositionedObject:
     def pre_render_hook(self):
         """Run code once just before document rendering begins.
 
-        This is an experimental feature to support precomputation and
-        caching for expensive methods.
-
-        Any data cached in this function must be cleared in a
-        corresponding ``post_render_hook``.
+        Implementations *must* call the super class function as well.
         """
+        self.__currently_rendering = True
 
     def post_render_hook(self):
         """Run code once after document rendering completes.
 
-        Any cached data stored in ``pre_render_hook`` must be cleared
-        in this function.
+        Implementations *must* call the super class function as well.
         """
+        for cached_property in self._render_cached_properties:
+            del self.__dict__[cached_property]
+        self.__currently_rendering = False
 
     def render(self):
         """Render the object and all its children."""
@@ -333,12 +358,7 @@ class PositionedObject:
         )
         remaining_x = self.breakable_length - first_line_length
         if remaining_x <= ZERO:
-
-            self.render_complete(
-                self.canvas_pos,
-                pos_in_flowable.x - first_line.flowable_x,
-                pos_in_flowable.x,
-            )
+            self.render_complete(self.canvas_pos, first_line, pos_in_flowable.x)
             return
 
         # Render before break
@@ -353,110 +373,64 @@ class PositionedObject:
             remaining_x = self.breakable_length - first_line_length
         line_pos = first_line.canvas_pos
         render_start_pos = Point(line_pos.x, line_pos.y + pos_in_flowable.y)
-        render_end_pos = Point(
-            render_start_pos.x + first_line_length, render_start_pos.y
-        )
-        self.render_before_break(
-            pos_in_flowable.x,
-            render_start_pos,
-            render_end_pos,
-            pos_in_flowable.x - first_line.flowable_x,
-        )
+        self.render_before_break(render_start_pos, first_line, pos_in_flowable.x)
 
         # Iterate through remaining length
         for current_line_i in range(first_line_i + 1, len(self.flowable.lines)):
             current_line = self.flowable.lines[current_line_i]
             line_pos = current_line.canvas_pos
             render_start_pos = Point(line_pos.x, line_pos.y + pos_in_flowable.y)
+            local_object_x = self.breakable_length - remaining_x
             if remaining_x > current_line.length:
                 # Render spanning continuation
-                render_end_pos = Point(
-                    render_start_pos.x + current_line.length,
-                    render_start_pos.y,
-                )
                 self.render_spanning_continuation(
-                    self.breakable_length - remaining_x,
-                    render_start_pos,
-                    render_end_pos,
+                    render_start_pos, current_line, local_object_x
                 )
                 remaining_x -= current_line.length
             else:
                 # Render end
-                render_end_pos = Point(
-                    render_start_pos.x + remaining_x, render_start_pos.y
-                )
-                self.render_after_break(
-                    self.breakable_length - remaining_x, render_start_pos
-                )
+                self.render_after_break(render_start_pos, current_line, local_object_x)
                 break
 
     def render_complete(
         self,
         pos: Point,
-        dist_to_line_start: Optional[Unit] = None,
-        local_start_x: Optional[Unit] = None,
+        flowable_line: Optional[NewLine] = None,
+        flowable_x: Optional[Unit] = None,
     ):
         """Render the entire object.
 
         This is used to render all objects outside of flowables, as well as those inside
         flowables when they fit completely in one line of the flowable.
 
-        Note: By default this is a no-op. Subclasses with with
-        rendered appearances should override this.
+        By default this is a no-op. Subclasses with with rendered appearances should
+        override this.
 
         Args:
             pos: The rendering position in document space for drawing.
-            dist_to_line_start: If in a ``Flowable``, the x-axis distance from the
-                active ``NewLine`` beginning. Otherwise, this is always ``None``.
-                Subclasses may use this information to perform basic position
-                modifications at render time, though in most cases this field
-                can be ignored.
-            local_start_x: If this object is in a flowable, the local
-                starting position of this drawing segment.
-
+            flowable_line: If in a ``Flowable``, the line in which this object appears
+            flowable_x: If in a ``Flowable``, the flowable x position of this render
         """
 
-    def render_before_break(
-        self, local_start_x: Unit, start: Point, stop: Point, dist_to_line_start: Unit
-    ):
+    def render_before_break(self, pos: Point, flowable_line: NewLine, flowable_x: Unit):
         """Render the beginning of the object up to a stopping point.
 
-        For use in flowable containers when rendering an object that
-        crosses a line or page break. This function should render the
-        beginning portion of the object up to the break.
+        For use in flowable containers when rendering an object that crosses a line or
+        page break. This function should render the beginning portion of the object up
+        to the break.
+
+        By default this is a no-op. Subclasses with with rendered appearances should
+        override this.
 
         Args:
-            local_start_x: The local starting position of this
-                drawing segment.
-            start: The starting point in document space for drawing.
-            stop: The stopping point in document space for drawing.
-            dist_to_line_start: The x-axis distance from the active
-                ``NewLine`` beginning. Subclasses may use this
-                information to perform basic position modifications at
-                render time, though in most cases this field can be ignored.
+            pos: The rendering position in document space for drawing.
+            flowable_line: The line in which this object appears
+            flowable_x: The flowable x position of this render
 
-        Note: By default this is a no-op. Subclasses with with
-            rendered appearances should override this.
-        """
-
-    def render_after_break(self, local_start_x: Unit, start: Point):
-        """Render the continuation of an object after a break.
-
-        For use in flowable containers when rendering an object that
-        crosses a line or page break. This function should render the
-        ending portion of an object after a break.
-
-        Args:
-            local_start_x: The local starting position of this
-                drawing segment.
-            start: The starting point in document space for drawing.
-
-        Note: By default this is a no-op. Subclasses with with
-            rendered appearances should override this.
         """
 
     def render_spanning_continuation(
-        self, local_start_x: Unit, start: Point, stop: Point
+        self, pos: Point, flowable_line: NewLine, object_x: Unit
     ):
         """
         Render the continuation of an object after a break and before another.
@@ -465,14 +439,29 @@ class PositionedObject:
         two breaks. This function should render the portion of the object
         surrounded by breaks on either side.
 
-        Args:
-            local_start_x: The local starting position of this
-                drawing segment.
-            start: The starting point in document space for drawing.
-            stop: The stopping point in document space for drawing.
+        By default this is a no-op. Subclasses with with rendered appearances should
+        override this.
 
-        Note: By default this is a no-op. Subclasses with with
-            rendered appearances should override this.
+        Args:
+            pos: The rendering position in document space for drawing.
+            flowable_line: The line in which this object appears
+            object_x: The local object x position of the line's start.
+        """
+
+    def render_after_break(self, pos: Point, flowable_line: NewLine, object_x: Unit):
+        """Render the continuation of an object after a break.
+
+        For use in flowable containers when rendering an object that crosses a line or
+        page break. This function should render the ending portion of an object after a
+        break.
+
+        By default this is a no-op. Subclasses with with rendered appearances should
+        override this.
+
+        Args:
+            pos: The rendering position in document space for drawing.
+            flowable_line: The line in which this object appears
+            object_x: The local object x position of the line's start.
         """
 
     @staticmethod

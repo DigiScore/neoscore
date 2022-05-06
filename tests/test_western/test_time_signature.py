@@ -92,24 +92,24 @@ class TestTimeSignature(AppTest):
 
     def test_single_glyph_centered(self):
         ts = TimeSignature(ZERO, self.staff, COMMON_TIME)
-        assert ts.upper_text.y == ts.music_font.unit(2)
+        assert ts.upper_text.y == self.staff.unit(2)
 
     def test_meter_setter_updates_alignment(self):
         ts = TimeSignature(ZERO, self.staff, CUT_TIME)
-        assert ts.upper_text.y == ts.music_font.unit(2)
+        assert ts.upper_text.y == self.staff.unit(2)
         ts.meter = (3, 4)
-        assert ts.upper_text.y == ts.music_font.unit(1)
-        assert ts.lower_text.y == ts.music_font.unit(3)
+        assert ts.upper_text.y == self.staff.unit(1)
+        assert ts.lower_text.y == self.staff.unit(3)
 
     def test_width_set_to_max_text_width(self):
         ts = TimeSignature(ZERO, self.staff, Meter.numeric([5, 10], 16))
-        assert ts.width == ts.upper_text.bounding_rect.width
+        assert ts.visual_width == ts.upper_text.bounding_rect.width
 
     def test_meter_setter_updates_width(self):
         ts = TimeSignature(ZERO, self.staff, CUT_TIME)
-        assert ts.width == ts.upper_text.bounding_rect.width
+        assert ts.visual_width == ts.upper_text.bounding_rect.width
         ts.meter = (3, 4)
-        assert ts.width == ts.lower_text.bounding_rect.width
+        assert ts.visual_width == ts.lower_text.bounding_rect.width
 
     def test_end_to_end(self):
         ts = TimeSignature(ZERO, self.staff, COMMON_TIME)

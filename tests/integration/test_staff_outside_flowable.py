@@ -10,7 +10,7 @@ from ..helpers import AppTest, render_scene
 
 class TestStaffOutsideFlowable(AppTest):
     def test_staff_with_notes(self):
-        staff = Staff((Mm(0), Mm(0)), None, Mm(100), Mm(1))
+        staff = Staff((Mm(0), Mm(0)), None, Mm(100), line_spacing=Mm(1))
 
         unit = staff.unit
         clef = Clef(unit(0), staff, "treble")

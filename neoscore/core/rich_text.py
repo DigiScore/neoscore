@@ -4,6 +4,7 @@ from typing import Optional
 
 from neoscore.core import neoscore
 from neoscore.core.font import Font
+from neoscore.core.layout_controllers import NewLine
 from neoscore.core.point import Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import ZERO, Unit
@@ -129,8 +130,8 @@ class RichText(PositionedObject):
     def render_complete(
         self,
         pos: Point,
-        dist_to_line_start: Optional[Unit] = None,
-        local_start_x: Optional[Unit] = None,
+        flowable_line: Optional[NewLine] = None,
+        flowable_x: Optional[Unit] = None,
     ):
         interface = RichTextInterface(
             pos,

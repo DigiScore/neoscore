@@ -29,7 +29,7 @@ class TestTabStaff(AppTest):
         assert staff.line_spacing == Mm(2.5)
 
     def test_line_spacing_override(self):
-        staff = TabStaff(ORIGIN, None, Mm(100), Mm(2))
+        staff = TabStaff(ORIGIN, None, Mm(100), line_spacing=Mm(2))
         assert staff.line_spacing == Mm(2)
 
     def test_line_count_default(self):
@@ -41,7 +41,7 @@ class TestTabStaff(AppTest):
         assert staff.line_count == 10
 
     def test_music_font_size_derived_from_line_spacing(self):
-        staff = TabStaff(ORIGIN, None, Mm(100), Mm(2))
+        staff = TabStaff(ORIGIN, None, Mm(100), line_spacing=Mm(2))
         assert staff.music_font.family_name == "Bravura"
         self.assertAlmostEqual(staff.music_font.unit.CONVERSION_RATE, 3.7795296)
 
@@ -58,19 +58,3 @@ class TestTabStaff(AppTest):
         assert_almost_equal(staff.string_y(4), staff.unit(4.5))
         assert_almost_equal(staff.string_y(5), staff.unit(6))
         assert_almost_equal(staff.string_y(6), staff.unit(7.5))
-
-    def test_height(self):
-        staff = TabStaff(ORIGIN, None, Mm(100))
-        assert staff.height == staff.unit(1.5 * 5)
-
-    def test_center_y(self):
-        staff = TabStaff(ORIGIN, None, Mm(100))
-        assert staff.center_y == staff.height / 2
-
-    def test_barline_extent_multi_line(self):
-        staff = TabStaff(ORIGIN, None, Mm(100), line_spacing=Mm(1), line_count=4)
-        assert staff.barline_extent == (ZERO, Mm(3))
-
-    def test_barline_extent_single_line(self):
-        staff = TabStaff(ORIGIN, None, Mm(100), line_spacing=Mm(1), line_count=1)
-        assert staff.barline_extent == (Mm(-1), Mm(1))

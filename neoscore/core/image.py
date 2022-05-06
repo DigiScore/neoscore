@@ -3,6 +3,7 @@ from __future__ import annotations
 import pathlib
 from typing import Optional
 
+from neoscore.core.layout_controllers import NewLine
 from neoscore.core.point import Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import ZERO, Unit
@@ -70,8 +71,8 @@ class Image(PositionedObject):
     def render_complete(
         self,
         pos: Point,
-        dist_to_line_start: Optional[Unit] = None,
-        local_start_x: Optional[Unit] = None,
+        flowable_line: Optional[NewLine] = None,
+        flowable_x: Optional[Unit] = None,
     ):
         interface = ImageInterface(pos, self.file_path, self.scale)
         interface.render()

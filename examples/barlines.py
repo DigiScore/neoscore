@@ -11,7 +11,7 @@ from neoscore.western.staff import Staff
 neoscore.setup()
 
 flowable = Flowable((Mm(0), Mm(0)), None, Mm(200), Mm(30), Mm(5))
-normal_staff = Staff((Mm(0), Mm(0)), flowable, Mm(150), Mm(2))
+normal_staff = Staff((Mm(0), Mm(0)), flowable, Mm(150), line_spacing=Mm(2))
 percussion_staff = Staff((Mm(0), Mm(30)), flowable, Mm(150), line_count=1)
 offset_staff = Staff((Mm(10), Mm(50)), flowable, Mm(140))
 

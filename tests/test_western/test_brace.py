@@ -22,13 +22,13 @@ class TestBrace(AppTest):
         assert large_brace.music_chars[0].canonical_name == "braceLarge"
 
     def test_default_font_from_top_staff(self):
-        large_staff = Staff(ORIGIN, None, Mm(100), Mm(3))
+        large_staff = Staff(ORIGIN, None, Mm(100), line_spacing=Mm(3))
         small_staff = Staff((Mm(0), Mm(20)), None, Mm(100))
         brace = Brace(Mm(0), [large_staff, self.bottom_staff])
         assert brace.music_font == large_staff.music_font
 
     def test_font_override(self):
-        large_staff = Staff(ORIGIN, None, Mm(100), Mm(3))
+        large_staff = Staff(ORIGIN, None, Mm(100), line_spacing=Mm(3))
         font = MusicFont("Bravura", Mm)
         brace = Brace(Mm(0), [large_staff], font)
         assert brace.music_font == font

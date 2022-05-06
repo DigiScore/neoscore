@@ -15,7 +15,7 @@ neoscore.document.pages.overlay_func = simple_header_footer(
 )
 
 flowable = Flowable((Mm(0), Mm(0)), None, Mm(5000), Mm(15), Mm(5))
-staff = Staff((Mm(0), Mm(0)), flowable, Mm(5000), Mm(1))
+staff = Staff((Mm(0), Mm(0)), flowable, Mm(5000), line_spacing=Mm(1))
 
 
 render_example("header_footer")

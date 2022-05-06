@@ -6,7 +6,6 @@ from neoscore.core.brush import Brush
 from neoscore.core.color import Color
 from neoscore.core.directions import DirectionX
 from neoscore.core.paper import Paper
-from neoscore.core.path import Path
 from neoscore.core.pen import Pen
 from neoscore.core.pen_pattern import PenPattern
 from neoscore.core.point import ORIGIN, PointDef
@@ -172,6 +171,8 @@ class Page(PositionedObject):
         This is useful for interactive views, but should typically not
         be called in PDF and image export contexts.
         """
+        from neoscore.core.path import Path
+
         # Create page rect
         bounding_rect = self.bounding_rect
         page_preview_rect = Path.rect(

@@ -4,6 +4,7 @@ from math import atan, cos, pi, sin, sqrt, tan
 from typing import Optional, cast
 
 from neoscore.core.brush import Brush, BrushDef
+from neoscore.core.layout_controllers import NewLine
 from neoscore.core.painted_object import PaintedObject
 from neoscore.core.path_element import (
     ControlPoint,
@@ -594,20 +595,18 @@ class Path(PaintedObject):
     def render_complete(
         self,
         pos: Point,
-        dist_to_line_start: Optional[Unit] = None,
-        local_start_x: Optional[Unit] = None,
+        flowable_line: Optional[NewLine] = None,
+        flowable_x: Optional[Unit] = None,
     ):
         self.render_slice(pos, None, None)
 
-    def render_before_break(
-        self, local_start_x: Unit, start: Point, stop: Point, dist_to_line_start: Unit
-    ):
-        self.render_slice(start, ZERO, stop.x - start.x)
-
-    def render_after_break(self, local_start_x: Unit, start: Point):
-        self.render_slice(start, local_start_x, None)
+    def render_before_break(self, pos: Point, flowable_line: NewLine, flowable_x: Unit):
+        self.render_slice(pos, ZERO, flowable_line.length)
 
     def render_spanning_continuation(
-        self, local_start_x: Unit, start: Point, stop: Point
+        self, pos: Point, flowable_line: NewLine, object_x: Unit
     ):
-        self.render_slice(start, local_start_x, stop.x - start.x)
+        self.render_slice(pos, object_x, flowable_line.length)
+
+    def render_after_break(self, pos: Point, flowable_line: NewLine, object_x: Unit):
+        self.render_slice(pos, object_x, None)

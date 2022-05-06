@@ -7,7 +7,7 @@ neoscore.setup()
 
 flowable = Flowable((Mm(0), Mm(0)), None, Mm(2000), Mm(30), Mm(10))
 
-staff = Staff((Mm(0), Mm(0)), flowable, Mm(2000), Mm(1))
+staff = Staff((Mm(0), Mm(0)), flowable, Mm(2000), line_spacing=Mm(1))
 
 # If staff is longer than flowable, the last line runs to the end.
 # this behavior kind of makes sense, actually..

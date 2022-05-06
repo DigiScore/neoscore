@@ -3,33 +3,34 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Type, cast
 
 from neoscore.core.exceptions import NoClefError
+from neoscore.core.layout_controllers import MarginController, NewLine
 from neoscore.core.music_font import MusicFont
-from neoscore.core.music_path import MusicPath
-from neoscore.core.pen import Pen
+from neoscore.core.pen import Pen, PenDef
 from neoscore.core.point import PointDef
-from neoscore.core.positioned_object import PositionedObject
+from neoscore.core.positioned_object import PositionedObject, render_cached_property
 from neoscore.core.units import ZERO, Mm, Unit, make_unit_class
+from neoscore.western.abstract_staff import AbstractStaff
+from neoscore.western.staff_fringe_layout import StaffFringeLayout
+from neoscore.western.staff_group import StaffGroup
 
 if TYPE_CHECKING:
     from neoscore.western.clef import Clef
+    from neoscore.western.key_signature import KeySignature
 
 
-class Staff(MusicPath):
+class Staff(AbstractStaff):
     """A staff with decently high-level knowledge of its contents."""
-
-    # Type sentinel used to hackily check if objects are Staff
-    # without importing the type, risking cyclic imports.
-    _neoscore_staff_type_marker = True
 
     def __init__(
         self,
         pos: PointDef,
         parent: Optional[PositionedObject],
         length: Unit,
+        group: Optional[StaffGroup] = None,
         line_spacing: Unit = Mm(1.75),
         line_count: int = 5,
         music_font_family: str = "Bravura",
-        pen: Optional[Pen] = None,
+        pen: Optional[PenDef] = None,
     ):
         """
         Args:
@@ -37,6 +38,8 @@ class Staff(MusicPath):
             parent: The parent for the staff. Make this a ``Flowable``
                 to allow the staff to run across line and page breaks.
             length: The horizontal width of the staff
+            group: The staff group this belongs to. Set this if being used in a system
+                of multiple staves.
             line_spacing: The distance between two lines in the staff.
             line_count: The number of lines in the staff.
             music_font_family: The name of the font to use for MusicText objects
@@ -48,53 +51,9 @@ class Staff(MusicPath):
         unit = self._make_unit_class(line_spacing)
         music_font = MusicFont(music_font_family, unit)
         pen = pen or Pen(thickness=music_font.engraving_defaults["staffLineThickness"])
-        super().__init__(pos, parent, font=music_font, pen=pen)
-        self._line_count = line_count
-        self._length = length
-        # Construct the staff path
-        for i in range(self.line_count):
-            y_offset = self.unit(i)
-            self.move_to(ZERO, y_offset)
-            self.line_to(length, y_offset)
-
-    ######## PUBLIC PROPERTIES ########
-
-    @property
-    def height(self) -> Unit:
-        """The height of the staff from top to bottom line.
-
-        If the staff only has one line, its height is defined as 0.
-        """
-        return self.unit(self.line_count - 1)
-
-    @property
-    def line_count(self) -> int:
-        """The number of lines in the staff"""
-        return self._line_count
-
-    @property
-    def center_y(self) -> Unit:
-        """The position of the center staff position"""
-        return self.height / 2
-
-    @property
-    def barline_extent(self) -> tuple[Unit, Unit]:
-        """The starting and stopping Y positions of barlines in this staff.
-
-        For staves with more than 1 line, this extends from the top line to bottom
-        line. For single-line staves, this extends from 1 unit above and below the
-        staff.
-        """
-        if self.line_count == 1:
-            return self.unit(-1), self.unit(1)
-        else:
-            return ZERO, self.height
-
-    @property
-    def breakable_length(self) -> Unit:
-        # Override expensive ``Path.length`` since the staff length here
-        # is already known.
-        return self._length
+        super().__init__(
+            pos, parent, length, group, unit(1), line_count, music_font, pen
+        )
 
     ######## PUBLIC METHODS ########
 
@@ -123,18 +82,53 @@ class Staff(MusicPath):
             return self.breakable_length - start_x
         return closest_x - start_x
 
+    @render_cached_property
     def clefs(self) -> list[tuple[Unit, Clef]]:
         """All the clefs in this staff, ordered by their relative x pos."""
-        cached_clef_positions = getattr(self, "_clef_x_positions", None)
-        if cached_clef_positions:
-            return cached_clef_positions
-        return self._compute_clef_x_positions()
+        result = [
+            (clef.pos_x_in_staff, clef)
+            for clef in self.descendants_with_attribute("middle_c_staff_position")
+        ]
+        result.sort(key=lambda tup: tup[0])
+        return result
 
     def active_clef_at(self, pos_x: Unit) -> Optional[Clef]:
         """Return the active clef at a given x position, if any."""
-        clefs = self.clefs()
         return next(
-            (clef for (clef_x, clef) in reversed(clefs) if clef_x <= pos_x),
+            (clef for (clef_x, clef) in reversed(self.clefs) if clef_x <= pos_x),
+            None,
+        )
+
+    @render_cached_property
+    def key_signatures(self) -> list[tuple[Unit, KeySignature]]:
+        """All the key signatures in this staff, ordered by their relative x pos."""
+        result = [
+            (sig.pos_x_in_staff, sig)
+            for sig in self.descendants_with_attribute(
+                "_neoscore_key_signature_type_marker"
+            )
+        ]
+        result.sort(key=lambda tup: tup[0])
+        return result
+
+    # TODO HIGH - DRY these methods
+
+    @render_cached_property
+    def time_signatures(self) -> list[tuple[Unit, KeySignature]]:
+        """All the time signatures in this staff, ordered by their relative x pos."""
+        result = [
+            (self.descendant_pos_x(sig), sig)
+            for sig in self.descendants_with_attribute(
+                "_neoscore_time_signature_type_marker"
+            )
+        ]
+        result.sort(key=lambda tup: tup[0])
+        return result
+
+    def active_key_signature_at(self, pos_x: Unit) -> Optional[KeySignature]:
+        """Return the active key signature at a given x position, if any."""
+        return next(
+            (sig for (sig_x, sig) in reversed(self.key_signatures) if sig_x <= pos_x),
             None,
         )
 
@@ -150,13 +144,6 @@ class Staff(MusicPath):
         if clef is None:
             raise NoClefError
         return clef.middle_c_staff_position
-
-    def y_inside_staff(self, pos_y: Unit) -> bool:
-        """Determine if a y-axis position is inside the staff.
-
-        This is true for any position within or on the outer lines.
-        """
-        return ZERO <= pos_y <= self.height
 
     def y_on_ledger(self, pos_y: Unit) -> bool:
         """Determine if a y-axis position is approximately at a ledger line position
@@ -178,8 +165,6 @@ class Staff(MusicPath):
         else:
             return []
 
-    ######## PRIVATE METHODS ########
-
     @staticmethod
     def _make_unit_class(staff_unit_size: Unit) -> Type[Unit]:
         """Create a Unit class with a ratio of 1 to a staff unit size
@@ -193,16 +178,90 @@ class Staff(MusicPath):
 
         return make_unit_class("StaffUnit", staff_unit_size.base_value)
 
-    def _compute_clef_x_positions(self) -> list[tuple[Unit, Clef]]:
-        result = [
-            (clef.pos_x_in_staff, clef)
-            for clef in self.descendants_with_attribute("middle_c_staff_position")
-        ]
-        result.sort(key=lambda tup: tup[0])
-        return result
+    def _register_layout_controllers(self):
+        flowable = self.flowable
+        if not flowable:
+            return
+        staff_flowable_x = flowable.descendant_pos_x(self)
+        flowable.add_margin_controller(
+            MarginController(
+                staff_flowable_x, self.unit(StaffGroup.RIGHT_PADDING), "neoscore_staff"
+            )
+        )
+        for clef_x, clef in self.clefs:
+            flowable_x = staff_flowable_x + clef_x
+            margin_needed = clef.bounding_rect.width + self.unit(
+                StaffGroup.CLEF_LEFT_PADDING
+            )
+            flowable.add_margin_controller(
+                MarginController(flowable_x, margin_needed, "neoscore_clef")
+            )
+        # Assume that key signatures have the same width in all clefs
+        for key_sig_x, key_sig in self.key_signatures:
+            flowable_x = staff_flowable_x + key_sig_x
+            flowable.add_margin_controller(
+                MarginController(
+                    flowable_x,
+                    key_sig.visual_width + self.unit(StaffGroup.KEY_SIG_LEFT_PADDING),
+                    "neoscore_key_signature",
+                )
+            )
+        for time_sig in self.descendants_with_attribute(
+            "_neoscore_time_signature_type_marker"
+        ):
+            flowable_x = flowable.descendant_pos_x(time_sig)
+            flowable.add_margin_controller(
+                MarginController(
+                    flowable_x,
+                    time_sig.visual_width + self.unit(StaffGroup.TIME_SIG_LEFT_PADDING),
+                    "neoscore_time_signature",
+                )
+            )
+            # Cancel the margin controller immediately after it afters, this way time
+            # signatures only affect margins if they lie right around a line start.
+            flowable.add_margin_controller(
+                MarginController(flowable_x + Unit(1), ZERO, "neoscore_time_signature")
+            )
 
-    def pre_render_hook(self):
-        self._clef_x_positions = self._compute_clef_x_positions()
+    def _fringe_layout_for_isolated_staff(
+        self, location: Optional[NewLine]
+    ) -> StaffFringeLayout:
+        if location:
+            staff_pos_x = location.flowable_x - self.flowable.descendant_pos_x(self)
+            if staff_pos_x < ZERO:
+                # This happens on the first line of a staff positioned at x>0 relative
+                # to its flowable.
+                staff_pos_x = ZERO
+        else:
+            staff_pos_x = ZERO
+        # Work right-to-left through different fringe layers
+        current_x = -self.unit(StaffGroup.RIGHT_PADDING)
+        clef = self.active_clef_at(staff_pos_x)
+        key_sig = self.active_key_signature_at(staff_pos_x)
+        time_sig = next(
+            (sig for x, sig in self.time_signatures if x == staff_pos_x), None
+        )
+        clef_fringe_pos = current_x
+        key_signature_fringe_pos = current_x
+        time_signature_fringe_pos = current_x
 
-    def post_render_hook(self):
-        self._clef_x_positions = None
+        if time_sig:
+            current_x -= time_sig.visual_width
+            time_signature_fringe_pos = current_x
+            current_x -= self.unit(StaffGroup.TIME_SIG_LEFT_PADDING)
+        if key_sig:
+            current_x -= key_sig.visual_width
+            key_signature_fringe_pos = current_x
+            current_x -= self.unit(StaffGroup.KEY_SIG_LEFT_PADDING)
+        if clef:
+            current_x -= clef.bounding_rect.width
+            clef_fringe_pos = current_x
+            current_x -= self.unit(StaffGroup.CLEF_LEFT_PADDING)
+        staff_fringe_pos = current_x
+        return StaffFringeLayout(
+            staff_pos_x,
+            staff_fringe_pos,
+            clef_fringe_pos,
+            key_signature_fringe_pos,
+            time_signature_fringe_pos,
+        )

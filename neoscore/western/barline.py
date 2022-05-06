@@ -12,8 +12,9 @@ from neoscore.core.point import ORIGIN, Point
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import ZERO, Union, Unit
 from neoscore.western import barline_style
+from neoscore.western.abstract_staff import AbstractStaff
 from neoscore.western.barline_style import BarlineStyle
-from neoscore.western.multi_staff_object import MultiStaffObject, StaffLike
+from neoscore.western.multi_staff_object import MultiStaffObject
 
 _DEFAULT_BARLINE_STYLE = BarlineStyle()
 
@@ -36,7 +37,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
     def __init__(
         self,
         pos_x: Unit,
-        staves: list[StaffLike],
+        staves: list[AbstractStaff],
         styles: BarlineStyle | Iterable[BarlineStyle] = barline_style.SINGLE,
         connected: Optional[bool] = True,
         font: Optional[MusicFont] = None,

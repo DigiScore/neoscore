@@ -133,11 +133,15 @@ class TestFlowable(AppTest):
     def test_add_margin_controller_with_collision(self):
         flowable = Flowable((Mm(10), ZERO), None, Mm(500), Mm(50))
         flowable.add_margin_controller(MarginController(ZERO, Mm(20)))
+        flowable.add_margin_controller(MarginController(ZERO, Mm(10), "other layer"))
         flowable.add_margin_controller(MarginController(ZERO, Mm(20)))
-        assert len(flowable.provided_controllers) == 1
+        assert len(flowable.provided_controllers) == 2
+        assert flowable.provided_controllers[0].margin_left == Mm(20)
+        assert flowable.provided_controllers[1].margin_left == Mm(10)
         flowable.add_margin_controller(MarginController(ZERO, Mm(40)))
-        assert len(flowable.provided_controllers) == 1
-        assert flowable.provided_controllers[0].margin_left == Mm(40)
+        assert len(flowable.provided_controllers) == 2
+        assert flowable.provided_controllers[0].margin_left == Mm(10)
+        assert flowable.provided_controllers[1].margin_left == Mm(40)
 
     # For reference
     # page live width == Mm(160)

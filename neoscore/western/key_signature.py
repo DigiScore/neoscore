@@ -1,10 +1,11 @@
-import warnings
-from typing import Optional, Union, cast
+from typing import Optional, Union
 
+from neoscore.core.layout_controllers import NewLine
 from neoscore.core.music_text import MusicText
-from neoscore.core.point import ORIGIN, Point
+from neoscore.core.point import Point
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import ZERO, Unit
+from neoscore.western import clef_type
 from neoscore.western.accidental_type import AccidentalType
 from neoscore.western.key_signature_type import KeySignatureType
 from neoscore.western.staff import Staff
@@ -21,6 +22,10 @@ class KeySignature(PositionedObject, StaffObject):
     and at the beginning of subsequent lines until a new
     ``KeySignature`` is encountered.
     """
+
+    # Type sentinel used to hackily check type
+    # without importing the type, risking cyclic imports.
+    _neoscore_key_signature_type_marker = True
 
     def __init__(
         self,
@@ -43,9 +48,6 @@ class KeySignature(PositionedObject, StaffObject):
             if isinstance(key_signature_type, KeySignatureType)
             else KeySignatureType[key_signature_type.upper()]
         )
-        self._create_pseudo_accidentals()
-
-    ######## PUBLIC PROPERTIES ########
 
     @property
     def key_signature_type(self) -> KeySignatureType:
@@ -57,111 +59,73 @@ class KeySignature(PositionedObject, StaffObject):
         """Key signatures extend until another is found in the staff."""
         return self.staff.distance_to_next_of_type(self)
 
-    ######## PRIVATE METHODS ########
-
-    def _create_pseudo_accidentals(self):
-        length = self.breakable_length
-        for key, value in self.key_signature_type.value.items():
-            if value is not None:
-                _KeySignatureAccidental(
-                    ORIGIN, self, key, value, self.staff.music_font, 1, length
-                )
-
-
-class _KeySignatureAccidental(MusicText, StaffObject):
-    """A visual accidental.
-
-    This should only be used by ``KeySignature``.
-    """
-
-    def __init__(
-        self,
-        pos,
-        key_signature,
-        pitch_letter,
-        accidental_type,
-        music_font,
-        scale,
-        length,
-    ):
-        MusicText.__init__(
-            self,
-            pos,
-            key_signature,
-            accidental_type.value,
-            music_font,
-            scale=scale,
-        )
-        StaffObject.__init__(self, key_signature)
-        self._length = length
-        self.pitch_letter = pitch_letter
-        self.accidental_type = accidental_type
-
     @property
-    def breakable_length(self):
-        return self._length
+    def visual_width(self) -> Unit:
+        """The visual width of this key signature
 
-    def _padded_clef_width(self, clef):
-        return clef.bounding_rect.width + self.staff.unit(0.5)
+        This assumes that key signatures have the same width in any clef, and that the
+        accidentals used in key signatures are 1 staff unit wide.
+        """
+        max_x = 0
+        for letter, accidental_type in self.key_signature_type.value.items():
+            if accidental_type is None:
+                continue
+            if accidental_type == AccidentalType.SHARP:
+                pos_tuple = clef_type.TREBLE.key_signature_sharp_layout[letter]
+            else:
+                pos_tuple = clef_type.TREBLE.key_signature_flat_layout[letter]
+            max_x = max(max_x, pos_tuple[0])
+        # Add max position + 1 for accidental width
+        return self.staff.unit(max_x + 1)
 
     def render_occurrence(
-        self, pos: Point, local_start_x: Optional[Unit], dist_to_line_start: Unit
+        self, pos: Point, flowable_line: Optional[NewLine], for_line_start: bool
     ):
-        """Render one appearance of one key signature accidental.
-
-        Much of the positioning code needs to be performed
-        per-occurrence because key signatures can have different
-        appearances when clefs change.
-
-        Ideally there should be a way to cache/centralize much of this
-        work.
-
-        """
-        if local_start_x is not None:
-            staff_pos_in_flowable = self.flowable.map_to(self.staff)
-            pos_x_in_staff = local_start_x - staff_pos_in_flowable.x
-        else:
-            pos_x_in_staff = self.staff.map_to(self).x
-        clef = self.staff.active_clef_at(pos_x_in_staff)
-        if clef is None:
-            return
-        clef_type = clef.clef_type
-        try:
-            if self.accidental_type == AccidentalType.SHARP:
-                pos_tuple = clef_type.key_signature_sharp_layout[self.pitch_letter]
+        base_x = pos.x
+        base_y = pos.y
+        fringe_layout = self.staff.fringe_layout_at(flowable_line)
+        if for_line_start:
+            base_x += fringe_layout.key_signature
+        clef = self.staff.active_clef_at(fringe_layout.pos_x_in_staff)
+        for letter, accidental_type in self.key_signature_type.value.items():
+            if accidental_type is None:
+                continue
+            if accidental_type == AccidentalType.SHARP:
+                pos_tuple = clef.clef_type.key_signature_sharp_layout[letter]
             else:
-                pos_tuple = clef_type.key_signature_flat_layout[self.pitch_letter]
-        except TypeError:
-            warnings.warn(
-                f"Clef {clef_type} does not support key signatures; skipping this occurrence."
+                pos_tuple = clef.clef_type.key_signature_flat_layout[letter]
+            acc_pos = Point(
+                base_x + self.staff.unit(pos_tuple[0]),
+                base_y + self.staff.unit(pos_tuple[1]),
             )
-            return
-        visual_pos_x = self.staff.unit(pos_tuple[0]) + pos.x
-        visual_pos_y = self.staff.unit(pos_tuple[1]) + pos.y
-        if dist_to_line_start == ZERO:
-            # Note that this doesn't work on the first line if the key sign isn't placed
-            # at x=0. We really need proper staff-left-margin handling for this kind of
-            # thing.
-            visual_pos_x += self._padded_clef_width(clef)
-        self.render_slice(Point(visual_pos_x, visual_pos_y))
+            accidental = MusicText(
+                acc_pos, None, accidental_type.value, self.staff.music_font
+            )
+            accidental.render()
+            accidental.remove()
 
     def render_complete(
         self,
         pos: Point,
-        dist_to_line_start: Optional[Unit] = None,
-        local_start_x: Optional[Unit] = None,
+        flowable_line: Optional[NewLine] = None,
+        flowable_x: Optional[Unit] = None,
     ):
-        self.render_occurrence(pos, local_start_x, cast(Unit, dist_to_line_start))
+        for_line_start = False
+        if flowable_line:
+            if flowable_line.flowable_x == flowable_x:
+                for_line_start = True
+        elif self.x == ZERO:
+            for_line_start = True
+        self.render_occurrence(pos, flowable_line, for_line_start)
 
-    def render_before_break(
-        self, local_start_x: Unit, start: Point, stop: Point, dist_to_line_start: Unit
-    ):
-        self.render_occurrence(start, local_start_x, dist_to_line_start)
-
-    def render_after_break(self, local_start_x: Unit, start: Point):
-        self.render_occurrence(start, local_start_x, ZERO)
+    def render_before_break(self, pos: Point, flowable_line: NewLine, flowable_x: Unit):
+        for_line_start = flowable_line.flowable_x == flowable_x
+        self.render_occurrence(pos, flowable_line, for_line_start)
 
     def render_spanning_continuation(
-        self, local_start_x: Unit, start: Point, stop: Point
+        self, pos: Point, flowable_line: NewLine, object_x: Unit
     ):
-        self.render_occurrence(start, local_start_x, ZERO)
+        self.render_occurrence(pos, flowable_line, True)
+
+    def render_after_break(self, pos: Point, flowable_line: NewLine, object_x: Unit):
+        self.render_occurrence(pos, flowable_line, True)

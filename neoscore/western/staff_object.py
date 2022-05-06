@@ -8,21 +8,14 @@ from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import Unit
 
 if TYPE_CHECKING:
-    from neoscore.western.staff import Staff
+    from neoscore.western.abstract_staff import AbstractStaff
 
 
 class StaffObject:
 
-    """An object which must always be the descendant of a Staff
+    """An object which must always be the descendant of an AbstractStaff
 
     This is a Mixin class, meant to be paired with PositionedObject classes.
-
-    Usage within a PositionedObject will look something like:
-
-    >>> class SomeMusicGlyph(MusicText, StaffObject):  # doctest: +SKIP
-    ...     def __init__(self, ...):
-    ...         MusicText.__init__(self, ...)
-    ...         StaffObject.__init__(self, ...)
     """
 
     def __init__(self, parent: PositionedObject):
@@ -50,9 +43,9 @@ class StaffObject:
     ######## PRIVATE METHODS ########
 
     @staticmethod
-    def find_staff(obj: PositionedObject) -> Optional[Staff]:
+    def find_staff(obj: PositionedObject) -> Optional[AbstractStaff]:
         """Find the first staff which is an ancestor of ``obj`` or ``obj`` itself"""
-        marker = "_neoscore_staff_type_marker"
+        marker = "_neoscore_abstract_staff_type_marker"
         if hasattr(obj, marker):
             return cast(Any, obj)
         return obj.first_ancestor_with_attr(marker)

@@ -274,7 +274,7 @@ class TestChordrest(AppTest):
         assert chord.noteheads[2].x == self.staff.unit(-1.12)
 
     def test_end_to_end(self):
-        staff = Staff((Mm(0), Mm(0)), None, Mm(100), Mm(1))
+        staff = Staff((Mm(0), Mm(0)), None, Mm(100), line_spacing=Mm(1))
         unit = staff.unit
         clef = Clef(unit(0), staff, "treble")
         KeySignature(clef.bounding_rect.width + unit(0.5), staff, "g_major")
