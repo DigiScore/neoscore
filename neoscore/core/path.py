@@ -63,6 +63,7 @@ class Path(PaintedObject):
         self._z_index = z_index
         self._rotation = rotation
         self.elements: list[PathElement] = []
+        self._current_subpath_start: Optional[tuple[Point, Optional[parent]]] = None
 
     ######## CLASSMETHODS ########
 
@@ -479,19 +480,22 @@ class Path(PaintedObject):
             parent: An optional parent, whose position the target coordinate will
                 be relative to.
         """
+        self._current_subpath_start = (Point(x, y), parent or self)
         self.elements.append(MoveTo(Point(x, y), parent or self))
 
     def close_subpath(self):
-        """Close the current sub-path and start a new one at the local origin.
+        """Close the current sub-path with a line.
 
-        This is equivalent to ``move_to(Unit(0), Unit(0))``
-
-        Note:
-            This convenience method does not support point parentage.
-            If you need to anchor the new point, use an explicit
-            ``move_to(Unit(0), Unit(0), parent)`` instead.
+        Draw a line back to the starting position
+        (including any parent) of the current subpath.
         """
-        self.move_to(ZERO, ZERO)
+        end_pos = Point.from_def(self._current_subpath_start[0])
+        end_parent = self._current_subpath_start[1]
+        self.line_to(
+            end_pos.x,
+            end_pos.y,
+            end_parent,
+        )
 
     def cubic_to(
         self,
