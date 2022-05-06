@@ -116,7 +116,7 @@ class TimeSignature(PositionedObject, StaffObject):
             self.lower_text.alignment_x = AlignmentX.CENTER
         elif lower_width > upper_width:
             self._visual_width = lower_width
-            self.upper_text.x += upper_width / 2
+            self.upper_text.x += lower_width / 2
             self.upper_text.alignment_x = AlignmentX.CENTER
         else:
             # Widths are equal. No adjustment needed.

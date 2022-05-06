@@ -3,7 +3,7 @@ Flowable Containers
 
 So far we've discussed how to draw objects with exactly one graphical representation placed fairly literally on a page, but a common feature of musical scores is flowable containers like staff systems. We can imagine flowable containers as long horizontal strips which are broken into different segments as they wrap around the page edges. Objects within these containers may need to be drawn multiple times—and in multiple locations—if they span those breaks.
 
-Neoscore has fairly good support for such notation systems via the :obj:`.Flowable` class and its associated render hooks in :obj:`.PositionedObject` classes. 
+Neoscore has fairly good support for such notation systems via the :obj:`.Flowable` class and its associated render hooks in :obj:`.PositionedObject` classes.
 
 .. rendered-example::
 
@@ -28,7 +28,7 @@ By default, flowable lines run as far as they can within the live page area and 
    # Outline the flowable for visualization
    Path.rect(ORIGIN, flow, Mm(500), Mm(15), brush=Brush.no_brush())
    # And draw a line over the break threshold
-   Path.straight_line((paper.live_width - Mm(50), ZERO), None, (ZERO, Mm(75)), 
+   Path.straight_line((paper.live_width - Mm(50), ZERO), None, (ZERO, Mm(75)),
        pen=Pen("#ff0000", pattern=PenPattern.DASH))
    BreakHintText((Mm(100), Mm(8)), flow, "opp 1")
    BreakHintText((Mm(200), Mm(8)), flow, "opp 2")
@@ -37,3 +37,5 @@ By default, flowable lines run as far as they can within the live page area and 
    BreakHintText((Mm(440), Mm(12)), flow, "opp 5")
 
 :obj:`.Flowable.break_threshold` is zero by default, meaning break opportunities are always ignored. You can also set it to some value larger than the live page width to make it break at every opportunity.
+
+Flowables can also have dynamically calculated left margins. This is useful in situations like western notation staves, where each staff system line has a left fringe with a clef, key signature, etc., and it is not desirable for that fringe to occupy the flowable coordinate space. In situations like this, the flowable can be made to leave a margin on its side where those elements can be laid out. See :obj:`.Flowable.provided_controllers`.
