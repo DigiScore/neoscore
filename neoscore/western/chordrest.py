@@ -1,4 +1,4 @@
-from collections.abc import Iterable
+from functools import cached_property
 from typing import NamedTuple, Optional
 
 from neoscore.core.directions import DirectionX, DirectionY
@@ -50,6 +50,25 @@ class Chordrest(PositionedObject, StaffObject):
     Any accidentals given in pitches will be unconditionally drawn
     regardless of context and key signature.
     """
+
+    # All cached properties which change on rebuilds *must* be registered here.
+    _CACHED_PROPS = [
+        "ledger_line_positions",
+        "rhythm_dot_positions",
+        "furthest_notehead",
+        "highest_notehead",
+        "lowest_notehead",
+        "leftmost_notehead",
+        "rightmost_notehead",
+        "widest_notehead",
+        "extra_attachment_point",
+        "notehead_column_width",
+        "noteheads_outside_staff",
+        "leftmost_notehead_outside_staff",
+        "rightmost_notehead_outside_staff",
+        "notehead_column_outside_staff_width",
+        "stem_height",
+    ]
 
     def __init__(
         self,
@@ -216,11 +235,7 @@ class Chordrest(PositionedObject, StaffObject):
         if rebuild_needed:
             self._rebuild()
 
-    # Note that most/all of these derived properties could be computed ahead of time or
-    # cached, they would just need to be reset on ``rebuild()`` calls.
-    # Something to consider if these end up being performance hotspots.
-
-    @property
+    @cached_property
     def ledger_line_positions(self) -> list[Unit]:
         """A set of staff positions of needed ledger lines.
 
@@ -240,8 +255,8 @@ class Chordrest(PositionedObject, StaffObject):
                 ledgers.append(ledger_pos)
         return ledgers
 
-    @property
-    def rhythm_dot_positions(self) -> Iterable[Point]:
+    @cached_property
+    def rhythm_dot_positions(self) -> list[Point]:
         """The positions of all rhythm dots needed."""
         start_padding = self.staff.unit(0.25)
         if self.rest:
@@ -252,6 +267,7 @@ class Chordrest(PositionedObject, StaffObject):
                 self.leftmost_notehead.x + self.notehead_column_width + start_padding
             )
             dottables = self.noteheads
+        result = []
         for i in range(self.duration.display.dot_count):
             for dottable in dottables:
                 if dottable.y.display_value % 1 == 0:
@@ -259,13 +275,14 @@ class Chordrest(PositionedObject, StaffObject):
                     y_offset = self.staff.unit(-0.5)
                 else:
                     y_offset = self.staff.unit(0)
-                yield (
+                result.append(
                     Point(
                         dot_start_x + (self.staff.unit(0.5) * i), dottable.y + y_offset
                     )
                 )
+        return result
 
-    @property
+    @cached_property
     def furthest_notehead(self) -> Optional[Notehead]:
         """The notehead furthest from the staff center"""
         return max(
@@ -274,32 +291,32 @@ class Chordrest(PositionedObject, StaffObject):
             default=None,
         )
 
-    @property
+    @cached_property
     def highest_notehead(self) -> Optional[Notehead]:
         """The highest notehead in the chord."""
         return min(self.noteheads, key=lambda n: n.y, default=None)
 
-    @property
+    @cached_property
     def lowest_notehead(self) -> Optional[Notehead]:
         """The lowest notehead in the chord."""
         return max(self.noteheads, key=lambda n: n.y, default=None)
 
-    @property
+    @cached_property
     def leftmost_notehead(self) -> Optional[Notehead]:
         """The notehead furthest to the left in the chord"""
         return min(self.noteheads, key=lambda n: n.x, default=None)
 
-    @property
+    @cached_property
     def rightmost_notehead(self) -> Optional[Notehead]:
         """The notehead furthest to the right in the chord"""
         return max(self.noteheads, key=lambda n: n.x, default=None)
 
-    @property
+    @cached_property
     def widest_notehead(self) -> Optional[Notehead]:
         """The notehead with the greatest ``visual_width``"""
         return max(self.noteheads, key=lambda n: n.visual_width, default=None)
 
-    @property
+    @cached_property
     def extra_attachment_point(self) -> Point:
         """A point where common attachments like ornaments could go.
 
@@ -326,7 +343,7 @@ class Chordrest(PositionedObject, StaffObject):
         x = notehead.x + bounding_rect.x + (bounding_rect.width / 2)
         return Point(x, y)
 
-    @property
+    @cached_property
     def notehead_column_width(self) -> Unit:
         """The width of the notehead column after layout"""
         leftmost_notehead = self.leftmost_notehead
@@ -336,27 +353,27 @@ class Chordrest(PositionedObject, StaffObject):
             extent = max((n.x + n.visual_width for n in self.noteheads))
             return extent - leftmost_notehead.x
 
-    @property
-    def noteheads_outside_staff(self) -> Iterable[Notehead]:
+    @cached_property
+    def noteheads_outside_staff(self) -> list[Notehead]:
         """All noteheads which are above or below the staff"""
-        return (
+        return [
             note
             for note in self.noteheads
             # Since ``note.parent == self`` and ``self.y == 0``
             if not self.staff.y_inside_staff(note.y)
-        )
+        ]
 
-    @property
+    @cached_property
     def leftmost_notehead_outside_staff(self) -> Optional[Notehead]:
         """The notehead furthest to the left outside the staff"""
         return min(self.noteheads_outside_staff, key=lambda n: n.x, default=None)
 
-    @property
+    @cached_property
     def rightmost_notehead_outside_staff(self) -> Optional[Notehead]:
         """The notehead furthest to the right outside the staff"""
         return max(self.noteheads_outside_staff, key=lambda n: n.x, default=None)
 
-    @property
+    @cached_property
     def notehead_column_outside_staff_width(self) -> Unit:
         """The total width of any noteheads outside the staff"""
         left_bounding_note = self.leftmost_notehead_outside_staff
@@ -366,6 +383,8 @@ class Chordrest(PositionedObject, StaffObject):
             extent = max((n.x + n.visual_width for n in self.noteheads_outside_staff))
             return extent - left_bounding_note.x
 
+    # Can't use cached_property here because a setter is needed. Could get around this
+    # by storing this computation in an attr like self._stem_direction though.
     @property
     def stem_direction(self) -> DirectionY:
         """The direction of the stem
@@ -406,7 +425,7 @@ class Chordrest(PositionedObject, StaffObject):
         self._stem_direction_override = value
         self._rebuild()
 
-    @property
+    @cached_property
     def stem_height(self) -> Unit:
         """The height of the stem"""
         flag_offset = self.staff.unit(Flag.vertical_offset_needed(self.duration))
@@ -440,6 +459,8 @@ class Chordrest(PositionedObject, StaffObject):
         if self.rest:
             self.rest.remove()
         self._rest = None
+        for prop in Chordrest._CACHED_PROPS:
+            self.__dict__.pop(prop, None)
 
     def _rebuild(self):
         """Generate or regenerate all child objects"""
@@ -477,7 +498,6 @@ class Chordrest(PositionedObject, StaffObject):
             self._rest = Rest(Point(self.staff.unit(0), rest_y), self, self.duration)
         # Both rests and chords needs dots
         self._create_dots()
-        pass
 
     def render(self):
         super().render()
