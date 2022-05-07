@@ -107,7 +107,16 @@ class MarginController(LayoutController):
     """
 
     def __init__(self, flowable_x: Unit, margin_left: Unit, layer_key: str = ""):
-        """ """
+        """
+        Args:
+            flowable_x: The position of this controller within the owning
+                flowable's local space.
+            margin_left: The margin value contributed by this controller in
+                the specified layer
+            layer_key: The layer this controller applies to. Layer keys starting with
+                `_neoscore` are reserved for internal purposes and should not be used
+                directly.
+        """
         super().__init__(flowable_x)
         self._margin_left = margin_left
         self._layer_key = layer_key

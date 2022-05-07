@@ -57,7 +57,7 @@ class Flowable(PositionedObject):
         self._y_padding = y_padding
         self._break_threshold = break_threshold
         self._lines = []
-        self._provided_controllers = SortedKeyList(key=lambda c: c.flowable_x)
+        self._provided_controllers = Flowable._new_provided_controllers_list()
 
     ######## PUBLIC PROPERTIES ########
 
@@ -269,3 +269,17 @@ class Flowable(PositionedObject):
     def render(self):
         self._generate_lines()
         super().render()
+
+    def post_render_hook(self):
+        # Clear all auto-generated margin controllers
+        self._provided_controllers = Flowable._new_provided_controllers_list(
+            (
+                c
+                for c in self.provided_controllers
+                if not c.layer_key.startswith("_neoscore")
+            )
+        )
+
+    @staticmethod
+    def _new_provided_controllers_list(*args) -> SortedKeyList[MarginController]:
+        return SortedKeyList(key=lambda c: c.flowable_x)
