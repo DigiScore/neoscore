@@ -1,13 +1,13 @@
-from examples.feldman_projections_2.event import Event
-from examples.feldman_projections_2.grid_unit import GridUnit
-from neoscore.core.text import Text
+from examples.feldman_projection_2.event import Event
+from examples.feldman_projection_2.grid_unit import GridUnit
+from neoscore.core.music_text import MusicText
 from neoscore.core.text_alignment import AlignmentX, AlignmentY
 
 
-class TextEvent(Event):
+class MusicTextEvent(Event):
     def __init__(self, pos, parent, length, text, font):
         Event.__init__(self, pos, parent, length)
-        self.text = Text(
+        self.text = MusicText(
             (GridUnit(0.5), GridUnit(0.5)),
             self,
             text,

@@ -1,8 +1,8 @@
 from typing import NamedTuple
 
-from examples.feldman_projections_2.grid_unit import GridUnit
-from examples.feldman_projections_2.measure import Measure
-from examples.feldman_projections_2.register import Register
+from examples.feldman_projection_2.grid_unit import GridUnit
+from examples.feldman_projection_2.measure import Measure
+from examples.feldman_projection_2.register import Register
 from neoscore.core.units import Unit
 
 

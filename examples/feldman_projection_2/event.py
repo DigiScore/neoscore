@@ -1,7 +1,7 @@
 import math
 
-from examples.feldman_projections_2.grid_unit import GridUnit
-from examples.feldman_projections_2.measure import Measure
+from examples.feldman_projection_2.grid_unit import GridUnit
+from examples.feldman_projection_2.measure import Measure
 from neoscore.core.brush import Brush
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
@@ -14,16 +14,9 @@ class Event(PositionedObject):
     """A boxed event."""
 
     box_pen = Pen(thickness=GridUnit(0.07))
-    # box_pen = Pen(thickness=GridUnit(0))
 
     def __init__(self, pos: Point, parent: PositionedObject, length: Unit):
         PositionedObject.__init__(self, pos, parent)
-        # half_pen_thickness = Event.box_pen.thickness / 2
-        # if Event.lies_at_measure_boundary(self.x):
-        #     self.x += half_pen_thickness
-        #     length -= half_pen_thickness
-        # if Event.lies_at_measure_boundary(self.x + length):
-        #     length -= half_pen_thickness
         self.path = Path.rect(
             ORIGIN,
             self,

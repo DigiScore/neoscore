@@ -1,11 +1,11 @@
 from typing import Union
 
-from examples.feldman_projections_2.glyph_name import GlyphName
-from examples.feldman_projections_2.grid_unit import GridUnit
-from examples.feldman_projections_2.instrument_data import InstrumentData
-from examples.feldman_projections_2.measure import Measure
-from examples.feldman_projections_2.music_text_event import MusicTextEvent
-from examples.feldman_projections_2.text_event import TextEvent
+from examples.feldman_projection_2.glyph_name import GlyphName
+from examples.feldman_projection_2.grid_unit import GridUnit
+from examples.feldman_projection_2.instrument_data import InstrumentData
+from examples.feldman_projection_2.measure import Measure
+from examples.feldman_projection_2.music_text_event import MusicTextEvent
+from examples.feldman_projection_2.text_event import TextEvent
 from neoscore.core import neoscore
 from neoscore.core.break_hint import BreakHint
 from neoscore.core.music_font import MusicFont

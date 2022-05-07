@@ -1,6 +1,6 @@
 from enum import Enum
 
-from examples.feldman_projections_2.grid_unit import GridUnit
+from examples.feldman_projection_2.grid_unit import GridUnit
 
 
 class Register(Enum):

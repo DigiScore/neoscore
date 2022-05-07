@@ -1,4 +1,4 @@
-from examples.feldman_projections_2.measure import Measure
+from examples.feldman_projection_2.measure import Measure
 from neoscore.core.units import Unit
 
 
