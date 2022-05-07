@@ -36,7 +36,7 @@ Articulations and ornaments are created as regular :obj:`.MusicText` objects. SM
 
    staff = Staff(ORIGIN, None, Mm(30))
    Clef(ZERO, staff, 'treble')
-   c = Chordrest(Mm(10), staff, ["c'", "e'"], (1, 8))
+   c = Chordrest(Mm(2), staff, ["c'", "e'"], (1, 8))
    MusicText(c.extra_attachment_point, c, "ornamentTurnInverted",
       alignment_x=AlignmentX.CENTER, alignment_y=AlignmentY.CENTER)
 
@@ -44,6 +44,6 @@ Articulations and ornaments are created as regular :obj:`.MusicText` objects. SM
 
    staff = Staff(ORIGIN, None, Mm(30))
    Clef(ZERO, staff, 'treble')
-   c = Chordrest(Mm(10), staff, ["c#", "g"], (1, 8))
+   c = Chordrest(Mm(2), staff, ["c#", "g"], (1, 8))
    MusicText(c.extra_attachment_point, c, "articAccentBelow",
       alignment_x=AlignmentX.CENTER, alignment_y=AlignmentY.CENTER)

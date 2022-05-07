@@ -29,6 +29,8 @@ class TabStringText(MusicText):
         hide_background: bool = True,
         z_index: Optional[int] = None,
         breakable: bool = True,
+        alignment_x: AlignmentX = AlignmentX.CENTER,
+        alignment_y: AlignmentY = AlignmentY.CENTER,
     ):
         """
         Args:
@@ -47,6 +49,12 @@ class TabStringText(MusicText):
                 Defaults to 1 greater than the staff's z_index.
             breakable: Whether this object should break across lines in
                 Flowable containers.
+            alignment_x: The text's horizontal alignment relative to ``pos``.
+                Note that the default value here is center-alignment, unlike
+                most other text classes.
+            alignment_y: The text's vertical alignment relative to ``pos``.
+                Note that the default value here is center-alignment, unlike
+                most other text classes.
         """
         background_brush = neoscore.background_brush if hide_background else None
         pos_y = staff.string_y(string)
@@ -63,6 +71,6 @@ class TabStringText(MusicText):
             background_brush,
             z_index if z_index is not None else staff.z_index + 1,
             breakable,
-            alignment_x=AlignmentX.CENTER,
-            alignment_y=AlignmentY.CENTER,
+            alignment_x,
+            alignment_y,
         )

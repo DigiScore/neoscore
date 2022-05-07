@@ -10,7 +10,7 @@ Custom Accidentals
 
    staff = Staff(ORIGIN, None, Mm(100))
    Clef(ZERO, staff, 'treble')
-   Chordrest(Mm(20), staff, [("g", "accidentalDoubleFlatTwoArrowsUp", 4)], (3, 16))
+   Chordrest(staff.unit(3), staff, [("g", "accidentalDoubleFlatTwoArrowsUp", 4)], (3, 16))
 
 `SMuFL provides a very large collection of accidental glyphs you can find at the spec <https://w3c.github.io/smufl/latest/tables/standard-accidentals-12-edo.html>`_, but you can also use any glyph name even if it's not meant to be an accidental.
 
@@ -23,10 +23,10 @@ By default neoscore uses the standard set of noteheads, automatically selecting 
 
    staff = Staff(ORIGIN, None, Mm(100))
    Clef(ZERO, staff, 'tenor')
-   Chordrest(Mm(10), staff, ["c"], (1, 4), table=notehead_tables.DIAMOND)
-   Chordrest(Mm(20), staff, ["c"], (1, 4), table=notehead_tables.PARENTHESIS)
-   Chordrest(Mm(30), staff, ["c"], (1, 4), table=notehead_tables.SLASH)
-   Chordrest(Mm(40), staff, ["c"], (1, 4), table=notehead_tables.INVISIBLE)
+   Chordrest(Mm(0), staff, ["c"], (1, 4), table=notehead_tables.DIAMOND)
+   Chordrest(Mm(10), staff, ["c"], (1, 4), table=notehead_tables.PARENTHESIS)
+   Chordrest(Mm(20), staff, ["c"], (1, 4), table=notehead_tables.SLASH)
+   Chordrest(Mm(30), staff, ["c"], (1, 4), table=notehead_tables.INVISIBLE)
 
 You can check out the complete set of built-in notehead tables in `the noteheads example <https://github.com/DigiScore/neoscore/blob/main/examples/noteheads.py>`_.
 
@@ -39,6 +39,6 @@ You can also override notehead glyphs within a chord by giving a pitch as a tupl
 
    staff = Staff(ORIGIN, None, Mm(100))
    Clef(ZERO, staff, 'treble')
-   Chordrest(Mm(10), staff, [
+   Chordrest(staff.unit(1), staff, [
        "f", ("bb", "noteheadDiamondHalf"), ("f''", "noteheadBlackParens")
    ], (1, 4))

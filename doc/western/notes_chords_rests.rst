@@ -7,7 +7,7 @@ Through the :obj:`.Chordrest` class, neoscore can automatically draw notes, chor
 
    staff = Staff(ORIGIN, None, Mm(100))
    Clef(ZERO, staff, 'treble')
-   Chordrest(Mm(20), staff, ["c", "g", "eb'"], (3, 16))
+   Chordrest(staff.unit(2), staff, ["c", "g", "eb'"], (3, 16))
 
 Chordrests are shaped by two main arguments - a list of pitches and a duration.
 
@@ -51,12 +51,12 @@ Durations are specified with 2-tuples resembling fractions of a whole note. The 
 
    staff = Staff(ORIGIN, None, Mm(100))
    Clef(ZERO, staff, 'bass')
-   Chordrest(Mm(10), staff, ["c"], (1, 4))
-   Chordrest(Mm(20), staff, ["c"], (1, 8))
-   Chordrest(Mm(30), staff, ["c"], (3, 8))
-   Chordrest(Mm(40), staff, ["c"], (1, 1))
-   Chordrest(Mm(50), staff, ["c"], (2, 1))
-   Chordrest(Mm(60), staff, ["c"], (3, 128))
+   Chordrest(Mm(0), staff, ["c"], (1, 4))
+   Chordrest(Mm(10), staff, ["c"], (1, 8))
+   Chordrest(Mm(20), staff, ["c"], (3, 8))
+   Chordrest(Mm(30), staff, ["c"], (1, 1))
+   Chordrest(Mm(40), staff, ["c"], (2, 1))
+   Chordrest(Mm(50), staff, ["c"], (3, 128))
 
 It can be a bit difficult to work out the numerical representations of durations with many dots, so you can also use :obj:`.Duration.from_description` to specify durations in terms of their base divisions and dot counts::
 
@@ -83,9 +83,9 @@ Rests are just chordrests without any notes.
 
    staff = Staff(ORIGIN, None, Mm(100))
    Clef(ZERO, staff, 'treble')
-   Chordrest(Mm(10), staff, None, (1, 4))
-   Chordrest(Mm(20), staff, None, (1, 8))
-   Chordrest(Mm(30), staff, None, (3, 8))
+   Chordrest(Mm(0), staff, None, (1, 4))
+   Chordrest(Mm(10), staff, None, (1, 8))
+   Chordrest(Mm(20), staff, None, (3, 8))
 
 By default rests are placed in the middle of the staff, but you can override their vertical position if needed.
 
@@ -93,5 +93,4 @@ By default rests are placed in the middle of the staff, but you can override the
 
    staff = Staff(ORIGIN, None, Mm(100))
    Clef(ZERO, staff, 'treble')
-   Chordrest(Mm(10), staff, None, (1, 4), rest_y=staff.unit(-2))
-   
+   Chordrest(Mm(0), staff, None, (1, 4), rest_y=staff.unit(-2))
