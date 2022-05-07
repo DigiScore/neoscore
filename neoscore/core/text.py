@@ -261,7 +261,8 @@ class Text(PaintedObject):
         self.render_slice(pos, None, None)
 
     def render_before_break(self, pos: Point, flowable_line: NewLine, flowable_x: Unit):
-        self.render_slice(pos, ZERO, flowable_line.length)
+        slice_length = flowable_line.length - (flowable_x - flowable_line.flowable_x)
+        self.render_slice(pos, ZERO, slice_length)
 
     def render_spanning_continuation(
         self, pos: Point, flowable_line: NewLine, object_x: Unit

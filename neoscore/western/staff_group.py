@@ -35,10 +35,18 @@ class StaffGroup:
         cached_value = self._fringe_layout_cache.get((staff, location))
         if cached_value:
             return cached_value
+        # If the staff doesn't actually exist at the beginning of a line,
+        # Do its fringe layout in isolation
+        if not self._staff_exists_at(staff, location):
+            layout = staff._fringe_layout_for_isolated_staff(location)
+            self._fringe_layout_cache[(staff, location)] = layout
+            return layout
         # Work out the layouts of each staff in isolation first
         isolated_layouts = []
         min_staff_basis = ZERO  # Wider fringes give a lower number here (further left)
         for iter_staff in self.staves:
+            if not self._staff_exists_at(iter_staff, location):
+                continue
             layout = iter_staff._fringe_layout_for_isolated_staff(location)
             min_staff_basis = min(min_staff_basis, layout.staff)
             isolated_layouts.append((iter_staff, layout))
@@ -48,6 +56,19 @@ class StaffGroup:
             self._fringe_layout_cache[(iter_staff, location)] = aligned_layout
         # Now the requested layout is cached, so return it
         return self._fringe_layout_cache[(staff, location)]
+
+    def _staff_exists_at(
+        self, staff: AbstractStaff, location: Optional[NewLine]
+    ) -> bool:
+        """Check if a staff exists at a given location"""
+        if not location:
+            # No good way currently to check without a location
+            return True
+        staff_pos_x = staff.flowable.descendant_pos_x(staff)
+        return (staff_pos_x <= location.flowable_x) and (
+            staff_pos_x + staff.breakable_length
+            >= location.flowable_x + location.length
+        )
 
     def _align_layout(
         self, layout: StaffFringeLayout, staff_basis: Unit

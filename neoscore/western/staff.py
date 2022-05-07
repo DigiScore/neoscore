@@ -162,6 +162,8 @@ class Staff(AbstractStaff):
         return make_unit_class("StaffUnit", staff_unit_size.base_value)
 
     def _register_layout_controllers(self):
+        # This is known to have some limitations in some cases when staves in a group
+        # have different key signatures. See issue #28.
         flowable = self.flowable
         if not flowable:
             return

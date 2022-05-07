@@ -25,10 +25,6 @@ class LayoutController:
         """The x position in the flowable's local space."""
         return self._flowable_x
 
-    @flowable_x.setter
-    def flowable_x(self, value: Unit):
-        self._flowable_x = value
-
 
 class NewLine(LayoutController, PositionedObject):
     """A line break controller."""

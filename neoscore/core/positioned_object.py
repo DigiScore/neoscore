@@ -372,7 +372,10 @@ class PositionedObject:
             )
             remaining_x = self.breakable_length - first_line_length
         line_pos = first_line.canvas_pos
-        render_start_pos = Point(line_pos.x, line_pos.y + pos_in_flowable.y)
+        render_start_pos = Point(
+            line_pos.x + (pos_in_flowable.x - first_line.flowable_x),
+            line_pos.y + pos_in_flowable.y,
+        )
         self.render_before_break(render_start_pos, first_line, pos_in_flowable.x)
 
         # Iterate through remaining length

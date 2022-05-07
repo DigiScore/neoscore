@@ -6,6 +6,7 @@ from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.pen import PenDef
 from neoscore.core.point import Point
+from neoscore.core.positioned_object import render_cached_property
 from neoscore.core.units import ZERO, Unit
 from neoscore.western.clef_type import ClefType, ClefTypeDef
 from neoscore.western.staff import Staff
@@ -69,7 +70,7 @@ class Clef(MusicText, StaffObject):
             middle_c_staff_pos = self.clef_type.middle_c_staff_pos
         self._middle_c_staff_position = self.staff.unit(middle_c_staff_pos)
 
-    @property
+    @render_cached_property
     def breakable_length(self) -> Unit:
         """Find the length in the staff during which this clef is active.
 
@@ -110,11 +111,15 @@ class Clef(MusicText, StaffObject):
         flowable_x: Optional[Unit] = None,
     ):
         fringe_layout = self.staff.fringe_layout_at(flowable_line)
-        super().render_complete(Point(pos.x + fringe_layout.clef, pos.y))
+        if fringe_layout.pos_x_in_staff == self.pos_x_in_staff:
+            pos = Point(pos.x + fringe_layout.clef, pos.y)
+        super().render_complete(pos)
 
     def render_before_break(self, pos: Point, flowable_line: NewLine, flowable_x: Unit):
         fringe_layout = self.staff.fringe_layout_at(flowable_line)
-        super().render_complete(Point(pos.x + fringe_layout.clef, pos.y))
+        if fringe_layout.pos_x_in_staff == self.pos_x_in_staff:
+            pos = Point(pos.x + fringe_layout.clef, pos.y)
+        super().render_complete(pos)
 
     def render_spanning_continuation(
         self, pos: Point, flowable_line: NewLine, object_x: Unit
