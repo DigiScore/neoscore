@@ -202,6 +202,5 @@ class AbstractStaff(PaintedObject, HasMusicFont):
         raise NotImplementedError
 
     def pre_render_hook(self):
-        # TODO do these need to be cleaned up after rendering?
-        super().pre_render_hook
+        super().pre_render_hook()
         self._register_layout_controllers()

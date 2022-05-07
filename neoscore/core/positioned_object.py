@@ -30,7 +30,7 @@ class render_cached_property:
         if obj is None:
             return self
         result = self.func(obj)
-        if not getattr(obj, "__currently_rendering", None):
+        if not getattr(obj, "_currently_rendering", None):
             return result
         property_name = self.func.__name__
         value = obj.__dict__[property_name] = result
@@ -325,7 +325,7 @@ class PositionedObject:
 
         Implementations *must* call the super class function as well.
         """
-        self.__currently_rendering = True
+        self._currently_rendering = True
 
     def post_render_hook(self):
         """Run code once after document rendering completes.
@@ -334,7 +334,7 @@ class PositionedObject:
         """
         for cached_property in self._render_cached_properties:
             del self.__dict__[cached_property]
-        self.__currently_rendering = False
+        self._currently_rendering = False
 
     def render(self):
         """Render the object and all its children."""
