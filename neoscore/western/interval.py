@@ -65,8 +65,6 @@ class Interval:
             # can only be perfect, augmented, or diminished
             raise InvalidIntervalError
 
-    ######## SPECIAL METHODS ########
-
     def __repr__(self):
         direction_str = "a" if self.direction == DirectionY.UP else "d"
         return f"Interval('{direction_str}{self.quality}{self.distance}')"
@@ -81,8 +79,6 @@ class Interval:
             and self.quality == other.quality
             and self.distance == other.distance
         )
-
-    ######## PUBLIC PROPERTIES ########
 
     @property
     def direction(self) -> DirectionY:

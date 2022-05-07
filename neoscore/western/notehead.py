@@ -58,8 +58,6 @@ class Notehead(MusicText, StaffObject):
         StaffObject.__init__(self, parent)
         self._update_music_text()
 
-    ######## PUBLIC PROPERTIES ########
-
     @property
     def visual_width(self) -> Unit:
         """The visual width of the Notehead"""
@@ -120,8 +118,6 @@ class Notehead(MusicText, StaffObject):
         return self.staff.middle_c_at(self.pos_x_in_staff) + self.staff.unit(
             self.pitch.staff_pos_from_middle_c
         )
-
-    ######## PRIVATE METHODS ########
 
     def _update_music_text(self):
         duration_display = cast(DurationDisplay, self.duration.display)

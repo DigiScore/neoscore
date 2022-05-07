@@ -123,8 +123,6 @@ class Chordrest(PositionedObject, StaffObject):
         self._table = table
         self._rebuild()
 
-    ######## PUBLIC PROPERTIES ########
-
     @property
     def notes(self) -> list[PitchDef | PitchAndGlyph]:
         return self._notes
@@ -437,8 +435,6 @@ class Chordrest(PositionedObject, StaffObject):
         )
         abs_height = max(min_abs_height, fitted_abs_height)
         return abs_height
-
-    ######## PRIVATE METHODS ########
 
     def _clear(self):
         for notehead in self.noteheads:

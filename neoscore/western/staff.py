@@ -55,8 +55,6 @@ class Staff(AbstractStaff):
             pos, parent, length, group, unit(1), line_count, music_font, pen
         )
 
-    ######## PUBLIC METHODS ########
-
     def distance_to_next_of_type(self, staff_object: PositionedObject) -> Unit:
         """Find the x distance until the next occurrence of an object's type.
 

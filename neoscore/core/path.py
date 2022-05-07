@@ -65,8 +65,6 @@ class Path(PaintedObject):
         self.elements: list[PathElement] = []
         self._current_subpath_start: Optional[tuple[Point, Optional[parent]]] = None
 
-    ######## CLASSMETHODS ########
-
     @classmethod
     def straight_line(
         cls,
@@ -387,8 +385,6 @@ class Path(PaintedObject):
             path.line_to(Unit(x), Unit(y))
         return path
 
-    ######## PUBLIC PROPERTIES ########
-
     @property
     def breakable_length(self) -> Unit:
         """The breakable length of the path.
@@ -443,8 +439,6 @@ class Path(PaintedObject):
     @z_index.setter
     def z_index(self, value: int):
         self._z_index = value
-
-    ######## Public Methods ########
 
     def line_to(self, x: Unit, y: Unit, parent: Optional[PositionedObject] = None):
         """Draw a path from the current position to a new point.

@@ -53,8 +53,6 @@ class Hairpin(MusicPath, Spanner2D):
         self.pen = Pen(thickness=self.music_font.engraving_defaults["hairpinThickness"])
         self._draw_path()
 
-    ######## PUBLIC PROPERTIES ########
-
     @property
     def music_font(self) -> MusicFont:
         return self._music_font
@@ -70,8 +68,6 @@ class Hairpin(MusicPath, Spanner2D):
     @direction.setter
     def direction(self, value: DirectionX):
         self._direction = value
-
-    ######## PRIVATE METHODS ########
 
     def _find_hairpin_points(
         self,

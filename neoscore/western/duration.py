@@ -70,8 +70,6 @@ class Duration:
             return None
         return DurationDisplay(partial_denominator, dot_count)
 
-    ######## CONSTRUCTORS ########
-
     @classmethod
     def from_def(cls, duration_def: DurationDef) -> Duration:
         if isinstance(duration_def, Duration):
@@ -102,14 +100,10 @@ class Duration:
             inc_division *= 2
         return Duration(val.numerator, val.denominator)
 
-    ######## PUBLIC PROPERTIES ########
-
     @property
     def requires_tie(self) -> bool:
         """If this Duration requires a tie to be written."""
         return self.display is None
-
-    ######## SPECIAL METHODS ########
 
     def __float__(self):
         """Reduce the fractional representation to a ``float`` and return it."""

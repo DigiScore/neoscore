@@ -65,8 +65,6 @@ class PathInterface(PositionedObjectInterface):
     Use ``None`` to render to the end.
     """
 
-    ######## Public Methods ########
-
     @staticmethod
     def create_qt_path(elements: list[ResolvedPathElement]) -> QPainterPath:
         path = QPainterPath()
@@ -97,8 +95,6 @@ class PathInterface(PositionedObjectInterface):
         """
         qt_object = self._create_qt_object()
         neoscore._app_interface.scene.addItem(qt_object)
-
-    ######## PRIVATE METHODS ########
 
     def _create_qt_object(self) -> QClippingPath:
         painter_path = PathInterface.create_qt_path(self.elements)

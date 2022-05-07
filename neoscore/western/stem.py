@@ -45,8 +45,6 @@ class Stem(MusicPath):
         # Draw stem path
         self.line_to(ZERO, self.height * self.direction.value)
 
-    ######## PUBLIC PROPERTIES ########
-
     @property
     def height(self) -> Unit:
         """The height of the stem from its position.

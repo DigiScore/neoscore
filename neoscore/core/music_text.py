@@ -107,8 +107,6 @@ class MusicText(Text, HasMusicFont):
             alignment_y,
         )
 
-    ######## PUBLIC PROPERTIES ########
-
     @property
     def music_chars(self) -> list[MusicChar]:
         """A list of the SMuFL characters in the string including metadata.
@@ -162,8 +160,6 @@ class MusicText(Text, HasMusicFont):
         bounding_rect = self.font.bounding_rect_of(self.text) * self.scale
         _GEOMETRY_CACHE[key] = _CachedTextGeometry(bounding_rect)
         return bounding_rect
-
-    ######## PRIVATE METHODS ########
 
     @staticmethod
     def _music_chars_to_str(music_chars: list[MusicChar]) -> str:

@@ -23,8 +23,6 @@ class StaffObject:
         if not self._staff:
             raise NoAncestorStaffError
 
-    ######## PUBLIC PROPERTIES ########
-
     @property
     def staff(self):
         """Staff: The staff associated with this object"""
@@ -39,8 +37,6 @@ class StaffObject:
     def pos_x_in_staff(self) -> Unit:
         """A specialized version of ``pos_in_staff`` which only finds the x pos"""
         return self.staff.map_x_to(cast(PositionedObject, self))
-
-    ######## PRIVATE METHODS ########
 
     @staticmethod
     def find_staff(obj: PositionedObject) -> Optional[AbstractStaff]:

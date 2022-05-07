@@ -63,8 +63,6 @@ class TimeSignature(PositionedObject, StaffObject):
         )
         self._position_glyphs()
 
-    ######## PUBLIC PROPERTIES ########
-
     @property
     def upper_text(self) -> MusicText:
         """MusicText: The upper glyph for the time signature"""

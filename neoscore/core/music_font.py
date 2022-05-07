@@ -47,8 +47,6 @@ class MusicFont(Font):
         unit_val_as_mm = Mm(self.unit(1)).display_value
         return f"MusicFont('{self.family_name}', <unit(1) = Mm({unit_val_as_mm})>)"
 
-    ######## PUBLIC PROPERTIES ########
-
     @property
     def unit(self) -> Type[Unit]:
         return self._unit
@@ -62,8 +60,6 @@ class MusicFont(Font):
     def engraving_defaults(self) -> Dict:
         """dict: The SMuFL engraving defaults information for this font"""
         return self._engraving_defaults
-
-    ######## PUBLIC METHODS ########
 
     def modified(
         self, family_name: Optional[str] = None, unit: Optional[Type[Unit]] = None
@@ -96,7 +92,6 @@ class MusicFont(Font):
         self._glyph_info_cache[key] = computed_result
         return computed_result
 
-    ######## PRIVATE METHODS ########
     def _glyph_info(
         self, glyph_name: str, alternate_number: Optional[int] = None
     ) -> GlyphInfo:

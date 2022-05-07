@@ -66,8 +66,6 @@ class AppInterface:
             _RENDER_IMAGE_THREAD_MAX
         )
 
-    ######## PUBLIC METHODS ########
-
     def set_refresh_func(self, refresh_func: Callable[[float], float]):
         self.main_window.refresh_func = refresh_func
 
@@ -206,8 +204,6 @@ class AppInterface:
     def background_brush(self, value: BrushInterface):
         self._background_brush = value
         self.scene.setBackgroundBrush(value.qt_object)
-
-    ######## PRIVATE METHODS ########
 
     def _remove_all_loaded_fonts(self):
         """Remove all fonts registered with ``register_font()``.

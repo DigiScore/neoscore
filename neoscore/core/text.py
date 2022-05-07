@@ -71,8 +71,6 @@ class Text(PaintedObject):
         self._alignment_y = alignment_y
         super().__init__(pos, parent, brush, pen or Pen.no_pen())
 
-    ######## PUBLIC PROPERTIES ########
-
     @property
     def breakable_length(self) -> Unit:
         """The breakable length of the object.
@@ -218,8 +216,6 @@ class Text(PaintedObject):
             raw_rect.width,
             raw_rect.height,
         )
-
-    ######## PRIVATE METHODS ########
 
     def render_slice(
         self,

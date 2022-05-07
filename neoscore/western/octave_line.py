@@ -150,13 +150,9 @@ class _OctaveLineText(MusicText):
         )
         self._length = length
 
-    ######## PUBLIC PROPERTIES ########
-
     @property
     def breakable_length(self) -> Unit:
         return self._length
-
-    ######## PRIVATE METHODS ########
 
     def render_before_break(self, pos: Point, flowable_line: NewLine, flowable_x: Unit):
         super().render_complete(pos)

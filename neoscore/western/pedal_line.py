@@ -71,8 +71,6 @@ class PedalLine(Spanner, MusicPath):
         self.half_lift_positions = half_lift_positions
         self._draw_path()
 
-    ######## PRIVATE METHODS ########
-
     def _draw_path(self):
         """Draw the path according to this object's attributes.
 

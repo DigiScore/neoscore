@@ -67,8 +67,6 @@ class Flag(MusicText):
             glyph_name = self._up_glyphnames[duration_display.flag_count]
         MusicText.__init__(self, pos, parent, [glyph_name])
 
-    ######## PUBLIC PROPERTIES ########
-
     @property
     def duration(self) -> Duration:
         """The time duration of this Notehead"""
@@ -89,8 +87,6 @@ class Flag(MusicText):
     @direction.setter
     def direction(self, value: DirectionY):
         self._direction = value
-
-    ######## PUBLIC CLASS METHODS ########
 
     @classmethod
     def vertical_offset_needed(cls, duration: Duration) -> int:

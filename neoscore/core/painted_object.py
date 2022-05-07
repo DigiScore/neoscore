@@ -31,8 +31,6 @@ class PaintedObject(PositionedObject):
         self.brush = brush
         self._children: list[PositionedObject] = []
 
-    ######## PUBLIC PROPERTIES ########
-
     @property
     def pen(self) -> Pen:
         """The pen to draw outlines with"""

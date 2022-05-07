@@ -46,8 +46,6 @@ class Clef(MusicText, StaffObject):
         MusicText.__init__(self, (pos_x, ZERO), staff, "", font, brush, pen)
         self.clef_type = clef_type
 
-    ######## PUBLIC PROPERTIES ########
-
     @property
     def clef_type(self) -> ClefType:
         """The type of clef, both logical and graphical."""

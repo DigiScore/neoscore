@@ -18,8 +18,6 @@ class LayoutController:
         """
         self._flowable_x = flowable_x
 
-    ######## PUBLIC PROPERTIES ########
-
     @property
     def flowable_x(self) -> Unit:
         """The x position in the flowable's local space."""
@@ -52,8 +50,6 @@ class NewLine(LayoutController, PositionedObject):
         PositionedObject.__init__(self, pos, page)
         self._length = length
         self._height = height
-
-    ######## PUBLIC PROPERTIES ########
 
     @property
     def page(self) -> Page:

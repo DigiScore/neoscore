@@ -77,8 +77,6 @@ class TextInterface(PositionedObjectInterface):
     Use ``None`` to render to the end.
     """
 
-    ######## PUBLIC METHODS ########
-
     def render(self):
         """Render the line to the scene."""
         qt_object = self._create_qt_object()
@@ -93,8 +91,6 @@ class TextInterface(PositionedObjectInterface):
         if self.z_index != 0:
             qt_object.setZValue(self.z_index)
         return qt_object
-
-    ######## PRIVATE METHODS ########
 
     def _get_path(self, text: str, font: FontInterface, scale: float) -> QClippingPath:
         qt_font = font.qt_object

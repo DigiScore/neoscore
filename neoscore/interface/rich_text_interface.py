@@ -29,8 +29,6 @@ class RichTextInterface(PositionedObjectInterface):
     z_index: int = 0
     """Z-index controlling draw order."""
 
-    ######## PUBLIC METHODS ########
-
     def render(self):
         """Render the line to the scene."""
         qt_object = self._create_qt_object()

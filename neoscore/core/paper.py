@@ -32,8 +32,6 @@ class Paper:
             "live_height", self.height - self.margin_bottom - self.margin_top
         )
 
-    ######## PUBLIC METHODS ########
-
     def make_rotation(self) -> Paper:
         """Create a 90 degree clockwise rotation of this paper.
 

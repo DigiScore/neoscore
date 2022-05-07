@@ -34,8 +34,6 @@ class Color:
             # otherwise color_def must be a str
             return Color(color_def)
 
-    ######## SPECIAL METHODS ########
-
     def __repr__(self):
         return "{}({}, {}, {}, {})".format(
             type(self).__name__, self.red, self.green, self.blue, self.alpha
@@ -54,8 +52,6 @@ class Color:
     def __hash__(self):
         """Colors with equal properties will have the same hash."""
         return 23467817 ^ self.red ^ self.green ^ self.blue ^ self.alpha
-
-    ######## PUBLIC PROPERTIES ########
 
     @property
     def red(self):
@@ -76,8 +72,6 @@ class Color:
     def alpha(self):
         """int: The 0-255 value of the alpha color channel"""
         return self._alpha
-
-    ######## PRIVATE METHODS ########
 
     def _set_with_hex(self, hex_value):
         """Set properties from an #rrggbb hex string

@@ -76,14 +76,8 @@ class Unit:
         """
         return round(self.base_value, 2)
 
-    ######## SPECIAL METHODS ########
-
-    # Representations ---------------------------------------------------------
-
     def __repr__(self):
         return "{}({})".format(type(self).__name__, self.display_value)
-
-    # Comparisons -------------------------------------------------------------
 
     _CMP_POS_EPSILON = 0.001
     _CMP_NEG_EPSILON = -0.001
@@ -109,8 +103,6 @@ class Unit:
 
     def __ge__(self, other: Unit):
         return self.base_value - other.base_value > Unit._CMP_NEG_EPSILON
-
-    # Operators ---------------------------------------------------------------
 
     def __add__(self: TUnit, other: TUnit) -> TUnit:
         return type(self)(None, _raw_base_value=self.base_value + other.base_value)

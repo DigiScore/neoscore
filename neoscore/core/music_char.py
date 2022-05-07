@@ -24,8 +24,6 @@ class MusicChar:
     alternate_number: Optional[int] = None
     """An SMuFL alternate glyph code, if applicable."""
 
-    ######## PUBLIC PROPERTIES ########
-
     @cached_property
     def glyph_info(self) -> GlyphInfo:
         # this is a little expensive, so only do it on demand and then cache it

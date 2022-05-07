@@ -75,8 +75,6 @@ class Brace(MultiStaffObject, MusicText):
                 alignment_x=AlignmentX.RIGHT,
             )
 
-    ######## PUBLIC PROPERTIES ########
-
     @property
     def breakable_length(self) -> Unit:
         return self.highest.breakable_length

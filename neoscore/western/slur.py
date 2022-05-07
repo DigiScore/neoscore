@@ -67,8 +67,6 @@ class Slur(MusicPath, Spanner2D):
         ]
         self._draw_path()
 
-    ######## PRIVATE METHODS ########
-
     def _derive_height(self):
         length = self.spanner_2d_length
         unit = self.music_font.unit

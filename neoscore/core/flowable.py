@@ -59,8 +59,6 @@ class Flowable(PositionedObject):
         self._lines = []
         self._provided_controllers = Flowable._new_provided_controllers_list()
 
-    ######## PUBLIC PROPERTIES ########
-
     @property
     def length(self) -> Unit:
         """The length of the unwrapped flowable"""

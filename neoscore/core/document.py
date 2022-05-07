@@ -26,8 +26,6 @@ class Document:
         self._paper = paper
         self._pages = PageSupplier(self, overlay_func)
 
-    ######## PUBLIC PROPERTIES ########
-
     @property
     def paper(self) -> Paper:
         """The paper type of the document"""
@@ -64,8 +62,6 @@ class Document:
         """
         return self._pages
 
-    ######## PRIVATE METHODS ########
-
     def _run_on_all_descendants(self, func: Callable):
         for page in self.pages:
             for obj in page.descendants:
@@ -77,8 +73,6 @@ class Document:
         for page in self.pages:
             page.render()
         self._run_on_all_descendants(lambda g: g.post_render_hook())
-
-    ######## PUBLIC METHODS ########
 
     def page_origin(self, page_index: int) -> Point:
         """Find the origin point of a given page number.

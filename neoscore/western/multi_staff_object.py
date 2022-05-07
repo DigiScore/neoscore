@@ -23,8 +23,6 @@ class MultiStaffObject:
         else:
             self._staves = staves
 
-    ######## PUBLIC PROPERTIES ########
-
     @property
     def staves(self) -> list[AbstractStaff]:
         """The staves this is associated with, given in descending order."""

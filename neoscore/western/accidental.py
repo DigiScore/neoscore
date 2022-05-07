@@ -36,8 +36,6 @@ class Accidental(MusicText):
             canonical_name = accidental_type
         MusicText.__init__(self, pos, parent, canonical_name, font)
 
-    ######## PUBLIC PROPERTIES ########
-
     @property
     def accidental_type(self) -> AccidentalType | str:
         """The accidental variant.

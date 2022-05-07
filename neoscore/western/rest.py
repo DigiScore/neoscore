@@ -54,8 +54,6 @@ class Rest(MusicText):
             font,
         )
 
-    ######## PUBLIC PROPERTIES ########
-
     @property
     def duration(self) -> Duration:
         """The time duration of this Rest"""

@@ -38,8 +38,6 @@ class Font:
             self.family_name, self.size, self.weight, self.italic
         )
 
-    ######## PUBLIC PROPERTIES ########
-
     @property
     def family_name(self) -> str:
         return self._family_name
@@ -84,8 +82,6 @@ class Font:
         """The backing low-level font interface"""
         return self._interface
 
-    ######## SPECIAL METHODS ########
-
     def __str__(self):
         return f"Font('{self.family_name}', {self.size}, {self.weight}, {self.italic})"
 
@@ -102,8 +98,6 @@ class Font:
         return hash(
             (self.family_name, self.size.rounded_base_value, self.weight, self.italic)
         )
-
-    ######## PUBLIC METHODS ########
 
     def modified(
         self,
