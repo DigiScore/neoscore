@@ -21,11 +21,6 @@ _PREVIEW_OUTLINE_COLOR = Color("#551155")
 _PREVIEW_SHADOW_COLOR = Color(0, 0, 0, 80)
 
 
-# TODO HIGH update this to somehow show that this object's parent is not a
-# PositionedObject, but is a Document instead. This is needed to prevent nasty cyclic
-# imports
-
-
 class Page(PositionedObject):
 
     """A document page.

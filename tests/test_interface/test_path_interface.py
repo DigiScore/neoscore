@@ -4,7 +4,7 @@ from neoscore.core.pen_cap_style import PenCapStyle
 from neoscore.core.pen_join_style import PenJoinStyle
 from neoscore.core.pen_pattern import PenPattern
 from neoscore.core.point import ORIGIN
-from neoscore.core.units import GraphicUnit, Unit
+from neoscore.core.units import Unit
 from neoscore.interface.brush_interface import BrushInterface
 from neoscore.interface.path_interface import (
     PathInterface,
@@ -22,7 +22,7 @@ class TestPathInterface(AppTest):
         super().setUp()
         self.pen = PenInterface(
             Color("#000000"),
-            GraphicUnit(0),
+            Unit(0),
             PenPattern.SOLID,
             PenJoinStyle.BEVEL,
             PenCapStyle.SQUARE,

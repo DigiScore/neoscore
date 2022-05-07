@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Optional, Union
 
 from neoscore.core.rect import Rect
-from neoscore.core.units import GraphicUnit, Unit
+from neoscore.core.units import Unit
 from neoscore.interface.font_interface import FontInterface
 
 
@@ -31,7 +31,7 @@ class Font:
             italic: Whether or not the font is italicized
         """
         self._family_name = family_name
-        self._size = size if isinstance(size, Unit) else GraphicUnit(size)
+        self._size = size if isinstance(size, Unit) else Unit(size)
         self._weight = weight
         self._italic = italic
         self._interface = FontInterface(

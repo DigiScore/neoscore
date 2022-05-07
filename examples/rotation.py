@@ -20,7 +20,7 @@ for angle in range(0, 360, 10):
     )
 
 
-tfont = neoscore.default_font.modified(size=GraphicUnit(10))
+tfont = neoscore.default_font.modified(size=Unit(10))
 text_crossing_break = Text(
     (Mm(160), Mm(-10)),
     flowable,

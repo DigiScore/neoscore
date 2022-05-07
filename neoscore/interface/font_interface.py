@@ -5,7 +5,7 @@ from PyQt5 import QtGui
 
 from neoscore.core import neoscore
 from neoscore.core.rect import Rect
-from neoscore.core.units import GraphicUnit, Unit
+from neoscore.core.units import Unit
 from neoscore.interface.qt.converters import qt_rect_to_rect
 
 
@@ -35,7 +35,7 @@ class FontInterface:
 
     x_height: Unit = field(init=False)
     """The x-height for the font.
-    
+
     This is generally similar, if not identical, to the em size.
     """
 
@@ -63,16 +63,10 @@ class FontInterface:
             "_qt_font_metrics_object",
             QtGui.QFontMetricsF(self.qt_object, neoscore._app_interface.view),
         )
-        super().__setattr__(
-            "ascent", GraphicUnit(self._qt_font_metrics_object.ascent())
-        )
-        super().__setattr__(
-            "descent", GraphicUnit(self._qt_font_metrics_object.descent())
-        )
+        super().__setattr__("ascent", Unit(self._qt_font_metrics_object.ascent()))
+        super().__setattr__("descent", Unit(self._qt_font_metrics_object.descent()))
 
-        super().__setattr__(
-            "x_height", GraphicUnit(self._qt_font_metrics_object.xHeight())
-        )
+        super().__setattr__("x_height", Unit(self._qt_font_metrics_object.xHeight()))
 
     def bounding_rect_of(self, text: str) -> Rect:
         """Calculate the tight bounding rectangle around a string in this font."""

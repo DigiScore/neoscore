@@ -2,7 +2,7 @@ import unittest
 
 import pytest
 
-from neoscore.core.units import GraphicUnit, Inch, Mm, Unit, make_unit_class
+from neoscore.core.units import Inch, Mm, Unit, make_unit_class
 from tests.helpers import assert_almost_equal
 
 MockUnit = make_unit_class("MockUnit", 2)
@@ -127,9 +127,3 @@ class TestInch(unittest.TestCase):
     def test_inch_unit_conversion(self):
         assert_almost_equal(Inch(1), Unit(72))
         assert_almost_equal(Inch(2), Unit(144))
-
-
-class TestGraphicUnit(unittest.TestCase):
-    def test_graphic_unit_unit_conversion(self):
-        assert_almost_equal(GraphicUnit(1), Unit(1))
-        assert_almost_equal(GraphicUnit(2), Unit(2))

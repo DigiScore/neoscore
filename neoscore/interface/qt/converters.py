@@ -8,7 +8,7 @@ from PyQt5.QtGui import QColor
 from neoscore.core.color import Color
 from neoscore.core.point import Point
 from neoscore.core.rect import Rect
-from neoscore.core.units import GraphicUnit
+from neoscore.core.units import Unit
 
 
 def qt_point_to_point(qt_point: Union[QPoint, QPointF]) -> Point:
@@ -19,7 +19,7 @@ def qt_point_to_point(qt_point: Union[QPoint, QPointF]) -> Point:
 
     Returns: Point
     """
-    return Point(GraphicUnit(qt_point.x()), GraphicUnit(qt_point.y()))
+    return Point(Unit(qt_point.x()), Unit(qt_point.y()))
 
 
 def point_to_qt_point(point: Point) -> QPoint:
@@ -53,10 +53,10 @@ def qt_rect_to_rect(qt_rect: Union[QRect, QRectF]) -> Rect:
     Returns: Rect
     """
     return Rect(
-        GraphicUnit(qt_rect.x()),
-        GraphicUnit(qt_rect.y()),
-        GraphicUnit(qt_rect.width()),
-        GraphicUnit(qt_rect.height()),
+        Unit(qt_rect.x()),
+        Unit(qt_rect.y()),
+        Unit(qt_rect.width()),
+        Unit(qt_rect.height()),
     )
 
 

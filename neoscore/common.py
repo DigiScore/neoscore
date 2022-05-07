@@ -27,7 +27,7 @@ from neoscore.core.rich_text import RichText
 from neoscore.core.simple_header_footer import simple_header_footer
 from neoscore.core.text import Text
 from neoscore.core.text_alignment import AlignmentX, AlignmentY
-from neoscore.core.units import ZERO, GraphicUnit, Inch, Mm, Unit
+from neoscore.core.units import ZERO, Inch, Mm, Unit
 from neoscore.western import barline_style, notehead_tables
 from neoscore.western.accidental import Accidental
 from neoscore.western.accidental_type import AccidentalType

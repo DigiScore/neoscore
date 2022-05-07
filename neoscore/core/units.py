@@ -9,25 +9,27 @@ TUnit = TypeVar("TUnit", bound="Unit")
 class Unit:
     """An immutable graphical distance with a unit.
 
-    Unit objects enable easy conversion from one unit to another and
-    convenient operations between them.
+    Unit objects enable easy conversion from one unit to another and convenient
+    operations between them.
 
-    Common operators (``+``, ``-``, ``/``, etc.) are supported between them.
-    Return values from these operations are given in the type on the left.
+    Common operators (``+``, ``-``, ``/``, etc.) are supported between them. Return
+    values from these operations are given in the type on the left.
 
         >>> from neoscore.core.units import Inch, Mm
         >>> print(Inch(1) + Mm(1))
         Inch(1.039)
 
-    To facilitate easy comparison between equivalent values in
-    different units, equality is checked with a tolerance of
-    ``Unit(0.001)``.
+    To facilitate easy comparison between equivalent values in different units, equality
+    is checked with a tolerance of ``Unit(0.001)``.
 
         >>> from neoscore.core.units import Inch, Mm
         >>> assert Inch(Mm(1)) == Mm(1)
         >>> assert Inch(Mm(1)) >= Mm(1)
         >>> assert Inch(Mm(1)) <= Mm(1)
 
+    The base ``Unit`` type is a graphical unit corresponding to 1/72nd of an inch.
+    Internally, this is significant because it is the unit used by the graphics backend,
+    Qt. For most purposes, you probably want to use a more descriptive unit type.
     """
 
     __slots__ = ("base_value", "_display_value")
@@ -145,18 +147,6 @@ class Unit:
 
     def __abs__(self: TUnit) -> TUnit:
         return type(self)(None, _raw_base_value=abs(self.base_value))
-
-
-# TODO HIGH delete this????
-class GraphicUnit(Unit):
-    """A unit with a 1:1 ratio with Qt units.
-
-    This will typically be the size of a pixel in ``neoscore.show()`` preview mode.
-
-    In most cases, you probably want to use a more descriptive unit type.
-    """
-
-    CONVERSION_RATE = 1
 
 
 class Inch(Unit):
