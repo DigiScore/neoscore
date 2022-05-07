@@ -79,10 +79,6 @@ class Brace(MultiStaffObject, MusicText):
 
     @property
     def breakable_length(self) -> Unit:
-        """The breakable length of the object.
-
-        This is used to determine how and where rendering cuts should be made.
-        """
         return self.highest.breakable_length
 
     def _render_occurrence(

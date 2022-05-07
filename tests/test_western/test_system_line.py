@@ -17,23 +17,23 @@ class TestSystemLine(AppTest):
         self.staves = [self.top_staff, self.bottom_staff]
 
     def test_font_override(self):
-        line = SystemLine(ZERO, self.staves)
+        line = SystemLine(self.staves)
         assert line.music_font == self.top_staff.music_font
         explicit_font = MusicFont("Bravura", Mm(10))
-        line = SystemLine(ZERO, self.staves, font=explicit_font)
+        line = SystemLine(self.staves, font=explicit_font)
         assert line.music_font == explicit_font
 
     def test_pen_override(self):
-        line = SystemLine(ZERO, self.staves)
+        line = SystemLine(self.staves)
         assert (
             line.pen.thickness
             == self.top_staff.music_font.engraving_defaults["staffLineThickness"]
         )
-        line = SystemLine(ZERO, self.staves, pen=Pen("#ff0000"))
+        line = SystemLine(self.staves, pen=Pen("#ff0000"))
         assert line.pen == Pen("#ff0000")
 
     def test_path_drawing(self):
-        line = SystemLine(ZERO, self.staves)
+        line = SystemLine(self.staves)
         assert_path_els_equal(
             line.elements, [MoveTo(ORIGIN, line), LineTo(Point(ZERO, Mm(27)), line)]
         )

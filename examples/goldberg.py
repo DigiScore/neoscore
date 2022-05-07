@@ -16,7 +16,7 @@ upper_staff = Staff((Mm(0), Mm(0)), flowable, Mm(500), staff_group)
 lower_staff = Staff((Mm(0), Mm(20)), flowable, Mm(500), staff_group)
 staves = [upper_staff, lower_staff]
 brace = Brace(staves)
-SystemLine(Mm(0), staves)
+SystemLine(staves)
 
 # We can use the same unit in the upper and lower staves since they
 # are the same size

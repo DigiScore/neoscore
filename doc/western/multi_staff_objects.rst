@@ -78,7 +78,7 @@ A line connecting a system's staves at the start of every line can be easily dra
    group = StaffGroup()
    staff_1 = Staff(ORIGIN, None, Mm(40), group)
    staff_2 = Staff((ZERO, Mm(15)), None, Mm(40), group)
-   SystemLine(ZERO, group)
+   SystemLine(group)
 
 .. rendered-example::
 
@@ -86,7 +86,7 @@ A line connecting a system's staves at the start of every line can be easily dra
    group = StaffGroup()
    staff_1 = Staff(ORIGIN, flowable, Mm(400), group)
    staff_2 = Staff((ZERO, Mm(15)), flowable, Mm(400), group)
-   SystemLine(ZERO, group)
+   SystemLine(group)
 
 Braces
 ------
@@ -107,4 +107,4 @@ Staff system braces can be created with the :obj:`.Brace` class. Braces are auto
    staff_1 = Staff(ORIGIN, flowable, Mm(400), group)
    staff_2 = Staff((ZERO, Mm(15)), flowable, Mm(400), group)
    Brace(group)
-   SystemLine(ZERO, group)
+   SystemLine(group)
