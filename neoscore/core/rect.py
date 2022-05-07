@@ -24,6 +24,12 @@ class Rect:
     width: Unit
     height: Unit
 
+    @classmethod
+    def from_def(cls, rect_def: RectDef) -> Rect:
+        if isinstance(rect_def, Rect):
+            return rect_def
+        return cls(*rect_def)
+
     def offset(self, offset: Point) -> Rect:
         """Translate a rect by a point."""
         return Rect(self.x + offset.x, self.y + offset.y, self.width, self.height)
@@ -47,12 +53,3 @@ class Rect:
 
 RectDef: TypeAlias = Union[Rect, tuple[Unit, Unit, Unit, Unit]]
 """A ``Rect`` or an init arg tuple for one."""
-
-
-# TODO HIGH Move into Rect classmethod
-
-
-def rect_from_def(rect_def: RectDef) -> Rect:
-    if isinstance(rect_def, Rect):
-        return rect_def
-    return Rect(*rect_def)

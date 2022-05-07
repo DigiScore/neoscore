@@ -16,7 +16,7 @@ from neoscore.core.color import Color, ColorDef
 from neoscore.core.exceptions import InvalidImageFormatError
 from neoscore.core.paper import A4, Paper
 from neoscore.core.pen import Pen
-from neoscore.core.rect import RectDef, rect_from_def
+from neoscore.core.rect import Rect, RectDef
 from neoscore.core.units import Unit
 from neoscore.interface.app_interface import AppInterface
 
@@ -329,7 +329,7 @@ def render_image(
             "image_path {} is not in a supported format.".format(image_path)
         )
 
-    rect = rect_from_def(rect)
+    rect = Rect.from_def(rect)
     bg_color = background_brush.color
     document.render()
 
