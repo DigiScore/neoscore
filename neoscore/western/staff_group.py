@@ -2,6 +2,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional
 
+from sortedcontainers import SortedKeyList
+
+from neoscore.core import neoscore
 from neoscore.core.layout_controllers import NewLine
 from neoscore.core.units import ZERO, Unit
 from neoscore.western.staff_fringe_layout import StaffFringeLayout
@@ -26,7 +29,10 @@ class StaffGroup:
         self._fringe_layout_cache: dict[
             tuple[AbstractStaff, Optional[NewLine]], StaffFringeLayout
         ] = {}
-        self.staves: list[AbstractStaff] = []
+        # Sort staves according to position to some arbitrary known object
+        self.staves: SortedKeyList[AbstractStaff] = SortedKeyList(
+            key=lambda s: neoscore.document.pages[0].map_to(s).y
+        )
 
     def fringe_layout_at(
         self, staff: AbstractStaff, location: Optional[NewLine]

@@ -15,6 +15,7 @@ from neoscore.western import barline_style
 from neoscore.western.abstract_staff import AbstractStaff
 from neoscore.western.barline_style import BarlineStyle
 from neoscore.western.multi_staff_object import MultiStaffObject
+from neoscore.western.staff_group import StaffGroup
 
 _DEFAULT_BARLINE_STYLE = BarlineStyle()
 
@@ -37,7 +38,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
     def __init__(
         self,
         pos_x: Unit,
-        staves: list[AbstractStaff],
+        staves: StaffGroup | list[AbstractStaff],
         styles: BarlineStyle | Iterable[BarlineStyle] = barline_style.SINGLE,
         connected: Optional[bool] = True,
         font: Optional[MusicFont] = None,
@@ -46,7 +47,8 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         Args:
             pos_x: The barline X position relative to the highest staff.
                 Specifies right edge of the barline group and offsets 'thickness'.
-            staves: The staves spanned. Must be in visually descending order.
+            staves: The staves spanned. If a raw list of staves is given, it must be
+                in descending order.
             styles: If provided, this accepts any of the premade styles provided in
                 barline_style, in addition to custom styles created with BarlineStyle.
             connected: If provided, connects all barlines across the staves span (True)
@@ -60,7 +62,6 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         self._music_font = font
         self.engraving_defaults = self._music_font.engraving_defaults
         self.paths = []
-        self.staves = staves
         self.connected = connected
 
         # Start x position for first barline relative to self

@@ -1,5 +1,6 @@
 from neoscore.core.units import Unit
 from neoscore.western.abstract_staff import AbstractStaff
+from neoscore.western.staff_group import StaffGroup
 
 
 class MultiStaffObject:
@@ -11,13 +12,16 @@ class MultiStaffObject:
     These must have their visually highest staff as their parent.
     """
 
-    def __init__(self, staves: list[AbstractStaff]):
+    def __init__(self, staves: StaffGroup | list[AbstractStaff]):
         """
         Args:
-            staves: The staves this is associated with, given in descending order.
+            staves: The staves this is associated with. If a raw list of staves
+                is given, it must be in descending order.
         """
-        # TODO HIGH make this a StaffGroup instead - and update StaffGroup to use a sorted list
-        self._staves = staves
+        if isinstance(staves, StaffGroup):
+            self._staves = staves.staves
+        else:
+            self._staves = staves
 
     ######## PUBLIC PROPERTIES ########
 

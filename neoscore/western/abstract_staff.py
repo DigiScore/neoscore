@@ -41,7 +41,7 @@ class AbstractStaff(PaintedObject, HasMusicFont):
         self._line_count = line_count
         self._length = length
         self._group = group or StaffGroup()
-        self._group.staves.append(self)
+        self._group.staves.add(self)
         self._z_index = 0
 
     @property

@@ -1,7 +1,7 @@
 Multi-Staff Objects
 ===================
 
-Some objects, like barlines and braces, span multiple staves. Such classes inherit :obj:`.MultiStaffObject`, and the general pattern for creating them is to pass a complete list of the staves spanned in descending order.
+Some objects, like barlines and braces, span multiple staves. Such classes inherit :obj:`.MultiStaffObject`, and the general pattern for creating them is to pass in either a :obj:`.StaffGroup` or a plain ``list`` of staves given in descending order.
 
 Barlines
 --------
@@ -10,20 +10,20 @@ Barlines can be easily created with the :obj:`.Barline` class.
 
 .. rendered-example::
 
-   staff_1 = Staff(ORIGIN, None, Mm(40))
-   staff_2 = Staff((ZERO, Mm(15)), None, Mm(40))
-   staves = [staff_1, staff_2]
-   Barline(Mm(20), staves)
+   staff_group = StaffGroup()
+   staff_1 = Staff(ORIGIN, None, Mm(40), staff_group)
+   staff_2 = Staff((ZERO, Mm(15)), None, Mm(40), staff_group)
+   Barline(Mm(20), staff_group)
 
 A couple common barline types are built-in, and available via constants in the :obj:`.barline_style` module.
 
 .. rendered-example::
 
    staff_1 = Staff(ORIGIN, None, Mm(40))
-   staves = [staff_1]
-   Barline(Mm(20), staves, barline_style.SINGLE)  # The default
-   Barline(Mm(30), staves, barline_style.THIN_DOUBLE)
-   Barline(Mm(40), staves, barline_style.END)
+   group = staff_1.group  # For single-entry groups you can use the default created one
+   Barline(Mm(20), group, barline_style.SINGLE)  # The default
+   Barline(Mm(30), group, barline_style.THIN_DOUBLE)
+   Barline(Mm(40), group, barline_style.END)
 
 Custom styles can be defined by providing a list of :obj:`.BarlineStyle`\ s.
 
@@ -44,7 +44,7 @@ The position passed to :obj:`.Barline` is used as the `right edge` of the barlin
 .. rendered-example::
 
    staff = Staff(ORIGIN, None, Mm(40))
-   Barline(Mm(40), [staff], barline_style.END)
+   Barline(Mm(40), staff.group, barline_style.END)
 
 By default, barlines which extend across multiple staves are fully connected. This can be changed so the barline breaks between staves with the ``connected`` argument.
 
@@ -52,8 +52,7 @@ By default, barlines which extend across multiple staves are fully connected. Th
 
    staff_1 = Staff(ORIGIN, None, Mm(40))
    staff_2 = Staff((ZERO, Mm(15)), None, Mm(40))
-   staves = [staff_1, staff_2]
-   Barline(Mm(20), staves, connected=False)
+   Barline(Mm(20), [staff_1, staff_2], connected=False)
 
 Barlines automatically attach a :obj:`.BreakHint` immediately after them, so if they're placed in a flowable they can suggest line break opportunities.
 
@@ -76,17 +75,18 @@ A line connecting a system's staves at the start of every line can be easily dra
 
 .. rendered-example::
 
-   staff_1 = Staff(ORIGIN, None, Mm(40))
-   staff_2 = Staff((ZERO, Mm(15)), None, Mm(40))
-   staves = [staff_1, staff_2]
-   SystemLine(ZERO, staves)
+   group = StaffGroup()
+   staff_1 = Staff(ORIGIN, None, Mm(40), group)
+   staff_2 = Staff((ZERO, Mm(15)), None, Mm(40), group)
+   SystemLine(ZERO, group)
 
 .. rendered-example::
 
    flowable = Flowable(ORIGIN, None, Mm(400), Mm(30))
-   staff_1 = Staff(ORIGIN, flowable, Mm(400))
-   staff_2 = Staff((ZERO, Mm(15)), flowable, Mm(400))
-   SystemLine(ZERO, [staff_1, staff_2])
+   group = StaffGroup()
+   staff_1 = Staff(ORIGIN, flowable, Mm(400), group)
+   staff_2 = Staff((ZERO, Mm(15)), flowable, Mm(400), group)
+   SystemLine(ZERO, group)
 
 Braces
 ------
@@ -95,14 +95,16 @@ Staff system braces can be created with the :obj:`.Brace` class. Braces are auto
 
 .. rendered-example::
 
-   staff_1 = Staff(ORIGIN, None, Mm(40))
-   staff_2 = Staff((ZERO, Mm(15)), None, Mm(40))
-   staves = [staff_1, staff_2]
-   Brace(ZERO, staves)
+   group = StaffGroup()
+   staff_1 = Staff(ORIGIN, None, Mm(40), group)
+   staff_2 = Staff((ZERO, Mm(15)), None, Mm(40), group)
+   Brace(ZERO, group)
 
 .. rendered-example::
 
    flowable = Flowable(ORIGIN, None, Mm(400), Mm(30))
-   staff_1 = Staff(ORIGIN, flowable, Mm(400))
-   staff_2 = Staff((ZERO, Mm(15)), flowable, Mm(400))
-   Brace(ZERO, [staff_1, staff_2])
+   group = StaffGroup()
+   staff_1 = Staff(ORIGIN, flowable, Mm(400), group)
+   staff_2 = Staff((ZERO, Mm(15)), flowable, Mm(400), group)
+   Brace(ZERO, group)
+   SystemLine(ZERO, group)

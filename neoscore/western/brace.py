@@ -10,6 +10,7 @@ from neoscore.core.text_alignment import AlignmentX
 from neoscore.core.units import Unit
 from neoscore.western.abstract_staff import AbstractStaff
 from neoscore.western.multi_staff_object import MultiStaffObject
+from neoscore.western.staff_group import StaffGroup
 
 
 class Brace(MultiStaffObject, MusicText):
@@ -23,7 +24,7 @@ class Brace(MultiStaffObject, MusicText):
     def __init__(
         self,
         pos_x: Unit,
-        staves: list[AbstractStaff],
+        staves: StaffGroup | list[AbstractStaff],
         font: Optional[MusicFont] = None,
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,
@@ -31,7 +32,8 @@ class Brace(MultiStaffObject, MusicText):
         """
         Args:
             pos_x: The starting X position relative to the highest staff.
-            staves: The staves spanned. Must be in visually descending order.
+            staves: The staves spanned. If a raw list of staves is given, it must be
+                in descending order.
             font: If provided, this overrides the font in the parent (top) staff.
             brush: The brush to fill shapes with.
             pen: The pen to draw outlines with.

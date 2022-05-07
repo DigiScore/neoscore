@@ -8,6 +8,7 @@ from neoscore.core.point import Point
 from neoscore.core.units import ZERO, Unit
 from neoscore.western.abstract_staff import AbstractStaff
 from neoscore.western.multi_staff_object import MultiStaffObject
+from neoscore.western.staff_group import StaffGroup
 
 
 class SystemLine(MultiStaffObject, MusicPath):
@@ -21,14 +22,15 @@ class SystemLine(MultiStaffObject, MusicPath):
     def __init__(
         self,
         pos_x: Unit,
-        staves: list[AbstractStaff],
+        staves: StaffGroup | list[AbstractStaff],
         font: Optional[MusicFont] = None,
         pen: Optional[PenDef] = None,
     ):
         """
         Args:
             pos_x: The starting X position relative to the highest staff.
-            staves: The staves spanned. Must be in visually descending order.
+            staves: The staves spanned. If a raw list of staves is given, it must be
+                in descending order.
             font: If provided, this overrides the font in the parent (top) staff.
             pen: An override to the pen normally derived from the active music font.
         """
