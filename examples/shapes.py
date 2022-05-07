@@ -30,7 +30,6 @@ Path.rect(
 arcs_parent = PositionedObject((Mm(1), Mm(60)), None)
 
 t = Text(ORIGIN, arcs_parent, "arc start angles:")
-print(t.font.size)
 inc = (2 * math.pi) / 10
 for i in range(1, 10):
     angle = i * inc

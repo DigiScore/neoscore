@@ -6,7 +6,7 @@ from neoscore.western.meter import MeterDef
 neoscore.setup()
 
 
-staff = Staff(ORIGIN, None, Mm(150))
+staff = Staff((Mm(10), ZERO), None, Mm(150))
 
 meters: list[MeterDef] = [
     COMMON_TIME,

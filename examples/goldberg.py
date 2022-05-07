@@ -31,35 +31,35 @@ KeySignature(ZERO, lower_staff, "g_major")
 TimeSignature(ZERO, upper_staff, (3, 4))
 TimeSignature(ZERO, lower_staff, (3, 4))
 
-Dynamic((unit(7), unit(6)), upper_staff, "p")
-Text((unit(10), unit(6)), upper_staff, "dolce", expressive_font)
+Dynamic((unit(-4), unit(6.5)), upper_staff, "p")
+Text((unit(-1), unit(6.5)), upper_staff, "dolce", expressive_font)
 
 # BAR 1 ###################################################
 
 # Upper staff notes
-Chordrest(unit(8), upper_staff, ["g'"], Duration(1, 4))
-Chordrest(unit(12), upper_staff, ["g'"], Duration(1, 4))
-a = Chordrest(unit(16), upper_staff, ["a'"], Duration(3, 16))
+Chordrest(unit(0), upper_staff, ["g'"], Duration(1, 4))
+Chordrest(unit(4), upper_staff, ["g'"], Duration(1, 4))
+a = Chordrest(unit(8), upper_staff, ["a'"], Duration(3, 16))
 MusicText((unit(-1), unit(-2)), a, "ornamentMordent")
-b = Chordrest(unit(19), upper_staff, ["b'"], Duration(1, 16))
+b = Chordrest(unit(11), upper_staff, ["b'"], Duration(1, 16))
 BeamGroup([a, b])
 
 # Lower staff notes - upper voice
-Chordrest(unit(10), lower_staff, None, (1, 4), unit(-3))
-Chordrest(unit(16), lower_staff, ["d"], Duration(1, 4), stem_direction=DirectionY.UP)
+Chordrest(unit(2), lower_staff, None, (1, 4), unit(-3))
+Chordrest(unit(8), lower_staff, ["d"], Duration(1, 4), stem_direction=DirectionY.UP)
 
 # Lower staff notes - middle voice
-Chordrest(unit(8), lower_staff, None, (1, 4), rest_y=unit(-2))
-Chordrest(unit(12), lower_staff, ["b,"], Duration(2, 4), stem_direction=DirectionY.UP)
+Chordrest(unit(0), lower_staff, None, (1, 4), rest_y=unit(-2))
+Chordrest(unit(4), lower_staff, ["b,"], Duration(2, 4), stem_direction=DirectionY.UP)
 
 # Lower staff notes - lower voice
-Chordrest(unit(8), lower_staff, ["g,"], Duration(3, 4))
+Chordrest(unit(0), lower_staff, ["g,"], Duration(3, 4))
 
-Barline(unit(22), staves)
+Barline(unit(14), staves)
 
 # BAR 2 ###################################################
 
-b2 = unit(23)
+b2 = unit(15)
 
 # Upper staff notes
 a = Chordrest(b2, upper_staff, ["a'"], (1, 8))
@@ -94,6 +94,4 @@ Chordrest(
 Chordrest(b2, lower_staff, ["f,"], Duration(3, 4))
 
 
-# Barline to test line breaking
-Barline(Mm(140), staves)
 render_example("goldberg")

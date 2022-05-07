@@ -8,10 +8,10 @@ flowable = Flowable((Mm(0), Mm(0)), None, Mm(500), Mm(30), Mm(10))
 
 staff = Staff((Mm(0), Mm(0)), flowable, Mm(500))
 unit = staff.unit
-clef = Clef(unit(0), staff, "treble")
-KeySignature(clef.bounding_rect.width + unit(0.5), staff, "g_major")
+clef = Clef(ZERO, staff, "treble")
+KeySignature(ZERO, staff, "g_major")
 
-center = unit(20)
+center = unit(15)
 
 n1 = Notehead(center, staff, "g", Duration(1, 4))
 n2 = Notehead(center, staff, "b", Duration(1, 4))
