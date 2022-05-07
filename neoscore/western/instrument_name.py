@@ -120,7 +120,7 @@ class InstrumentName(PaintedObject, StaffObject):
         """The width of later lines of text"""
         return self.font.bounding_rect_of(self._resolved_later_lines_text).width
 
-    def render_occurrence(
+    def _render_occurrence(
         self,
         render_call_pos: Point,
         flowable_line: Optional[NewLine],
@@ -157,18 +157,18 @@ class InstrumentName(PaintedObject, StaffObject):
         flowable_line: Optional[NewLine] = None,
         flowable_x: Optional[Unit] = None,
     ):
-        self.render_occurrence(pos, flowable_line, True)
+        self._render_occurrence(pos, flowable_line, True)
 
     def render_before_break(self, pos: Point, flowable_line: NewLine, flowable_x: Unit):
-        self.render_occurrence(pos, flowable_line, True)
+        self._render_occurrence(pos, flowable_line, True)
 
     def render_spanning_continuation(
         self, pos: Point, flowable_line: NewLine, object_x: Unit
     ):
-        self.render_occurrence(pos, flowable_line, False)
+        self._render_occurrence(pos, flowable_line, False)
 
     def render_after_break(self, pos: Point, flowable_line: NewLine, object_x: Unit):
-        self.render_occurrence(pos, flowable_line, False)
+        self._render_occurrence(pos, flowable_line, False)
 
     def _register_layout_controllers(self):
         # This is known to have some limitations in some cases when a staff is added

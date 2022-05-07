@@ -32,7 +32,7 @@ TimeSignature(ZERO, staff_4, ([3, 3, 2], 8))
 staves = [staff_1, staff_2, staff_3, staff_4]
 
 SystemLine(ZERO, staves)
-Brace(ZERO, staves)
+Brace(staves)
 
 Barline(Mm(30), staves)
 

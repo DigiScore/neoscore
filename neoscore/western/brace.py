@@ -7,7 +7,7 @@ from neoscore.core.music_text import MusicText
 from neoscore.core.pen import PenDef
 from neoscore.core.point import Point
 from neoscore.core.text_alignment import AlignmentX
-from neoscore.core.units import Unit
+from neoscore.core.units import ZERO, Unit
 from neoscore.western.abstract_staff import AbstractStaff
 from neoscore.western.multi_staff_object import MultiStaffObject
 from neoscore.western.staff_group import StaffGroup
@@ -15,15 +15,13 @@ from neoscore.western.staff_group import StaffGroup
 
 class Brace(MultiStaffObject, MusicText):
 
-    """A brace spanning staves, recurring at line beginnings.
+    """A brace spanning staves.
 
-    The brace is drawn at the beginning of every line starting at the line containing
-    its initial x position until the end of the staff.
+    This is drawn in the fringe of every staff system in the specified group.
     """
 
     def __init__(
         self,
-        pos_x: Unit,
         staves: StaffGroup | list[AbstractStaff],
         font: Optional[MusicFont] = None,
         brush: Optional[BrushDef] = None,
@@ -31,7 +29,6 @@ class Brace(MultiStaffObject, MusicText):
     ):
         """
         Args:
-            pos_x: The starting X position relative to the highest staff.
             staves: The staves spanned. If a raw list of staves is given, it must be
                 in descending order.
             font: If provided, this overrides the font in the parent (top) staff.
@@ -55,7 +52,7 @@ class Brace(MultiStaffObject, MusicText):
             # Attempt to use size-specific optional glyph
             MusicText.__init__(
                 self,
-                (pos_x, self.vertical_span),
+                (ZERO, self.vertical_span),
                 self.highest,
                 text,
                 font,
@@ -68,7 +65,7 @@ class Brace(MultiStaffObject, MusicText):
             # Default to non-optional glyph
             MusicText.__init__(
                 self,
-                (pos_x, self.vertical_span),
+                (ZERO, self.vertical_span),
                 self.highest,
                 "brace",
                 font,
@@ -86,7 +83,15 @@ class Brace(MultiStaffObject, MusicText):
 
         This is used to determine how and where rendering cuts should be made.
         """
-        return self.parent.breakable_length - self.x
+        return self.highest.breakable_length
+
+    def _render_occurrence(
+        self,
+        pos: Point,
+        flowable_line: Optional[NewLine],
+    ):
+        fringe_layout = self.highest.fringe_layout_at(flowable_line)
+        super().render_complete(Point(pos.x + fringe_layout.staff, pos.y))
 
     def render_complete(
         self,
@@ -94,22 +99,18 @@ class Brace(MultiStaffObject, MusicText):
         flowable_line: Optional[NewLine] = None,
         flowable_x: Optional[Unit] = None,
     ):
-        fringe_layout = self.highest.fringe_layout_at(flowable_line)
-        super().render_complete(Point(pos.x + fringe_layout.staff, pos.y))
+        self._render_occurrence(pos, flowable_line)
 
     def render_before_break(self, pos: Point, flowable_line: NewLine, flowable_x: Unit):
-        fringe_layout = self.highest.fringe_layout_at(flowable_line)
-        super().render_complete(Point(pos.x + fringe_layout.staff, pos.y))
+        self._render_occurrence(pos, flowable_line)
 
     def render_spanning_continuation(
         self, pos: Point, flowable_line: NewLine, object_x: Unit
     ):
-        fringe_layout = self.highest.fringe_layout_at(flowable_line)
-        super().render_complete(Point(pos.x + fringe_layout.staff, pos.y))
+        self._render_occurrence(pos, flowable_line)
 
     def render_after_break(self, pos: Point, flowable_line: NewLine, object_x: Unit):
-        fringe_layout = self.highest.fringe_layout_at(flowable_line)
-        super().render_complete(Point(pos.x + fringe_layout.staff, pos.y))
+        self._render_occurrence(pos, flowable_line)
 
     def _register_layout_controllers(self):
         flowable = self.flowable

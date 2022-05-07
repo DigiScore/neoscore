@@ -88,7 +88,7 @@ hairpin = Hairpin((Mm(0), Mm(3)), p, (Mm(0), Mm(3)), sfz, 1)
 
 slur = Slur((Mm(0), Mm(0)), regular_text, (Mm(0), Mm(0)), sfz)
 
-brace = Brace(Mm(0), [staff, lower_staff, lowest_staff])
+brace = Brace([staff, lower_staff, lowest_staff])
 
 random_wiggles = [
     random.choice(["wiggleRandom1", "wiggleRandom2", "wiggleRandom3", "wiggleRandom4"])

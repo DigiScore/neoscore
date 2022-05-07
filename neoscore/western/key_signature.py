@@ -78,7 +78,7 @@ class KeySignature(PositionedObject, StaffObject):
         # Add max position + 1 for accidental width
         return self.staff.unit(max_x + 1)
 
-    def render_occurrence(
+    def _render_occurrence(
         self, pos: Point, flowable_line: Optional[NewLine], for_line_start: bool
     ):
         base_x = pos.x
@@ -116,17 +116,17 @@ class KeySignature(PositionedObject, StaffObject):
                 for_line_start = True
         elif self.x == ZERO:
             for_line_start = True
-        self.render_occurrence(pos, flowable_line, for_line_start)
+        self._render_occurrence(pos, flowable_line, for_line_start)
 
     def render_before_break(self, pos: Point, flowable_line: NewLine, flowable_x: Unit):
         fringe_layout = self.staff.fringe_layout_at(flowable_line)
         for_line_start = fringe_layout.pos_x_in_staff == self.pos_x_in_staff
-        self.render_occurrence(pos, flowable_line, for_line_start)
+        self._render_occurrence(pos, flowable_line, for_line_start)
 
     def render_spanning_continuation(
         self, pos: Point, flowable_line: NewLine, object_x: Unit
     ):
-        self.render_occurrence(pos, flowable_line, True)
+        self._render_occurrence(pos, flowable_line, True)
 
     def render_after_break(self, pos: Point, flowable_line: NewLine, object_x: Unit):
-        self.render_occurrence(pos, flowable_line, True)
+        self._render_occurrence(pos, flowable_line, True)

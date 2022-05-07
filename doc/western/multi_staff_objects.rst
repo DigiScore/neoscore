@@ -98,7 +98,7 @@ Staff system braces can be created with the :obj:`.Brace` class. Braces are auto
    group = StaffGroup()
    staff_1 = Staff(ORIGIN, None, Mm(40), group)
    staff_2 = Staff((ZERO, Mm(15)), None, Mm(40), group)
-   Brace(ZERO, group)
+   Brace(group)
 
 .. rendered-example::
 
@@ -106,5 +106,5 @@ Staff system braces can be created with the :obj:`.Brace` class. Braces are auto
    group = StaffGroup()
    staff_1 = Staff(ORIGIN, flowable, Mm(400), group)
    staff_2 = Staff((ZERO, Mm(15)), flowable, Mm(400), group)
-   Brace(ZERO, group)
+   Brace(group)
    SystemLine(ZERO, group)
