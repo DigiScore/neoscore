@@ -21,8 +21,13 @@ def render_example(name: str):
         else:
             image_path = output_dir / f"{name}_image.png"
         autocrop = "--autocrop" in sys.argv
+        entire_scene = "--entire-scene" in sys.argv
         neoscore.render_image(
-            neoscore.document.pages[0].document_space_bounding_rect,
+            (
+                None
+                if entire_scene
+                else neoscore.document.pages[0].document_space_bounding_rect
+            ),
             image_path,
             dpi,
             autocrop=autocrop,

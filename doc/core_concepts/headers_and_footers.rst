@@ -4,7 +4,7 @@ Headers and Footers
 Neoscore has robust support for headers and footers using higher level page overlay functions. Simply assign a function to :obj:`.neoscore.document.pages.overlay_func` which takes a :obj:`.Page` and use it to create some objects.
 
 .. rendered-example::
-    
+
     # Use a smaller paper for doc example
     neoscore.document.paper = Paper(Mm(200), Mm(150), Mm(10), Mm(10), Mm(10), Mm(10))
     def overlay(page: Page):
@@ -14,7 +14,7 @@ Neoscore has robust support for headers and footers using higher level page over
             page_rect.width, page_rect.height, Brush.no_brush())
         # And write some text
         Text(ORIGIN, page, f"some overlay text on page {page.page_index + 1}")
-    
+
     neoscore.document.pages.overlay_func = overlay
 
     Text((Mm(50), Mm(50)), None, "text directly on the page")
@@ -24,7 +24,7 @@ This overlay function is then run every time a new page is created. As a reminde
 For the common use-case of a simple header and footer, neoscore provides a built-in overlay function generator with :obj:`.simple_header_footer`.
 
 .. rendered-example::
-    
+
     # Use a smaller paper for doc example
     neoscore.document.paper = Paper(Mm(200), Mm(150), Mm(10), Mm(10), Mm(10), Mm(10))
     # Since the first page is a right-side page, corner text will appear on the right edge
@@ -35,7 +35,3 @@ For the common use-case of a simple header and footer, neoscore provides a built
         "centered bottom",
     )
     Text((Mm(50), Mm(50)), None, "text directly on the page")
-
-.. todo::
-
-    Disable auto cropping on these examples

@@ -16,7 +16,7 @@ from neoscore.core.color import Color, ColorDef
 from neoscore.core.exceptions import InvalidImageFormatError
 from neoscore.core.paper import A4, Paper
 from neoscore.core.pen import Pen
-from neoscore.core.rect import Rect, RectDef
+from neoscore.core.rect import RectDef
 from neoscore.core.units import Unit
 from neoscore.interface.app_interface import AppInterface
 
@@ -268,7 +268,7 @@ def render_pdf(pdf_path: str | pathlib.Path, dpi: int = 300):
 
 
 def render_image(
-    rect: RectDef,
+    rect: Optional[RectDef],
     image_path: str | pathlib.Path,
     dpi: int = 300,
     quality: int = -1,
@@ -295,6 +295,7 @@ def render_image(
 
     Args:
         rect: The part of the document to render, in document coordinates.
+            If ``None``, the entire scene will be rendered.
         image_path: The path to the output image.
             This must be a valid path relative to the current working directory.
         dpi: The pixels per inch of the rendered image.
@@ -313,8 +314,7 @@ def render_image(
             unknown reasons.
 
     """
-    # TODO HIGH add ability to render the entire doc contents here and autocrop. This will
-    # simplify writing rendered examples in docs.
+
     global document
     global _app_interface
 
@@ -329,7 +329,6 @@ def render_image(
             "image_path {} is not in a supported format.".format(image_path)
         )
 
-    rect = Rect.from_def(rect)
     bg_color = background_brush.color
     document.render()
 

@@ -3,7 +3,7 @@ from __future__ import annotations
 import multiprocessing
 import pathlib
 import threading
-from typing import TYPE_CHECKING, Callable
+from typing import TYPE_CHECKING, Callable, Optional
 
 from PyQt5.QtCore import QRectF
 from PyQt5.QtGui import (
@@ -20,7 +20,7 @@ from PyQt5.QtWidgets import QApplication, QGraphicsScene
 from neoscore.core import env
 from neoscore.core.color import Color
 from neoscore.core.exceptions import FontRegistrationError, ImageExportError
-from neoscore.core.rect import Rect
+from neoscore.core.rect import Rect, RectDef
 from neoscore.core.units import Inch, Mm
 from neoscore.interface.brush_interface import BrushInterface
 from neoscore.interface.qt.converters import color_to_q_color, rect_to_qt_rect_f
@@ -85,7 +85,7 @@ class AppInterface:
 
     def render_image(
         self,
-        rect: Rect,
+        rect: Optional[RectDef],
         image_path: str | pathlib.Path,
         dpi: int,
         quality: int,
@@ -103,8 +103,8 @@ class AppInterface:
         render threads are already running.
 
         Args:
-            rect: The part of the document to render,
-                in document coordinates.
+            rect: The part of the document to render, in document coordinates.
+                If ``None``, the entire scene will be rendered.
             image_path: The path to the output image.
                 This must be a valid path relative to the current
                 working directory.
@@ -128,8 +128,12 @@ class AppInterface:
             image_path = str(image_path)
         dpm = AppInterface._dpi_to_dpm(dpi)
         scale = dpm / Mm(1000).base_value
-        pix_width = int(rect.width.base_value * scale)
-        pix_height = int(rect.height.base_value * scale)
+        if rect:
+            source_rect = rect_to_qt_rect_f(Rect.from_def(rect))
+        else:
+            source_rect = self.scene.sceneRect()
+        pix_width = int(source_rect.width() * scale)
+        pix_height = int(source_rect.height() * scale)
 
         if preserve_alpha:
             q_image_format = QImage.Format_ARGB32
@@ -147,7 +151,6 @@ class AppInterface:
         painter.setRenderHint(QPainter.Antialiasing)
 
         target_rect = QRectF(q_image.rect())
-        source_rect = rect_to_qt_rect_f(rect)
 
         self.scene.render(painter, target=target_rect, source=source_rect)
         painter.end()

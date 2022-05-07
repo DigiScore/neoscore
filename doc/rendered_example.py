@@ -72,7 +72,7 @@ class RenderedExample(CodeBlock):
         """Modify `script` in-place preparing it for render"""
         render_line = (
             f"neoscore.render_image("
-            + "neoscore.document.pages[0].document_space_bounding_rect,"
+            + "None,"
             + f"'{export_path}', 130, autocrop=True)"
         )
 
