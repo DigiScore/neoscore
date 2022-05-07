@@ -18,6 +18,13 @@ from neoscore.core.units import ZERO
 
 class Score(PositionedObject):
 
+    """The main object for the score.
+
+    This class converts a collection of content data to a fully drawn score. It converts
+    the content data into graphical Event objects, and draws the score gridlines
+    according to rules deduced from the reference piece.
+    """
+
     _TEXT_FONT_SIZE = GridUnit(0.6)
     _MUSIC_FONT_SIZE = GridUnit(0.5)
 
@@ -111,6 +118,7 @@ class Score(PositionedObject):
         ) or instrument.measure_has_events(measure_num)
 
     def draw_instrument_dividers(self):
+        """Draw the horizontal dividers between instrument areas"""
         for divider in range(len(self.instruments) + 1):
             current_path = Path(
                 (Measure(0), Score._divider_pos_y(divider)),
@@ -135,6 +143,7 @@ class Score(PositionedObject):
                         drawing = False
 
     def draw_barlines(self):
+        """Draw the vertical dashed barlines between measures"""
         pen = Score._barline_pen
         for measure_num in range(self.measure_count + 1):
             measure_x = Measure(measure_num)

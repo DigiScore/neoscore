@@ -1,2 +1,2 @@
 class GlyphName(str):
-    pass
+    """A newtype to disambiguate plain text strings and SMuFL glyph names."""

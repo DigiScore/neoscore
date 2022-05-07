@@ -1,3 +1,5 @@
+"""The main entrypoint for the example score."""
+
 from examples.feldman_projection_2.content import instruments
 from examples.feldman_projection_2.grid_unit import GridUnit
 from examples.feldman_projection_2.measure import Measure

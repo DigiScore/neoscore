@@ -5,6 +5,9 @@ from neoscore.core.text_alignment import AlignmentX, AlignmentY
 
 
 class MusicTextEvent(Event):
+
+    """An Event box with a MusicText glyph inside it"""
+
     def __init__(self, pos, parent, length, text, font):
         Event.__init__(self, pos, parent, length)
         self.text = MusicText(

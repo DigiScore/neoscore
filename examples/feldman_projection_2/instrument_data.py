@@ -15,6 +15,9 @@ class EventData(NamedTuple):
 
 
 class InstrumentData:
+
+    """A container of content data for an entire instrument"""
+
     def __init__(self, name: str, event_data):
         self.name: str = name
         self.event_data = event_data

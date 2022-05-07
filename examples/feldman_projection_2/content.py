@@ -1,3 +1,10 @@
+"""The score's content data.
+
+The managed notation system built out in this example can turn this raw data into an
+almost fully notated score.
+"""
+
+
 from examples.feldman_projection_2.glyph_name import GlyphName
 from examples.feldman_projection_2.grid_unit import GridUnit as G
 from examples.feldman_projection_2.instrument_data import EventData, InstrumentData

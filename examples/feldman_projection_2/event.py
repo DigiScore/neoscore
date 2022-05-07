@@ -11,7 +11,11 @@ from neoscore.core.units import Unit
 
 
 class Event(PositionedObject):
-    """A boxed event."""
+    """A graphical event wrapped in a box
+
+    This plain class can notate plain empty rectangle events, but it can be subclassed
+    to create boxes with text and glyphs inside them.
+    """
 
     box_pen = Pen(thickness=GridUnit(0.07))
 
