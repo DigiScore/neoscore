@@ -3,16 +3,9 @@ from enum import Enum
 
 class BrushPattern(Enum):
 
-    """An enumeration of pen stroke patterns.
+    """Brush fill patterns"""
 
-    Only the below enumerated patterns are currently supported,
-    but if needed it is possible to implement gradient patterns
-    and arbitrary custom patterns. See the following page from
-    the relevant Qt docs:
-        https://doc.qt.io/qt-5/qt.html#BrushStyle-enum
-
-    The corresponding integer values must align with Qt's enum values.
-    """
+    # Values align with Qt's https://doc.qt.io/qt-5/qt.html#BrushStyle-enum
 
     INVISIBLE = 0
     """No brush pattern. This is equivalent to a fully transparent color."""

@@ -3,10 +3,9 @@ from enum import Enum
 
 class PenCapStyle(Enum):
 
-    """Styles controlling how pen strokes are capped.
+    """Styles controlling how pen strokes are capped."""
 
-    See also http://doc.qt.io/qt-5.9/qt.html#PenCapStyle-enum
-    """
+    # Values align with Qt's http://doc.qt.io/qt-5.9/qt.html#PenCapStyle-enum
 
     SQUARE = 0x10
     """A square cap that extends beyond the end point by half the pen width"""

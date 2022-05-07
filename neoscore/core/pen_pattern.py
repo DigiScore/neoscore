@@ -3,15 +3,9 @@ from enum import Enum
 
 class PenPattern(Enum):
 
-    """An enumeration of pen stroke patterns.
+    """Pen stroke patterns"""
 
-    Only the below enumerated patterns are currently supported,
-    but if needed it is possible to implement arbitrary custom
-    patterns. See the following page from the relevant Qt docs:
-        http://doc.qt.io/qt-5.7/qt.html#PenStyle-enum
-
-    The corresponding integer values must align with Qt's enum values.
-    """
+    # These values align with Qt's values http://doc.qt.io/qt-5.7/qt.html#PenStyle-enum
 
     INVISIBLE = 0
 
