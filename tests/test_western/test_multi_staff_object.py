@@ -3,7 +3,6 @@ from neoscore.core.units import Mm
 from neoscore.western.multi_staff_object import MultiStaffObject
 from neoscore.western.staff import Staff
 from neoscore.western.staff_group import StaffGroup
-from tests.helpers import assert_almost_equal
 
 from ..helpers import AppTest
 
@@ -35,4 +34,8 @@ class TestMultiStaffObject(AppTest):
 
     def test_vertical_span(self):
         multi_object = MultiStaffObject([self.staff_1, self.staff_2, self.staff_3])
-        assert_almost_equal(multi_object.vertical_span, self.staff_3.unit(4) + Mm(50))
+        assert multi_object.vertical_span == self.staff_3.unit(4) + Mm(50)
+
+    def test_center_y(self):
+        multi_object = MultiStaffObject([self.staff_1, self.staff_2, self.staff_3])
+        assert multi_object.center_y == multi_object.vertical_span / 2

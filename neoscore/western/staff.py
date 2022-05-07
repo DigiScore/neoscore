@@ -170,7 +170,7 @@ class Staff(AbstractStaff):
         staff_flowable_x = flowable.descendant_pos_x(self)
         flowable.add_margin_controller(
             MarginController(
-                staff_flowable_x, self.unit(StaffGroup.RIGHT_PADDING), "neoscore_staff"
+                staff_flowable_x, self.unit(StaffGroup.RIGHT_PADDING), "_neoscore_staff"
             )
         )
         for clef_x, clef in self.clefs:
@@ -179,7 +179,7 @@ class Staff(AbstractStaff):
                 StaffGroup.CLEF_LEFT_PADDING
             )
             flowable.add_margin_controller(
-                MarginController(flowable_x, margin_needed, "neoscore_clef")
+                MarginController(flowable_x, margin_needed, "_neoscore_clef")
             )
         # Assume that key signatures have the same width in all clefs
         for key_sig_x, key_sig in self.key_signatures:
@@ -188,7 +188,7 @@ class Staff(AbstractStaff):
                 MarginController(
                     flowable_x,
                     key_sig.visual_width + self.unit(StaffGroup.KEY_SIG_LEFT_PADDING),
-                    "neoscore_key_signature",
+                    "_neoscore_key_signature",
                 )
             )
         for time_sig in self.descendants_with_attribute(
@@ -199,13 +199,13 @@ class Staff(AbstractStaff):
                 MarginController(
                     flowable_x,
                     time_sig.visual_width + self.unit(StaffGroup.TIME_SIG_LEFT_PADDING),
-                    "neoscore_time_signature",
+                    "_neoscore_time_signature",
                 )
             )
             # Cancel the margin controller immediately after it afters, this way time
             # signatures only affect margins if they lie right around a line start.
             flowable.add_margin_controller(
-                MarginController(flowable_x + Unit(1), ZERO, "neoscore_time_signature")
+                MarginController(flowable_x + Unit(1), ZERO, "_neoscore_time_signature")
             )
 
     def _fringe_layout_for_isolated_staff(

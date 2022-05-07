@@ -54,3 +54,10 @@ class MultiStaffObject:
         highest = self.staves[0]
         lowest = self.staves[-1]
         return highest.unit(highest.map_to(lowest).y + lowest.height)
+
+    @property
+    def center_y(self) -> Unit:
+        """The vertical center of the staves spanned.
+
+        This value is relative to the top of the highest staff."""
+        return self.vertical_span / 2

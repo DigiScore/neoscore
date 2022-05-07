@@ -12,7 +12,7 @@ Neoscore is able to draw thousands of common and uncommon musical glyphs by writ
 
 :obj:`.MusicFont` and :obj:`.MusicText` are used much like their plaintext counterparts, but instead of specifying text as plain strings you provide glyph names. These glyph names are used as keys to look up their corresponding unicode codepoints in the `Standard Music Font Layout (SMuFL) schema <https://w3c.github.io/smufl/latest/index.html>`_ with which all supported music fonts comply.
 
-Unlike text fonts which are sized to a given line height, music fonts are sized to a given *staff unit* - the distance between two staff lines. This size may be given either as a unit value or a unit type where ``unit(1)`` is that distance. 
+Unlike text fonts which are sized to a given line height, music fonts are sized to a given *staff unit* - the distance between two staff lines. This size may be given either as a unit value or a unit type where ``unit(1)`` is that distance.
 
 .. rendered-example::
 
@@ -21,7 +21,7 @@ Unlike text fonts which are sized to a given line height, music fonts are sized 
     MusicText((Mm(6), ZERO), None, "ornamentTurn", MusicFont("Bravura", Mm(2)))
     MusicText((Mm(11), ZERO), None, "noteheadBlack", MusicFont("Bravura", Mm(2)))
 
-The way glyphs are aligned relative to the given :obj:`.MusicText` position varies based on the SMuFL schema. For example noteheads are locally aligned such that they can be placed at the Y position of a staff line or space-center, while the treble clef glyph expects to be placed on the fourth staff line. 
+The way glyphs are aligned relative to the given :obj:`.MusicText` position varies based on the SMuFL schema. For example noteheads are locally aligned such that they can be placed at the Y position of a staff line or space-center, while the treble clef glyph expects to be placed on the fourth staff line.
 
 .. rendered-example::
 
@@ -66,4 +66,4 @@ If you expect to use music text often, we strongly recommend getting familiar wi
 
 .. todo::
 
-    when we understand better whether we support other fonts than bravura, explain how to register new music fonts as well
+when we understand better whether we support other fonts than bravura, explain how to register new music fonts as well

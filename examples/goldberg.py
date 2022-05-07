@@ -15,7 +15,7 @@ staff_group = StaffGroup()
 upper_staff = Staff((Mm(0), Mm(0)), flowable, Mm(500), staff_group)
 lower_staff = Staff((Mm(0), Mm(20)), flowable, Mm(500), staff_group)
 staves = [upper_staff, lower_staff]
-Brace(Mm(0), staves)
+brace = Brace(Mm(0), staves)
 SystemLine(Mm(0), staves)
 
 # We can use the same unit in the upper and lower staves since they
@@ -30,6 +30,8 @@ KeySignature(ZERO, lower_staff, "g_major")
 
 TimeSignature(ZERO, upper_staff, (3, 4))
 TimeSignature(ZERO, lower_staff, (3, 4))
+
+InstrumentName((upper_staff.unit(-3), brace.center_y), upper_staff, "Piano", "pno")
 
 Dynamic((unit(-4), unit(6.5)), upper_staff, "p")
 Text((unit(-1), unit(6.5)), upper_staff, "dolce", expressive_font)

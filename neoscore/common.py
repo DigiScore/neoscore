@@ -43,6 +43,7 @@ from neoscore.western.duration import Duration
 from neoscore.western.dynamic import Dynamic
 from neoscore.western.flag import Flag
 from neoscore.western.hairpin import Hairpin
+from neoscore.western.instrument_name import InstrumentName
 from neoscore.western.invisible_clef import InvisibleClef
 from neoscore.western.key_signature import KeySignature
 from neoscore.western.key_signature_type import KeySignatureType

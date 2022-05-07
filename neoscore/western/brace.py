@@ -1,7 +1,7 @@
 from typing import Optional, cast
 
 from neoscore.core.brush import BrushDef
-from neoscore.core.layout_controllers import NewLine
+from neoscore.core.layout_controllers import MarginController, NewLine
 from neoscore.core.music_font import MusicFont, MusicFontGlyphNotFoundError
 from neoscore.core.music_text import MusicText
 from neoscore.core.pen import PenDef
@@ -110,3 +110,20 @@ class Brace(MultiStaffObject, MusicText):
     def render_after_break(self, pos: Point, flowable_line: NewLine, object_x: Unit):
         fringe_layout = self.highest.fringe_layout_at(flowable_line)
         super().render_complete(Point(pos.x + fringe_layout.staff, pos.y))
+
+    def _register_layout_controllers(self):
+        flowable = self.flowable
+        if not flowable:
+            return
+        staff_flowable_x = flowable.descendant_pos_x(self.highest)
+        flowable.add_margin_controller(
+            MarginController(
+                staff_flowable_x,
+                self.bounding_rect.width,
+                "_neoscore_brace",
+            )
+        )
+
+    def pre_render_hook(self):
+        super().pre_render_hook()
+        self._register_layout_controllers()
