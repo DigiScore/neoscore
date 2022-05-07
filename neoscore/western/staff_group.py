@@ -20,7 +20,7 @@ class StaffGroup:
     # Padding to the left of time signatures in fringes
     TIME_SIG_LEFT_PADDING = 0.5
     # PAdding to the left of key signatures in fringes
-    KEY_SIG_LEFT_PADDING = 0.5
+    KEY_SIG_LEFT_PADDING = 0.25
 
     def __init__(self) -> None:
         self._fringe_layout_cache: dict[
@@ -66,8 +66,7 @@ class StaffGroup:
             return True
         staff_pos_x = staff.flowable.descendant_pos_x(staff)
         return (staff_pos_x <= location.flowable_x) and (
-            staff_pos_x + staff.breakable_length
-            >= location.flowable_x + location.length
+            staff_pos_x + staff.breakable_length >= location.flowable_x
         )
 
     def _align_layout(

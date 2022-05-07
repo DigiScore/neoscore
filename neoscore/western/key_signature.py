@@ -119,7 +119,8 @@ class KeySignature(PositionedObject, StaffObject):
         self.render_occurrence(pos, flowable_line, for_line_start)
 
     def render_before_break(self, pos: Point, flowable_line: NewLine, flowable_x: Unit):
-        for_line_start = flowable_line.flowable_x == flowable_x
+        fringe_layout = self.staff.fringe_layout_at(flowable_line)
+        for_line_start = fringe_layout.pos_x_in_staff == self.pos_x_in_staff
         self.render_occurrence(pos, flowable_line, for_line_start)
 
     def render_spanning_continuation(

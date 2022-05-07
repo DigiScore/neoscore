@@ -42,7 +42,7 @@ octave_line = OctaveLine((Mm(20), staff.unit(-3)), staff, Mm(1000), indication="
 Chordrest(Mm(10), staff, ["a", "bs,"], Duration(2, 4))
 Chordrest(Mm(60), staff, ["b", "bf,"], Duration(2, 4))
 
-Chordrest(Mm(10), lowest_staff, [("a", "accidentalQuarterToneSharpStein", 2)], (3, 4))
+Chordrest(Mm(5), lowest_staff, [("a", "accidentalQuarterToneSharpStein", 2)], (3, 4))
 Chordrest(
     Mm(15),
     lowest_staff,
