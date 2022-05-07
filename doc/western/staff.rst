@@ -101,6 +101,18 @@ Meters can be defined in a few different ways. A 2-tuple as seen above will give
 
    Time signatures are purely cosmetic since neoscore's limited engraving knowledge is not meter-aware.
 
+Instrument Names
+----------------
+
+Instrument names can be drawn to the left of staff systems using the :obj:`.InstrumentName` class. It draws text right-aligned and vertically centered at a given position relative to the top left corner of each staff fringe. You can optionally provide is a different string to use for lines after the first, including a blank string to leave later lines blank.
+
+.. rendered-example::
+
+   flowable = Flowable(ORIGIN, None, Mm(300), Mm(15))
+   staff = Staff(ORIGIN, flowable, Mm(300))
+   InstrumentName((staff.unit(-2), staff.center_y), staff, "Melodica", "mel")
+   Clef(ZERO, staff, 'treble')
+
 Staff Fringes
 -------------
 

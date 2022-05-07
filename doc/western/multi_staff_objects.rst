@@ -71,7 +71,7 @@ Barlines automatically attach a :obj:`.BreakHint` immediately after them, so if 
 System Lines
 ------------
 
-A line connecting a system's staves at the start of every line can be easily drawn with the :obj:`.SystemLine` class.
+A line connecting a system's staves at the start of every line can be easily drawn with the :obj:`.SystemLine` class. Once created, the ``SystemLine`` is drawn at the beginning of every system in the given staff group.
 
 .. rendered-example::
 
@@ -91,7 +91,7 @@ A line connecting a system's staves at the start of every line can be easily dra
 Braces
 ------
 
-Staff system braces can be created with the :obj:`.Brace` class. Braces are automatically right-aligned to their given position and, like :obj:`.SystemLine`\ s, they appear at the beginning of every staff system after their placement.
+Staff system braces can be created with the :obj:`.Brace` class. Like :obj:`.SystemLine`\ s, they appear at the beginning of every staff system once created.
 
 .. rendered-example::
 
