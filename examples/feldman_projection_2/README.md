@@ -4,4 +4,6 @@ This is an involved example score demonstrating how you can build sophisticated 
 
 To run the score, run `main.py`.
 
+![Preview of Feldman's Projection 2 as built with neoscore](/gallery/feldman_projection_2.png)
+
 Note that this piece is (c) Edition Peters 1951, used here under fair use. The project's open source license does not extend to the musical contents of the piece.
