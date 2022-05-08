@@ -186,6 +186,17 @@ class TestPositionedObject(AppTest):
         expected = Point(Unit(-1), Unit(-2))
         assert_almost_equal(relative_pos, expected)
 
+    def test_map_to_x(self):
+        source = PositionedObject((Unit(5), Unit(6)), neoscore.document.pages[1])
+        destination = PositionedObject((Unit(99), Unit(90)), neoscore.document.pages[4])
+        relative_x = source.map_x_to(destination)
+
+        page_1_x = neoscore.document.pages[1].canvas_pos().x
+        page_4_x = neoscore.document.pages[4].canvas_pos().x
+
+        expected = (page_4_x + Unit(99)) - (page_1_x + Unit(5))
+        assert_almost_equal(relative_x, expected)
+
     def test_canvas_pos(self):
         item = PositionedObject((Mm(5), Mm(6)), neoscore.document.pages[2])
         canvas_pos = item.canvas_pos()

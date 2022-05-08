@@ -265,6 +265,7 @@ class PositionedObject:
         for two objects in a ``Flowable`` container whether or not they are separated by
         a line break.
         """
+        # When changing this method be sure to make the equivalent change in `map_x_to`
         # Handle easy cases
         if self == dst:
             return ORIGIN
@@ -295,8 +296,37 @@ class PositionedObject:
 
     def map_x_to(self, dst: PositionedObject) -> Unit:
         """Like :obj:`.map_to`, but only return the X distance from to ``dst``."""
-        # TODO HIGH inline here and edit as needed
-        return self.map_to(dst).x
+
+        # This implementation is copied from `map_to` and tweaked to only handle the X
+        # axis. This is a very common operation, so this optimization is useful.
+
+        # Handle easy cases
+        if self == dst:
+            return ZERO
+        if self.parent == dst.parent:
+            return dst.x - self.x
+        if dst.parent == self:
+            return dst.x
+        if self.parent == dst:
+            return -self.x
+        # Start by collecting all ancestor using IDs because they're hashable
+        self_ancestor_ids = set(id(obj) for obj in self.ancestors)
+        relative_dst_x = dst.x
+        for dst_ancestor in dst.ancestors:
+            if hasattr(dst_ancestor, "parent"):
+                relative_dst_x += dst_ancestor.x
+            if id(dst_ancestor) in self_ancestor_ids:
+                # Now find relative_self_x and return relative_dst_x - relative_self_x
+                relative_self_x = self.x
+                for self_ancestor in self.ancestors:
+                    if hasattr(self_ancestor, "parent"):
+                        relative_self_x += self_ancestor.x
+                    if self_ancestor == dst_ancestor:
+                        return relative_dst_x - relative_self_x
+                # Since we've already determined there is a common
+                # ancestor, this should never happen
+                assert False, "Unreachable"
+        raise ValueError(f"{self} and {dst} have no common ancestor")
 
     def canvas_pos(self) -> Point:
         """Find the document-space position of this object.
