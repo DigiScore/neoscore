@@ -17,9 +17,9 @@ class TestBrace(AppTest):
 
     def test_scaling_alternate_glyphs(self):
         small_brace = Brace([self.top_staff])
-        assert small_brace.music_chars[0].canonical_name == "braceSmall"
+        assert small_brace.music_chars[0].glyph_info.canonical_name == "braceSmall"
         large_brace = Brace([self.top_staff, self.bottom_staff])
-        assert large_brace.music_chars[0].canonical_name == "braceLarge"
+        assert large_brace.music_chars[0].glyph_info.canonical_name == "braceLarge"
 
     def test_default_font_from_top_staff(self):
         large_staff = Staff(ORIGIN, None, Mm(100), line_spacing=Mm(3))

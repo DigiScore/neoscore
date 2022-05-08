@@ -25,7 +25,7 @@ class Page(PositionedObject):
 
     """A document page.
 
-    All ``PositionedObject``\ s will have a ``Page`` as their
+    All :obj:`.PositionedObject`\ s will have a ``Page`` as their
     ancestor. All ``Page``\ s are direct children of the global document.
 
     ``Page`` objects are automatically created by ``Document`` and should
@@ -44,17 +44,14 @@ class Page(PositionedObject):
     ):
         """
         Args:
-            pos: The position of the top left corner
-                of this page in canvas space. Note that this refers to the
-                real corner of the page, not the corner of its live area
-                within the paper margins.
-            document: The global document. This is used as
-                the Page object's parent.
-            page_index: The index of this page. This should be
-                the same index this Page can be found at in the document's
-                ``PageSupplier``. This should be a positive number.
+            pos: The position of the top left corner of this page's live area
+                in canvas space. Note that this refers to the corner of the *live*
+                area bounded by margins, not the actual paper corner.
+            document: The global document. This is used as the ``Page`` object's parent.
+            page_index: The index of this page. This should be the same index this page
+                can be found at in :obj:`.Document.pages`.
             page_side: The left/right side the page lies on when printed.
-            paper: The type of paper this page uses.
+            paper: The paper geometry for this page.
         """
         super().__init__(pos, document)
         self._document = document
@@ -64,7 +61,7 @@ class Page(PositionedObject):
 
     @property
     def page_index(self):
-        """The index of this page in its managing ``PageSupplier`` object."""
+        """The index of this page in its managing :obj:`.PageSupplier`."""
         return self._page_index
 
     @property
@@ -77,7 +74,7 @@ class Page(PositionedObject):
 
     @property
     def bounding_rect(self) -> Rect:
-        """The page bounding rect, positioned relative to the page."""
+        """The page bounding rect, positioned relative to the ``pos``."""
         if self.page_side == DirectionX.RIGHT:
             # Page is on right side, apply gutter on left side
             rect_x = -(self.paper.gutter + self.paper.margin_left)
@@ -92,7 +89,7 @@ class Page(PositionedObject):
 
     @property
     def document_space_bounding_rect(self) -> Rect:
-        """Find the page bounding rect relative to the document."""
+        """The page bounding rect relative to the document."""
         local_rect = self.bounding_rect
         return Rect(
             local_rect.x + self.x,
@@ -160,11 +157,11 @@ class Page(PositionedObject):
     def render_geometry_preview(self, background_brush: Brush):
         """Create and render child objects which show the page geometry.
 
-        This shouldn't be called directly; use the setting
-        in ``neoscore.show()`` instead.
+        This shouldn't be called directly; use the setting in :obj:`.neoscore.score`
+        instead.
 
-        This is useful for interactive views, but should typically not
-        be called in PDF and image export contexts.
+        This is useful for interactive views, but should typically not be called in PDF
+        and image export contexts.
         """
         from neoscore.core.path import Path
 

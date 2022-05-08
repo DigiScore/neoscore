@@ -4,15 +4,15 @@ from typing import Optional, TypeAlias, Union
 
 from neoscore.core.glyph_info import GlyphInfo
 from neoscore.core.music_font import MusicFont
+from neoscore.core.rect import Rect
 
 
 @dataclass(frozen=True)
 class MusicChar:
     """A SMuFL music character.
 
-    Note that measurements in the contained metadata may have slight
-    errors and should be used with caution when high precision is
-    needed.
+    Note that measurements in the contained metadata may have slight errors and should
+    be used with caution when high precision is needed.
     """
 
     font: MusicFont
@@ -26,30 +26,21 @@ class MusicChar:
 
     @cached_property
     def glyph_info(self) -> GlyphInfo:
-        # this is a little expensive, so only do it on demand and then cache it
-        """The metadata for a specified glyphname"""
+        """SMuFL metadata for this character"""
 
         return self.font.glyph_info(self.glyph_name, self.alternate_number)
 
     @property
-    def canonical_name(self):
-        """The canonical SMuFL glyph name.
-
-        This is a convenience property for ``glyph_info.canonical_name``
-        """
-        return self.glyph_info.canonical_name
-
-    @property
-    def codepoint(self):
+    def codepoint(self) -> str:
         """The glyph's SMuFL codepoint.
 
-        This is a convenience property for glyph_info.codepoint`
+        This is a convenience property for ``glyph_info.codepoint``
         """
         return self.glyph_info.codepoint
 
     @property
-    def bounding_rect(self):
-        """Rect: The glyph bounding box."""
+    def bounding_rect(self) -> Rect:
+        """The glyph bounding box."""
         return self.glyph_info.bounding_rect
 
 

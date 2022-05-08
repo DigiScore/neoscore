@@ -49,7 +49,9 @@ class TestRepeatingMusicTextLine(AppTest):
         assert line.end_parent == c
         assert line.pos == Point(Unit(-15.681), Unit(29.043))
         assert line.end_pos == Point(Unit(-15.681), Unit(-1.76))
-        assert line.music_chars[-1].canonical_name == "wiggleArpeggiatoUpArrow"
+        assert (
+            line.music_chars[-1].glyph_info.canonical_name == "wiggleArpeggiatoUpArrow"
+        )
 
     def test_for_chord_with_arrow_down(self):
         staff = Staff(ORIGIN, None, Mm(40))
@@ -60,7 +62,9 @@ class TestRepeatingMusicTextLine(AppTest):
         assert line.end_parent == c
         assert line.pos == Point(Unit(-15.681), Unit(-1.76))
         assert line.end_pos == Point(Unit(-15.681), Unit(29.043))
-        assert line.music_chars[-1].canonical_name == "wiggleArpeggiatoUpArrow"
+        assert (
+            line.music_chars[-1].glyph_info.canonical_name == "wiggleArpeggiatoUpArrow"
+        )
 
     def test_for_chord_with_no_arrow(self):
         staff = Staff(ORIGIN, None, Mm(40))
@@ -71,4 +75,4 @@ class TestRepeatingMusicTextLine(AppTest):
         assert line.end_parent == c
         assert line.pos == Point(Unit(-15.681), Unit(-1.76))
         assert line.end_pos == Point(Unit(-15.681), Unit(29.043))
-        assert line.music_chars[-1].canonical_name == "wiggleArpeggiatoUp"
+        assert line.music_chars[-1].glyph_info.canonical_name == "wiggleArpeggiatoUp"

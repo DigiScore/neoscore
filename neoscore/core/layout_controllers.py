@@ -25,7 +25,12 @@ class LayoutController:
 
 
 class NewLine(LayoutController, PositionedObject):
-    """A line break controller."""
+    """A line break controller.
+
+    These are currently used only for automatically generated line breaks and should
+    generally not be constructed directly. Line breaks can be controlled using
+    :obj:`.BreakOpportunity` objects instead.
+    """
 
     def __init__(
         self,
@@ -55,7 +60,7 @@ class NewLine(LayoutController, PositionedObject):
     def page(self) -> Page:
         """The page this controller appears on.
 
-        This is identical to ``self.parent``.
+        This is identical to :obj:`parent <.PositionedObject.parent>`.
         """
         return cast(Page, self.parent)
 
@@ -100,6 +105,9 @@ class MarginController(LayoutController):
     while clefs and key signatures contribute their own margin amounts which can vary
     between systems. In this case, one might create separate margin controllers for each
     of these layers.
+
+    These can be manually created and added to a flowable via
+    :obj:`.Flowable.add_margin_controller` to control margins.
     """
 
     def __init__(self, flowable_x: Unit, margin_left: Unit, layer_key: str = ""):
@@ -110,8 +118,7 @@ class MarginController(LayoutController):
             margin_left: The margin value contributed by this controller in
                 the specified layer
             layer_key: The layer this controller applies to. Layer keys starting with
-                `_neoscore` are reserved for internal purposes and should not be used
-                directly.
+                ``_neoscore`` are reserved for internal purposes.
         """
         super().__init__(flowable_x)
         self._margin_left = margin_left

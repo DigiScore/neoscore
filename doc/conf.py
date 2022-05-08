@@ -83,6 +83,7 @@ napoleon_include_init_with_doc = True
 autodoc_class_signature = "separated"
 autodoc_typehints_format = "short"
 autodoc_member_order = "bysource"
+autodoc_preserve_defaults = True
 
 # Workaround for https://github.com/sphinx-doc/sphinx/issues/10290
 # autodoc_typehints_format doesn't work for all situation, including class properties

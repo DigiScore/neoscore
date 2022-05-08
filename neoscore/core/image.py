@@ -27,7 +27,7 @@ class Image(PositionedObject):
         """
         Args:
             pos: Position relative to the parent
-            parent: The parent (core-level) object or None
+            parent: The parent object or None
             file_path: Path to an image file to be used
             scale: A scaling factor applied to the image.
         """
@@ -61,8 +61,8 @@ class Image(PositionedObject):
     def breakable_length(self) -> Unit:
         """The breakable length of the object.
 
-        This is always 0, meaning Images objects cannot be broken
-        across Flowable lines.
+        This is always ``ZERO``, meaning images cannot be broken across :obj:`.Flowable`
+        lines.
         """
         return ZERO
 

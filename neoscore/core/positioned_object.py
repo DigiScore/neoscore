@@ -351,6 +351,8 @@ class PositionedObject:
     def render_in_flowable(self):
         """Render the object to the scene, dispatching partial rendering calls
         when needed if an object flows across a break in the flowable.
+
+        This and other render methods should generally not be called directly.
         """
         # Calculate position within flowable
         pos_in_flowable = self.flowable.descendant_pos(self)
@@ -412,6 +414,8 @@ class PositionedObject:
         By default this is a no-op. Subclasses with with rendered appearances should
         override this.
 
+        This and other render methods should generally not be called directly.
+
         Args:
             pos: The rendering position in document space for drawing.
             flowable_line: If in a ``Flowable``, the line in which this object appears
@@ -427,6 +431,8 @@ class PositionedObject:
 
         By default this is a no-op. Subclasses with with rendered appearances should
         override this.
+
+        This and other render methods should generally not be called directly.
 
         Args:
             pos: The rendering position in document space for drawing.
@@ -448,6 +454,8 @@ class PositionedObject:
         By default this is a no-op. Subclasses with with rendered appearances should
         override this.
 
+        This and other render methods should generally not be called directly.
+
         Args:
             pos: The rendering position in document space for drawing.
             flowable_line: The line in which this object appears
@@ -463,6 +471,8 @@ class PositionedObject:
 
         By default this is a no-op. Subclasses with with rendered appearances should
         override this.
+
+        This and other render methods should generally not be called directly.
 
         Args:
             pos: The rendering position in document space for drawing.

@@ -19,7 +19,7 @@ class TestClef(AppTest):
         clef = Clef(Mm(1), self.staff, clef_type.TREBLE)
         assert clef.clef_type == clef_type.TREBLE
         assert clef.pos == Point(Mm(1), self.staff.unit(3))
-        assert clef.music_chars[0].canonical_name == "gClef"
+        assert clef.music_chars[0].glyph_info.canonical_name == "gClef"
         assert clef.middle_c_staff_position == self.staff.unit(5)
         assert clef.staff == self.staff
 
@@ -27,7 +27,7 @@ class TestClef(AppTest):
         clef = Clef(Mm(1), self.staff, clef_type.BASS)
         assert clef.clef_type == clef_type.BASS
         assert clef.pos == Point(Mm(1), self.staff.unit(1))
-        assert clef.music_chars[0].canonical_name == "fClef"
+        assert clef.music_chars[0].glyph_info.canonical_name == "fClef"
         assert clef.middle_c_staff_position == self.staff.unit(-1)
 
     def test_init_with_str_clef_type(self):
@@ -72,7 +72,7 @@ class TestClef(AppTest):
         clef.clef_type = "bass"
         assert clef.clef_type == clef_type.BASS
         assert clef.pos == Point(Mm(1), self.staff.unit(1))
-        assert clef.music_chars[0].canonical_name == "fClef"
+        assert clef.music_chars[0].glyph_info.canonical_name == "fClef"
         assert clef.middle_c_staff_position == self.staff.unit(-1)
 
     def test_supports_dynamic_position_clef_types(self):

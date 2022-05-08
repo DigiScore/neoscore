@@ -33,16 +33,19 @@ MusicStringDef: TypeAlias = Union[MusicCharDef, list[MusicCharDef]]
 
 This supports several forms for different use-cases. The most commonly
 used form is a simple SMuFL canonical glyph name.
+
 * A canonical SMuFL glyph name. This may be an empty string to indicate 0-length text.
 * A tuple of a glyph name and a SMuFL alternate number.
-* A fully defined ``MusicChar``.
+* A fully defined :obj:`.MusicChar`.
 * A list of any of these, including an empty list.
 """
 
 
 class MusicText(Text, HasMusicFont):
-    """
-    A glyph with a MusicFont and convenient access to relevant SMuFL metadata.
+    """Text written in SMuFL compliant music fonts.
+
+    For many use-cases, ``MusicText`` strings will consist of a single character, but
+    longer strings are supported too.
     """
 
     def __init__(
@@ -65,22 +68,21 @@ class MusicText(Text, HasMusicFont):
         Args:
             pos: The position of the text.
             parent: The parent of the glyph. If no ``font`` is given,
-                this or one of its ancestors must implement ``HasMusicFont``.
-            text: The text to display. Can be given as a SMuFL glyph name,
-                or other shorthand forms. See ``MusicStringDef`` and ``MusicCharDef``.
-            font: The music font to be used. If not specified,
-                ``parent`` must be or have a ``Staff`` ancestor.
+                this or one of its ancestors must implement :obj:`.HasMusicFont`.
+            text: The text to display. Can be given as a SMuFL glyph name
+                or other shorthand forms. See ``MusicStringDef``.
+            font: The music font to be used. If not specified, ``parent`` must
+                implement :obj:`.HasMusicFont` or have an ancestor which does.
             brush: The brush to fill in text shapes with.
             pen: The pen to trace text outlines with. This defaults to no pen.
-            scale: A scaling factor to be applied
-                in addition to the size of the music font.
+            scale: A scaling factor to be applied in addition to the size of the music font.
             rotation: Angle in degrees. Note that breakable rotated text is
                 not currently supported.
             background_brush: Optional brush used to paint the text's bounding rect
                 behind it.
             z_index: Controls draw order with higher values drawn first.
             breakable: Whether this object should break across lines in
-                Flowable containers.
+                :obj:`.Flowable` containers.
             alignment_x: The text's horizontal alignment relative to ``pos``.
                 Note that text which is not ``LEFT`` aligned does not currently display
                 correctly when breaking across flowable lines.
@@ -111,7 +113,7 @@ class MusicText(Text, HasMusicFont):
     def music_chars(self) -> list[MusicChar]:
         """A list of the SMuFL characters in the string including metadata.
 
-        If set, this will also update ``self.text``.
+        If set, this will also update ``text``.
         """
         return self._music_chars
 
@@ -124,7 +126,7 @@ class MusicText(Text, HasMusicFont):
     def text(self) -> str:
         """The raw unicode representation of the SMuFL text.
 
-        If set, this will also update ``self.music_chars``
+        If set, this will also update ``music_chars``.
         """
         return self._text
 
@@ -138,8 +140,7 @@ class MusicText(Text, HasMusicFont):
     def music_font(self) -> MusicFont:
         """The SMuFL font used in this text.
 
-        This is an expressive synonym for the ``font`` field which implements the
-        ``HasMusicFont`` mixin.
+        This is an expressive synonym for :obj:`font <.Text.font>`.
         """
         return cast(MusicFont, self._font)
 
@@ -149,6 +150,7 @@ class MusicText(Text, HasMusicFont):
 
     @property
     def unit(self) -> Type[Unit]:
+        """A unit type where ``unit(1)`` is a standard staff space in the font."""
         return self.music_font.unit
 
     @property

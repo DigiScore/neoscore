@@ -3,7 +3,6 @@ from typing import NamedTuple, Optional, cast
 from neoscore.core.brush import Brush, BrushDef
 from neoscore.core.directions import DirectionX, DirectionY
 from neoscore.core.has_music_font import HasMusicFont
-from neoscore.core.math_helpers import sign
 from neoscore.core.music_font import MusicFont
 from neoscore.core.pen import Pen, PenDef
 from neoscore.core.point import ORIGIN, Point
@@ -310,7 +309,6 @@ class BeamGroup(PositionedObject, HasMusicFont):
             # y = m(x - x1) - y1, where x = 0
             c_relative_x = c.map_x_to(self._chordrests[0])
             y = (beam_group_line.slope * c_relative_x) + beam_group_line.start_y
-            original_stem_sign = sign(c.stem.end_point.y)
             # (This direction checking approach will not work for kneed beams)
             if self.direction != c.stem.direction:
                 c.stem_direction = self.direction

@@ -25,14 +25,15 @@ if TYPE_CHECKING:
     from neoscore.core.font import Font
 
 
-"""The global state of the application."""
+"""The global application state module."""
 
 _app_interface: AppInterface
 
 default_font: Font
-"""Font: The default font to be used in ``Text`` objects."""
+"""The default font to be used in ``Text`` objects."""
 
 document: Document
+"""The root document object."""
 
 registered_music_fonts: dict[str, dict] = {}
 """A map from registered music font names to SMuFL metadata"""
@@ -41,9 +42,9 @@ registered_font_family_names: set[str] = set()
 """A set of family names of all registered fonts, including music fonts"""
 
 background_brush = Brush("#ffffff")
-"""The scene's background color.
+"""The brush used to draw the scene background.
 
-Defaults to white. Set this using ``set_background_brush``.
+Defaults to solid white. Set this using :obj:`.set_background_brush`.
 """
 
 _supported_image_extensions = {
@@ -84,9 +85,7 @@ def setup(paper: Paper = A4):
     calling this multiple times in one script will cause unexpected behavior.
 
     Args:
-        paper (Paper): The paper to use in the document.
-
-    Returns: None
+        paper: The paper to use in the document.
     """
     global _app_interface
     global default_font
@@ -118,27 +117,30 @@ def set_default_color(color: ColorDef):
 
 
 def set_background_brush(brush: BrushDef):
+    """Set the brush used to paint the scene background."""
     global background_brush
     global _app_interface
     background_brush = Brush.from_def(brush)
     _app_interface.background_brush = background_brush.interface
 
 
-def register_font(font_file_path: str) -> list[str]:
+def register_font(font_file_path: str | pathlib.Path) -> list[str]:
     """Register a font file with the application.
 
-    If successful, this makes the font available for use in ``Font`` objects,
+    If successful, this makes the font available for use in :obj:`.Font` objects,
     to be referenced by the family name embedded in the font file.
 
     Args:
         font_file_path: A path to a font file. Currently only
             TrueType and OpenType fonts are supported.
 
-    Returns: A list of family names registered. Typically this will have length 1.
+    Returns:
+        A list of family names registered. Typically this will have length 1.
 
-    Raises: FontRegistrationError: If the font could not be loaded.
-        Typically, this is because the given path does not lead to
-        a valid font file.
+    Raises:
+        FontRegistrationError: If the font could not be loaded.
+            Typically, this is because the given path does not lead to
+            a valid font file.
     """
     global registered_font_family_names
     global _app_interface
@@ -148,20 +150,24 @@ def register_font(font_file_path: str) -> list[str]:
     return family_names
 
 
-def register_music_font(font_file_path: str, metadata_path: str):
+def register_music_font(
+    font_file_path: str | pathlib.Path, metadata_path: str | pathlib.Path
+):
     """Register a music font with the application.
 
     Args:
-        font_file_path (str): A path to a font file.
-        metadata_path (str): A path to a SMuFL metadata JSON file
+        font_file_path: A path to a font file.
+        metadata_path: A path to a SMuFL metadata JSON file
             for this font. The standard SMuFL format for this file name
-            will be {lowercase_font_name}_metadata.json.
+            will be ``{lowercase_font_name}_metadata.json``.
 
-    Returns: A list of family names registered. Typically this will have length 1.
+    Returns:
+        A list of family names registered. Typically this will have length 1.
 
-    Raises: FontRegistrationError: If the font could not be loaded.
-        Typically, this is because the given path does not lead to
-        a valid font file.
+    Raises:
+        FontRegistrationError: If the font could not be loaded.
+            Typically, this is because the given path does not lead to
+            a valid font file.
     """
     global registered_music_fonts
     family_names = register_font(font_file_path)
@@ -190,20 +196,22 @@ RefreshFunc: TypeAlias = Callable[[float], None]
 """A user-providable function for updating the scene every frame(ish).
 
 The function should accept one argument - the current time in seconds.
+
+Refresh functions can modify the scene, create new objects, and :obj:`remove
+<.PositionedObject.remove>` them, though not all objects respond well to mutability.
 """
 
 
 def show(refresh_func: Optional[RefreshFunc] = None, display_page_geometry=True):
-    """Show a preview of the score in a GUI window.
+    """Display the score in an interactive GUI window.
 
-    An update function can be provided (or otherwise set with
-    ``set_refresh_func``) which is run on a timer approximating the
-    frame rate.
-
-    The current implementation is pretty limited in features,
-    but this could/should be extended in the future once
-    the API/interface/Qt bindings are more stable.
-
+    Args:
+        refresh_func: A scene update function to run on a timer approximating the
+            frame rate. This can also be set with :obj:`.set_refresh_func`, which
+            allows customizing the target frame rate.
+        display_page_geometry: Whether to include a preview of page geometry,
+            including a page outline and a dotted outline of the page's live
+            area inside its margins.
     """
     global document
     global _app_interface
@@ -238,8 +246,8 @@ def render_pdf(pdf_path: str | pathlib.Path, dpi: int = 300):
     """Render the score as a pdf.
 
     Args:
-        pdf_path (str): The output pdf path
-        dpi: Resolution to render with
+        pdf_path: The output pdf path
+        dpi: Resolution to render at
     """
     global document
     global _app_interface
@@ -279,6 +287,7 @@ def render_image(
     """Render a section of the document to an image.
 
     The following file extensions are supported:
+
         * ``.bmp``
         * ``.jpg``
         * ``.png``
@@ -312,7 +321,6 @@ def render_image(
             supported image format file extension.
         ImageExportError: If low level Qt image export fails for
             unknown reasons.
-
     """
 
     global document
@@ -354,6 +362,12 @@ def _repl_refresh_func(_: float) -> float:
 
 
 def set_refresh_func(refresh_func: RefreshFunc, target_fps: int = 60):
+    """Update the global scene refresh function.
+
+    Args:
+        refresh_func: The new refresh function
+        target_fps: The requested frame rate to run the function at.
+    """
     global _app_interface
     global document
 
@@ -383,4 +397,9 @@ def _register_default_fonts():
 
 
 def shutdown():
+    """Tear down the global state, including the document tree.
+
+    After running this, :obj:`.neoscore.setup` can be called again to start a new
+    document.
+    """
     _app_interface.destroy()

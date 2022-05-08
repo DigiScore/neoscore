@@ -24,7 +24,7 @@ class MusicFont(Font):
         Args:
             family_name: The font name
             size: The font size, given either as the distance between two staff lines,
-                or a unit type ``unit(1)`` is that distance.
+                or a unit type where ``unit(1)`` is that distance.
         """
         if isinstance(size, Unit):
             self._unit = make_unit_class("StaffUnit", size.base_value)
@@ -49,16 +49,15 @@ class MusicFont(Font):
 
     @property
     def unit(self) -> Type[Unit]:
+        """A unit type where ``unit(1)`` is a standard staff space in the font."""
         return self._unit
 
     @property
-    def em_size(self) -> Unit:
-        """Unit: The em size for the font."""
-        return self._em_size
-
-    @property
     def engraving_defaults(self) -> Dict:
-        """dict: The SMuFL engraving defaults information for this font"""
+        """The SMuFL engraving defaults for this font.
+
+        See `SMuFL's description of this data here <https://w3c.github.io/smufl/latest/specification/engravingdefaults.html>`_.
+        """
         return self._engraving_defaults
 
     def modified(
@@ -72,12 +71,12 @@ class MusicFont(Font):
     def glyph_info(
         self, glyph_name: str, alternate_number: Optional[int] = None
     ) -> GlyphInfo:
-        """Collect and return all known metadata about a glyph.
+        """Look up metadata on a glyph in this font.
 
         Args:
             glyph_name: The canonical name of the glyph, or its main version
                 if using an alternate number.
-            alternate_number: A glyph alternate number
+            alternate_number: A glyph alternate number.
 
         Raises:
             MusicFontGlyphNotFoundError: If the requested glyph
