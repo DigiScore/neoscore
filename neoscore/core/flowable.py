@@ -15,16 +15,15 @@ class Flowable(PositionedObject):
 
     """A flowable coordinate space container.
 
-    This provides a virtual horizontal strip of space in which
-    objects can be placed, and at render time be automatically
-    flowed across line breaks and page breaks in the document.
+    This provides a virtual horizontal strip of space in which objects can be placed,
+    and at render time be automatically flowed across line breaks and page breaks in the
+    document.
 
-    To place an object in a ``Flowable``, simply parent it
-    to one, or to an object already in one.
+    To place an object in a ``Flowable``, simply parent it to one, or to an object
+    already in one.
 
-    In typical scores, there will be a single ``Flowable``
-    placed in the first page of the document, and most objects
-    will be placed inside it.
+    In typical scores, there will be a single ``Flowable`` placed in the first page of
+    the document, and most objects will be placed inside it.
     """
 
     _neoscore_flowable_type_marker = True
@@ -84,12 +83,12 @@ class Flowable(PositionedObject):
 
     @property
     def break_threshold(self) -> Unit:
-        """The threshold for ``BreakOpportunity``-aware line breaks.
+        """The threshold for :obj:`.BreakOpportunity`-aware line breaks.
 
         This is the maximum distance the flowable will shorten a line to allow
         a break to occur on a ``BreakOpportunity``.
 
-        If set to ``ZERO``, ``BreakOpportunity``\ s will be entirely ignored during
+        If set to ``ZERO``, break opportunities will be entirely ignored during
         layout. On the other hand, if set to a value larger than the live page width,
         all break opportunities will be taken.
         """
@@ -236,6 +235,8 @@ class Flowable(PositionedObject):
         Args:
             local_point: A position in the flowable's local space.
         """
+        if not getattr(self, "_currently_rendering", None):
+            print("WARNING: Called Flowable.map_to_canvas outside rendering context")
         line = self.last_break_at(local_point.x)
         line_canvas_pos = line.canvas_pos
         return line_canvas_pos + Point(local_point.x - line.flowable_x, local_point.y)

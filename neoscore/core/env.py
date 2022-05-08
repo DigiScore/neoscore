@@ -1,3 +1,10 @@
+"""Application-wide environment variables.
+
+Some global behavior can be switched by environment variable toggles. For example
+running any neoscore program with the environment variable ``NEOSCORE_DEBUG`` to some
+truthy value will enable some debugging information like Qt bounding box outlines.
+"""
+
 import os
 
 
@@ -7,8 +14,14 @@ def _resolve_bool_env_variable(var):
 
 
 HEADLESS = _resolve_bool_env_variable("NEOSCORE_HEADLESS")
-"""Whether to run the Qt application in headless mode."""
+"""Whether to run the Qt application in headless mode.
+
+Set by the environment variable ``NEOSCORE_HEADLESS``.
+"""
 
 
 DEBUG = _resolve_bool_env_variable("NEOSCORE_DEBUG")
-"""Whether debug mode is enabled"""
+"""Whether debug mode is enabled.
+
+Set by the environment variable ``NEOSCORE_DEBUG``.
+"""

@@ -12,7 +12,8 @@ class Font:
     """A text font.
 
     All fonts are immutable. To get a modified version of a font, use
-    ``Font.modified``."""
+    :obj:`.Font.modified`
+    """
 
     def __init__(
         self,
@@ -106,6 +107,10 @@ class Font:
         weight: Optional[int] = None,
         italic: Optional[bool] = None,
     ) -> Font:
+        """Derive a font from this one.
+
+        All properties not specified will be taken from the existing font.
+        """
         return Font(
             family_name if family_name is not None else self.family_name,
             size if size is not None else self.size,

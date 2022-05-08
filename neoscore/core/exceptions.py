@@ -61,7 +61,7 @@ class UnknownFontFamilyError(Exception):
 class ColorBoundsError(Exception):
     """Exception raised when a color channel is set out of bounds"""
 
-    def __init__(self, value):
+    def __init__(self, value: int):
         self.message = f"Invalid color channel value {value}"
         super().__init__(self.message)
 

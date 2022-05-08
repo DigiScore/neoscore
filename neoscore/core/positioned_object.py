@@ -337,7 +337,10 @@ class PositionedObject:
         self._currently_rendering = False
 
     def render(self):
-        """Render the object and all its children."""
+        """Render the object and all its children.
+
+        This and other render methods should generally not be called directly.
+        """
         if self.breakable_length != ZERO and self.flowable is not None:
             self.render_in_flowable()
         else:
