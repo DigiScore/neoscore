@@ -298,9 +298,6 @@ class PositionedObject:
         # TODO HIGH inline here and edit as needed
         return self.map_to(dst).x
 
-    # TODO HIGH make this not a property, since it has access constraints
-
-    @property
     def canvas_pos(self) -> Point:
         """Find the document-space position of this object.
 
@@ -347,7 +344,7 @@ class PositionedObject:
         if self.breakable_length != ZERO and self.flowable is not None:
             self.render_in_flowable()
         else:
-            self.render_complete(self.canvas_pos)
+            self.render_complete(self.canvas_pos())
         for child in self.children:
             child.render()
 
@@ -366,7 +363,7 @@ class PositionedObject:
         )
         remaining_x = self.breakable_length - first_line_length
         if remaining_x <= ZERO:
-            self.render_complete(self.canvas_pos, first_line, pos_in_flowable.x)
+            self.render_complete(self.canvas_pos(), first_line, pos_in_flowable.x)
             return
 
         # Render before break
@@ -379,7 +376,7 @@ class PositionedObject:
                 first_line.flowable_x + first_line.length - pos_in_flowable.x
             )
             remaining_x = self.breakable_length - first_line_length
-        line_pos = first_line.canvas_pos
+        line_pos = first_line.canvas_pos()
         render_start_pos = Point(
             line_pos.x + (pos_in_flowable.x - first_line.flowable_x),
             line_pos.y + pos_in_flowable.y,
@@ -389,7 +386,7 @@ class PositionedObject:
         # Iterate through remaining length
         for current_line_i in range(first_line_i + 1, len(self.flowable.lines)):
             current_line = self.flowable.lines[current_line_i]
-            line_pos = current_line.canvas_pos
+            line_pos = current_line.canvas_pos()
             render_start_pos = Point(line_pos.x, line_pos.y + pos_in_flowable.y)
             local_object_x = self.breakable_length - remaining_x
             if remaining_x > current_line.length:

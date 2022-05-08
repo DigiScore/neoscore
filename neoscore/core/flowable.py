@@ -238,7 +238,7 @@ class Flowable(PositionedObject):
         if not getattr(self, "_currently_rendering", None):
             print("WARNING: Called Flowable.map_to_canvas outside rendering context")
         line = self.last_break_at(local_point.x)
-        line_canvas_pos = line.canvas_pos
+        line_canvas_pos = line.canvas_pos()
         return line_canvas_pos + Point(local_point.x - line.flowable_x, local_point.y)
 
     def last_break_at(self, flowable_x: Unit) -> NewLine:
