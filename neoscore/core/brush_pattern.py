@@ -3,12 +3,19 @@ from enum import Enum
 
 class BrushPattern(Enum):
 
-    """Brush fill patterns"""
+    """Brush fill patterns.
+
+    The enum int values are for internal purposes and not guaranteed by the API.
+    """
 
     # Values align with Qt's https://doc.qt.io/qt-5/qt.html#BrushStyle-enum
 
     INVISIBLE = 0
-    """No brush pattern. This is equivalent to a fully transparent color."""
+    """No brush pattern. This is equivalent to a fully transparent color.
+
+    Instead of using this pattern directly, consider using :obj:`.Brush.no_brush()`
+    instead.
+    """
 
     SOLID = 1
     """Uniform solid color."""

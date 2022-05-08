@@ -42,7 +42,7 @@ class MusicPath(Path, HasMusicFont):
                 path elements anchored to other objects are not currently supported.
             background_brush: Optional brush used to paint the path's bounding rect
                 behind it.
-            z_index: Controls draw order with higher values drawn first.
+            z_index: Controls draw order with lower values drawn first.
         """
         Path.__init__(
             self, pos, parent, brush, pen, rotation, background_brush, z_index

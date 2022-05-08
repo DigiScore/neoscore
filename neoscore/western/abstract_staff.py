@@ -101,7 +101,7 @@ class AbstractStaff(PaintedObject, HasMusicFont):
 
     @property
     def z_index(self) -> int:
-        """Value controlling draw order with higher values being drawn first"""
+        """Value controlling draw order with lower values being drawn first"""
         return self._z_index
 
     @z_index.setter

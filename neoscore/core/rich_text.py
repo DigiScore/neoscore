@@ -42,7 +42,7 @@ class RichText(PositionedObject):
             font: The default font to display the text in.
             scale: A scaling factor relative to the font size.
             rotation: Rotation angle in degrees.
-            z_index: Controls draw order with higher values drawn first.
+            z_index: Controls draw order with lower values drawn first.
         """
         if font:
             self._font = font
@@ -118,7 +118,7 @@ class RichText(PositionedObject):
 
     @property
     def z_index(self) -> int:
-        """Value controlling draw order with higher values being drawn first"""
+        """Value controlling draw order with lower values being drawn first"""
         return self._z_index
 
     @z_index.setter

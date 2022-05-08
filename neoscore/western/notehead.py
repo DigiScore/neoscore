@@ -112,7 +112,7 @@ class Notehead(MusicText, StaffObject):
     def staff_pos(self) -> Unit:
         """The y-axis position in the staff.
 
-        0 means the top staff line, higher values mean lower pitches,
+        0 means the top staff line, lower values mean lower pitches,
         and vice versa.
         """
         return self.staff.middle_c_at(self.pos_x_in_staff) + self.staff.unit(

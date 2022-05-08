@@ -45,7 +45,7 @@ class TabStringText(MusicText):
             pen: The pen to trace text outlines with. This defaults to no pen.
             hide_background: Whether to paint over the background behind the text.
                 Particularly useful for preventing overlaps with staff lines.
-            z_index: Controls draw order with higher values drawn first.
+            z_index: Controls draw order with lower values drawn first.
                 Defaults to 1 greater than the staff's z_index.
             breakable: Whether this object should break across lines in
                 Flowable containers.

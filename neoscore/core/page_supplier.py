@@ -15,28 +15,25 @@ PageOverlayFunc: TypeAlias = Callable[[Page], None]
 The function takes one argument, the newly generated page. Functions will typically
 create objects with this page as their parent.
 
-See ``simple_header_footer`` for a ready-made implementation of a simple overlay function.
+See :obj:`.simple_header_footer` for a ready-made simple overlay function.
 """
 
 
 class PageSupplier:
-    """A supplier and generator-on-demand of document Page objects.
+    """A supplier and generator-on-demand of document :obj:`.Page` objects.
 
-    This acts like a list of Page objects which generates them as
-    needed. Externally, it can be used mostly as a list. If an index
-    is requested for which no Page yet exists, that page will be
-    generated, as well as any missing pages between the previous
-    last page and the one requested. Consequently, keep in mind
-    that innocent looking operations such as some_page_suppler[100000]
-    are actually expensive operations, as they implicitly generate
-    thousands of Page objects.
+    This acts like a list of ``Page`` objects which generates them as needed.
+    Externally, it can be used mostly as a list. If an index is requested for which no
+    page yet exists, that page will be generated, as well as any missing pages between
+    the previous last page and the one requested. Consequently, keep in mind that
+    innocent looking operations such as ``page_suppler[100000]`` are actually expensive
+    operations, as they implicitly generate thousands of Page objects.
 
-    The contents of the PageSupplier should be treated as immutable.
-    Attempts to modify the pages it contains will likely result in
-    unexpected behavior.
+    The contents of the ``PageSupplier`` should be treated as immutable. Attempts to
+    modify the pages it contains will likely result in unexpected behavior.
 
-    This is an internal class meant to be created by the global Document
-    for its ``pages`` property.
+    This is an internal class meant to be created by the global :obj:`.Document` for its
+    ``pages`` property.
     """
 
     def __init__(
@@ -82,9 +79,8 @@ class PageSupplier:
     def overlay_func(self) -> Optional[PageOverlayFunc]:
         """A function to call on every page generation.
 
-        This function is called with every generated page at the time
-        of generation. If the value is changed it will only affect
-        pages generated after the change.
+        This function is called with every generated page at the time of generation. If
+        the value is changed it will only affect pages generated after the change.
         """
         return self._overlay_func
 

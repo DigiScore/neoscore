@@ -3,7 +3,10 @@ from enum import Enum
 
 class PenCapStyle(Enum):
 
-    """Styles controlling how pen strokes are capped."""
+    """Styles controlling how pen strokes are capped.
+
+    The enum int values are for internal purposes and not guaranteed by the API.
+    """
 
     # Values align with Qt's http://doc.qt.io/qt-5.9/qt.html#PenCapStyle-enum
 

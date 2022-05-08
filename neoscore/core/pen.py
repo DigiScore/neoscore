@@ -27,12 +27,12 @@ class Pen:
         """
         Args:
             color: The stroke color. Defaults to black unless changed globally by
-                ``neoscore.set_default_color``.
-            thickness: The stroke thickness. A value of ``0`` (the default) indicates
+                :obj:`.neoscore.set_default_color`.
+            thickness: The stroke thickness. A value of ``ZERO`` (the default) indicates
                 a display pixel width.
             pattern: The stroke pattern. Defaults to a solid line.
-            join_style: Defaults to a bevel join
-            cap_style: Defaults to a square cap
+            join_style: The appearance of line joints. Defaults to a bevel join
+            cap_style: The appearance of line ends. Defaults to a flat cap
         """
         if color is None:
             self._color = Pen._default_color
@@ -54,7 +54,7 @@ class Pen:
         join_style: Optional[PenJoinStyle] = None,
         cap_style: Optional[PenCapStyle] = None,
     ) -> Pen:
-        """Derive a Pen from another, overriding any provided fields."""
+        """Derive a pen from another, overriding any provided fields."""
         return cls(
             color or pen.color,
             thickness or pen.thickness,
@@ -86,17 +86,19 @@ class Pen:
 
     @property
     def color(self) -> Color:
-        """The color for the pen"""
+        """The color for the pen.
+
+        This can be set with a :obj:`.ColorDef` shorthand."""
         return self._color
 
     @color.setter
-    def color(self, value: Color):
-        self._color = value
+    def color(self, value: ColorDef):
+        self._color = Color.from_def(value)
         self._regenerate_interface()
 
     @property
     def thickness(self) -> Unit:
-        """The stroke thickness."""
+        """The pen stroke thickness."""
         return self._thickness
 
     @thickness.setter
@@ -129,7 +131,7 @@ class Pen:
 
     @property
     def cap_style(self) -> PenCapStyle:
-        """PenCapStyle: the style of unclosed path caps with this pen.
+        """the style of unclosed path caps with this pen.
 
         This style has no effect on closed paths."""
         return self._cap_style

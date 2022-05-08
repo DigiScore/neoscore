@@ -9,7 +9,11 @@ from neoscore.core.positioned_object import PositionedObject
 
 
 class PaintedObject(PositionedObject):
-    """A PositionedObject which is painted with a pen (outline) and brush (fill)."""
+    """A ``PositionedObject`` which is painted with a pen (outline) and brush (fill).
+
+    This is mostly meant to be used as a superclass for other classes which need this
+    behavior.
+    """
 
     def __init__(
         self,
@@ -21,8 +25,7 @@ class PaintedObject(PositionedObject):
         """
         Args:
             pos: The position of the object relative to its parent
-            pen: The pen to draw outlines
-        with.
+            pen: The pen to draw outlines with.
             brush: The brush to fill shapes with.
             parent: The parent object or None
         """
@@ -45,12 +48,11 @@ class PaintedObject(PositionedObject):
 
     @property
     def brush(self) -> Brush:
-        """The brush to draw outlines with
+        """The brush to draw outlines with.
 
-        As a convenience, this may be set with a hex color string
-        for a solid color brush of that color. For brushes using
-        alpha channels and non-solid-color fill patterns, a fully
-        initialized brush must be passed to this.
+        As a convenience, this may be set with a hex color string for a solid color
+        brush of that color. For brushes using alpha channels and non-solid-color fill
+        patterns, a fully initialized brush must be passed to this.
         """
         return self._brush
 

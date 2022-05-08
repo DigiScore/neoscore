@@ -49,7 +49,7 @@ class Text(PaintedObject):
                 not currently supported.
             background_brush: Optional brush used to paint the text's bounding rect
                 behind it.
-            z_index: Controls draw order with higher values drawn first.
+            z_index: Controls draw order with lower values drawn first.
             breakable: Whether this object should break across lines in
                 Flowable containers.
             alignment_x: The text's horizontal alignment relative to ``pos``.
@@ -139,7 +139,7 @@ class Text(PaintedObject):
 
     @property
     def z_index(self) -> int:
-        """Value controlling draw order with higher values being drawn first"""
+        """Value controlling draw order with lower values being drawn first"""
         return self._z_index
 
     @z_index.setter

@@ -28,12 +28,11 @@ from neoscore.interface.path_interface import (
 
 class Path(PaintedObject):
 
-    """A vector path whose points can be anchored to other objects.
+    """A vector path whose elements can be anchored to other objects.
 
-    If a Path is in a ``Flowable``, any point anchors in the path
-    should be anchored to objects in the same ``Flowable``, or
-    undefined behavior may occur. Likewise, if a Path is not
-    in a ``Flowable``, all point anchors should not be in one either.
+    If a ``Path`` is in a :obj:`.Flowable`, any element parents in the path should be in the
+    same flowable. Likewise, if a path is not in a flowable, all element parts should
+    not be in one either.
     """
 
     def __init__(
@@ -52,11 +51,11 @@ class Path(PaintedObject):
             parent: The parent object or None
             brush: The brush to fill shapes with.
             pen: The pen to draw outlines with.
-            rotation: Angle in degrees. Rotated paths with flowable breaks and
-                path elements anchored to other objects are not currently supported.
+            rotation: Angle in degrees. Rotated paths with flowable breaks or
+                path elements parented to other objects are not currently supported.
             background_brush: Optional brush used to paint the path's bounding rect
                 behind it.
-            z_index: Controls draw order with higher values drawn first.
+            z_index: Controls draw order with lower values drawn first.
         """
         super().__init__(pos, parent, brush, pen)
         self.background_brush = background_brush
@@ -81,7 +80,7 @@ class Path(PaintedObject):
             start: The position of the center of the arrow line's start
             parent: A parent object
             end: The position of the end of the line, relative to ``end_parent``
-                if provided or ``start``
+                if provided or otherwise ``start``
             end_parent: An optional parent for the end point.
             brush: The brush to fill shapes with.
             pen: The pen to draw outlines with. Defaults to no pen.
@@ -183,32 +182,29 @@ class Path(PaintedObject):
         """Convenience for drawing an elliptical arc.
 
         Args:
-            pos: The position of the upper left corner of the traced ellipse.
-            parent: The parent object or None
-            width: The traced ellipse's width
-            height: The traced ellipse's height
-            start_angle: The starting arc angle in radians clockwise relative
+            pos: The position of the upper left corner of the traced ellipse. parent:
+                The parent object or None width: The traced ellipse's width height: The
+                traced ellipse's height start_angle: The starting arc angle in radians
+                clockwise relative
                 to the 3 o'clock position.
             stop_angle: The stopping arc angle in radians clockwise relative
                 to the 3 o'clock position.
-            brush: The brush to fill shapes with.
-            pen: The pen to draw outlines with.
+            brush: The brush to fill shapes with. pen: The pen to draw outlines with.
 
-        The arc definition can be most easily understood as tracing an
-        ellipse as defined in ``Path.ellipse()``, where ``pos`` marks the
-        top-left corner of the ellipse bounding rect. Two angles are
-        provided in clockwise radians relative to the 3 o'clock
-        position. The arc is traced from ``start_angle`` clockwise to
-        ``stop_angle``. Consequently, depending on the provided angles
-        the actually drawn path may be far from the Path's position.
+        The arc definition can be most easily understood as tracing an ellipse as
+        defined in ``Path.ellipse()``, where ``pos`` marks the top-left corner of the
+        ellipse bounding rect. Two angles are provided in clockwise radians relative to
+        the 3 o'clock position. The arc is traced from ``start_angle`` clockwise to
+        ``stop_angle``. Consequently, depending on the provided angles the actually
+        drawn path may be far from the Path's position.
 
-        The provided angles are interpreted mod ``2*pi``. The angle
-        between them must not be 0. This also means arc angles of
-        ``2*pi``, (i.e. complete ellipses), are not supported as they
-        are interpreted as 0. Complete ellipses should instead be
+        The provided angles are interpreted mod ``2*pi``. The angle between them must
+        not be 0. This also means arc angles of ``2*pi``, (i.e. complete ellipses), are
+        not supported as they are interpreted as 0. Complete ellipses should instead be
         drawn with ``Path.ellipse()``.
 
-        Raises: ValueError: if invalid angles are given
+        Raises:
+            ValueError: if invalid angles are given
         """
         # This method and ``_acute_arc_to_bezier`` are adapted from Joe
         # Cridge's algorithm and JS implementation found at
@@ -421,7 +417,7 @@ class Path(PaintedObject):
 
     @property
     def background_brush(self) -> Optional[Brush]:
-        """The brush to paint over the background with."""
+        """An optional brush to paint over the path bounding rect's background with"""
         return self._background_brush
 
     @background_brush.setter
@@ -433,7 +429,7 @@ class Path(PaintedObject):
 
     @property
     def z_index(self) -> int:
-        """Value controlling draw order with higher values being drawn first"""
+        """Value controlling draw order with lower values being drawn first"""
         return self._z_index
 
     @z_index.setter
@@ -442,10 +438,6 @@ class Path(PaintedObject):
 
     def line_to(self, x: Unit, y: Unit, parent: Optional[PositionedObject] = None):
         """Draw a path from the current position to a new point.
-
-        A point parent may be passed as well, anchored the target
-        point to a separate PositionedObject. In this case, the
-        coordinates passed will be considered relative to the parent.
 
         If the path is empty, this will add two elements, an initial
         ``MoveTo(ORIGIN, self)`` and the requested ``LineTo``.
@@ -464,10 +456,6 @@ class Path(PaintedObject):
     def move_to(self, x: Unit, y: Unit, parent: Optional[PositionedObject] = None):
         """Close the current sub-path and start a new one.
 
-        A point parent may be passed as well, anchored the target point to
-        a separate ``PositionedObject``. In this case, the coordinates passed will be
-        considered relative to the parent.
-
         Args:
             x: The end x position
             y: The end y position
@@ -480,8 +468,8 @@ class Path(PaintedObject):
     def close_subpath(self):
         """Close the current sub-path with a line.
 
-        Draw a line back to the starting position
-        (including any parent) of the current subpath.
+        Draw a line back to the starting position (including any parent) of the current
+        subpath.
         """
         end_pos = Point.from_def(self._current_subpath_start[0])
         end_parent = self._current_subpath_start[1]
@@ -566,7 +554,7 @@ class Path(PaintedObject):
                 raise TypeError("Unknown PathElement type")
         return resolved
 
-    def render_slice(
+    def _render_slice(
         self,
         pos: Point,
         clip_start_x: Optional[Unit] = None,
@@ -596,16 +584,16 @@ class Path(PaintedObject):
         flowable_line: Optional[NewLine] = None,
         flowable_x: Optional[Unit] = None,
     ):
-        self.render_slice(pos, None, None)
+        self._render_slice(pos, None, None)
 
     def render_before_break(self, pos: Point, flowable_line: NewLine, flowable_x: Unit):
         slice_length = flowable_line.length - (flowable_x - flowable_line.flowable_x)
-        self.render_slice(pos, ZERO, slice_length)
+        self._render_slice(pos, ZERO, slice_length)
 
     def render_spanning_continuation(
         self, pos: Point, flowable_line: NewLine, object_x: Unit
     ):
-        self.render_slice(pos, object_x, flowable_line.length)
+        self._render_slice(pos, object_x, flowable_line.length)
 
     def render_after_break(self, pos: Point, flowable_line: NewLine, object_x: Unit):
-        self.render_slice(pos, object_x, None)
+        self._render_slice(pos, object_x, None)

@@ -3,7 +3,10 @@ from enum import Enum
 
 class PenJoinStyle(Enum):
 
-    """Styles controlling the shape of line joints on a pen stroke."""
+    """Styles controlling the shape of line joints on a pen stroke.
+
+    The enum int values are for internal purposes and not guaranteed by the API.
+    """
 
     # Values align with Qt's http://doc.qt.io/qt-5.9/qt.html#PenJoinStyle-enum
 

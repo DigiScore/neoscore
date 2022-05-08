@@ -12,7 +12,7 @@ class PlatformType(Enum):
     UNKNOWN = auto()
 
 
-def current_platform():
+def current_platform() -> PlatformType:
     """Get the type of the running platform"""
     if sys.platform.startswith("freebsd"):
         return PlatformType.BSD

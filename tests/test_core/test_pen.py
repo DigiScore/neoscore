@@ -83,6 +83,11 @@ class TestPen(unittest.TestCase):
             PenCapStyle.ROUND,
         )
 
+    def test_color_setter_with_hex_string(self):
+        pen = Pen("#ff0000")
+        pen.color = "#00ff00"
+        assert pen.color == Color("#00ff00")
+
     def test_setters_update_interface(self):
         pen = Pen(
             Color("#eeddcc"),

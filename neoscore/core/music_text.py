@@ -80,7 +80,7 @@ class MusicText(Text, HasMusicFont):
                 not currently supported.
             background_brush: Optional brush used to paint the text's bounding rect
                 behind it.
-            z_index: Controls draw order with higher values drawn first.
+            z_index: Controls draw order with lower values drawn first.
             breakable: Whether this object should break across lines in
                 :obj:`.Flowable` containers.
             alignment_x: The text's horizontal alignment relative to ``pos``.
