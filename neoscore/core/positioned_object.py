@@ -16,10 +16,18 @@ if TYPE_CHECKING:
 
 class render_cached_property:
 
-    """A ``PositionedObject`` property which is cached only at render time.
+    """A property annotation for fields which can be cached at render time.
 
     You can annotate any ``PositionedObject`` property to get this behavior, including
-    on inheriting classes.
+    on inheriting classes. ::
+
+        class Example(PositionedObject):
+            @render_cached_property
+            def some_expensive_computed_property(self):
+                ...
+
+    Such properties must be immutable during rendering. Typical ``@property`` setters
+    are not supported.
     """
 
     def __init__(self, func):
@@ -43,21 +51,20 @@ class PositionedObject:
 
     This is the base class of all objects in the neoscore scene tree.
 
-    A single PositionedObject can have multiple graphical representations,
-    calculated at render-time. If the object's ancestor is a Flowable,
-    it will be rendered as a flowable object, capable of being wrapped around
-    lines.
+    A single ``PositionedObject`` can have multiple graphical representations derived at
+    render-time. If the object's ancestor is a :obj:`.Flowable`, it will be rendered as a
+    flowable object, capable of being wrapped around lines.
 
-    The position of this object is relative to that of its parent.
-    Each PositionedObject has another PositionedObject for a parent, except
-    ``Page`` objects, whose parent is always the global ``Document``.
+    The position of this object is relative to that of its parent. Each ``PositionedObject``
+    has another ``PositionedObject`` for a parent, except :obj:`.Page` objects, whose parent is
+    always the global root :obj:`.Document`.
 
-    For convenience, the parent may be initialized to None to indicate
-    the first page of the document.
+    For convenience, the parent may be initialized to ``None`` to indicate the first page of
+    the document.
 
-    To place objects directly in the scene on pages other than the first,
-    simply set the parent to the desired page, accessed through the
-    global document with ``neoscore.document.pages[n]``
+    To place objects directly in the scene on pages other than the first, simply set the
+    parent to the desired page, accessed through the global document with
+    ``neoscore.document.pages[n]``
     """
 
     def __init__(
@@ -79,7 +86,7 @@ class PositionedObject:
 
     @property
     def pos(self) -> Point:
-        """Point: The position of the object relative to its parent."""
+        """The position of the object relative to its parent."""
         return self._pos
 
     @pos.setter
@@ -97,7 +104,7 @@ class PositionedObject:
 
     @property
     def y(self) -> Unit:
-        """The x position of the object relative to its parent."""
+        """The y position of the object relative to its parent."""
         return self.pos.y
 
     @y.setter
@@ -108,11 +115,11 @@ class PositionedObject:
     def breakable_length(self) -> Unit:
         """The breakable length of the object.
 
-        This is used to determine how and where rendering cuts should
-        be made. A length of zero indicates that no rendering cuts
-        will be made.
+        This is used to determine how and where rendering cuts should be made. A length
+        of zero indicates that no rendering cuts will be made.
 
-        This is derived from other properties and cannot be set directly.
+        The default implementation of this method returns ``ZERO``. Subclasses which
+        want to support flowable line breaks should override this method.
         """
         return ZERO
 
@@ -131,7 +138,7 @@ class PositionedObject:
 
     @property
     def children(self) -> list[PositionedObject]:
-        """All objects who have self as their parent."""
+        """All direct children of this object."""
         return self._children
 
     @children.setter
@@ -157,21 +164,17 @@ class PositionedObject:
     def flowable(self) -> Optional[Flowable]:
         """The flowable this object belongs in."""
         return cast(
-            Any, self.first_ancestor_with_attr("_neoscore_flowable_type_marker")
+            Any, self.first_ancestor_with_attr("_neoscore_flowable_type_marker")  # noqa
         )
 
     @property
     def interfaces(self) -> list[PositionedObjectInterface]:
         """The graphical backend binding interfaces for this object
 
-        Interface objects are created upon calling ``PositionedObject.render()``
+        Interface objects are created and stored here upon calling :obj:`.render`.
 
-        Typically each PositionedObject will have one interface for each
-        flowable line it appears in. Objects which fit completely
-        in one visual line will typically have exactly one interface.
-
-        If this is an empty set, the object has not been rendered yet
-        with the ``render()`` method.
+        Typically each ``PositionedObject`` will have at most one interface for each
+        flowable line it appears in.
         """
         return self._interfaces
 
@@ -204,7 +207,7 @@ class PositionedObject:
     def ancestors(self) -> Iterator[PositionedObject]:
         """All ancestors of this object.
 
-        Follows the chain of parents up to the document root.
+        Follows the chain of parents up to and including the :obj:`.Document` root.
 
         The order begins with ``self.parent`` and traverses upward in the document tree.
         """
@@ -227,7 +230,8 @@ class PositionedObject:
         """Find the position of a descendant relative to this object.
 
         Raises:
-            ValueError: if ``descendant`` is not a descendant of this object.
+            ValueError:
+                If ``descendant`` is not a descendant of this object.
         """
         pos = descendant.pos
         for parent in descendant.ancestors:
@@ -242,7 +246,8 @@ class PositionedObject:
         This is a specialized version of ``descendant_pos`` provided for optimization.
 
         Raises:
-            ValueError: if ``descendant`` is not a descendant of this object.
+            ValueError:
+                If ``descendant`` is not a descendant of this object.
         """
         pos_x = descendant.pos.x
         for parent in descendant.ancestors:
@@ -255,13 +260,10 @@ class PositionedObject:
         """Find an object's logical position relative to this one
 
         This calculates the position in *logical* space, which differs from canvas space
-        in that it doesn't account for repositioning of objects inside ``Flowable``
+        in that it doesn't account for repositioning of objects inside :obj:`.Flowable`
         containers. For example, this function will return the same relative position
         for two objects in a ``Flowable`` container whether or not they are separated by
         a line break.
-
-        Args:
-            dst: The object to map to
         """
         # Handle easy cases
         if self == dst:
@@ -292,17 +294,18 @@ class PositionedObject:
         raise ValueError(f"{self} and {dst} have no common ancestor")
 
     def map_x_to(self, dst: PositionedObject) -> Unit:
-        # TODO once main function is shown to work, copy here and edit as needed
+        """Like :obj:`.map_to`, but only return the X distance from to ``dst``."""
+        # TODO HIGH inline here and edit as needed
         return self.map_to(dst).x
+
+    # TODO HIGH make this not a property, since it has access constraints
 
     @property
     def canvas_pos(self) -> Point:
-        """Find the paged document position of a PositionedObject.
+        """Find the document-space position of this object.
 
-        Args:
-            obj: Any object in the document.
-
-        Returns: The object's paged position relative to the document.
+        For objects in :obj:`.Flowable`\ s, this should only be accessed at render time,
+        when flowable layouts are available.
         """
         pos = ORIGIN
         current = self
@@ -316,21 +319,21 @@ class PositionedObject:
         return pos
 
     def remove(self):
-        """Remove this object from the document."""
+        """Remove this object from the document tree."""
         if self.parent:
             self.parent.children.remove(self)
 
     def pre_render_hook(self):
         """Run code once just before document rendering begins.
 
-        Implementations *must* call the super class function as well.
+        Implementations *must* call the superclass function as well.
         """
         self._currently_rendering = True
 
     def post_render_hook(self):
         """Run code once after document rendering completes.
 
-        Implementations *must* call the super class function as well.
+        Implementations *must* call the superclass function as well.
         """
         for cached_property in self._render_cached_properties:
             del self.__dict__[cached_property]

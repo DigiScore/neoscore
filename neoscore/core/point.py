@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import NamedTuple, Type, TypeAlias, Union, cast
+from typing import NamedTuple, TypeAlias, Union, cast
 
 from neoscore.core.units import ZERO, Unit
 
@@ -12,7 +12,10 @@ class Point(NamedTuple):
     """
 
     x: Unit
+    """The horizontal X-axis value"""
+
     y: Unit
+    """The vertical Y-axis value"""
 
     @staticmethod
     def from_def(point_def: PointDef) -> Point:
@@ -52,12 +55,9 @@ class Point(NamedTuple):
         """Get a Point whose x and y values are the negation of this point's."""
         return Point(-self.x, -self.y)
 
-    def in_unit(self, unit: Type[Unit]) -> Point:
-        return Point(unit(self.x), unit(self.y))
-
 
 ORIGIN = Point(ZERO, ZERO)
-"""Shorthand for a point at 0, 0"""
+"""Shorthand for a point at ``ZERO, ZERO``"""
 
 PointDef: TypeAlias = Union[Point, tuple[Unit, Unit]]
 """A Point or an argument tuple for one"""
