@@ -53,7 +53,7 @@ class Document:
             >>> sixth_page = neoscore.document.pages[5]  # Get the sixth page
             >>> len(neoscore.document.pages)             # 5 new pages are created
             6
-            # Pages can be accessed by negative indexing too
+            >>> # Pages can be accessed by negative indexing too
             >>> assert(first_page == neoscore.document.pages[-6])
             >>> assert(sixth_page == neoscore.document.pages[-1])
             >>> neoscore.shutdown()

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import copy
-from typing import Dict, Optional, Type
+from typing import Dict, Optional, Type, Union
 
 from neoscore.core import neoscore, smufl
 from neoscore.core.exceptions import (
