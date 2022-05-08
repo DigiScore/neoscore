@@ -18,7 +18,7 @@ class TestPageSupplier(AppTest):
             paper.LETTER,
         )
         assert pg.pos == Point(Unit(1), Unit(2))
-        assert pg.page_index == 1
+        assert pg.index == 1
         assert pg.page_side == DirectionX.LEFT
         assert pg.paper == paper.LETTER
 

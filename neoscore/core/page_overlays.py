@@ -47,7 +47,7 @@ def simple_header_footer(
     """
 
     def generated_overlay_func(page: Page):
-        n = page.page_index + 1
+        n = page.index + 1
         # These different resolved names are needed to prevent closure scoping issues
         top_corner_text = (
             _format_template(outside_top_text, n) if outside_top_text else None

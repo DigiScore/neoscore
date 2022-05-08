@@ -13,7 +13,7 @@ Neoscore has robust support for headers and footers using higher level page over
         Path.rect((page_rect.x, page_rect.y), page,
             page_rect.width, page_rect.height, Brush.no_brush())
         # And write some text
-        Text(ORIGIN, page, f"some overlay text on page {page.page_index + 1}")
+        Text(ORIGIN, page, f"some overlay text on page {page.index + 1}")
 
     neoscore.document.pages.overlay_func = overlay
 

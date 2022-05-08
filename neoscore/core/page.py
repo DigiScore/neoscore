@@ -38,7 +38,7 @@ class Page(PositionedObject):
         self,
         pos: PointDef,
         document: Document,
-        page_index: int,
+        index: int,
         page_side: DirectionX,
         paper: Paper,
     ):
@@ -48,21 +48,21 @@ class Page(PositionedObject):
                 in canvas space. Note that this refers to the corner of the *live*
                 area bounded by margins, not the actual paper corner.
             document: The global document. This is used as the ``Page`` object's parent.
-            page_index: The index of this page. This should be the same index this page
+            index: The index of this page. This should be the same index this page
                 can be found at in :obj:`.Document.pages`.
             page_side: The left/right side the page lies on when printed.
             paper: The paper geometry for this page.
         """
         super().__init__(pos, document)
         self._document = document
-        self._page_index = page_index
+        self._index = index
         self._page_side = page_side
         self.paper = paper
 
     @property
-    def page_index(self):
+    def index(self):
         """The index of this page in its managing :obj:`.PageSupplier`."""
-        return self._page_index
+        return self._index
 
     @property
     def page_side(self):

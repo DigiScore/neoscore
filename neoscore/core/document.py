@@ -77,13 +77,13 @@ class Document:
             page.render()
         self._run_on_all_descendants(lambda g: g.post_render_hook())
 
-    def page_origin(self, page_index: int) -> Point:
+    def page_origin(self, index: int) -> Point:
         """Find the origin point of a given page number.
 
         The origin is the top left corner of the live page area.
 
         Args:
-            page_index: The 0-based index of the page to locate.
+            index: The 0-based index of the page to locate.
         """
-        page_x = (self.paper.width + _PAGE_DISPLAY_GAP) * page_index
+        page_x = (self.paper.width + _PAGE_DISPLAY_GAP) * index
         return Point(page_x, ZERO)

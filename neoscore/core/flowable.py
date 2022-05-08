@@ -180,7 +180,7 @@ class Flowable(PositionedObject):
                     new_line_y > live_page_height
                     or new_line_bottom_y > live_page_height
                 ):
-                    page = neoscore.document.pages[page.page_index + 1]
+                    page = neoscore.document.pages[page.index + 1]
                     new_line_y = ZERO
             # Now determine this line's length
             max_length = live_page_width - new_line_x
