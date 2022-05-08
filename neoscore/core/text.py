@@ -39,7 +39,7 @@ class Text(PaintedObject):
         """
         Args:
             pos: Position relative to the parent
-            parent: The parent (core-level) object or None
+            parent: The parent object. Defaults to the document's first page.
             text: The text to be displayed
             font: The font to display the text in.
             brush: The brush to fill in text shapes with.
@@ -51,7 +51,7 @@ class Text(PaintedObject):
                 behind it.
             z_index: Controls draw order with lower values drawn first.
             breakable: Whether this object should break across lines in
-                Flowable containers.
+                :obj:`.Flowable` containers.
             alignment_x: The text's horizontal alignment relative to ``pos``.
                 Note that text which is not ``LEFT`` aligned does not currently display
                 correctly when breaking across flowable lines.
@@ -86,7 +86,6 @@ class Text(PaintedObject):
 
     @property
     def text(self) -> str:
-        """The text to be drawn"""
         return self._text
 
     @text.setter
@@ -95,7 +94,6 @@ class Text(PaintedObject):
 
     @property
     def font(self) -> Font:
-        """The text font"""
         return self._font
 
     @font.setter
@@ -103,13 +101,11 @@ class Text(PaintedObject):
         self._font = value
 
     @property
-    def baseline_y(self) -> Unit:
-        """The y coordinate of the first text line's baseline."""
-        return self.y + self.font.ascent
-
-    @property
     def scale(self) -> float:
-        """A scale factor to be applied to the rendered text"""
+        """A scale factor to be applied to the rendered text.
+
+        This is applied in addition to the font size. It has no effect on children.
+        """
         return self._scale
 
     @scale.setter
@@ -118,7 +114,12 @@ class Text(PaintedObject):
 
     @property
     def rotation(self) -> float:
-        """An angle in degrees to rotate about the text origin"""
+        """An angle in degrees to rotate about the text origin.
+
+        Note that breakable rotated text is not currently supported.
+
+        This has no effect on children.
+        """
         return self._rotation
 
     @rotation.setter
@@ -204,7 +205,7 @@ class Text(PaintedObject):
     def bounding_rect(self) -> Rect:
         """The bounding rect for this text positioned relative to ``pos``.
 
-        The rect x, y position is relative to the object's position (``pos``).
+        The rect ``(x, y)`` position is relative to the object's position.
 
         Note that this currently accounts for scaling, but not rotation.
         """
@@ -217,7 +218,7 @@ class Text(PaintedObject):
             raw_rect.height,
         )
 
-    def render_slice(
+    def _render_slice(
         self,
         pos: Point,
         clip_start_x: Optional[Unit] = None,
@@ -254,16 +255,16 @@ class Text(PaintedObject):
         flowable_line: Optional[NewLine] = None,
         flowable_x: Optional[Unit] = None,
     ):
-        self.render_slice(pos, None, None)
+        self._render_slice(pos, None, None)
 
     def render_before_break(self, pos: Point, flowable_line: NewLine, flowable_x: Unit):
         slice_length = flowable_line.length - (flowable_x - flowable_line.flowable_x)
-        self.render_slice(pos, ZERO, slice_length)
+        self._render_slice(pos, ZERO, slice_length)
 
     def render_spanning_continuation(
         self, pos: Point, flowable_line: NewLine, object_x: Unit
     ):
-        self.render_slice(pos, object_x, flowable_line.length)
+        self._render_slice(pos, object_x, flowable_line.length)
 
     def render_after_break(self, pos: Point, flowable_line: NewLine, object_x: Unit):
-        self.render_slice(pos, object_x, None)
+        self._render_slice(pos, object_x, None)

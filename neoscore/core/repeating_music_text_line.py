@@ -41,15 +41,14 @@ class RepeatingMusicTextLine(MusicText, Spanner2D):
         Args:
             start: The starting point.
             start_parent: If no font is given, this or one of its ancestors
-                must implement ``HasMusicFont``.
-            end_pos: The stopping point.
+                must implement :obj:`.HasMusicFont`.
+            end_pos: The end point.
             end_parent: The parent for the ending position.
-                If ``None``, defaults to ``self``. (Please note the lack of a default
-                argument here, unlike with most other spanners, ``None`` must be given
+                If ``None``, defaults to ``self``. (Note the lack of a default
+                argument here: unlike with most other spanners, ``None`` must be given
                 explicitly.)
             text: The text to be repeated over the spanner. Can be given as a SMuFL
-                glyph name, or other shorthand forms. See ``MusicStringDef`` and
-                ``MusicCharDef``.
+                glyph name, or other shorthand forms. See :obj:`.MusicStringDef`.
             end_cap_text: A text specifier for the end of text. Especially useful
                 for line terminators like arrows at the end of arppeggio lines.
                 This can be provided in the same form as ``text``.

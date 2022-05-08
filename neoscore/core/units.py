@@ -1,6 +1,7 @@
 """Various interoperable units classes and some related helper functions."""
 from __future__ import annotations
 
+import decimal
 from typing import Any, Optional, Type, TypeVar, Union, cast
 
 TUnit = TypeVar("TUnit", bound="Unit")
@@ -32,7 +33,10 @@ class Unit:
     Qt. For most purposes, you probably want to use a more descriptive unit type.
     """
 
-    __slots__ = ("base_value", "_display_value")
+    __slots__ = {
+        "base_value": "The underlying float value in base units.",
+        "_display_value": "",
+    }
 
     CONVERSION_RATE: float = 1
     """The ratio of this class to fundamental ``Unit``\ s.
@@ -40,7 +44,8 @@ class Unit:
     Subclasses should override this.
     """
 
-    def __init__(self, value, _raw_base_value=None):
+    def __init__(self, value: Unit | float, _raw_base_value=None):
+        """Create a unit from another unit or a raw number."""
         if _raw_base_value is not None:
             # Short circuiting constructor for internal use
             self.base_value = _raw_base_value
@@ -56,13 +61,11 @@ class Unit:
 
     @property
     def display_value(self) -> float:
-        """The readable given value in the unit.
+        """A human-friendly unit value.
 
-        If the unit was constructed with a simple number (e.g. Mm(1))
-        this will return the exact given argument value. If the unit
-        was constructed from another unit (e.g. Mm(Inch(1))) this will
-        return the converted value rounded to 3 decimal places. This
-        is helpful for correcting floating point math errors.
+        If the unit was constructed with a simple number, this will return the exact
+        given argument value. If the unit was constructed from another unit, this will
+        return the converted value rounded to 3 decimal places.
         """
         if self._display_value:
             return self._display_value
@@ -150,22 +153,19 @@ class Inch(Unit):
 class Mm(Unit):
     """A millimeter."""
 
-    CONVERSION_RATE = Inch.CONVERSION_RATE * 0.0393701
+    CONVERSION_RATE = float(decimal.Decimal("0.0393700787") * Inch.CONVERSION_RATE)
 
-
-# Constants
 
 ZERO = Unit(0)
 """Shorthand for a zero unit"""
 
-# Utilities
 
-
-def make_unit_class(name, unit_size):
+def make_unit_class(name: str, conversion_rate: float) -> Type[Unit]:
+    """Create a ``Unit`` subclass with a name and base unit conversion rate"""
     return type(
         name,
         (Unit,),
-        {"CONVERSION_RATE": unit_size},
+        {"CONVERSION_RATE": conversion_rate},
     )
 
 
@@ -180,8 +180,8 @@ def _convert_all_to_unit_out_of_place(
 def convert_all_to_unit(collection: Union[list, dict], unit: Type[Unit]):
     """Recursively convert all numbers found in a list or dict to a unit in place.
 
-    This function works in place. Tuples and sets found
-    within ``collection`` will be replaced.
+    This function works in place. Tuples and sets found within ``collection`` will be
+    replaced.
 
     In dictionaries, only values are converted.
     """

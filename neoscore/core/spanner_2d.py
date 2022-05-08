@@ -11,13 +11,22 @@ from neoscore.core.units import Unit
 
 
 class Spanner2D(Spanner):
+
+    """A 2-dimensional :obj:`.Spanner`."""
+
     def __init__(self, end_pos: PointDef, end_parent: PositionedObject):
+        """
+        Args:
+            end_pos: The end point.
+            end_parent: The parent for the ending position.
+        """
         end_pos = Point.from_def(end_pos)
         super().__init__(end_pos.x, end_parent)
         self._end_y = end_pos.y
 
     @property
     def end_y(self) -> Unit:
+        """The y position of the endpoint as specified."""
         return self._end_y
 
     @end_y.setter
@@ -26,9 +35,6 @@ class Spanner2D(Spanner):
 
     @property
     def end_pos(self) -> Point:
-        # This could be stored, but it would make Spanner._end_x (set
-        # in its constructor) redundant, so I prefer to keep end_pos
-        # on-demand in both super and subclass for simplicity.
         return Point(self._end_x, self._end_y)
 
     @end_pos.setter
@@ -41,8 +47,8 @@ class Spanner2D(Spanner):
     def spanner_2d_length(self) -> Unit:
         """The 2d length of the spanner.
 
-        Note: This takes into account both the x and y axis. For only
-            the horizontal length, use ``spanner_x_length``.
+        This takes into account both the x and y axis. For only the horizontal length,
+        use :obj:`.Spanner.spanner_x_length`.
         """
         relative_end_pos = self._relative_end_pos()
         distance = Unit(
@@ -55,7 +61,11 @@ class Spanner2D(Spanner):
 
     @property
     def angle(self) -> float:
-        """The angle from the start to end point in degrees."""
+        """The angle from the start to end point in degrees.
+
+        The angle goes from the positive X axis to the end point. Positive angles go
+        clockwise.
+        """
         return math.degrees(point_angle(self._relative_end_pos()))
 
     def _relative_end_pos(self) -> Point:

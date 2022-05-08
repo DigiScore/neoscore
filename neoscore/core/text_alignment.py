@@ -1,3 +1,8 @@
+"""Enums describing text alignment.
+
+All enum int values are arbitrary and not part of the guaranteed API.
+"""
+
 from enum import Enum, auto
 
 

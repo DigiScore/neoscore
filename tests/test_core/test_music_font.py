@@ -21,11 +21,11 @@ class TestMusicFont(AppTest):
 
     def test_init_with_unit_type(self):
         font = MusicFont("Bravura", Mm)
-        self.assertAlmostEqual(font.unit.CONVERSION_RATE, 2.8346472)
+        self.assertAlmostEqual(font.unit.CONVERSION_RATE, 2.8346456664)
 
     def test_init_with_unit_value(self):
         font = MusicFont("Bravura", Mm(2))
-        self.assertAlmostEqual(font.unit.CONVERSION_RATE, 5.6692944)
+        self.assertAlmostEqual(font.unit.CONVERSION_RATE, 5.6692913328)
 
     def test_modified(self):
         # Since only Bravura is currently provided, we can't really

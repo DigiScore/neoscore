@@ -43,7 +43,7 @@ class TestTabStaff(AppTest):
     def test_music_font_size_derived_from_line_spacing(self):
         staff = TabStaff(ORIGIN, None, Mm(100), line_spacing=Mm(2))
         assert staff.music_font.family_name == "Bravura"
-        self.assertAlmostEqual(staff.music_font.unit.CONVERSION_RATE, 3.7795296)
+        self.assertAlmostEqual(staff.music_font.unit.CONVERSION_RATE, 3.7795275552)
 
     def test_music_font_override(self):
         font = MusicFont("Bravura", Mm)

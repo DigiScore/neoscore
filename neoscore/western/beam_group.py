@@ -254,11 +254,11 @@ class BeamGroup(PositionedObject, HasMusicFont):
     flip, correcting the ``Chordrest`` layout.
 
     This currently has some limitations:
+
     * It does not support beamed rests
     * It does not respond well to mutations. If being used in interactive
       or animated situations, the group likely will need to be destroyed
       and recreated after any changes affecting its chordrests.
-
     """
 
     def __init__(

@@ -31,6 +31,9 @@ class render_cached_property:
     """
 
     def __init__(self, func):
+        """
+        :meta private:
+        """
         self.__doc__ = getattr(func, "__doc__")
         self.func = func
 
