@@ -14,7 +14,7 @@ class Pen:
 
     """A pen describing how shape outlines are drawn."""
 
-    default_color = Color("#000000")
+    _default_color = Color("#000000")
 
     def __init__(
         self,
@@ -35,7 +35,7 @@ class Pen:
             cap_style: Defaults to a square cap
         """
         if color is None:
-            self._color = Pen.default_color
+            self._color = Pen._default_color
         else:
             self._color = Color.from_def(color)
         self._thickness = thickness

@@ -66,4 +66,4 @@ If you expect to use music text often, we strongly recommend getting familiar wi
 
 .. todo::
 
-when we understand better whether we support other fonts than bravura, explain how to register new music fonts as well
+    when we understand better whether we support other fonts than bravura, explain how to register new music fonts as well

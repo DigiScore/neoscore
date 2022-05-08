@@ -11,7 +11,7 @@ from ..helpers import AppTest
 
 class TestNeoscore(AppTest):
     def test_setting_global_color(self):
-        initial_color = Pen.default_color
+        initial_color = Pen._default_color
         try:
             text_created_before_set = Text(ORIGIN, None, "Test")
             path_created_before_set = Path(ORIGIN, None)

@@ -10,7 +10,7 @@ Below we sketch out a few architectural notes that may be helpful when building 
 Architecture
 ------------
 
-Neoscore's core functionality is divided into 3 main components: the :obj:`.core` module discussed earlier, a Qt backend for graphics rendering, and an :obj:`.interface` layer translating between the two. Extensions, including ``western``, mostly integrate with the ``core`` module, but may occasionally need to manipulate interface classes directly. Communication between these architectural layers is generally one directional: ``core`` talks to ``interface``, but ``interface`` doesn't talk back. You should almost never need to deal with the Qt layer directly.
+Neoscore's core functionality is divided into 3 main components: the :obj:`.core` module discussed earlier, a Qt backend for graphics rendering, and an :obj:`interface <.neoscore.interface>` layer translating between the two. Extensions, including ``western``, mostly integrate with the ``core`` module, but may occasionally need to manipulate interface classes directly. Communication between these architectural layers is generally one directional: ``core`` talks to ``interface``, but ``interface`` doesn't talk back. You should almost never need to deal with the Qt layer directly.
 
 .. graphviz::
    :align: center
@@ -32,7 +32,7 @@ Neoscore's core functionality is divided into 3 main components: the :obj:`.core
        4 -> 5
    }
 
-The :obj:`.interface` layer provides low-level representations of core-layer objects. The document tree at the interface layer is completely flattened; every interface object is positioned in absolute document coordinates. Interface classes are also immutable; once created they cannot be changed. Mutation in interactive contexts like animation and live-coding is achieved by continually destroying and recreating interface classes.
+The :obj:`interface <.neoscore.interface>` layer provides low-level representations of core-layer objects. The document tree at the interface layer is completely flattened; every interface object is positioned in absolute document coordinates. Interface classes are also immutable; once created they cannot be changed. Mutation in interactive contexts like animation and live-coding is achieved by continually destroying and recreating interface classes.
 
 .. note::
 

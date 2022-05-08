@@ -20,16 +20,14 @@ class _BeamState(NamedTuple):
     break_depth: Optional[int] = None
     """Indicates a subgroup break after this position.
 
-    This indicates the number of beams to cut a subdivision to after
-    this beam position. The value must be less than ``flag_count`` and
-    greater than 0.
+    This indicates the number of beams to cut a subdivision to after this beam position.
+    The value must be less than ``flag_count`` and greater than 0.
 
-    For example, `[_BeamState(3), _BeamState(3, break_depth=1),
-    _BeamState(3), _BeamState(3)]` encodes four 32nd notes subdivided into
-    2 groups of 2 connected by a single beam.
+    For example, this encodes four 32nd notes subdivided into 2 groups of 2 connected by
+    a single beam: ``[_BeamState(3), _BeamState(3, break_depth=1), _BeamState(3), _BeamState(3)]``
 
-    Because the beam resolver is not meter-aware, it does not perform
-    subdivision breaks unless explicitly requested with this field.
+    Because the beam resolver is not meter-aware, it does not perform subdivision breaks
+    unless explicitly requested with this field.
     """
 
     hook: Optional[DirectionX] = None

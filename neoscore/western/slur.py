@@ -11,7 +11,7 @@ from neoscore.core.pen import PenDef
 from neoscore.core.point import ORIGIN, Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner_2d import Spanner2D
-from neoscore.core.units import ZERO
+from neoscore.core.units import ZERO, Unit
 
 
 class Slur(MusicPath, Spanner2D):

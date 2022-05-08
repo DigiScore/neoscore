@@ -2,7 +2,7 @@ from helpers import render_example
 
 from neoscore.common import *
 from neoscore.core import paper
-from neoscore.core.simple_header_footer import simple_header_footer
+from neoscore.core.page_overlays import simple_header_footer
 
 neoscore.setup(paper.A4.modified(gutter=Mm(10)))
 

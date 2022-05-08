@@ -68,7 +68,7 @@ class PositionedObject:
         """
         Args:
             pos: The position of the object relative to its parent
-            parent: The parent object or None
+            parent: The parent object. Defaults to the document's first page.
         """
         self.pos = pos
         self._children: list[PositionedObject] = []

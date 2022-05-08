@@ -24,21 +24,22 @@ class Interval:
 
         The interval specifier should be a string in the form:
         ``[direction][quality][distance]`` where:
-            * ``direction`` is one of:
 
-              * ``'a'`` for ascending
-              * ``'d'`` for descending
+        * ``direction`` is one of:
 
-            * ``quality`` is one of:
+            * ``'a'`` for ascending
+            * ``'d'`` for descending
 
-              * ``'m'`` for minor
-              * ``'M'`` for Major
-              * ``'P'`` for Perfect
-              * ``'d'`` for diminished
-              * ``'A'`` for Augmented
+        * ``quality`` is one of:
 
-            * ``distance`` is any positive integer indicating the
-              interval distance.
+            * ``'m'`` for minor
+            * ``'M'`` for Major
+            * ``'P'`` for Perfect
+            * ``'d'`` for diminished
+            * ``'A'`` for Augmented
+
+        * ``distance`` is any positive integer indicating the
+            interval distance.
 
         Some examples:
 

@@ -113,8 +113,8 @@ def set_default_color(color: ColorDef):
     # Objects using unspecified pens and brushes make copies of these
     # global default objects.
     c = Color.from_def(color)
-    Pen.default_color = c
-    Brush.default_color = c
+    Pen._default_color = c
+    Brush._default_color = c
 
 
 def set_background_brush(brush: BrushDef):

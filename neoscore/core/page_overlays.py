@@ -1,3 +1,5 @@
+"""Built-in page overlay helpers"""
+
 from typing import Optional
 
 from neoscore.core import neoscore

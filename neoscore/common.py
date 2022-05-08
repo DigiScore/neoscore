@@ -13,6 +13,7 @@ from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.page import Page
+from neoscore.core.page_overlays import simple_header_footer
 from neoscore.core.paper import Paper
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
@@ -24,7 +25,6 @@ from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.rect import Rect
 from neoscore.core.repeating_music_text_line import RepeatingMusicTextLine
 from neoscore.core.rich_text import RichText
-from neoscore.core.simple_header_footer import simple_header_footer
 from neoscore.core.text import Text
 from neoscore.core.text_alignment import AlignmentX, AlignmentY
 from neoscore.core.units import ZERO, Inch, Mm, Unit

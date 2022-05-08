@@ -30,4 +30,4 @@ doc/_build
 doc/api
 
 #VS Code
-#.vscode
+.vscode

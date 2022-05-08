@@ -36,7 +36,7 @@ class TestBrush(unittest.TestCase):
 
     def test_no_brush(self):
         brush = Brush.no_brush()
-        assert brush == Brush(Brush.default_color, BrushPattern.INVISIBLE)
+        assert brush == Brush(Brush._default_color, BrushPattern.INVISIBLE)
         assert id(brush) != Brush.no_brush()
 
     def test_interface_generation(self):

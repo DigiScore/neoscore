@@ -11,7 +11,7 @@ class Brush:
 
     """A brush describing how shapes are filled in."""
 
-    default_color = Color("#000000")
+    _default_color = Color("#000000")
 
     def __init__(
         self,
@@ -25,7 +25,7 @@ class Brush:
             pattern: The brush fill pattern.
         """
         if color is None:
-            self._color = Brush.default_color
+            self._color = Brush._default_color
         else:
             self._color = Color.from_def(color)
         self._pattern = pattern

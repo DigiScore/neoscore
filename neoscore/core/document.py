@@ -14,14 +14,15 @@ class Document:
     """The document root object.
 
     This object should not be created directly by users - it is instantiated
-    by ``neoscore.setup()``, which creates a global instance of this class which
-    can be then accessed as ``neoscore.document``.
+    by :obj:`.neoscore.setup`, which creates a global instance of this class which
+    can be then accessed as :obj:`.neoscore.document`.
     """
 
     def __init__(self, paper: Paper, overlay_func: Optional[PageOverlayFunc] = None):
         """
         Args:
             paper: The paper to use in the document.
+            overlay_func: An optional function to run on each generated page.
         """
         self._paper = paper
         self._pages = PageSupplier(self, overlay_func)
@@ -52,13 +53,12 @@ class Document:
             >>> sixth_page = neoscore.document.pages[5]  # Get the sixth page
             >>> len(neoscore.document.pages)             # 5 new pages are created
             6
-
             # Pages can be accessed by negative indexing too
             >>> assert(first_page == neoscore.document.pages[-6])
             >>> assert(sixth_page == neoscore.document.pages[-1])
             >>> neoscore.shutdown()
 
-        For more information on this object, see ``PageSupplier``.
+        For more information on this object, see :obj:`.PageSupplier`.
         """
         return self._pages
 
@@ -68,7 +68,10 @@ class Document:
                 func(obj)
 
     def render(self):
-        """Render all items in the document."""
+        """Render all items in the document.
+
+        This should not be called directly.
+        """
         self._run_on_all_descendants(lambda g: g.pre_render_hook())
         for page in self.pages:
             page.render()

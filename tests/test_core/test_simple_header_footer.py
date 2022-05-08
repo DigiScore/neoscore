@@ -1,5 +1,5 @@
 from neoscore.core import neoscore
-from neoscore.core.simple_header_footer import simple_header_footer
+from neoscore.core.page_overlays import simple_header_footer
 
 from ..helpers import AppTest
 

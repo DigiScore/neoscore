@@ -23,22 +23,16 @@ class OctaveLine(PositionedObject, Spanner, HasMusicFont):
 
     """An octave indication with a dashed line.
 
-    This octave line is purely cosmetic, and does not result in
-    any automatic transpositions.
+    This octave line is purely cosmetic, and does not result in any automatic
+    transpositions.
 
-    Supported octave indications are:
-        - '15ma' (two octaves higher)
-        - '8va' (one octave higher)
-        - '8vb' (one octave lower)
-        - '15mb' (two octaves lower)
-
-    At the starting position the octave is written in text, followed by
-    a dashed line ending in a small vertical hook pointing toward the staff.
-    If the spanner goes across line breaks, the octave text is repeated
-    in parenthesis at the line beginning.
+    At the starting position the octave is written in text, followed by a dashed line
+    ending in a small vertical hook pointing toward the staff. If the spanner goes
+    across line breaks, the octave text is repeated in parenthesis at the line
+    beginning.
     """
 
-    glyphs = {
+    _glyphs = {
         "15ma": "quindicesimaAlta",
         "8va": "ottavaAlta",
         "8vb": "ottavaBassaVb",
@@ -68,13 +62,11 @@ class OctaveLine(PositionedObject, Spanner, HasMusicFont):
                 a staff itself. The root staff of this *must* be the same
                 as the root staff of ``start_parent``. If omitted, the
                 stop point is relative to the start point.
-            indication: A valid octave indication.
-                currently supported indications are:
+            indication: A valid octave indication. currently supported indications are:
                     - '15ma' (two octaves higher)
                     - '8va' (one octave higher)
                     - '8vb' (one octave lower)
                     - '15mb' (two octaves lower)
-                The default value is '8va'.
             direction: The direction the line's ending hook points.
                 For lines above staves, this should be down, and vice versa for below.
             font: If provided, this overrides any font found in the ancestor chain.
@@ -139,12 +131,12 @@ class _OctaveLineText(MusicText):
             self,
             pos,
             parent,
-            OctaveLine.glyphs[indication],
+            OctaveLine._glyphs[indication],
             font,
             background_brush=neoscore.background_brush,
         )
-        open_paren_char = MusicChar(self.music_font, OctaveLine.glyphs["("])
-        close_paren_char = MusicChar(self.music_font, OctaveLine.glyphs[")"])
+        open_paren_char = MusicChar(self.music_font, OctaveLine._glyphs["("])
+        close_paren_char = MusicChar(self.music_font, OctaveLine._glyphs[")"])
         self.parenthesized_text = (
             open_paren_char.codepoint + self.text + close_paren_char.codepoint
         )

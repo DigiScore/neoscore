@@ -21,7 +21,7 @@ Neoscore has robust support for headers and footers using higher level page over
 
 This overlay function is then run every time a new page is created. As a reminder, :obj:`.Document` creates pages on demand whenever accessed through :obj:`.Document.pages`, so overlay functions only apply to pages created `after` they're assigned. Consequently, if you want a page overlay to apply to all pages in your document, you should assign your overlay function at the top of your script, right after calling :obj:`.neoscore.setup`. On the other hand, this can be leveraged to disable or change overlays throughout your document.
 
-For the common use-case of a simple header and footer, neoscore provides a built-in overlay function generator with :obj:`.simple_header_footer`.
+For the common use-case of a simple header and footer, neoscore provides a built-in overlay function generator with :obj:`.page_overlays.simple_header_footer`.
 
 .. rendered-example::
 
