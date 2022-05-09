@@ -24,7 +24,7 @@ class Accidental(MusicText):
         Args:
             pos: Position relative to ``parent``
             parent: If no font is given, this or one of its ancestors must
-                implement ``HasMusicFont``.
+                implement :obj:`.HasMusicFont`.
             accidental_type: Which accidental to draw. For extended accidentals,
                 an arbitrary string SMuFL glyph name may be provided.
             font: If provided, this overrides any font found in the ancestor chain.

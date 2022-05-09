@@ -42,7 +42,7 @@ class ClefType:
     This is given in pseudo staff units relative to the staff's top
     line. When positioning clefs, this should be passed into the
     staff's unit to find the appropriate y position.
-    
+
     For clefs whose position depends on the number of staff lines,
     this can be a ``StaffPosFunc``.
     """
@@ -52,7 +52,7 @@ class ClefType:
 
     Like ``staff_pos``, this is given in pseudo staff units relative to
     the staff's top line.
-    
+
     For clefs whose middle C position depends on the number of staff
     lines, this can be a ``StaffPosFunc``.
     """
@@ -115,11 +115,40 @@ _alto_sharp_positions = {
 
 
 TREBLE = ClefType("gClef", 3, 5, _flat_positions, _sharp_positions)
+"""A conventional treble clef.
+
+:meta hide-value:
+"""
+
 TREBLE_8VB = ClefType("gClef8vb", 3, 1.5, _flat_positions, _sharp_positions)
+"""A treble clef one octave below, like often used in tenor vocal parts.
+
+:meta hide-value:
+"""
+
 BASS = ClefType("fClef", 1, -1, _bass_flat_positions, _bass_sharp_positions)
+"""A conventional bass clef.
+
+:meta hide-value:
+"""
+
 BASS_8VB = ClefType("fClef8vb", 1, -4.5, _bass_flat_positions, _bass_sharp_positions)
+"""A bass clef one octave below, like often used in double bass parts.
+
+:meta hide-value:
+"""
+
 TENOR = ClefType("cClef", 1, 1, _tenor_flat_positions, _tenor_sharp_positions)
+"""A tenor C-clef.
+
+:meta hide-value:
+"""
+
 ALTO = ClefType("cClef", 2, 2, _alto_flat_positions, _alto_sharp_positions)
+"""An alto C-clef.
+
+:meta hide-value:
+"""
 
 
 def _percussion_staff_pos_func(num_lines: int) -> float:
@@ -133,10 +162,12 @@ PERCUSSION_1 = ClefType(
     _alto_flat_positions,
     _alto_sharp_positions,
 )
-"""Percussion clef consisting of 2 solid bars.
+"""A percussion clef consisting of 2 solid bars.
 
 Percussion clefs are treated as C clefs always centered at the middle
 of the staff. This works with any number of staff lines.
+
+:meta hide-value:
 """
 
 PERCUSSION_2 = ClefType(
@@ -146,9 +177,11 @@ PERCUSSION_2 = ClefType(
     _alto_flat_positions,
     _alto_sharp_positions,
 )
-"""Percussion clef consisting of an open rectangle.
+"""A percussion clef consisting of an open rectangle.
 
 See also ``PERCUSSION_1``
+
+:meta hide-value:
 """
 
 CLEF_TYPE_SHORTHAND_NAMES = {

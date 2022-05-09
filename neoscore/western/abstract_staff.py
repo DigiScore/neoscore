@@ -86,6 +86,7 @@ class AbstractStaff(PaintedObject, HasMusicFont):
 
     @property
     def breakable_length(self) -> Unit:
+        """Staves are breakable over their full length"""
         # Override expensive ``Path.length`` since the staff length here
         # is already known.
         return self._length
@@ -127,7 +128,7 @@ class AbstractStaff(PaintedObject, HasMusicFont):
     def fringe_layout_at(self, location: Optional[NewLine]) -> StaffFringeLayout:
         return self.group.fringe_layout_at(self, location)
 
-    def render_slice(
+    def _render_slice(
         self,
         pos: Point,
         clip_start_x: Optional[Unit],
@@ -155,10 +156,10 @@ class AbstractStaff(PaintedObject, HasMusicFont):
         flowable_line: Optional[NewLine] = None,
         flowable_x: Optional[Unit] = None,
     ):
-        self.render_slice(pos, None, None, flowable_line)
+        self._render_slice(pos, None, None, flowable_line)
 
     def render_before_break(self, pos: Point, flowable_line: NewLine, flowable_x: Unit):
-        self.render_slice(
+        self._render_slice(
             pos,
             ZERO,
             flowable_line.flowable_x + flowable_line.length - flowable_x,
@@ -168,10 +169,10 @@ class AbstractStaff(PaintedObject, HasMusicFont):
     def render_spanning_continuation(
         self, pos: Point, flowable_line: NewLine, object_x: Unit
     ):
-        self.render_slice(pos, object_x, flowable_line.length, flowable_line)
+        self._render_slice(pos, object_x, flowable_line.length, flowable_line)
 
     def render_after_break(self, pos: Point, flowable_line: NewLine, object_x: Unit):
-        self.render_slice(pos, object_x, None, flowable_line)
+        self._render_slice(pos, object_x, None, flowable_line)
 
     def _create_staff_segment_path(self, doc_pos: Point, length: Unit) -> Path:
         path = Path(doc_pos, None, pen=self.pen, z_index=self.z_index)

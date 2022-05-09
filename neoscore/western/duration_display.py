@@ -1,10 +1,10 @@
 import math
 from dataclasses import dataclass
-from typing import NewType
+from typing import TypeAlias
 
 from neoscore.core.math_helpers import is_power_of_2
 
-BaseDuration = NewType("BaseDuration", int)
+BaseDuration: TypeAlias = int
 """A base duration used to set notehead and rest glyphs.
 
 Must be 0 or a power of 2. The values correspond to durations like so:
@@ -18,6 +18,9 @@ Must be 0 or a power of 2. The values correspond to durations like so:
 
 @dataclass(frozen=True)
 class DurationDisplay:
+
+    """The basic information about a :obj:`.Duration` needed to write a note with."""
+
     base_duration: BaseDuration
 
     dot_count: int
@@ -34,5 +37,5 @@ class DurationDisplay:
         return int(math.log2(self.base_duration) - 2)
 
     @property
-    def requires_stem(self):
+    def requires_stem(self) -> bool:
         return self.base_duration > 1

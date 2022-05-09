@@ -21,18 +21,13 @@ _DEFAULT_BARLINE_STYLE = BarlineStyle()
 
 
 class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
-    """A barline.
+    """A barline spanning any number of staves.
 
-    This is drawn as vertical lines at a given x coordinate
-    spanning the full height of a series of staves.
+    In addition to a default plain barline, this supports many common barline styles out
+    of the box, and beyond those you can easily define custom barline styles.
 
-    The style of the bar line is determined by the optional style
-    value. If none then will resort to default single thin line.
-
-    The thickness of the line is determined by the engraving defaults
-    on the top staff. Can be over-ridden by the font property.
-
-    A ``BreakHint`` is automatically attached to the end of the barline.
+    A :obj:`.BreakHint` is automatically attached to the end of the barline so
+    :obj:`.Flowable` containers will treat barlines as potential line break points.
     """
 
     def __init__(
@@ -49,9 +44,10 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
                 Specifies right edge of the barline group and offsets 'thickness'.
             staves: The staves spanned. If a raw list of staves is given, it must be
                 in descending order.
-            styles: If provided, this accepts any of the premade styles provided in
-                barline_style, in addition to custom styles created with BarlineStyle.
-            connected: If provided, connects all barlines across the staves span (True)
+            styles: This accepts any of the premade styles provided in
+                :obj:`.barline_style`, in addition to custom styles defined in
+                a list of :obj:`.BarlineStyle`\ s (one for each sub-barline).
+            connected: Whether to connect the barline between staves.
             font: If provided, this overrides the font in the parent (top) staff.
         """
         MultiStaffObject.__init__(self, staves)

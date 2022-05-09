@@ -21,8 +21,13 @@ from neoscore.western.stem import Stem
 
 
 class PitchAndGlyph(NamedTuple):
+    """Used to define individual notes with one-off SMuFL glyphs."""
+
     pitch: PitchDef
+    """The pitch for the notehead"""
+
     notehead_glyph: str
+    """The SMuFL glyph name for the notehead"""
 
 
 class Chordrest(PositionedObject, StaffObject):
@@ -34,18 +39,15 @@ class Chordrest(PositionedObject, StaffObject):
     to be used as notes in the chord, or ``None`` for a rest.
 
     It will automatically generate and lay out:
-        * ``Notehead``\ s if pitches are given
-        * a ``Stem`` if pitches are given and required by the given ``Duration``
-        * a ``Flag`` if pitches are given and required by the given ``Duration``
-        * ``LedgerLine``\ s as needed (taking into consideration the given
-          pitches and their location on the ``Staff``)
-        * ``Accidental``\ s as needed by any given pitches
-        * a ``Rest`` if no pitches are given
-        * ``RhythmDot``\ s if needed by the given ``Duration``
 
-    The given pitches are treated mostly as written pitches. The only
-    transposition automatically applied to them is octave
-    transpositions from ``OctaveLine``\ s.
+    * :obj:`.Notehead`\ s if pitches are given
+    * a :obj:`.Stem` if pitches are given and required by the given :obj:`.Duration`
+    * a :obj:`.Flag` if pitches are given and required by the given ``Duration``
+    * :obj:`.LedgerLine`\ s as needed (taking into consideration the given
+      pitches and their location on the :obj:`.Staff`)
+    * :obj:`.Accidental`\ s as needed by any given pitches
+    * a :obj:`.Rest` if no pitches are given
+    * :obj:`.RhythmDot`\ s if needed by the given ``Duration``
 
     Any accidentals given in pitches will be unconditionally drawn
     regardless of context and key signature.
@@ -85,23 +87,22 @@ class Chordrest(PositionedObject, StaffObject):
     ):
         """
         Args:
-            pos_x: The horizontal position
+            pos_x: The horizontal position in the staff
             staff: The staff the object is attached to
             notes: A list of pitches and optional notehead-specific data. If ``None``
                 this indicates a rest. For simple notes and chords, this can typically
-                be a list of pitch string shorthands (see ``Pitch.from_str``). Pitches
+                be a list of pitch string shorthands (see :obj:`.Pitch.from_str`). Pitches
                 with extended accidentals can be given by passing fully constructed
                 ``Pitch`` objects. Individual notehead glyphs (by default taken from the
                 given ``table``) can be overridden by passing a tuple of a pitch
                 and a SMuFL glyph name string.
-            duration: The duration of the Chordrest
+            duration: The written duration for the object.
             rest_y: The vertical position used by rests. This defaults to the center
                 of the staff.
-            stem_direction: An optional stem direction override
-                where ``1`` points down and ``-1`` points up. If omitted, the
+            stem_direction: An optional stem direction override. If omitted, the
                 direction is automatically calculated to point away from
                 the furthest-out notehead.
-            beam_break_depth: Break depth used if in a ``BeamGroup``.
+            beam_break_depth: Break depth used if in a :obj:`.BeamGroup`.
             beam_hook_dir: Beamlet hook direction used in a ``BeamGroup``.
             table: The set of noteheads to use according to ``duration``.
         """
@@ -152,7 +153,7 @@ class Chordrest(PositionedObject, StaffObject):
 
     @property
     def rest(self) -> Optional[Rest]:
-        """A Rest glyph, if no noteheads exist."""
+        """A rest glyph, if no noteheads exist."""
         return self._rest
 
     @property
@@ -164,7 +165,7 @@ class Chordrest(PositionedObject, StaffObject):
     def ledgers(self) -> list[LedgerLine]:
         """The ledger lines contained in this Chordrest.
 
-        An empty set means no ledgers.
+        An empty list means none are needed.
         """
         return self._ledgers
 
@@ -174,7 +175,7 @@ class Chordrest(PositionedObject, StaffObject):
 
     @property
     def stem(self) -> Optional[Stem]:
-        """The Stem for the Chordrest."""
+        """The stem for the Chordrest."""
         return self._stem
 
     @property
@@ -184,23 +185,21 @@ class Chordrest(PositionedObject, StaffObject):
 
     @property
     def beam_break_depth(self) -> Optional[int]:
-        """Break depth used if in a ``BeamGroup``.
+        """Break depth used if in a :obj:`.BeamGroup`.
 
-        If this Chordrest is within a beam group, this triggers a
-        beam subdivision break at this point. The value indicates the
-        number of beams to which the subdivision breaks. For example,
-        in run of 16th notes a ``beam_break_depth`` of ``1`` would
+        If this Chordrest is within a beam group, this triggers a beam subdivision break
+        at this point. The value indicates the number of beams to which the subdivision
+        breaks. For example, in run of 16th notes a ``beam_break_depth`` of ``1`` would
         indicate a subdivision break to 1 beam at this point.
         """
         return self._beam_break_depth
 
     @property
     def beam_hook_dir(self) -> Optional[DirectionX]:
-        """Beamlet hook direction used in a ``BeamGroup``.
+        """Beamlet hook direction used in a :obj:`.BeamGroup`.
 
-        If this Chordrest is within a beam group and this position is
-        one requiring a beamlet hook whose direction is ambiguous,
-        this controls that direction.
+        If this Chordrest is within a beam group and this position is one requiring a
+        beamlet hook whose direction is ambiguous, this controls that direction.
         """
         return self._beam_hook_dir
 
@@ -215,11 +214,9 @@ class Chordrest(PositionedObject, StaffObject):
 
     @property
     def duration(self) -> Duration:
-        """The length of this event.
+        """The written length of this event.
 
-        This is used to determine which (if any) ``Flag``\ s, ``RhythmDot``\ s,
-        and ``Notehead``/``Rest`` styles. Higher level managers may also
-        use this information to inform layout decisions and ``Beam`` groupings.
+        This affects many components of the chordrest.
         """
         return self._duration
 
@@ -239,7 +236,7 @@ class Chordrest(PositionedObject, StaffObject):
 
         Positions are in centered staff positions.
 
-        An empty set means no ledger lines are needed.
+        An empty list means no ledger lines are needed.
         """
         highest = self.highest_notehead.y
         lowest = self.lowest_notehead.y
@@ -308,11 +305,6 @@ class Chordrest(PositionedObject, StaffObject):
     def rightmost_notehead(self) -> Optional[Notehead]:
         """The notehead furthest to the right in the chord"""
         return max(self.noteheads, key=lambda n: n.x, default=None)
-
-    @cached_property
-    def widest_notehead(self) -> Optional[Notehead]:
-        """The notehead with the greatest ``visual_width``"""
-        return max(self.noteheads, key=lambda n: n.visual_width, default=None)
 
     @cached_property
     def extra_attachment_point(self) -> Point:
@@ -387,20 +379,18 @@ class Chordrest(PositionedObject, StaffObject):
     def stem_direction(self) -> DirectionY:
         """The direction of the stem
 
-        Takes the notehead furthest from the center of the staff,
-        and returns the opposite direction.
+        Takes the notehead furthest from the center of the staff, and returns the
+        opposite direction.
 
-        If the furthest notehead is in the center of the staff, the
-        direction defaults to ``DirectionY.DOWN``, unless the
-        staff has only one line, in which case it defaults to
-        ``DirectionY.UP`` as a convenience for percussion staves.
+        If the furthest notehead is in the center of the staff, the direction defaults
+        to ``DirectionY.DOWN``, unless the staff has only one line, in which case it
+        defaults to ``DirectionY.UP`` as a convenience for percussion staves.
 
-        This automatically calculated property may be overridden using
-        its setter. To revert back to the automatically calculated value
-        set this property to ``None``.
+        This automatically calculated property may be overridden using its setter. To
+        revert back to the automatically calculated value set this property to ``None``.
 
-        If there are no noteheads (meaning this Chordrest is a rest),
-        this arbitrarily returns ``DirectionY.UP``.
+        If there are no noteheads (meaning this Chordrest is a rest), this arbitrarily
+        returns ``DirectionY.UP``.
 
         """
         if self._stem_direction_override:
@@ -494,9 +484,6 @@ class Chordrest(PositionedObject, StaffObject):
             self._rest = Rest(Point(self.staff.unit(0), rest_y), self, self.duration)
         # Both rests and chords needs dots
         self._create_dots()
-
-    def render(self):
-        super().render()
 
     def _create_ledgers(self):
         """Create all required ledger lines and store them in ``self.ledgers``

@@ -6,10 +6,10 @@ class AccidentalType(Enum):
 
     """A logical accidental descriptor covering standard 12-EDO western accidentals.
 
-    These are used both in ``Pitch`` manipulations and in
-    graphical ``Accidental`` objects.
+    These are used both in abstract :obj:`.Pitch` descriptions and in concrete
+    graphical :obj:`.Accidental` objects.
 
-    The string values of each variant are their canonical SMuFL glyph names.
+    Each enum's string value is its corresponding canonical SMuFL glyph name.
 
     Not all glyphs are mandatory in SMuFL, but all are available in Bravura.
     """

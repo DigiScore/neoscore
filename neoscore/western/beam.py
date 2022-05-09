@@ -17,7 +17,7 @@ class Beam(MusicPath):
 
     This is a single beam - for multiple layers of beams (e.g. 2 for
     16th notes), multiple of these must be stacked on top of each
-    other. See ``BeamGroup`` for a reasonable implementation of this.
+    other. See :obj:`.BeamGroup` for a reasonable implementation of this.
 
     While this is a path, it requires a music font from which to
     derive its appearance.
@@ -37,7 +37,7 @@ class Beam(MusicPath):
         Args:
             pos: The starting (left) position of the beam
             parent: The parent for the starting position. If no font is given,
-                this or one of its ancestors must implement ``HasMusicFont``.
+                this or one of its ancestors must implement :obj:`.HasMusicFont`.
             end_pos: The ending (right) position of the beam
             end_parent: The parent for the ending position.
                 Must be a staff or in one.

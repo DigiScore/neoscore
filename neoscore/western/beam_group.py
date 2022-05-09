@@ -230,35 +230,31 @@ def _resolve_beam_direction(chordrests: list[Chordrest]) -> DirectionY:
 class BeamGroup(PositionedObject, HasMusicFont):
     """A beam group spanning a collection of Chordrests.
 
-    This analyzes the given chordrests to determine a reasonable beam
-    layout. The beaming algorithm does not take into account metric
-    subdivisions; instead it greedily tries to beam together as many
-    notes as possible. Subdivisions can be specified by setting
-    ``Chordrest.beam_break_depth``, which indicates a break after the
-    chord to the given beam count.
+    This analyzes the given chordrests to determine a reasonable beam layout. The
+    beaming algorithm does not take into account metric subdivisions; instead it
+    greedily tries to beam together as many notes as possible. Subdivisions can be
+    specified by setting :obj:`.Chordrest.beam_break_depth`, which indicates a break
+    after the chord to the given beam count.
 
-    While in most situations beamlet "hooks" (as in a dotted 8th note
-    followed by a 16th note) unambiguously must point right or left,
-    there are some cases where it is ambiguous. For example, a
-    16th note between two 8th notes could have its beamlet point left
-    or right. In these situations, ``BeamGroup`` will point it left by
-    default, but users can override this by setting
-    ``Chordrest.beam_hook_dir``.
+    While in most situations beamlet "hooks" (as in a dotted 8th note followed by a 16th
+    note) unambiguously must point right or left, there are some cases where it is
+    ambiguous. For example, a 16th note between two 8th notes could have its beamlet
+    point left or right. In these situations, ``BeamGroup`` will point it left by
+    default, but users can override this by setting :obj:`.Chordrest.beam_hook_dir`.
 
-    The beam direction and slant angle are determined automatically
-    based on the given notes. The direction can be overridden in
-    ``BeamGroup``'s constructor.
+    The beam direction and slant angle are determined automatically based on the given
+    notes. The direction can be overridden in ``BeamGroup``'s constructor.
 
-    Beam layout automatically modifies spanned ``Chordrests`` by
-    snapping their stems to the beam line and, if this causes a stem
-    flip, correcting the ``Chordrest`` layout.
+    Beam layout automatically modifies spanned chordrests by snapping their stems to the
+    beam line and, if this causes a stem flip, correcting the the chordrest component
+    layout.
 
     This currently has some limitations:
 
     * It does not support beamed rests
-    * It does not respond well to mutations. If being used in interactive
-      or animated situations, the group likely will need to be destroyed
-      and recreated after any changes affecting its chordrests.
+    * It does not respond well to mutations. If being used in interactive or animated
+      situations, the group likely will need to be destroyed and recreated after any
+      changes affecting its chordrests.
     """
 
     def __init__(

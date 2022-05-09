@@ -40,7 +40,7 @@ class ArpeggioLine(RepeatingMusicTextLine):
         Args:
             start: The starting point.
             start_parent: If no font is given, this or one of its ancestors
-                must implement ``HasMusicFont``.
+                must implement :obj:`.HasMusicFont`.
             end_pos: The stopping point.
             end_parent: The parent for the ending position.
                 If ``None``, defaults to ``self``.

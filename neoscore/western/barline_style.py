@@ -28,28 +28,33 @@ class BarlineStyle:
     """
 
     pattern: PenPattern = PenPattern.SOLID
-    """Line pattern of a line"""
+    """Line pattern of this line"""
 
     color: Optional[ColorDef] = None
-    """Color of a line"""
+    """Color of this line given as a :obj:`.ColorDef`"""
 
 
 # NOTE: When adding a new style, be sure to add it to ALL_STYLES below
 
 SINGLE = [BarlineStyle("thinBarlineThickness")]
+"""A plain single barline."""
 
 DASH = [BarlineStyle("thinBarlineThickness", pattern=PenPattern.DASH)]
+"""A single dashed barline."""
 
 DOT = [BarlineStyle("thinBarlineThickness", pattern=PenPattern.DOT)]
+"""A single dotted barline."""
 
 THIN_DOUBLE = [
     BarlineStyle("thinBarlineThickness", "barlineSeparation"),
     BarlineStyle("thinBarlineThickness"),
 ]
+"""A thin double barline."""
 
 END = [
     BarlineStyle("thinBarlineThickness", "thickBarlineSeparation"),
     BarlineStyle("thickBarlineThickness"),
 ]
+"""A thick double barline conventionally used at the end of scores."""
 
 ALL_STYLES: list[list[BarlineStyle]] = [SINGLE, DASH, DOT, THIN_DOUBLE, END]

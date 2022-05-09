@@ -17,9 +17,9 @@ class Clef(MusicText, StaffObject):
 
     """A graphical and logical staff clef.
 
-    These are drawn at the initially specified position, and at the
-    beginning of new lines in the parent ``Staff`` until a new ``Clef``
-    is encountered or the end of the ``Staff``.
+    These are drawn at the initially specified position, and at the beginning of new
+    lines in the parent :obj:`.Staff` until a new ``Clef`` is encountered or the end of
+    the ``Staff``.
 
     ``Staff`` uses these to map pitches to vertical positions.
     """
@@ -38,8 +38,10 @@ class Clef(MusicText, StaffObject):
             pos_x: The x position in the staff
             staff: The parent staff
             clef_type: The type of clef. String names of common clefs may be
-                given as a convenience; see ``ClefTypeDef``.
+                given as a convenience; see :obj:`.ClefTypeDef`.
             font: The font used. Defaults to the staff's font.
+            brush: The brush to fill in text shapes with.
+            pen: The pen to trace text outlines with. This defaults to no pen.
         """
         StaffObject.__init__(self, staff)
         # Init with placeholder y position and text; clef_type setter will update
