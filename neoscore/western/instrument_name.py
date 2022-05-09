@@ -108,6 +108,7 @@ class InstrumentName(PaintedObject, StaffObject):
 
     @property
     def breakable_length(self) -> Unit:
+        """This class's breakable length is that of its staff"""
         return self.staff.breakable_length
 
     @property

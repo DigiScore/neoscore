@@ -99,7 +99,3 @@ class RepeatingMusicTextLine(MusicText, Spanner2D):
             else:
                 width += self.font.bounding_rect_of(c.codepoint).width
         return width
-
-    @property
-    def breakable_length(self) -> Unit:
-        return self.spanner_x_length

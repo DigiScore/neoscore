@@ -5,7 +5,7 @@ from neoscore.core.exceptions import InvalidIntervalError
 
 
 class Interval:
-    """A pitch interval."""
+    """An abstract pitch interval."""
 
     _shorthand_regex = re.compile("^([ad])([mMPdA])([1-9]\d*)$")
     _base_pc_deltas = {1: 0, 2: 2, 3: 4, 4: 5, 5: 7, 6: 9, 7: 11}
@@ -19,9 +19,6 @@ class Interval:
 
     def __init__(self, specifier: str):
         """
-        Args:
-            specifier: A description of the interval.
-
         The interval specifier should be a string in the form:
         ``[direction][quality][distance]`` where:
 
@@ -39,7 +36,7 @@ class Interval:
             * ``'A'`` for Augmented
 
         * ``distance`` is any positive integer indicating the
-            interval distance.
+          interval distance.
 
         Some examples:
 

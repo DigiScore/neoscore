@@ -55,7 +55,7 @@ class OctaveLine(PositionedObject, Spanner, HasMusicFont):
         Args:
             start: The starting point.
             start_parent: The parent for the starting position. If no font is given,
-                this or one of its ancestors must implement ``HasMusicFont``.
+                this or one of its ancestors must implement :obj:`.HasMusicFont`.
             end_x: The spanner end x position. The y position will be
                 automatically calculated to be horizontal.
             end_parent: An object either in a Staff or
@@ -63,10 +63,12 @@ class OctaveLine(PositionedObject, Spanner, HasMusicFont):
                 as the root staff of ``start_parent``. If omitted, the
                 stop point is relative to the start point.
             indication: A valid octave indication. currently supported indications are:
-                    - '15ma' (two octaves higher)
-                    - '8va' (one octave higher)
-                    - '8vb' (one octave lower)
-                    - '15mb' (two octaves lower)
+
+                    * '15ma' (two octaves higher)
+                    * '8va' (one octave higher)
+                    * '8vb' (one octave lower)
+                    * '15mb' (two octaves lower)
+
             direction: The direction the line's ending hook points.
                 For lines above staves, this should be down, and vice versa for below.
             font: If provided, this overrides any font found in the ancestor chain.
@@ -106,10 +108,6 @@ class OctaveLine(PositionedObject, Spanner, HasMusicFont):
     @property
     def music_font(self) -> MusicFont:
         return self._music_font
-
-    @property
-    def breakable_length(self) -> Unit:
-        return self.spanner_x_length
 
 
 class _OctaveLineText(MusicText):

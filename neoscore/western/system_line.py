@@ -41,6 +41,7 @@ class SystemLine(MultiStaffObject, MusicPath):
 
     @property
     def breakable_length(self) -> Unit:
+        """This class's breakable length is that of its highest staff"""
         return self.highest.breakable_length
 
     def _render_occurrence(

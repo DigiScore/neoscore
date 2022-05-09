@@ -36,7 +36,7 @@ class Hairpin(MusicPath, Spanner2D):
         Args:
             pos: The starting point.
             parent: The parent for the starting position. If no font is given,
-                this or one of its ancestors must implement ``HasMusicFont``.
+                this or one of its ancestors must implement :obj:`.HasMusicFont`.
             end_pos: The stopping point.
             end_parent: The parent for the ending position.
                 If ``None``, defaults to ``self``.
@@ -139,10 +139,6 @@ class Hairpin(MusicPath, Spanner2D):
         )
 
     def _draw_path(self):
-        """Draw the hairpin shape.
-
-        Returns: None
-        """
         (
             first_pos,
             first_parent,

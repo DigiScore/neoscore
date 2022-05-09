@@ -20,7 +20,7 @@ _glyph_names = {
 
 @dataclass(frozen=True)
 class Meter:
-    """A time signature textual meter comprising two lists of glyphs.
+    """A time signature graphical meter comprising two lists of glyphs.
 
     Users are recommended to use the ``Meter.numeric()`` constructor,
     which provides a convenient way to create standard meters. The
@@ -44,7 +44,7 @@ class Meter:
 
         Lists of numbers will be treated as additive time signatures
         where each upper number is joined by a plus sign. This is
-        useful for time signatures like [3 + 2 + 3] / 8.
+        useful for time signatures like ``[3 + 2 + 3] / 8``.
         """
         if isinstance(upper, int):
             upper_glyphs = Meter._glyphs_for_number(upper)

@@ -10,7 +10,7 @@ from neoscore.core.positioned_object import PositionedObject
 
 class RhythmDot(MusicText):
 
-    """A single rhythmic dot"""
+    """A single rhythmic augmentation dot used in notes and rests"""
 
     _glyph_name = "augmentationDot"
 
@@ -20,8 +20,8 @@ class RhythmDot(MusicText):
         """
         Args:
             pos: Position relative to ``parent``
-            parent: If no font is given, this or one of its ancestors must
-                implement ``HasMusicFont``.
+            parent: The parent of the rest. If no font is provided,
+                this parent or one of its ancestors must implement :obj:`.HasStaffUnit`.
             font: If provided, this overrides any font found in the ancestor chain.
         """
         MusicText.__init__(self, pos, parent, [self._glyph_name], font)

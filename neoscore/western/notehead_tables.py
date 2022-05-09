@@ -1,5 +1,4 @@
 """Tables of glyphs for common notehead styles
-
 This module includes prebuilt ``NoteheadTable``\ s for many notehead
 flavors included in SMuFL. Custom tables using arbitrary SMuFL glyphs
 may also be created by simply instantiating a ``NoteheadTable`` and
@@ -85,6 +84,7 @@ Not available in all fonts.
 X = NoteheadTable(
     "noteheadXDoubleWhole", "noteheadXWhole", "noteheadXHalf", "noteheadXBlack"
 )
+""""""
 
 SLASH = NoteheadTable(
     "noteheadSlashWhiteDoubleWhole",
@@ -137,6 +137,7 @@ PLUS = NoteheadTable(
     "noteheadPlusHalf",
     "noteheadPlusBlack",
 )
+""""""
 
 CIRCLE_X = NoteheadTable(
     "noteheadCircleXDoubleWhole",
@@ -144,6 +145,7 @@ CIRCLE_X = NoteheadTable(
     "noteheadCircleXHalf",
     "noteheadCircleX",
 )
+""""""
 
 STANDARD_WITH_X = NoteheadTable(
     "noteheadDoubleWholeWithX",
@@ -151,6 +153,7 @@ STANDARD_WITH_X = NoteheadTable(
     "noteheadHalfWithX",
     "noteheadVoidWithX",
 )
+""""""
 
 SQUARE = NoteheadTable(
     "noteheadSquareWhite",
@@ -158,6 +161,7 @@ SQUARE = NoteheadTable(
     "noteheadSquareWhite",
     "noteheadSquareBlack",
 )
+""""""
 
 TRIANGLE_UP = NoteheadTable(
     "noteheadTriangleUpDoubleWhole",
@@ -165,6 +169,7 @@ TRIANGLE_UP = NoteheadTable(
     "noteheadTriangleUpHalf",
     "noteheadTriangleUpBlack",
 )
+""""""
 
 TRIANGLE_LEFT = NoteheadTable(
     "noteheadTriangleLeftWhite",
@@ -172,6 +177,7 @@ TRIANGLE_LEFT = NoteheadTable(
     "noteheadTriangleLeftWhite",
     "noteheadTriangleLeftBlack",
 )
+""""""
 
 TRIANGLE_RIGHT = NoteheadTable(
     "noteheadTriangleRightWhite",
@@ -179,6 +185,7 @@ TRIANGLE_RIGHT = NoteheadTable(
     "noteheadTriangleRightWhite",
     "noteheadTriangleRightBlack",
 )
+""""""
 
 TRIANGLE_DOWN = NoteheadTable(
     "noteheadTriangleDownDoubleWhole",
@@ -186,6 +193,7 @@ TRIANGLE_DOWN = NoteheadTable(
     "noteheadTriangleDownHalf",
     "noteheadTriangleDownBlack",
 )
+""""""
 
 TRIANGLE_UP_RIGHT = NoteheadTable(
     "noteheadTriangleUpRightWhite",
@@ -193,6 +201,7 @@ TRIANGLE_UP_RIGHT = NoteheadTable(
     "noteheadTriangleUpRightWhite",
     "noteheadTriangleUpRightBlack",
 )
+""""""
 
 TRIANGLE_ROUND_DOWN = NoteheadTable(
     "noteheadTriangleRoundDownWhite",
@@ -200,6 +209,7 @@ TRIANGLE_ROUND_DOWN = NoteheadTable(
     "noteheadTriangleRoundDownWhite",
     "noteheadTriangleRoundDownBlack",
 )
+""""""
 
 MOON = NoteheadTable(
     "noteheadMoonWhite",
@@ -207,6 +217,7 @@ MOON = NoteheadTable(
     "noteheadMoonWhite",
     "noteheadMoonBlack",
 )
+""""""
 
 PARENTHESIS = NoteheadTable(
     "noteheadParenthesis",
@@ -238,6 +249,7 @@ DIAMOND = NoteheadTable(
     "noteheadDiamondHalf",
     "noteheadDiamondBlack",
 )
+""""""
 
 DIAMOND_WIDE = NoteheadTable(
     "noteheadDiamondDoubleWhole",
@@ -253,6 +265,7 @@ DIAMOND_OLD = NoteheadTable(
     "noteheadDiamondHalfOld",
     "noteheadDiamondBlackOld",
 )
+""""""
 
 STANDARD_CIRCLED = NoteheadTable(
     "noteheadCircledDoubleWhole",
@@ -260,6 +273,7 @@ STANDARD_CIRCLED = NoteheadTable(
     "noteheadCircledHalf",
     "noteheadCircledBlack",
 )
+""""""
 
 STANDARD_LARGE_CIRCLED = NoteheadTable(
     "noteheadCircledDoubleWholeLarge",
@@ -275,6 +289,7 @@ LARGE_ARROW_UP = NoteheadTable(
     "noteheadLargeArrowUpHalf",
     "noteheadLargeArrowUpBlack",
 )
+""""""
 
 LARGE_ARROW_DOWN = NoteheadTable(
     "noteheadLargeArrowDownDoubleWhole",
@@ -282,6 +297,7 @@ LARGE_ARROW_DOWN = NoteheadTable(
     "noteheadLargeArrowDownHalf",
     "noteheadLargeArrowDownBlack",
 )
+""""""
 
 CLUSTER_SQUARE = NoteheadTable(
     "noteheadClusterSquareWhite",
@@ -344,6 +360,7 @@ This uses the same glyph for all durations except ``short``.
 """
 
 INVISIBLE = NoteheadTable("", "", "", "")
+"""Blank non-printing noteheads"""
 
 ALL_TABLES: list[NoteheadTable] = [
     STANDARD,
@@ -384,4 +401,7 @@ ALL_TABLES: list[NoteheadTable] = [
     CLUSTER_THIRD_DIAMOND,
     INVISIBLE,
 ]
-"""A list of all the notehead tables in this module"""
+"""A list of all the notehead tables in this module
+
+:meta hide-value:
+"""

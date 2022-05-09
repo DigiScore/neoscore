@@ -41,17 +41,13 @@ class PedalLine(Spanner, MusicPath):
     derive its appearance.
     """
 
-    # TODO LOW this way of setting half-lift positions without parents
-    # won't work for typical cases where lifts should be synced with
-    # other objects
-
     def __init__(
         self,
         start: PointDef,
         start_parent: PositionedObject,
         end_x: Unit,
         end_parent: Optional[PositionedObject] = None,
-        half_lift_positions: list[Unit] = None,
+        half_lift_positions: list[Unit | tuple[Unit, PositionedObject]] = None,
         font: Optional[MusicFont] = None,
     ):
         """

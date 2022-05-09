@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 
 
 class Staff(AbstractStaff):
-    """A staff with decently high-level knowledge of its contents."""
+    """A staff with some high-level knowledge of its contents."""
 
     def __init__(
         self,
@@ -35,7 +35,7 @@ class Staff(AbstractStaff):
         """
         Args:
             pos: The position of the top-left corner of the staff
-            parent: The parent for the staff. Make this a ``Flowable``
+            parent: The parent for the staff. Make this a :obj:`.Flowable`
                 to allow the staff to run across line and page breaks.
             length: The horizontal width of the staff
             group: The staff group this belongs to. Set this if being used in a system
@@ -58,12 +58,12 @@ class Staff(AbstractStaff):
     def distance_to_next_of_type(self, staff_object: PositionedObject) -> Unit:
         """Find the x distance until the next occurrence of an object's type.
 
-        If the object is the last of its type, this gives the remaining length
-        of the staff after the object.
+        If the object is the last of its type, this gives the remaining length of the
+        staff after the object.
 
-        This is useful for determining rendering behavior of staff objects
-        which are active until another of their type occurs,
-        such as ``KeySignature`` and ``Clef``.
+        This is useful for determining rendering behavior of staff objects which are
+        active until another of their type occurs, such as :obj:`.KeySignature` and
+        :obj:`.Clef`.
         """
         start_x = self.map_x_to(cast(PositionedObject, staff_object))
         all_others_of_class = (
@@ -119,7 +119,9 @@ class Staff(AbstractStaff):
         Looks for clefs and other transposing modifiers to determine
         the position of middle-c.
 
-        If no clef is present, a ``NoClefError`` is raised.
+        Raises:
+            NoClefError:
+                If no clef is active at the given position.
         """
         clef = self.active_clef_at(pos_x)
         if clef is None:
@@ -148,15 +150,7 @@ class Staff(AbstractStaff):
 
     @staticmethod
     def _make_unit_class(staff_unit_size: Unit) -> Type[Unit]:
-        """Create a Unit class with a ratio of 1 to a staff unit size
-
-        Args:
-            staff_unit_size
-
-        Returns:
-            type: A new StaffUnit class specifically for use in this staff.
-        """
-
+        """Create a Unit class with a ratio of 1 to a staff unit size."""
         return make_unit_class("StaffUnit", staff_unit_size.base_value)
 
     def _register_layout_controllers(self):
@@ -173,9 +167,10 @@ class Staff(AbstractStaff):
         )
         for clef_x, clef in self.clefs:
             flowable_x = staff_flowable_x + clef_x
-            margin_needed = clef.bounding_rect.width + self.unit(
-                StaffGroup.CLEF_LEFT_PADDING
-            )
+            margin_needed = clef.bounding_rect.width
+            if margin_needed != ZERO:
+                # Some clefs can be zero-width; don't add padding in that case.
+                margin_needed += self.unit(StaffGroup.CLEF_LEFT_PADDING)
             flowable.add_margin_controller(
                 MarginController(flowable_x, margin_needed, "_neoscore_clef")
             )
@@ -237,9 +232,12 @@ class Staff(AbstractStaff):
             key_signature_fringe_pos = current_x
             current_x -= self.unit(StaffGroup.KEY_SIG_LEFT_PADDING)
         if clef:
-            current_x -= clef.bounding_rect.width
+            clef_width = clef.bounding_rect.width
+            current_x -= clef_width
             clef_fringe_pos = current_x
-            current_x -= self.unit(StaffGroup.CLEF_LEFT_PADDING)
+            if clef_width != ZERO:
+                # Some clefs can be zero-width (invisible) - don't pad in this case.
+                current_x -= self.unit(StaffGroup.CLEF_LEFT_PADDING)
         staff_fringe_pos = current_x
         return StaffFringeLayout(
             staff_pos_x,

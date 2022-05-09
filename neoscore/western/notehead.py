@@ -33,14 +33,14 @@ class Notehead(MusicText, StaffObject):
             pos_x: The x-axis position relative to ``parent``.
                 The y-axis position is calculated automatically based
                 on ``pitch`` and contextual information in ``self.staff``.
-            parent: Must either be a ``Staff`` or an object
-                with an ancestor ``Staff``.
-            pitch: May be a ``str`` pitch representation.
-                See ``Pitch`` for valid signatures.
-            duration: The logical duration of
-                the notehead. This is used to determine the glyph style.
+            parent: Must be a :obj:`.Staff` or a descendant of one.
+            pitch: The pitch used to vertically place the notehead.
+                See :obj:`.Pitch` and :obj:`.PitchDef`
+            duration: The logical duration of the notehead. This is used to determine
+                the glyph style.
             font: If provided, this overrides any font found in the ancestor chain.
             table: The set of noteheads to use according to ``duration``.
+                See :obj:`.notehead_tables`.
             glyph_override: A SMuFL glyph name. If given, this overrides
                 the glyph normally looked up with ``duration`` from ``table``.
         """
@@ -60,12 +60,10 @@ class Notehead(MusicText, StaffObject):
 
     @property
     def visual_width(self) -> Unit:
-        """The visual width of the Notehead"""
         return self.bounding_rect.width
 
     @property
     def pitch(self) -> Pitch:
-        """The logical pitch."""
         return self._pitch
 
     @pitch.setter
@@ -77,7 +75,6 @@ class Notehead(MusicText, StaffObject):
 
     @property
     def duration(self) -> Duration:
-        """The time duration of this Notehead"""
         return self._duration
 
     @duration.setter
@@ -112,8 +109,8 @@ class Notehead(MusicText, StaffObject):
     def staff_pos(self) -> Unit:
         """The y-axis position in the staff.
 
-        0 means the top staff line, lower values mean lower pitches,
-        and vice versa.
+        This is derived from the ``pitch`` and the staff's active clef at this object's
+        position.
         """
         return self.staff.middle_c_at(self.pos_x_in_staff) + self.staff.unit(
             self.pitch.staff_pos_from_middle_c

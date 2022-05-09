@@ -14,7 +14,7 @@ from neoscore.western.duration_display import DurationDisplay
 
 class Flag(MusicText):
 
-    """A simple Flag glyph with a duration and direction"""
+    """A simple flag glyph determined by a duration and direction"""
 
     _up_glyphnames = {
         8: "flag1024thUp",
@@ -48,9 +48,9 @@ class Flag(MusicText):
         """
         Args:
             pos: The position of this flag. When ``parent`` is a stem end point
-                this should typically be ``ORIGIN``.
+                this should typically be :obj:`.ORIGIN`.
             parent: If no font is given, this or one of its ancestors must
-                implement ``HasMusicFont``.
+                implement :obj:`.HasMusicFont`.
             duration: The duration corresponding to the flag. This controls the flag
                 glyph rendered.
             direction: The direction of the flag
@@ -65,11 +65,10 @@ class Flag(MusicText):
             glyph_name = self._down_glyphnames[duration_display.flag_count]
         else:
             glyph_name = self._up_glyphnames[duration_display.flag_count]
-        MusicText.__init__(self, pos, parent, [glyph_name])
+        MusicText.__init__(self, pos, parent, [glyph_name], font)
 
     @property
     def duration(self) -> Duration:
-        """The time duration of this Notehead"""
         return self._duration
 
     @duration.setter
@@ -81,7 +80,6 @@ class Flag(MusicText):
 
     @property
     def direction(self) -> DirectionY:
-        """The flag direction"""
         return self._direction
 
     @direction.setter
@@ -92,7 +90,7 @@ class Flag(MusicText):
     def vertical_offset_needed(cls, duration: Duration) -> int:
         """Find the space needed in a stem using a flag of a given duration
 
-        Returns: a number to be plugged into a staff unit
+        The value is given in pseudo-staff-units.
         """
         # TODO LOW I believe this should become longer according to
         # division (and thus number of flaglets)

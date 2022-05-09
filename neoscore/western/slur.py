@@ -18,8 +18,7 @@ class Slur(MusicPath, Spanner2D):
 
     """A slur, also usable as a tie.
 
-    While this is a path, it requires a music font from which to
-    derive its appearance.
+    While this is a path, it requires a music font from which to derive its appearance.
     """
 
     def __init__(
@@ -38,8 +37,8 @@ class Slur(MusicPath, Spanner2D):
         """
         Args:
             pos: The starting point.
-            parent: The parent for the starting position. If no font is given,
-                this or one of its ancestors must implement ``HasMusicFont``.
+            parent: The parent for the starting position. If no font is provided,
+                this parent or one of its ancestors must implement :obj:`.HasStaffUnit`.
             end_pos: The stopping point.
             end_parent: The parent for the ending position.
                 If ``None``, defaults to ``self``.

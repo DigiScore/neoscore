@@ -7,16 +7,14 @@ class MultiStaffObject:
 
     """An object which spans several staves.
 
-    This is a Mixin class, meant to be combined with PositionedObject classes.
-
-    These must have their visually highest staff as their parent.
+    This is a mixin class for :obj:`.PositionedObject` classes. Such ``PositionedObject``\ s must have their highest staff also be their parent such that ``self.parent == self.highest``.
     """
 
     def __init__(self, staves: StaffGroup | list[AbstractStaff]):
         """
         Args:
             staves: The staves this is associated with. If a raw list of staves
-                is given, it must be in descending order.
+                is given, it must be in visually descending order.
         """
         if isinstance(staves, StaffGroup):
             self._staves = staves.staves
@@ -57,5 +55,6 @@ class MultiStaffObject:
     def center_y(self) -> Unit:
         """The vertical center of the staves spanned.
 
-        This value is relative to the top of the highest staff."""
+        This value is relative to the top of the highest staff.
+        """
         return self.vertical_span / 2

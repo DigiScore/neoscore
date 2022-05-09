@@ -2,6 +2,7 @@ import pytest
 
 from neoscore.core.directions import DirectionY
 from neoscore.core.music_char import MusicChar
+from neoscore.core.music_font import MusicFont
 from neoscore.core.point import ORIGIN
 from neoscore.core.units import Mm
 from neoscore.western.duration import Duration
@@ -28,6 +29,11 @@ class TestFlag(AppTest):
         assert flag.music_chars == [MusicChar(self.staff.music_font, "flag32ndDown")]
         flag = Flag(ORIGIN, self.staff, Duration(1, 16), DirectionY.UP)
         assert flag.music_chars == [MusicChar(self.staff.music_font, "flag16thUp")]
+
+    def test_font_override(self):
+        font = MusicFont("Bravura", Mm(3))
+        flag = Flag(ORIGIN, self.staff, Duration(1, 32), DirectionY.DOWN, font)
+        assert flag.music_font == font
 
     def test_vertical_offset_needed(self):
         assert Flag.vertical_offset_needed(Duration(1, 4)) == 0

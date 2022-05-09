@@ -13,21 +13,17 @@ class Pitch:
 
     """A written pitch with a letter, octave, and accidental.
 
-    This class does not define an actual concert pitch, MIDI code,
-    pitch class, etc associated with it. Users building notation
-    systems on it can decide whether this represents a concert pitch
-    or a written one. Neoscore's ``western`` module treats it mostly as
-    a written pitch, unconditionally writing provided accidentals
-    regardless of context and key signatures, only automatically
-    transposing for octave lines.
+    This class does not define an actual concert pitch, MIDI code, pitch class, etc
+    associated with it. Users building notation systems on it can decide whether this
+    represents a concert pitch or a written one. Neoscore's ``western`` module treats it
+    mostly as a written pitch, unconditionally writing provided accidentals regardless
+    of context and key signatures.
 
-    The class supports a helpful shorthand for standard Western 12-EDO
-    pitches inspired by Lilypond's pitch notation; see
-    ``Pitch.from_str``.
+    The class supports a helpful shorthand for standard western 12-EDO pitches inspired
+    by Lilypond's pitch notation; see :obj:`.Pitch.from_str`.
 
-    Extended accidentals are fully supported by passing arbitrary
-    SMuFL glyph names to the ``accidental`` attribute.
-
+    Extended accidentals are fully supported by passing arbitrary SMuFL glyph names to
+    the ``accidental`` attribute.
     """
 
     _shorthand_regex = re.compile("^([a-g])(s|#|n|f|b|ss|x|ff|bb)?('*|,*)$")

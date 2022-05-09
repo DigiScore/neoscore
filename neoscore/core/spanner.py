@@ -66,14 +66,15 @@ class Spanner:
 
     @property
     def spanner_x_length(self) -> Unit:
-        """The x-axis length of the spanner.
-
-        Implementing subclasses will often want to override
-        :obj:`.PositionedObject.breakable_length` to return this.
-        """
+        """The x-axis length of the spanner."""
         if self.end_parent == self:
             return self.end_pos.x
         else:
             return (
                 cast(PositionedObject, self).map_x_to(self.end_parent) + self.end_pos.x
             )
+
+    @property
+    def breakable_length(self) -> Unit:
+        """Spanners are breakable over their ``spanner_x_length``."""
+        return self.spanner_x_length
