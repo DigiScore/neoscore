@@ -17,11 +17,20 @@
 
 The automated test suite is run using [pytest](https://docs.pytest.org/). Simply call `pytest` to run the suite. The suite can be run much faster in parallel with `pytest -n auto`.
 
-Several visual tests ("vtests") are included which are used to run neoscore programs end-to-end, allowing manual visual inspection. The kitchen sink test is found at `vtests/vtest.py`. If your change has effects on rendered outputs, please verify its correctness on any applicable vtests, adding new tests or code to them if needed.
+The [examples folder](/examples) also serves as a collection of visual tests for verifying graphical output. If your change affects these examples, please verify against them. When adding new graphical features, consider adding an example covering it.
 
 ## Building the docs
 
-(todo when writing this, note that doc build requires graphviz)
+The docs are built using Sphinx.
+
+```sh
+cd doc
+make html
+```
+
+You can then serve the docs locally easily with `python -m http.server -d doc/_build/html` or by running `sh dev_scripts/start_doc_server.sh`.
+
+Full builds require [Graphviz](https://graphviz.org/) available on your system path, but you can still work on the docs without it.
 
 ## Committing
 
