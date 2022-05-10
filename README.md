@@ -2,7 +2,7 @@
 
 ## *notation without bars*
 
-![A score with colored blocks and squiggly lines](/gallery/promo_image.png)
+![A score with colored blocks and squiggly lines](/doc/static/img/promo_image.png)
 *[Example source](/examples/promo_image.py)*
 
 Neoscore is a Python library for creating scores without limits. While other notation software assumes scores follow a narrow set of rules, neoscore treats scores as shapes and text with as few assumptions as possible. In neoscore, staves and noteheads are just one way of writing. Its programmatic nature makes it especially useful for generative scoremaking, and it even supports experimental animation and live-coding!
