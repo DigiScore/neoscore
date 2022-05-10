@@ -31,3 +31,6 @@ doc/api
 
 #VS Code
 .vscode
+
+# Build
+dist
