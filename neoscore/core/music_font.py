@@ -87,7 +87,10 @@ class MusicFont(Font):
         cached_result = self._glyph_info_cache.get(key, None)
         if cached_result:
             return cached_result
-        computed_result = self._glyph_info(glyph_name, alternate_number)
+        try:
+            computed_result = self._glyph_info(glyph_name, alternate_number)
+        except ValueError:
+            raise MusicFontGlyphNotFoundError(glyph_name, alternate_number)
         self._glyph_info_cache[key] = computed_result
         return computed_result
 
@@ -149,7 +152,8 @@ class MusicFont(Font):
         """Check to see if the alternate glyph exists,
         if it does it then returns that glyph name.
 
-        Args: glyph_name: The canonical name of the glyph, or its main version
+        Args:
+            glyph_name: The canonical name of the glyph, or its main version
                 if using an alternate number.
             alternate_number: A glyph alternate number
         """
@@ -159,7 +163,7 @@ class MusicFont(Font):
 
         # Alternate not found in the font
         if not alternate_glyphs:
-            raise MusicFontGlyphNotFoundError
+            raise ValueError
 
         else:
             # check if valid alt number
@@ -172,7 +176,7 @@ class MusicFont(Font):
                 ]
             else:
                 # Alternate number out of range
-                raise MusicFontGlyphNotFoundError
+                raise ValueError
 
         return new_glyph_name
 
@@ -196,7 +200,7 @@ class MusicFont(Font):
 
         # else glyphname is not registered with SMuFL
         else:
-            raise MusicFontGlyphNotFoundError
+            raise ValueError
 
         return (codepoint, description)
 

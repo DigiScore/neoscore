@@ -1,12 +1,22 @@
 """All custom exceptions used throughout neoscore."""
 
 
+from typing import Optional
+
+
 class MusicFontMetadataNotFoundError(Exception):
     """Exception raised when metadata for a music font can't be found."""
 
 
 class MusicFontGlyphNotFoundError(Exception):
     """Exception raised when a glyph cannot be found in a MusicFont"""
+
+    def __init__(self, glyph_name: str, alternate_number: Optional[int]):
+        if alternate_number is None:
+            self.message = f"Cannot find glyph '{glyph_name}'"
+        else:
+            self.message = f"Cannot find glyph '{glyph_name} [alt {alternate_number}]'"
+        super().__init__(self.message)
 
 
 class NoClefError(Exception):

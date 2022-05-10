@@ -40,4 +40,5 @@ def render_example(name: str):
             pdf_path = output_dir / f"{name}_pdf.pdf"
         neoscore.render_pdf(pdf_path, dpi)
     else:
-        neoscore.show()
+        display_page_geometry = "--hide-page-geometry" not in sys.argv
+        neoscore.show(display_page_geometry=display_page_geometry)
