@@ -130,6 +130,7 @@ class Flowable(PositionedObject):
         """
         if not self._provided_controllers:
             self._provided_controllers.add(controller)
+            return
         idx = self._provided_controllers.bisect_left(controller)
 
         for i in range(idx, len(self._provided_controllers)):
@@ -144,7 +145,7 @@ class Flowable(PositionedObject):
                     return
                 else:
                     # Existing controller margin is smaller than one being added; replace it
-                    self._provided_controllers.pop(idx)
+                    self._provided_controllers.pop(i)
                     break
         self._provided_controllers.add(controller)
 
