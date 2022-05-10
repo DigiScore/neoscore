@@ -11,7 +11,7 @@ from neoscore.western.staff_object import StaffObject
 
 neoscore.setup()
 
-flowable = Flowable(ORIGIN, None, Mm(2000), Mm(75))
+flowable = Flowable(ORIGIN, None, Mm(4000), Mm(75))
 group = StaffGroup()
 staff_1 = Staff(ORIGIN, flowable, Mm(2000), group, line_count=8)
 staff_2 = Staff((ZERO, Mm(25)), flowable, Mm(2000), group)
