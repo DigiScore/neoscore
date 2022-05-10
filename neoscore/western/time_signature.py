@@ -19,7 +19,7 @@ class TimeSignature(PositionedObject, StaffObject):
     """A graphical time signature.
 
     Note that these time signatures are purely cosmetic; they have no effect on
-    automatic engraving since ``neoscore.western`` has no internal concept of measures.
+    automatic engraving since this module has no internal concept of measures.
     """
 
     # Type sentinel used to hackily check type
@@ -65,12 +65,12 @@ class TimeSignature(PositionedObject, StaffObject):
 
     @property
     def upper_text(self) -> MusicText:
-        """MusicText: The upper glyph for the time signature"""
+        """The upper glyph for the time signature"""
         return self._upper_text
 
     @property
     def lower_text(self) -> MusicText:
-        """MusicText: The lower glyph for the time signature"""
+        """The lower glyph for the time signature"""
         return self._lower_text
 
     @property

@@ -21,14 +21,13 @@ _LINE_SPACE_TO_FONT_UNIT_RATIO: float = 2 / 3
 class TabStaff(AbstractStaff):
     """A staff for writing guitar tablature with any number of strings.
 
-    This class is not suitable for use with ``Chordrest``, ``Clef``,
-    ``TimeSignature``, and other such classes dependent on classical
-    staff semantics.
+    This class is not suitable for use with :obj:`.Chordrest`, :obj:`.Clef`,
+    :obj:`.TimeSignature`, and other such classes dependent on classical staff
+    semantics.
 
-    While ``TabStaff`` has a ``MusicFont``, its unit does not necessarily
-    correspond to the distance between staff lines. By default, the
-    line spacing is wider than classical staves, and its ``MusicFont``
-    is sized to 2/3 that spacing.
+    While ``TabStaff`` has a :obj:`.MusicFont`, its unit does not necessarily correspond
+    to the distance between staff lines. By default, the line spacing is wider than
+    classical staves, and its ``MusicFont`` is sized to 2/3 that spacing.
     """
 
     def __init__(
@@ -45,15 +44,15 @@ class TabStaff(AbstractStaff):
         """
         Args:
             pos: The position of the top-left corner of the staff
-            parent: The parent for the staff. Make this a ``Flowable``
+            parent: The parent for the staff. Make this a :obj:`.Flowable`
                 to allow the staff to run across line and page breaks.
             length: The horizontal width of the staff
             group: The staff group this belongs to. Set this if being used in a system
                 of multiple staves.
             line_spacing: The distance between two lines in the staff.
             line_count: The number of lines in the staff.
-            music_font: The font to use for ``MusicText`` objects in the staff.
-                Unlike in ``Staff``, this font's ``unit`` is not necessarily equivalent
+            music_font: The font to use for :obj:`.MusicText` objects in the staff.
+                Unlike in :obj:`.Staff`, this font's ``unit`` is not necessarily equivalent
                 to the space between two staff (string) lines. By default, this will
                 use the system-wide default music font with a unit sized to 2/3 the
                 staff line spacing.
@@ -82,6 +81,7 @@ class TabStaff(AbstractStaff):
 
     @property
     def font_to_staff_space_ratio(self) -> float:
+        """Conversion ratio between the font's unit an the staff line spacing."""
         return cast(float, self.unit(1) / self.line_spacing)
 
     @render_cached_property

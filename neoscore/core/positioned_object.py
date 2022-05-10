@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import functools
 from collections.abc import Iterator
 from typing import TYPE_CHECKING, Any, Optional, Type, cast
 
@@ -14,7 +15,7 @@ if TYPE_CHECKING:
     from neoscore.core.layout_controllers import NewLine
 
 
-class render_cached_property:
+class render_cached_property(functools.cached_property):
 
     """A property annotation for fields which can be cached at render time.
 
@@ -30,12 +31,16 @@ class render_cached_property:
     are not supported.
     """
 
+    # Note that this class extends `cached_property`, but this is just a hack to make
+    # Sphinx and other tools treat it like a property.
+
     def __init__(self, func):
         """
         :meta private:
         """
-        self.__doc__ = getattr(func, "__doc__")
         self.func = func
+        self.attrname = None
+        self.__doc__ = func.__doc__
 
     def __get__(self, obj, cls):
         if obj is None:

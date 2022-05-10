@@ -7,7 +7,9 @@ class MultiStaffObject:
 
     """An object which spans several staves.
 
-    This is a mixin class for :obj:`.PositionedObject` classes. Such ``PositionedObject``\ s must have their highest staff also be their parent such that ``self.parent == self.highest``.
+    This is a mixin class for :obj:`.PositionedObject` classes. Such
+    ``PositionedObject``\ s must have their highest staff also be their parent such that
+    ``self.parent == self.highest``.
     """
 
     def __init__(self, staves: StaffGroup | list[AbstractStaff]):

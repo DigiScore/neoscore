@@ -22,7 +22,7 @@ KeySignature(ZERO, staff_2, "cf_major")
 TimeSignature(ZERO, staff_2, ([3, 3, 2], 8))
 
 staff_3 = TabStaff((ZERO, Mm(30)), flowable, length, group)
-TabClef(ZERO, staff_3)
+TabClef(staff_3)
 TabNumber(ZERO, staff_3, 3, 123)
 
 staff_4 = Staff((ZERO, Mm(50)), flowable, length, group, line_count=1)

@@ -14,11 +14,7 @@ from neoscore.core.units import ZERO, Unit
 
 class Stem(MusicPath):
 
-    """A vertical note/chord stem.
-
-    While this is a path, it requires a music font from which to
-    derive its appearance.
-    """
+    """A vertical note or chord stem path."""
 
     def __init__(
         self,
@@ -32,9 +28,9 @@ class Stem(MusicPath):
         Args:
             start: Starting point for the stem
             parent: If no font is given, this or one of its ancestors must
-                implement ``HasMusicFont``.
-            direction: The direction a stem points
-            height: The height/ length of the stem.
+                implement :obj:`.HasMusicFont`.
+            direction: The direction the stem points
+            height: The absolute-value height of the stem.
             font: If provided, this overrides any font found in the ancestor chain.
         """
         MusicPath.__init__(self, start, parent, font=font)
@@ -47,16 +43,19 @@ class Stem(MusicPath):
 
     @property
     def height(self) -> Unit:
-        """The height of the stem from its position.
-        Must be positive value"""
+        """The absolute-value height of the stem."""
         return self._height
 
     @property
     def direction(self) -> DirectionY:
-        """The direction the stem points, where -1 is up and 1 is down"""
+        """The direction the stem extends from the given position."""
         return self._direction
 
     @property
     def end_point(self) -> PathElement:
-        """The outer point; not attached to a ``Notehead``."""
+        """The outer point of the stem.
+
+        In notes and chords this will typically be the line end which extends away from
+        the notes.
+        """
         return self.elements[1]

@@ -13,19 +13,20 @@ if TYPE_CHECKING:
 
 class StaffObject:
 
-    """An object which must always be the descendant of an AbstractStaff
+    """An object which must always be the descendant of an :obj:`.AbstractStaff`.
 
-    This is a Mixin class, meant to be paired with PositionedObject classes.
+    This is a mixin class for :obj:`.PositionedObject` classes.
     """
 
     def __init__(self, parent: PositionedObject):
-        self._staff = StaffObject.find_staff(cast(PositionedObject, parent))
-        if not self._staff:
+        staff = StaffObject._find_staff(cast(PositionedObject, parent))
+        if not staff:
             raise NoAncestorStaffError
+        self._staff = staff
 
     @property
-    def staff(self):
-        """Staff: The staff associated with this object"""
+    def staff(self) -> AbstractStaff:
+        """The ancestor staff"""
         return self._staff
 
     @property
@@ -39,7 +40,7 @@ class StaffObject:
         return self.staff.map_x_to(cast(PositionedObject, self))
 
     @staticmethod
-    def find_staff(obj: PositionedObject) -> Optional[AbstractStaff]:
+    def _find_staff(obj: PositionedObject) -> Optional[AbstractStaff]:
         """Find the first staff which is an ancestor of ``obj`` or ``obj`` itself"""
         marker = "_neoscore_abstract_staff_type_marker"
         if hasattr(obj, marker):

@@ -11,7 +11,7 @@ staff_group = StaffGroup()
 # 6 line tab
 
 staff_1 = TabStaff(ORIGIN, flowable, Mm(500), staff_group)
-clef_1 = TabClef(ZERO, staff_1)
+clef_1 = TabClef(staff_1)
 
 TabNumber(Mm(0), staff_1, 1, 1)
 TabNumber(Mm(5), staff_1, 1, 2)
@@ -41,7 +41,7 @@ arp = ArpeggioLine(
 # 4 line tab
 
 staff_2 = TabStaff((ZERO, Mm(20)), flowable, Mm(500), staff_group, line_count=4)
-clef_2 = TabClef(ZERO, staff_2, "4stringTabClef")
+clef_2 = TabClef(staff_2, "4stringTabClef")
 
 
 regular_staff = Staff((ZERO, Mm(35)), flowable, Mm(500), staff_group)

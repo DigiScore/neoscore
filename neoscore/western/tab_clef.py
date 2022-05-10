@@ -10,21 +10,20 @@ from neoscore.core.music_text import MusicText
 from neoscore.core.pen import PenDef
 from neoscore.core.point import Point
 from neoscore.core.text_alignment import AlignmentY
-from neoscore.core.units import Unit
+from neoscore.core.units import ZERO, Unit
 from neoscore.western.staff_object import StaffObject
 from neoscore.western.tab_staff import TabStaff
 
 
 class TabClef(MusicText, StaffObject):
 
-    """A "TAB" clef.
+    """A tablature clef.
 
-    Unlike classical clefs, this is purely cosmetic. It must be placed
-    in a ``TabStaff``, typically at the beginning. If the ``TabStaff`` is
-    in a flowable, this automatically repeats at the beginning of
-    every flowed staff line for the length of the staff. Because clef
-    changes are generally inapplicable to tabs, clef changes are not
-    currently supported.
+    Unlike classical :obj:`.Clef`\ s, this is purely cosmetic. It must be placed in a
+    :obj:`.TabStaff`, and it is automatically positioned at its beginning. If the
+    ``TabStaff`` is in a flowable, this automatically repeats at the beginning of every
+    flowed staff line for the length of the staff. Because clef changes are generally
+    inapplicable to tabs, clef changes are not currently supported.
     """
 
     # Type sentinel used to hackily check type
@@ -33,7 +32,6 @@ class TabClef(MusicText, StaffObject):
 
     def __init__(
         self,
-        pos_x: Unit,
         staff: TabStaff,
         glyph_name: str = "6stringTabClef",
         font: Optional[MusicFont] = None,
@@ -44,7 +42,6 @@ class TabClef(MusicText, StaffObject):
     ):
         """
         Args:
-            pos_x: The x position relative to the parent
             staff: The parent staff
             glyph_name: The SMuFL glyph to use.
             font: The font to use. Defaults to the staff's font.
@@ -52,12 +49,12 @@ class TabClef(MusicText, StaffObject):
             pen: The pen to trace text outlines with. This defaults to no pen.
             hide_background: Whether to paint over the background behind the text.
             z_index: Controls draw order with lower values drawn first.
-                Defaults to 1 greater than the staff's z_index.
+                Defaults to 1 greater than the staff's ``z_index``.
         """
         StaffObject.__init__(self, staff)
         MusicText.__init__(
             self,
-            (pos_x, staff.center_y),
+            (ZERO, staff.center_y),
             staff,
             glyph_name,
             font,
@@ -70,6 +67,7 @@ class TabClef(MusicText, StaffObject):
 
     @property
     def breakable_length(self) -> Unit:
+        """Tab clefs are drawn at the beginning of every line in a staff."""
         return self.parent.breakable_length - self.x
 
     def render_complete(

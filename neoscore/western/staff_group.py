@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional
 
-from sortedcontainers import SortedKeyList
+from sortedcontainers import SortedKeyList  # type: ignore
 
 from neoscore.core import neoscore
 from neoscore.core.layout_controllers import NewLine
@@ -15,28 +15,58 @@ if TYPE_CHECKING:
 
 class StaffGroup:
 
+    """A collection of staves.
+
+    This provides a shared context for staff systems, useful in situations like aligning
+    staff fringes.
+
+    Each staff has a reference to a staff group, even if it's a single-item group. See
+    :obj:`.AbstractStaff.group`.
+    """
+
     # Fringe padding constants in pseudo-staff-units
-    # Padding to the right of the entire fringe
     RIGHT_PADDING = 1
-    # Padding to the left of clefs in fringes
+    """Padding to the right of all staff fringes, in pseudo-staff-units."""
+
     CLEF_LEFT_PADDING = 0.5
-    # Padding to the left of time signatures in fringes
+    """Padding to the left of clefs in fringes, in pseudo-staff-units."""
+
     TIME_SIG_LEFT_PADDING = 0.5
-    # PAdding to the left of key signatures in fringes
+    """Padding to the left of time signatures in fringes, in pseudo-staff-units."""
+
     KEY_SIG_LEFT_PADDING = 0.25
+    """Padding to the left of key signatures in fringes, in pseudo-staff-units."""
 
     def __init__(self) -> None:
         self._fringe_layout_cache: dict[
             tuple[AbstractStaff, Optional[NewLine]], StaffFringeLayout
         ] = {}
         # Sort staves according to position to some arbitrary known object
-        self.staves: SortedKeyList[AbstractStaff] = SortedKeyList(
+        self._staves: SortedKeyList[AbstractStaff] = SortedKeyList(
             key=lambda s: neoscore.document.pages[0].map_to(s).y
         )
+
+    @property
+    def staves(self) -> SortedKeyList[AbstractStaff]:
+        """The staves contained in this group.
+
+        Staves shouldn't be directly added to this list; instead register a staff with
+        the group when the staff is initialized.
+
+        This list is automatically sorted in visually descending order.
+        """
+        return self._staves
 
     def fringe_layout_at(
         self, staff: AbstractStaff, location: Optional[NewLine]
     ) -> StaffFringeLayout:
+        """Compute to fringe layout needed for a staff at a given location.
+
+        This automatically aligns the returned layout with the fringes of other staves
+        in the group.
+
+        Layouts are internally cached so this is fairly efficient.
+        """
         # If the layout is already cached, return it
         cached_value = self._fringe_layout_cache.get((staff, location))
         if cached_value:
