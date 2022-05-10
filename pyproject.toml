@@ -1,8 +1,18 @@
 [tool.poetry]
 name = "neoscore"
-version = "0.1.0"
-description = ""
+version = "0.0.1"
+description = "A graphical musical notation library"
 authors = ["Andrew Yoon <andrew@nothing-to-say.org>"]
+license = "GPL-3.0-only"
+readme = "README.md"
+homepage = "https://neoscore.org"
+repository = "https://github.com/DigiScore/neoscore"
+classifiers = ["Topic :: Multimedia :: Graphics"]
+packages = [
+    { include = "neoscore" }
+]
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/DigiScore/neoscore/issues"
 
 [tool.poetry.dependencies]
 python = "^3.10"
