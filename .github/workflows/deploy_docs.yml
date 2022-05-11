@@ -1,11 +1,5 @@
 name: Build neoscore
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -51,24 +45,6 @@ jobs:
       #----------------------------------------------
       - name: Install neoscore
         run: poetry install --no-interaction
-      #----------------------------------------------
-      #              run test suite
-      #----------------------------------------------
-      - name: Run tests
-        run: |
-          source .venv/bin/activate
-          pytest -n auto
-        env:
-          NEOSCORE_HEADLESS: True
-      - name: Check formatting conforms to Black
-        uses: psf/black@stable
-      - name: Check import sorting with isort
-        uses: isort/isort-action@master
-      - name: Check for unused imports with unimport
-        run: |
-          source .venv/bin/activate
-          pip install unimport
-          unimport --check --exclude "neoscore/common.py|.venv"
       - name: Build docs site
         working-directory: doc
         env:
@@ -77,3 +53,10 @@ jobs:
           sudo apt install graphviz
           source ../.venv/bin/activate
           make html
+      - name: Deploy docs site
+        working-directory: doc
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        run:
+          netlify deploy --dir=_build/html --prod
