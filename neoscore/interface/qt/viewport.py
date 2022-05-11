@@ -2,7 +2,7 @@ from PyQt5 import QtGui, QtWidgets
 
 
 class Viewport(QtWidgets.QGraphicsView):
-    """A QGraphicsView configured for use in interactive Neoscore scenes.
+    """A QGraphicsView configured for use in interactive neoscore scenes.
 
     Includes some basic hacky features.
     """

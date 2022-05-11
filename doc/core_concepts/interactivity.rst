@@ -1,7 +1,7 @@
 Interactivity
 =============
 
-Neoscore has experimental partial support for interactive scores which can change on the fly through live coding and animation. Most properties of neoscore graphical objects are mutable (modifiable), and changing them while the interactive neoscore view is running can update their rendered representations on the fly.
+Neoscore has experimental support for interactive scores which can change on the fly through live coding and animation. Most properties of neoscore graphical objects are mutable (modifiable), and changing them while the interactive neoscore view is running can update their rendered representations on the fly.
 
 Live coding with a REPL
 -----------------------
@@ -34,14 +34,14 @@ You can also animate your scores by passing a callback function to :obj:`.neosco
 
     from neoscore.common import *
     import math
-    
+
     neoscore.setup()
     center = Mm(50)
     text = Text((center, Mm(50)), None, "moving text")
 
     def refresh_func(time: float):
         text.x = center + Mm(math.sin(time) * 20)
-    
+
     neoscore.show(refresh_func)
 
 This callback will be automatically executed at up to 60 times per second. The refresh function is called with the current system time in seconds.

@@ -73,7 +73,7 @@ Units can be used much like numbers: they can be added, subtracted, and compared
   Mm(26.4)
   >>> Mm(25.4) == Inch(1)
   True
-  
+
 .. note::
    Units are considered equal if they are within ``Unit(0.001)`` of each other. This is necessary for performance reasons.
 
@@ -84,7 +84,7 @@ Units can be used much like numbers: they can be added, subtracted, and compared
   >>> Point(Mm(25.4), Mm(0)) == Point(Inch(1), Inch(0))
   True
 
-In most places Neoscore requires a :obj:`.Point`, you can pass it a tuple for convenience as demonstrated in the above "text 1.." example. Additionally, :obj:`units.ZERO <.ZERO>` and :obj:`point.ORIGIN <.ORIGIN>` are provided as shorthands for ``Unit(0)`` and ``Point(Unit(0), Unit(0))`` respectively.
+In most places functions accept a :obj:`.Point` you can pass a tuple for convenience as demonstrated in the above "text 1.." example. Additionally, :obj:`.units.ZERO` and :obj:`.point.ORIGIN` are provided as shorthands for ``Unit(0)`` and ``Point(Unit(0), Unit(0))`` respectively.
 
 
 Pages

@@ -7,6 +7,10 @@ Text
 
    Text(ORIGIN, None, "Lorem ipsum")
 
+.. note::
+
+  From this point on we'll be omitting imports and ``neoscore.setup()`` / ``neoscore.show()`` calls in most examples.
+
 By default, text objects are positioned by the left edge of the text baseline. Here, the given position is approximately at the left corner of the "L". Text can be horizontally and vertically aligned with the :obj:`alignment_x <.Text.alignment_x>` and :obj:`alignment_y <.Text.alignment_y>` properties (with some caveats in flowable containers).
 
 Fonts
@@ -14,7 +18,7 @@ Fonts
 
 Every text object is drawn in a :obj:`.Font`. If no font is given, the neoscore default `12-pt Lora <https://fonts.google.com/specimen/Lora>`_ is used.
 
-:obj:`.Font`\ s specify a family name ("Lora", "Arial", etc), a size, a weight, and whether to use italics. Font sizes are specified in units, where the base :obj:`.Unit` pixel value corresponds to "points" used in other other applications. ``Unit(12)`` should match 12-point fonts used in Microsoft Word, Google Docs, and so on. Weights (boldness and lightness) are given in a number between 0 and 100, where 50 is regular and larger numbers are more bold. For fonts which do not support variable weight, the exact mapping between numeric weight and font styles varies. The default Lora is variable weight so any value can be given, but ``70`` corresponds to standard "bold".
+:obj:`.Font`\ s specify a family name ("Lora", "Arial", etc), a size, a weight, and whether to use italics. Font sizes are specified in units, where the base :obj:`.Unit` pixel value corresponds to "points" used in other other applications. ``Unit(12)`` matches 12-point fonts used in Microsoft Word, Google Docs, and so on. Weights (boldness and lightness) are given in a number between 0 and 100, where 50 is regular and larger numbers are more bold. For fonts which do not support variable weight, the exact mapping between numeric weight and font styles varies. The default font Lora supports variable weights, with ``70`` corresponding to standard bold.
 
 You can derive variations of fonts using :obj:`.Font.modified`, where properties can be overridden using keyword arguments. The default font can be accessed for derivation at :obj:`neoscore.default_font <neoscore.core.neoscore.default_font>`.
 

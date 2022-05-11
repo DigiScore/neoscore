@@ -36,7 +36,9 @@ The :obj:`interface <.neoscore.interface>` layer provides low-level representati
 
 .. note::
 
-   For those more familiar with GUI systems, Neoscore's interactive runtime acts essentially like an immediate-mode GUI. This is despite the fact that Qt is a retained-mode framework, and that discrepancy is why animations can't run smoothly. Eventually we would like to migrate to something like `imgui <https://github.com/ocornut/imgui>`_ to resolve this. There are no technical hurdles to this that we know of, just time constraints. If you want to take a shot at this, get in touch!
+   For those more familiar with GUI systems, neoscore's interactive runtime acts essentially like an immediate-mode GUI. This is despite the fact that Qt is a retained-mode framework, and that discrepancy is why animations can't run smoothly. Eventually we would like to migrate to something like `imgui <https://github.com/ocornut/imgui>`_ to resolve this. There are no technical hurdles to this that we know of, just time constraints. If you want to take a shot at this, get in touch!
+
+.. _advanced rendering:
 
 Rendering
 ---------

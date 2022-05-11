@@ -64,6 +64,7 @@ Each resolved :obj:`.MusicChar` is placed in :obj:`.MusicText.music_chars`, thro
 
 If you expect to use music text often, we strongly recommend getting familiar with `the SMuFL documentation <https://w3c.github.io/smufl/latest/index.html>`_, both to understand how it works and what metadata it offers, and to get a sense of what kinds of glyphs it offers.
 
-.. todo::
+Using other music fonts
+-----------------------
 
-    when we understand better whether we support other fonts than bravura, explain how to register new music fonts as well
+In theory, neoscore should support all SMuFL-compliant music fonts, not just Bravura, but we haven't tested this much yet. See `Issue #29 <https://github.com/DigiScore/neoscore/issues/29>`_.

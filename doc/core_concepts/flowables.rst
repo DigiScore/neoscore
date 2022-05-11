@@ -12,7 +12,10 @@ Neoscore has fairly good support for such notation systems via the :obj:`.Flowab
     Text((Mm(200), ZERO), flow, "text on second line")
     Text((Mm(300), ZERO), flow, "text spanning line break")
 
-Objects placed within a flowable are automatically rendered in the flowed space. When an object fits entirely in a given flowed line, it's rendered like usual, just in a different place. Things get more interesting when objects span line breaks. Simple classes like :obj:`.Path` and :obj:`.Text` simply break across the line (clipping at the line edges), but other classes can support special rendering behavior as an object appears in different places relative to flowable breaks by implementing :obj:`.PositionedObject.render_complete`, :obj:`.PositionedObject.render_before_break`, :obj:`.PositionedObject.render_after_break`, and :obj:`.PositionedObject.render_spanning_continuation`. These render calls are dispatched over the span of an object's :obj:`breakable_length <.PositionedObject.breakable_length>`.
+Objects placed within a flowable are automatically rendered in the flowed space. When an object fits entirely in a given flowed line, it's rendered like usual, just in a different place. Things get more interesting when objects span line breaks. Simple classes like :obj:`.Path` and :obj:`.Text` simply break across the line (clipping at the line edges), but :ref:`other classes can provide variable rendering behavior <advanced rendering>` as an object appears in different places relative to flowable breaks.
+
+Break Opportunities
+-------------------
 
 By default, flowable lines run as far as they can within the live page area and break at page margins. Flowables can also be made to respect break opportunities by proactively breaking when one is encountered within its :obj:`break_threshold <.Flowable.break_threshold>`. When calculating its layout, ``Flowable`` finds all descendents which subclass :obj:`.BreakOpportunity`; it then checks at every line break whether any opportunity is placed between the page margin and ``break_threshold`` to the left of it. If such opportunities exist, it will break at the last one encountered.
 
@@ -37,5 +40,8 @@ By default, flowable lines run as far as they can within the live page area and 
    BreakHintText((Mm(440), Mm(12)), flow, "opp 5")
 
 :obj:`.Flowable.break_threshold` is zero by default, meaning break opportunities are always ignored. You can also set it to some value larger than the live page width to make it break at every opportunity.
+
+Dynamic margins
+---------------
 
 Flowables can also have dynamically calculated left margins. This is useful in situations like western notation staves, where each staff system line has a left fringe with a clef, key signature, etc., and it is not desirable for that fringe to occupy the flowable coordinate space. In situations like this, the flowable can be made to leave a margin on its side where those elements can be laid out. See :obj:`.Flowable.provided_controllers`.
