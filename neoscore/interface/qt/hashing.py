@@ -1,3 +1,9 @@
+"""Custom hash functions for Qt objects.
+
+These hash functions are mostly needed so Qt objects (or other classes including them)
+can be hashed and used in cache dicts.
+"""
+
 from PyQt5.QtGui import QPainterPath, QTransform
 
 

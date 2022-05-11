@@ -13,22 +13,39 @@ from neoscore.interface.qt.q_clipping_path import QClippingPath
 
 
 class ResolvedMoveTo(NamedTuple):
+    """A canvas-space move-to element."""
+
+    # Add blank docstrings to suppress ugly default namedtuple docstring used by Sphinx
     x: Unit
+    """"""
     y: Unit
+    """"""
 
 
 class ResolvedLineTo(NamedTuple):
+    """A canvas-space line-to element."""
+
     x: Unit
+    """"""
     y: Unit
+    """"""
 
 
 class ResolvedCurveTo(NamedTuple):
+    """A canvas-space curve-to element."""
+
     c1_x: Unit
+    """"""
     c1_y: Unit
+    """"""
     c2_x: Unit
+    """"""
     c2_y: Unit
+    """"""
     end_x: Unit
+    """"""
     end_y: Unit
+    """"""
 
 
 ResolvedPathElement: TypeAlias = Union[ResolvedMoveTo, ResolvedLineTo, ResolvedCurveTo]
@@ -89,10 +106,7 @@ class PathInterface(PositionedObjectInterface):
         return path
 
     def render(self):
-        """Render the line to the scene.
-
-        Returns: None
-        """
+        """Render the path to the scene."""
         qt_object = self._create_qt_object()
         neoscore._app_interface.scene.addItem(qt_object)
 

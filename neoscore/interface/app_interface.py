@@ -38,9 +38,8 @@ _QT_PIXMAP_CACHE_LIMIT_KB = 200_000
 class AppInterface:
     """The primary interface to the application state.
 
-    This holds much of the global state for interacting with the API,
-    and must be created (and ``create_document()`` must be called) before
-    working with the API.
+    This holds much of the global application state. An ``AppInterface`` must be created
+    near the start of neoscore programs.
     """
 
     _QT_FONT_ERROR_CODE = -1
@@ -67,6 +66,7 @@ class AppInterface:
         )
 
     def set_refresh_func(self, refresh_func: Callable[[float], float]):
+        """Set a function to run automatically on a timer in the main window."""
         self.main_window.refresh_func = refresh_func
 
     def show(self):
@@ -91,9 +91,7 @@ class AppInterface:
         autocrop: bool,
         preserve_alpha: bool,
     ) -> threading.Thread:
-        """Render a section of self.scene to an image.
-
-        It is assumed that all input arguments are valid.
+        """Render the scene, or part of it, to a saved image.
 
         This renders on the main thread but autocrops and saves the image
         on a spawned thread which is returned to allow efficient rendering
@@ -181,9 +179,12 @@ class AppInterface:
             font_file_path: A path to a font file. Currently only TrueType and
                 OpenType fonts are supported.
 
-        Returns: A list of font families found in the font.
+        Returns:
+            A list of font families found in the font.
 
-        Raises: FontRegistrationError: if the registration fails.
+        Raises:
+            FontRegistrationError:
+                If the registration fails for any reason.
         """
         if isinstance(font_file_path, pathlib.Path):
             font_file_path = str(font_file_path)
@@ -198,6 +199,7 @@ class AppInterface:
 
     @property
     def background_brush(self) -> BrushInterface:
+        """The brush used to paint the scene background"""
         return self._background_brush
 
     @background_brush.setter
