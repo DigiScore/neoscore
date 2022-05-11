@@ -22,6 +22,8 @@ Once installed, check your setup by running this "hello world" program!
    Text(ORIGIN, None, "Hello, neoscore!")
    neoscore.show()
 
+If you're getting errors installing our running this starter program, please check out our :ref:`troubleshooting guide here <installation troubleshooting>`.
+
 How these docs are organized
 ----------------------------
 

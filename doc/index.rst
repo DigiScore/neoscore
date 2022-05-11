@@ -52,6 +52,12 @@ We differ from traditional score-writing systems in many important aspects. Neos
    extending/extending_neoscore.rst
 
 .. toctree::
+   :caption: Community
+
+   community/support.rst
+   community/community.rst
+
+.. toctree::
    :caption: API Reference
 
    api/neoscore.core
