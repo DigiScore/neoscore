@@ -24,6 +24,15 @@ Once installed, check your setup by running this "hello world" program!
 
 If you're getting errors installing our running this starter program, please check out our :ref:`troubleshooting guide here <installation troubleshooting>`.
 
+Important Links
+---------------
+
+* `Source Code <https://github.com/DigiScore/neoscore>`_
+* `Issue Tracker <https://github.com/DigiScore/neoscore>`_
+* `Forums <https://github.com/DigiScore/neoscore/discussions>`_
+* `API Docs <https://neoscore.org/api/neoscore.core.html>`_
+* `SMuFL Reference <https://w3c.github.io/smufl/latest/index.html>`_ (music font layout)
+
 How these docs are organized
 ----------------------------
 
