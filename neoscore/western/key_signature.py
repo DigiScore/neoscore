@@ -11,8 +11,6 @@ from neoscore.western.key_signature_type import KeySignatureType
 from neoscore.western.staff import Staff
 from neoscore.western.staff_object import StaffObject
 
-# TODO LOW this doesn't support natural (cancelling) key signatures
-
 
 class KeySignature(PositionedObject, StaffObject):
 
@@ -21,6 +19,8 @@ class KeySignature(PositionedObject, StaffObject):
     The signature will be rendered initially at the given ``pos_x``,
     and at the beginning of subsequent lines until a new
     ``KeySignature`` is encountered.
+
+    This does not currently support natural (cancelling key signatures).
     """
 
     # Type sentinel used to hackily check type

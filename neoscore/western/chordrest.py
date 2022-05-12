@@ -2,7 +2,7 @@ from functools import cached_property
 from typing import NamedTuple, Optional
 
 from neoscore.core.directions import DirectionX, DirectionY
-from neoscore.core.point import ORIGIN, Point
+from neoscore.core.point import Point
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import ZERO, Unit
 from neoscore.western import notehead_tables
@@ -76,7 +76,6 @@ class Chordrest(PositionedObject, StaffObject):
         self,
         pos_x: Unit,
         staff: Staff,
-        # TODO HIGH this PitchDef isn't patched correctly in docs
         notes: Optional[list[PitchDef | PitchAndGlyph]],
         duration: DurationDef,
         rest_y: Optional[Unit] = None,
@@ -417,10 +416,10 @@ class Chordrest(PositionedObject, StaffObject):
     def stem_height(self) -> Unit:
         """The height of the stem"""
         flag_offset = self.staff.unit(Flag.vertical_offset_needed(self.duration))
-        min_abs_height = self.staff.unit(3) + flag_offset
+        min_abs_height = self.staff.unit(2.5) + flag_offset
         fitted_abs_height = (
             abs(self.lowest_notehead.y - self.highest_notehead.y)
-            + self.staff.unit(2)
+            + self.staff.unit(2.5)
             + flag_offset
         )
         abs_height = max(min_abs_height, fitted_abs_height)
@@ -544,7 +543,10 @@ class Chordrest(PositionedObject, StaffObject):
         """Create a Flag attached to self.stem and store it in ``self.flag``"""
         if self.duration.display.flag_count:
             self._flag = Flag(
-                ORIGIN, self.stem.end_point, self.duration, self.stem.direction
+                (self.stem.pen.thickness / -2, ZERO),
+                self.stem.end_point,
+                self.duration,
+                self.stem.direction,
             )
 
     def _position_noteheads_around_stem(self):
