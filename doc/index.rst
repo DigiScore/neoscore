@@ -9,16 +9,19 @@ neoscore
 .. image:: _static/img/promo_image.png
   :alt: A score with colored blocks and squiggly lines
 
-Neoscore is a Python programming library for creating scores without limits. While other notation software assumes scores follow a narrow set of rules, neoscore treats scores as shapes and text with as few assumptions as possible. In neoscore, staves and noteheads are just one way of writing. Its programmatic nature makes it especially useful for generative scoremaking, and it even supports experimental animation and live-coding!
+Neoscore is a Python programming library for creating scores without limits. While other notation software assumes scores follow a narrow set of rules, neoscore treats scores as shapes and text with as few assumptions as possible. In neoscore, staves and noteheads are just one way of writing.
 
-Neoscore provides a core set of graphics primitives and a decent collection of traditional western notation objects built on them. Many users will find these out-of-the-box capabilities are everything they need for their project, but for everyone else, neoscore provides a rich API for building new notation systems on top of it.
+Neoscore uses a layered architecture which allows users to work with low-level graphics primitives and higher-level notation constructs according to their needs. Users can build sophisticated scores using the substantial built-in primitives, or they can treat the library as a framework on which to build complex new notation systems. Experimentally it also supports an interactive runtime allowing users to live code on scores and even animate them.
 
 We differ from traditional score-writing systems in many important aspects. Neoscore deliberately lacks support for things like audio playback, MusicXML support, MIDI import, automatic score layout, and part extraction. We treat traditional western notation as a second class citizen. In general, if your score *can* be written with traditional score-writers you're better off using one. But if your notation speaks in dots and squiggles, grids and colors, bouncing barlines and unruly clefs—you're in the right place!
 
 .. toctree::
+   :hidden:
+
    getting_started.rst
 
 .. toctree::
+   :hidden:
    :caption: Core Concepts
 
    core_concepts/graphical_notation.rst
@@ -34,6 +37,7 @@ We differ from traditional score-writing systems in many important aspects. Neos
    core_concepts/interactivity.rst
 
 .. toctree::
+   :hidden:
    :caption: Western Notation
 
    western/western.rst
@@ -47,17 +51,20 @@ We differ from traditional score-writing systems in many important aspects. Neos
    western/tablature.rst
 
 .. toctree::
+   :hidden:
    :caption: Extending Neoscore
 
    extending/extending_neoscore.rst
 
 .. toctree::
+   :hidden:
    :caption: Community
 
    community/support.rst
    community/community.rst
 
 .. toctree::
+   :hidden:
    :caption: API Reference
 
    api/neoscore.core
@@ -65,8 +72,8 @@ We differ from traditional score-writing systems in many important aspects. Neos
    api/neoscore.interface
 
 
-Indices and tables
-==================
+.. Indices and tables
+.. ==================
 
-* :ref:`genindex`
-* :ref:`modindex`
+.. * :ref:`genindex`
+.. * :ref:`modindex`

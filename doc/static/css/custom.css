@@ -11,3 +11,18 @@
   font-size: 125%;
   text-align: right;
 }
+
+/*
+ * Tweak theme color in navbar header
+ */
+.wy-side-nav-search,
+.wy-nav-top {
+  background: #118DA1;
+}
+
+/*
+ * Make sidebar section headers slightly brighter than the header for readability
+ */
+p.caption>span {
+  color: #38B7CB;
+}

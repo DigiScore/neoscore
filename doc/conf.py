@@ -63,6 +63,10 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 #
 html_theme = "sphinx_rtd_theme"
 
+# html_theme_options = {
+#     "style_nav_header_background": "#B6174B",
+# }
+
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
@@ -73,8 +77,14 @@ html_css_files = ["css/custom.css"]
 
 # Sphinx settings
 
-# https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html?highlight=napoleon
+# Don't include RST file sources
+html_copy_source = False
+html_show_sourcelink = False
 
+# Hide copyright line in footer
+html_show_copyright = False
+
+# https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html?highlight=napoleon
 napoleon_include_init_with_doc = True
 
 # Autodoc config - see:
