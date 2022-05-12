@@ -372,6 +372,7 @@ class PositionedObject:
         """
         for cached_property in self._render_cached_properties:
             del self.__dict__[cached_property]
+        self._render_cached_properties.clear()
         self._currently_rendering = False
 
     def render(self):
