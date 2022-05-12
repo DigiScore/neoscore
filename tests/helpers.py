@@ -1,3 +1,4 @@
+import sys
 import tempfile
 import unittest
 from typing import Optional
@@ -102,6 +103,10 @@ class AppTest(unittest.TestCase):
     Tests using ``setUp`` and ``tearDown`` functions should make sure to
     run the super functions as well.
     """
+
+    @staticmethod
+    def running_on_linux():
+        return sys.platform.startswith("linux")
 
     def setUp(self):
         neoscore.setup()

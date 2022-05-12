@@ -1,3 +1,5 @@
+import pytest
+
 from neoscore.core.directions import DirectionY
 from neoscore.core.flowable import Flowable
 from neoscore.core.music_char import MusicChar
@@ -124,6 +126,7 @@ class TestChordrest(AppTest):
             dots[1], Point(self.staff.unit(2.02), self.staff.unit(1.5)), epsilon=2
         )
 
+    @pytest.mark.skipif("not AppTest.running_on_linux()")
     def test_rhythm_dot_positions_with_noteheads(self):
         pitches = ["e,,", "d,", "e''"]
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(7, 16))

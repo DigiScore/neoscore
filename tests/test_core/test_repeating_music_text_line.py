@@ -1,3 +1,5 @@
+import pytest
+
 from neoscore.core.brush import Brush
 from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
@@ -10,6 +12,7 @@ from tests.helpers import AppTest
 from tests.mocks.mock_staff_object import MockStaffObject
 
 
+@pytest.mark.skipif("not AppTest.running_on_linux()")
 class TestRepeatingMusicTextLine(AppTest):
     def setUp(self):
         super().setUp()

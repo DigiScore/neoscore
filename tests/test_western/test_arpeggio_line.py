@@ -1,3 +1,5 @@
+import pytest
+
 from neoscore.core.brush import Brush
 from neoscore.core.directions import DirectionY
 from neoscore.core.music_char import MusicChar
@@ -13,6 +15,7 @@ from neoscore.western.staff import Staff
 from tests.helpers import AppTest
 
 
+@pytest.mark.skipif("not AppTest.running_on_linux()")
 class TestArpeggioLine(AppTest):
     def setUp(self):
         super().setUp()
