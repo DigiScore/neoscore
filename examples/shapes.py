@@ -7,12 +7,12 @@ from neoscore.common import *
 neoscore.setup()
 
 Path.ellipse((Mm(0), Mm(10)), None, Mm(6), Mm(6), "#00ff00")
-ellipse = Path.ellipse(
-    (Mm(6), Mm(9)),
+Path.ellipse_from_center(
+    (Mm(20), Mm(10)),
     None,
     Mm(20),
     Mm(10),
-    Brush(Color(255, 0, 0, 60)),
+    "#f004",
     Pen(thickness=Mm(0.5)),
 )
 

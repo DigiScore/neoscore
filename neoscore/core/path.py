@@ -108,8 +108,6 @@ class Path(PaintedObject):
         path.line_to(ZERO, ZERO)
         return path
 
-    # TODO MEDIUM It seems like the origin/center point of these ellipse methods is wrong.
-
     @classmethod
     def ellipse(
         cls,
@@ -132,15 +130,15 @@ class Path(PaintedObject):
         kappa = 0.5522848
         ox = (width / 2) * kappa  # control point offset horizontal
         oy = (height / 2) * kappa  # control point offset vertical
-        xe = path.x + width  # x-end
-        ye = path.y + height  # y-end
-        xm = path.x + (width / 2)  # x-middle
-        ym = path.y + (height / 2)  # y-middle
-        path.move_to(path.x, ym)
-        path.cubic_to(path.x, ym - oy, xm - ox, path.y, xm, path.y)
-        path.cubic_to(xm + ox, path.y, xe, ym - oy, xe, ym)
+        xe = width  # x-end
+        ye = height  # y-end
+        xm = width / 2  # x-middle
+        ym = height / 2  # y-middle
+        path.move_to(ZERO, ym)
+        path.cubic_to(ZERO, ym - oy, xm - ox, ZERO, xm, ZERO)
+        path.cubic_to(xm + ox, ZERO, xe, ym - oy, xe, ym)
         path.cubic_to(xe, ym + oy, xm + ox, ye, xm, ye)
-        path.cubic_to(xm - ox, ye, path.x, ym + oy, path.x, ym)
+        path.cubic_to(xm - ox, ye, ZERO, ym + oy, ZERO, ym)
         return path
 
     @classmethod
@@ -154,6 +152,9 @@ class Path(PaintedObject):
         pen: Optional[PenDef] = None,
     ):
         """Convenience for drawing an ellipse from its center point.
+
+        The constructed path will have its ``pos`` at the ellipse bounding rect's top
+        left corner.
 
         See also ``Path.ellipse``
         """

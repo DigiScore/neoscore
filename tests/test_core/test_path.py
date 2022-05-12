@@ -8,7 +8,7 @@ from neoscore.core.path_element import ControlPoint, CurveTo, LineTo, MoveTo
 from neoscore.core.pen import Pen
 from neoscore.core.point import ORIGIN, Point
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.core.units import ZERO, Unit
+from neoscore.core.units import ZERO, Mm, Unit
 from neoscore.interface.path_interface import (
     ResolvedCurveTo,
     ResolvedLineTo,
@@ -218,7 +218,9 @@ class TestPath(AppTest):
         )
 
     def test_ellipse(self):
-        path = Path.ellipse(ORIGIN, None, Unit(5), Unit(6), self.brush, self.pen)
+        path = Path.ellipse(
+            (Mm(1), Mm(2)), None, Unit(5), Unit(6), self.brush, self.pen
+        )
         assert path.brush == self.brush
         assert path.pen == self.pen
         # These values were visually verified and copied here
@@ -256,7 +258,7 @@ class TestPath(AppTest):
 
     def test_ellipse_from_center(self):
         path = Path.ellipse_from_center(
-            ORIGIN, None, Unit(5), Unit(6), self.brush, self.pen
+            (Mm(1), Mm(2)), None, Unit(5), Unit(6), self.brush, self.pen
         )
         assert path.brush == self.brush
         assert path.pen == self.pen
