@@ -2,7 +2,7 @@
 # Some care is needed since the doc site doesn't currently support version-specific docs,
 # so docs for new features shouldn't be deployed until they're available to users.
 
-name: Deploy docs after release
+name: Deploy docs
 
 on: workflow_dispatch
 

@@ -6,6 +6,8 @@ from neoscore.core.rect import Rect
 from neoscore.core.units import Unit
 from neoscore.interface.font_interface import FontInterface
 
+_BOUNDING_RECT_CACHE: dict[tuple[Font, str], Rect] = {}
+
 
 class Font:
 
@@ -119,10 +121,11 @@ class Font:
         )
 
     def bounding_rect_of(self, string: str) -> Rect:
-        """Approximate the bounding rect of a string in this font.
-
-        Args:
-            string: The string to derive the rect from
-        """
-        # TODO MEDIUM: Add caching for this
-        return self._interface.bounding_rect_of(string)
+        """Approximate the bounding rect of a string in this font."""
+        key = (self, string)
+        cached_rect = _BOUNDING_RECT_CACHE.get(key)
+        if cached_rect:
+            return cached_rect
+        rect = self._interface.bounding_rect_of(string)
+        _BOUNDING_RECT_CACHE[key] = rect
+        return rect
