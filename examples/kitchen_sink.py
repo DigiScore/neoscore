@@ -55,10 +55,10 @@ c = Chordrest(
     ["b,", "c,", ("g", notehead_tables.DIAMOND.short)],
     (1, 16),
 )
-trill = RepeatingMusicTextLine(
+RepeatingMusicTextLine(
     (lowest_staff.unit(3), lowest_staff.unit(-0.5)),
     c,
-    (lowest_staff.unit(20), lowest_staff.unit(-2)),
+    (lowest_staff.unit(11), lowest_staff.unit(-2)),
     None,
     "wiggleArpeggiatoUp",
     None,

@@ -110,11 +110,10 @@ class RepeatingMusicTextLine(MusicText, Spanner2D):
         )
 
     def _approx_width(self, chars: list[MusicChar]) -> Unit:
-        width = ZERO
-        for c in chars:
-            glyph_info = c.glyph_info
-            if glyph_info.advance_width:
-                width += glyph_info.advance_width
-            else:
-                width += self.font.bounding_rect_of(c.codepoint).width
-        return width
+        # Try to hackily account for ligatures and variable advance widths by averaging
+        # out the width of main chars repeated many times.
+        reps = 20
+        return (
+            self.font.bounding_rect_of("".join(c.codepoint for c in chars) * reps).width
+            / reps
+        )

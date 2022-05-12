@@ -33,7 +33,7 @@ class TestArpeggioLine(AppTest):
             "#00ff00",
             "#0000ff",
         )
-        assert len(arp.music_chars) == 14
+        assert len(arp.music_chars) == 13
         assert arp.music_chars[0] == MusicChar(font, "wiggleArpeggiatoUp")
         assert arp.music_chars[-1] == MusicChar(font, "wiggleArpeggiatoUpArrow")
         assert arp.brush == Brush("#ff0000")
