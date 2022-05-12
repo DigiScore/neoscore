@@ -103,7 +103,7 @@ Similarly you can provide a glyph to use as an end cap.
    start = Chordrest(Mm(2), staff, ["c'"], (1, 1))
    end = Chordrest(Mm(25), staff, ["c''"], (1, 4))
    RepeatingMusicTextLine((staff.unit(2), ZERO), start.highest_notehead,
-      (staff.unit(-1), ZERO), end.highest_notehead,
+      (staff.unit(0), ZERO), end.highest_notehead,
       "wiggleGlissando", None, "wiggleArpeggiatoUpArrow")
 
 See `SMuFL's collection of multi-segment line glyphs here <https://w3c.github.io/smufl/latest/tables/multi-segment-lines.html>`_ for common applications.
