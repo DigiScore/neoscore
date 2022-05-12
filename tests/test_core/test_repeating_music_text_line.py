@@ -30,6 +30,20 @@ class TestRepeatingMusicTextLine(AppTest):
         self.assertAlmostEqual(line.rotation, -9.462322208025618)
         assert line.rotation == line.angle
 
+    def test_with_start_cap_text(self):
+        line = RepeatingMusicTextLine(
+            ORIGIN,
+            self.staff,
+            (Mm(5), Mm(-10)),
+            None,
+            "wiggleTrill",
+            "ornamentTrill",
+        )
+        assert len(line.music_chars) == 5
+        for char in line.music_chars[1:]:
+            assert char == MusicChar(self.staff.music_font, "wiggleTrill")
+        assert line.music_chars[0] == MusicChar(self.staff.music_font, "ornamentTrill")
+
     def test_with_end_cap_text(self):
         line = RepeatingMusicTextLine(
             ORIGIN,
@@ -37,6 +51,7 @@ class TestRepeatingMusicTextLine(AppTest):
             (Mm(5), Mm(-10)),
             None,
             "wiggleArpeggiatoUp",
+            None,
             "wiggleArpeggiatoUpArrow",
         )
         assert len(line.music_chars) == 5

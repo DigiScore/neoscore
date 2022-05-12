@@ -92,8 +92,6 @@ class Flag(MusicText):
 
         The value is given in pseudo-staff-units.
         """
-        # TODO LOW I believe this should become longer according to
-        # division (and thus number of flaglets)
         if duration.display is None:
             return 0
         elif duration.display.flag_count:

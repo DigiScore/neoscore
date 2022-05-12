@@ -61,6 +61,7 @@ trill = RepeatingMusicTextLine(
     (lowest_staff.unit(20), lowest_staff.unit(-2)),
     None,
     "wiggleArpeggiatoUp",
+    None,
     "wiggleArpeggiatoUpArrow",
 )
 

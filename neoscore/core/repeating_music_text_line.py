@@ -12,8 +12,6 @@ from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner_2d import Spanner2D
 from neoscore.core.units import ZERO, Unit
 
-# TODO MEDIUM support start_cap_text here
-
 
 class RepeatingMusicTextLine(MusicText, Spanner2D):
 
@@ -31,6 +29,7 @@ class RepeatingMusicTextLine(MusicText, Spanner2D):
         end_pos: PointDef,
         end_parent: Optional[PositionedObject],
         text: MusicStringDef,
+        start_cap_text: Optional[MusicStringDef] = None,
         end_cap_text: Optional[MusicStringDef] = None,
         font: Optional[MusicFont] = None,
         brush: Optional[BrushDef] = None,
@@ -49,7 +48,10 @@ class RepeatingMusicTextLine(MusicText, Spanner2D):
                 explicitly.)
             text: The text to be repeated over the spanner. Can be given as a SMuFL
                 glyph name, or other shorthand forms. See :obj:`.MusicStringDef`.
-            end_cap_text: A text specifier for the end of text. Especially useful
+            start_cap_text: A text specifier for the start of the text. Useful for
+                things like "tr" beginnings to trill lines. This can be provided in the
+                same form as ``text``.
+            end_cap_text: A text specifier for the end of the text. Especially useful
                 for line terminators like arrows at the end of arppeggio lines.
                 This can be provided in the same form as ``text``.
             font: If provided, this overrides any font found in the ancestor chain.
@@ -77,8 +79,16 @@ class RepeatingMusicTextLine(MusicText, Spanner2D):
         single_repetition_chars = self.music_chars
         main_char_width = self._approx_width(single_repetition_chars)
 
-        if end_cap_text:
+        if start_cap_text:
             # Again need to hackily set temporary text value to work out the width
+            self.text = start_cap_text
+            start_cap_chars = self.music_chars
+            start_cap_width = self.font.bounding_rect_of(self.text).width
+        else:
+            start_cap_chars = []
+            start_cap_width = ZERO
+        if end_cap_text:
+            # Same idea...
             self.text = end_cap_text
             end_cap_chars = self.music_chars
             end_cap_width = self.font.bounding_rect_of(self.text).width
@@ -86,9 +96,18 @@ class RepeatingMusicTextLine(MusicText, Spanner2D):
             end_cap_chars = []
             end_cap_width = ZERO
         main_reps_needed = round(
-            cast(float, (self.spanner_2d_length - end_cap_width) / main_char_width)
+            cast(
+                float,
+                (self.spanner_2d_length - end_cap_width - start_cap_width)
+                / main_char_width,
+            )
         )
-        self.music_chars = (single_repetition_chars * main_reps_needed) + end_cap_chars
+        # Now set the final resolved text
+        self.music_chars = (
+            start_cap_chars
+            + (single_repetition_chars * main_reps_needed)
+            + end_cap_chars
+        )
 
     def _approx_width(self, chars: list[MusicChar]) -> Unit:
         width = ZERO

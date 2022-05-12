@@ -13,7 +13,7 @@ from neoscore.western.staff import Staff
 from tests.helpers import AppTest
 
 
-class TestRepeatingMusicTextLine(AppTest):
+class TestArpeggioLine(AppTest):
     def setUp(self):
         super().setUp()
 

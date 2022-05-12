@@ -59,6 +59,7 @@ class ArpeggioLine(RepeatingMusicTextLine):
             end_pos,
             end_parent,
             ArpeggioLine._MAIN_GLYPH,
+            None,
             end_cap_text,
             font,
             brush,

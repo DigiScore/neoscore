@@ -40,6 +40,7 @@ arp = RepeatingMusicTextLine(
     (Mm(0), Mm(-10)),
     None,
     "wiggleArpeggiatoUp",
+    None,
     "wiggleArpeggiatoUpArrow",
     mfont,
 )

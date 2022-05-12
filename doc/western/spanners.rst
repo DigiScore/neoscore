@@ -86,7 +86,15 @@ Repeating Music Text Lines
    c = Chordrest(Mm(2), staff, ["c'"], (1, 1))
    RepeatingMusicTextLine((ZERO, staff.unit(-1)), c, (Mm(20), ZERO), None, "wiggleTrill")
 
-You can optionally provide a glyph to use as an end cap.
+You can optionally provide a glyph to use as a start cap.
+
+.. rendered-example::
+
+   staff = Staff(ORIGIN, None, Mm(40))
+   RepeatingMusicTextLine((ZERO, staff.unit(-1)), staff, (staff.unit(10), ZERO), None,
+      "wiggleTrill", "ornamentTrill")
+
+Similarly you can provide a glyph to use as an end cap.
 
 .. rendered-example::
 
@@ -95,7 +103,8 @@ You can optionally provide a glyph to use as an end cap.
    start = Chordrest(Mm(2), staff, ["c'"], (1, 1))
    end = Chordrest(Mm(25), staff, ["c''"], (1, 4))
    RepeatingMusicTextLine((staff.unit(2), ZERO), start.highest_notehead,
-      (staff.unit(-1), ZERO), end.highest_notehead, "wiggleGlissando", "wiggleArpeggiatoUpArrow")
+      (staff.unit(-1), ZERO), end.highest_notehead,
+      "wiggleGlissando", None, "wiggleArpeggiatoUpArrow")
 
 See `SMuFL's collection of multi-segment line glyphs here <https://w3c.github.io/smufl/latest/tables/multi-segment-lines.html>`_ for common applications.
 
