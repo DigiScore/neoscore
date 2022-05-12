@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "neoscore"
-version = "0.1.0-rc.0"
+version = "0.0.2"
 description = "A graphical musical notation library"
 authors = ["Andrew Yoon <andrew@nothing-to-say.org>"]
 license = "GPL-3.0-only"
