@@ -42,6 +42,10 @@ Some examples:
 
    Key signatures are purely cosmetic, so pitches in chordrests should always be given the `written` accidentals desired.
 
+.. note::
+
+   There is a known bug with accidentals overlapping in tight chords. See `Issue #32 <https://github.com/DigiScore/neoscore/issues/32>`_ for a workaround.
+
 Durations
 ---------
 

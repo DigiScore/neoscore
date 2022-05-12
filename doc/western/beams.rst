@@ -6,12 +6,12 @@ Note-group beams can be created by passing a list of :obj:`.Chordrest`\ s to a :
 .. rendered-example::
 
    staff = Staff(ORIGIN, None, Mm(100))
-   Clef(ZERO, staff, 'treble')
+   Clef(ZERO, staff, "treble")
    chords = [
-       Chordrest(Mm(0), staff, ["c"], (3, 16)),
-       Chordrest(Mm(10), staff, ["e"], (1, 16)),
-       Chordrest(Mm(20), staff, ["g"], (1, 8)),
-       Chordrest(Mm(30), staff, ["bb"], (1, 8))
+       Chordrest(Mm(1), staff, ["f"], (3, 16)),
+       Chordrest(Mm(11), staff, ["a"], (1, 16)),
+       Chordrest(Mm(21), staff, ["c"], (1, 8)),
+       Chordrest(Mm(31), staff, ["e"], (1, 8)),
    ]
    BeamGroup(chords)
 
@@ -24,17 +24,17 @@ Because neoscore has no internal understanding of meter or logical beat placemen
    staff = Staff(ORIGIN, None, Mm(100))
    Clef(ZERO, staff, 'treble')
    chords = [
-       Chordrest(Mm(0), staff, ["c"], (3, 16)),
-       Chordrest(Mm(10), staff, ["e"], (1, 16)),
-       Chordrest(Mm(20), staff, ["g"], (1, 32)),
-       Chordrest(Mm(30), staff, ["bb"], (1, 32))
+       Chordrest(Mm(1), staff, ["f"], (3, 16)),
+       Chordrest(Mm(11), staff, ["a"], (1, 16)),
+       Chordrest(Mm(21), staff, ["c"], (1, 32)),
+       Chordrest(Mm(31), staff, ["e"], (1, 32))
    ]
    BeamGroup(chords)
    chords_2 = [
-       Chordrest(Mm(40), staff, ["c"], (3, 16)),
-       Chordrest(Mm(50), staff, ["e"], (1, 16), beam_break_depth=1),
-       Chordrest(Mm(60), staff, ["g"], (1, 32)),
-       Chordrest(Mm(70), staff, ["bb"], (1, 32))
+       Chordrest(Mm(40), staff, ["bb"], (3, 16)),
+       Chordrest(Mm(50), staff, ["g"], (1, 16), beam_break_depth=1),
+       Chordrest(Mm(60), staff, ["e"], (1, 32)),
+       Chordrest(Mm(70), staff, ["c#",], (1, 32))
    ]
    BeamGroup(chords_2)
 
@@ -51,15 +51,15 @@ default, but users can override this by setting
    staff = Staff(ORIGIN, None, Mm(100))
    Clef(ZERO, staff, 'treble')
    chords = [
-       Chordrest(Mm(0), staff, ["c"], (1, 8)),
-       Chordrest(Mm(10), staff, ["eb"], (1, 16)),
-       Chordrest(Mm(20), staff, ["g"], (1, 8))
+       Chordrest(Mm(1), staff, ["c"], (1, 8)),
+       Chordrest(Mm(11), staff, ["eb"], (1, 16)),
+       Chordrest(Mm(21), staff, ["g"], (1, 8))
    ]
    BeamGroup(chords)
    chords_2 = [
-       Chordrest(Mm(30), staff, ["c"], (1, 8)),
-       Chordrest(Mm(40), staff, ["eb"], (1, 16), beam_hook_dir=DirectionX.RIGHT),
-       Chordrest(Mm(50), staff, ["g"], (1, 8))
+       Chordrest(Mm(31), staff, ["c"], (1, 8)),
+       Chordrest(Mm(41), staff, ["eb"], (1, 16), beam_hook_dir=DirectionX.RIGHT),
+       Chordrest(Mm(51), staff, ["g"], (1, 8))
    ]
    BeamGroup(chords_2)
 
