@@ -601,8 +601,5 @@ class Chordrest(PositionedObject, StaffObject):
     def _position_accidentals_horizontally(self):
         """Reposition accidentals so that they are laid out correctly
 
-        TODO LOW: Implement me
-
-        Returns: None
+        Not yet implemented. See https://github.com/DigiScore/neoscore/issues/32
         """
-        pass

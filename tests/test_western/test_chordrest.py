@@ -114,7 +114,6 @@ class TestChordrest(AppTest):
             self.staff.unit(-1),
         ]
 
-    # TODO HIGH: a while ago i added a note here about a bug. look into this before release.
     def test_rhythm_dot_positions_with_rest(self):
         chord = Chordrest(Mm(1), self.staff, None, Duration(7, 16))
         dots = list(chord.rhythm_dot_positions)
