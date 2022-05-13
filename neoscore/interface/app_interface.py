@@ -23,6 +23,7 @@ from neoscore.core.exceptions import FontRegistrationError, ImageExportError
 from neoscore.core.rect import Rect, RectDef
 from neoscore.core.units import Inch, Mm
 from neoscore.interface.brush_interface import BrushInterface
+from neoscore.interface.qt import file_paths
 from neoscore.interface.qt.converters import color_to_q_color, rect_to_qt_rect_f
 from neoscore.interface.qt.main_window import MainWindow
 from neoscore.interface.repl import running_in_ipython_gui_repl
@@ -120,8 +121,7 @@ class AppInterface:
             ImageExportError: If Qt image export fails for unknown reasons.
 
         """
-        if isinstance(image_path, pathlib.Path):
-            image_path = str(image_path)
+        image_path = file_paths.resolve_qt_path(image_path)
         dpm = AppInterface._dpi_to_dpm(dpi)
         scale = dpm / Mm(1000).base_value
         if rect:
@@ -186,8 +186,7 @@ class AppInterface:
             FontRegistrationError:
                 If the registration fails for any reason.
         """
-        if isinstance(font_file_path, pathlib.Path):
-            font_file_path = str(font_file_path)
+        font_file_path = file_paths.resolve_qt_path(font_file_path)
         font_id = self.font_database.addApplicationFont(font_file_path)
         if font_id == AppInterface._QT_FONT_ERROR_CODE:
             raise FontRegistrationError(font_file_path)
