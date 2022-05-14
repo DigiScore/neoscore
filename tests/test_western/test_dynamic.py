@@ -7,7 +7,7 @@ from neoscore.western.staff import Staff
 from ..helpers import AppTest
 
 
-class TestNotehead(AppTest):
+class TestDynamic(AppTest):
     def setUp(self):
         super().setUp()
         self.staff = Staff((Mm(0), Mm(0)), parent=None, length=Mm(100))

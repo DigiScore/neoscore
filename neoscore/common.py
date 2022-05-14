@@ -22,6 +22,7 @@ from neoscore.core.pen_join_style import PenJoinStyle
 from neoscore.core.pen_pattern import PenPattern
 from neoscore.core.point import ORIGIN, Point
 from neoscore.core.positioned_object import PositionedObject
+from neoscore.core.raw_music_char import RawMusicChar
 from neoscore.core.rect import Rect
 from neoscore.core.repeating_music_text_line import RepeatingMusicTextLine
 from neoscore.core.rich_text import RichText
@@ -49,6 +50,7 @@ from neoscore.western.key_signature import KeySignature
 from neoscore.western.key_signature_type import KeySignatureType
 from neoscore.western.ledger_line import LedgerLine
 from neoscore.western.meter import COMMON_TIME, CUT_TIME, Meter
+from neoscore.western.metronome_mark import MetronomeMark
 from neoscore.western.notehead import Notehead
 from neoscore.western.octave_line import OctaveLine
 from neoscore.western.ped_and_star import PedAndStar
