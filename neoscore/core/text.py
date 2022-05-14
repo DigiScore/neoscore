@@ -9,7 +9,7 @@ from neoscore.core.layout_controllers import NewLine
 from neoscore.core.painted_object import PaintedObject
 from neoscore.core.pen import Pen, PenDef
 from neoscore.core.point import ORIGIN, Point, PointDef
-from neoscore.core.positioned_object import PositionedObject
+from neoscore.core.positioned_object import PositionedObject, render_cached_property
 from neoscore.core.rect import Rect
 from neoscore.core.text_alignment import AlignmentX, AlignmentY
 from neoscore.core.units import ZERO, Unit
@@ -178,7 +178,7 @@ class Text(PaintedObject):
     def alignment_y(self, value: bool):
         self._alignment_y = value
 
-    @property
+    @render_cached_property
     def _alignment_offset(self) -> Point:
         if (
             self.alignment_x == AlignmentX.LEFT
@@ -196,12 +196,12 @@ class Text(PaintedObject):
             y = (bounding_rect.height / -2) - bounding_rect.y
         return Point(x, y)
 
-    @property
+    @render_cached_property
     def _raw_scaled_bounding_rect(self) -> Rect:
         """The text bounding rect without centering adjustment"""
         return self.font.bounding_rect_of(self.text) * self.scale
 
-    @property
+    @render_cached_property
     def bounding_rect(self) -> Rect:
         """The bounding rect for this text positioned relative to ``pos``.
 

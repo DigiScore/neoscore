@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from functools import cached_property
 from typing import TYPE_CHECKING
 
 from neoscore.core.brush import Brush
@@ -72,7 +73,7 @@ class Page(PositionedObject):
         """
         return self._page_side
 
-    @property
+    @cached_property
     def bounding_rect(self) -> Rect:
         """The page bounding rect, positioned relative to the ``pos``."""
         if self.page_side == DirectionX.RIGHT:
@@ -87,7 +88,7 @@ class Page(PositionedObject):
             self.paper.height,
         )
 
-    @property
+    @cached_property
     def document_space_bounding_rect(self) -> Rect:
         """The page bounding rect relative to the document."""
         local_rect = self.bounding_rect
@@ -98,7 +99,7 @@ class Page(PositionedObject):
             local_rect.height,
         )
 
-    @property
+    @cached_property
     def full_margin_left(self) -> Unit:
         """The left margin, including any gutter if the gutter is on the left."""
         if self.page_side == DirectionX.RIGHT:
@@ -106,7 +107,7 @@ class Page(PositionedObject):
         else:
             return self.paper.margin_left
 
-    @property
+    @cached_property
     def full_margin_right(self) -> Unit:
         """The right margin, including any gutter if the gutter is on the right."""
         if self.page_side == DirectionX.RIGHT:

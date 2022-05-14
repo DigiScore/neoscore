@@ -4,7 +4,7 @@ from typing import Optional, cast
 
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
-from neoscore.core.positioned_object import PositionedObject
+from neoscore.core.positioned_object import PositionedObject, render_cached_property
 from neoscore.core.units import ZERO, Unit
 from neoscore.western import notehead_tables
 from neoscore.western.duration import Duration, DurationDef
@@ -105,7 +105,7 @@ class Notehead(MusicText, StaffObject):
         self._glyph_override = value
         self._update_music_text()
 
-    @property
+    @render_cached_property
     def staff_pos(self) -> Unit:
         """The y-axis position in the staff.
 

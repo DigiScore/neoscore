@@ -15,7 +15,7 @@ from neoscore.core.path_element import (
 )
 from neoscore.core.pen import Pen, PenDef
 from neoscore.core.point import Point, PointDef
-from neoscore.core.positioned_object import PositionedObject
+from neoscore.core.positioned_object import PositionedObject, render_cached_property
 from neoscore.core.units import ZERO, Mm, Unit
 from neoscore.interface.path_interface import (
     PathInterface,
@@ -382,7 +382,7 @@ class Path(PaintedObject):
             path.line_to(Unit(x), Unit(y))
         return path
 
-    @property
+    @render_cached_property
     def breakable_length(self) -> Unit:
         """The breakable length of the path.
 

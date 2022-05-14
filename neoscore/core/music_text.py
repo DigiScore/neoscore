@@ -8,7 +8,7 @@ from neoscore.core.music_char import MusicChar, MusicCharDef
 from neoscore.core.music_font import MusicFont
 from neoscore.core.pen import PenDef
 from neoscore.core.point import PointDef
-from neoscore.core.positioned_object import PositionedObject
+from neoscore.core.positioned_object import PositionedObject, render_cached_property
 from neoscore.core.rect import Rect
 from neoscore.core.text import Text
 from neoscore.core.text_alignment import AlignmentX, AlignmentY
@@ -153,7 +153,7 @@ class MusicText(Text, HasMusicFont):
         """A unit type where ``unit(1)`` is a standard staff space in the font."""
         return self.music_font.unit
 
-    @property
+    @render_cached_property
     def _raw_scaled_bounding_rect(self) -> Rect:
         key = _CachedTextGeometryKey(self.text, self.music_font, self.scale)
         cached_result = _GEOMETRY_CACHE.get(key)

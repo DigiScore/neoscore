@@ -3,7 +3,7 @@ from typing import Optional, Union
 from neoscore.core.layout_controllers import NewLine
 from neoscore.core.music_text import MusicText
 from neoscore.core.point import Point
-from neoscore.core.positioned_object import PositionedObject
+from neoscore.core.positioned_object import PositionedObject, render_cached_property
 from neoscore.core.units import ZERO, Unit
 from neoscore.western import clef_type
 from neoscore.western.accidental_type import AccidentalType
@@ -59,7 +59,7 @@ class KeySignature(PositionedObject, StaffObject):
         """Key signatures extend until another is found in the staff."""
         return self.staff.distance_to_next_of_type(self)
 
-    @property
+    @render_cached_property
     def visual_width(self) -> Unit:
         """The visual width of this key signature
 

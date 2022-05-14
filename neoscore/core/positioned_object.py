@@ -53,6 +53,9 @@ class render_cached_property(functools.cached_property):
         obj._render_cached_properties.add(property_name)
         return value
 
+    def __set__(self, obj, val):
+        raise AttributeError(f"can't set attribute '{self.func.__name__}'")
+
 
 class PositionedObject:
     """An object positioned in the scene

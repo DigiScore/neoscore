@@ -5,7 +5,7 @@ from typing import cast
 
 from neoscore.core.math_helpers import point_angle
 from neoscore.core.point import Point, PointDef
-from neoscore.core.positioned_object import PositionedObject
+from neoscore.core.positioned_object import PositionedObject, render_cached_property
 from neoscore.core.spanner import Spanner
 from neoscore.core.units import Unit
 
@@ -43,14 +43,14 @@ class Spanner2D(Spanner):
         self._end_x = value.x
         self._end_y = value.y
 
-    @property
+    @render_cached_property
     def spanner_2d_length(self) -> Unit:
         """The 2d length of the spanner.
 
         This takes into account both the x and y axis. For only the horizontal length,
         use :obj:`.Spanner.spanner_x_length`.
         """
-        relative_end_pos = self._relative_end_pos()
+        relative_end_pos = self._relative_end_pos
         distance = Unit(
             math.sqrt(
                 (relative_end_pos.x.base_value**2)
@@ -59,15 +59,16 @@ class Spanner2D(Spanner):
         )
         return type(cast(PositionedObject, self).pos.x)(distance)
 
-    @property
+    @render_cached_property
     def angle(self) -> float:
         """The angle from the start to end point in degrees.
 
         The angle goes from the positive X axis to the end point. Positive angles go
         clockwise.
         """
-        return math.degrees(point_angle(self._relative_end_pos()))
+        return math.degrees(point_angle(self._relative_end_pos))
 
+    @render_cached_property
     def _relative_end_pos(self) -> Point:
         if self.end_parent == self:
             return self.end_pos

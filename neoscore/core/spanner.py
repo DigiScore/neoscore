@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import cast
 
 from neoscore.core.point import Point
-from neoscore.core.positioned_object import PositionedObject
+from neoscore.core.positioned_object import PositionedObject, render_cached_property
 from neoscore.core.units import Unit
 
 
@@ -42,7 +42,7 @@ class Spanner:
     def end_x(self, value: Unit):
         self._end_x = value
 
-    @property
+    @render_cached_property
     def end_y(self) -> Unit:
         """The y position of the endpoint.
 
@@ -64,7 +64,7 @@ class Spanner:
     def end_parent(self, value: PositionedObject):
         self._end_parent = value
 
-    @property
+    @render_cached_property
     def spanner_x_length(self) -> Unit:
         """The x-axis length of the spanner."""
         if self.end_parent == self:
