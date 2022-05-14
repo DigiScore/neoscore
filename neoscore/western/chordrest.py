@@ -497,16 +497,16 @@ class Chordrest(PositionedObject, StaffObject):
             self.ledgers.append(LedgerLine(Point(pos_x, staff_pos), self, length))
 
     def _create_accidentals(self):
-        padding = self.staff.music_font.engraving_defaults["staffLineThickness"]
         for notehead in self.noteheads:
             if notehead.pitch.accidental is None:
                 continue
             accidental = Accidental(
-                notehead.pos,
+                # X value is a placeholder to be resolved
+                # in _position_accidentals_horizontally
+                (ZERO, notehead.y),
                 self,
                 notehead.pitch.accidental,
             )
-            accidental.x -= accidental.bounding_rect.width + padding
             self.accidentals.append(accidental)
 
     def _create_dots(self):
@@ -573,7 +573,7 @@ class Chordrest(PositionedObject, StaffObject):
             reverse=(self.stem_direction == DirectionY.UP),
         ):
             if abs(prev_y - note.y) < self.staff.unit(1):
-                # This note collides with previous, use switch sides
+                # This note collides with previous, switch sides
                 prev_side = prev_side.flip()
             else:
                 prev_side = default_side
@@ -601,5 +601,35 @@ class Chordrest(PositionedObject, StaffObject):
     def _position_accidentals_horizontally(self):
         """Reposition accidentals so that they are laid out correctly
 
-        Not yet implemented. See https://github.com/DigiScore/neoscore/issues/32
+        This implementation is very basic and fails in some fairly common use-cases. A
+        proper solution would likely involve totally redoing this. See
+        https://github.com/DigiScore/neoscore/issues/32
         """
+        # Rather than working with staff positions, we can work with
+        # ``Accidental.y`` values directly because we know they all share
+        # ``self`` as a parent.
+        padding = self.staff.music_font.engraving_defaults["staffLineThickness"]
+        notehead_col_edge_x = self.leftmost_notehead.x
+        prev_side = None
+        prev_acc = None
+        prev_rect = None
+        for acc in sorted(self.accidentals, key=lambda a: a.y):
+            acc_rect = acc.bounding_rect
+            shift_for_collision = False
+
+            if (
+                prev_acc
+                and prev_side == DirectionX.RIGHT
+                and (prev_acc.y + prev_rect.y + prev_rect.height > acc.y + acc_rect.y)
+            ):
+                # This accidental collides with previous, switch sides
+                shift_for_collision = True
+                prev_side = DirectionX.LEFT
+            else:
+                prev_side = DirectionX.RIGHT
+            if shift_for_collision:
+                acc.x = prev_acc.x - acc.bounding_rect.width
+            else:
+                acc.x = notehead_col_edge_x - acc.bounding_rect.width - padding
+            prev_acc = acc
+            prev_rect = acc_rect
