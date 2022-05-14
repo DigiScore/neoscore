@@ -18,6 +18,7 @@ class TestRichTextInterface(AppTest):
         )
         qt_object = interface._create_qt_object()
         assert qt_object.document().toPlainText() == "test"
+        assert qt_object.document().documentMargin() == 0
         assert qt_object.x() == 5
         assert qt_object.y() == 6
         assert qt_object.textWidth() == 50

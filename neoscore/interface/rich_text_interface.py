@@ -1,13 +1,12 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from PyQt5.QtWidgets import QGraphicsTextItem
-
 from neoscore.core import neoscore
 from neoscore.core.units import Unit
 from neoscore.interface.font_interface import FontInterface
 from neoscore.interface.positioned_object_interface import PositionedObjectInterface
 from neoscore.interface.qt.converters import point_to_qt_point_f
+from neoscore.interface.qt.q_rich_text_item import QRichTextItem
 
 
 @dataclass(frozen=True)
@@ -34,10 +33,11 @@ class RichTextInterface(PositionedObjectInterface):
         qt_object = self._create_qt_object()
         neoscore._app_interface.scene.addItem(qt_object)
 
-    def _create_qt_object(self) -> QGraphicsTextItem:
+    def _create_qt_object(self) -> QRichTextItem:
         """Create and return this interface's underlying Qt object"""
-        qt_object = QGraphicsTextItem()
+        qt_object = QRichTextItem()
         qt_object.setHtml(self.html_text)
+        qt_object.document().setDocumentMargin(0)
         qt_object.setPos(point_to_qt_point_f(self.pos))
         qt_object.setRotation(self.rotation)
         qt_object.setTextWidth(self.width.base_value if self.width is not None else -1)

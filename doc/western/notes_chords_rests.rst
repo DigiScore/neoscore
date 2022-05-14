@@ -44,7 +44,7 @@ Some examples:
 
 .. note::
 
-   There is a known bug with accidentals overlapping in tight chords. See `Issue #32 <https://github.com/DigiScore/neoscore/issues/32>`_ for a workaround.
+   There is a known bug with accidental layout in tight chords. See `Issue #32 <https://github.com/DigiScore/neoscore/issues/32>`_ for a workaround.
 
 Durations
 ---------
