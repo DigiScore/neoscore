@@ -23,9 +23,26 @@ Dynamic strings can consist of any of the following letters: `p, m, f, r, s, z, 
 Metronome Markings
 ------------------
 
-.. todo::
+Metronome marks are supported with the :obj:`.MetronomeMark` class.
 
-    These aren't easily supported yet. See `#19 <https://github.com/DigiScore/neoscore/issues/19>`_.
+.. rendered-example::
+
+   staff = Staff(ORIGIN, None, Mm(30))
+   MetronomeMark((ZERO, staff.unit(-2)), staff, "metNoteQuarterUp", "= 60")
+
+:obj:`.MetronomeMark` works like a combined :obj:`.MusicText` and :obj:`.Text` object. It takes two text arguments, the first in ``MusicText``\ s format, and the second a plain text string, and it takes two fonts (optionally inheriting the :obj:`.MusicFont` from an ancestor).
+
+.. rendered-example::
+
+   staff = Staff(ORIGIN, None, Mm(30))
+   MetronomeMark(
+      (ZERO, staff.unit(-2)),
+      staff,
+      ["metNoteQuarterUp", "metAugmentationDot"],
+      "≈ 96",
+   )
+
+See `the metronome marks SMuFL range <https://w3c.github.io/smufl/latest/tables/metronome-marks.html>`_ for commonly used glyphs in in the left-side text.
 
 Articulations and Ornaments
 ---------------------------
