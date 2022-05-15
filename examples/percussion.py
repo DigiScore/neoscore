@@ -1,6 +1,11 @@
 from helpers import render_example
 
-from neoscore.common import *
+from neoscore.core import neoscore
+from neoscore.core.units import ZERO, Mm
+from neoscore.western import notehead_tables
+from neoscore.western.chordrest import Chordrest
+from neoscore.western.clef import Clef
+from neoscore.western.staff import Staff
 
 neoscore.setup()
 

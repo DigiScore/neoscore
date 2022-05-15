@@ -2,10 +2,15 @@ from typing import NamedTuple, Optional
 
 from helpers import render_example
 
-from neoscore.common import *
-from neoscore.core.directions import DirectionY
+from neoscore.core import neoscore
+from neoscore.core.directions import DirectionX, DirectionY
+from neoscore.core.units import ZERO, Mm
+from neoscore.western.beam_group import BeamGroup
+from neoscore.western.chordrest import Chordrest
+from neoscore.western.clef import Clef
 from neoscore.western.duration import DurationDef
 from neoscore.western.pitch import PitchDef
+from neoscore.western.staff import Staff
 
 neoscore.setup()
 

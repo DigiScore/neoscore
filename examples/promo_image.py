@@ -3,11 +3,24 @@ import random
 
 from helpers import render_example
 
-from neoscore.common import *
-from neoscore.core import flowable
-from neoscore.core.color import ColorDef
-from neoscore.western.pitch import PitchDef
+from neoscore.core import flowable, neoscore
+from neoscore.core.brush import Brush
+from neoscore.core.color import Color, ColorDef
+from neoscore.core.directions import DirectionY
+from neoscore.core.flowable import Flowable
+from neoscore.core.music_text import MusicText
+from neoscore.core.path import Path
+from neoscore.core.pen import Pen
+from neoscore.core.point import ORIGIN
+from neoscore.core.positioned_object import PositionedObject
+from neoscore.core.units import ZERO, Mm, Unit
+from neoscore.western.clef import Clef
+from neoscore.western.pitch import Pitch, PitchDef
+from neoscore.western.slur import Slur
+from neoscore.western.staff import Staff
+from neoscore.western.staff_group import StaffGroup
 from neoscore.western.staff_object import StaffObject
+from neoscore.western.system_line import SystemLine
 
 neoscore.setup()
 

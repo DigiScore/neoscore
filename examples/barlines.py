@@ -1,12 +1,14 @@
 from helpers import render_example
 
-from neoscore.common import *
+from neoscore.core import neoscore
 from neoscore.core.flowable import Flowable
+from neoscore.core.pen_pattern import PenPattern
 from neoscore.core.units import Mm
 from neoscore.western import barline_style
 from neoscore.western.barline import Barline
 from neoscore.western.barline_style import BarlineStyle
 from neoscore.western.staff import Staff
+from neoscore.western.tab_staff import TabStaff
 
 neoscore.setup()
 

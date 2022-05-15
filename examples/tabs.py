@@ -1,6 +1,17 @@
 from helpers import render_example
 
-from neoscore.common import *
+from neoscore.core import neoscore
+from neoscore.core.flowable import Flowable
+from neoscore.core.point import ORIGIN
+from neoscore.core.units import ZERO, Mm
+from neoscore.western.arpeggio_line import ArpeggioLine
+from neoscore.western.barline import Barline
+from neoscore.western.clef import Clef
+from neoscore.western.staff import Staff
+from neoscore.western.staff_group import StaffGroup
+from neoscore.western.tab_clef import TabClef
+from neoscore.western.tab_number import TabNumber
+from neoscore.western.tab_staff import TabStaff
 
 neoscore.setup()
 

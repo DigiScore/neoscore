@@ -2,7 +2,15 @@ import math
 
 from helpers import render_example
 
-from neoscore.common import *
+from neoscore.core import neoscore
+from neoscore.core.brush import Brush
+from neoscore.core.color import Color
+from neoscore.core.path import Path
+from neoscore.core.pen import Pen
+from neoscore.core.point import ORIGIN, Point
+from neoscore.core.positioned_object import PositionedObject
+from neoscore.core.text import Text
+from neoscore.core.units import ZERO, Mm
 
 neoscore.setup()
 

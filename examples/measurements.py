@@ -1,7 +1,10 @@
 from helpers import render_example
 
-from neoscore.common import *
-from neoscore.core import paper
+from neoscore.core import neoscore, paper
+from neoscore.core.font import Font
+from neoscore.core.path import Path
+from neoscore.core.text import Text
+from neoscore.core.units import ZERO, Inch, Mm, Unit
 
 neoscore.setup(paper=paper.LETTER)
 

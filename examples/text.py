@@ -1,6 +1,13 @@
 from helpers import render_example
 
-from neoscore.common import *
+from neoscore.core import neoscore
+from neoscore.core.brush import Brush
+from neoscore.core.flowable import Flowable
+from neoscore.core.path import Path
+from neoscore.core.point import ORIGIN
+from neoscore.core.text import Text
+from neoscore.core.text_alignment import AlignmentX, AlignmentY
+from neoscore.core.units import ZERO, Mm
 
 neoscore.setup()
 

@@ -1,6 +1,13 @@
 import math
 
-from neoscore.common import *
+from neoscore.core import neoscore
+from neoscore.core.flowable import Flowable
+from neoscore.core.units import ZERO, Mm
+from neoscore.western.clef import Clef
+from neoscore.western.duration import Duration
+from neoscore.western.key_signature import KeySignature
+from neoscore.western.notehead import Notehead
+from neoscore.western.staff import Staff
 
 neoscore.setup()
 

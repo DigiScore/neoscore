@@ -1,6 +1,12 @@
 from helpers import render_example
 
-from neoscore.common import *
+from neoscore.core import neoscore
+from neoscore.core.paper import Paper
+from neoscore.core.units import ZERO, Inch, Mm
+from neoscore.western import notehead_tables
+from neoscore.western.chordrest import Chordrest
+from neoscore.western.clef import Clef
+from neoscore.western.staff import Staff
 
 neoscore.setup(paper=Paper(Inch(8.5), Inch(40), Inch(1), Inch(1), Inch(1), Inch(1)))
 

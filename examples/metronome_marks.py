@@ -1,6 +1,9 @@
 from helpers import render_example
 
-from neoscore.common import *
+from neoscore.core import neoscore
+from neoscore.core.music_font import MusicFont
+from neoscore.core.units import ZERO, Mm
+from neoscore.western.metronome_mark import MetronomeMark
 
 neoscore.setup()
 

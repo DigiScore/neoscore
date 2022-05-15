@@ -6,7 +6,36 @@ import random
 
 from helpers import render_example
 
-from neoscore.common import *
+from neoscore.core import neoscore
+from neoscore.core.brush import Brush
+from neoscore.core.brush_pattern import BrushPattern
+from neoscore.core.directions import DirectionX
+from neoscore.core.flowable import Flowable
+from neoscore.core.font import Font
+from neoscore.core.music_text import MusicText
+from neoscore.core.path import Path
+from neoscore.core.pen import Pen
+from neoscore.core.pen_pattern import PenPattern
+from neoscore.core.repeating_music_text_line import RepeatingMusicTextLine
+from neoscore.core.text import Text
+from neoscore.core.units import ZERO, Mm
+from neoscore.western import notehead_tables
+from neoscore.western.barline import Barline
+from neoscore.western.beam_group import BeamGroup
+from neoscore.western.brace import Brace
+from neoscore.western.chordrest import Chordrest
+from neoscore.western.clef import Clef
+from neoscore.western.duration import Duration
+from neoscore.western.dynamic import Dynamic
+from neoscore.western.hairpin import Hairpin
+from neoscore.western.key_signature import KeySignature
+from neoscore.western.octave_line import OctaveLine
+from neoscore.western.ped_and_star import PedAndStar
+from neoscore.western.pedal_line import PedalLine
+from neoscore.western.slur import Slur
+from neoscore.western.staff import Staff
+from neoscore.western.staff_group import StaffGroup
+from neoscore.western.time_signature import TimeSignature
 
 neoscore.setup()
 

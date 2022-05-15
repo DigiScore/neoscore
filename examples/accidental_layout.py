@@ -5,7 +5,14 @@ accidental layout algorithm. See https://github.com/DigiScore/neoscore/issues/32
 
 from helpers import render_example
 
-from neoscore.common import *
+from neoscore.core import neoscore
+from neoscore.core.flowable import Flowable
+from neoscore.core.point import ORIGIN
+from neoscore.core.units import ZERO, Mm
+from neoscore.western.barline import Barline
+from neoscore.western.chordrest import Chordrest
+from neoscore.western.clef import Clef
+from neoscore.western.staff import Staff
 
 neoscore.setup()
 

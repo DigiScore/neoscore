@@ -1,8 +1,10 @@
 from helpers import render_example
 
-from neoscore.common import *
-from neoscore.core import paper
+from neoscore.core import neoscore, paper
+from neoscore.core.flowable import Flowable
 from neoscore.core.page_overlays import simple_header_footer
+from neoscore.core.units import Mm
+from neoscore.western.staff import Staff
 
 neoscore.setup(paper.A4.modified(gutter=Mm(10)))
 

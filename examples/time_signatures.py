@@ -1,7 +1,10 @@
 from helpers import render_example
 
-from neoscore.common import *
-from neoscore.western.meter import MeterDef
+from neoscore.core import neoscore
+from neoscore.core.units import ZERO, Mm
+from neoscore.western.meter import COMMON_TIME, CUT_TIME, MeterDef
+from neoscore.western.staff import Staff
+from neoscore.western.time_signature import TimeSignature
 
 neoscore.setup()
 

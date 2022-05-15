@@ -1,7 +1,15 @@
 from helpers import render_example
 
-from neoscore.common import *
+from neoscore.core import neoscore
+from neoscore.core.units import ZERO, Mm
+from neoscore.western import barline_style
+from neoscore.western.barline import Barline
+from neoscore.western.chordrest import Chordrest
+from neoscore.western.clef import Clef
 from neoscore.western.clef_type import CLEF_TYPE_SHORTHAND_NAMES
+from neoscore.western.key_signature import KeySignature
+from neoscore.western.staff import Staff
+from neoscore.western.staff_group import StaffGroup
 
 neoscore.setup()
 

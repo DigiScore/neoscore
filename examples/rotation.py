@@ -1,6 +1,14 @@
 from helpers import render_example
 
-from neoscore.common import *
+from neoscore.core import neoscore
+from neoscore.core.flowable import Flowable
+from neoscore.core.music_font import MusicFont
+from neoscore.core.music_text import MusicText
+from neoscore.core.point import ORIGIN
+from neoscore.core.repeating_music_text_line import RepeatingMusicTextLine
+from neoscore.core.rich_text import RichText
+from neoscore.core.text import Text
+from neoscore.core.units import ZERO, Mm, Unit
 
 neoscore.setup()
 

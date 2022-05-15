@@ -1,6 +1,26 @@
 from helpers import render_example
 
-from neoscore.common import *
+from neoscore.core import neoscore
+from neoscore.core.directions import DirectionY
+from neoscore.core.flowable import Flowable
+from neoscore.core.font import Font
+from neoscore.core.layout_controllers import MarginController
+from neoscore.core.music_text import MusicText
+from neoscore.core.text import Text
+from neoscore.core.units import ZERO, Mm
+from neoscore.western.barline import Barline
+from neoscore.western.beam_group import BeamGroup
+from neoscore.western.brace import Brace
+from neoscore.western.chordrest import Chordrest
+from neoscore.western.clef import Clef
+from neoscore.western.duration import Duration
+from neoscore.western.dynamic import Dynamic
+from neoscore.western.instrument_name import InstrumentName
+from neoscore.western.key_signature import KeySignature
+from neoscore.western.staff import Staff
+from neoscore.western.staff_group import StaffGroup
+from neoscore.western.system_line import SystemLine
+from neoscore.western.time_signature import TimeSignature
 
 neoscore.setup()
 

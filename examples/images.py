@@ -2,7 +2,10 @@ import pathlib
 
 from helpers import render_example
 
-from neoscore.common import *
+from neoscore.core import neoscore
+from neoscore.core.image import Image
+from neoscore.core.point import ORIGIN
+from neoscore.core.units import Mm
 
 neoscore.setup()
 
