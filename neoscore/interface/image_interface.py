@@ -1,6 +1,5 @@
 import pathlib
 from dataclasses import dataclass
-from typing import Any
 
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtSvg import QGraphicsSvgItem
@@ -35,7 +34,7 @@ class ImageInterface(PositionedObjectInterface):
     def _resolved_path(self) -> str:
         return str(self.file_path.expanduser())
 
-    def _create_svg_qt_object(self) -> Any:  # todo
+    def _create_svg_qt_object(self) -> QGraphicsSvgItem:
         qt_object = QGraphicsSvgItem(self._resolved_path)
         qt_object.setPos(point_to_qt_point_f(self.pos))
         if self.scale != 1:

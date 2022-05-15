@@ -96,7 +96,7 @@ class MarginController(LayoutController):
 
     A flowable can have any number of different margin layers identified by a given
     ``layer_key``. A margin controller overrides the active margin values only for the
-    specified layer. When a the flowable generates its layout, it sums the margin values
+    specified layer. When a flowable generates its layout, it sums the margin values
     from all layers at the point of each new line to determine its margins.
 
     This layered margin system is useful for situations like staves, where different

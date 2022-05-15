@@ -15,7 +15,7 @@ class Spanner:
 
     This mixin only provides a common interface for ending anchors. The starting
     position of this spanner should be the main object's ``PositionedObject.pos``, and
-    the starting anchor should be the its ``PositionedObject.parent``. It is up to the
+    the starting anchor should be its ``PositionedObject.parent``. It is up to the
     implementing class to decide how to use this information.
 
     Simple ``Spanner``\ s are horizontal relative to their starting anchor. Arbitrary

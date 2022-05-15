@@ -10,7 +10,7 @@ from neoscore.core.units import Union, Unit
 class BarlineStyle:
     """Style for an individual sub-barline.
 
-    Use multiple of these to specify multi-part lines like double barlines.
+    Use multiple of these to specify multipart lines like double barlines.
     """
 
     thickness: Union[str, float, Unit] = 0.16

@@ -115,7 +115,7 @@ class StaffGroup:
         delta = staff_basis - layout.staff
         return StaffFringeLayout(
             layout.pos_x_in_staff,
-            # Staff, clef, and key signatures are left-aligned to widest fringe
+            # Staff, clef, and key signatures are left-aligned to the widest fringe
             layout.staff + delta,
             layout.clef + delta,
             layout.key_signature + delta,

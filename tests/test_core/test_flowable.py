@@ -84,7 +84,7 @@ class TestFlowable(AppTest):
     def test_generate_layout_controllers_with_two_pages(self):
         live_width = neoscore.document.paper.live_width
         flowable = Flowable(ORIGIN, None, live_width * 1.5, Mm(256), Mm(5))
-        # Should result in two lines separated by one page break
+        # Should result in two lines separated by a page break
         flowable._generate_lines()
         assert len(flowable.lines) == 2
         assert flowable.lines[1].flowable_x == live_width

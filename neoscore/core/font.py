@@ -31,7 +31,7 @@ class Font:
             weight: The font weight on a 0-100 scale, where 50 is normal,
                 lower numbers are lighter, and higher are darker.
                 If ``None`` (the default), a normal weight will be used.
-            italic: Whether or not the font is italicized
+            italic: Whether the font is italicized
         """
         self._family_name = family_name
         self._size = size if isinstance(size, Unit) else Unit(size)

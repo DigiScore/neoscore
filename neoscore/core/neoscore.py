@@ -131,11 +131,11 @@ def register_font(font_file_path: str | pathlib.Path) -> list[str]:
     to be referenced by the family name embedded in the font file.
 
     Args:
-        font_file_path: A path to a font file. Currently only
-            TrueType and OpenType fonts are supported.
+        font_file_path: A path to a font file. Only TrueType and OpenType
+            fonts are supported.
 
     Returns:
-        A list of family names registered. Typically this will have length 1.
+        A list of family names registered. Typically, this will have length 1.
 
     Raises:
         FontRegistrationError: If the font could not be loaded.
@@ -162,7 +162,7 @@ def register_music_font(
             will be ``{lowercase_font_name}_metadata.json``.
 
     Returns:
-        A list of family names registered. Typically this will have length 1.
+        A list of family names registered. Typically, this will have length 1.
 
     Raises:
         FontRegistrationError: If the font could not be loaded.
@@ -311,7 +311,7 @@ def render_image(
         quality: The quality of the output image for compressed
             image formats. Must be either ``-1`` (default compression) or
             between ``0`` (most compressed) and ``100`` (least compressed).
-        autocrop: Whether or not to crop the output image to tightly
+        autocrop: Whether to crop the output image to tightly
             fit the contents of the frame.
         preserve_alpha: Whether to preserve the alpha channel. If false,
             ``neoscore.background_brush`` will be used to flatten any transparency.

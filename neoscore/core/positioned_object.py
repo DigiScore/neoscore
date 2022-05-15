@@ -158,9 +158,9 @@ class PositionedObject:
 
     @property
     def descendants(self) -> Iterator[PositionedObject]:
-        """All of the objects in the children subtree.
+        """All the objects in the children subtree.
 
-        This recursively searches all of the object's children
+        This recursively searches all the object's children
         (and their children, etc.) and provides an iterator over them.
 
         The current implementation performs a simple recursive DFS over
@@ -273,7 +273,7 @@ class PositionedObject:
         This calculates the position in *logical* space, which differs from canvas space
         in that it doesn't account for repositioning of objects inside :obj:`.Flowable`
         containers. For example, this function will return the same relative position
-        for two objects in a ``Flowable`` container whether or not they are separated by
+        for two objects in a ``Flowable`` container whether they are separated by
         a line break.
         """
         # When changing this method be sure to make the equivalent change in `map_x_to`
@@ -397,6 +397,7 @@ class PositionedObject:
         This and other render methods should generally not be called directly.
         """
         # Calculate position within flowable
+        assert self.flowable is not None
         pos_in_flowable = self.flowable.descendant_pos(self)
         first_line_i = self.flowable.last_break_index_at(pos_in_flowable.x)
         first_line = self.flowable.lines[first_line_i]
@@ -450,10 +451,10 @@ class PositionedObject:
     ):
         """Render the entire object.
 
-        This is used to render all objects outside of flowables, as well as those inside
+        This is used to render all objects outside flowables, as well as those inside
         flowables when they fit completely in one line of the flowable.
 
-        By default this is a no-op. Subclasses with with rendered appearances should
+        By default, this is a no-op. Subclasses with rendered appearances should
         override this.
 
         This and other render methods should generally not be called directly.
@@ -471,7 +472,7 @@ class PositionedObject:
         page break. This function should render the beginning portion of the object up
         to the break.
 
-        By default this is a no-op. Subclasses with with rendered appearances should
+        By default, this is a no-op. Subclasses with rendered appearances should
         override this.
 
         This and other render methods should generally not be called directly.
@@ -493,7 +494,7 @@ class PositionedObject:
         two breaks. This function should render the portion of the object
         surrounded by breaks on either side.
 
-        By default this is a no-op. Subclasses with with rendered appearances should
+        By default, this is a no-op. Subclasses with rendered appearances should
         override this.
 
         This and other render methods should generally not be called directly.
@@ -511,7 +512,7 @@ class PositionedObject:
         page break. This function should render the ending portion of an object after a
         break.
 
-        By default this is a no-op. Subclasses with with rendered appearances should
+        By default, this is a no-op. Subclasses with rendered appearances should
         override this.
 
         This and other render methods should generally not be called directly.

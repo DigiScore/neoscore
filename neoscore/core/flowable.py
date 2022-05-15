@@ -153,7 +153,7 @@ class Flowable(PositionedObject):
         """Generate automatic layout controllers.
 
         The generated controllers are stored in ``self.layout_controllers``
-        in sorted order according to ascending x position
+        in sorted order by ascending x position
         """
         live_page_width = neoscore.document.paper.live_width
         live_page_height = neoscore.document.paper.live_height

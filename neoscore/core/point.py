@@ -6,7 +6,7 @@ from neoscore.core.units import ZERO, Unit
 
 
 class Point(NamedTuple):
-    """A two dimensional point.
+    """A two-dimensional point.
 
     The x-axis grows left-to right, and the y-axis grows top-to-bottom.
     """

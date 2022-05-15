@@ -13,7 +13,7 @@ class Pitch:
 
     """A written pitch with a letter, octave, and accidental.
 
-    This class does not define an actual concert pitch, MIDI code, pitch class, etc
+    This class does not define an actual concert pitch, MIDI code, pitch class, etc.
     associated with it. Users building notation systems on it can decide whether this
     represents a concert pitch or a written one. Neoscore's ``western`` module treats it
     mostly as a written pitch, unconditionally writing provided accidentals regardless

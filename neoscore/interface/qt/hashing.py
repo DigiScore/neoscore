@@ -13,7 +13,7 @@ def hash_transformed_path(path: QPainterPath, transform: QTransform) -> int:
     return path_hash ^ transform_hash
 
 
-# For some reason QTransform's qHash method seems to be ommited from PyQt5, so
+# For some reason QTransform's qHash method seems to be omitted from PyQt5, so
 # we implement our own based on the fields used in Qt's implementation here:
 # github.com/qt/qtbase/blob/e05e3c776/src/gui/painting/qtransform.cpp#L778-L791
 def hash_transform(t: QTransform) -> int:

@@ -28,7 +28,7 @@ class OctaveLine(PositionedObject, Spanner, HasMusicFont):
 
     At the starting position the octave is written in text, followed by a dashed line
     ending in a small vertical hook pointing toward the staff. If the spanner goes
-    across line breaks, the octave text is repeated in parenthesis at the line
+    across line breaks, the octave text is repeated in parentheses at the line
     beginning.
     """
 

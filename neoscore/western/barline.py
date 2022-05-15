@@ -44,7 +44,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
                 Specifies right edge of the barline group and offsets 'thickness'.
             staves: The staves spanned. If a raw list of staves is given, it must be
                 in descending order.
-            styles: This accepts any of the premade styles provided in
+            styles: This accepts any of the pre-made styles provided in
                 :obj:`.barline_style`, in addition to custom styles defined in
                 a list of :obj:`.BarlineStyle`\ s (one for each sub-barline).
             connected: Whether to connect the barline between staves.

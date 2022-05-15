@@ -19,7 +19,7 @@ def assert_almost_equal(
 
     This compares based on the arguments' unit base values
     (corresponding to Qt pixels). If ``epsilon`` is given, compare
-    equality within a difference of its value. Otherwise compare the
+    equality within a difference of its value. Otherwise, compare the
     base values rounded to ``places``.
     """
     if isinstance(left, Unit):

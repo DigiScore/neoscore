@@ -47,7 +47,7 @@ class Spanner2D(Spanner):
     def spanner_2d_length(self) -> Unit:
         """The 2d length of the spanner.
 
-        This takes into account both the x and y axis. For only the horizontal length,
+        This takes into account both the x and y-axis. For only the horizontal length,
         use :obj:`.Spanner.spanner_x_length`.
         """
         relative_end_pos = self._relative_end_pos

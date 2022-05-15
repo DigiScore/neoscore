@@ -24,7 +24,7 @@ class TestFontInterface(AppTest):
         assert test_font.qt_object.italic() is False
         assert test_font.qt_object.pixelSize() == 6
         assert test_font.qt_object.weight() == 1
-        # These values seems to flakily vary between runs
+        # These values seem to flakily vary between runs
         # assert test_font.ascent == MockUnit(18)
         # assert test_font.descent == MockUnit(6)
         # assert test_font.x_height == MockUnit(10)

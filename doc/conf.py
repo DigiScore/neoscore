@@ -129,7 +129,7 @@ def autogenerate_type_alias_mapping():
     Sphinx currently requires you to explicitly copy out every type alias in
     `autodoc_type_alias` to prevent it from automatically expanding them in docs. This
     is not very maintainable, so we instead automatically gather and provide the
-    mappings here. For this to work, type aliases must be explicitly annotated and they
+    mappings here. For this to work type aliases must be explicitly annotated, and they
     must be provided as top-level module members.
 
     See https://github.com/sphinx-doc/sphinx/issues/8934
@@ -158,7 +158,7 @@ def run_apidoc(_):
         shutil.rmtree(output_dir)
     if resolve_bool_env_variable("SKIP_APIDOC"):
         # Skip after deleting output_dir since otherwise left-over sources from prev
-        # build can cause apidoc generation anyways
+        # build can cause apidoc generation anyway
         print("skipping apidoc")
         return
     # Note that our templates override the apidoc-provided automodule options

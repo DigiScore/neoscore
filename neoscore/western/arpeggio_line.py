@@ -82,7 +82,7 @@ class ArpeggioLine(RepeatingMusicTextLine):
         Args:
             chordrest: The chord to attach the line to. This must not be a rest.
             arrow_direction: If provided, cap the line with an arrow pointing this way.
-            font: A font override. By default the chord's font is used.
+            font: A font override. If omitted, the chord's font is used.
             brush: The brush to fill in text shapes with.
             pen: The pen to trace text outlines with. This defaults to no pen.
             background_brush: Optional brush used to paint the text's bounding rect

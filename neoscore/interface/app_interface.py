@@ -110,7 +110,7 @@ class AppInterface:
                 image formats. Must be either ``-1`` (default compression) or
                 between ``0`` (most compressed) and ``100`` (least compressed).
             bg_color: The background color for the image.
-            autocrop: Whether or not to crop the output image to tightly
+            autocrop: Whether to crop the output image to tightly
                 fit the contents of the frame. If true, the image will be
                 cropped such that all 4 edges have at least one pixel not of
                 ``bg_color``.
@@ -176,8 +176,7 @@ class AppInterface:
         """Register a font file with the graphics engine.
 
         Args:
-            font_file_path: A path to a font file. Currently only TrueType and
-                OpenType fonts are supported.
+            font_file_path: A path to a font file. Supports TrueType and OpenType formats.
 
         Returns:
             A list of font families found in the font.

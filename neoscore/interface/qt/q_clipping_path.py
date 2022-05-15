@@ -15,7 +15,7 @@ class QClippingPath(QGraphicsPathItem):
     horizontal slice of the path. Rather than rendering the entire
     path, renders the region starting at a given ``clip_start_x`` and
     extending for a given ``clip_width``. This rendered region is
-    shifted leftward so it appears at the path's root position. This
+    shifted leftward, so it appears at the path's root position. This
     is useful for splitting a path into horizontal chunks and
     rendering them in different positions, for instance when drawing a
     staff which appears on multiple lines.
@@ -117,7 +117,7 @@ class QClippingPath(QGraphicsPathItem):
             self.clip_width,
             self.padding,
         )
-        # Clip rect is used by painter, which translates by -clip_start_x
+        # Clip rect is used by painter, which translates by -clip_start_x,
         # so we need to cancel that out here
         self.clip_rect = self.bounding_rect.translated(self.clip_start_x, 0)
 
@@ -151,7 +151,7 @@ class QClippingPath(QGraphicsPathItem):
             padding_left = padding
         else:
             padding_left = 0
-        # i think this assumes bounding rect starts at 0,0??
+        # I think this assumes bounding rect starts at 0,0??
         return QRectF(
             bounding_rect.x() - padding_left,
             bounding_rect.y() - padding,

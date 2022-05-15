@@ -131,7 +131,7 @@ class Staff(AbstractStaff):
     def y_on_ledger(self, pos_y: Unit) -> bool:
         """Determine if a y-axis position is approximately at a ledger line position
 
-        This is true for any whole-number staff position outside of the staff
+        This is true for any whole-number staff position outside the staff
         """
         return (not self.y_inside_staff(pos_y)) and self.unit(
             pos_y
@@ -195,7 +195,7 @@ class Staff(AbstractStaff):
                     "_neoscore_time_signature",
                 )
             )
-            # Cancel the margin controller immediately after it afters, this way time
+            # Cancel the margin controller immediately after it, this way time
             # signatures only affect margins if they lie right around a line start.
             flowable.add_margin_controller(
                 MarginController(flowable_x + Unit(1), ZERO, "_neoscore_time_signature")

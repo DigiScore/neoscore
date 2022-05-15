@@ -47,7 +47,7 @@ class Unit:
     def __init__(self, value: Unit | float, _raw_base_value=None):
         """Create a unit from another unit or a raw number."""
         if _raw_base_value is not None:
-            # Short circuiting constructor for internal use
+            # Short-circuiting constructor for internal use
             self.base_value = _raw_base_value
             self._display_value = None
         else:

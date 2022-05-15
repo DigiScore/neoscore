@@ -136,7 +136,7 @@ def _resolve_beam_layout(states: list[_BeamState]) -> list[_BeamPathSpec]:
 
 
 class _BeamGroupLine(NamedTuple):
-    """The line running along the outside of the a group's outermost beam."""
+    """The line running along the outside of a group's outermost beam."""
 
     start_y: Unit
     """The starting y position relative to the staff.
@@ -153,9 +153,8 @@ def _resolve_beam_group_line(
     unit = chordrests[0].staff.unit
     first = chordrests[0]
     last = chordrests[-1]
-    beam_thickness = font.engraving_defaults["beamThickness"]
     beam_group_height = _resolve_beam_group_height(chordrests, font)
-    # Determine slope from first and last noteheads furthest on side opposite of beam
+    # Determine slope from the notes furthest on the side opposite of beam
     if direction == DirectionY.DOWN:
         slope_start_ref_note = first.highest_notehead
         slope_end_ref_note = last.highest_notehead
@@ -188,7 +187,7 @@ def _resolve_beam_group_line(
 
 
 def _beam_layer_height(font: MusicFont):
-    """Determine the height of a beam and it's vertical padding in a given font."""
+    """Determine the height of a beam and its vertical padding in a given font."""
     return (
         font.engraving_defaults["beamSpacing"]
         + font.engraving_defaults["beamThickness"]
@@ -236,7 +235,7 @@ class BeamGroup(PositionedObject, HasMusicFont):
     specified by setting :obj:`.Chordrest.beam_break_depth`, which indicates a break
     after the chord to the given beam count.
 
-    While in most situations beamlet "hooks" (as in a dotted 8th note followed by a 16th
+    While in most situations, beamlet "hooks" (as in a dotted 8th note followed by a 16th
     note) unambiguously must point right or left, there are some cases where it is
     ambiguous. For example, a 16th note between two 8th notes could have its beamlet
     point left or right. In these situations, ``BeamGroup`` will point it left by
@@ -246,7 +245,7 @@ class BeamGroup(PositionedObject, HasMusicFont):
     notes. The direction can be overridden in ``BeamGroup``'s constructor.
 
     Beam layout automatically modifies spanned chordrests by snapping their stems to the
-    beam line and, if this causes a stem flip, correcting the the chordrest component
+    beam line and, if this causes a stem flip, correcting the chordrest component
     layout.
 
     This currently has some limitations:

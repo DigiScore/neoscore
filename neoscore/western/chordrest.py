@@ -34,7 +34,7 @@ class Chordrest(PositionedObject, StaffObject):
 
     """A chord or a rest.
 
-    This is a general unified interface for conventionally notated
+    This is a unified interface for conventionally notated
     musical notes/chords/rests. It can be given any number of pitches
     to be used as notes in the chord, or ``None`` for a rest.
 
@@ -386,7 +386,7 @@ class Chordrest(PositionedObject, StaffObject):
         defaults to ``DirectionY.UP`` as a convenience for percussion staves.
 
         This automatically calculated property may be overridden using its setter. To
-        revert back to the automatically calculated value set this property to ``None``.
+        revert to the automatically calculated value set this property to ``None``.
 
         If there are no noteheads (meaning this Chordrest is a rest), this arbitrarily
         returns ``DirectionY.UP``.
@@ -540,7 +540,7 @@ class Chordrest(PositionedObject, StaffObject):
         )
 
     def _create_flag(self):
-        """Create a Flag attached to self.stem and store it in ``self.flag``"""
+        """Create a Flag attached to ``self.stem`` and store it in ``self.flag``"""
         if self.duration.display.flag_count:
             self._flag = Flag(
                 (self.stem.pen.thickness / -2, ZERO),

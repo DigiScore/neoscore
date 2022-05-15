@@ -81,7 +81,7 @@ class TabStaff(AbstractStaff):
 
     @property
     def font_to_staff_space_ratio(self) -> float:
-        """Conversion ratio between the font's unit an the staff line spacing."""
+        """Conversion ratio between the font's unit and the staff line spacing."""
         return cast(float, self.unit(1) / self.line_spacing)
 
     @render_cached_property

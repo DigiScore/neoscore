@@ -33,7 +33,7 @@ class Paper:
         )
 
     def make_rotation(self) -> Paper:
-        """Create a 90 degree clockwise rotation of this paper.
+        """Create a 90-degree clockwise rotation of this paper.
 
         The ``gutter`` field is left unchanged.
         """
