@@ -188,9 +188,14 @@ class Path(PaintedObject):
                 traced ellipse's height start_angle: The starting arc angle in radians
                 clockwise relative
                 to the 3 o'clock position.
-            stop_angle: The stopping arc angle in radians clockwise relative
+            parent: The parent object or None
+            width: The full ellipse width
+            height: The full ellipse height
+            start_angle: The start arc angle in radians clockwise relative
                 to the 3 o'clock position.
+            stop_angle: The stopping arc angle, defined like ``start_angle``.
             brush: The brush to fill shapes with. pen: The pen to draw outlines with.
+            pen: The pen to draw outlines with.
 
         The arc definition can be most easily understood as tracing an ellipse as
         defined in ``Path.ellipse()``, where ``pos`` marks the top-left corner of the

@@ -85,7 +85,7 @@ p = Dynamic((Mm(20), staff.unit(6)), staff, "p")
 
 sfz = Dynamic.sfz((Mm(25), staff.unit(6)), staff)
 
-hairpin = Hairpin((Mm(0), Mm(3)), p, (Mm(0), Mm(3)), sfz, 1)
+hairpin = Hairpin((Mm(0), Mm(3)), p, (Mm(0), Mm(3)), sfz, DirectionX.RIGHT)
 
 slur = Slur((Mm(0), Mm(0)), regular_text, (Mm(0), Mm(0)), sfz)
 

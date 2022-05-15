@@ -76,6 +76,8 @@ class QClippingPath(QGraphicsPathItem):
         self.padding = self.pen().width() / scale
         self.setRotation(rotation)
         self.background_brush = background_brush
+        self.bounding_rect = None
+        self.clip_rect = None
         self.update_geometry()
 
     def boundingRect(self):

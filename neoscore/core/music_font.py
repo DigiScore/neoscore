@@ -129,8 +129,8 @@ class MusicFont(Font):
             glyph_name, codepoint, description, bounding_rect, advance_width, anchors
         )
 
-    # private helper functions
-    def _convert_bbox_to_rect(self, b_box_dict: dict) -> Rect:
+    @staticmethod
+    def _convert_bbox_to_rect(b_box_dict: dict) -> Rect:
         """Converst the SMuFL bounding box info
         into a Rect class format"""
 

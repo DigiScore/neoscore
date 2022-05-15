@@ -7,7 +7,6 @@ With the exception of ``CurveTo``, each of these classes is just a bare
 
 from __future__ import annotations
 
-from neoscore.core.point import Point
 from neoscore.core.positioned_object import PositionedObject
 
 
@@ -37,7 +36,7 @@ class ControlPoint(PathElement):
 class CurveTo(PathElement):
     def __init__(
         self,
-        pos: Point,
+        pos: PointDef,
         parent: PositionedObject,
         control_1: ControlPoint,
         control_2: ControlPoint,

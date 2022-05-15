@@ -39,7 +39,7 @@ def test_hash_transform():
     transform_4 = QTransform()
     transform_4.translate(1, 2)
     hash_4 = hashing.hash_transform(transform_4)
-    assert len(set([hash_1, hash_2, hash_3, hash_4])) == 4
+    assert len({hash_1, hash_2, hash_3, hash_4}) == 4
 
 
 def test_hash_transformed_path():

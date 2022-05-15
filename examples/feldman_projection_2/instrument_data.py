@@ -30,7 +30,7 @@ class InstrumentData:
 
     @staticmethod
     def calculate_occupied_measures(event_data):
-        occupied_measures = set()
+        occupied_measures: set[int] = set()
         for event in event_data:
             start_measure_num = int(Measure(event.pos_x).display_value)
             end_measure_num = int(

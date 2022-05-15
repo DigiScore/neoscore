@@ -137,9 +137,6 @@ class Unit:
     def __neg__(self: TUnit) -> TUnit:
         return type(self)(None, _raw_base_value=-self.base_value)
 
-    def __pos__(self: TUnit) -> TUnit:
-        return type(self)(None, _raw_base_value=+self.base_value)
-
     def __abs__(self: TUnit) -> TUnit:
         return type(self)(None, _raw_base_value=abs(self.base_value))
 
@@ -162,10 +159,13 @@ ZERO = Unit(0)
 
 def make_unit_class(name: str, conversion_rate: float) -> Type[Unit]:
     """Create a ``Unit`` subclass with a name and base unit conversion rate"""
-    return type(
-        name,
-        (Unit,),
-        {"CONVERSION_RATE": conversion_rate},
+    return cast(
+        Type[Unit],
+        type(
+            name,
+            (Unit,),
+            {"CONVERSION_RATE": conversion_rate},
+        ),
     )
 
 

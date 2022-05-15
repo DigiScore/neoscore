@@ -16,7 +16,7 @@ class RawMusicChar(MusicChar):
             font: The character's font
             codepoint: The character's raw unicode string representation.
         """
-        self._codepoint = codepoint
+        self._codepoint = codepoint  # noqa
         super().__init__(font, "[RAW CHAR]")
 
     @cached_property

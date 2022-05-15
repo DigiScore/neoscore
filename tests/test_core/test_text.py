@@ -32,8 +32,8 @@ class TestText(AppTest):
             "#00f",
             3,
             False,
-            True,
-            True,
+            AlignmentX.CENTER,
+            AlignmentY.CENTER,
         )
         assert obj.x == Unit(5)
         assert obj.y == Unit(6)
@@ -46,9 +46,9 @@ class TestText(AppTest):
         assert obj.rotation == 12
         assert obj.background_brush == Brush("#00f")
         assert obj.z_index == 3
-        assert obj.breakable == False
-        assert obj.alignment_x == True
-        assert obj.alignment_y == True
+        assert not obj.breakable
+        assert obj.alignment_x == AlignmentX.CENTER
+        assert obj.alignment_y == AlignmentY.CENTER
 
     def test_default_init_values(self):
         obj = Text((Unit(5), Unit(6)), None, "testing")
@@ -57,8 +57,8 @@ class TestText(AppTest):
         assert obj.brush == Brush()
         assert obj.pen == Pen.no_pen()
         assert obj.scale == 1
-        assert obj.background_brush == None
-        assert obj.breakable == True
+        assert obj.background_brush is None
+        assert obj.breakable
 
     def test_length_when_non_breakable(self):
         obj = Text((Unit(5), Unit(6)), None, "testing", breakable=False)

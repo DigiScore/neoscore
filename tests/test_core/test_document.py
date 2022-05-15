@@ -1,7 +1,7 @@
 import unittest
 
 from neoscore.core import paper
-from neoscore.core.document import _PAGE_DISPLAY_GAP, Document
+from neoscore.core.document import _PAGE_DISPLAY_GAP, Document  # noqa
 from neoscore.core.paper import Paper
 from neoscore.core.point import ORIGIN, Point
 from neoscore.core.units import ZERO, Mm

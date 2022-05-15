@@ -21,7 +21,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self._frame = 0  # Frame counter used in debug mode
 
     def show(self):
-        QtCore.QTimer.singleShot(0, QT_PRECISE_TIMER, self.refresh)
+        QtCore.QTimer.singleShot(0, QT_PRECISE_TIMER, self.refresh)  # noqa
         super().show()
 
     @QtCore.pyqtSlot()
@@ -30,7 +30,9 @@ class MainWindow(QtWidgets.QMainWindow):
         if self.refresh_func:
             requested_delay_s = self.refresh_func(start_time)
             requested_delay_ms = int(requested_delay_s * 1000)
-            QtCore.QTimer.singleShot(requested_delay_ms, QT_PRECISE_TIMER, self.refresh)
+            QtCore.QTimer.singleShot(
+                requested_delay_ms, QT_PRECISE_TIMER, self.refresh  # noqa
+            )
             # if env.DEBUG:
             #     update_time = time() - start_time
             #     refresh_fps = int(1 / (time() - start_time))

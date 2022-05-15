@@ -26,14 +26,14 @@ class TestPoint(unittest.TestCase):
         p2 = Point(Unit(3), Unit(4))
         assert p1 + p2 == Point(Unit(4), Unit(6))
         with pytest.raises(TypeError):
-            p1 + 1
+            p1 + 1  # noqa
 
     def test__sub__(self):
         p1 = Point(Unit(1), Unit(2))
         p2 = Point(Unit(3), Unit(4))
         assert p1 - p2 == Point(Unit(-2), Unit(-2))
         with pytest.raises(TypeError):
-            p1 - 1
+            p1 - 1  # noqa
 
     def test__mul__(self):
         p = Point(Unit(1), Unit(2))

@@ -54,7 +54,7 @@ class Page(PositionedObject):
             page_side: The left/right side the page lies on when printed.
             paper: The paper geometry for this page.
         """
-        super().__init__(pos, document)
+        super().__init__(pos, document)  # noqa
         self._document = document
         self._index = index
         self._page_side = page_side

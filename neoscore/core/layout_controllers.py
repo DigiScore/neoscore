@@ -2,7 +2,7 @@
 from typing import cast
 
 from neoscore.core.page import Page
-from neoscore.core.point import Point
+from neoscore.core.point import Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import Unit
 
@@ -34,7 +34,7 @@ class NewLine(LayoutController, PositionedObject):
 
     def __init__(
         self,
-        pos: Point,
+        pos: PointDef,
         page: Page,
         flowable_x: Unit,
         length: Unit,

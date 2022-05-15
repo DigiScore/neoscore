@@ -4,27 +4,35 @@ from neoscore.core import neoscore
 from neoscore.core.directions import DirectionX
 from neoscore.core.page import Page
 from neoscore.core.page_supplier import PageSupplier
-from neoscore.core.point import Point
+from neoscore.core.point import ORIGIN, Point
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import Unit
 
 from ..helpers import AppTest
 
 
+def _test_page() -> Page:
+    return Page(
+        ORIGIN, neoscore.document, 123, DirectionX.RIGHT, neoscore.document.paper
+    )
+
+
 class TestPageSupplier(AppTest):
     def test_getitem_with_existing(self):
         supplier = PageSupplier(neoscore.document)
-        supplier._page_list.extend([1, 2])
-        assert supplier[0] == 1
-        assert supplier[1] == 2
-        assert supplier[-1] == 2
-        assert supplier[-2] == 1
+        page_1 = _test_page()
+        page_2 = _test_page()
+        supplier._page_list.extend([page_1, page_2])
+        assert supplier[0] == page_1
+        assert supplier[1] == page_2
+        assert supplier[-1] == page_2
+        assert supplier[-2] == page_1
         with pytest.raises(IndexError):
-            supplier[-3]
+            supplier[-3]  # noqa
 
     def test_getitem_generation_needing_1(self):
         supplier = PageSupplier(neoscore.document)
-        supplier._page_list.extend([1, 2])
+        supplier._page_list.extend([(_test_page()), (_test_page())])
         new_page = supplier[2]
         assert len(supplier) == 3
         assert new_page == supplier[2]
@@ -47,8 +55,10 @@ class TestPageSupplier(AppTest):
 
     def test_iteration(self):
         supplier = PageSupplier(neoscore.document)
-        supplier._page_list.extend([1, 2])
-        assert [p for p in supplier] == [1, 2]
+        page_1 = _test_page()
+        page_2 = _test_page()
+        supplier._page_list.extend([page_1, page_2])
+        assert [p for p in supplier] == [page_1, page_2]
 
     def test_page_side_selection(self):
         supplier = PageSupplier(neoscore.document)
@@ -59,8 +69,8 @@ class TestPageSupplier(AppTest):
 
     def test_overlay_func(self):
         # Use an overlay func passed in supplier init
-        def test_overlay_func(page: Page):
-            PositionedObject((Unit(1), Unit(2)), page)
+        def test_overlay_func(pg: Page):
+            PositionedObject((Unit(1), Unit(2)), pg)
 
         supplier = PageSupplier(neoscore.document, test_overlay_func)
         page = supplier[0]
@@ -68,8 +78,8 @@ class TestPageSupplier(AppTest):
         assert page.children[0].pos == Point(Unit(1), Unit(2))
 
         # Now change the supplier and show it working on a newly generated page
-        def second_test_overlay_func(page: Page):
-            PositionedObject((Unit(3), Unit(4)), page)
+        def second_test_overlay_func(pg: Page):
+            PositionedObject((Unit(3), Unit(4)), pg)
 
         supplier.overlay_func = second_test_overlay_func
         page_2 = supplier[1]

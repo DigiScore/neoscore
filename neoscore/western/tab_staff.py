@@ -96,7 +96,7 @@ class TabStaff(AbstractStaff):
             None,
         )
 
-    def _register_layout_controllers(self):
+    def register_layout_controllers(self):
         """Register any flowable margin controllers needed by the staff.
 
         Staff subclasses must implement this.
@@ -119,7 +119,7 @@ class TabStaff(AbstractStaff):
                 MarginController(flowable_x, margin_needed, "neoscore_clef")
             )
 
-    def _fringe_layout_for_isolated_staff(
+    def fringe_layout_for_isolated_staff(
         self, location: Optional[NewLine]
     ) -> StaffFringeLayout:
         """Determine the staff fringe layout of this staff in isolation.

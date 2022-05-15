@@ -157,7 +157,7 @@ class Text(PaintedObject):
         self._breakable = value
 
     @property
-    def alignment_x(self) -> bool:
+    def alignment_x(self) -> AlignmentX:
         """The text's horizontal alignment relative to ``pos``.
 
         Note that text which is not ``LEFT`` aligned does not currently display
@@ -166,16 +166,16 @@ class Text(PaintedObject):
         return self._alignment_x
 
     @alignment_x.setter
-    def alignment_x(self, value: bool):
+    def alignment_x(self, value: AlignmentX):
         self._alignment_x = value
 
     @property
-    def alignment_y(self) -> bool:
+    def alignment_y(self) -> AlignmentY:
         """The text's vertical alignment relative to ``pos``."""
         return self._alignment_y
 
     @alignment_y.setter
-    def alignment_y(self, value: bool):
+    def alignment_y(self, value: AlignmentY):
         self._alignment_y = value
 
     @render_cached_property

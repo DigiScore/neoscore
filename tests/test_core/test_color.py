@@ -123,10 +123,10 @@ class TestColor(unittest.TestCase):
     def test_color_is_immutable(self):
         color = Color("#ffffff")
         with pytest.raises(AttributeError):
-            color.red = 123
+            color.red = 123  # noqa
         with pytest.raises(AttributeError):
-            color.green = 123
+            color.green = 123  # noqa
         with pytest.raises(AttributeError):
-            color.blue = 123
+            color.blue = 123  # noqa
         with pytest.raises(AttributeError):
-            color.alpha = 123
+            color.alpha = 123  # noqa

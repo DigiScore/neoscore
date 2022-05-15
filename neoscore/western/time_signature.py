@@ -9,6 +9,7 @@ from neoscore.core.point import ORIGIN, Point
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.text_alignment import AlignmentX
 from neoscore.core.units import ZERO, Unit
+from neoscore.western.abstract_staff import AbstractStaff
 from neoscore.western.meter import Meter, MeterDef
 from neoscore.western.staff import Staff
 from neoscore.western.staff_object import StaffObject
@@ -130,7 +131,11 @@ class _TimeSignatureText(MusicText):
     """
 
     def __init__(
-        self, staff: Optional[Staff], staff_pos_x: Optional[Unit], *args, **kwargs
+        self,
+        staff: Optional[AbstractStaff],
+        staff_pos_x: Optional[Unit],
+        *args,
+        **kwargs,
     ):
         self.staff = staff
         self.staff_pos_x = staff_pos_x

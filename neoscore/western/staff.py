@@ -153,7 +153,7 @@ class Staff(AbstractStaff):
         """Create a Unit class with a ratio of 1 to a staff unit size."""
         return make_unit_class("StaffUnit", staff_unit_size.base_value)
 
-    def _register_layout_controllers(self):
+    def register_layout_controllers(self):
         # This is known to have some limitations in some cases when staves in a group
         # have different key signatures. See issue #28.
         flowable = self.flowable
@@ -201,7 +201,7 @@ class Staff(AbstractStaff):
                 MarginController(flowable_x + Unit(1), ZERO, "_neoscore_time_signature")
             )
 
-    def _fringe_layout_for_isolated_staff(
+    def fringe_layout_for_isolated_staff(
         self, location: Optional[NewLine]
     ) -> StaffFringeLayout:
         if location:

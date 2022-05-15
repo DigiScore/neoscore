@@ -4,10 +4,9 @@ from neoscore.core.flowable import Flowable
 from neoscore.core.layout_controllers import MarginController
 from neoscore.core.paper import Paper
 from neoscore.core.point import ORIGIN, Point
-from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import ZERO, Mm
 
-from ..helpers import AppTest, assert_almost_equal
+from ..helpers import AppTest
 
 
 class TestFlowable(AppTest):
@@ -35,23 +34,6 @@ class TestFlowable(AppTest):
         assert flowable.pos.x == Mm(20)
         flowable.y = Mm(21)
         assert flowable.pos.y == Mm(21)
-
-    def flowable_with_explicit_parent(self):
-        page = neoscore.document.pages[1]
-        parent = PositionedObject((Mm(22), Mm(33)), page)
-        flowable = Flowable(
-            (Mm(10), Mm(11)),
-            parent=parent,
-            length=Mm(1000),
-            height=Mm(100),
-            y_padding=Mm(5),
-        )
-        flowable._generate_lines()
-        map_result = flowable.map_to_canvas(Point(Mm(4), Mm(5)))
-        assert_almost_equal(
-            map_result,
-            Point(Mm(4) + Mm(10) + Mm(22) + page.x, Mm(5) + Mm(11) + Mm(33) + page.y),
-        )
 
     def test_generate_layout_controllers_with_only_one_line(self):
         flowable = Flowable((Mm(9), Mm(11)), None, Mm(100), Mm(50), Mm(5))

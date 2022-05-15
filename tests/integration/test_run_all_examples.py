@@ -6,7 +6,7 @@ import subprocess
 import pytest
 
 example_dir = (pathlib.Path(__file__).parent / ".." / ".." / "examples").resolve()
-example_dir_contents = os.listdir(example_dir)
+example_dir_contents: list[str] = os.listdir(example_dir)
 example_file_names = [
     f
     for f in example_dir_contents

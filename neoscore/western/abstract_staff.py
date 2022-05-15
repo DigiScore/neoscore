@@ -183,14 +183,14 @@ class AbstractStaff(PaintedObject, HasMusicFont):
             line_y += self.line_spacing
         return path
 
-    def _register_layout_controllers(self):
+    def register_layout_controllers(self):
         """Register any flowable margin controllers needed by the staff.
 
         Staff subclasses must implement this.
         """
         raise NotImplementedError
 
-    def _fringe_layout_for_isolated_staff(
+    def fringe_layout_for_isolated_staff(
         self, location: Optional[NewLine]
     ) -> StaffFringeLayout:
         """Determine the staff fringe layout of this staff in isolation.
@@ -204,4 +204,4 @@ class AbstractStaff(PaintedObject, HasMusicFont):
 
     def pre_render_hook(self):
         super().pre_render_hook()
-        self._register_layout_controllers()
+        self.register_layout_controllers()

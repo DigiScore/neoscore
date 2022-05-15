@@ -50,7 +50,7 @@ class render_cached_property(functools.cached_property):
             return result
         property_name = self.func.__name__
         value = obj.__dict__[property_name] = result
-        obj._render_cached_properties.add(property_name)
+        obj._render_cached_properties.add(property_name)  # noqa
         return value
 
     def __set__(self, obj, val):
@@ -93,6 +93,7 @@ class PositionedObject:
         self._parent = PositionedObject._resolve_parent(parent)
         self._set_parent_and_register_self(parent)
         self._render_cached_properties: set[str] = set()
+        self._currently_rendering = False
         self._interfaces = []
 
     @property

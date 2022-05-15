@@ -33,9 +33,9 @@ class TestSpanner(AppTest):
     def test_end_y_not_settable(self):
         with pytest.raises(AttributeError):
             spanner = MockSpanner(Point(Unit(20), Unit(5)), None, Unit(30), None)
-            spanner.end_y = ZERO
+            spanner.end_y = ZERO  # noqa
 
     def test_end_pos_not_settable(self):
         with pytest.raises(AttributeError):
             spanner = MockSpanner(Point(Unit(20), Unit(5)), None, Unit(30), None)
-            spanner.end_pos = ZERO
+            spanner.end_pos = ZERO  # noqa

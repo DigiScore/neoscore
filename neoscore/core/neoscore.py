@@ -219,7 +219,7 @@ def show(refresh_func: Optional[RefreshFunc] = None, display_page_geometry=True)
     """
     global document
     global app_interface
-    app_interface._clear_scene()
+    app_interface.clear_scene()
     document.render()
     if display_page_geometry:
         _render_geometry_preview()
@@ -231,7 +231,7 @@ def show(refresh_func: Optional[RefreshFunc] = None, display_page_geometry=True)
 def _clear_interfaces():
     global document
     global app_interface
-    app_interface._clear_scene()
+    app_interface.clear_scene()
     for page in document.pages:
         for obj in page.descendants:
             interfaces = getattr(obj, "interfaces", None)
@@ -269,7 +269,6 @@ def render_pdf(pdf_path: str | pathlib.Path, dpi: int = 300):
                 img_path.name,
                 dpi,
                 preserve_alpha=False,
-                auto_start_thread=False,
             )
         )
     for thread in render_threads:
@@ -286,7 +285,6 @@ def render_image(
     quality: int = -1,
     autocrop: bool = False,
     preserve_alpha: bool = True,
-    auto_start_thread: bool = True,
 ) -> threading.Thread:
     """Render a section of the document to an image.
 

@@ -1,6 +1,8 @@
 from neoscore.core.directions import DirectionX, DirectionY
 from neoscore.core.point import Point
 from neoscore.core.units import Mm
+
+# noinspection PyProtectedMember
 from neoscore.western.beam_group import (
     BeamGroup,
     _BeamGroupLine,
@@ -16,7 +18,7 @@ from neoscore.western.chordrest import Chordrest
 from neoscore.western.clef import Clef
 from neoscore.western.staff import Staff
 
-from ..helpers import AppTest, assert_almost_equal, render_scene
+from ..helpers import AppTest, assert_almost_equal
 
 
 def test_resolve_beam_hooks():
@@ -384,16 +386,3 @@ class TestBeamGroup(AppTest):
         assert bg.direction == DirectionY.UP
         bg = BeamGroup(crs, DirectionY.DOWN)
         assert bg.direction == DirectionY.DOWN
-
-    def test_end_to_end(self):
-        crs = [
-            Chordrest(Mm(10), self.staff, ["bb'", "e'"], (1, 32)),
-            Chordrest(Mm(20), self.staff, ["f"], (1, 32), beam_break_depth=2),
-            Chordrest(Mm(30), self.staff, ["f"], (1, 32)),
-            Chordrest(Mm(40), self.staff, ["g'"], (1, 32)),
-            Chordrest(Mm(50), self.staff, ["c#"], (3, 16)),
-            Chordrest(Mm(60), self.staff, ["e'"], (1, 32)),
-            Chordrest(Mm(70), self.staff, ["eb'"], (1, 32)),
-            Chordrest(Mm(80), self.staff, ["d'"], (1, 8)),
-        ]
-        render_scene()

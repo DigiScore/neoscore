@@ -18,6 +18,15 @@ from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner import Spanner
 from neoscore.core.units import Unit
 
+_GLYPHS = {
+    "15ma": "quindicesimaAlta",
+    "8va": "ottavaAlta",
+    "8vb": "ottavaBassaVb",
+    "15mb": "quindicesimaBassaMb",
+    "(": "octaveParensLeft",
+    ")": "octaveParensRight",
+}
+
 
 class OctaveLine(PositionedObject, Spanner, HasMusicFont):
 
@@ -31,15 +40,6 @@ class OctaveLine(PositionedObject, Spanner, HasMusicFont):
     across line breaks, the octave text is repeated in parentheses at the line
     beginning.
     """
-
-    _glyphs = {
-        "15ma": "quindicesimaAlta",
-        "8va": "ottavaAlta",
-        "8vb": "ottavaBassaVb",
-        "15mb": "quindicesimaBassaMb",
-        "(": "octaveParensLeft",
-        ")": "octaveParensRight",
-    }
 
     def __init__(
         self,
@@ -129,12 +129,12 @@ class _OctaveLineText(MusicText):
             self,
             pos,
             parent,
-            OctaveLine._glyphs[indication],
+            _GLYPHS[indication],
             font,
             background_brush=neoscore.background_brush,
         )
-        open_paren_char = MusicChar(self.music_font, OctaveLine._glyphs["("])
-        close_paren_char = MusicChar(self.music_font, OctaveLine._glyphs[")"])
+        open_paren_char = MusicChar(self.music_font, _GLYPHS["("])
+        close_paren_char = MusicChar(self.music_font, _GLYPHS[")"])
         self.parenthesized_text = (
             open_paren_char.codepoint + self.text + close_paren_char.codepoint
         )

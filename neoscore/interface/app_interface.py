@@ -214,7 +214,7 @@ class AppInterface:
         if not success:
             raise RuntimeError("Failed to remove application fonts.")
 
-    def _clear_scene(self):
+    def clear_scene(self):
         """Clear the QT Scene. This should be called before each render."""
         self.scene.clear()
 

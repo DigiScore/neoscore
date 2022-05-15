@@ -14,7 +14,7 @@ staff_1 = Staff(ORIGIN, flowable, length, group)
 Clef(ZERO, staff_1, "treble")
 KeySignature(ZERO, staff_1, "cf_major")
 TimeSignature(ZERO, staff_1, ([3, 3, 2], 8))
-Chordrest(ZERO, staff_1, "b", (1, 32))
+Chordrest(ZERO, staff_1, ["b"], (1, 32))
 
 staff_2 = Staff((ZERO, Mm(15)), flowable, length, group)
 Clef(ZERO, staff_2, "bass")

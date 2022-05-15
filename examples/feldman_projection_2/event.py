@@ -5,7 +5,7 @@ from examples.feldman_projection_2.measure import Measure
 from neoscore.core.brush import Brush
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
-from neoscore.core.point import ORIGIN, Point
+from neoscore.core.point import ORIGIN
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import Unit
 
@@ -19,7 +19,7 @@ class Event(PositionedObject):
 
     box_pen = Pen(thickness=GridUnit(0.07))
 
-    def __init__(self, pos: Point, parent: PositionedObject, length: Unit):
+    def __init__(self, pos: PointDef, parent: PositionedObject, length: Unit):
         PositionedObject.__init__(self, pos, parent)
         self.path = Path.rect(
             ORIGIN,

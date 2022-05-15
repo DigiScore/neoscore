@@ -1,5 +1,8 @@
 from PyQt5 import QtGui, QtWidgets
 
+_SCROLL_HAND_DRAG = 1
+_NO_VIEWPORT_UPDATE = 3
+
 
 class Viewport(QtWidgets.QGraphicsView):
     """A QGraphicsView configured for use in interactive neoscore scenes.
@@ -12,10 +15,10 @@ class Viewport(QtWidgets.QGraphicsView):
         # Default configs
         self.setViewport(QtWidgets.QOpenGLWidget())
         self.setRenderHint(QtGui.QPainter.Antialiasing)
-        self.setDragMode(1)  # ScrollHandDrag
+        self.setDragMode(_SCROLL_HAND_DRAG)  # noqa
         # Automatic viewport updates are disabled. Updates are performed
         # manually in the main window refresh function.
-        self.setViewportUpdateMode(3)  # NoViewportUpdate
+        self.setViewportUpdateMode(_NO_VIEWPORT_UPDATE)  # noqa
 
     def wheelEvent(self, event):
         """Implementation of Qt event hook for zooming with the mouse wheel."""
