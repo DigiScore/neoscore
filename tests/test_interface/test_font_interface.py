@@ -12,7 +12,7 @@ class MockUnit(Unit):
 class TestFontInterface(AppTest):
     def setUp(self):
         super().setUp()
-        neoscore._app_interface._remove_all_loaded_fonts()
+        neoscore.app_interface._remove_all_loaded_fonts()
 
     def test_init(self):
         test_font = FontInterface("Bravura", MockUnit(12), 1, False)

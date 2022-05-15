@@ -36,4 +36,4 @@ class TestNeoscore(AppTest):
         new_brush = Brush("#ffff00")
         neoscore.set_background_brush(new_brush)
         assert neoscore.background_brush == new_brush
-        assert neoscore._app_interface.background_brush == new_brush.interface
+        assert neoscore.app_interface.background_brush == new_brush.interface

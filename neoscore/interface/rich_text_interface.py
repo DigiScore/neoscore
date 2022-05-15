@@ -31,7 +31,7 @@ class RichTextInterface(PositionedObjectInterface):
     def render(self):
         """Render the line to the scene."""
         qt_object = self._create_qt_object()
-        neoscore._app_interface.scene.addItem(qt_object)
+        neoscore.app_interface.scene.addItem(qt_object)
 
     def _create_qt_object(self) -> QRichTextItem:
         """Create and return this interface's underlying Qt object"""

@@ -58,4 +58,4 @@ class ImageInterface(PositionedObjectInterface):
             qt_object = self._create_svg_qt_object()
         else:
             qt_object = self._create_pixmap_qt_object()
-        neoscore._app_interface.scene.addItem(qt_object)
+        neoscore.app_interface.scene.addItem(qt_object)

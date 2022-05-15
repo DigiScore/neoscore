@@ -61,7 +61,7 @@ class FontInterface:
         super().__setattr__("_qt_font_info_object", QtGui.QFontInfo(self.qt_object))
         super().__setattr__(
             "_qt_font_metrics_object",
-            QtGui.QFontMetricsF(self.qt_object, neoscore._app_interface.view),
+            QtGui.QFontMetricsF(self.qt_object, neoscore.app_interface.view),
         )
         super().__setattr__("ascent", Unit(self._qt_font_metrics_object.ascent()))
         super().__setattr__("descent", Unit(self._qt_font_metrics_object.descent()))

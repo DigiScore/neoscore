@@ -110,7 +110,7 @@ class PathInterface(PositionedObjectInterface):
     def render(self):
         """Render the path to the scene."""
         qt_object = self._create_qt_object()
-        neoscore._app_interface.scene.addItem(qt_object)
+        neoscore.app_interface.scene.addItem(qt_object)
 
     def _create_qt_object(self) -> QClippingPath:
         painter_path = PathInterface.create_qt_path(self.elements)

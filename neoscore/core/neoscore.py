@@ -27,8 +27,6 @@ if TYPE_CHECKING:
 
 """The global application state module."""
 
-_app_interface: AppInterface
-
 default_font: Font
 """The default font to be used in ``Text`` objects."""
 
@@ -45,6 +43,12 @@ background_brush = Brush("#ffffff")
 """The brush used to draw the scene background.
 
 Defaults to solid white. Set this using :obj:`.set_background_brush`.
+"""
+
+app_interface: AppInterface
+"""The underlying application interface.
+
+You generally shouldn't directly interact with this.
 """
 
 _supported_image_extensions = {
@@ -87,7 +91,7 @@ def setup(paper: Paper = A4):
     Args:
         paper: The paper to use in the document.
     """
-    global _app_interface
+    global app_interface
     global default_font
     global document
     global background_brush
@@ -96,7 +100,7 @@ def setup(paper: Paper = A4):
     from neoscore.core.font import Font
 
     document = Document(paper)
-    _app_interface = AppInterface(
+    app_interface = AppInterface(
         document, _repl_refresh_func, background_brush.interface
     )
     _register_default_fonts()
@@ -119,9 +123,9 @@ def set_default_color(color: ColorDef):
 def set_background_brush(brush: BrushDef):
     """Set the brush used to paint the scene background."""
     global background_brush
-    global _app_interface
+    global app_interface
     background_brush = Brush.from_def(brush)
-    _app_interface.background_brush = background_brush.interface
+    app_interface.background_brush = background_brush.interface
 
 
 def register_font(font_file_path: str | pathlib.Path) -> list[str]:
@@ -143,8 +147,8 @@ def register_font(font_file_path: str | pathlib.Path) -> list[str]:
             a valid font file.
     """
     global registered_font_family_names
-    global _app_interface
-    family_names = _app_interface.register_font(font_file_path)
+    global app_interface
+    family_names = app_interface.register_font(font_file_path)
     for name in family_names:
         registered_font_family_names.add(name)
     return family_names
@@ -214,20 +218,20 @@ def show(refresh_func: Optional[RefreshFunc] = None, display_page_geometry=True)
             area inside its margins.
     """
     global document
-    global _app_interface
-    _app_interface._clear_scene()
+    global app_interface
+    app_interface._clear_scene()
     document.render()
     if display_page_geometry:
         _render_geometry_preview()
     if refresh_func:
         set_refresh_func(refresh_func)
-    _app_interface.show()
+    app_interface.show()
 
 
 def _clear_interfaces():
     global document
-    global _app_interface
-    _app_interface._clear_scene()
+    global app_interface
+    app_interface._clear_scene()
     for page in document.pages:
         for obj in page.descendants:
             interfaces = getattr(obj, "interfaces", None)
@@ -250,7 +254,7 @@ def render_pdf(pdf_path: str | pathlib.Path, dpi: int = 300):
         dpi: Resolution to render at
     """
     global document
-    global _app_interface
+    global app_interface
     _clear_interfaces()
     document.render()
     # Render all pages to temp files
@@ -324,7 +328,7 @@ def render_image(
     """
 
     global document
-    global _app_interface
+    global app_interface
 
     _clear_interfaces()
 
@@ -340,7 +344,7 @@ def render_image(
     bg_color = background_brush.color
     document.render()
 
-    return _app_interface.render_image(
+    return app_interface.render_image(
         rect,
         image_path,
         dpi,
@@ -368,7 +372,7 @@ def set_refresh_func(refresh_func: RefreshFunc, target_fps: int = 60):
         refresh_func: The new refresh function
         target_fps: The requested frame rate to run the function at.
     """
-    global _app_interface
+    global app_interface
     global document
 
     frame_wait = 1 / target_fps
@@ -384,7 +388,7 @@ def set_refresh_func(refresh_func: RefreshFunc, target_fps: int = 60):
         elapsed_time = time() - frame_time
         return max(frame_wait - elapsed_time, 0)
 
-    _app_interface.set_refresh_func(wrapped_refresh_func)
+    app_interface.set_refresh_func(wrapped_refresh_func)
 
 
 def _register_default_fonts():
@@ -402,4 +406,4 @@ def shutdown():
     After running this, :obj:`.neoscore.setup` can be called again to start a new
     document.
     """
-    _app_interface.destroy()
+    app_interface.destroy()
