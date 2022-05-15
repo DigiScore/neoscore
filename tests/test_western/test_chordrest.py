@@ -207,7 +207,7 @@ class TestChordrest(AppTest):
             2,
         )
 
-    def test_extra_attachment_point_with_upward_stem(self):
+    def test_extra_attachment_point_with_downard_stem(self):
         chord = Chordrest(Mm(1), self.staff, ["f'"], Duration(1, 4))
         assert_almost_equal(
             chord.extra_attachment_point,

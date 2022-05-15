@@ -141,7 +141,7 @@ class TestPositionedObject(AppTest):
         child_1 = PositionedObject(ORIGIN, root)
         child_2 = PositionedObject(ORIGIN, child_1)
         assert child_2.first_ancestor_with_attr("test_attr") == root
-        assert child_2.first_ancestor_with_attr("not_found") == None
+        assert child_2.first_ancestor_with_attr("not_found") is None
 
     def test_length_is_zero(self):
         obj = PositionedObject((Unit(5), Unit(6)), None)

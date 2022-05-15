@@ -4,7 +4,6 @@ from neoscore.core.units import ZERO, Mm
 from neoscore.western.meter import COMMON_TIME, CUT_TIME, Meter
 from neoscore.western.staff import Staff
 from neoscore.western.time_signature import TimeSignature
-from tests.helpers import render_scene
 
 from ..helpers import AppTest
 
@@ -110,7 +109,3 @@ class TestTimeSignature(AppTest):
         assert ts.visual_width == ts.upper_text.bounding_rect.width
         ts.meter = (3, 4)
         assert ts.visual_width == ts.lower_text.bounding_rect.width
-
-    def test_end_to_end(self):
-        ts = TimeSignature(ZERO, self.staff, COMMON_TIME)
-        render_scene()

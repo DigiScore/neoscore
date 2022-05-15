@@ -272,14 +272,8 @@ class Flowable(PositionedObject):
 
     def post_render_hook(self):
         # Clear all auto-generated margin controllers
-        self._provided_controllers = Flowable._new_provided_controllers_list(
-            (
-                c
-                for c in self.provided_controllers
-                if not c.layer_key.startswith("_neoscore")
-            )
-        )
+        self._provided_controllers = Flowable._new_provided_controllers_list()
 
     @staticmethod
-    def _new_provided_controllers_list(*args) -> SortedKeyList[MarginController]:
+    def _new_provided_controllers_list() -> SortedKeyList[MarginController]:
         return SortedKeyList(key=lambda c: c.flowable_x)

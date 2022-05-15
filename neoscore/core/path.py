@@ -25,6 +25,9 @@ from neoscore.interface.path_interface import (
     ResolvedPathElement,
 )
 
+_TWO_PI = pi * 2
+_HALF_PI = pi / 2
+
 
 class Path(PaintedObject):
 
@@ -218,47 +221,43 @@ class Path(PaintedObject):
         # comments have been left in place as well.
 
         # Work in float base units, converting back to units at the end
-        TWO_PI = pi * 2
-        HALF_PI = pi / 2
-
         w = width.base_value
         h = height.base_value
 
         # Make all angles positive...
         while start_angle < 0:
-            start_angle += TWO_PI
+            start_angle += _TWO_PI
         while stop_angle < 0:
-            stop_angle += TWO_PI
+            stop_angle += _TWO_PI
 
         # ...and confine them to the interval [0,TWO_PI).
-        start_angle %= TWO_PI
-        stop_angle %= TWO_PI
+        start_angle %= _TWO_PI
+        stop_angle %= _TWO_PI
 
         # Adjust angles to counter linear scaling.
-        if start_angle <= HALF_PI:
+        if start_angle <= _HALF_PI:
             start_angle = atan(w / h * tan(start_angle))
-        elif start_angle > HALF_PI and start_angle <= 3 * HALF_PI:
+        elif _HALF_PI < start_angle <= 3 * _HALF_PI:
             start_angle = atan(w / h * tan(start_angle)) + pi
         else:
-            start_angle = atan(w / h * tan(start_angle)) + TWO_PI
-        if stop_angle <= HALF_PI:
+            start_angle = atan(w / h * tan(start_angle)) + _TWO_PI
+        if stop_angle <= _HALF_PI:
             stop_angle = atan(w / h * tan(stop_angle))
-        elif stop_angle > HALF_PI and stop_angle <= 3 * HALF_PI:
+        elif _HALF_PI < stop_angle <= 3 * _HALF_PI:
             stop_angle = atan(w / h * tan(stop_angle)) + pi
         else:
-            stop_angle = atan(w / h * tan(stop_angle)) + TWO_PI
+            stop_angle = atan(w / h * tan(stop_angle)) + _TWO_PI
 
         # Exceed the interval if necessary in order to preserve the size and
         # orientation of the arc.
         if start_angle > stop_angle:
-            stop_angle += TWO_PI
+            stop_angle += _TWO_PI
 
         # Create curves
         epsilon = 0.00001  # Smallest visible angle on displays up to 4K.
-        arc_to_draw = 0.0
         curves = []
         while stop_angle - start_angle > epsilon:
-            arc_to_draw = min(stop_angle - start_angle, HALF_PI)
+            arc_to_draw = min(stop_angle - start_angle, _HALF_PI)
             curves.append(Path._acute_arc_to_bezier(start_angle, arc_to_draw))
             start_angle += arc_to_draw
 
@@ -366,8 +365,7 @@ class Path(PaintedObject):
         length = sqrt(dx * dx + dy * dy)
         sin_ = dy / length
         cos_ = dx / length
-        resolved_points: list[tuple[float, float]] = []
-        resolved_points.append((0, 0))
+        resolved_points: list[tuple[float, float]] = [(0, 0)]
         for cp in control_points:
             if cp[0] < 0:
                 resolved_points.append((length + cp[0], cp[1]))

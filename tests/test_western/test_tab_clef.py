@@ -29,8 +29,8 @@ class TestTabClef(AppTest):
 
     def test_font_override(self):
         other_font = MusicFont("Bravura", Inch)
-        clef = TabClef(self.staff)
-        assert clef.music_font == self.staff.music_font
+        clef = TabClef(self.staff, font=other_font)
+        assert clef.music_font == other_font
 
     def test_brush_default(self):
         clef = TabClef(self.staff)

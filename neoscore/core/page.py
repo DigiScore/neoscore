@@ -186,9 +186,6 @@ class Page(PositionedObject):
             Pen.no_pen(),
         )
         page_drop_shadow_rect.z_index = page_preview_rect.z_index - 1
-        live_area_bounding_rect = Rect(
-            ZERO, ZERO, self.paper.live_width, self.paper.live_height
-        )
         live_area_preview_rect = Path.rect(
             ORIGIN,
             self,

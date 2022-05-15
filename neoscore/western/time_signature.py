@@ -52,6 +52,7 @@ class TimeSignature(PositionedObject, StaffObject):
             ORIGIN,
             self,
             self.meter.upper_text_glyph_names,
+            font=font,
             breakable=False,
         )
         self._lower_text = _TimeSignatureText(
@@ -60,6 +61,7 @@ class TimeSignature(PositionedObject, StaffObject):
             ORIGIN,
             self,
             self.meter.lower_text_glyph_names,
+            font=font,
             breakable=False,
         )
         self._position_glyphs()

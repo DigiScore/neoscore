@@ -40,7 +40,8 @@ class MetronomeMark(PositionedObject, HasMusicFont):
             music_font: If provided, this overrides any music font found in the
                 ancestor chain.
             text_font: The font for the plain text portion of the mark.
-            spaces_between_music_chars: Whether to insert spaces between each specified music character. This is needed to correctly space rhythm dots if used.
+            spaces_between_music_chars: Whether to insert spaces between each specified
+                music character. This is needed to correctly space rhythm dots if used.
         """
         PositionedObject.__init__(self, pos, parent)
         self._music_font = music_font or HasMusicFont.find_music_font(parent)

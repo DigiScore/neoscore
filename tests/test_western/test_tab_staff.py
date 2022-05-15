@@ -36,7 +36,7 @@ class TestTabStaff(AppTest):
         staff = TabStaff(ORIGIN, None, Mm(100))
         assert staff.line_count == 6
 
-    def test_line_count_default(self):
+    def test_line_count_override(self):
         staff = TabStaff(ORIGIN, None, Mm(100), line_count=10)
         assert staff.line_count == 10
 

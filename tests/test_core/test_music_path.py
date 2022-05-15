@@ -36,4 +36,4 @@ class TestMusicPath(AppTest):
     def test_init_with_no_font_fails(self):
         parent = PositionedObject(ORIGIN, None)
         with pytest.raises(NoAncestorWithMusicFontError):
-            mp = MusicPath(ORIGIN, parent)
+            MusicPath(ORIGIN, parent)

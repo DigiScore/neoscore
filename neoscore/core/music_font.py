@@ -56,11 +56,12 @@ class MusicFont(Font):
     def engraving_defaults(self) -> Dict:
         """The SMuFL engraving defaults for this font.
 
-        See `SMuFL's description of this data here <https://w3c.github.io/smufl/latest/specification/engravingdefaults.html>`_.
+        See `SMuFL's description of this data here
+        <https://w3c.github.io/smufl/latest/specification/engravingdefaults.html>`_.
         """
         return self._engraving_defaults
 
-    def modified(
+    def modified(  # noqa
         self, family_name: Optional[str] = None, unit: Optional[Type[Unit]] = None
     ) -> MusicFont:
         return MusicFont(
@@ -202,7 +203,7 @@ class MusicFont(Font):
         else:
             raise ValueError
 
-        return (codepoint, description)
+        return codepoint, description
 
     def _load_glyph_anchors(self, glyph_name: str) -> Optional[dict[str, Point]]:
         """Load any glyph anchors and convert coordinates to neoscore points."""

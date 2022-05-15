@@ -91,7 +91,6 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
     def music_font(self) -> MusicFont:
         return self._music_font
 
-    #### PRIVATE METHODS ####
     def _draw_barline(
         self, start_x: Unit, thickness: Unit, pen_pattern: PenPattern, color: ColorDef
     ):

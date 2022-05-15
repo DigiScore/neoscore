@@ -105,7 +105,7 @@ class TestRepeatingMusicTextLine(AppTest):
         line = RepeatingMusicTextLine(
             ORIGIN, self.staff, (Mm(5), Mm(-10)), None, "gClef"
         )
-        assert line.background_brush == None
+        assert line.background_brush is None
 
     def test_background_brush_override(self):
         line = RepeatingMusicTextLine(

@@ -14,5 +14,5 @@ class TestRawMusicChar(AppTest):
     def test_glyph_info(self):
         char = RawMusicChar(self.font, " ")
         assert char.codepoint == " "
-        assert char.bounding_rect == None
+        assert char.bounding_rect is None
         assert char.glyph_info == GlyphInfo("[RAW CHAR]", " ", "", None, None, None)

@@ -30,7 +30,10 @@ text_crossing_break = Text(
 )
 
 
-html = "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>"
+html = (
+    "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, "
+    + "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>"
+)
 rich_text = RichText((Mm(30), Mm(50)), None, html, Mm(30), tfont, rotation=-20)
 
 

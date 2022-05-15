@@ -25,7 +25,7 @@ def create_example(chords: list[TestChord], direction: Optional[DirectionY] = No
     global staff_y
     staff = Staff((ZERO, staff_y), None, Mm(150))
     staff_y = staff.y
-    clef = Clef(ZERO, staff, "treble")
+    Clef(ZERO, staff, "treble")
     unit = staff.unit
     group = []
     spacing = unit(6)
@@ -41,7 +41,7 @@ def create_example(chords: list[TestChord], direction: Optional[DirectionY] = No
                 beam_hook_dir=c.beam_hook_dir,
             )
         )
-    bg = BeamGroup(group, direction)
+    BeamGroup(group, direction)
     staff_y += Mm(24)
 
 

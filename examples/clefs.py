@@ -1,8 +1,9 @@
+from helpers import render_example
+
 from neoscore.common import *
 from neoscore.western.clef_type import CLEF_TYPE_SHORTHAND_NAMES
 
 neoscore.setup()
-from helpers import render_example
 
 staff_group = StaffGroup()
 staves = []
@@ -20,6 +21,6 @@ for (i, clef_type) in enumerate(CLEF_TYPE_SHORTHAND_NAMES.values()):
     KeySignature(unit(20), staff, "cf_major")
 
 
-Barline(unit(35), staves, barline_style.THIN_DOUBLE)
+Barline(staves[0].unit(35), staves, barline_style.THIN_DOUBLE)
 
 render_example("clefs")

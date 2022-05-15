@@ -23,7 +23,6 @@ class TestBrace(AppTest):
 
     def test_default_font_from_top_staff(self):
         large_staff = Staff(ORIGIN, None, Mm(100), line_spacing=Mm(3))
-        small_staff = Staff((Mm(0), Mm(20)), None, Mm(100))
         brace = Brace([large_staff, self.bottom_staff])
         assert brace.music_font == large_staff.music_font
 

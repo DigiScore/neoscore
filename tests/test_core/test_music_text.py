@@ -50,7 +50,7 @@ class TestMusicText(AppTest):
         assert mtext.rotation == 123
         assert mtext.background_brush == Brush("#00f")
         assert mtext.z_index == 5
-        assert mtext.breakable == False
+        assert not mtext.breakable
         assert mtext.alignment_x == AlignmentX.RIGHT
         assert mtext.alignment_y == AlignmentY.CENTER
 
@@ -96,7 +96,7 @@ class TestMusicText(AppTest):
 
     def test_breakable_passed_to_superclass(self):
         mtext = MusicText((Unit(5), Unit(6)), self.staff, "accidentalSharp")
-        assert mtext.breakable == True
+        assert mtext.breakable
 
     @pytest.mark.skip("Bounding rects do not currently respond to rotation")
     def test_bounding_rect_responds_to_rotation(self):

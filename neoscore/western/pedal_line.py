@@ -86,10 +86,7 @@ class PedalLine(Spanner, MusicPath):
             if isinstance(pos, tuple):
                 lift_parent = pos[1]
                 lift_center_x = pos[0]
-                if self.flowable is not None:
-                    lift_center_y = (
-                        self.flowable.map_to_locally(lift_parent, self).y + descent
-                    )
+                lift_center_y = lift_parent.map_to(self).y + descent
             elif isinstance(pos, Unit):
                 lift_parent = self
                 lift_center_x = pos

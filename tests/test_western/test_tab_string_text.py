@@ -52,6 +52,7 @@ class TestTabStringText(AppTest):
 
     def test_background_brush_can_be_disabled(self):
         text = TabStringText(Mm(10), self.staff, 1, "fingering1", hide_background=False)
+        assert text.background_brush is None
 
     def test_z_index_defaults_to_1_more_than_staff(self):
         self.staff.z_index = 5

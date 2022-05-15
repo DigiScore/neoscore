@@ -64,7 +64,7 @@ class TestClef(AppTest):
 
     def test_breakable_length_with_other_clefs(self):
         clef = Clef(Mm(1), self.staff, clef_type.TREBLE)
-        later_clef = Clef(Mm(50), self.staff, clef_type.TREBLE)
+        Clef(Mm(50), self.staff, clef_type.TREBLE)
         assert clef.breakable_length == Mm(50 - 1)
 
     def test_clef_type_setter_updates_other_attributes(self):

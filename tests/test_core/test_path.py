@@ -307,13 +307,13 @@ class TestPath(AppTest):
 
     def test_arc_with_invalid_angle(self):
         with pytest.raises(ValueError):
-            path = Path.arc(ORIGIN, None, Unit(10), Unit(10), 1.0, 1.0 + 2 * math.pi)
+            Path.arc(ORIGIN, None, Unit(10), Unit(10), 1.0, 1.0 + 2 * math.pi)
 
         with pytest.raises(ValueError):
-            path = Path.arc(ORIGIN, None, Unit(10), Unit(10), 1.0, 1.0)
+            Path.arc(ORIGIN, None, Unit(10), Unit(10), 1.0, 1.0)
 
         with pytest.raises(ValueError):
-            path = Path.arc(ORIGIN, None, Unit(10), Unit(10), 0, 2 * math.pi)
+            Path.arc(ORIGIN, None, Unit(10), Unit(10), 0, 2 * math.pi)
 
     def test_arrow_without_end_parent(self):
         path = Path.arrow(

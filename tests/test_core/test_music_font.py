@@ -67,7 +67,7 @@ class TestMusicFont(AppTest):
             "accidentalDoubleFlatParens"
         )
         assert test_glyph_no_description[0] == "\uF5E4"
-        assert test_glyph_no_description[1] == None
+        assert test_glyph_no_description[1] is None
         test_glyph_with_description = self.font._check_optional_glyphs(
             "4stringTabClefSerif"
         )

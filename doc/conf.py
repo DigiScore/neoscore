@@ -27,7 +27,7 @@ PROJECT_SRC_DIR = PROJECT_ROOT_DIR / "neoscore"
 sys.path.insert(0, str(PROJECT_SRC_DIR))
 sys.path.insert(0, ".")
 
-from rendered_example import RenderedExample
+from rendered_example import RenderedExample  # noqa
 
 # -- Project information -----------------------------------------------------
 

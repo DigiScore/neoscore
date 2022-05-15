@@ -41,10 +41,7 @@ class HasMusicFont:
         """
         if hasattr(obj, "music_font"):
             return cast(HasMusicFont, obj).music_font
-        try:
-            lookup_result = obj.first_ancestor_with_attr("music_font")
-            if lookup_result is None:
-                raise NoAncestorWithMusicFontError()
-        except:
+        lookup_result = obj.first_ancestor_with_attr("music_font")
+        if lookup_result is None:
             raise NoAncestorWithMusicFontError()
         return cast(HasMusicFont, lookup_result).music_font

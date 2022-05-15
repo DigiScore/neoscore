@@ -12,6 +12,6 @@ def running_in_ipython_gui_repl() -> bool:
         if ipython:
             if ipython.config["TerminalIPythonApp"]["gui"] == "qt5":
                 return True
-    except:
+    except:  # noqa
         pass
     return False

@@ -85,19 +85,19 @@ class TestDuration(unittest.TestCase):
 
     def test_invalid_duration_display(self):
         # Values < 2 which require ties
-        assert Duration(5, 8).display == None
-        assert Duration(9, 16).display == None
-        assert Duration(11, 16).display == None
-        assert Duration(13, 16).display == None
-        assert Duration(17, 16).display == None
-        assert Duration(18, 16).display == None
+        assert Duration(5, 8).display is None
+        assert Duration(9, 16).display is None
+        assert Duration(11, 16).display is None
+        assert Duration(13, 16).display is None
+        assert Duration(17, 16).display is None
+        assert Duration(18, 16).display is None
         # Values 2 <= x < 4 which require ties
-        assert Duration(33, 16).display == None
-        assert Duration(35, 16).display == None
+        assert Duration(33, 16).display is None
+        assert Duration(35, 16).display is None
         # Values >= 4 (which always require ties)
-        assert Duration(4, 1).display == None
-        assert Duration(5, 1).display == None
-        assert Duration(65, 16).display == None
+        assert Duration(4, 1).display is None
+        assert Duration(5, 1).display is None
+        assert Duration(65, 16).display is None
 
     def test__float__(self):
         self.assertAlmostEqual(float(Duration(1, 2)), 0.5)

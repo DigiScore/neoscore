@@ -15,7 +15,7 @@ if TYPE_CHECKING:
     from neoscore.core.layout_controllers import NewLine
 
 
-class render_cached_property(functools.cached_property):
+class render_cached_property(functools.cached_property):  # noqa
 
     """A property annotation for fields which can be cached at render time.
 
@@ -42,7 +42,7 @@ class render_cached_property(functools.cached_property):
         self.attrname = None
         self.__doc__ = func.__doc__
 
-    def __get__(self, obj, cls):
+    def __get__(self, obj, cls):  # noqa
         if obj is None:
             return self
         result = self.func(obj)
@@ -225,7 +225,7 @@ class PositionedObject:
         """
         ancestor = self.parent
         while True:
-            yield (ancestor)
+            yield ancestor
             if not hasattr(ancestor, "parent"):
                 # Document root found
                 break
