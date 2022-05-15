@@ -39,11 +39,12 @@ class RichTextInterface(PositionedObjectInterface):
         qt_object.setHtml(self.html_text)
         qt_object.document().setDocumentMargin(0)
         qt_object.setPos(point_to_qt_point_f(self.pos))
-        qt_object.setRotation(self.rotation)
         qt_object.setTextWidth(self.width.base_value if self.width is not None else -1)
         qt_object.setFont(self.font.qt_object)
         if self.scale != 1:
             qt_object.setScale(self.scale)
+        if self.rotation != 0:
+            qt_object.setRotation(self.rotation)
         if self.z_index != 0:
             qt_object.setZValue(self.z_index)
         return qt_object

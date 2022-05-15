@@ -23,6 +23,8 @@ class Image(PositionedObject):
         parent: Optional[PositionedObject],
         file_path: str | pathlib.Path,
         scale: float = 1,
+        rotation: float = 0,
+        z_index: int = 0,
     ):
         """
         Args:
@@ -30,8 +32,12 @@ class Image(PositionedObject):
             parent: The parent object or None
             file_path: Path to an image file to be used
             scale: A scaling factor applied to the image.
+            rotation: Rotation angle in degrees.
+            z_index: Controls draw order with lower values drawn first.
         """
         self._scale = scale
+        self._rotation = rotation
+        self._z_index = z_index
         self.file_path = file_path
         super().__init__(pos, parent)
 
@@ -45,6 +51,24 @@ class Image(PositionedObject):
     @scale.setter
     def scale(self, value: float):
         self._scale = value
+
+    @property
+    def rotation(self) -> float:
+        """An angle in degrees to rotate about the image origin"""
+        return self._rotation
+
+    @rotation.setter
+    def rotation(self, value: float):
+        self._rotation = value
+
+    @property
+    def z_index(self) -> int:
+        """Value controlling draw order with lower values being drawn first"""
+        return self._z_index
+
+    @z_index.setter
+    def z_index(self, value: int):
+        self._z_index = value
 
     @property
     def file_path(self) -> pathlib.Path:
@@ -74,6 +98,8 @@ class Image(PositionedObject):
         flowable_line: Optional[NewLine] = None,
         flowable_x: Optional[Unit] = None,
     ):
-        interface = ImageInterface(pos, self.file_path, self.scale)
+        interface = ImageInterface(
+            pos, self.file_path, self.scale, self.rotation, self.z_index
+        )
         interface.render()
         self.interfaces.append(interface)
