@@ -15,6 +15,12 @@ Neoscore uses a layered architecture which allows users to work with low-level g
 
 We differ from traditional score-writing systems in many important aspects. Neoscore deliberately lacks support for things like audio playback, MusicXML support, MIDI import, automatic score layout, and part extraction. We treat traditional western notation as a second class citizen. In general, if your score *can* be written with traditional score-writers you're better off using one. But if your notation speaks in dots and squiggles, grids and colors, bouncing barlines and unruly clefs—you're in the right place!
 
+.. raw:: html
+
+   <!-- Github button -->
+   <script async defer src="https://buttons.github.io/buttons.js"></script>
+   <a class="github-button" href="https://github.com/DigiScore/neoscore" data-icon="octicon-star" data-size="large" aria-label="Star DigiScore/neoscore on GitHub">Star us on GitHub!</a>
+
 .. toctree::
    :hidden:
 
