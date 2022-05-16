@@ -13,7 +13,7 @@
 {%- endfor %}
 {%- endmacro %}
 
-{{- [pkgname, "package"] | join(" ") | e | heading }}
+{{- pkgname | e | heading }}
 
 {{ automodule(pkgname, automodule_options) }}
 
