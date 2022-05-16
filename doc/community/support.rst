@@ -12,8 +12,8 @@ Mac OS Installation errors
 Some versions of Mac OS have trouble installing one of our dependencies. If your installation fails, try running these commands in your environment::
 
     pip uninstall Pillow
-    python -m pip install --upgrade pip
-    python -m pip install --upgrade Pillow --no-binary :all:
+    pip install --upgrade pip
+    pip install --upgrade Pillow --no-binary :all:
 
 Python Errors
 ^^^^^^^^^^^^^
