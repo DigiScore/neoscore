@@ -19,7 +19,7 @@ We differ from traditional score-writing systems in many important aspects. Neos
 
    <!-- Github button -->
    <script async defer src="https://buttons.github.io/buttons.js"></script>
-   <a class="github-button" href="https://github.com/DigiScore/neoscore" data-icon="octicon-star" data-size="large" aria-label="Star DigiScore/neoscore on GitHub">Star us on GitHub!</a>
+   <a class="github-button" href="https://github.com/DigiScore/neoscore" data-icon="octicon-star" data-size="large" aria-label="Star DigiScore/neoscore on GitHub">Don't forget to star us on GitHub!</a>
 
 .. toctree::
    :hidden:

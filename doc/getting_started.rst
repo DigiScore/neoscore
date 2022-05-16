@@ -6,7 +6,7 @@ Pre-requisites
 
 Neoscore is a `Python <https://www.python.org/>`_ library, and working with it requires a basic working knowledge of using the language.
 
-We require a minimum Python version of **3.10**. If your system does not have this version (you can check with ``python --version``), you'll need to install it. We recommend following standard Python best-practices by using a dedicated `virtual environment <https://realpython.com/python-virtual-environments-a-primer/>`_ for each of your projects, and installing neoscore in those environments rather than your global Python installation.
+We require a minimum Python version of **3.10**. If your system does not have this version (you can check with ``python --version``), `you'll need to install it <https://www.python.org/downloads/>`_. We recommend following standard Python best-practices by using a dedicated `virtual environment <https://realpython.com/python-virtual-environments-a-primer/>`_ for each of your projects, and installing neoscore in those environments rather than your global Python installation.
 
 Installation
 ------------
@@ -22,7 +22,7 @@ Once installed, check your setup by running this "hello world" program!
    Text(ORIGIN, None, "Hello, neoscore!")
    neoscore.show()
 
-If you're getting errors installing our running this starter program, please check out our :ref:`troubleshooting guide here <installation troubleshooting>`.
+If you're getting errors installing or running this starter program, please check out our :ref:`troubleshooting guide here <installation troubleshooting>`.
 
 Important Links
 ---------------
