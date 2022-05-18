@@ -20,7 +20,18 @@ neoscore.show()
 
 If you have installation problems, please see [our troubleshooting guide](https://neoscore.org/community/support.html).
 
-## Documentation
+## [Documentation](https://neoscore.org)
 
 Visit [neoscore.org](https://neoscore.org) for thorough documentation and dozens of examples. You can find more [elaborate examples in this repository here](https://github.com/DigiScore/neoscore/blob/main/examples).
 
+------------------
+
+### Credits
+
+Neoscore was principally developed by [Andrew Yoon](https://andrewyoon.art), originally begun in 2016 at [The Recurse Center](https://www.recurse.com/) then revived and released in 2022 with substantial support from [Craig Vear](https://www.dmu.ac.uk/about-dmu/academic-staff/art-design-humanities/craig-vear/craig-vear.aspx) and the [DigiScore](https://digiscore.dmu.ac.uk/) research project. Additional support was provided by [Prashanth Thattai Ravikumar](https://github.com/prashanthtr). Many of neoscore’s design choices were informed by the excellent open source notation projects [Abjad](https://github.com/Abjad/abjad), [Lilypond](https://lilypond.org/index.html), and [MuseScore](https://github.com/musescore/MuseScore/).
+
+The Digital Score project (DigiScore) is funded by the European Research Council (ERC) under the European Union’s Horizon 2020 research and innovation programme (Grant agreement No. ERC-2020-COG - 101002086).
+
+![Logo for the European Research Council](https://raw.githubusercontent.com/DigiScore/neoscore/main/doc/static/img/erc_eu_logo.webp)
+
+Get your name added here by getting involved!
