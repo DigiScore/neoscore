@@ -9,16 +9,24 @@ Troubleshooting
 Mac OS Installation errors
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+If you have trouble installing on Mac OS, try first upgrading your environment's pip with::
+
+    pip install --upgrade pip
+
+and try installing neoscore again. This should fix many problems.
+
+Pillow installation problems
+""""""""""""""""""""""""""""
+
 Some versions of Mac OS have trouble installing one of our dependencies. If your installation fails, try running these commands in your environment::
 
     pip uninstall Pillow
-    pip install --upgrade pip
     pip install --upgrade Pillow --no-binary :all:
 
 Python Errors
 ^^^^^^^^^^^^^
 
-If you're getting errors says neoscore isn't installed or other strange Python errors, confirm that you are running on Python 3.10, the minimum required version, with ``python --version``. If you don't have it, `you'll need to install it <https://www.python.org/downloads/>`_. We strongly recommend `using a dedicated virtual environment <https://realpython.com/python-virtual-environments-a-primer/>`_ for each of your projects using neoscore.
+If you're getting errors saying neoscore isn't installed or other strange Python errors, confirm that you are running on Python 3.10, the minimum required version, with ``python --version``. If you don't have it, `you'll need to install it <https://www.python.org/downloads/>`_. We strongly recommend `using a dedicated virtual environment <https://realpython.com/python-virtual-environments-a-primer/>`_ for each of your projects using neoscore.
 
 Bug Reports
 -----------
