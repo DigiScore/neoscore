@@ -18,6 +18,8 @@ Text(ORIGIN, None, "Hello, neoscore!")
 neoscore.show()
 ```
 
+If you have installation problems, please see [our troubleshooting guide](https://neoscore.org/community/support.html).
+
 ## Documentation
 
 Visit [neoscore.org](https://neoscore.org) for thorough documentation and dozens of examples. You can find more [elaborate examples in this repository here](https://github.com/DigiScore/neoscore/blob/main/examples).
