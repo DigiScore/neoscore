@@ -7,15 +7,16 @@ import pytest
 
 example_dir = (pathlib.Path(__file__).parent / ".." / ".." / "examples").resolve()
 example_dir_contents: list[str] = os.listdir(example_dir)
-example_file_names = [
-    f
+example_script_paths = [
+    example_dir / f
     for f in example_dir_contents
     if f.endswith(".py")
     and f not in ["helpers.py", "repl.py", "animation.py", "pdf.py"]
 ]
+example_script_paths.append(example_dir / "feldman_projection_2" / "main.py")
 
 
-@pytest.mark.parametrize("file_name", example_file_names)
+@pytest.mark.parametrize("file_name", example_script_paths)
 def test_examples(file_name: str):
     validate_script_safe_to_run(file_name)
     subprocess.run(

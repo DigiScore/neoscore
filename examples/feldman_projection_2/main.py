@@ -4,6 +4,7 @@ from examples.feldman_projection_2.content import instruments
 from examples.feldman_projection_2.grid_unit import GridUnit
 from examples.feldman_projection_2.measure import Measure
 from examples.feldman_projection_2.score import Score
+from examples.helpers import render_example
 from neoscore.core import neoscore
 from neoscore.core.flowable import Flowable
 from neoscore.core.paper import LETTER
@@ -21,4 +22,4 @@ flowable = Flowable(
 )
 score = Score(ORIGIN, flowable, instruments)
 
-neoscore.show(display_page_geometry=True)
+render_example("feldman")
