@@ -5,7 +5,7 @@ from examples.feldman_projection_2.measure import Measure
 from neoscore.core.brush import Brush
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
-from neoscore.core.point import ORIGIN
+from neoscore.core.point import ORIGIN, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import Unit
 
