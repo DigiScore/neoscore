@@ -8,8 +8,11 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+    strategy:
+      matrix:
+        platform: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.platform }}
+    timeout-minutes: 30
     steps:
       #----------------------------------------------
       #       check-out repo and set-up python
@@ -43,11 +46,27 @@ jobs:
       #----------------------------------------------
       # install dependencies if cache does not exist
       #----------------------------------------------
-      - name: Install dependencies
+      - name: Install python dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: poetry install --no-interaction --no-root
       #----------------------------------------------
-      # install your root project, if required
+      # install non-python dependencies, specific to OS
+      #----------------------------------------------
+      - name:  Install non-python dependencies
+        run:   |
+          if [ "$RUNNER_OS" == "Linux" ]; then
+            sudo apt install graphviz
+          elif [ "$RUNNER_OS" == "macOS" ]; then
+            brew install graphviz
+          elif [ "$RUNNER_OS" == "Windows" ]; then
+            choco install graphviz --no-progress
+          else
+            echo "$RUNNER_OS not supported"
+            exit 1
+          fi
+        shell: bash
+      #----------------------------------------------
+      # install root project
       #----------------------------------------------
       - name: Install neoscore
         run: poetry install --no-interaction
@@ -56,15 +75,26 @@ jobs:
       #----------------------------------------------
       - name: Run tests
         run: |
-          source .venv/bin/activate
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            source .venv/Scripts/activate
+          else
+            source .venv/bin/activate
+          fi
           pytest -n auto
+        shell: bash
         env:
           NEOSCORE_HEADLESS: True
       - name: Check formatting conforms to Black
         uses: psf/black@stable
+        if: matrix.platform == 'ubuntu-latest'
       - name: Check import sorting with isort
-        uses: isort/isort-action@master
+        if: matrix.platform == 'ubuntu-latest'
+        run: |
+          source .venv/bin/activate
+          pip install isort
+          isort .
       - name: Check for unused imports with unimport
+        if: matrix.platform == 'ubuntu-latest'
         run: |
           source .venv/bin/activate
           pip install unimport
@@ -73,7 +103,14 @@ jobs:
         working-directory: doc
         env:
           NEOSCORE_HEADLESS: True
+          SPHINXOPTS: -T  # Log traceback on sphinx errors
         run: |
-          sudo apt install graphviz
-          source ../.venv/bin/activate
-          make html
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            source ../.venv/Scripts/activate
+            ./make.bat html
+          else
+            source ../.venv/bin/activate
+            make html
+          fi
+        shell: bash
+

@@ -218,11 +218,11 @@ def post_process_html(app, exception):
         target_files.append(Path(app.outdir) / app.builder.get_target_uri(doc))
 
     for html_file in target_files:
-        src = html_file.read_text()
+        src = html_file.read_text(encoding="utf-8")
         soup = BeautifulSoup(src, "lxml")
         modified = link_aliases(soup)
         if modified:
-            with open(html_file, "w") as f:
+            with open(html_file, "w", encoding="utf-8") as f:
                 f.write(str(soup))
 
 

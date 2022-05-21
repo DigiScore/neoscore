@@ -2,6 +2,7 @@ import os
 import pathlib
 import re
 import subprocess
+import sys
 
 import pytest
 
@@ -20,7 +21,7 @@ example_script_paths.append(example_dir / "feldman_projection_2" / "main.py")
 def test_examples(file_name: str):
     validate_script_safe_to_run(file_name)
     subprocess.run(
-        ["python", file_name, "--image", "--tmp", "--automated"],
+        [sys.executable, file_name, "--image", "--tmp", "--automated"],
         cwd=example_dir,
         check=True,
     )
@@ -30,7 +31,7 @@ def test_pdf_example():
     file_name = "pdf.py"
     validate_script_safe_to_run(file_name)
     subprocess.run(
-        ["python", file_name, "--pdf", "--tmp", "--automated"],
+        [sys.executable, file_name, "--pdf", "--tmp", "--automated"],
         cwd=example_dir,
         check=True,
     )

@@ -1,6 +1,7 @@
 import base64
 import os
 import subprocess
+import sys
 import tempfile
 from hashlib import sha1
 from pathlib import Path
@@ -33,7 +34,7 @@ class RenderedExample(CodeBlock):
         # Run superclass first
         result = super().run()
         # Now render the code block to an image
-        script_file = tempfile.NamedTemporaryFile("w", suffix=".py")
+
         # Script ID should be stable across builds for unchanged scripts
         script_id = RenderedExample.hash_script(self.content)
         STATIC_RENDER_DIR.mkdir(parents=True, exist_ok=True)
@@ -45,10 +46,18 @@ class RenderedExample(CodeBlock):
             script_lines = list(self.content)
             RenderedExample.post_process_script(script_lines, export_path)
             script_text = "\n".join(script_lines)
-            script_file.write(script_text)
-            script_file.flush()
-            os.fsync(script_file.fileno())
-            subprocess.check_call(["python", script_file.name])
+            script_file = tempfile.NamedTemporaryFile(
+                "w", suffix=".py", delete=False, encoding="utf-8"
+            )
+            try:
+                script_file.write(script_text)
+                script_file.flush()
+                os.fsync(script_file.fileno())
+                script_file.close()
+                subprocess.check_call([sys.executable, script_file.name])
+            finally:
+                script_file.close()
+                os.unlink(script_file.name)
         # This hackily assumes exported images live 2 dirs down from root
         # Need to prefix absolute path with TWO slashes due to Sphinx quirk
         # https://github.com/sphinx-doc/sphinx/issues/7772
@@ -70,10 +79,11 @@ class RenderedExample(CodeBlock):
     @staticmethod
     def post_process_script(script: list[str], export_path: Path):
         """Modify `script` in-place preparing it for render"""
+
         render_line = (
             f"neoscore.render_image("
             + "None,"
-            + f"'{export_path}', 130, autocrop=True)"
+            + f"r'{export_path}', 130, autocrop=True)"
         )
 
         if any(("neoscore.show()" in line for line in script)):

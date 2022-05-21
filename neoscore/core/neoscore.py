@@ -3,7 +3,6 @@ from __future__ import annotations
 import json
 import os
 import pathlib
-import tempfile
 import threading
 from time import time
 from typing import TYPE_CHECKING, Callable, Optional, TypeAlias
@@ -261,30 +260,32 @@ def render_pdf(pdf_path: str | pathlib.Path, dpi: int = 300):
     page_imgs = []
     render_threads = []
     for page in document.pages:
-        img_path = tempfile.NamedTemporaryFile(suffix=".png")
-        page_imgs.append(img_path)
+        img_buffer = bytearray()
+        page_imgs.append(img_buffer)
         render_threads.append(
             render_image(
                 page.document_space_bounding_rect,
-                img_path.name,
+                img_buffer,
                 dpi,
                 preserve_alpha=False,
+                wait=False,
             )
         )
     for thread in render_threads:
         thread.join()
     # Assemble into PDF and write it to file path
     with open(pdf_path, "wb") as f:
-        f.write(img2pdf.convert(page_imgs))
+        f.write(img2pdf.convert([bytes(buf) for buf in page_imgs]))
 
 
 def render_image(
     rect: Optional[RectDef],
-    image_path: str | pathlib.Path,
+    dest: str | pathlib.Path | bytearray,
     dpi: int = 300,
     quality: int = -1,
     autocrop: bool = False,
     preserve_alpha: bool = True,
+    wait: bool = True,
 ) -> threading.Thread:
     """Render a section of the document to an image.
 
@@ -299,24 +300,24 @@ def render_image(
         * ``.xbm``
         * ``.xpm``
 
-    This renders on the main thread but autocrops and saves the image
-    on a spawned thread which is returned to allow efficient rendering
-    of many images in parallel. ``render_image`` will block if too many
-    render threads are already running.
+    If `wait == False`, this renders on the main thread but autocrops and saves the
+    image on a spawned thread which is returned to allow efficient rendering of many
+    images in parallel.
 
     Args:
         rect: The part of the document to render, in document coordinates.
             If ``None``, the entire scene will be rendered.
-        image_path: The path to the output image.
-            This must be a valid path relative to the current working directory.
-        dpi: The pixels per inch of the rendered image.
-        quality: The quality of the output image for compressed
-            image formats. Must be either ``-1`` (default compression) or
-            between ``0`` (most compressed) and ``100`` (least compressed).
+        dest: An output file path or a bytearray to save to. If a bytearray
+            is given, the output format will be PNG.
+        dpi: The pixels per inch of the rendered image. quality: The quality of the
+        output image for compressed
+            image formats. Must be either ``-1`` (default compression) or between ``0``
+            (most compressed) and ``100`` (least compressed).
         autocrop: Whether to crop the output image to tightly
             fit the contents of the frame.
         preserve_alpha: Whether to preserve the alpha channel. If false,
             ``neoscore.background_brush`` will be used to flatten any transparency.
+        wait: Whether to block until the image is fully exported.
 
     Raises:
         InvalidImageFormatError: If the given ``image_path`` does not have a
@@ -334,23 +335,29 @@ def render_image(
         warn("render_image quality {} invalid; using default.".format(quality))
         quality = -1
 
-    if not os.path.splitext(image_path)[1] in _supported_image_extensions:
+    if (
+        not isinstance(dest, bytearray)
+        and not os.path.splitext(dest)[1] in _supported_image_extensions
+    ):
         raise InvalidImageFormatError(
-            "image_path {} is not in a supported format.".format(image_path)
+            "image_path {} is not in a supported format.".format(dest)
         )
 
     bg_color = background_brush.color
     document.render()
 
-    return app_interface.render_image(
+    thread = app_interface.render_image(
         rect,
-        image_path,
+        dest,
         dpi,
         quality,
         bg_color,
         autocrop,
         preserve_alpha,
     )
+    if wait:
+        thread.join()
+    return thread
 
 
 def _repl_refresh_func(_: float) -> float:

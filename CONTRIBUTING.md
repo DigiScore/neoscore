@@ -25,7 +25,7 @@ The docs are built using Sphinx.
 
 ```sh
 cd doc
-make html
+make html  # (On Windows, use the `make.bat` script)
 ```
 
 You can then serve the docs locally easily with `python -m http.server -d doc/_build/html` or by running `sh dev_scripts/start_doc_server.sh`.

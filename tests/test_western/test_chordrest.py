@@ -191,6 +191,7 @@ class TestChordrest(AppTest):
         chord = Chordrest(Mm(1), self.staff, pitches, Duration(1, 4))
         assert chord.highest_notehead == chord.lowest_notehead
 
+    @pytest.mark.skipif("not AppTest.running_on_linux()")
     def test_extra_attachment_point_with_rest(self):
         chord = Chordrest(Mm(1), self.staff, None, Duration(1, 4))
         assert_almost_equal(
@@ -199,6 +200,7 @@ class TestChordrest(AppTest):
             2,
         )
 
+    @pytest.mark.skipif("not AppTest.running_on_linux()")
     def test_extra_attachment_point_with_upward_stem(self):
         chord = Chordrest(Mm(1), self.staff, ["c"], Duration(1, 4))
         assert_almost_equal(
@@ -207,6 +209,7 @@ class TestChordrest(AppTest):
             2,
         )
 
+    @pytest.mark.skipif("not AppTest.running_on_linux()")
     def test_extra_attachment_point_with_downard_stem(self):
         chord = Chordrest(Mm(1), self.staff, ["f'"], Duration(1, 4))
         assert_almost_equal(

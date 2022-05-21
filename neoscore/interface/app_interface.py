@@ -5,7 +5,7 @@ import pathlib
 import threading
 from typing import TYPE_CHECKING, Callable, Optional
 
-from PyQt5.QtCore import QRectF
+from PyQt5.QtCore import QBuffer, QByteArray, QIODevice, QRectF
 from PyQt5.QtGui import (
     QBitmap,
     QColor,
@@ -82,10 +82,13 @@ class AppInterface:
         else:
             self.app.exec_()
 
+    # TODO HIGH - make this thread propagate exceptions
+    # see https://stackoverflow.com/a/31614591/5615927
+
     def render_image(
         self,
         rect: Optional[RectDef],
-        image_path: str | pathlib.Path,
+        dest: str | pathlib.Path | bytearray,
         dpi: int,
         quality: int,
         bg_color: Color,
@@ -102,9 +105,8 @@ class AppInterface:
         Args:
             rect: The part of the document to render, in document coordinates.
                 If ``None``, the entire scene will be rendered.
-            image_path: The path to the output image.
-                This must be a valid path relative to the current
-                working directory.
+            dest: An output file path or a bytearray to save to. If a bytearray
+                is given, the output format will be PNG.
             dpi: The pixels per inch of the rendered image.
             quality: The quality of the output image for compressed
                 image formats. Must be either ``-1`` (default compression) or
@@ -121,7 +123,6 @@ class AppInterface:
             ImageExportError: If Qt image export fails for unknown reasons.
 
         """
-        image_path = file_paths.resolve_qt_path(image_path)
         dpm = AppInterface._dpi_to_dpm(dpi)
         scale = dpm / Mm(1000).base_value
         if rect:
@@ -156,10 +157,25 @@ class AppInterface:
                 final_image = (
                     AppInterface._autocrop(q_image, q_color) if autocrop else q_image
                 )
-                success = final_image.save(image_path, quality=quality)
+                if isinstance(dest, bytearray):
+                    output_array = QByteArray()
+                    qbuf = QBuffer(output_array)
+                    qbuf.open(QIODevice.OpenModeFlag.WriteOnly)
+                    success = final_image.save(qbuf, quality=quality, format="PNG")
+                    qbuf.close()
+                    dest.clear()
+                    dest.extend(output_array)
+                else:
+                    success = final_image.save(
+                        file_paths.resolve_qt_path(dest), quality=quality
+                    )
                 if not success:
+                    dest_description = (
+                        "bytearray" if isinstance(dest, bytearray) else dest
+                    )
                     raise ImageExportError(
-                        "Unknown error occurred when exporting image to " + image_path
+                        "Unknown error occurred when exporting image to "
+                        + dest_description
                     )
 
         thread = threading.Thread(target=finalize)

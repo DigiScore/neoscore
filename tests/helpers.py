@@ -1,3 +1,4 @@
+import os
 import sys
 import tempfile
 import unittest
@@ -93,8 +94,12 @@ def assert_path_els_equal(
 
 
 def render_scene():
-    out_file = tempfile.NamedTemporaryFile(suffix=".png")
-    neoscore.render_image((Mm(-100), Mm(-100), Mm(100), Mm(100)), out_file.name)
+    out_file = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
+    out_file.close()
+    try:
+        neoscore.render_image((Mm(-100), Mm(-100), Mm(100), Mm(100)), out_file.name)
+    finally:
+        os.unlink(out_file.name)
 
 
 class AppTest(unittest.TestCase):
