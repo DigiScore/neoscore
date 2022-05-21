@@ -3,7 +3,6 @@ from __future__ import annotations
 import json
 import os
 import pathlib
-import threading
 from time import time
 from typing import TYPE_CHECKING, Callable, Optional, TypeAlias
 from warnings import warn
@@ -15,6 +14,7 @@ from neoscore.core.color import Color, ColorDef
 from neoscore.core.exceptions import InvalidImageFormatError
 from neoscore.core.paper import A4, Paper
 from neoscore.core.pen import Pen
+from neoscore.core.propagating_thread import PropagatingThread
 from neoscore.core.rect import RectDef
 from neoscore.core.units import Unit
 from neoscore.interface.app_interface import AppInterface
@@ -286,7 +286,7 @@ def render_image(
     autocrop: bool = False,
     preserve_alpha: bool = True,
     wait: bool = True,
-) -> threading.Thread:
+) -> PropagatingThread:
     """Render a section of the document to an image.
 
     The following file extensions are supported:

@@ -20,6 +20,7 @@ from PyQt5.QtWidgets import QApplication, QGraphicsScene
 from neoscore.core import env
 from neoscore.core.color import Color
 from neoscore.core.exceptions import FontRegistrationError, ImageExportError
+from neoscore.core.propagating_thread import PropagatingThread
 from neoscore.core.rect import Rect, RectDef
 from neoscore.core.units import Inch, Mm
 from neoscore.interface.brush_interface import BrushInterface
@@ -82,9 +83,6 @@ class AppInterface:
         else:
             self.app.exec_()
 
-    # TODO HIGH - make this thread propagate exceptions
-    # see https://stackoverflow.com/a/31614591/5615927
-
     def render_image(
         self,
         rect: Optional[RectDef],
@@ -94,7 +92,7 @@ class AppInterface:
         bg_color: Color,
         autocrop: bool,
         preserve_alpha: bool,
-    ) -> threading.Thread:
+    ) -> PropagatingThread:
         """Render the scene, or part of it, to a saved image.
 
         This renders on the main thread but autocrops and saves the image
@@ -178,7 +176,7 @@ class AppInterface:
                         + dest_description
                     )
 
-        thread = threading.Thread(target=finalize)
+        thread = PropagatingThread(target=finalize)
         thread.start()
         return thread
 
