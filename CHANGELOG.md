@@ -1,4 +1,4 @@
-# 0.1.1 (xxxx-xx-xx)
+# 0.1.1 (2022-05-20)
 
 - [Fixed PDF export on Windows](https://github.com/DigiScore/neoscore/issues/37)
 - Updated `neoscore.render_image()` to block by default. Set the new kwarg `wait=False` to finalize export asynchronously.
