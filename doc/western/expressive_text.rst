@@ -42,7 +42,7 @@ Metronome marks are supported with the :obj:`.MetronomeMark` class.
       "≈ 96",
    )
 
-See `the metronome marks SMuFL range <https://w3c.github.io/smufl/latest/tables/metronome-marks.html>`_ for commonly used glyphs in in the left-side text.
+See `the metronome marks SMuFL range <https://w3c.github.io/smufl/latest/tables/metronome-marks.html>`_ for commonly used glyphs in the left-side text.
 
 Articulations and Ornaments
 ---------------------------

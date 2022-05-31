@@ -61,7 +61,7 @@ Custom clefs can also be defined using arbitrary glyphs and pitch offsets using 
 Key Signatures
 --------------
 
-Cosmetic standard key signatures are supported out of the box. Like clefs, they are automatically drawn once were placed and then at every subsequent line until canceled by another. Initial signatures should also be placed at ``ZERO``.
+Cosmetic standard key signatures are supported out of the box. Like clefs, they are automatically drawn once where placed and then at every subsequent line until canceled by another. Initial signatures should also be placed at ``ZERO``.
 
 .. rendered-example::
 

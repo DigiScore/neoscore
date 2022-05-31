@@ -7,4 +7,4 @@ Generally speaking, these classes help manage the vertical layout of objects, bu
 
 This package also generally strives to provide ways to override glyphs where possible. :obj:`Notehead tables <.notehead_tables>` provide dozens of glyph-sets for noteheads, and if you need something else you can use arbitrary glyphs as noteheads. :obj:`.ClefType` provides a mechanism for creating new clefs with any glyph and pitch offset.
 
-Please note that while many of the examples here demonstrate objects used within staves, most can be used outside of staves too as long as they're provided with a :obj:`.MusicFont` or one of their ancestors implements :obj:`.HasMusicFont`.
+Note that while many of the examples here demonstrate objects used within staves, most can be used outside of staves too as long as they're provided with a :obj:`.MusicFont` or one of their ancestors implements :obj:`.HasMusicFont`.
