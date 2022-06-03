@@ -40,7 +40,7 @@ If you're getting errors saying neoscore isn't installed or other strange Python
 Bug Reports
 -----------
 
-We track bugs and known feature gaps at `our issue tracker <https://github.com/DigiScore/neoscore/issues>`_. If you think you've encountered a bug, please let us know by opening an issue! But please be sure to check for neoscore updates first (`pip install --upgrade neoscore`) in case we've already fixed it, and otherwise try to find if the bug has already been reported.
+We track bugs and known feature gaps at `our issue tracker <https://github.com/DigiScore/neoscore/issues>`_. If you think you've encountered a bug, please let us know by opening an issue! But please be sure to check for neoscore updates first (``pip install --upgrade neoscore``) in case we've already fixed it, and otherwise try to find if the bug has already been reported.
 
 Please also consider opening an issue or posting in our forum if any part of these docs were confusing or difficult for you. If you've found a typo in these docs please feel free to directly open a pull request to fix it!
 

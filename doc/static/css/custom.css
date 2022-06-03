@@ -26,3 +26,55 @@
 p.caption>span {
   color: #38B7CB;
 }
+
+/*
+ * Sitewide announcement banner
+ */
+.sitewide-announcement {
+  width: 100%;
+  text-align: center;
+
+  background-color: #8FC93A;
+  color: rgb(45, 42, 42);
+  /* 300px on left padding aligns with navbar width */
+  padding: 0.4em 10% 0.4em calc(300px + 1em);
+}
+
+/* This matches the RTD theme's breakpoint when the navbar collapses */
+@media screen and (max-width: 768px) {
+  .sitewide-announcement {
+    padding: 0.4em 0;
+  }
+}
+
+.sitewide-announcement a:link {
+  color: #005dc0;
+  font-weight: bold;
+}
+
+.sitewide-announcement a:visited {
+  color: #005dc0;
+  font-weight: bold;
+}
+
+.sitewide-announcement a:hover {
+  color: #005dc0;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.sitewide-announcement a:active {
+  color: #005dc0;
+  font-weight: bold;
+}
+
+.sitewide-announcement>.close-button {
+  border: none;
+  background-color: transparent;
+  font-family: inherit;
+  font-style: italic;
+}
+
+.sitewide-announcement>.close-button:hover {
+  text-decoration: underline;
+}
