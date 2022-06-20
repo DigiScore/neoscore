@@ -43,9 +43,9 @@ author = "Andrew Yoon"
 # ones.
 extensions = [
     "sphinx.ext.autodoc",
+    "sphinx.ext.graphviz",
     "sphinx.ext.napoleon",
     "sphinx.ext.todo",
-    "sphinx.ext.graphviz",
     "sphinx.ext.viewcode",
 ]
 
