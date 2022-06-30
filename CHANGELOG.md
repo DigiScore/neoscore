@@ -1,3 +1,6 @@
+# 0.1.2 (unreleased)
+- Support disabling automatic viewport interaction with `neoscore.show(auto_viewport_interaction_enabled=False)`. This disables scroll-zooming, drag-moving, and the appearance of window scrollbars.
+
 # 0.1.1 (2022-05-20)
 
 - [Fixed PDF export on Windows](https://github.com/DigiScore/neoscore/issues/37)

@@ -99,8 +99,9 @@ def setup(paper: Paper = A4):
     from neoscore.core.font import Font
 
     document = Document(paper)
+
     app_interface = AppInterface(
-        document, _repl_refresh_func, background_brush.interface
+        document, _repl_refresh_func, background_brush.interface, True
     )
     _register_default_fonts()
     default_font = Font(
@@ -205,7 +206,11 @@ Refresh functions can modify the scene, create new objects, and :obj:`remove
 """
 
 
-def show(refresh_func: Optional[RefreshFunc] = None, display_page_geometry=True):
+def show(
+    refresh_func: Optional[RefreshFunc] = None,
+    display_page_geometry=True,
+    auto_viewport_interaction_enabled=True,
+):
     """Display the score in an interactive GUI window.
 
     Args:
@@ -215,6 +220,9 @@ def show(refresh_func: Optional[RefreshFunc] = None, display_page_geometry=True)
         display_page_geometry: Whether to include a preview of page geometry,
             including a page outline and a dotted outline of the page's live
             area inside its margins.
+        auto_viewport_interaction_enabled: Whether mouse and scrollbar viewport
+            interaction is enabled. If false, scrollbars do not appear, mousewheel
+            zooming is disabled, and click-and-drag view movement is disabled.
     """
     global document
     global app_interface
@@ -224,6 +232,7 @@ def show(refresh_func: Optional[RefreshFunc] = None, display_page_geometry=True)
         _render_geometry_preview()
     if refresh_func:
         set_refresh_func(refresh_func)
+    app_interface.auto_viewport_interaction_enabled = auto_viewport_interaction_enabled
     app_interface.show()
 
 

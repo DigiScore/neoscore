@@ -51,6 +51,7 @@ class AppInterface:
         document: Document,
         repl_refresh_func: Callable[[float], float],
         background_brush: BrushInterface,
+        auto_viewport_interaction_enabled: bool,
     ):
         self.document = document
         args = ["TestApplication", "-platform", "offscreen"] if env.HEADLESS else []
@@ -60,7 +61,7 @@ class AppInterface:
         self.view = self.main_window.graphicsView
         self.view.setScene(self.scene)
         self.background_brush = background_brush
-        self.registered_music_fonts = {}
+        self.auto_viewport_interaction_enabled = auto_viewport_interaction_enabled
         self.font_database = QFontDatabase()
         self.repl_refresh_func = repl_refresh_func
         self.render_image_thread_semaphore = threading.Semaphore(
@@ -218,6 +219,16 @@ class AppInterface:
     def background_brush(self, value: BrushInterface):
         self._background_brush = value
         self.scene.setBackgroundBrush(value.qt_object)
+
+    @property
+    def auto_viewport_interaction_enabled(self) -> bool:
+        """Whether mouse and scrollbar viewport interaction is enabled"""
+        return self._auto_viewport_interaction_enabled
+
+    @auto_viewport_interaction_enabled.setter
+    def auto_viewport_interaction_enabled(self, value: bool):
+        self._auto_viewport_interaction_enabled = value
+        self.view.set_auto_interaction(value)
 
     def _remove_all_loaded_fonts(self):
         """Remove all fonts registered with ``register_font()``.
