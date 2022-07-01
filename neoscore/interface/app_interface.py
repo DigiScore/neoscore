@@ -72,14 +72,19 @@ class AppInterface:
         """Set a function to run automatically on a timer in the main window."""
         self.main_window.refresh_func = refresh_func
 
-    def show(self, size: Optional[tuple[int, int]] = None):
+    def show(
+        self,
+        min_size: Optional[tuple[int, int]] = None,
+        max_size: Optional[tuple[int, int]] = None,
+    ):
         """Open a window showing a preview of the document.
 
         Args:
-            size: An optional ``(width, height)`` window size tuple.
+            min_size: An optional ``(width, height)`` minimum window size tuple.
+            max_size: An optional ``(width, height)`` maximum window size tuple.
         """
         self._optimize_for_interactive_view()
-        self.main_window.show(size)
+        self.main_window.show(min_size, max_size)
         if running_in_ipython_gui_repl():
             # Do not run app.exec_() in GUI REPL mode, since IPython
             # manages the GUI thread in that case.

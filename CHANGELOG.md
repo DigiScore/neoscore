@@ -1,6 +1,6 @@
 # 0.1.2 (unreleased)
 - Support disabling automatic viewport interaction with `neoscore.show(auto_viewport_interaction_enabled=False)`. This disables scroll-zooming, drag-moving, and the appearance of window scrollbars.
-- Support setting the preview window size with `neoscore.show(window_size=(width, height))`
+- Support setting the preview window size with new `neoscore.show()` options `min_window_size` and `max_window_size`.
 
 # 0.1.1 (2022-05-20)
 

@@ -21,9 +21,15 @@ class MainWindow(QtWidgets.QMainWindow):
         self.refresh_func = None
         self._frame = 0  # Frame counter used in debug mode
 
-    def show(self, size: Optional[tuple[int, int]] = None):
-        if size:
-            self.setGeometry(0, 0, size[0], size[1])
+    def show(
+        self,
+        min_size: Optional[tuple[int, int]] = None,
+        max_size: Optional[tuple[int, int]] = None,
+    ):
+        if min_size:
+            self.setMinimumSize(QtCore.QSize(min_size[0], min_size[1]))
+        if max_size:
+            self.setMaximumSize(QtCore.QSize(max_size[0], max_size[1]))
         QtCore.QTimer.singleShot(0, QT_PRECISE_TIMER, self.refresh)  # noqa
         super().show()
 
