@@ -210,6 +210,7 @@ def show(
     refresh_func: Optional[RefreshFunc] = None,
     display_page_geometry=True,
     auto_viewport_interaction_enabled=True,
+    window_size: Optional[tuple[int, int]] = None,
 ):
     """Display the score in an interactive GUI window.
 
@@ -223,6 +224,7 @@ def show(
         auto_viewport_interaction_enabled: Whether mouse and scrollbar viewport
             interaction is enabled. If false, scrollbars do not appear, mousewheel
             zooming is disabled, and click-and-drag view movement is disabled.
+        window_size: An optional ``(width, height)`` window size tuple.
     """
     global document
     global app_interface
@@ -233,7 +235,7 @@ def show(
     if refresh_func:
         set_refresh_func(refresh_func)
     app_interface.auto_viewport_interaction_enabled = auto_viewport_interaction_enabled
-    app_interface.show()
+    app_interface.show(window_size)
 
 
 def _clear_interfaces():

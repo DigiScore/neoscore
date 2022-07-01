@@ -1,5 +1,6 @@
 import os
 from time import time
+from typing import Optional
 
 from PyQt5 import QtCore, QtWidgets, uic
 
@@ -20,7 +21,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.refresh_func = None
         self._frame = 0  # Frame counter used in debug mode
 
-    def show(self):
+    def show(self, size: Optional[tuple[int, int]] = None):
+        if size:
+            self.setGeometry(0, 0, size[0], size[1])
         QtCore.QTimer.singleShot(0, QT_PRECISE_TIMER, self.refresh)  # noqa
         super().show()
 
