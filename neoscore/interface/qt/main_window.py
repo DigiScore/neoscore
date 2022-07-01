@@ -25,13 +25,17 @@ class MainWindow(QtWidgets.QMainWindow):
         self,
         min_size: Optional[tuple[int, int]] = None,
         max_size: Optional[tuple[int, int]] = None,
+        fullscreen: bool = False,
     ):
         if min_size:
             self.setMinimumSize(QtCore.QSize(min_size[0], min_size[1]))
         if max_size:
             self.setMaximumSize(QtCore.QSize(max_size[0], max_size[1]))
         QtCore.QTimer.singleShot(0, QT_PRECISE_TIMER, self.refresh)  # noqa
-        super().show()
+        if fullscreen:
+            super().showFullScreen()
+        else:
+            super().show()
 
     @QtCore.pyqtSlot()
     def refresh(self):

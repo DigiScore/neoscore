@@ -212,6 +212,7 @@ def show(
     auto_viewport_interaction_enabled=True,
     min_window_size: Optional[tuple[int, int]] = None,
     max_window_size: Optional[tuple[int, int]] = None,
+    fullscreen: bool = False,
 ):
     """Display the score in an interactive GUI window.
 
@@ -227,6 +228,8 @@ def show(
             zooming is disabled, and click-and-drag view movement is disabled.
         min_window_size: An optional ``(width, height)`` minimum window size tuple.
         max_window_size: An optional ``(width, height)`` maximum window size tuple.
+        fullscreen: Whether to show the window in fullscreen mode.
+            This doesn't mix well with ``max_window_size``.
     """
     global document
     global app_interface
@@ -237,7 +240,7 @@ def show(
     if refresh_func:
         set_refresh_func(refresh_func)
     app_interface.auto_viewport_interaction_enabled = auto_viewport_interaction_enabled
-    app_interface.show(min_window_size, max_window_size)
+    app_interface.show(min_window_size, max_window_size, fullscreen)
 
 
 def _clear_interfaces():

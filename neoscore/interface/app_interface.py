@@ -76,15 +76,18 @@ class AppInterface:
         self,
         min_size: Optional[tuple[int, int]] = None,
         max_size: Optional[tuple[int, int]] = None,
+        fullscreen: bool = False,
     ):
         """Open a window showing a preview of the document.
 
         Args:
             min_size: An optional ``(width, height)`` minimum window size tuple.
             max_size: An optional ``(width, height)`` maximum window size tuple.
+            fullscreen: Whether to show the window in fullscreen mode.
+                This doesn't mix well with ``max_window_size``.
         """
         self._optimize_for_interactive_view()
-        self.main_window.show(min_size, max_size)
+        self.main_window.show(min_size, max_size, fullscreen)
         if running_in_ipython_gui_repl():
             # Do not run app.exec_() in GUI REPL mode, since IPython
             # manages the GUI thread in that case.
