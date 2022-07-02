@@ -1,11 +1,12 @@
 from __future__ import annotations
 
+import math
 import multiprocessing
 import pathlib
 import threading
 from typing import TYPE_CHECKING, Callable, Optional
 
-from PyQt5.QtCore import QBuffer, QByteArray, QIODevice, QRectF
+from PyQt5.QtCore import QBuffer, QByteArray, QIODevice, QPoint, QRectF
 from PyQt5.QtGui import (
     QBitmap,
     QColor,
@@ -20,13 +21,19 @@ from PyQt5.QtWidgets import QApplication, QGraphicsScene
 from neoscore.core import env
 from neoscore.core.color import Color
 from neoscore.core.exceptions import FontRegistrationError, ImageExportError
+from neoscore.core.point import Point
 from neoscore.core.propagating_thread import PropagatingThread
 from neoscore.core.rect import Rect, RectDef
 from neoscore.core.units import Inch, Mm
 from neoscore.interface.brush_interface import BrushInterface
 from neoscore.interface.qt import file_paths
-from neoscore.interface.qt.converters import color_to_q_color, rect_to_qt_rect_f
+from neoscore.interface.qt.converters import (
+    color_to_q_color,
+    qt_point_to_point,
+    rect_to_qt_rect_f,
+)
 from neoscore.interface.qt.main_window import MainWindow
+from neoscore.interface.qt.viewport import Viewport
 from neoscore.interface.repl import running_in_ipython_gui_repl
 
 if TYPE_CHECKING:
@@ -58,7 +65,7 @@ class AppInterface:
         self.app = QApplication(args)
         self.main_window = MainWindow()
         self.scene = QGraphicsScene()
-        self.view = self.main_window.graphicsView
+        self.view: Viewport = self.main_window.graphicsView
         self.view.setScene(self.scene)
         self.background_brush = background_brush
         self.auto_viewport_interaction_enabled = auto_viewport_interaction_enabled
@@ -67,6 +74,7 @@ class AppInterface:
         self.render_image_thread_semaphore = threading.Semaphore(
             _RENDER_IMAGE_THREAD_MAX
         )
+        self._viewport_rotation = 0
 
     def set_refresh_func(self, refresh_func: Callable[[float], float]):
         """Set a function to run automatically on a timer in the main window."""
@@ -241,6 +249,57 @@ class AppInterface:
     def auto_viewport_interaction_enabled(self, value: bool):
         self._auto_viewport_interaction_enabled = value
         self.view.set_auto_interaction(value)
+
+    @property
+    def viewport_center_pos(self) -> Point:
+        """The interactive viewport's center position in document space."""
+        # Working out the center position from the transform matrix and window
+        # dimensions is pretty tricky, so hand the job to Qt.
+        return qt_point_to_point(self.view.mapToScene(self.view.rect().center()))
+
+    @viewport_center_pos.setter
+    def viewport_center_pos(self, value: Point):
+        self.view.centerOn(value.x.base_value, value.y.base_value)
+
+    @property
+    def viewport_scale(self) -> float:
+        """The interactive viewport's scale (zoom).
+
+        Values should be greater than 0, with 1 as the base zoom and
+        larger numbers zooming in.
+        """
+        # Deriving the scale from the transform matrix is a headache, so compute it by
+        # mapping a vector of known length.
+        p1 = self.view.mapToScene(QPoint(0, 0))
+        p2 = self.view.mapToScene(QPoint(1, 0))
+        return 1 / math.dist((p1.x(), p1.y()), (p2.x(), p2.y()))
+
+    @viewport_scale.setter
+    def viewport_scale(self, value: float):
+        transform = self.view.viewportTransform()
+        current_scale = transform.m11()  # Assume x and y scales are equal
+        relative_scale_factor = value / current_scale
+        self.view.setTransform(
+            transform.scale(relative_scale_factor, relative_scale_factor)
+        )
+
+    @property
+    def viewport_rotation(self) -> float:
+        """Set the interactive viewport's rotation angle in degrees.
+
+        The viewport is rotated about its center.
+        """
+        # Track the rotation explicitly to prevent headaches and ambiguities trying to
+        # derive rotation from the viewport transform matrix.
+        return self._viewport_rotation
+
+    @viewport_rotation.setter
+    def viewport_rotation(self, value: float):
+        transform = self.view.viewportTransform()
+        if self._viewport_rotation:
+            transform = transform.rotate(-self._viewport_rotation)
+        self.view.setTransform(transform.rotate(value))
+        self._viewport_rotation = value
 
     def _remove_all_loaded_fonts(self):
         """Remove all fonts registered with ``register_font()``.

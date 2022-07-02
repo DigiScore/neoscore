@@ -14,6 +14,7 @@ from neoscore.core.color import Color, ColorDef
 from neoscore.core.exceptions import InvalidImageFormatError
 from neoscore.core.paper import A4, Paper
 from neoscore.core.pen import Pen
+from neoscore.core.point import Point, PointDef
 from neoscore.core.propagating_thread import PropagatingThread
 from neoscore.core.rect import RectDef
 from neoscore.core.units import Unit
@@ -49,6 +50,7 @@ app_interface: AppInterface
 
 You generally shouldn't directly interact with this.
 """
+
 
 _supported_image_extensions = {
     ".bmp",
@@ -259,6 +261,63 @@ def _render_geometry_preview():
     global background_brush
     for page in document.pages:
         page.render_geometry_preview(background_brush)
+
+
+def set_viewport_center_pos(document_pos: PointDef):
+    """Center the interactive viewport at a given document-space position.
+
+    If the given position is such that the requested view goes beyond the document's
+    bounding rect, the actual position used is adjusted to prevent that. This is caused
+    by an internal limitation and may change in the future.
+    """
+    global app_interface
+    app_interface.viewport_center_pos = Point.from_def(document_pos)
+
+
+def get_viewport_center_pos() -> Point:
+    """Return the interactive viewport's center position in document-space.
+
+    This value may differ slightly from values set in ``set_viewport_center_pos``.
+    """
+    global app_interface
+    return app_interface.viewport_center_pos
+
+
+def set_viewport_scale(scale: float):
+    """Set the interactive viewport's scale (zoom).
+
+    Values should be greater than 0, with 1 as the base zoom and
+    larger numbers zooming in.
+    """
+    global app_interface
+    app_interface.viewport_scale = scale
+
+
+def get_viewport_scale() -> float:
+    """Return the interactive viewport's scale (zoom).
+
+    This value is always greater than 0, with 1 as the base zoom and
+    larger numbers zooming in.
+
+    This value may differ slightly from values set in ``set_viewport_scale``.
+    """
+    global app_interface
+    return app_interface.viewport_scale
+
+
+def set_viewport_rotation(rotation: float):
+    """Set the interactive viewport's rotation angle in degrees.
+
+    The viewport is rotated about its center.
+    """
+    global app_interface
+    app_interface.viewport_rotation = rotation
+
+
+def get_viewport_rotation() -> float:
+    """Return the interactive viewport's rotation angle in degrees."""
+    global app_interface
+    return app_interface.viewport_rotation
 
 
 def render_pdf(pdf_path: str | pathlib.Path, dpi: int = 300):
