@@ -80,7 +80,6 @@ changing notes. Rebuilds can also be triggered when attaching a BeamGroup to
 chords. Here, a chord's overridden colors are reset by a subsequent stem direction
 override.
 """
-
 RichText((Mm(1), Mm(60)), None, annotation_2, width=Mm(120))
 
 staff_2 = Staff((Mm(10), Mm(110)), None, Mm(100))
@@ -91,4 +90,4 @@ change_all_chordrest_colors(c7, "#ff0000")
 c7.stem_direction = DirectionY.DOWN
 
 
-render_example("colored_noteheads")
+render_example("chordrest_coloring")
