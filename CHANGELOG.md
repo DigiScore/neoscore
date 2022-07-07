@@ -1,4 +1,4 @@
-# 0.1.3 (Pending early July release)
+# 0.1.3 (2022-07-07)
 - Reduce minimum Python version to 3.7
 - Fix bug where arrowkeys still scrolled the viewport with `neoscore.show(auto_viewport_interaction_enabled=False)`
 
