@@ -52,7 +52,7 @@ def change_all_chordrest_colors(cr: Chordrest, color: ColorDef):
     for ledger in cr.ledgers:
         ledger.pen = Pen.from_existing(ledger.pen, color=color)
     for dot in cr.dots:
-        ledger.brush = Brush.from_existing(ledger.brush, color)
+        dot.brush = Brush.from_existing(ledger.brush, color)
     if cr.stem:
         cr.stem.pen = Pen.from_existing(cr.stem.pen, color=color)
     if cr.flag:
