@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from functools import cached_property
+from backports.cached_property import cached_property
 
 from neoscore.core.glyph_info import GlyphInfo
 from neoscore.core.music_char import MusicChar

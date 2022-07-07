@@ -35,7 +35,7 @@ Some versions of Mac OS have trouble installing one of our dependencies, `Pillow
 Other Python Errors
 ^^^^^^^^^^^^^^^^^^^
 
-If you're getting errors saying neoscore isn't installed or other strange Python errors, confirm that you are running on Python 3.10, the minimum required version, with ``python --version``. If you don't have it, `you'll need to install it <https://www.python.org/downloads/>`_. We strongly recommend `using a dedicated virtual environment <https://realpython.com/python-virtual-environments-a-primer/>`_ for each of your projects using neoscore.
+If you're getting errors saying neoscore isn't installed or other strange Python errors, confirm that you are running on Python version 3.7 or higher with ``python --version``. If you don't have it, `you'll need to install it <https://www.python.org/downloads/>`_. We strongly recommend `using a dedicated virtual environment <https://realpython.com/python-virtual-environments-a-primer/>`_ for each of your projects using neoscore.
 
 Bug Reports
 -----------

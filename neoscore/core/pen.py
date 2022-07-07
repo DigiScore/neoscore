@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-from typing import Any, Optional, TypeAlias, Union
+from typing import Any, Optional, Union
+
+from typing_extensions import TypeAlias
 
 from neoscore.core.color import Color, ColorDef
 from neoscore.core.pen_cap_style import PenCapStyle

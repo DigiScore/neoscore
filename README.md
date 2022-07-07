@@ -9,7 +9,7 @@ Neoscore is a Python library for creating scores without limits. While other not
 
 ## Quick Start
 
-Neoscore requires a minimum [Python version of **3.10**](https://www.python.org/downloads/). If you don't have it you'll need to first install it, then [set up a virtual environment with it](https://realpython.com/python-virtual-environments-a-primer/). In that environment you can then install neoscore with pip  using `pip install neoscore`, after which you should be able to run this example:
+Neoscore requires a minimum [Python version of **3.7**](https://www.python.org/downloads/). If you don't have it you'll need to first install it, then [set up a virtual environment with it](https://realpython.com/python-virtual-environments-a-primer/). In that environment you can then install neoscore with pip  using `pip install neoscore`, after which you should be able to run this example:
 
 ```python
 from neoscore.common import *

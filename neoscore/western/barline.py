@@ -1,5 +1,4 @@
-from collections.abc import Iterable
-from typing import Optional
+from typing import Iterable, List, Optional
 
 from neoscore.core.break_hint import BreakHint
 from neoscore.core.color import ColorDef
@@ -33,8 +32,8 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
     def __init__(
         self,
         pos_x: Unit,
-        staves: StaffGroup | list[AbstractStaff],
-        styles: BarlineStyle | Iterable[BarlineStyle] = barline_style.SINGLE,
+        staves: Union[StaffGroup, List[AbstractStaff]],
+        styles: Union[BarlineStyle, Iterable[BarlineStyle]] = barline_style.SINGLE,
         connected: Optional[bool] = True,
         font: Optional[MusicFont] = None,
     ):

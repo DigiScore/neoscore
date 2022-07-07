@@ -99,14 +99,14 @@ class Flowable(PositionedObject):
         self._break_threshold = value
 
     @property
-    def lines(self) -> list[NewLine]:
+    def lines(self) -> List[NewLine]:
         """The generated lines of this flowable.
 
         This property is managed and should not be modified."""
         return self._lines
 
     @lines.setter
-    def lines(self, value: list[NewLine]):
+    def lines(self, value: List[NewLine]):
         self._lines = value
 
     @property
@@ -209,7 +209,7 @@ class Flowable(PositionedObject):
             if flowable_start_x + length > self.length:
                 break
 
-    def _find_break_opportunities(self) -> list[Unit]:
+    def _find_break_opportunities(self) -> List[Unit]:
         """Find the relative X positions of every break hint in this flowable.
 
         The returned positions will be sorted.
@@ -220,7 +220,7 @@ class Flowable(PositionedObject):
         return sorted((self.map_x_to(opp) for opp in opps))
 
     def _active_margin_at(self, flowable_x: Unit) -> Unit:
-        active_margin_layers: dict[str, Unit] = {}
+        active_margin_layers: Dict[str, Unit] = {}
         for controller in self.provided_controllers:
             if controller.flowable_x > flowable_x:
                 break

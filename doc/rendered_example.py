@@ -67,7 +67,7 @@ class RenderedExample(CodeBlock):
         return result
 
     @staticmethod
-    def hash_script(script: list[str]) -> str:
+    def hash_script(script: List[str]) -> str:
         """Get a stable hash string unique to a script.
 
         The given hash string is suitable for use in file paths and URLs.
@@ -77,7 +77,7 @@ class RenderedExample(CodeBlock):
         return base64.b32encode(h).decode()
 
     @staticmethod
-    def post_process_script(script: list[str], export_path: Path):
+    def post_process_script(script: List[str], export_path: Path):
         """Modify `script` in-place preparing it for render"""
 
         render_line = (

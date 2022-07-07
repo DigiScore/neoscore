@@ -6,7 +6,7 @@ from neoscore.core.rect import Rect
 from neoscore.core.units import Unit
 from neoscore.interface.font_interface import FontInterface
 
-_BOUNDING_RECT_CACHE: dict[tuple[Font, str], Rect] = {}
+_BOUNDING_RECT_CACHE: Dict[Tuple[Font, str], Rect] = {}
 
 
 class Font:

@@ -1,10 +1,11 @@
 from __future__ import annotations
 
-from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Dict, Optional, TypeAlias, Union
+from typing import Callable, Dict, Optional, Tuple, Union
 
-KeySignatureLayout: TypeAlias = Dict[str, tuple[float, float]]
+from typing_extensions import TypeAlias
+
+KeySignatureLayout: TypeAlias = Dict[str, Tuple[float, float]]
 """A layout specification for accidentals in key signatures.
 
 Instances should have a key for every pitch letter a-g (lowercase),
@@ -36,7 +37,7 @@ class ClefType:
 
     """
 
-    staff_pos: float | StaffPosFunc
+    staff_pos: Union[float, StaffPosFunc]
     """Where the clef should be vertically drawn in a staff.
 
     This is given in pseudo staff units relative to the staff's top
@@ -47,7 +48,7 @@ class ClefType:
     this can be a ``StaffPosFunc``.
     """
 
-    middle_c_staff_pos: float | StaffPosFunc
+    middle_c_staff_pos: Union[float, StaffPosFunc]
     """Where this clef places middle C in a staff.
 
     Like ``staff_pos``, this is given in pseudo staff units relative to

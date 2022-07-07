@@ -109,7 +109,7 @@ class RepeatingMusicTextLine(MusicText, Spanner2D):
             + end_cap_chars
         )
 
-    def _approx_width(self, chars: list[MusicChar]) -> Unit:
+    def _approx_width(self, chars: List[MusicChar]) -> Unit:
         # Try to hackily account for ligatures and variable advance widths by averaging
         # out the width of main chars repeated many times.
         reps = 20

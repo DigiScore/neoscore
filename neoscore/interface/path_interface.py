@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import NamedTuple, Optional, TypeAlias, Union
+from typing import NamedTuple, Optional, Union
 
 from PyQt5.QtGui import QPainterPath
+from typing_extensions import TypeAlias
 
 from neoscore.core import neoscore
 from neoscore.core.units import Unit
@@ -62,7 +63,7 @@ class PathInterface(PositionedObjectInterface):
 
     pen: PenInterface
 
-    elements: list[ResolvedPathElement]
+    elements: List[ResolvedPathElement]
 
     rotation: float = 0
     """Rotation angle in degrees"""
@@ -85,7 +86,7 @@ class PathInterface(PositionedObjectInterface):
     """
 
     @staticmethod
-    def create_qt_path(elements: list[ResolvedPathElement]) -> QPainterPath:
+    def create_qt_path(elements: List[ResolvedPathElement]) -> QPainterPath:
         path = QPainterPath()
         path.setFillRule(1)
 

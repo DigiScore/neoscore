@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass
-from typing import TypeAlias
+
+from typing_extensions import TypeAlias
 
 from neoscore.core.math_helpers import is_power_of_2
 

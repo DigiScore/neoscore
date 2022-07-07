@@ -73,7 +73,7 @@ class MetronomeMark(PositionedObject, HasMusicFont):
     def plain_text_obj(self) -> Text:
         return self._plain_text_obj
 
-    def _insert_spaces(self, chars: list[MusicChar]) -> list[MusicChar]:
+    def _insert_spaces(self, chars: List[MusicChar]) -> List[MusicChar]:
         result = []
         blank = RawMusicChar(self.music_font, " ")
         for i, char in enumerate(chars):

@@ -1,5 +1,6 @@
-from functools import cached_property
-from typing import NamedTuple, Optional
+from typing import List, NamedTuple, Optional, Union
+
+from backports.cached_property import cached_property
 
 from neoscore.core.directions import DirectionX, DirectionY
 from neoscore.core.point import Point
@@ -76,7 +77,7 @@ class Chordrest(PositionedObject, StaffObject):
         self,
         pos_x: Unit,
         staff: Staff,
-        notes: Optional[list[PitchDef | PitchAndGlyph]],
+        notes: Optional[List[Union[PitchDef, PitchAndGlyph]]],
         duration: DurationDef,
         rest_y: Optional[Unit] = None,
         stem_direction: Optional[DirectionY] = None,
@@ -124,16 +125,16 @@ class Chordrest(PositionedObject, StaffObject):
         self._rebuild()
 
     @property
-    def notes(self) -> list[PitchDef | PitchAndGlyph]:
+    def notes(self) -> List[Union[PitchDef, PitchAndGlyph]]:
         return self._notes
 
     @notes.setter
-    def notes(self, value: Optional[list[PitchDef | PitchAndGlyph]]):
+    def notes(self, value: Optional[List[Union[PitchDef, PitchAndGlyph]]]):
         self._notes = [] if value is None else value
         self._rebuild()
 
     @property
-    def noteheads(self) -> list[Notehead]:
+    def noteheads(self) -> List[Notehead]:
         """The noteheads contained in this Chordrest."""
         return self._noteheads
 
@@ -156,12 +157,12 @@ class Chordrest(PositionedObject, StaffObject):
         return self._rest
 
     @property
-    def accidentals(self) -> list[Accidental]:
+    def accidentals(self) -> List[Accidental]:
         """The accidentals contained in this Chordrest."""
         return self._accidentals
 
     @property
-    def ledgers(self) -> list[LedgerLine]:
+    def ledgers(self) -> List[LedgerLine]:
         """The ledger lines contained in this Chordrest.
 
         An empty list means none are needed.
@@ -169,7 +170,7 @@ class Chordrest(PositionedObject, StaffObject):
         return self._ledgers
 
     @property
-    def dots(self) -> list[RhythmDot]:
+    def dots(self) -> List[RhythmDot]:
         return self._dots
 
     @property
@@ -230,7 +231,7 @@ class Chordrest(PositionedObject, StaffObject):
             self._rebuild()
 
     @cached_property
-    def ledger_line_positions(self) -> list[Unit]:
+    def ledger_line_positions(self) -> List[Unit]:
         """A set of staff positions of needed ledger lines.
 
         Positions are in centered staff positions.
@@ -250,7 +251,7 @@ class Chordrest(PositionedObject, StaffObject):
         return ledgers
 
     @cached_property
-    def rhythm_dot_positions(self) -> list[Point]:
+    def rhythm_dot_positions(self) -> List[Point]:
         """The positions of all rhythm dots needed."""
         start_padding = self.staff.unit(0.25)
         if self.rest:
@@ -343,7 +344,7 @@ class Chordrest(PositionedObject, StaffObject):
             return extent - leftmost_notehead.x
 
     @cached_property
-    def noteheads_outside_staff(self) -> list[Notehead]:
+    def noteheads_outside_staff(self) -> List[Notehead]:
         """All noteheads which are above or below the staff"""
         return [
             note

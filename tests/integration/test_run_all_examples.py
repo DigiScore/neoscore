@@ -3,11 +3,12 @@ import pathlib
 import re
 import subprocess
 import sys
+from typing import List
 
 import pytest
 
 example_dir = (pathlib.Path(__file__).parent / ".." / ".." / "examples").resolve()
-example_dir_contents: list[str] = os.listdir(example_dir)
+example_dir_contents: List[str] = os.listdir(example_dir)
 example_script_paths = [
     example_dir / f
     for f in example_dir_contents

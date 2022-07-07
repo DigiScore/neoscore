@@ -114,7 +114,7 @@ class Dynamic(MusicText):
         return cls(pos, parent, "fp", font)
 
     @classmethod
-    def _parse_dynamic_string(cls, string: str) -> list[str]:
+    def _parse_dynamic_string(cls, string: str) -> List[str]:
         """Parse a dynamics string into a list of SMuFL canonical names"""
         music_chars = []
         for char in string:

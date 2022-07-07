@@ -2,7 +2,7 @@ import os
 import sys
 import tempfile
 import unittest
-from typing import Optional
+from typing import Optional, Union
 
 from neoscore.core import neoscore
 from neoscore.core.path_element import CurveTo
@@ -11,8 +11,8 @@ from neoscore.core.units import Mm, Unit
 
 
 def assert_almost_equal(
-    left: Point | Unit,
-    right: Point | Unit,
+    left: Union[Point, Unit],
+    right: Union[Point, Unit],
     places: float = 7,
     epsilon: Optional[float] = None,
 ):

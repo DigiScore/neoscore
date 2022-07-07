@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from typing import Optional, TypeAlias, Union
+from typing import Optional, Union
+
+from typing_extensions import TypeAlias
 
 from neoscore.core.exceptions import InvalidPitchDescriptionError
 from neoscore.western.accidental_type import AccidentalType

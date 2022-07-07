@@ -172,7 +172,7 @@ def make_unit_class(name: str, conversion_rate: float) -> Type[Unit]:
 def _convert_all_to_unit_out_of_place(
     collection: Union[tuple, set], unit: Type[Unit]
 ) -> Union[tuple, set]:
-    mutable_iterable: list[Any] = list(collection)
+    mutable_iterable: List[Any] = list(collection)
     convert_all_to_unit(mutable_iterable, unit)
     return type(collection)(mutable_iterable)
 

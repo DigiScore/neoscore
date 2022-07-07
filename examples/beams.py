@@ -1,4 +1,4 @@
-from typing import NamedTuple, Optional
+from typing import List, NamedTuple, Optional
 
 from helpers import render_example
 
@@ -16,7 +16,7 @@ neoscore.setup()
 
 
 class TestChord(NamedTuple):
-    pitches: Optional[list[PitchDef]]
+    pitches: Optional[List[PitchDef]]
     duration: DurationDef
     stem_direction: Optional[DirectionY] = None
     beam_break_depth: Optional[int] = None
@@ -26,7 +26,7 @@ class TestChord(NamedTuple):
 staff_y = ZERO
 
 
-def create_example(chords: list[TestChord], direction: Optional[DirectionY] = None):
+def create_example(chords: List[TestChord], direction: Optional[DirectionY] = None):
     global staff_y
     staff = Staff((ZERO, staff_y), None, Mm(150))
     staff_y = staff.y

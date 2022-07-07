@@ -47,7 +47,7 @@ class PedalLine(Spanner, MusicPath):
         start_parent: PositionedObject,
         end_x: Unit,
         end_parent: Optional[PositionedObject] = None,
-        half_lift_positions: list[Unit | tuple[Unit, PositionedObject]] = None,
+        half_lift_positions: List[Unit | Tuple[Unit, PositionedObject]] = None,
         font: Optional[MusicFont] = None,
     ):
         """

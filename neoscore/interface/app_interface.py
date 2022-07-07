@@ -4,7 +4,7 @@ import math
 import multiprocessing
 import pathlib
 import threading
-from typing import TYPE_CHECKING, Callable, Optional
+from typing import TYPE_CHECKING, Callable, Optional, Tuple
 
 from PyQt5.QtCore import QBuffer, QByteArray, QIODevice, QPoint, QRectF
 from PyQt5.QtGui import (
@@ -82,8 +82,8 @@ class AppInterface:
 
     def show(
         self,
-        min_size: Optional[tuple[int, int]] = None,
-        max_size: Optional[tuple[int, int]] = None,
+        min_size: Optional[Tuple[int, int]] = None,
+        max_size: Optional[Tuple[int, int]] = None,
         fullscreen: bool = False,
     ):
         """Open a window showing a preview of the document.
@@ -207,7 +207,7 @@ class AppInterface:
         self.app = None
         self.scene = None
 
-    def register_font(self, font_file_path: str | pathlib.Path) -> list[str]:
+    def register_font(self, font_file_path: str | pathlib.Path) -> List[str]:
         """Register a font file with the graphics engine.
 
         Args:

@@ -1,3 +1,5 @@
+from typing import List
+
 from helpers import render_example
 
 from neoscore.core import neoscore
@@ -11,7 +13,7 @@ neoscore.setup()
 
 staff = Staff((Mm(10), ZERO), None, Mm(150))
 
-meters: list[MeterDef] = [
+meters: List[MeterDef] = [
     COMMON_TIME,
     CUT_TIME,
     (3, 4),

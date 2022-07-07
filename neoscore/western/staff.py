@@ -81,7 +81,7 @@ class Staff(AbstractStaff):
         return closest_x - start_x
 
     @render_cached_property
-    def clefs(self) -> list[tuple[Unit, Clef]]:
+    def clefs(self) -> List[Tuple[Unit, Clef]]:
         """All the clefs in this staff, ordered by their relative x pos."""
         return self.find_ordered_descendants_with_attr("middle_c_staff_position")
 
@@ -93,14 +93,14 @@ class Staff(AbstractStaff):
         )
 
     @render_cached_property
-    def key_signatures(self) -> list[tuple[Unit, KeySignature]]:
+    def key_signatures(self) -> List[Tuple[Unit, KeySignature]]:
         """All the key signatures in this staff, ordered by their relative x pos."""
         return self.find_ordered_descendants_with_attr(
             "_neoscore_key_signature_type_marker"
         )
 
     @render_cached_property
-    def time_signatures(self) -> list[tuple[Unit, KeySignature]]:
+    def time_signatures(self) -> List[Tuple[Unit, KeySignature]]:
         """All the time signatures in this staff, ordered by their relative x pos."""
         return self.find_ordered_descendants_with_attr(
             "_neoscore_time_signature_type_marker"
@@ -137,7 +137,7 @@ class Staff(AbstractStaff):
             pos_y
         ).display_value % 1 == 0
 
-    def ledgers_needed_for_y(self, position: Unit) -> list[Unit]:
+    def ledgers_needed_for_y(self, position: Unit) -> List[Unit]:
         """Find the y positions of all ledgers needed for a given y position"""
         # Work on positions as integers for simplicity
         start = int(self.unit(position).display_value)

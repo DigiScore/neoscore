@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 
 from neoscore.core.brush import BrushDef
 from neoscore.core.music_font import MusicFont
@@ -51,5 +51,5 @@ class TabNumber(TabStringText):
         )
 
     @staticmethod
-    def _number_to_digit_glyph_names(number: int) -> list[str]:
+    def _number_to_digit_glyph_names(number: int) -> List[str]:
         return [f"fingering{digit}" for digit in str(number)]

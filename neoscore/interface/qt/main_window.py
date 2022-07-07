@@ -1,6 +1,6 @@
 import os
 from time import time
-from typing import Optional
+from typing import Optional, Tuple
 
 from PyQt5 import QtCore, QtWidgets, uic
 
@@ -23,8 +23,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def show(
         self,
-        min_size: Optional[tuple[int, int]] = None,
-        max_size: Optional[tuple[int, int]] = None,
+        min_size: Optional[Tuple[int, int]] = None,
+        max_size: Optional[Tuple[int, int]] = None,
         fullscreen: bool = False,
     ):
         if min_size:

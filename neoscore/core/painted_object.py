@@ -32,7 +32,7 @@ class PaintedObject(PositionedObject):
         super().__init__(pos, parent)
         self.pen = pen
         self.brush = brush
-        self._children: list[PositionedObject] = []
+        self._children: List[PositionedObject] = []
 
     @property
     def pen(self) -> Pen:

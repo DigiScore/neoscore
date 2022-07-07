@@ -1,4 +1,4 @@
-from typing import NamedTuple, Optional, cast
+from typing import List, NamedTuple, Optional, Union, cast
 
 from neoscore.core.brush import Brush, BrushDef
 from neoscore.core.directions import DirectionX, DirectionY
@@ -41,11 +41,11 @@ class _BeamState(NamedTuple):
     """
 
 
-def _resolve_beam_hooks(specs: list[_BeamState]) -> list[_BeamState]:
+def _resolve_beam_hooks(specs: List[_BeamState]) -> List[_BeamState]:
     """Determine which states need hooks, accounting for overrides where sensible."""
     if len(specs) < 2:
         raise ValueError("Beam groups must have at least 2 members")
-    states: list[_BeamState] = []
+    states: List[_BeamState] = []
     for i, (current_count, break_depth, current_hint_hook) in enumerate(specs):
         prev_count, prev_hint_break_depth, _ = (
             specs[i - 1] if i > 0 else (None, None, None)
@@ -96,14 +96,14 @@ class _BeamPathSpec(NamedTuple):
     start: int
     """Index of the starting position"""
 
-    end: int | DirectionX
+    end: Union[int, DirectionX]
     """Index of the ending position or a hook direction.
 
     If this is an index, it should be greater than ``start``.
     """
 
 
-def _resolve_beam_layout(states: list[_BeamState]) -> list[_BeamPathSpec]:
+def _resolve_beam_layout(states: List[_BeamState]) -> List[_BeamPathSpec]:
     """Given a list of individual note beam states, work out how to render the beams."""
     # Iterate through beams from depth 0 to end, left to right.
     path_specs = []
@@ -148,7 +148,7 @@ class _BeamGroupLine(NamedTuple):
 
 
 def _resolve_beam_group_line(
-    chordrests: list[Chordrest], direction: DirectionY, font: MusicFont
+    chordrests: List[Chordrest], direction: DirectionY, font: MusicFont
 ) -> _BeamGroupLine:
     unit = chordrests[0].staff.unit
     first = chordrests[0]
@@ -194,7 +194,7 @@ def _beam_layer_height(font: MusicFont):
     )
 
 
-def _resolve_beam_group_height(chordrests: list[Chordrest], font: MusicFont) -> Unit:
+def _resolve_beam_group_height(chordrests: List[Chordrest], font: MusicFont) -> Unit:
     """Find the vertical height occupied by a beam group spanning the given Chordrests.
 
     This determines the maximum beam depth required and uses it to
@@ -204,7 +204,7 @@ def _resolve_beam_group_height(chordrests: list[Chordrest], font: MusicFont) -> 
     return max_depth * _beam_layer_height(font)
 
 
-def _resolve_beam_direction(chordrests: list[Chordrest]) -> DirectionY:
+def _resolve_beam_direction(chordrests: List[Chordrest]) -> DirectionY:
     """Try to determine the best direction a beam group should go in.
 
     The algorithm works by determining the average y position of the
@@ -213,14 +213,11 @@ def _resolve_beam_direction(chordrests: list[Chordrest]) -> DirectionY:
     versa
     """
     middle_staff_pos = chordrests[0].staff.center_y
-    center = sum(
-        [
-            c.furthest_notehead.y if c.noteheads else middle_staff_pos
-            for c in chordrests
-        ],
-        start=ZERO,
-    ) / len(chordrests)
-    if center > middle_staff_pos:
+    s = ZERO
+    for c in chordrests:
+        s += c.furthest_notehead.y if c.noteheads else middle_staff_pos
+    avg = s / len(chordrests)
+    if avg > middle_staff_pos:
         return DirectionY.UP
     else:
         return DirectionY.DOWN
@@ -258,7 +255,7 @@ class BeamGroup(PositionedObject, HasMusicFont):
 
     def __init__(
         self,
-        chordrests: list[Chordrest],
+        chordrests: List[Chordrest],
         direction: Optional[DirectionY] = None,
         font: Optional[MusicFont] = None,
         brush: Optional[BrushDef] = None,
@@ -280,7 +277,7 @@ class BeamGroup(PositionedObject, HasMusicFont):
         # Determine top beam path
         chordrests.sort(key=lambda c: c.x)
         self._chordrests = chordrests
-        self._beams: list[Beam] = []
+        self._beams: List[Beam] = []
         super().__init__(ORIGIN, chordrests[0])
         if font is None:
             font = HasMusicFont.find_music_font(self.parent)
@@ -340,8 +337,8 @@ class BeamGroup(PositionedObject, HasMusicFont):
 
     @staticmethod
     def _resolve_chordrest_beam_layout(
-        chordrests: list[Chordrest],
-    ) -> list[_BeamPathSpec]:
+        chordrests: List[Chordrest],
+    ) -> List[_BeamPathSpec]:
         states = _resolve_beam_hooks(
             [
                 _BeamState(
@@ -357,11 +354,11 @@ class BeamGroup(PositionedObject, HasMusicFont):
         return self._direction
 
     @property
-    def chordrests(self) -> list[Chordrest]:
+    def chordrests(self) -> List[Chordrest]:
         return self._chordrests
 
     @property
-    def beams(self) -> list[Beam]:
+    def beams(self) -> List[Beam]:
         return self._beams
 
     @property

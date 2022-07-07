@@ -1,4 +1,4 @@
-from typing import Optional, cast
+from typing import List, Optional, Union, cast
 
 from neoscore.core.brush import BrushDef
 from neoscore.core.layout_controllers import MarginController, NewLine
@@ -22,7 +22,7 @@ class Brace(MultiStaffObject, MusicText):
 
     def __init__(
         self,
-        staves: StaffGroup | list[AbstractStaff],
+        staves: Union[StaffGroup, List[AbstractStaff]],
         font: Optional[MusicFont] = None,
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional
+from typing import Dict, Optional
 
 from neoscore.core.point import Point
 from neoscore.core.rect import Rect
@@ -29,7 +29,7 @@ class GlyphInfo:
     advance_width: Optional[Unit]
     """The typographic advance distance specified for the glyph."""
 
-    anchors: Optional[dict[str, Point]]
+    anchors: Optional[Dict[str, Point]]
     """A collection of anchor points provided by SMuFL metadata.
 
     See `SMuFL's docs on anchors

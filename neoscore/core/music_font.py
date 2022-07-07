@@ -181,7 +181,7 @@ class MusicFont(Font):
 
         return new_glyph_name
 
-    def _check_optional_glyphs(self, glyph_name: str) -> tuple[str, str]:
+    def _check_optional_glyphs(self, glyph_name: str) -> Tuple[str, str]:
         """Check to see if the called glyph exists  as an optional, if it does it then
          populate the GlyphInfo dataclass with basic info.
 
@@ -205,7 +205,7 @@ class MusicFont(Font):
 
         return codepoint, description
 
-    def _load_glyph_anchors(self, glyph_name: str) -> Optional[dict[str, Point]]:
+    def _load_glyph_anchors(self, glyph_name: str) -> Optional[Dict[str, Point]]:
         """Load any glyph anchors and convert coordinates to neoscore points."""
         anchors = self.metadata["glyphsWithAnchors"].get(glyph_name)
         if anchors is None:

@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TypeAlias, Union
+from typing import Tuple, Union
+
+from typing_extensions import TypeAlias
 
 from neoscore.core.point import Point
 from neoscore.core.units import Unit
@@ -51,5 +53,5 @@ class Rect:
         )
 
 
-RectDef: TypeAlias = Union[Rect, tuple[Unit, Unit, Unit, Unit]]
+RectDef: TypeAlias = Union[Rect, Tuple[Unit, Unit, Unit, Unit]]
 """A ``Rect`` or an init arg tuple for one."""

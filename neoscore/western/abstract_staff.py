@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Optional
+from typing import Any, List, Optional, Tuple
 
 from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.layout_controllers import NewLine
@@ -72,7 +72,7 @@ class AbstractStaff(PaintedObject, HasMusicFont):
         return self.height / 2
 
     @property
-    def barline_extent(self) -> tuple[Unit, Unit]:
+    def barline_extent(self) -> Tuple[Unit, Unit]:
         """The starting and stopping Y positions of barlines in this staff.
 
         For staves with more than 1 line, this extends from the top line to bottom
@@ -109,7 +109,7 @@ class AbstractStaff(PaintedObject, HasMusicFont):
     def z_index(self, value: int):
         self._z_index = value
 
-    def find_ordered_descendants_with_attr(self, attr: str) -> list[tuple[Unit, Any]]:
+    def find_ordered_descendants_with_attr(self, attr: str) -> List[Tuple[Unit, Any]]:
         """Find all descendants with an attribute, sorted with their staff x positions"""
         result = [
             (self.descendant_pos_x(obj), obj)

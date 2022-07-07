@@ -38,8 +38,8 @@ class StaffGroup:
     """Padding to the left of key signatures in fringes, in pseudo-staff-units."""
 
     def __init__(self) -> None:
-        self._fringe_layout_cache: dict[
-            tuple[AbstractStaff, Optional[NewLine]], StaffFringeLayout
+        self._fringe_layout_cache: Dict[
+            Tuple[AbstractStaff, Optional[NewLine]], StaffFringeLayout
         ] = {}
         # Sort staves according to position to some arbitrary known object
         self._staves: SortedKeyList[AbstractStaff] = SortedKeyList(

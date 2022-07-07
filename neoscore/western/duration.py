@@ -2,7 +2,9 @@ from __future__ import annotations
 
 from dataclasses import InitVar, dataclass, field
 from fractions import Fraction
-from typing import Optional, TypeAlias, Union
+from typing import Optional, Tuple, Union
+
+from typing_extensions import TypeAlias
 
 from neoscore.core.math_helpers import is_power_of_2
 from neoscore.western.duration_display import DurationDisplay
@@ -144,5 +146,5 @@ class Duration:
         return self < other or self == other
 
 
-DurationDef: TypeAlias = Union[Duration, tuple[int, int]]
+DurationDef: TypeAlias = Union[Duration, Tuple[int, int]]
 """A Duration or a shorthand tuple for one."""

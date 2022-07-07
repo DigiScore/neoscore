@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-from typing import NamedTuple, Optional, Type, TypeAlias, Union, cast
+from typing import Dict, List, NamedTuple, Optional, Type, Union, cast
+
+from typing_extensions import TypeAlias
 
 from neoscore.core.brush import BrushDef
 from neoscore.core.has_music_font import HasMusicFont
@@ -25,10 +27,10 @@ class _CachedTextGeometry(NamedTuple):
     bounding_rect: Rect
 
 
-_GEOMETRY_CACHE: dict[_CachedTextGeometryKey, _CachedTextGeometry] = {}
+_GEOMETRY_CACHE: Dict[_CachedTextGeometryKey, _CachedTextGeometry] = {}
 
 
-MusicStringDef: TypeAlias = Union[MusicCharDef, list[MusicCharDef]]
+MusicStringDef: TypeAlias = Union[MusicCharDef, List[MusicCharDef]]
 """Argument specifying SMuFL ``MusicText`` strings.
 
 This supports several forms for different use-cases. The most commonly
@@ -110,7 +112,7 @@ class MusicText(Text, HasMusicFont):
         )
 
     @property
-    def music_chars(self) -> list[MusicChar]:
+    def music_chars(self) -> List[MusicChar]:
         """A list of the SMuFL characters in the string including metadata.
 
         If set, this will also update ``text``.
@@ -118,7 +120,7 @@ class MusicText(Text, HasMusicFont):
         return self._music_chars
 
     @music_chars.setter
-    def music_chars(self, value: list[MusicChar]):
+    def music_chars(self, value: List[MusicChar]):
         self._music_chars = value
         self._text = MusicText._music_chars_to_str(value)
 
@@ -164,11 +166,11 @@ class MusicText(Text, HasMusicFont):
         return bounding_rect
 
     @staticmethod
-    def _music_chars_to_str(music_chars: list[MusicChar]) -> str:
+    def _music_chars_to_str(music_chars: List[MusicChar]) -> str:
         return "".join(char.codepoint for char in music_chars)
 
     @staticmethod
-    def _resolve_music_chars(font: MusicFont, text: MusicStringDef) -> list[MusicChar]:
+    def _resolve_music_chars(font: MusicFont, text: MusicStringDef) -> List[MusicChar]:
         if isinstance(text, list):
             music_chars = []
             for text_char in text:

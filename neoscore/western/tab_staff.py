@@ -85,7 +85,7 @@ class TabStaff(AbstractStaff):
         return cast(float, self.unit(1) / self.line_spacing)
 
     @render_cached_property
-    def clefs(self) -> list[tuple[Unit, TabClef]]:
+    def clefs(self) -> List[Tuple[Unit, TabClef]]:
         """All the clefs in this staff, ordered by their relative x pos."""
         return self.find_ordered_descendants_with_attr("_neoscore_tab_clef_type_marker")
 

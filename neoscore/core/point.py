@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-from typing import NamedTuple, TypeAlias, Union, cast
+from typing import NamedTuple, Tuple, Union, cast
+
+from typing_extensions import TypeAlias
 
 from neoscore.core.units import ZERO, Unit
 
@@ -59,5 +61,5 @@ class Point(NamedTuple):
 ORIGIN = Point(ZERO, ZERO)
 """Shorthand for a point at ``ZERO, ZERO``"""
 
-PointDef: TypeAlias = Union[Point, tuple[Unit, Unit]]
+PointDef: TypeAlias = Union[Point, Tuple[Unit, Unit]]
 """A Point or an argument tuple for one"""

@@ -1,3 +1,5 @@
+from typing import List, Union
+
 from neoscore.core.units import Unit
 from neoscore.western.abstract_staff import AbstractStaff
 from neoscore.western.staff_group import StaffGroup
@@ -12,7 +14,7 @@ class MultiStaffObject:
     ``self.parent == self.highest``.
     """
 
-    def __init__(self, staves: StaffGroup | list[AbstractStaff]):
+    def __init__(self, staves: Union[StaffGroup, List[AbstractStaff]]):
         """
         Args:
             staves: The staves this is associated with. If a raw list of staves
@@ -24,12 +26,12 @@ class MultiStaffObject:
             self._staves = staves
 
     @property
-    def staves(self) -> list[AbstractStaff]:
+    def staves(self) -> List[AbstractStaff]:
         """The staves this is associated with, given in descending order."""
         return self._staves
 
     @staves.setter
-    def staves(self, value: list[AbstractStaff]):
+    def staves(self, value: List[AbstractStaff]):
         self._staves = value
 
     @property

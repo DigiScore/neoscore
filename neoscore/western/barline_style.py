@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional
+from typing import List, Optional
 
 from neoscore.core.color import ColorDef
 from neoscore.core.pen_pattern import PenPattern
@@ -57,4 +57,4 @@ END = [
 ]
 """A thick double barline conventionally used at the end of scores."""
 
-ALL_STYLES: list[list[BarlineStyle]] = [SINGLE, DASH, DOT, THIN_DOUBLE, END]
+ALL_STYLES: List[List[BarlineStyle]] = [SINGLE, DASH, DOT, THIN_DOUBLE, END]

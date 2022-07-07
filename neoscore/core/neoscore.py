@@ -4,10 +4,11 @@ import json
 import os
 import pathlib
 from time import time
-from typing import TYPE_CHECKING, Callable, Optional, TypeAlias
+from typing import TYPE_CHECKING, Callable, Optional
 from warnings import warn
 
 import img2pdf  # type: ignore
+from typing_extensions import TypeAlias
 
 from neoscore.core.brush import Brush, BrushDef
 from neoscore.core.color import Color, ColorDef
@@ -33,10 +34,10 @@ default_font: Font
 document: Document
 """The root document object."""
 
-registered_music_fonts: dict[str, dict] = {}
+registered_music_fonts: Dict[str, dict] = {}
 """A map from registered music font names to SMuFL metadata"""
 
-registered_font_family_names: set[str] = set()
+registered_font_family_names: Set[str] = set()
 """A set of family names of all registered fonts, including music fonts"""
 
 background_brush = Brush("#ffffff")
@@ -130,7 +131,7 @@ def set_background_brush(brush: BrushDef):
     app_interface.background_brush = background_brush.interface
 
 
-def register_font(font_file_path: str | pathlib.Path) -> list[str]:
+def register_font(font_file_path: str | pathlib.Path) -> List[str]:
     """Register a font file with the application.
 
     If successful, this makes the font available for use in :obj:`.Font` objects,
@@ -212,8 +213,8 @@ def show(
     refresh_func: Optional[RefreshFunc] = None,
     display_page_geometry=True,
     auto_viewport_interaction_enabled=True,
-    min_window_size: Optional[tuple[int, int]] = None,
-    max_window_size: Optional[tuple[int, int]] = None,
+    min_window_size: Optional[Tuple[int, int]] = None,
+    max_window_size: Optional[Tuple[int, int]] = None,
     fullscreen: bool = False,
 ):
     """Display the score in an interactive GUI window.

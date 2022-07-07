@@ -71,7 +71,7 @@ class Hairpin(MusicPath, Spanner2D):
 
     def _find_hairpin_points(
         self,
-    ) -> tuple[
+    ) -> Tuple[
         Point, PositionedObject, Point, PositionedObject, Point, PositionedObject
     ]:
         """Find the hairpin path points for a set of parameters.

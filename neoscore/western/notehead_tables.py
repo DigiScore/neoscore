@@ -11,6 +11,7 @@ used.
 """
 
 from dataclasses import dataclass
+from typing import List
 
 from neoscore.western.duration_display import BaseDuration
 
@@ -362,7 +363,7 @@ This uses the same glyph for all durations except ``short``.
 INVISIBLE = NoteheadTable("", "", "", "")
 """Blank non-printing noteheads"""
 
-ALL_TABLES: list[NoteheadTable] = [
+ALL_TABLES: List[NoteheadTable] = [
     STANDARD,
     STANDARD_WITH_PARENTHESES,
     STANDARD_SMALL,

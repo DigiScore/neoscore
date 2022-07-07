@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-from typing import TypeAlias, Union
+from typing import Tuple, Union
+
+from typing_extensions import TypeAlias
 
 from neoscore.core.exceptions import ColorBoundsError
 
@@ -143,7 +145,7 @@ class Color:
                 raise ColorBoundsError(value)
 
 
-ColorDef: TypeAlias = Union[Color, str, tuple[int, int, int], tuple[int, int, int, int]]
+ColorDef: TypeAlias = Union[Color, str, Tuple[int, int, int], Tuple[int, int, int, int]]
 """A ``Color`` or a shorthand hex string or init argument tuple for one.
 
 Hex strings may have 3 channels (#RRGGBB) or 4 (#RRGGBBAA).

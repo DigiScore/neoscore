@@ -21,7 +21,7 @@ class InstrumentData:
     def __init__(self, name: str, event_data):
         self.name: str = name
         self.event_data = event_data
-        self.occupied_measures: set[int] = self.calculate_occupied_measures(
+        self.occupied_measures: Set[int] = self.calculate_occupied_measures(
             self.event_data
         )
 
@@ -30,7 +30,7 @@ class InstrumentData:
 
     @staticmethod
     def calculate_occupied_measures(event_data):
-        occupied_measures: set[int] = set()
+        occupied_measures: Set[int] = set()
         for event in event_data:
             start_measure_num = int(Measure(event.pos_x).display_value)
             end_measure_num = int(

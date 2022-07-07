@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Callable, Optional, TypeAlias
+from typing import TYPE_CHECKING, Callable, Optional
+
+from typing_extensions import TypeAlias
 
 from neoscore.core.directions import DirectionX
 from neoscore.core.page import Page
@@ -46,7 +48,7 @@ class PageSupplier:
                 This can be used to create headers and footers.
         """
         self._document = document
-        self._page_list: list[Page] = []
+        self._page_list: List[Page] = []
         self.overlay_func = overlay_func
 
     def __getitem__(self, index):

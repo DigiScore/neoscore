@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-from functools import cached_property
 from typing import TYPE_CHECKING
+
+from backports.cached_property import cached_property
 
 from neoscore.core.brush import Brush
 from neoscore.core.color import Color

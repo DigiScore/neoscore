@@ -2,7 +2,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from functools import reduce
-from typing import TypeAlias, Union, cast
+from typing import List, Tuple, Union, cast
+
+from typing_extensions import TypeAlias
 
 _glyph_names = {
     0: "timeSig0",
@@ -33,11 +35,11 @@ class Meter:
 
     """
 
-    upper_text_glyph_names: list[str]
-    lower_text_glyph_names: list[str]
+    upper_text_glyph_names: List[str]
+    lower_text_glyph_names: List[str]
 
     @classmethod
-    def numeric(cls, upper: int | list[int], lower: int) -> Meter:
+    def numeric(cls, upper: Union[int | List[int]], lower: int) -> Meter:
         """Create a meter with upper and lower numbers.
 
         The upper number can be a single number, or a list of them.
@@ -63,7 +65,7 @@ class Meter:
         return cast(Meter, meter_def)
 
     @staticmethod
-    def _glyphs_for_number(number: int) -> list[str]:
+    def _glyphs_for_number(number: int) -> List[str]:
         return [_glyph_names[int(digit)] for digit in str(number)]
 
 
@@ -71,7 +73,7 @@ COMMON_TIME = Meter(["timeSigCommon"], [])
 CUT_TIME = Meter(["timeSigCutCommon"], [])
 
 
-MeterDef: TypeAlias = Union[Meter, tuple[Union[int, list[int]], int]]
+MeterDef: TypeAlias = Union[Meter, Tuple[Union[int, List[int]], int]]
 """Shorthand for Meter.
 
 Either a Meter, or an argument tuple for ``Meter.numeric``.

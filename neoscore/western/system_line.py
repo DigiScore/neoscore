@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional, Union
 
 from neoscore.core.layout_controllers import NewLine
 from neoscore.core.music_font import MusicFont
@@ -20,7 +20,7 @@ class SystemLine(MultiStaffObject, MusicPath):
 
     def __init__(
         self,
-        staves: StaffGroup | list[AbstractStaff],
+        staves: Union[StaffGroup, List[AbstractStaff]],
         font: Optional[MusicFont] = None,
         pen: Optional[PenDef] = None,
     ):

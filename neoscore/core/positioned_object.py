@@ -1,8 +1,9 @@
 from __future__ import annotations
 
-import functools
 from collections.abc import Iterator
 from typing import TYPE_CHECKING, Any, Optional, Type, cast
+
+from backports.cached_property import cached_property
 
 from neoscore.core import neoscore
 from neoscore.core.point import ORIGIN, Point, PointDef
@@ -15,7 +16,7 @@ if TYPE_CHECKING:
     from neoscore.core.layout_controllers import NewLine
 
 
-class render_cached_property(functools.cached_property):  # noqa
+class render_cached_property(cached_property):  # noqa
 
     """A property annotation for fields which can be cached at render time.
 
@@ -89,10 +90,10 @@ class PositionedObject:
             parent: The parent object. Defaults to the document's first page.
         """
         self.pos = pos
-        self._children: list[PositionedObject] = []
+        self._children: List[PositionedObject] = []
         self._parent = PositionedObject._resolve_parent(parent)
         self._set_parent_and_register_self(parent)
-        self._render_cached_properties: set[str] = set()
+        self._render_cached_properties: Set[str] = set()
         self._currently_rendering = False
         self._interfaces = []
 
@@ -149,12 +150,12 @@ class PositionedObject:
         self._set_parent_and_register_self(value)
 
     @property
-    def children(self) -> list[PositionedObject]:
+    def children(self) -> List[PositionedObject]:
         """All direct children of this object."""
         return self._children
 
     @children.setter
-    def children(self, value: list[PositionedObject]):
+    def children(self, value: List[PositionedObject]):
         self._children = value
 
     @property
@@ -180,7 +181,7 @@ class PositionedObject:
         )
 
     @property
-    def interfaces(self) -> list[PositionedObjectInterface]:
+    def interfaces(self) -> List[PositionedObjectInterface]:
         """The graphical backend binding interfaces for this object
 
         Interface objects are created and stored here upon calling :obj:`.render`.

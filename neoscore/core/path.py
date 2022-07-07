@@ -64,8 +64,8 @@ class Path(PaintedObject):
         self.background_brush = background_brush
         self._z_index = z_index
         self._rotation = rotation
-        self.elements: list[PathElement] = []
-        self._current_subpath_start: Optional[tuple[Point, Optional[parent]]] = None
+        self.elements: List[PathElement] = []
+        self._current_subpath_start: Optional[Tuple[Point, Optional[parent]]] = None
 
     @classmethod
     def straight_line(
@@ -365,7 +365,7 @@ class Path(PaintedObject):
         length = sqrt(dx * dx + dy * dy)
         sin_ = dy / length
         cos_ = dx / length
-        resolved_points: list[tuple[float, float]] = [(0, 0)]
+        resolved_points: List[Tuple[float, float]] = [(0, 0)]
         for cp in control_points:
             if cp[0] < 0:
                 resolved_points.append((length + cp[0], cp[1]))
@@ -530,8 +530,8 @@ class Path(PaintedObject):
     def _relative_element_pos(self, element: PositionedObject) -> Point:
         return self.map_to(element)
 
-    def _resolve_path_elements(self) -> list[ResolvedPathElement]:
-        resolved: list[ResolvedPathElement] = []
+    def _resolve_path_elements(self) -> List[ResolvedPathElement]:
+        resolved: List[ResolvedPathElement] = []
         for element in self.elements:
             # Interface drawing methods expect coordinates
             # relative to PathInterface root
