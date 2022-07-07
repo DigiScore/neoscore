@@ -1,3 +1,8 @@
+# 0.1.3 (Pending early July release)
+- Reduce minimum Python version to 3.7
+- Fix bug where arrowkeys still scrolled the viewport with `neoscore.show(auto_viewport_interaction_enabled=False)`
+
+
 # 0.1.2 (2022-07-02)
 - Support disabling automatic viewport interaction with `neoscore.show(auto_viewport_interaction_enabled=False)`. This disables scroll-zooming, drag-moving, and the appearance of window scrollbars.
 - Support setting the preview window size with new `neoscore.show()` options `min_window_size` and `max_window_size`.

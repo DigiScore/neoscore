@@ -5,6 +5,8 @@ _SCROLL_HAND_DRAG = 1
 _NO_VIEWPORT_UPDATE = 3
 _SCROLL_BAR_AS_NEEDED = 0
 _SCROLL_BAR_ALWAYS_OFF = 1
+_FOCUS_POLICY_STRONG_FOCUS = 0x1 | 0x2 | 0x8
+_FOCUS_POLICY_NO_FOCUS = 0
 
 
 class Viewport(QtWidgets.QGraphicsView):
@@ -30,10 +32,12 @@ class Viewport(QtWidgets.QGraphicsView):
             self.setDragMode(_SCROLL_HAND_DRAG)  # noqa
             self.setHorizontalScrollBarPolicy(_SCROLL_BAR_AS_NEEDED)  # noqa
             self.setVerticalScrollBarPolicy(_SCROLL_BAR_AS_NEEDED)  # noqa
+            self.setFocusPolicy(_FOCUS_POLICY_STRONG_FOCUS)  # noqa
         else:
             self.setDragMode(_NO_DRAG)  # noqa
             self.setHorizontalScrollBarPolicy(_SCROLL_BAR_ALWAYS_OFF)  # noqa
             self.setVerticalScrollBarPolicy(_SCROLL_BAR_ALWAYS_OFF)  # noqa
+            self.setFocusPolicy(_FOCUS_POLICY_NO_FOCUS)  # noqa
 
     def wheelEvent(self, event):
         """Implementation of Qt event hook for zooming with the mouse wheel."""
