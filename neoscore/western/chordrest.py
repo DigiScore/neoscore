@@ -442,6 +442,9 @@ class Chordrest(PositionedObject, StaffObject):
         if self.stem:
             self.stem.remove()
         self._stem = None
+        if self.flag:
+            self.flag.remove()
+        self._flag = None
         if self.rest:
             self.rest.remove()
         self._rest = None

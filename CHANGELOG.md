@@ -1,3 +1,6 @@
+# 0.1.4 (unreleased)
+- Fix bug where chordrest flags were not properly reset when rebuilding chords after mutations
+
 # 0.1.3 (2022-07-07)
 - Reduce minimum Python version to 3.7
 - Fix bug where arrowkeys still scrolled the viewport with `neoscore.show(auto_viewport_interaction_enabled=False)`
