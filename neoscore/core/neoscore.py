@@ -269,7 +269,14 @@ def set_viewport_center_pos(document_pos: PointDef):
 
     If the given position is such that the requested view goes beyond the document's
     bounding rect, the actual position used is adjusted to prevent that. This is caused
-    by an internal limitation and may change in the future.
+    by an internal limitation and may change in the future. To work around this issue,
+    you can expand the document bounding rect by creating an arbitrarily large invisible
+    path like so::
+
+        Path.rect((Mm(-1000000), Mm(-1000000)), None, Mm(2000000), Mm(2000000),
+              Brush.no_brush(), Pen.no_pen())
+
+    This is mostly recommended when not using automatic viewport interaction.
     """
     global app_interface
     app_interface.viewport_center_pos = Point.from_def(document_pos)
