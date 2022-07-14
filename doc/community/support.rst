@@ -6,23 +6,16 @@ Troubleshooting
 
 .. _installation troubleshooting:
 
-Mac OS Installation errors
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-If you have trouble installing on Mac OS, try first upgrading your environment's pip with::
-
-    pip install --upgrade pip
-
-and try installing neoscore again. This should fix many problems.
-
 PyQt5 installation problems
-"""""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If you see an error like this::
+If you have trouble installing neoscore, first try installing PyQt5 alone with ``pip install PyQt5``. If this fails too, follow these troubleshooting steps.
 
-    AttributeError: module 'sipbuild.api' has no attribute 'prepare_metadata_for_build_wheel'
+First try upgrading pip with ``pip install --upgrade pip``; this should fix many errors.
 
-It's an upstream PyQt bug issue especially affecting new Mac M1 chips. First be sure to upgrade pip as described above. If the problem persists, `try running within the M1 compatibility layer Rosetta as described here <https://stackoverflow.com/questions/68317410/how-to-install-pyqt5-on-macos/70262165#70262165>`_.
+If that doesn't help and you're on a Mac system using an M1 chip, `try running within the M1 compatibility layer Rosetta as described here <https://stackoverflow.com/questions/68317410/how-to-install-pyqt5-on-macos/70262165#70262165>`_.
+
+If none of these steps help, check your python version with ``python --version``. If you aren't running on 3.7, try switching your environment's version to 3.7 (we recommend using `pyenv <https://github.com/pyenv/pyenv#installation>`_ if you don't know how to do this) and repeat the above steps.
 
 Pillow installation problems
 """"""""""""""""""""""""""""
