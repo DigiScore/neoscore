@@ -1,6 +1,7 @@
 # 0.1.4 (unreleased)
 - Fix bug where chordrest flags were not properly reset when rebuilding chords after mutations
 - Added built-in support for mouse event handlers with `neoscore.set_mouse_event_handler`.
+- Added built-in support for keyboard event handlers with `neoscore.set_key_event_handler`.
 
 # 0.1.3 (2022-07-07)
 - Reduce minimum Python version to 3.7

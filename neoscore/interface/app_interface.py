@@ -21,6 +21,7 @@ from PyQt5.QtWidgets import QApplication, QGraphicsScene
 from neoscore.core import env
 from neoscore.core.color import Color
 from neoscore.core.exceptions import FontRegistrationError, ImageExportError
+from neoscore.core.key_event import KeyEvent
 from neoscore.core.mouse_event import MouseEvent
 from neoscore.core.point import Point
 from neoscore.core.propagating_thread import PropagatingThread
@@ -84,6 +85,10 @@ class AppInterface:
     def set_mouse_event_handler(self, handler: Callable[[MouseEvent], None]):
         """Set a function to run on mouse events."""
         self.main_window.graphicsView.mouse_event_handler = handler
+
+    def set_key_event_handler(self, handler: Callable[[KeyEvent], None]):
+        """Set a function to run on keyboard input events."""
+        self.main_window.graphicsView.key_event_handler = handler
 
     def show(
         self,

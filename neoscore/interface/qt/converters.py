@@ -3,9 +3,10 @@
 from typing import Union
 
 from PyQt5.QtCore import QPoint, QPointF, QRect, QRectF
-from PyQt5.QtGui import QColor, QMouseEvent
+from PyQt5.QtGui import QColor, QKeyEvent, QMouseEvent
 
 from neoscore.core.color import Color
+from neoscore.core.key_event import KeyEvent, KeyEventType
 from neoscore.core.mouse_event import MouseButton, MouseEvent, MouseEventType
 from neoscore.core.point import Point
 from neoscore.core.rect import Rect
@@ -17,8 +18,6 @@ def qt_point_to_point(qt_point: Union[QPoint, QPointF]) -> Point:
 
     Args:
         qt_point: The source point
-
-    Returns: Point
     """
     return Point(Unit(qt_point.x()), Unit(qt_point.y()))
 
@@ -27,9 +26,7 @@ def point_to_qt_point(point: Point) -> QPoint:
     """Create a QPoint from a Point
 
     Args:
-        point (Point): The source point
-
-    Returns: QPoint
+        point: The source point
     """
     return QPoint(int(point.x.base_value), int(point.y.base_value))
 
@@ -38,9 +35,7 @@ def point_to_qt_point_f(point: Point) -> QPointF:
     """Create a QPointF from a Point
 
     Args:
-        point (Point): The source point
-
-    Returns: QPointF
+        point: The source point
     """
     return QPointF(point.x.base_value, point.y.base_value)
 
@@ -49,9 +44,7 @@ def qt_rect_to_rect(qt_rect: Union[QRect, QRectF]) -> Rect:
     """Create a Rect from a QRect or QRectF
 
     Args:
-        qt_rect (QRect or QRectF): The source rect
-
-    Returns: Rect
+        qt_rect: The source rect
     """
     return Rect(
         Unit(qt_rect.x()),
@@ -65,9 +58,7 @@ def rect_to_qt_rect(rect: Rect) -> QRect:
     """Create a QRect from a Rect
 
     Args:
-        rect (Rect): The source rect
-
-    Returns: QRect
+        rect: The source rect
     """
     return QRect(
         int(rect.x.base_value),
@@ -81,9 +72,7 @@ def rect_to_qt_rect_f(rect: Rect) -> QRectF:
     """Create a QRectF from a Rect
 
     Args:
-        rect (Rect): The source rect
-
-    Returns: QRectF
+        rect: The source rect
     """
     return QRectF(
         rect.x.base_value,
@@ -97,9 +86,7 @@ def color_to_q_color(color: Color) -> QColor:
     """Create a ``QColor`` from a ``Color``
 
     Args:
-        color (Color): The source ``Color``
-
-    Returns: QColor
+        color: The source ``Color``
     """
     return QColor(color.red, color.green, color.blue, color.alpha)
 
@@ -108,9 +95,7 @@ def q_color_to_color(q_color: QColor) -> Color:
     """Create a ``Color`` from a ``QColor``
 
     Args:
-        q_color (QColor): The source ``QColor``
-
-    Returns: Color
+        q_color: The source ``QColor``
     """
     return Color(q_color.red(), q_color.green(), q_color.blue(), q_color.alpha())
 
@@ -135,3 +120,14 @@ def q_mouse_event_to_mouse_event(
     q_pos = q_event.windowPos()
     ns_window_pos = (int(q_pos.x()), int(q_pos.y()))
     return MouseEvent(ns_event_type, ns_mouse_button, ns_window_pos)
+
+
+def q_key_event_to_key_event(
+    q_event: QKeyEvent, basic_event_type: KeyEventType
+) -> KeyEvent:
+    resolved_event_type = (
+        KeyEventType.AUTO_REPEAT if q_event.isAutoRepeat() else basic_event_type
+    )
+    return KeyEvent(
+        resolved_event_type, q_event.key(), int(q_event.modifiers()), q_event.text()
+    )

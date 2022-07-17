@@ -13,6 +13,7 @@ from typing_extensions import TypeAlias
 from neoscore.core.brush import Brush, BrushDef
 from neoscore.core.color import Color, ColorDef
 from neoscore.core.exceptions import InvalidImageFormatError
+from neoscore.core.key_event import KeyEvent
 from neoscore.core.mouse_event import MouseEvent
 from neoscore.core.paper import A4, Paper
 from neoscore.core.pen import Pen
@@ -493,6 +494,20 @@ def set_mouse_event_handler(handler: Callable[[MouseEvent], None]):
     """
     global app_interface
     app_interface.set_mouse_event_handler(handler)
+
+
+def set_key_event_handler(handler: Callable[[KeyEvent], None]):
+    """Set the global key event handler function.
+
+    Key events are fired on key presses, releases, and auto-repeats from being held.
+
+    Args:
+        handler: A callback function which accepts a key event.
+            See :obj:`.KeyEvent` for what event data is provided.
+
+    """
+    global app_interface
+    app_interface.set_key_event_handler(handler)
 
 
 def _register_default_fonts():

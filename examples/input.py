@@ -24,18 +24,21 @@ RichText((Mm(1), Mm(1)), None, annotation, width=Mm(120))
 
 
 def mouse_handler(event):
-    """Simply print event mouse event.
+    """Simply print mouse events.
 
     Since every mouse movement fires an event, this generate a lot of logs.
     """
     print(event)
 
 
+def key_handler(event):
+    """Simply print key events"""
+    print(event)
+
+
 neoscore.set_mouse_event_handler(mouse_handler)
-
-
-# keyboard input not yet implemented
+neoscore.set_key_event_handler(key_handler)
 
 
 if __name__ == "__main__":
-    neoscore.show(auto_viewport_interaction_enabled=True)
+    neoscore.show(auto_viewport_interaction_enabled=False)

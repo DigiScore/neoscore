@@ -4,7 +4,6 @@ from typing import Optional
 
 
 class MouseButton(Enum):
-
     """Enum for mouse buttons.
 
     This currently only supports left, middle, and right buttons.
@@ -38,6 +37,7 @@ class MouseEventType(Enum):
 
 @dataclass(frozen=True)
 class MouseEvent:
+    """A mouse input event."""
 
     event_type: MouseEventType
     """The type of the event"""
