@@ -19,6 +19,7 @@ class MainWindow(QtWidgets.QMainWindow):
         super().__init__()
         uic.loadUi(MainWindow._ui_path, self)
         self.refresh_func = None
+        self.mouse_event_handler = None
         self._frame = 0  # Frame counter used in debug mode
 
     def show(

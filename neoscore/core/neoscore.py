@@ -13,6 +13,7 @@ from typing_extensions import TypeAlias
 from neoscore.core.brush import Brush, BrushDef
 from neoscore.core.color import Color, ColorDef
 from neoscore.core.exceptions import InvalidImageFormatError
+from neoscore.core.mouse_event import MouseEvent
 from neoscore.core.paper import A4, Paper
 from neoscore.core.pen import Pen
 from neoscore.core.point import Point, PointDef
@@ -477,6 +478,21 @@ def set_refresh_func(refresh_func: RefreshFunc, target_fps: int = 60):
         return max(frame_wait - elapsed_time, 0)
 
     app_interface.set_refresh_func(wrapped_refresh_func)
+
+
+def set_mouse_event_handler(handler: Callable[[MouseEvent], None]):
+    """Set the global mouse event handler function.
+
+    Mouse events are fired on mouse moves and button presses, releases, and double
+    clicks.
+
+    Args:
+        handler: A callback function which accepts a mouse event.
+            See :obj:`.MouseEvent` for what event data is provided.
+
+    """
+    global app_interface
+    app_interface.set_mouse_event_handler(handler)
 
 
 def _register_default_fonts():

@@ -4,7 +4,7 @@ import math
 import multiprocessing
 import pathlib
 import threading
-from typing import TYPE_CHECKING, Callable, Optional, Tuple
+from typing import TYPE_CHECKING, Callable, List, Optional, Tuple
 
 from PyQt5.QtCore import QBuffer, QByteArray, QIODevice, QPoint, QRectF
 from PyQt5.QtGui import (
@@ -21,6 +21,7 @@ from PyQt5.QtWidgets import QApplication, QGraphicsScene
 from neoscore.core import env
 from neoscore.core.color import Color
 from neoscore.core.exceptions import FontRegistrationError, ImageExportError
+from neoscore.core.mouse_event import MouseEvent
 from neoscore.core.point import Point
 from neoscore.core.propagating_thread import PropagatingThread
 from neoscore.core.rect import Rect, RectDef
@@ -79,6 +80,10 @@ class AppInterface:
     def set_refresh_func(self, refresh_func: Callable[[float], float]):
         """Set a function to run automatically on a timer in the main window."""
         self.main_window.refresh_func = refresh_func
+
+    def set_mouse_event_handler(self, handler: Callable[[MouseEvent], None]):
+        """Set a function to run on mouse events."""
+        self.main_window.graphicsView.mouse_event_handler = handler
 
     def show(
         self,

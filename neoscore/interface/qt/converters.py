@@ -3,9 +3,10 @@
 from typing import Union
 
 from PyQt5.QtCore import QPoint, QPointF, QRect, QRectF
-from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QColor, QMouseEvent
 
 from neoscore.core.color import Color
+from neoscore.core.mouse_event import MouseButton, MouseEvent, MouseEventType
 from neoscore.core.point import Point
 from neoscore.core.rect import Rect
 from neoscore.core.units import Unit
@@ -112,3 +113,25 @@ def q_color_to_color(q_color: QColor) -> Color:
     Returns: Color
     """
     return Color(q_color.red(), q_color.green(), q_color.blue(), q_color.alpha())
+
+
+_Q_MOUSE_LEFT_BUTTON = 0x00000001
+_Q_MOUSE_RIGHT_BUTTON = 0x00000002
+_Q_MOUSE_MIDDLE_BUTTON = 0x00000004
+
+
+def q_mouse_event_to_mouse_event(
+    q_event: QMouseEvent, ns_event_type: MouseEventType
+) -> MouseEvent:
+    buttons = int(q_event.buttons())
+    if buttons & _Q_MOUSE_LEFT_BUTTON:
+        ns_mouse_button = MouseButton.LEFT
+    elif buttons & _Q_MOUSE_RIGHT_BUTTON:
+        ns_mouse_button = MouseButton.RIGHT
+    elif buttons & _Q_MOUSE_MIDDLE_BUTTON:
+        ns_mouse_button = MouseButton.MIDDLE
+    else:
+        ns_mouse_button = None
+    q_pos = q_event.windowPos()
+    ns_window_pos = (int(q_pos.x()), int(q_pos.y()))
+    return MouseEvent(ns_event_type, ns_mouse_button, ns_window_pos)

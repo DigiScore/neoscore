@@ -1,5 +1,8 @@
 from PyQt5 import QtGui, QtWidgets
 
+from neoscore.core.mouse_event import MouseEventType
+from neoscore.interface.qt.converters import q_mouse_event_to_mouse_event
+
 _NO_DRAG = 0
 _SCROLL_HAND_DRAG = 1
 _NO_VIEWPORT_UPDATE = 3
@@ -64,3 +67,31 @@ class Viewport(QtWidgets.QGraphicsView):
         """Override of superclass scroll action to trigger a viewport update."""
         super().scrollContentsBy(*args)
         self.viewport().update()
+
+    def mouseMoveEvent(self, e):
+        if self.mouse_event_handler:
+            self.mouse_event_handler(
+                q_mouse_event_to_mouse_event(e, MouseEventType.MOVE)
+            )
+        super().mouseMoveEvent(e)
+
+    def mousePressEvent(self, e):
+        if self.mouse_event_handler:
+            self.mouse_event_handler(
+                q_mouse_event_to_mouse_event(e, MouseEventType.PRESS)
+            )
+        super().mousePressEvent(e)
+
+    def mouseReleaseEvent(self, e):
+        if self.mouse_event_handler:
+            self.mouse_event_handler(
+                q_mouse_event_to_mouse_event(e, MouseEventType.RELEASE)
+            )
+        super().mouseReleaseEvent(e)
+
+    def mouseDoubleClickEvent(self, e):
+        if self.mouse_event_handler:
+            self.mouse_event_handler(
+                q_mouse_event_to_mouse_event(e, MouseEventType.DOUBLE_CLICK)
+            )
+        super().mouseDoubleClickEvent(e)
