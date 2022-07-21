@@ -49,5 +49,5 @@ For objects in flowable containers, :obj:`.PositionedObject.render` delegates to
 
 Each of these methods can be overridden by custom classes to create custom rendering behavior.
 
-You can also implement :obj:`.PositionedObject.pre_commit_hook` and :obj:`.PositionedObject.post_commit_hook` to run code immediately before and after document rendering occurs. This is primarily useful for pre-computing expensive properties before rendering. (But be advised that implementations *must* call their superclass's hook too.)
+You can also implement :obj:`.PositionedObject.pre_render_hook` and :obj:`.PositionedObject.post_render_hook` to run code immediately before and after document rendering occurs. This is primarily useful for pre-computing expensive properties before rendering. (But be advised that implementations *must* call their superclass's hook too.)
 
