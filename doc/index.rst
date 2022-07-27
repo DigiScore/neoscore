@@ -8,6 +8,7 @@ neoscore
 
 .. image:: _static/img/promo_image.png
   :alt: A score with colored blocks and squiggly lines
+  :target: https://github.com/DigiScore/neoscore/blob/main/examples/promo_image.py
 
 Neoscore is a Python programming library for creating scores without limits. While other notation software assumes scores follow a narrow set of rules, neoscore treats scores as shapes and text with as few assumptions as possible. In neoscore, staves and noteheads are just one way of writing.
 
