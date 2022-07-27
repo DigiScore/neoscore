@@ -93,12 +93,12 @@ jobs:
           source .venv/bin/activate
           pip install isort
           isort .
-      - name: Check for unused imports with unimport
-        if: matrix.platform == 'ubuntu-latest'
-        run: |
-          source .venv/bin/activate
-          pip install unimport
-          unimport --check --exclude "neoscore/common.py|.venv"
+      # - name: Check for unused imports with unimport
+      #   if: matrix.platform == 'ubuntu-latest'
+      #   run: |
+      #     source .venv/bin/activate
+      #     pip install unimport
+      #     unimport --check --exclude "neoscore/common.py|.venv"
       - name: Build docs site
         working-directory: doc
         env:
