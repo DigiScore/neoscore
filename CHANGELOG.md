@@ -1,3 +1,6 @@
+# 0.1.6 (unreleased)
+- Fix bug affecting path resolution in image export on Windows with Python 3.7
+
 # 0.1.5 (2022-07-27)
 - Fix bug breaking support on Python 3.7
 
