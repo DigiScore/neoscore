@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum, auto
-from typing import Optional
+from typing import Optional, Tuple
 
 
 class MouseButton(Enum):
@@ -53,5 +53,5 @@ class MouseEvent:
     return the first button pressed in order left, right, then middle.
     """
 
-    window_pos: tuple[int, int]
+    window_pos: Tuple[int, int]
     """The mouse position on the window in ``x, y`` pixels."""
