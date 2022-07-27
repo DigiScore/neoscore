@@ -18,27 +18,27 @@ example_script_paths = [
 example_script_paths.append(example_dir / "feldman_projection_2" / "main.py")
 
 
-@pytest.mark.parametrize("file_name", example_script_paths)
-def test_examples(file_name: str):
-    validate_script_safe_to_run(file_name)
+@pytest.mark.parametrize("example_path", example_script_paths)
+def test_examples(example_path: pathlib.Path):
+    validate_script_safe_to_run(example_path)
     subprocess.run(
-        [sys.executable, file_name, "--image", "--tmp", "--automated"],
+        [sys.executable, str(example_path), "--image", "--tmp", "--automated"],
         cwd=example_dir,
         check=True,
     )
 
 
 def test_pdf_example():
-    file_name = "pdf.py"
-    validate_script_safe_to_run(file_name)
+    example_file = example_dir / "pdf.py"
+    validate_script_safe_to_run(example_file)
     subprocess.run(
-        [sys.executable, file_name, "--pdf", "--tmp", "--automated"],
+        [sys.executable, str(example_file), "--pdf", "--tmp", "--automated"],
         cwd=example_dir,
         check=True,
     )
 
 
-def validate_script_safe_to_run(file_name: str):
-    script = (example_dir / file_name).read_text()
+def validate_script_safe_to_run(example_path: pathlib.Path):
+    script = example_path.read_text()
     assert re.search(r"neoscore.show\(.*?\)", script) is None
     assert re.search(r"render_example\(.*?\)", script) is not None
