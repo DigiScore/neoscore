@@ -58,7 +58,7 @@ class QClippingPath(QGraphicsPathItem):
                 be the same as in ``QGraphicsPathItem.__init__()``
             clip_start_x: The local starting position for the path clipping region.
                 This should not adjust for scaling, as that is performed
-                automatically. Use ``None`` to render from the start.
+                automatically. Use ``0`` to render from the start.
             clip_width: The width of the path clipping region. This should not adjust
                 for scaling, as that is performed automatically. Use ``None`` to render
                 to the end
@@ -73,7 +73,7 @@ class QClippingPath(QGraphicsPathItem):
         self.clip_start_x = clip_start_x / scale
         self.clip_width = None if clip_width is None else clip_width / scale
         self.setCacheMode(QGraphicsItem.CacheMode.DeviceCoordinateCache)
-        self.padding = self.pen().width() / scale
+        self.padding = self.pen().widthF()
         self.setRotation(rotation)
         self.background_brush = background_brush
         self.bounding_rect = None
