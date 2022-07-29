@@ -8,7 +8,8 @@ from ...helpers import AppTest
 class TestQClippingPath(AppTest):
     def setUp(self):
         super().setUp()
-        self.pen = QPen(QColor("#000000"), 1)
+        self.pen = QPen(QColor("#000000"), 2)
+        self.pen_padding_width = self.pen.widthF() / 2
 
     def test_clip_measurements_scale_adjusted(self):
         painter_path = QPainterPath()
@@ -22,12 +23,17 @@ class TestQClippingPath(AppTest):
         painter_path.lineTo(100, 200)
         obj = QClippingPath(painter_path, 0, None)
         obj.setPen(self.pen)
+        obj.update_geometry()
         # bounding rect should match that of the path plus padding for the pen width
         raw_path_rect = painter_path.boundingRect()
-        assert obj.boundingRect().x() == raw_path_rect.x() - 1
-        assert obj.boundingRect().y() == raw_path_rect.y() - 1
-        assert obj.boundingRect().width() == raw_path_rect.width() + 5 + 2
-        assert obj.boundingRect().height() == raw_path_rect.height() + 2
+        assert obj.boundingRect().x() == raw_path_rect.x() - self.pen_padding_width
+        assert obj.boundingRect().y() == raw_path_rect.y() - self.pen_padding_width
+        assert obj.boundingRect().width() == raw_path_rect.width() + 5 + (
+            self.pen_padding_width * 2
+        )
+        assert obj.boundingRect().height() == raw_path_rect.height() + (
+            self.pen_padding_width * 2
+        )
         assert obj.clip_rect == obj.boundingRect()
 
     def test_geometry_covering_end_of_path(self):
@@ -36,11 +42,17 @@ class TestQClippingPath(AppTest):
         painter_path.lineTo(100, 200)
         obj = QClippingPath(painter_path, 50, None)
         obj.setPen(self.pen)
+        obj.update_geometry()
         raw_path_rect = painter_path.boundingRect()
         assert obj.boundingRect().x() == raw_path_rect.x()
-        assert obj.boundingRect().y() == raw_path_rect.y() - 1
-        assert obj.boundingRect().width() == raw_path_rect.width() + 5 - 50 + 1
-        assert obj.boundingRect().height() == raw_path_rect.height() + 2
+        assert obj.boundingRect().y() == raw_path_rect.y() - self.pen_padding_width
+        assert (
+            obj.boundingRect().width()
+            == raw_path_rect.width() + 5 - 50 + self.pen_padding_width
+        )
+        assert obj.boundingRect().height() == raw_path_rect.height() + (
+            self.pen_padding_width * 2
+        )
         assert obj.clip_rect == obj.boundingRect().translated(50, 0)
 
     def test_geometry_covering_start_of_path(self):
@@ -49,11 +61,14 @@ class TestQClippingPath(AppTest):
         painter_path.lineTo(100, 200)
         obj = QClippingPath(painter_path, 0, 50)
         obj.setPen(self.pen)
+        obj.update_geometry()
         raw_path_rect = painter_path.boundingRect()
-        assert obj.boundingRect().x() == raw_path_rect.x() - 1
-        assert obj.boundingRect().y() == raw_path_rect.y() - 1
-        assert obj.boundingRect().width() == 50 + 5 + 1
-        assert obj.boundingRect().height() == raw_path_rect.height() + 2
+        assert obj.boundingRect().x() == raw_path_rect.x() - self.pen_padding_width
+        assert obj.boundingRect().y() == raw_path_rect.y() - self.pen_padding_width
+        assert obj.boundingRect().width() == 50 + 5 + self.pen_padding_width
+        assert obj.boundingRect().height() == raw_path_rect.height() + (
+            self.pen_padding_width * 2
+        )
         assert obj.clip_rect == obj.boundingRect()
 
     def test_geometry_covering_middle_of_path(self):
@@ -62,9 +77,12 @@ class TestQClippingPath(AppTest):
         painter_path.lineTo(100, 200)
         obj = QClippingPath(painter_path, 25, 30)
         obj.setPen(self.pen)
+        obj.update_geometry()
         raw_path_rect = painter_path.boundingRect()
         assert obj.boundingRect().x() == raw_path_rect.x()
-        assert obj.boundingRect().y() == raw_path_rect.y() - 1
+        assert obj.boundingRect().y() == raw_path_rect.y() - self.pen_padding_width
         assert obj.boundingRect().width() == 30 + 5
-        assert obj.boundingRect().height() == raw_path_rect.height() + 2
+        assert obj.boundingRect().height() == raw_path_rect.height() + (
+            self.pen_padding_width * 2
+        )
         assert obj.clip_rect == obj.boundingRect().translated(25, 0)
