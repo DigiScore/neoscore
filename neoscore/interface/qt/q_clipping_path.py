@@ -51,6 +51,7 @@ class QClippingPath(QGraphicsPathItem):
         scale: float = 1,
         rotation: float = 0,
         background_brush: QBrush = None,
+        defer_geometry_calculation: bool = False,
     ):
         """
         Args:
@@ -67,18 +68,23 @@ class QClippingPath(QGraphicsPathItem):
                 clipping is currently not supported.
             background_brush: If given, this will be used to paint over the path's
                 bounding rect behind the path.
+            defer_geometry_calculation: If true, this constructor will not automatically
+                calculate the path's bounding and clipping geometry. When this is set,
+                you *must* call ``update_geometry`` when the geometry is finalized.
+                This is useful when post-init modifications immediately alter the geometry,
+                preventing a redundant calculation.
         """
         super().__init__(qt_path)
         super().setScale(scale)
         self.clip_start_x = clip_start_x / scale
         self.clip_width = None if clip_width is None else clip_width / scale
         self.setCacheMode(QGraphicsItem.CacheMode.DeviceCoordinateCache)
-        self.padding = self.pen().widthF()
         self.setRotation(rotation)
         self.background_brush = background_brush
         self.bounding_rect = None
         self.clip_rect = None
-        self.update_geometry()
+        if not defer_geometry_calculation:
+            self.update_geometry()
 
     def boundingRect(self):
         # Seems like this is in logical space (pre-scaling)
@@ -111,13 +117,19 @@ class QClippingPath(QGraphicsPathItem):
         super().paint(painter, *args, **kwargs)
 
     def update_geometry(self):
+        """Recalculate the object's bounding and clipping rects.
+
+        This *must* be called after any changes affecting these rects, including pen
+        thickness changes.
+        """
         self.prepareGeometryChange()
         path_bounding_rect = self.path().boundingRect()
+        padding = self.pen().widthF() / 2
         self.bounding_rect = QClippingPath.calculate_bounding_rect(
             path_bounding_rect,
             self.clip_start_x,
             self.clip_width,
-            self.padding,
+            padding,
         )
         # Clip rect is used by painter, which translates by -clip_start_x,
         # so we need to cancel that out here

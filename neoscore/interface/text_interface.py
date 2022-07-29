@@ -90,6 +90,7 @@ class TextInterface(PositionedObjectInterface):
         qt_object.setPen(self.pen.qt_object)
         if self.z_index != 0:
             qt_object.setZValue(self.z_index)
+        qt_object.update_geometry()
         return qt_object
 
     def _get_path(self, text: str, font: FontInterface, scale: float) -> QClippingPath:
@@ -111,6 +112,7 @@ class TextInterface(PositionedObjectInterface):
             scale,
             self.rotation,
             self.background_brush.qt_object if self.background_brush else None,
+            defer_geometry_calculation=True,
         )
 
     @staticmethod
