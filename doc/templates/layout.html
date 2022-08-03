@@ -131,29 +131,28 @@
 
 <body class="wy-body-for-nav">
 
-    <div class="sitewide-announcement" id="sitewide-announcement">
-        <a href="https://digiscore.dmu.ac.uk/neoscore-commision-eoi-portal/" target="_blank">
-            We are now accepting submissions for a paid commision opportunity using neoscore. Submit by July 31!</a>
-        <button class="close-button" id="sitewide-announcement-close-btn">(dismiss)</button>
-    </div>
+  <!-- <div class="sitewide-announcement" id="sitewide-announcement">
+       (Sitewide announcement here)
+       <button class="close-button" id="sitewide-announcement-close-btn">(dismiss)</button>
+       </div>
 
-    <script>
-        const hideAnnouncementCookieSlug = "hide_eoi_announcement_1=1"
-        const closeButton = document.getElementById('sitewide-announcement-close-btn');
-        function hideAnnouncementBanner() {
-            document.getElementById('sitewide-announcement').style.display = 'None';
-        }
+       <script>
+       const hideAnnouncementCookieSlug = "hide_xyz_announcement_1=1"
+       const closeButton = document.getElementById('sitewide-announcement-close-btn');
+       function hideAnnouncementBanner() {
+       document.getElementById('sitewide-announcement').style.display = 'None';
+       }
 
-        closeButton.onclick = () => {
-            hideAnnouncementBanner()
-            document.cookie = hideAnnouncementCookieSlug + '; SameSite=Lax'
-        };
+       closeButton.onclick = () => {
+       hideAnnouncementBanner()
+       document.cookie = hideAnnouncementCookieSlug + '; SameSite=Lax'
+       };
 
-        if (document.cookie.indexOf(hideAnnouncementCookieSlug) !== -1) {
-            hideAnnouncementBanner()
-        }
-    </script>
-
+       if (document.cookie.indexOf(hideAnnouncementCookieSlug) !== -1) {
+       hideAnnouncementBanner()
+       }
+       </script>
+  -->
     {%- block extrabody %} {% endblock %}
     <div class="wy-grid-for-nav">
         {#- SIDE NAV, TOGGLES ON MOBILE #}
