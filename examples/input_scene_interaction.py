@@ -13,19 +13,23 @@ from neoscore.core.text import Text
 from neoscore.core.units import Mm, Unit
 
 """
-This example shows what keys are being held down and displays them on the center of the screen.
-It also allows the user to click-and-drag to generate line-segments.
+This example shows what keys are being held down and displays them on the center of 
+the screen. It also allows the user to click-and-drag to generate line-segments.
 
-There are a few caveats that must be worked around to get this example working, both related
-to the viewport. The viewport by default shifts to accomodate new elements as they are added to the page.
-To restrict viewport movement, we create an arbitrarily large invisible rectangle.
-To generate line-segments where we click on the screen, the page coordinates and screen coordinates should be identical.
-One way to achieve this is by fixing the size and scale of the viewport.
+There are a few caveats that must be worked around to get this example working, both 
+related to the viewport. The viewport by default shifts to accomodate new elements as 
+they are added to the page. To restrict viewport movement, we create an arbitrarily 
+large invisible rectangle. To generate line-segments where we click on the screen, 
+the page coordinates and screen coordinates should be identical. One way to achieve 
+this is by fixing the size and scale of the viewport.
 """
 
 
 def key_handler(event):
-    """Add single characters to a list when a key is pressed,
+    """
+    Key event handler.
+
+    Add single characters to a list when a key is pressed,
     and remove them from the list when the key is released.
     """
     global text_list
@@ -36,7 +40,10 @@ def key_handler(event):
 
 
 def mouse_handler(event):
-    """Remember where the user clicked the mouse, then
+    """
+    Mouse event handler and path creator.
+
+    Remember where the user clicked the mouse, then
     draw a line between the click and release points when the mouse is released."""
     global click_point
     if event.event_type == MouseEventType.PRESS:
