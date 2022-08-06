@@ -13,7 +13,15 @@ example_script_paths = [
     example_dir / f
     for f in example_dir_contents
     if f.endswith(".py")
-    and f not in ["helpers.py", "repl.py", "animation.py", "pdf.py", "input.py"]
+    and f
+    not in [
+        "helpers.py",
+        "repl.py",
+        "animation.py",
+        "pdf.py",
+        "input_simple.py",
+        "input_scene_interaction.py",
+    ]
 ]
 example_script_paths.append(example_dir / "feldman_projection_2" / "main.py")
 
