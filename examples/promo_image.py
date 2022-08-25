@@ -77,7 +77,7 @@ class BlockNote(PositionedObject, StaffObject):
         pitch = Pitch.from_def(pitch)
         pitch_y = staff.middle_c_at(pos_x) + staff.unit(pitch.staff_pos_from_middle_c)
         PositionedObject.__init__(self, (pos_x, pitch_y), staff)
-        StaffObject(staff)
+        StaffObject.__init__(self, staff)
         self.length = length
         height = staff.unit(1)
         Path.rect((ZERO, height / -2), self, length, height, Brush(color), Pen.no_pen())
