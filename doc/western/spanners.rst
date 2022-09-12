@@ -62,7 +62,7 @@ A reasonable curvature is automatically derived from the spanner length, but thi
 Octave Lines
 ------------
 
-Cosmetic :obj:`.OctaveLine`\ s can be drawn with a common variety of octave indications, but note that they do not automatically transpose the notes under them.
+Cosmetic :obj:`.OctaveLine`\ s can be drawn with a variety of common octave indications, but note that they do not automatically transpose the notes under them.
 
 .. rendered-example::
 
