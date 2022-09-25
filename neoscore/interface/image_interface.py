@@ -37,7 +37,7 @@ class ImageInterface(PositionedObjectInterface):
 
     z_index: int = 0
     """Z-index controlling draw order."""
-    
+
     transform_origin: Point = ORIGIN
     """Axis of rotation"""
 

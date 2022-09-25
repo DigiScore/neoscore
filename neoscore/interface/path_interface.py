@@ -86,7 +86,7 @@ class PathInterface(PositionedObjectInterface):
 
     Use ``None`` to render to the end.
     """
-    
+
     transform_origin: Point = ORIGIN
     """Axis of rotation"""
 
@@ -126,7 +126,7 @@ class PathInterface(PositionedObjectInterface):
             self.clip_width.base_value if self.clip_width is not None else None,
             1,
             self.rotation,
-            #self.transform_origin,
+            # self.transform_origin,
             self.background_brush.qt_object if self.background_brush else None,
             defer_geometry_calculation=True,
         )

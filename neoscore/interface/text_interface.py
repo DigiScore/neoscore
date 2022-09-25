@@ -78,7 +78,7 @@ class TextInterface(PositionedObjectInterface):
 
     Use ``None`` to render to the end.
     """
-    
+
     transform_origin: Point = ORIGIN
     """Axis of rotation"""
 
