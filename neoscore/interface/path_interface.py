@@ -8,6 +8,8 @@ from typing_extensions import TypeAlias
 
 from neoscore.core import neoscore
 from neoscore.core.units import Unit
+from neoscore.core.point import Point
+from neoscore.core.point import ORIGIN
 from neoscore.interface.brush_interface import BrushInterface
 from neoscore.interface.pen_interface import PenInterface
 from neoscore.interface.positioned_object_interface import PositionedObjectInterface
@@ -84,6 +86,9 @@ class PathInterface(PositionedObjectInterface):
 
     Use ``None`` to render to the end.
     """
+    
+    transform_origin: Point = ORIGIN
+    """Axis of rotation"""
 
     @staticmethod
     def create_qt_path(elements: List[ResolvedPathElement]) -> QPainterPath:
@@ -121,6 +126,7 @@ class PathInterface(PositionedObjectInterface):
             self.clip_width.base_value if self.clip_width is not None else None,
             1,
             self.rotation,
+            #self.transform_origin,
             self.background_brush.qt_object if self.background_brush else None,
             defer_geometry_calculation=True,
         )

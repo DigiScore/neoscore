@@ -1,6 +1,6 @@
 from typing import Optional
 
-from PyQt5.QtCore import QRectF
+from PyQt5.QtCore import QRectF, QPointF
 from PyQt5.QtGui import QBrush, QColor, QPainter, QPainterPath, QPen
 from PyQt5.QtWidgets import QGraphicsItem, QGraphicsPathItem
 
@@ -52,6 +52,7 @@ class QClippingPath(QGraphicsPathItem):
         rotation: float = 0,
         background_brush: QBrush = None,
         defer_geometry_calculation: bool = False,
+        transform_origin: QPointF = None,
     ):
         """
         Args:

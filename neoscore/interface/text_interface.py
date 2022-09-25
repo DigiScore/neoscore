@@ -5,6 +5,8 @@ from PyQt5.QtGui import QFont, QPainterPath
 
 from neoscore.core import neoscore
 from neoscore.core.units import Unit
+from neoscore.core.point import Point
+from neoscore.core.point import ORIGIN
 from neoscore.interface.brush_interface import BrushInterface
 from neoscore.interface.font_interface import FontInterface
 from neoscore.interface.pen_interface import PenInterface
@@ -76,6 +78,9 @@ class TextInterface(PositionedObjectInterface):
 
     Use ``None`` to render to the end.
     """
+    
+    transform_origin: Point = ORIGIN
+    """Axis of rotation"""
 
     def render(self):
         """Render the line to the scene."""

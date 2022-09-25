@@ -6,6 +6,8 @@ from PyQt5.QtSvg import QGraphicsSvgItem
 from PyQt5.QtWidgets import QGraphicsItem, QGraphicsPixmapItem
 
 from neoscore.core import neoscore
+from neoscore.core.point import Point
+from neoscore.core.point import ORIGIN
 from neoscore.core.exceptions import ImageLoadingError
 from neoscore.interface.positioned_object_interface import PositionedObjectInterface
 from neoscore.interface.qt.converters import point_to_qt_point_f
@@ -35,6 +37,9 @@ class ImageInterface(PositionedObjectInterface):
 
     z_index: int = 0
     """Z-index controlling draw order."""
+    
+    transform_origin: Point = ORIGIN
+    """Axis of rotation"""
 
     @property
     def _resolved_path(self) -> str:
