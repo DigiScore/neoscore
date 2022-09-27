@@ -88,7 +88,7 @@ class PathInterface(PositionedObjectInterface):
     """
 
     transform_origin: Point = ORIGIN
-    """Axis of rotation"""
+    """The origin point for rotation and scaling transforms"""
 
     @staticmethod
     def create_qt_path(elements: List[ResolvedPathElement]) -> QPainterPath:
@@ -126,9 +126,9 @@ class PathInterface(PositionedObjectInterface):
             self.clip_width.base_value if self.clip_width is not None else None,
             1,
             self.rotation,
-            # self.transform_origin,
             self.background_brush.qt_object if self.background_brush else None,
             defer_geometry_calculation=True,
+            # self.transform_origin,
         )
         qt_object.setPos(point_to_qt_point_f(self.pos))
         qt_object.setBrush(self.brush.qt_object)

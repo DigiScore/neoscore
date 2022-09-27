@@ -1,8 +1,9 @@
 from neoscore.core.brush_pattern import BrushPattern
 from neoscore.core.color import Color
 from neoscore.core.pen import Pen
-from neoscore.core.point import ORIGIN
+from neoscore.core.point import ORIGIN, Point
 from neoscore.core.units import Unit
+from neoscore.interface.qt.converters import point_to_qt_point_f
 from neoscore.interface.brush_interface import BrushInterface
 from neoscore.interface.font_interface import FontInterface
 from neoscore.interface.text_interface import TextInterface
@@ -55,13 +56,20 @@ class TestTextInterface(AppTest):
         )
         assert text._create_qt_object().rotation() == 123
 
-    #   def test_rotation_about_transform_origin(self):
-    #       text = TextInterface(ORIGIN, self.brush, self.pen, "foo", self.font)
-    #       assert text._create_qt_object().transform_origin() == ORIGIN
-    #       text = TextInterface(
-    #           ORIGIN, self.brush, self.pen, "foo", self.font, rotation=(Unit(12),Unit(12))
-    #       )
-    #       assert text._create_qt_object().transform_origin() == (Unit(12),Unit(12))
+    def test_transformOriginPoint(self):
+        text = TextInterface(ORIGIN, self.brush, self.pen, "foo", self.font)
+        assert text._create_qt_object().transformOriginPoint() == point_to_qt_point_f(
+            ORIGIN
+        )
+        text = TextInterface(
+            ORIGIN,
+            self.brush,
+            self.pen,
+            "foo",
+            self.font,
+            transform_origin=Point(Unit(12), Unit(12)),
+        )
+        # assert text._create_qt_object().transformOriginPoint() == point_to_qt_point_f(Point(Unit(12),Unit(12)))
 
     def test_z_index(self):
         text = TextInterface(ORIGIN, self.brush, self.pen, "foo", self.font)

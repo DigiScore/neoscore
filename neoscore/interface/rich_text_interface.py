@@ -31,7 +31,7 @@ class RichTextInterface(PositionedObjectInterface):
     """Z-index controlling draw order."""
 
     transform_origin: Point = ORIGIN
-    """Axis of rotation"""
+    """The origin point for rotation and scaling transforms"""
 
     def render(self):
         """Render the line to the scene."""
