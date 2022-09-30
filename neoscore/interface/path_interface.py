@@ -7,6 +7,7 @@ from PyQt5.QtGui import QPainterPath
 from typing_extensions import TypeAlias
 
 from neoscore.core import neoscore
+from neoscore.core.point import ORIGIN, Point
 from neoscore.core.units import Unit
 from neoscore.interface.brush_interface import BrushInterface
 from neoscore.interface.pen_interface import PenInterface
@@ -85,6 +86,9 @@ class PathInterface(PositionedObjectInterface):
     Use ``None`` to render to the end.
     """
 
+    transform_origin: Point = ORIGIN
+    """The origin point for rotation and scaling transforms"""
+
     @staticmethod
     def create_qt_path(elements: List[ResolvedPathElement]) -> QPainterPath:
         path = QPainterPath()
@@ -123,6 +127,7 @@ class PathInterface(PositionedObjectInterface):
             self.rotation,
             self.background_brush.qt_object if self.background_brush else None,
             defer_geometry_calculation=True,
+            transform_origin=self.transform_origin,
         )
         qt_object.setPos(point_to_qt_point_f(self.pos))
         qt_object.setBrush(self.brush.qt_object)
