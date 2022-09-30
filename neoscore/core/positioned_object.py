@@ -7,7 +7,7 @@ from backports.cached_property import cached_property
 
 from neoscore.core import neoscore
 from neoscore.core.point import ORIGIN, Point, PointDef
-from neoscore.core.units import ZERO, Unit
+from neoscore.core.units import ZERO, Mm, Unit
 from neoscore.interface.positioned_object_interface import PositionedObjectInterface
 
 if TYPE_CHECKING:
