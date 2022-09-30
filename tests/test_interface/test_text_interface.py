@@ -56,7 +56,7 @@ class TestTextInterface(AppTest):
         )
         assert text._create_qt_object().rotation() == 123
 
-    def test_transformOriginPoint(self):
+    def test_transform_origin_point(self):
         text = TextInterface(ORIGIN, self.brush, self.pen, "foo", self.font)
         assert text._create_qt_object().transformOriginPoint() == point_to_qt_point_f(
             ORIGIN
@@ -69,7 +69,9 @@ class TestTextInterface(AppTest):
             self.font,
             transform_origin=Point(Unit(12), Unit(12)),
         )
-        # assert text._create_qt_object().transformOriginPoint() == point_to_qt_point_f(Point(Unit(12),Unit(12)))
+        assert text._create_qt_object().transformOriginPoint() == point_to_qt_point_f(
+            Point(Unit(12), Unit(12))
+        )
 
     def test_z_index(self):
         text = TextInterface(ORIGIN, self.brush, self.pen, "foo", self.font)

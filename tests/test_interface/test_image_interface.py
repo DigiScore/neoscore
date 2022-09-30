@@ -3,6 +3,7 @@ import pathlib
 from neoscore.core.point import Point
 from neoscore.core.units import Unit
 from neoscore.interface.image_interface import ImageInterface
+from neoscore.interface.qt.converters import point_to_qt_point_f
 
 from ..helpers import AppTest
 
@@ -35,10 +36,15 @@ class TestImageInterface(AppTest):
         interface.render()
 
     def test_svg_qt_item_properties(self):
-        interface = ImageInterface(Point(Unit(5), Unit(6)), svg_image_path, 2, 3, 4)
+        interface = ImageInterface(
+            Point(Unit(5), Unit(6)), svg_image_path, 2, 3, 4, Point(Unit(12), Unit(12))
+        )
         qt_object = interface._create_svg_qt_object()
         assert qt_object.x() == 5
         assert qt_object.y() == 6
         assert qt_object.scale() == 2
         assert qt_object.rotation() == 3
         assert qt_object.zValue() == 4
+        assert qt_object.transformOriginPoint() == point_to_qt_point_f(
+            Point(Unit(12), Unit(12))
+        )

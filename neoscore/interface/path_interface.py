@@ -128,7 +128,7 @@ class PathInterface(PositionedObjectInterface):
             self.rotation,
             self.background_brush.qt_object if self.background_brush else None,
             defer_geometry_calculation=True,
-            # self.transform_origin,
+            transform_origin=self.transform_origin,
         )
         qt_object.setPos(point_to_qt_point_f(self.pos))
         qt_object.setBrush(self.brush.qt_object)

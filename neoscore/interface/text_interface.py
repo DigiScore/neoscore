@@ -118,7 +118,7 @@ class TextInterface(PositionedObjectInterface):
             self.rotation,
             self.background_brush.qt_object if self.background_brush else None,
             defer_geometry_calculation=True,
-            # self.transform_origin
+            transform_origin=self.transform_origin,
         )
 
     @staticmethod
