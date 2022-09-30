@@ -7,9 +7,8 @@ from PyQt5.QtGui import QPainterPath
 from typing_extensions import TypeAlias
 
 from neoscore.core import neoscore
+from neoscore.core.point import ORIGIN, Point
 from neoscore.core.units import Unit
-from neoscore.core.point import Point
-from neoscore.core.point import ORIGIN
 from neoscore.interface.brush_interface import BrushInterface
 from neoscore.interface.pen_interface import PenInterface
 from neoscore.interface.positioned_object_interface import PositionedObjectInterface

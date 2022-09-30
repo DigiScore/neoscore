@@ -4,9 +4,8 @@ from typing import Dict, NamedTuple, Optional
 from PyQt5.QtGui import QFont, QPainterPath
 
 from neoscore.core import neoscore
+from neoscore.core.point import ORIGIN, Point
 from neoscore.core.units import Unit
-from neoscore.core.point import Point
-from neoscore.core.point import ORIGIN
 from neoscore.interface.brush_interface import BrushInterface
 from neoscore.interface.font_interface import FontInterface
 from neoscore.interface.pen_interface import PenInterface

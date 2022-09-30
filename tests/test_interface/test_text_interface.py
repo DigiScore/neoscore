@@ -3,9 +3,9 @@ from neoscore.core.color import Color
 from neoscore.core.pen import Pen
 from neoscore.core.point import ORIGIN, Point
 from neoscore.core.units import Unit
-from neoscore.interface.qt.converters import point_to_qt_point_f
 from neoscore.interface.brush_interface import BrushInterface
 from neoscore.interface.font_interface import FontInterface
+from neoscore.interface.qt.converters import point_to_qt_point_f
 from neoscore.interface.text_interface import TextInterface
 
 from ..helpers import AppTest

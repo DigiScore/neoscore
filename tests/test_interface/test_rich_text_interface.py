@@ -1,8 +1,8 @@
 from neoscore.core import neoscore
 from neoscore.core.point import ORIGIN, Point
 from neoscore.core.units import Unit
-from neoscore.interface.rich_text_interface import RichTextInterface
 from neoscore.interface.qt.converters import point_to_qt_point_f
+from neoscore.interface.rich_text_interface import RichTextInterface
 
 from ..helpers import AppTest
 

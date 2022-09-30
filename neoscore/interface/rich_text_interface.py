@@ -2,9 +2,8 @@ from dataclasses import dataclass
 from typing import Optional
 
 from neoscore.core import neoscore
+from neoscore.core.point import ORIGIN, Point
 from neoscore.core.units import Unit
-from neoscore.core.point import Point
-from neoscore.core.point import ORIGIN
 from neoscore.interface.font_interface import FontInterface
 from neoscore.interface.positioned_object_interface import PositionedObjectInterface
 from neoscore.interface.qt.converters import point_to_qt_point_f

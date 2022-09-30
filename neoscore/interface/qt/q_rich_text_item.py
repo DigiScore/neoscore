@@ -1,6 +1,6 @@
+from PyQt5.QtCore import QPointF
 from PyQt5.QtGui import QBrush, QColor, QPainter, QPen
 from PyQt5.QtWidgets import QGraphicsItem, QGraphicsTextItem
-from PyQt5.QtCore import QPointF
 
 from neoscore.core import env
 from neoscore.core.point import ORIGIN
