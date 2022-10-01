@@ -5,6 +5,8 @@ from PyQt5.QtGui import QBrush, QColor, QPainter, QPainterPath, QPen
 from PyQt5.QtWidgets import QGraphicsItem, QGraphicsPathItem
 
 from neoscore.core import env
+from neoscore.core.point import ORIGIN
+from neoscore.interface.qt.converters import point_to_qt_point_f
 
 
 class QClippingPath(QGraphicsPathItem):

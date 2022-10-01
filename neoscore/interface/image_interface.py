@@ -71,6 +71,10 @@ class ImageInterface(PositionedObjectInterface):
             qt_object.setRotation(self.rotation)
         if self.z_index != 0:
             qt_object.setZValue(self.z_index)
+        if self.transform_origin != ORIGIN:
+            qt_object.setTransformOriginPoint(
+                point_to_qt_point_f(self.transform_origin)
+            )
 
     def render(self):
         if self.file_path.suffix == ".svg":
