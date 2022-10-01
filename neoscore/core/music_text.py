@@ -9,7 +9,7 @@ from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.music_char import MusicChar, MusicCharDef
 from neoscore.core.music_font import MusicFont
 from neoscore.core.pen import PenDef
-from neoscore.core.point import PointDef, Point, ORIGIN
+from neoscore.core.point import ORIGIN, Point, PointDef
 from neoscore.core.positioned_object import PositionedObject, render_cached_property
 from neoscore.core.rect import Rect
 from neoscore.core.text import Text

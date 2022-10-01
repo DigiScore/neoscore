@@ -14,7 +14,7 @@ from neoscore.core.path_element import (
     PathElement,
 )
 from neoscore.core.pen import Pen, PenDef
-from neoscore.core.point import Point, PointDef, ORIGIN
+from neoscore.core.point import ORIGIN, Point, PointDef
 from neoscore.core.positioned_object import PositionedObject, render_cached_property
 from neoscore.core.units import ZERO, Mm, Unit
 from neoscore.interface.path_interface import (

@@ -7,7 +7,7 @@ from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.music_font import MusicFont
 from neoscore.core.path import Path
 from neoscore.core.pen import PenDef
-from neoscore.core.point import PointDef, ORIGIN, Point
+from neoscore.core.point import ORIGIN, Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
 
 

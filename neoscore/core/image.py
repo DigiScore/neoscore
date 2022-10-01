@@ -4,10 +4,9 @@ import pathlib
 from typing import Optional
 
 from neoscore.core.layout_controllers import NewLine
-from neoscore.core.point import Point, PointDef
+from neoscore.core.point import ORIGIN, Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import ZERO, Unit
-from neoscore.core.point import ORIGIN
 from neoscore.interface.image_interface import ImageInterface
 
 
