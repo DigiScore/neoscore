@@ -46,6 +46,15 @@ class TestPath(AppTest):
         assert path.rotation == 20
         assert Path(ORIGIN, None, rotation=123).rotation == 123
 
+    def test_transform_origin_setter(self):
+        path = Path(ORIGIN, None)
+        assert path.transform_origin == ORIGIN
+        path.transform_origin = (Unit(12), Unit(12))
+        assert path.transform_origin == Point(Unit(12), Unit(12))
+        assert Path(
+            ORIGIN, None, transform_origin=(Unit(12), Unit(12))
+        ).transform_origin == (Unit(12), Unit(12))
+
     def test_z_index(self):
         path = Path(ORIGIN, None)
         assert path.z_index == 0

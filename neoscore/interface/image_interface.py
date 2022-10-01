@@ -61,6 +61,10 @@ class ImageInterface(PositionedObjectInterface):
 
     def _apply_common_properties(self, qt_object: QGraphicsItem):
         qt_object.setPos(point_to_qt_point_f(self.pos))
+        if self.transform_origin != ORIGIN:
+            qt_object.setTransformOriginPoint(
+                point_to_qt_point_f(self.transform_origin)
+            )
         if self.scale != 1:
             qt_object.setScale(self.scale)
         if self.rotation != 0:

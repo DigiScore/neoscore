@@ -14,7 +14,7 @@ from neoscore.core.path_element import (
     PathElement,
 )
 from neoscore.core.pen import Pen, PenDef
-from neoscore.core.point import Point, PointDef
+from neoscore.core.point import ORIGIN, Point, PointDef
 from neoscore.core.positioned_object import PositionedObject, render_cached_property
 from neoscore.core.units import ZERO, Mm, Unit
 from neoscore.interface.path_interface import (
@@ -47,6 +47,7 @@ class Path(PaintedObject):
         rotation: float = 0,
         background_brush: Optional[BrushDef] = None,
         z_index: int = 0,
+        transform_origin: PointDef = ORIGIN,
     ):
         """
         Args:
@@ -66,6 +67,7 @@ class Path(PaintedObject):
         self._rotation = rotation
         self.elements: List[PathElement] = []
         self._current_subpath_start: Optional[Tuple[Point, Optional[parent]]] = None
+        self.transform_origin = transform_origin
 
     @classmethod
     def straight_line(
@@ -439,6 +441,15 @@ class Path(PaintedObject):
     @z_index.setter
     def z_index(self, value: int):
         self._z_index = value
+
+    @property
+    def transform_origin(self) -> Point:
+        """The origin point for rotation and scaling transforms"""
+        return self._transform_origin
+
+    @transform_origin.setter
+    def transform_origin(self, value: PointDef):
+        self._transform_origin = Point.from_def(value)
 
     def line_to(self, x: Unit, y: Unit, parent: Optional[PositionedObject] = None):
         """Draw a path from the current position to a new point.

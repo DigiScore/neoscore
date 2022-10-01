@@ -5,8 +5,6 @@ from PyQt5.QtGui import QBrush, QColor, QPainter, QPainterPath, QPen
 from PyQt5.QtWidgets import QGraphicsItem, QGraphicsPathItem
 
 from neoscore.core import env
-from neoscore.core.point import ORIGIN
-from neoscore.interface.qt.converters import point_to_qt_point_f
 
 
 class QClippingPath(QGraphicsPathItem):
@@ -52,9 +50,9 @@ class QClippingPath(QGraphicsPathItem):
         clip_width: Optional[float] = None,
         scale: float = 1,
         rotation: float = 0,
-        background_brush: QBrush = None,
+        background_brush: Optional[QBrush] = None,
         defer_geometry_calculation: bool = False,
-        transform_origin: QPointF = ORIGIN,
+        transform_origin: Optional[QPointF] = None,
     ):
         """
         Args:
@@ -78,12 +76,13 @@ class QClippingPath(QGraphicsPathItem):
                 preventing a redundant calculation.
         """
         super().__init__(qt_path)
-        super().setScale(scale)
         self.clip_start_x = clip_start_x / scale
         self.clip_width = None if clip_width is None else clip_width / scale
         self.setCacheMode(QGraphicsItem.CacheMode.DeviceCoordinateCache)
+        if transform_origin:
+            self.setTransformOriginPoint(transform_origin)
         self.setRotation(rotation)
-        self.setTransformOriginPoint(point_to_qt_point_f(transform_origin))
+        super().setScale(scale)
         self.background_brush = background_brush
         self.bounding_rect = None
         self.clip_rect = None
