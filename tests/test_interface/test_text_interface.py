@@ -20,19 +20,11 @@ class TestTextInterface(AppTest):
 
     def test_path_caching(self):
         test_object_1 = TextInterface(
-            ORIGIN,
-            self.brush,
-            self.pen,
-            "foo",
-            self.font,
+            ORIGIN, None, 1, 0, 0, ORIGIN, self.brush, self.pen, "foo", self.font
         )
         test_font_2 = FontInterface("Bravura", Unit(24), 1, False)
         test_object_2 = TextInterface(
-            ORIGIN,
-            self.brush,
-            self.pen,
-            "foo",
-            test_font_2,
+            ORIGIN, None, 1, 0, 0, ORIGIN, self.brush, self.pen, "foo", test_font_2
         )
         # Since the fonts and texts matched, the underlying paths
         # should be equal by reference.
@@ -43,38 +35,55 @@ class TestTextInterface(AppTest):
         assert test_qt_object_2.scale() == 2
 
     def test_scale(self):
-        text = TextInterface(ORIGIN, self.brush, self.pen, "foo", self.font)
+        text = TextInterface(
+            ORIGIN, None, 1, 0, 0, ORIGIN, self.brush, self.pen, "foo", self.font
+        )
         assert text._create_qt_object().scale() == 1
-        text = TextInterface(ORIGIN, self.brush, self.pen, "foo", self.font, scale=2)
+        text = TextInterface(
+            ORIGIN, None, 2, 0, 0, ORIGIN, self.brush, self.pen, "foo", self.font
+        )
         assert text._create_qt_object().scale() == 2
 
     def test_rotation(self):
-        text = TextInterface(ORIGIN, self.brush, self.pen, "foo", self.font)
+        text = TextInterface(
+            ORIGIN, None, 1, 0, 0, ORIGIN, self.brush, self.pen, "foo", self.font
+        )
         assert text._create_qt_object().rotation() == 0
         text = TextInterface(
-            ORIGIN, self.brush, self.pen, "foo", self.font, rotation=123
+            ORIGIN, None, 1, 123, 0, ORIGIN, self.brush, self.pen, "foo", self.font
         )
         assert text._create_qt_object().rotation() == 123
 
+    def test_z_index(self):
+        text = TextInterface(
+            ORIGIN, None, 1, 0, 0, ORIGIN, self.brush, self.pen, "foo", self.font
+        )
+        assert text._create_qt_object().zValue() == 0
+        text = TextInterface(
+            ORIGIN, None, 1, 0, 99, ORIGIN, self.brush, self.pen, "foo", self.font
+        )
+        assert text._create_qt_object().zValue() == 99
+
     def test_transform_origin_point(self):
-        text = TextInterface(ORIGIN, self.brush, self.pen, "foo", self.font)
+        text = TextInterface(
+            ORIGIN, None, 1, 0, 0, ORIGIN, self.brush, self.pen, "foo", self.font
+        )
         assert text._create_qt_object().transformOriginPoint() == point_to_qt_point_f(
             ORIGIN
         )
+        transform_origin = Point(Unit(12), Unit(12))
         text = TextInterface(
             ORIGIN,
+            None,
+            1,
+            0,
+            0,
+            transform_origin,
             self.brush,
             self.pen,
             "foo",
             self.font,
-            transform_origin=Point(Unit(12), Unit(12)),
         )
         assert text._create_qt_object().transformOriginPoint() == point_to_qt_point_f(
-            Point(Unit(12), Unit(12))
+            transform_origin
         )
-
-    def test_z_index(self):
-        text = TextInterface(ORIGIN, self.brush, self.pen, "foo", self.font)
-        assert text._create_qt_object().zValue() == 0
-        text = TextInterface(ORIGIN, self.brush, self.pen, "foo", self.font, z_index=99)
-        assert text._create_qt_object().zValue() == 99

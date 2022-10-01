@@ -7,8 +7,8 @@ from PyQt5.QtWidgets import QGraphicsItem, QGraphicsPixmapItem
 
 from neoscore.core import neoscore
 from neoscore.core.exceptions import ImageLoadingError
-from neoscore.core.point import ORIGIN, Point
-from neoscore.interface.positioned_object_interface import PositionedObjectInterface
+from neoscore.core.point import ORIGIN
+from neoscore.interface.graphic_object_interface import GraphicObjectInterface
 from neoscore.interface.qt.converters import point_to_qt_point_f
 
 # Qt::SmoothTransformation
@@ -16,7 +16,7 @@ _QT_SMOOTH_TRANSFORMATION = 1
 
 
 @dataclass(frozen=True)
-class ImageInterface(PositionedObjectInterface):
+class ImageInterface(GraphicObjectInterface):
 
     """Interface for images, including both pixmaps and SVGs.
 
@@ -28,17 +28,6 @@ class ImageInterface(PositionedObjectInterface):
     """
 
     file_path: pathlib.Path
-
-    scale: float = 1
-
-    rotation: float = 0
-    """Rotation angle in degrees"""
-
-    z_index: int = 0
-    """Z-index controlling draw order."""
-
-    transform_origin: Point = ORIGIN
-    """The origin point for rotation and scaling transforms"""
 
     @property
     def _resolved_path(self) -> str:

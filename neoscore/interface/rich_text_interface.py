@@ -2,16 +2,15 @@ from dataclasses import dataclass
 from typing import Optional
 
 from neoscore.core import neoscore
-from neoscore.core.point import ORIGIN, Point
 from neoscore.core.units import Unit
 from neoscore.interface.font_interface import FontInterface
-from neoscore.interface.positioned_object_interface import PositionedObjectInterface
+from neoscore.interface.graphic_object_interface import GraphicObjectInterface
 from neoscore.interface.qt.converters import point_to_qt_point_f
 from neoscore.interface.qt.q_rich_text_item import QRichTextItem
 
 
 @dataclass(frozen=True)
-class RichTextInterface(PositionedObjectInterface):
+class RichTextInterface(GraphicObjectInterface):
 
     """An interface for graphical text objects."""
 
@@ -20,17 +19,6 @@ class RichTextInterface(PositionedObjectInterface):
     font: FontInterface
 
     width: Optional[Unit] = None
-
-    scale: float = 1
-
-    rotation: float = 0
-    """Rotation angle in degrees"""
-
-    z_index: int = 0
-    """Z-index controlling draw order."""
-
-    transform_origin: Point = ORIGIN
-    """The origin point for rotation and scaling transforms"""
 
     def render(self):
         """Render the line to the scene."""

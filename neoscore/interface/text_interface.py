@@ -4,12 +4,11 @@ from typing import Dict, NamedTuple, Optional
 from PyQt5.QtGui import QFont, QPainterPath
 
 from neoscore.core import neoscore
-from neoscore.core.point import ORIGIN, Point
 from neoscore.core.units import Unit
 from neoscore.interface.brush_interface import BrushInterface
 from neoscore.interface.font_interface import FontInterface
+from neoscore.interface.graphic_object_interface import GraphicObjectInterface
 from neoscore.interface.pen_interface import PenInterface
-from neoscore.interface.positioned_object_interface import PositionedObjectInterface
 from neoscore.interface.qt.converters import point_to_qt_point_f
 from neoscore.interface.qt.q_clipping_path import QClippingPath
 
@@ -44,7 +43,7 @@ see https://doc.qt.io/qt-5/qgraphicsitem.html#setCacheMode
 
 
 @dataclass(frozen=True)
-class TextInterface(PositionedObjectInterface):
+class TextInterface(GraphicObjectInterface):
 
     """An interface for graphical text objects."""
 
@@ -56,15 +55,7 @@ class TextInterface(PositionedObjectInterface):
 
     font: FontInterface
 
-    scale: float = 1
-
-    rotation: float = 0
-    """Rotation angle in degrees"""
-
     background_brush: Optional[BrushInterface] = None
-
-    z_index: int = 0
-    """Z-index controlling draw order."""
 
     clip_start_x: Optional[Unit] = None
     """The local starting position of the drawn region in the glyph.
@@ -77,9 +68,6 @@ class TextInterface(PositionedObjectInterface):
 
     Use ``None`` to render to the end.
     """
-
-    transform_origin: Point = ORIGIN
-    """The origin point for rotation and scaling transforms"""
 
     def render(self):
         """Render the line to the scene."""

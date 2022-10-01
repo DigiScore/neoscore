@@ -146,13 +146,14 @@ class RichText(PositionedObject):
     ):
         interface = RichTextInterface(
             pos,
-            self.html_text,
-            self.font.interface,
-            self.width,
+            None,  # TODO parent
             self.scale,
             self.rotation,
             self.z_index,
             self.transform_origin,
+            self.html_text,
+            self.font.interface,
+            self.width,
         )
         interface.render()
         self.interfaces.append(interface)

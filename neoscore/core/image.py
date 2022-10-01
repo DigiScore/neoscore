@@ -111,11 +111,12 @@ class Image(PositionedObject):
     ):
         interface = ImageInterface(
             pos,
-            self.file_path,
+            None,  # TODO handle parent
             self.scale,
             self.rotation,
             self.z_index,
             self.transform_origin,
+            self.file_path,
         )
         interface.render()
         self.interfaces.append(interface)

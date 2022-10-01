@@ -1,17 +1,16 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import NamedTuple, Optional, Union
+from typing import List, NamedTuple, Optional, Union
 
 from PyQt5.QtGui import QPainterPath
 from typing_extensions import TypeAlias
 
 from neoscore.core import neoscore
-from neoscore.core.point import ORIGIN, Point
 from neoscore.core.units import Unit
 from neoscore.interface.brush_interface import BrushInterface
+from neoscore.interface.graphic_object_interface import GraphicObjectInterface
 from neoscore.interface.pen_interface import PenInterface
-from neoscore.interface.positioned_object_interface import PositionedObjectInterface
 from neoscore.interface.qt.converters import point_to_qt_point_f
 from neoscore.interface.qt.q_clipping_path import QClippingPath
 
@@ -57,7 +56,7 @@ ResolvedPathElement: TypeAlias = Union[ResolvedMoveTo, ResolvedLineTo, ResolvedC
 
 
 @dataclass(frozen=True)
-class PathInterface(PositionedObjectInterface):
+class PathInterface(GraphicObjectInterface):
     """Interface for a generic graphic path object."""
 
     brush: BrushInterface
@@ -66,13 +65,7 @@ class PathInterface(PositionedObjectInterface):
 
     elements: List[ResolvedPathElement]
 
-    rotation: float = 0
-    """Rotation angle in degrees"""
-
     background_brush: Optional[BrushInterface] = None
-
-    z_index: int = 0
-    """Z-index controlling draw order."""
 
     clip_start_x: Optional[Unit] = None
     """The local starting position of the drawn region in the glyph.
@@ -85,9 +78,6 @@ class PathInterface(PositionedObjectInterface):
 
     Use ``None`` to render to the end.
     """
-
-    transform_origin: Point = ORIGIN
-    """The origin point for rotation and scaling transforms"""
 
     @staticmethod
     def create_qt_path(elements: List[ResolvedPathElement]) -> QPainterPath:

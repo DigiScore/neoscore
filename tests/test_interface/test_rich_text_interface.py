@@ -14,8 +14,17 @@ class TestRichTextInterface(AppTest):
         self.html = "<p>test</p>"
 
     def test_qt_object_properties(self):
+        transform_origin = Point(Unit(12), Unit(12))
         interface = RichTextInterface(
-            Point(Unit(5), Unit(6)), self.html, self.font, Unit(50), 2, 15, 99
+            Point(Unit(5), Unit(6)),
+            None,
+            2,
+            15,
+            99,
+            transform_origin,
+            self.html,
+            self.font,
+            Unit(50),
         )
         qt_object = interface._create_qt_object()
         assert qt_object.document().toPlainText() == "test"
@@ -26,43 +35,11 @@ class TestRichTextInterface(AppTest):
         assert qt_object.rotation() == 15
         assert qt_object.font() == self.font.qt_object
         assert qt_object.zValue() == 99
+        assert qt_object.transformOriginPoint() == point_to_qt_point_f(transform_origin)
 
     def test_automatic_text_width(self):
         interface = RichTextInterface(
-            Point(Unit(5), Unit(6)), self.html, self.font, None
+            Point(Unit(5), Unit(6)), None, 1, 0, 0, ORIGIN, self.html, self.font
         )
         qt_object = interface._create_qt_object()
         assert qt_object.textWidth() == -1
-
-    def test_scale(self):
-        text = RichTextInterface(ORIGIN, self.html, self.font)
-        assert text._create_qt_object().scale() == 1
-        text = RichTextInterface(ORIGIN, self.html, self.font, scale=2)
-        assert text._create_qt_object().scale() == 2
-
-    def test_rotation(self):
-        text = RichTextInterface(ORIGIN, self.html, self.font)
-        assert text._create_qt_object().rotation() == 0
-        text = RichTextInterface(ORIGIN, self.html, self.font, rotation=123)
-        assert text._create_qt_object().rotation() == 123
-
-    def test_transform_origin_point(self):
-        text = RichTextInterface(ORIGIN, self.html, self.font)
-        assert text._create_qt_object().transformOriginPoint() == point_to_qt_point_f(
-            ORIGIN
-        )
-        text = RichTextInterface(
-            ORIGIN,
-            self.html,
-            self.font,
-            transform_origin=Point(Unit(12), Unit(12)),
-        )
-        assert text._create_qt_object().transformOriginPoint() == point_to_qt_point_f(
-            Point(Unit(12), Unit(12))
-        )
-
-    def test_z_index(self):
-        text = RichTextInterface(ORIGIN, self.html, self.font)
-        assert text._create_qt_object().zValue() == 0
-        text = RichTextInterface(ORIGIN, self.html, self.font, z_index=99)
-        assert text._create_qt_object().zValue() == 99

@@ -581,12 +581,15 @@ class Path(PaintedObject):
         resolved_path_elements = self._resolve_path_elements()
         slice_interface = PathInterface(
             pos,
+            None,  # TODO parent
+            1,  # path doesn't yet support scaling, hardcode to 1
+            self.rotation,
+            self.z_index,
+            self.transform_origin,
             self.brush.interface,
             self.pen.interface,
             resolved_path_elements,
-            self.rotation,
             self.background_brush.interface if self.background_brush else None,
-            self.z_index,
             clip_start_x,
             clip_width,
         )

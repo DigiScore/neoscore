@@ -246,17 +246,18 @@ class Text(PaintedObject):
         """
         slice_interface = TextInterface(
             pos + self._alignment_offset,
+            None,  # TODO parent
+            self.scale,
+            self.rotation,
+            self.z_index,
+            self.transform_origin,
             self.brush.interface,
             self.pen.interface,
             self.text,
             self.font.interface,
-            self.scale,
-            self.rotation,
             self.background_brush.interface if self.background_brush else None,
-            self.z_index,
             clip_start_x,
             clip_width,
-            self.transform_origin,
         )
         slice_interface.render()
         self.interfaces.append(slice_interface)
