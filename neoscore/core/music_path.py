@@ -7,7 +7,7 @@ from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.music_font import MusicFont
 from neoscore.core.path import Path
 from neoscore.core.pen import PenDef
-from neoscore.core.point import ORIGIN, Point, PointDef
+from neoscore.core.point import ORIGIN, PointDef
 from neoscore.core.positioned_object import PositionedObject
 
 
@@ -29,7 +29,7 @@ class MusicPath(Path, HasMusicFont):
         rotation: float = 0,
         background_brush: Optional[BrushDef] = None,
         z_index: int = 0,
-        transform_origin: Point = ORIGIN,
+        transform_origin: PointDef = ORIGIN,
     ):
         """
         Args:

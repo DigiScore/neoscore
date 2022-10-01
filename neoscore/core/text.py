@@ -35,7 +35,7 @@ class Text(PaintedObject):
         breakable: bool = True,
         alignment_x: AlignmentX = AlignmentX.LEFT,
         alignment_y: AlignmentY = AlignmentY.BASELINE,
-        transform_origin: Point = ORIGIN,
+        transform_origin: PointDef = ORIGIN,
     ):
         """
         Args:
@@ -70,7 +70,7 @@ class Text(PaintedObject):
         self._breakable = breakable
         self._alignment_x = alignment_x
         self._alignment_y = alignment_y
-        self._transform_origin = transform_origin
+        self.transform_origin = transform_origin
         super().__init__(pos, parent, brush, pen or Pen.no_pen())
 
     @property
@@ -186,8 +186,8 @@ class Text(PaintedObject):
         return self._transform_origin
 
     @transform_origin.setter
-    def transform_origin(self, value: Point):
-        self._transform_origin = value
+    def transform_origin(self, value: PointDef):
+        self._transform_origin = Point.from_def(value)
 
     @render_cached_property
     def _alignment_offset(self) -> Point:

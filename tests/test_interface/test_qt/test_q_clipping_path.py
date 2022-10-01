@@ -1,3 +1,4 @@
+from PyQt5.QtCore import QPointF
 from PyQt5.QtGui import QColor, QPainterPath, QPen
 
 from neoscore.interface.qt.q_clipping_path import QClippingPath
@@ -10,6 +11,15 @@ class TestQClippingPath(AppTest):
         super().setUp()
         self.pen = QPen(QColor("#000000"), 2)
         self.pen_padding_width = self.pen.widthF() / 2
+
+    def test_transform_origin(self):
+        painter_path = QPainterPath()
+        obj = QClippingPath(painter_path, 2, 8, 2)
+        assert obj.transformOriginPoint().x() == 0
+        assert obj.transformOriginPoint().y() == 0
+        obj_2 = QClippingPath(painter_path, 2, 8, 2, transform_origin=QPointF(1, 2))
+        assert obj_2.transformOriginPoint().x() == 1
+        assert obj_2.transformOriginPoint().y() == 2
 
     def test_clip_measurements_scale_adjusted(self):
         painter_path = QPainterPath()

@@ -47,7 +47,7 @@ class Path(PaintedObject):
         rotation: float = 0,
         background_brush: Optional[BrushDef] = None,
         z_index: int = 0,
-        transform_origin: Point = ORIGIN,
+        transform_origin: PointDef = ORIGIN,
     ):
         """
         Args:
@@ -67,7 +67,7 @@ class Path(PaintedObject):
         self._rotation = rotation
         self.elements: List[PathElement] = []
         self._current_subpath_start: Optional[Tuple[Point, Optional[parent]]] = None
-        self._transform_origin = transform_origin
+        self.transform_origin = transform_origin
 
     @classmethod
     def straight_line(
@@ -448,8 +448,8 @@ class Path(PaintedObject):
         return self._transform_origin
 
     @transform_origin.setter
-    def transform_origin(self, value: Point):
-        self._transform_origin = value
+    def transform_origin(self, value: PointDef):
+        self._transform_origin = Point.from_def(value)
 
     def line_to(self, x: Unit, y: Unit, parent: Optional[PositionedObject] = None):
         """Draw a path from the current position to a new point.

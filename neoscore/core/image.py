@@ -25,7 +25,7 @@ class Image(PositionedObject):
         scale: float = 1,
         rotation: float = 0,
         z_index: int = 0,
-        transform_origin: Point = ORIGIN,
+        transform_origin: PointDef = ORIGIN,
     ):
         """
         Args:
@@ -39,7 +39,7 @@ class Image(PositionedObject):
         self._scale = scale
         self._rotation = rotation
         self._z_index = z_index
-        self._transform_origin = transform_origin
+        self.transform_origin = transform_origin
         self.file_path = file_path
         super().__init__(pos, parent)
 
@@ -69,8 +69,8 @@ class Image(PositionedObject):
         return self._transform_origin
 
     @transform_origin.setter
-    def transform_origin(self, value: Point):
-        self._transform_origin = value
+    def transform_origin(self, value: PointDef):
+        self._transform_origin = Point.from_def(value)
 
     @property
     def z_index(self) -> int:

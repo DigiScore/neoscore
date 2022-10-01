@@ -9,7 +9,7 @@ from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.music_char import MusicChar, MusicCharDef
 from neoscore.core.music_font import MusicFont
 from neoscore.core.pen import PenDef
-from neoscore.core.point import ORIGIN, Point, PointDef
+from neoscore.core.point import ORIGIN, PointDef
 from neoscore.core.positioned_object import PositionedObject, render_cached_property
 from neoscore.core.rect import Rect
 from neoscore.core.text import Text
@@ -65,7 +65,7 @@ class MusicText(Text, HasMusicFont):
         breakable: bool = True,
         alignment_x: AlignmentX = AlignmentX.LEFT,
         alignment_y: AlignmentY = AlignmentY.BASELINE,
-        transform_origin: Point = ORIGIN,
+        transform_origin: PointDef = ORIGIN,
     ):
         """
         Args:
