@@ -35,7 +35,7 @@ class Text(PaintedObject):
         breakable: bool = True,
         alignment_x: AlignmentX = AlignmentX.LEFT,
         alignment_y: AlignmentY = AlignmentY.BASELINE,
-        transform_origin: Point = ORIGIN
+        transform_origin: Point = ORIGIN,
     ):
         """
         Args:
@@ -179,7 +179,7 @@ class Text(PaintedObject):
     @alignment_y.setter
     def alignment_y(self, value: AlignmentY):
         self._alignment_y = value
-        
+
     @property
     def transform_origin(self) -> Point:
         """The origin point for rotation and scaling transforms"""
@@ -256,7 +256,7 @@ class Text(PaintedObject):
             self.z_index,
             clip_start_x,
             clip_width,
-            self.transform_origin
+            self.transform_origin,
         )
         slice_interface.render()
         self.interfaces.append(slice_interface)

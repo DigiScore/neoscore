@@ -34,7 +34,7 @@ class TestText(AppTest):
             False,
             AlignmentX.CENTER,
             AlignmentY.CENTER,
-            ORIGIN
+            ORIGIN,
         )
         assert obj.x == Unit(5)
         assert obj.y == Unit(6)
@@ -90,7 +90,7 @@ class TestText(AppTest):
         obj.rotation = 123
         assert obj.rotation == 123
         assert Text((Unit(5), Unit(6)), None, "testing", rotation=123).rotation == 123
-        
+
     def test_transform_origin_setter(self):
         obj = Text((Unit(5), Unit(6)), None, "testing", transform_origin=ORIGIN)
         assert obj.transform_origin == ORIGIN

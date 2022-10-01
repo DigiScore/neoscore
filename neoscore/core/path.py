@@ -47,7 +47,7 @@ class Path(PaintedObject):
         rotation: float = 0,
         background_brush: Optional[BrushDef] = None,
         z_index: int = 0,
-        transform_origin: Point = ORIGIN
+        transform_origin: Point = ORIGIN,
     ):
         """
         Args:
@@ -441,7 +441,7 @@ class Path(PaintedObject):
     @z_index.setter
     def z_index(self, value: int):
         self._z_index = value
-        
+
     @property
     def transform_origin(self) -> Point:
         """The origin point for rotation and scaling transforms"""

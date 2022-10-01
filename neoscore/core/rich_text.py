@@ -31,7 +31,7 @@ class RichText(PositionedObject):
         scale: float = 1,
         rotation: float = 0,
         z_index: int = 0,
-        transform_origin: Point = ORIGIN
+        transform_origin: Point = ORIGIN,
     ):
         """
         Args:
@@ -117,7 +117,7 @@ class RichText(PositionedObject):
     @rotation.setter
     def rotation(self, value: float):
         self._rotation = value
-        
+
     @property
     def transform_origin(self) -> Point:
         """The origin point for rotation and scaling transforms"""
@@ -152,7 +152,7 @@ class RichText(PositionedObject):
             self.scale,
             self.rotation,
             self.z_index,
-            self.transform_origin
+            self.transform_origin,
         )
         interface.render()
         self.interfaces.append(interface)

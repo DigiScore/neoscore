@@ -29,7 +29,7 @@ class MusicPath(Path, HasMusicFont):
         rotation: float = 0,
         background_brush: Optional[BrushDef] = None,
         z_index: int = 0,
-        transform_origin: Point = ORIGIN
+        transform_origin: Point = ORIGIN,
     ):
         """
         Args:
@@ -46,7 +46,15 @@ class MusicPath(Path, HasMusicFont):
             z_index: Controls draw order with lower values drawn first.
         """
         Path.__init__(
-            self, pos, parent, brush, pen, rotation, background_brush, z_index, transform_origin
+            self,
+            pos,
+            parent,
+            brush,
+            pen,
+            rotation,
+            background_brush,
+            z_index,
+            transform_origin,
         )
         if font is None:
             font = HasMusicFont.find_music_font(parent)

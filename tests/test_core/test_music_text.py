@@ -39,7 +39,7 @@ class TestMusicText(AppTest):
             False,
             AlignmentX.RIGHT,
             AlignmentY.CENTER,
-            ORIGIN
+            ORIGIN,
         )
         assert mtext.pos == Point(Unit(5), Unit(6))
         assert mtext.parent == mock_parent

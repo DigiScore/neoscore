@@ -65,7 +65,7 @@ class MusicText(Text, HasMusicFont):
         breakable: bool = True,
         alignment_x: AlignmentX = AlignmentX.LEFT,
         alignment_y: AlignmentY = AlignmentY.BASELINE,
-        transform_origin: Point = ORIGIN
+        transform_origin: Point = ORIGIN,
     ):
         """
         Args:
@@ -110,7 +110,7 @@ class MusicText(Text, HasMusicFont):
             breakable,
             alignment_x,
             alignment_y,
-            transform_origin
+            transform_origin,
         )
 
     @property
