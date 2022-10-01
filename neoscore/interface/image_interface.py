@@ -5,7 +5,6 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtSvg import QGraphicsSvgItem
 from PyQt5.QtWidgets import QGraphicsItem, QGraphicsPixmapItem
 
-from neoscore.core import neoscore
 from neoscore.core.exceptions import ImageLoadingError
 from neoscore.core.point import ORIGIN
 from neoscore.interface.graphic_object_interface import GraphicObjectInterface
@@ -70,5 +69,4 @@ class ImageInterface(GraphicObjectInterface):
             qt_object = self._create_svg_qt_object()
         else:
             qt_object = self._create_pixmap_qt_object()
-
-        neoscore.app_interface.scene.addItem(qt_object)
+        self._register_qt_object(qt_object)

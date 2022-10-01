@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from neoscore.core import neoscore
 from neoscore.core.units import Unit
 from neoscore.interface.font_interface import FontInterface
 from neoscore.interface.graphic_object_interface import GraphicObjectInterface
@@ -22,8 +21,7 @@ class RichTextInterface(GraphicObjectInterface):
 
     def render(self):
         """Render the line to the scene."""
-        qt_object = self._create_qt_object()
-        neoscore.app_interface.scene.addItem(qt_object)
+        self._register_qt_object(self._create_qt_object())
 
     def _create_qt_object(self) -> QRichTextItem:
         """Create and return this interface's underlying Qt object"""

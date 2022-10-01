@@ -1,8 +1,11 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Optional
 
+from PyQt5.QtWidgets import QGraphicsItem
+
+from neoscore.core import neoscore
 from neoscore.core.point import Point
 
 
@@ -37,11 +40,20 @@ class GraphicObjectInterface:
     transform_origin: Point
     """The origin point for rotation and scaling transforms"""
 
+    _qt_object: Optional[QGraphicsItem] = field(init=False, compare=False, repr=False)
+    """A corresponding Qt object for internal use only.
+
+    This value is set during rendering and is not meant to be set more than once.
+    """
+
     def render(self):
         """Render the object to the scene.
 
         This is typically done by constructing a QGraphicsItem
-        subclass and adding it to the scene with
-        ``neoscore._app_interface.scene.addItem(qt_object)``.
+        subclass and calling `_register_qt_object` with it.
         """
         raise NotImplementedError
+
+    def _register_qt_object(self, obj: QGraphicsItem):
+        neoscore.app_interface.scene.addItem(obj)
+        super().__setattr__("_qt_object", obj)

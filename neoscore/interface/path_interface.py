@@ -6,7 +6,6 @@ from typing import List, NamedTuple, Optional, Union
 from PyQt5.QtGui import QPainterPath
 from typing_extensions import TypeAlias
 
-from neoscore.core import neoscore
 from neoscore.core.units import Unit
 from neoscore.interface.brush_interface import BrushInterface
 from neoscore.interface.graphic_object_interface import GraphicObjectInterface
@@ -104,8 +103,7 @@ class PathInterface(GraphicObjectInterface):
 
     def render(self):
         """Render the path to the scene."""
-        qt_object = self._create_qt_object()
-        neoscore.app_interface.scene.addItem(qt_object)
+        self._register_qt_object(self._create_qt_object())
 
     def _create_qt_object(self) -> QClippingPath:
         painter_path = PathInterface.create_qt_path(self.elements)
