@@ -7,6 +7,7 @@ from neoscore.core.layout_controllers import NewLine
 from neoscore.core.point import Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import ZERO, Unit
+from neoscore.core.point import ORIGIN
 from neoscore.interface.image_interface import ImageInterface
 
 
@@ -25,6 +26,7 @@ class Image(PositionedObject):
         scale: float = 1,
         rotation: float = 0,
         z_index: int = 0,
+        transform_origin: Point = ORIGIN
     ):
         """
         Args:
@@ -38,6 +40,7 @@ class Image(PositionedObject):
         self._scale = scale
         self._rotation = rotation
         self._z_index = z_index
+        self._transform_origin = transform_origin
         self.file_path = file_path
         super().__init__(pos, parent)
 
@@ -51,7 +54,7 @@ class Image(PositionedObject):
     @scale.setter
     def scale(self, value: float):
         self._scale = value
-
+      
     @property
     def rotation(self) -> float:
         """An angle in degrees to rotate about the image origin"""
@@ -60,6 +63,15 @@ class Image(PositionedObject):
     @rotation.setter
     def rotation(self, value: float):
         self._rotation = value
+        
+    @property
+    def transform_origin(self) -> Point:
+        """The origin point for rotation and scaling transforms"""
+        return self._transform_origin
+
+    @transform_origin.setter
+    def transform_origin(self, value: Point):
+        self._transform_origin = value
 
     @property
     def z_index(self) -> int:
@@ -99,7 +111,7 @@ class Image(PositionedObject):
         flowable_x: Optional[Unit] = None,
     ):
         interface = ImageInterface(
-            pos, self.file_path, self.scale, self.rotation, self.z_index
+            pos, self.file_path, self.scale, self.rotation, self.z_index, self.transform_origin
         )
         interface.render()
         self.interfaces.append(interface)

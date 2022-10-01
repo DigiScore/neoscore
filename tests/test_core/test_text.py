@@ -34,6 +34,7 @@ class TestText(AppTest):
             False,
             AlignmentX.CENTER,
             AlignmentY.CENTER,
+            ORIGIN
         )
         assert obj.x == Unit(5)
         assert obj.y == Unit(6)
@@ -49,6 +50,7 @@ class TestText(AppTest):
         assert not obj.breakable
         assert obj.alignment_x == AlignmentX.CENTER
         assert obj.alignment_y == AlignmentY.CENTER
+        assert obj.transform_origin == ORIGIN
 
     def test_default_init_values(self):
         obj = Text((Unit(5), Unit(6)), None, "testing")
@@ -88,6 +90,12 @@ class TestText(AppTest):
         obj.rotation = 123
         assert obj.rotation == 123
         assert Text((Unit(5), Unit(6)), None, "testing", rotation=123).rotation == 123
+        
+    def test_transform_origin_setter(self):
+        obj = Text((Unit(5), Unit(6)), None, "testing", transform_origin=ORIGIN)
+        assert obj.transform_origin == ORIGIN
+        obj.transform_origin = (Unit(12), Unit(12))
+        assert obj.transform_origin == Point(Unit(12), Unit(12))
 
     def test_z_index(self):
         obj = Text((Unit(5), Unit(6)), None, "testing")
