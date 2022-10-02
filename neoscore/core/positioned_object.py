@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Iterator
-from typing import TYPE_CHECKING, Any, Optional, Type, cast
+from typing import TYPE_CHECKING, Any, List, Optional, Set, Type, cast
 
 from backports.cached_property import cached_property
 
@@ -9,6 +9,7 @@ from neoscore.core import neoscore
 from neoscore.core.point import ORIGIN, Point, PointDef
 from neoscore.core.units import ZERO, Unit
 from neoscore.interface.graphic_object_interface import GraphicObjectInterface
+from neoscore.interface.invisible_object_interface import InvisibleObjectInterface
 
 if TYPE_CHECKING:
     # Used in type annotations, imported here to avoid cyclic imports
@@ -96,6 +97,11 @@ class PositionedObject:
         self._render_cached_properties: Set[str] = set()
         self._currently_rendering = False
         self._interfaces = []
+        self._interface_for_children = None
+        self._scale = 1.0
+        self._rotation = 0.0
+        self._z_index = 0
+        self.transform_origin = ORIGIN
 
     @property
     def pos(self) -> Point:
@@ -105,6 +111,42 @@ class PositionedObject:
     @pos.setter
     def pos(self, value: PointDef):
         self._pos = Point.from_def(value)
+
+    @property
+    def scale(self) -> float:
+        """A scale factor to be applied to the rendered object."""
+        return self._scale
+
+    @scale.setter
+    def scale(self, value: float):
+        self._scale = value
+
+    @property
+    def rotation(self) -> float:
+        """A rotation angle in degrees."""
+        return self._rotation
+
+    @rotation.setter
+    def rotation(self, value: float):
+        self._rotation = value
+
+    @property
+    def z_index(self) -> int:
+        """Value controlling draw order with lower values being drawn first"""
+        return self._z_index
+
+    @z_index.setter
+    def z_index(self, value: int):
+        self._z_index = value
+
+    @property
+    def transform_origin(self) -> Point:
+        """The origin point for rotation and scaling transforms"""
+        return self._transform_origin
+
+    @transform_origin.setter
+    def transform_origin(self, value: PointDef):
+        self._transform_origin = Point.from_def(value)
 
     @property
     def x(self) -> Unit:
@@ -173,7 +215,7 @@ class PositionedObject:
                 yield subchild
             yield child
 
-    @property
+    @render_cached_property
     def flowable(self) -> Optional[Flowable]:
         """The flowable this object belongs in."""
         return cast(
@@ -190,6 +232,10 @@ class PositionedObject:
         flowable line it appears in.
         """
         return self._interfaces
+
+    @property
+    def interface_for_children(self) -> Optional[GraphicObjectInterface]:
+        return self._interface_for_children
 
     def descendants_of_class_or_subclass(
         self, graphic_object_class: Type[PositionedObject]
@@ -388,7 +434,17 @@ class PositionedObject:
         if self.breakable_length != ZERO and self.flowable is not None:
             self.render_in_flowable()
         else:
-            self.render_complete(self.canvas_pos())
+            self.render_complete(self.pos)
+            self._interface_for_children = InvisibleObjectInterface(
+                self.pos,
+                # Hack because root document obj lacks this property
+                getattr(self.parent, "interface_for_children", None),
+                self.scale,
+                self.rotation,
+                self.z_index,
+                self.transform_origin,
+            )
+            self._interface_for_children.render()
         for child in self.children:
             child.render()
 
@@ -462,7 +518,8 @@ class PositionedObject:
         This and other render methods should generally not be called directly.
 
         Args:
-            pos: The rendering position in document space for drawing.
+            pos: The rendering position. If outside a flowable, this is relative to
+                the parent. Otherwise, it is in document coordinates.
             flowable_line: If in a ``Flowable``, the line in which this object appears
             flowable_x: If in a ``Flowable``, the flowable x position of this render
         """

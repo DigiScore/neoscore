@@ -19,7 +19,11 @@ class GraphicObjectInterface:
     """
 
     pos: Point
-    """The absolute position of the object in canvas space."""
+    """The position of the object.
+
+    If a parent is provided, this position is relative to that interface. Otherwise it
+    is in absolute document coordinates.
+    """
 
     parent: Optional[GraphicObjectInterface]
     """The object's parent, if any.

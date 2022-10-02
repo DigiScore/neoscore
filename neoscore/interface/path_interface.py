@@ -111,7 +111,7 @@ class PathInterface(GraphicObjectInterface):
             painter_path,
             self.clip_start_x.base_value if self.clip_start_x is not None else 0,
             self.clip_width.base_value if self.clip_width is not None else None,
-            1,
+            self.scale,
             self.rotation,
             self.background_brush.qt_object if self.background_brush else None,
             defer_geometry_calculation=True,

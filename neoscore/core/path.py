@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from math import atan, cos, pi, sin, sqrt, tan
-from typing import Optional, cast
+from typing import List, Optional, Tuple, cast
 
 from neoscore.core.brush import Brush, BrushDef
 from neoscore.core.layout_controllers import NewLine
@@ -409,19 +409,6 @@ class Path(PaintedObject):
         return max_x - min_x
 
     @property
-    def rotation(self) -> float:
-        """An angle in degrees to rotate about the path origin.
-
-        Rotated paths with flowable breaks and path elements anchored
-        to other objects are not currently supported.
-        """
-        return self._rotation
-
-    @rotation.setter
-    def rotation(self, value: float):
-        self._rotation = value
-
-    @property
     def background_brush(self) -> Optional[Brush]:
         """An optional brush to paint over the path bounding rect's background with"""
         return self._background_brush
@@ -432,24 +419,6 @@ class Path(PaintedObject):
             self._background_brush = Brush.from_def(value)
         else:
             self._background_brush = None
-
-    @property
-    def z_index(self) -> int:
-        """Value controlling draw order with lower values being drawn first"""
-        return self._z_index
-
-    @z_index.setter
-    def z_index(self, value: int):
-        self._z_index = value
-
-    @property
-    def transform_origin(self) -> Point:
-        """The origin point for rotation and scaling transforms"""
-        return self._transform_origin
-
-    @transform_origin.setter
-    def transform_origin(self, value: PointDef):
-        self._transform_origin = Point.from_def(value)
 
     def line_to(self, x: Unit, y: Unit, parent: Optional[PositionedObject] = None):
         """Draw a path from the current position to a new point.
@@ -572,6 +541,7 @@ class Path(PaintedObject):
     def _render_slice(
         self,
         pos: Point,
+        inside_flowable: bool,
         clip_start_x: Optional[Unit] = None,
         clip_width: Optional[Unit] = None,
     ):
@@ -581,8 +551,8 @@ class Path(PaintedObject):
         resolved_path_elements = self._resolve_path_elements()
         slice_interface = PathInterface(
             pos,
-            None,  # TODO parent
-            1,  # path doesn't yet support scaling, hardcode to 1
+            None if inside_flowable else self.parent.interface_for_children,
+            self.scale,
             self.rotation,
             self.z_index,
             self.transform_origin,
@@ -602,16 +572,17 @@ class Path(PaintedObject):
         flowable_line: Optional[NewLine] = None,
         flowable_x: Optional[Unit] = None,
     ):
-        self._render_slice(pos, None, None)
+        inside_flowable = bool(flowable_line)
+        self._render_slice(pos, inside_flowable, None, None)
 
     def render_before_break(self, pos: Point, flowable_line: NewLine, flowable_x: Unit):
         slice_length = flowable_line.length - (flowable_x - flowable_line.flowable_x)
-        self._render_slice(pos, ZERO, slice_length)
+        self._render_slice(pos, True, ZERO, slice_length)
 
     def render_spanning_continuation(
         self, pos: Point, flowable_line: NewLine, object_x: Unit
     ):
-        self._render_slice(pos, object_x, flowable_line.length)
+        self._render_slice(pos, True, object_x, flowable_line.length)
 
     def render_after_break(self, pos: Point, flowable_line: NewLine, object_x: Unit):
-        self._render_slice(pos, object_x, None)
+        self._render_slice(pos, True, object_x, None)

@@ -196,8 +196,8 @@ class Page(PositionedObject):
             pen=Pen(_PREVIEW_OUTLINE_COLOR, pattern=PenPattern.DOT),
         )
         for obj in [
-            page_preview_rect,
             page_drop_shadow_rect,
+            page_preview_rect,
             live_area_preview_rect,
         ]:
             obj.render()

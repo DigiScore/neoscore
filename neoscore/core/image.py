@@ -36,50 +36,12 @@ class Image(PositionedObject):
             rotation: Rotation angle in degrees.
             z_index: Controls draw order with lower values drawn first.
         """
+        super().__init__(pos, parent)
         self._scale = scale
         self._rotation = rotation
         self._z_index = z_index
         self.transform_origin = transform_origin
         self.file_path = file_path
-        super().__init__(pos, parent)
-
-    @property
-    def scale(self) -> float:
-        """A scaling factor.
-
-        Scaling always respects the image's aspect ratio."""
-        return self._scale
-
-    @scale.setter
-    def scale(self, value: float):
-        self._scale = value
-
-    @property
-    def rotation(self) -> float:
-        """An angle in degrees to rotate about the image origin"""
-        return self._rotation
-
-    @rotation.setter
-    def rotation(self, value: float):
-        self._rotation = value
-
-    @property
-    def transform_origin(self) -> Point:
-        """The origin point for rotation and scaling transforms"""
-        return self._transform_origin
-
-    @transform_origin.setter
-    def transform_origin(self, value: PointDef):
-        self._transform_origin = Point.from_def(value)
-
-    @property
-    def z_index(self) -> int:
-        """Value controlling draw order with lower values being drawn first"""
-        return self._z_index
-
-    @z_index.setter
-    def z_index(self, value: int):
-        self._z_index = value
 
     @property
     def file_path(self) -> pathlib.Path:
@@ -111,7 +73,7 @@ class Image(PositionedObject):
     ):
         interface = ImageInterface(
             pos,
-            None,  # TODO handle parent
+            None if flowable_line else self.parent.interface_for_children,
             self.scale,
             self.rotation,
             self.z_index,

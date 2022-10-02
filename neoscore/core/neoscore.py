@@ -4,7 +4,7 @@ import json
 import os
 import pathlib
 from time import time
-from typing import TYPE_CHECKING, Callable, Optional
+from typing import TYPE_CHECKING, Callable, Dict, List, Optional, Set, Tuple
 from warnings import warn
 
 import img2pdf  # type: ignore
@@ -239,9 +239,9 @@ def show(
     global document
     global app_interface
     app_interface.clear_scene()
-    document.render()
     if display_page_geometry:
         _render_geometry_preview()
+    document.render()
     if refresh_func:
         set_refresh_func(refresh_func)
     app_interface.auto_viewport_interaction_enabled = auto_viewport_interaction_enabled
@@ -257,6 +257,8 @@ def _clear_interfaces():
             interfaces = getattr(obj, "interfaces", None)
             if interfaces:
                 interfaces.clear()
+            if hasattr(obj, "_interface_for_children"):
+                obj._interface_for_children = None
 
 
 def _render_geometry_preview():

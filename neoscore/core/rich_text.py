@@ -45,6 +45,7 @@ class RichText(PositionedObject):
             rotation: Rotation angle in degrees.
             z_index: Controls draw order with lower values drawn first.
         """
+        super().__init__(pos, parent)
         if font:
             self._font = font
         else:
@@ -55,7 +56,6 @@ class RichText(PositionedObject):
         self._rotation = rotation
         self._z_index = z_index
         self.transform_origin = transform_origin
-        super().__init__(pos, parent)
 
     @property
     def breakable_length(self) -> Unit:
@@ -100,42 +100,6 @@ class RichText(PositionedObject):
     def font(self, value: Font):
         self._font = value
 
-    @property
-    def scale(self) -> float:
-        """A scale factor to be applied to the rendered text"""
-        return self._scale
-
-    @scale.setter
-    def scale(self, value: float):
-        self._scale = value
-
-    @property
-    def rotation(self) -> float:
-        """An angle in degrees to rotate about the text origin"""
-        return self._rotation
-
-    @rotation.setter
-    def rotation(self, value: float):
-        self._rotation = value
-
-    @property
-    def transform_origin(self) -> Point:
-        """The origin point for rotation and scaling transforms"""
-        return self._transform_origin
-
-    @transform_origin.setter
-    def transform_origin(self, value: PointDef):
-        self._transform_origin = Point.from_def(value)
-
-    @property
-    def z_index(self) -> int:
-        """Value controlling draw order with lower values being drawn first"""
-        return self._z_index
-
-    @z_index.setter
-    def z_index(self, value: int):
-        self._z_index = value
-
     # Since RichText isn't breakable (for now?), we only need to
     # implement complete rendering
     def render_complete(
@@ -144,9 +108,10 @@ class RichText(PositionedObject):
         flowable_line: Optional[NewLine] = None,
         flowable_x: Optional[Unit] = None,
     ):
+
         interface = RichTextInterface(
             pos,
-            None,  # TODO parent
+            None if flowable_line else self.parent.interface_for_children,
             self.scale,
             self.rotation,
             self.z_index,
