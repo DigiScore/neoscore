@@ -16,6 +16,7 @@ class TestPageSupplier(AppTest):
             1,
             DirectionX.LEFT,
             paper.LETTER,
+            False,
         )
         assert pg.pos == Point(Unit(1), Unit(2))
         assert pg.index == 1
@@ -30,6 +31,7 @@ class TestPageSupplier(AppTest):
             0,
             DirectionX.LEFT,
             test_paper,
+            False,
         )
         assert pg.bounding_rect == Rect(Inch(-1), Inch(-1), Inch(8.5), Inch(11))
 
@@ -41,6 +43,7 @@ class TestPageSupplier(AppTest):
             0,
             DirectionX.RIGHT,
             test_paper,
+            False,
         )
         assert pg.bounding_rect == Rect(
             Inch(-1) - Mm(20), Inch(-1), Inch(8.5), Inch(11)
@@ -53,6 +56,7 @@ class TestPageSupplier(AppTest):
             0,
             DirectionX.RIGHT,
             paper.LETTER,
+            False,
         )
         assert pg.bounding_rect == Rect(Inch(-1), Inch(-1), Inch(8.5), Inch(11))
 
@@ -63,6 +67,7 @@ class TestPageSupplier(AppTest):
             0,
             DirectionX.RIGHT,
             paper.LETTER,
+            False,
         )
         assert pg.document_space_bounding_rect == Rect(
             Inch(-1) + Unit(1), Inch(-1) + Unit(2), Inch(8.5), Inch(11)
@@ -71,25 +76,32 @@ class TestPageSupplier(AppTest):
     def test_full_margin_left(self):
         test_paper = paper.A4.modified(gutter=Mm(7))
         assert Page(
-            ORIGIN, neoscore.document, 0, DirectionX.RIGHT, test_paper
+            ORIGIN, neoscore.document, 0, DirectionX.RIGHT, test_paper, False
         ).full_margin_left == Mm(27)
         assert Page(
-            ORIGIN, neoscore.document, 0, DirectionX.LEFT, test_paper
+            ORIGIN, neoscore.document, 0, DirectionX.LEFT, test_paper, False
         ).full_margin_left == Mm(20)
 
     def test_full_margin_right(self):
         test_paper = paper.A4.modified(gutter=Mm(7))
         assert Page(
-            ORIGIN, neoscore.document, 0, DirectionX.RIGHT, test_paper
+            ORIGIN, neoscore.document, 0, DirectionX.RIGHT, test_paper, False
         ).full_margin_right == Mm(20)
         assert Page(
-            ORIGIN, neoscore.document, 0, DirectionX.LEFT, test_paper
+            ORIGIN, neoscore.document, 0, DirectionX.LEFT, test_paper, False
         ).full_margin_right == Mm(27)
 
     def test_left_margin_x(self):
-        page = Page(ORIGIN, neoscore.document, 0, DirectionX.RIGHT, paper.A4)
+        page = Page(ORIGIN, neoscore.document, 0, DirectionX.RIGHT, paper.A4, False)
         assert page.left_margin_x == ZERO
         assert page.right_margin_x == paper.A4.live_width
         assert page.top_margin_y == ZERO
         assert page.bottom_margin_y == paper.A4.live_height
         assert page.center_x == paper.A4.live_width / 2
+
+    def test_display_preview(self):
+        # Sanity check that children are created when previews are requested
+        p1 = Page(ORIGIN, neoscore.document, 0, DirectionX.RIGHT, paper.A4, False)
+        assert len(p1.children) == 0
+        p2 = Page(ORIGIN, neoscore.document, 0, DirectionX.RIGHT, paper.A4, True)
+        assert len(p2.children) == 3

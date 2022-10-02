@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Callable, Optional
+from typing import TYPE_CHECKING, Callable, List, Optional
 
 from typing_extensions import TypeAlias
 
@@ -39,17 +39,24 @@ class PageSupplier:
     """
 
     def __init__(
-        self, document: Document, overlay_func: Optional[PageOverlayFunc] = None
+        self,
+        document: Document,
+        overlay_func: Optional[PageOverlayFunc] = None,
+        display_page_geometry: bool = True,
     ):
         """
         Args:
             document: The global document using this object.
             overlay_func: A function to call with every page when generated.
                 This can be used to create headers and footers.
+            display_page_geometry: Whether to include a preview of page geometry,
+                including a page outline and a dotted outline of the page's live
+                area inside its margins.
         """
         self._document = document
         self._page_list: List[Page] = []
         self.overlay_func = overlay_func
+        self.display_page_geometry = display_page_geometry
 
     def __getitem__(self, index):
         if index >= len(self._page_list):
@@ -61,6 +68,7 @@ class PageSupplier:
                     new_index,
                     page_side,
                     self.document.paper,
+                    self.display_page_geometry,
                 )
                 self._page_list.append(new_page)
                 if self.overlay_func:

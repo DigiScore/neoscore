@@ -13,13 +13,13 @@ from ..helpers import AppTest
 
 def _test_page() -> Page:
     return Page(
-        ORIGIN, neoscore.document, 123, DirectionX.RIGHT, neoscore.document.paper
+        ORIGIN, neoscore.document, 123, DirectionX.RIGHT, neoscore.document.paper, False
     )
 
 
 class TestPageSupplier(AppTest):
     def test_getitem_with_existing(self):
-        supplier = PageSupplier(neoscore.document)
+        supplier = PageSupplier(neoscore.document, display_page_geometry=False)
         page_1 = _test_page()
         page_2 = _test_page()
         supplier._page_list.extend([page_1, page_2])
@@ -31,7 +31,7 @@ class TestPageSupplier(AppTest):
             supplier[-3]  # noqa
 
     def test_getitem_generation_needing_1(self):
-        supplier = PageSupplier(neoscore.document)
+        supplier = PageSupplier(neoscore.document, display_page_geometry=False)
         supplier._page_list.extend([(_test_page()), (_test_page())])
         new_page = supplier[2]
         assert len(supplier) == 3
@@ -42,7 +42,7 @@ class TestPageSupplier(AppTest):
         assert new_page.paper == neoscore.document.paper
 
     def test_getitem_generation_needing_many(self):
-        supplier = PageSupplier(neoscore.document)
+        supplier = PageSupplier(neoscore.document, display_page_geometry=False)
         new_page = supplier[2]
         assert len(supplier) == 3
         assert new_page == supplier[2]
@@ -54,14 +54,14 @@ class TestPageSupplier(AppTest):
             assert page.paper == neoscore.document.paper
 
     def test_iteration(self):
-        supplier = PageSupplier(neoscore.document)
+        supplier = PageSupplier(neoscore.document, display_page_geometry=False)
         page_1 = _test_page()
         page_2 = _test_page()
         supplier._page_list.extend([page_1, page_2])
         assert [p for p in supplier] == [page_1, page_2]
 
     def test_page_side_selection(self):
-        supplier = PageSupplier(neoscore.document)
+        supplier = PageSupplier(neoscore.document, display_page_geometry=False)
         assert supplier[0].page_side == DirectionX.RIGHT
         assert supplier[1].page_side == DirectionX.LEFT
         assert supplier[2].page_side == DirectionX.RIGHT
@@ -72,7 +72,7 @@ class TestPageSupplier(AppTest):
         def test_overlay_func(pg: Page):
             PositionedObject((Unit(1), Unit(2)), pg)
 
-        supplier = PageSupplier(neoscore.document, test_overlay_func)
+        supplier = PageSupplier(neoscore.document, test_overlay_func, False)
         page = supplier[0]
         assert len(page.children) == 1
         assert page.children[0].pos == Point(Unit(1), Unit(2))

@@ -1,10 +1,16 @@
+import unittest
+
 from neoscore.core import neoscore
 from neoscore.core.page_overlays import simple_header_footer
 
-from ..helpers import AppTest
 
+class TestSimpleHeaderFooter(unittest.TestCase):
+    def setUp(self):
+        neoscore.setup(display_page_geometry=False)
 
-class TestSimpleHeaderFooter(AppTest):
+    def tearDown(self):
+        neoscore.shutdown()
+
     def test_page_number_formatting(self):
         neoscore.document.pages.overlay_func = simple_header_footer(
             "foo %page", "bar %page", "biz %page", "baz %page"

@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 from backports.cached_property import cached_property
 
+from neoscore.core import neoscore
 from neoscore.core.brush import Brush
 from neoscore.core.color import Color
 from neoscore.core.directions import DirectionX
@@ -43,6 +44,7 @@ class Page(PositionedObject):
         index: int,
         page_side: DirectionX,
         paper: Paper,
+        display_preview: bool,
     ):
         """
         Args:
@@ -60,6 +62,8 @@ class Page(PositionedObject):
         self._index = index
         self._page_side = page_side
         self.paper = paper
+        if display_preview:
+            self._create_geometry_preview(neoscore.background_brush)
 
     @property
     def index(self):
@@ -156,8 +160,8 @@ class Page(PositionedObject):
         """
         return self.paper.live_width / 2
 
-    def render_geometry_preview(self, background_brush: Brush):
-        """Create and render child objects which show the page geometry.
+    def _create_geometry_preview(self, background_brush: Brush):
+        """Create child objects which show the page geometry.
 
         This shouldn't be called directly; use the setting in :obj:`.neoscore.score`
         instead.
@@ -169,6 +173,14 @@ class Page(PositionedObject):
 
         # Create page rect
         bounding_rect = self.bounding_rect
+        page_drop_shadow_rect = Path.rect(
+            (bounding_rect.x + Mm(1), bounding_rect.y + Mm(1)),
+            self,
+            bounding_rect.width,
+            bounding_rect.height,
+            Brush(_PREVIEW_SHADOW_COLOR),
+            Pen.no_pen(),
+        )
         page_preview_rect = Path.rect(
             (bounding_rect.x, bounding_rect.y),
             self,
@@ -177,16 +189,6 @@ class Page(PositionedObject):
             background_brush,
             pen=Pen(_PREVIEW_OUTLINE_COLOR),
         )
-        page_preview_rect.z_index = -999999999999
-        page_drop_shadow_rect = Path.rect(
-            (Mm(1), Mm(1)),
-            page_preview_rect,
-            bounding_rect.width,
-            bounding_rect.height,
-            Brush(_PREVIEW_SHADOW_COLOR),
-            Pen.no_pen(),
-        )
-        page_drop_shadow_rect.z_index = page_preview_rect.z_index - 1
         live_area_preview_rect = Path.rect(
             ORIGIN,
             self,
@@ -195,9 +197,3 @@ class Page(PositionedObject):
             Brush.no_brush(),
             pen=Pen(_PREVIEW_OUTLINE_COLOR, pattern=PenPattern.DOT),
         )
-        for obj in [
-            page_drop_shadow_rect,
-            page_preview_rect,
-            live_area_preview_rect,
-        ]:
-            obj.render()
