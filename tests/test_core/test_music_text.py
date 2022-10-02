@@ -35,7 +35,6 @@ class TestMusicText(AppTest):
             2,
             123,
             "#00f",
-            5,
             False,
             AlignmentX.RIGHT,
             AlignmentY.CENTER,
@@ -50,7 +49,6 @@ class TestMusicText(AppTest):
         assert mtext.scale == 2
         assert mtext.rotation == 123
         assert mtext.background_brush == Brush("#00f")
-        assert mtext.z_index == 5
         assert not mtext.breakable
         assert mtext.alignment_x == AlignmentX.RIGHT
         assert mtext.alignment_y == AlignmentY.CENTER

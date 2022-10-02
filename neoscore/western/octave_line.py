@@ -79,6 +79,7 @@ class OctaveLine(PositionedObject, Spanner, HasMusicFont):
             font = HasMusicFont.find_music_font(start_parent)
         self._music_font = font
         self.direction = direction
+        # TODO HIGH move line_text creation after line_path to correct stacking order
         self.line_text = _OctaveLineText(
             ORIGIN, self, self.breakable_length, indication, font
         )
@@ -96,7 +97,6 @@ class OctaveLine(PositionedObject, Spanner, HasMusicFont):
                 pattern=PenPattern.DASH,
             ),
         )
-        self.line_text.z_index = self.line_path.z_index + 1
         # Drawn main line part
         self.line_path.line_to(self.end_pos.x, path_y, self.end_parent)
         self.line_path.line_to(

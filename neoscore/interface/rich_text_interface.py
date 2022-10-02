@@ -36,6 +36,4 @@ class RichTextInterface(GraphicObjectInterface):
             qt_object.setScale(self.scale)
         if self.rotation != 0:
             qt_object.setRotation(self.rotation)
-        if self.z_index != 0:
-            qt_object.setZValue(self.z_index)
         return qt_object

@@ -46,7 +46,6 @@ class Path(PaintedObject):
         pen: Optional[PenDef] = None,
         rotation: float = 0,
         background_brush: Optional[BrushDef] = None,
-        z_index: int = 0,
         transform_origin: PointDef = ORIGIN,
     ):
         """
@@ -59,11 +58,9 @@ class Path(PaintedObject):
                 path elements parented to other objects are not currently supported.
             background_brush: Optional brush used to paint the path's bounding rect
                 behind it.
-            z_index: Controls draw order with lower values drawn first.
         """
         super().__init__(pos, parent, brush, pen)
         self.background_brush = background_brush
-        self._z_index = z_index
         self._rotation = rotation
         self.elements: List[PathElement] = []
         self._current_subpath_start: Optional[Tuple[Point, Optional[parent]]] = None
@@ -554,7 +551,6 @@ class Path(PaintedObject):
             None if inside_flowable else self.parent.interface_for_children,
             self.scale,
             self.rotation,
-            self.z_index,
             self.transform_origin,
             self.brush.interface,
             self.pen.interface,

@@ -51,17 +51,17 @@ for i in range(50):
     y = staff_1.unit(random.randint(0, 7))
     text_len = random.randint(1, 15)
     wiggle_object_glyphs = random.choices(all_wiggle_glyphs, k=text_len)
-    mtext = MusicText((next_x, y), staff_1, wiggle_object_glyphs, z_index=10)
     # Hide staff just around the text path by duplicating the text with a thick white pen
     # Unlike setting a background brush, this trick only hides things right around the text
-    MusicText(
-        ORIGIN,
-        mtext,
-        mtext.music_chars,
+    white_shadow = MusicText(
+        (next_x, y),
+        staff_1,
+        wiggle_object_glyphs,
         brush=Brush.no_brush(),
         pen=Pen(neoscore.background_brush.color, staff_1.unit(1)),
-        z_index=mtext.z_index - 1,
     )
+    mtext = MusicText(ORIGIN, white_shadow, wiggle_object_glyphs)
+
     next_x += mtext.bounding_rect.width + staff_1.unit(random.randint(0, 5))
 
 

@@ -30,16 +30,10 @@ class TestPathInterface(AppTest):
         self.brush = BrushInterface(Color("#000000"), BrushPattern.SOLID)
 
     def test_rotation(self):
-        path = PathInterface(ORIGIN, None, 1, 0, 0, ORIGIN, self.brush, self.pen, [])
+        path = PathInterface(ORIGIN, None, 1, 0, ORIGIN, self.brush, self.pen, [])
         assert path._create_qt_object().rotation() == 0
-        path = PathInterface(ORIGIN, None, 1, 20, 0, ORIGIN, self.brush, self.pen, [])
+        path = PathInterface(ORIGIN, None, 1, 20, ORIGIN, self.brush, self.pen, [])
         assert path._create_qt_object().rotation() == 20
-
-    def test_z_index(self):
-        path = PathInterface(ORIGIN, None, 1, 0, 0, ORIGIN, self.brush, self.pen, [])
-        assert path._create_qt_object().zValue() == 0
-        path = PathInterface(ORIGIN, None, 1, 0, 99, ORIGIN, self.brush, self.pen, [])
-        assert path._create_qt_object().zValue() == 99
 
     def test_create_qt_path_with_move(self):
         qt_path = PathInterface.create_qt_path([ResolvedMoveTo(Unit(10), Unit(12))])

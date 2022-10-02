@@ -31,7 +31,6 @@ class Text(PaintedObject):
         scale: float = 1,
         rotation: float = 0,
         background_brush: Optional[BrushDef] = None,
-        z_index: int = 0,
         breakable: bool = True,
         alignment_x: AlignmentX = AlignmentX.LEFT,
         alignment_y: AlignmentY = AlignmentY.BASELINE,
@@ -50,7 +49,6 @@ class Text(PaintedObject):
                 not currently supported.
             background_brush: Optional brush used to paint the text's bounding rect
                 behind it.
-            z_index: Controls draw order with lower values drawn first.
             breakable: Whether this object should break across lines in
                 :obj:`.Flowable` containers.
             alignment_x: The text's horizontal alignment relative to ``pos``.
@@ -67,7 +65,6 @@ class Text(PaintedObject):
         self._scale = scale
         self._rotation = rotation
         self.background_brush = background_brush
-        self._z_index = z_index
         self._breakable = breakable
         self._alignment_x = alignment_x
         self._alignment_y = alignment_y
@@ -208,7 +205,6 @@ class Text(PaintedObject):
             None if inside_flowable else self.parent.interface_for_children,
             self.scale,
             self.rotation,
-            self.z_index,
             self.transform_origin,
             self.brush.interface,
             self.pen.interface,

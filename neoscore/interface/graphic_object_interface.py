@@ -37,11 +37,6 @@ class GraphicObjectInterface:
     rotation: float
     """Rotation angle in degrees, where 0 is no rotation."""
 
-    z_index: int
-    """Z-index controlling draw order.
-
-    Use 0 for the default draw order."""
-
     transform_origin: Point
     """The origin point for rotation and scaling transforms"""
 

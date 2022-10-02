@@ -28,7 +28,6 @@ class MusicPath(Path, HasMusicFont):
         pen: Optional[PenDef] = None,
         rotation: float = 0,
         background_brush: Optional[BrushDef] = None,
-        z_index: int = 0,
         transform_origin: PointDef = ORIGIN,
     ):
         """
@@ -43,7 +42,6 @@ class MusicPath(Path, HasMusicFont):
                 path elements anchored to other objects are not currently supported.
             background_brush: Optional brush used to paint the path's bounding rect
                 behind it.
-            z_index: Controls draw order with lower values drawn first.
         """
         Path.__init__(
             self,
@@ -53,7 +51,6 @@ class MusicPath(Path, HasMusicFont):
             pen,
             rotation,
             background_brush,
-            z_index,
             transform_origin,
         )
         if font is None:

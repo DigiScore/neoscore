@@ -100,7 +100,6 @@ class PositionedObject:
         self._interface_for_children = None
         self._scale = 1.0
         self._rotation = 0.0
-        self._z_index = 0
         self.transform_origin = ORIGIN
 
     @property
@@ -129,15 +128,6 @@ class PositionedObject:
     @rotation.setter
     def rotation(self, value: float):
         self._rotation = value
-
-    @property
-    def z_index(self) -> int:
-        """Value controlling draw order with lower values being drawn first"""
-        return self._z_index
-
-    @z_index.setter
-    def z_index(self, value: int):
-        self._z_index = value
 
     @property
     def transform_origin(self) -> Point:
@@ -441,7 +431,6 @@ class PositionedObject:
                 getattr(self.parent, "interface_for_children", None),
                 self.scale,
                 self.rotation,
-                self.z_index,
                 self.transform_origin,
             )
             self._interface_for_children.render()

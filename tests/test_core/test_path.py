@@ -55,13 +55,6 @@ class TestPath(AppTest):
             ORIGIN, None, transform_origin=(Unit(12), Unit(12))
         ).transform_origin == (Unit(12), Unit(12))
 
-    def test_z_index(self):
-        path = Path(ORIGIN, None)
-        assert path.z_index == 0
-        path.z_index = 99
-        assert path.z_index == 99
-        assert Path(ORIGIN, None, z_index=123).z_index == 123
-
     def test_straight_line(self):
         path = Path.straight_line((Unit(5), Unit(6)), None, (Unit(10), Unit(11)))
         assert path.pos == Point(Unit(5), Unit(6))

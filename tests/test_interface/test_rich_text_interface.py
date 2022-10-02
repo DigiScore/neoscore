@@ -20,7 +20,6 @@ class TestRichTextInterface(AppTest):
             None,
             2,
             15,
-            99,
             transform_origin,
             self.html,
             self.font,
@@ -34,12 +33,11 @@ class TestRichTextInterface(AppTest):
         assert qt_object.textWidth() == 50
         assert qt_object.rotation() == 15
         assert qt_object.font() == self.font.qt_object
-        assert qt_object.zValue() == 99
         assert qt_object.transformOriginPoint() == point_to_qt_point_f(transform_origin)
 
     def test_automatic_text_width(self):
         interface = RichTextInterface(
-            Point(Unit(5), Unit(6)), None, 1, 0, 0, ORIGIN, self.html, self.font
+            Point(Unit(5), Unit(6)), None, 1, 0, ORIGIN, self.html, self.font
         )
         qt_object = interface._create_qt_object()
         assert qt_object.textWidth() == -1

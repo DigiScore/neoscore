@@ -42,7 +42,6 @@ class AbstractStaff(PaintedObject, HasMusicFont):
         self._length = length
         self._group = group or StaffGroup()
         self._group.staves.add(self)
-        self._z_index = 0
 
     @property
     def music_font(self) -> MusicFont:
@@ -99,15 +98,6 @@ class AbstractStaff(PaintedObject, HasMusicFont):
         staff systems.
         """
         return self._group
-
-    @property
-    def z_index(self) -> int:
-        """Value controlling draw order with lower values being drawn first"""
-        return self._z_index
-
-    @z_index.setter
-    def z_index(self, value: int):
-        self._z_index = value
 
     def find_ordered_descendants_with_attr(self, attr: str) -> List[Tuple[Unit, Any]]:
         """Find all descendants with an attribute, sorted with their staff x positions"""
@@ -175,7 +165,7 @@ class AbstractStaff(PaintedObject, HasMusicFont):
         self._render_slice(pos, object_x, None, flowable_line)
 
     def _create_staff_segment_path(self, doc_pos: Point, length: Unit) -> Path:
-        path = Path(doc_pos, None, pen=self.pen, z_index=self.z_index)
+        path = Path(doc_pos, None, pen=self.pen)
         line_y = ZERO
         for i in range(self.line_count):
             path.move_to(ZERO, line_y)

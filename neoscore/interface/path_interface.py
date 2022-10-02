@@ -120,7 +120,5 @@ class PathInterface(GraphicObjectInterface):
         qt_object.setPos(point_to_qt_point_f(self.pos))
         qt_object.setBrush(self.brush.qt_object)
         qt_object.setPen(self.pen.qt_object)
-        if self.z_index != 0:
-            qt_object.setZValue(self.z_index)
         qt_object.update_geometry()
         return qt_object

@@ -30,7 +30,6 @@ class RichText(PositionedObject):
         font: Optional[Font] = None,
         scale: float = 1,
         rotation: float = 0,
-        z_index: int = 0,
         transform_origin: PointDef = ORIGIN,
     ):
         """
@@ -43,7 +42,6 @@ class RichText(PositionedObject):
             font: The default font to display the text in.
             scale: A scaling factor relative to the font size.
             rotation: Rotation angle in degrees.
-            z_index: Controls draw order with lower values drawn first.
         """
         super().__init__(pos, parent)
         if font:
@@ -54,7 +52,6 @@ class RichText(PositionedObject):
         self._width = width
         self._scale = scale
         self._rotation = rotation
-        self._z_index = z_index
         self.transform_origin = transform_origin
 
     @property
@@ -114,7 +111,6 @@ class RichText(PositionedObject):
             None if flowable_line else self.parent.interface_for_children,
             self.scale,
             self.rotation,
-            self.z_index,
             self.transform_origin,
             self.html_text,
             self.font.interface,

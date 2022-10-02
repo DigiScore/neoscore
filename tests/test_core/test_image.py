@@ -19,15 +19,12 @@ svg_image_path = img_dir / "svg_image.svg"
 class TestImage(AppTest):
     def test_init(self):
         parent = PositionedObject(ORIGIN, None)
-        image = Image(
-            (Unit(5), Unit(6)), parent, fake_path, 2, 3, 4, (Unit(12), Unit(12))
-        )
+        image = Image((Unit(5), Unit(6)), parent, fake_path, 2, 3, (Unit(12), Unit(12)))
         assert image.pos == Point(Unit(5), Unit(6))
         assert image.parent == parent
         assert image.file_path == fake_path
         assert image.scale == 2
         assert image.rotation == 3
-        assert image.z_index == 4
         assert image.transform_origin == (Unit(12), Unit(12))
 
     def test_init_with_str_file_path(self):
@@ -44,12 +41,6 @@ class TestImage(AppTest):
         assert image.rotation == 0
         image.rotation = 123
         assert image.rotation == 123
-
-    def test_z_index_setter(self):
-        image = Image(ORIGIN, None, fake_path)
-        assert image.z_index == 0
-        image.z_index = 123
-        assert image.z_index == 123
 
     def test_transform_origin_setter(self):
         image = Image(ORIGIN, None, fake_path)

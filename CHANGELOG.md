@@ -2,6 +2,8 @@
 - Fix [clipping of thick pens](https://github.com/DigiScore/neoscore/issues/14) thanks to help from @Xavman42.
 - Add a new field `transform_origin` to all graphical objects and corresponding interface classes. This new field sets the origin point (relative to the object's `pos`) for rotation and scaling.
 - Replace `PositionedObjectInterface` with `GraphicObjectInterface`, which now provides several fields common to graphical object interfaces.
+- Explicit z-index support has been removed. Stacking order is now strictly set by the order of the document tree's depth-first traversal.
+- Toggling the page geometry preview display has been moved from `neoscore.show()` to `neoscore.setup()`.
 
 # 0.1.6 (2022-07-27)
 - Fix bug affecting path resolution in image export on Windows with Python 3.7
