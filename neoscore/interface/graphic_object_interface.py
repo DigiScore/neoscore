@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Optional
+from warnings import warn
 
 from PyQt5.QtWidgets import QGraphicsItem
 
@@ -49,11 +50,27 @@ class GraphicObjectInterface:
     def render(self):
         """Render the object to the scene.
 
-        This is typically done by constructing a QGraphicsItem
-        subclass and calling `_register_qt_object` with it.
+        This is typically done by constructing a `QGraphicsItem` subclass and calling
+        `_register_qt_object` with it. Do *not* manually assign the Qt object's parent
+        or add it to the Qt scene.
         """
         raise NotImplementedError
 
+    def _parent_qt_obj(self) -> Optional[QGraphicsItem]:
+        if self.parent:
+            parent_qt_obj = self.parent._qt_object
+            if not parent_qt_obj:
+                warn(
+                    "Parent interface was provided but corresponding Qt object"
+                    + f" not available when needed for {self}"
+                )  # implicitly return None
+            return parent_qt_obj
+        return None
+
     def _register_qt_object(self, obj: QGraphicsItem):
-        neoscore.app_interface.scene.addItem(obj)
+        parent_obj = self._parent_qt_obj()
+        if parent_obj:
+            obj.setParentItem(parent_obj)
+        else:
+            neoscore.app_interface.scene.addItem(obj)
         super().__setattr__("_qt_object", obj)
