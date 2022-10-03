@@ -240,7 +240,7 @@ def show(
     global app_interface
     app_interface.clear_scene()
     if display_page_geometry:
-        _render_geometry_preview()
+        _create_geometry_preview()
     document.render()
     if refresh_func:
         set_refresh_func(refresh_func)
@@ -261,11 +261,11 @@ def _clear_interfaces():
                 obj._interface_for_children = None
 
 
-def _render_geometry_preview():
+def _create_geometry_preview():
     global document
     global background_brush
     for page in document.pages:
-        page.render_geometry_preview(background_brush)
+        page.create_geometry_preview(background_brush)
 
 
 def set_viewport_center_pos(document_pos: PointDef):

@@ -156,7 +156,7 @@ class Page(PositionedObject):
         """
         return self.paper.live_width / 2
 
-    def render_geometry_preview(self, background_brush: Brush):
+    def create_geometry_preview(self, background_brush: Brush):
         """Create and render child objects which show the page geometry.
 
         This shouldn't be called directly; use the setting in :obj:`.neoscore.score`
@@ -165,10 +165,16 @@ class Page(PositionedObject):
         This is useful for interactive views, but should typically not be called in PDF
         and image export contexts.
         """
+        # Import here to avoid cyclic import
         from neoscore.core.path import Path
 
+        # To ensure these preview objects appear below all real document objects, we
+        # need to attach all preview objects to the *first* page. This is necessary
+        # because the first page is drawn first. We furthermore need to ensure page
+        # preview objects are placed at the beginning of the first page's child list to
+        # ensure they are drawn before other first-page children. Some strange hacks
+        # here are needed to guarantee this behavior.
         parent = self if self.index == 0 else None
-        # Create page rect
         bounding_rect = self.bounding_rect
         page_drop_shadow_rect = Path.rect(
             self.pos + Point(bounding_rect.x + Mm(1), bounding_rect.y + Mm(1)),
@@ -186,16 +192,6 @@ class Page(PositionedObject):
             background_brush,
             pen=Pen(_PREVIEW_OUTLINE_COLOR),
         )
-        page_preview_rect.z_index = -999999999999
-        page_drop_shadow_rect = Path.rect(
-            (Mm(1), Mm(1)),
-            page_preview_rect,
-            bounding_rect.width,
-            bounding_rect.height,
-            Brush(_PREVIEW_SHADOW_COLOR),
-            Pen.no_pen(),
-        )
-        page_drop_shadow_rect.z_index = page_preview_rect.z_index - 1
         live_area_preview_rect = Path.rect(
             self.pos,
             parent,
