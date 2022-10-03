@@ -421,10 +421,9 @@ class PositionedObject:
 
         This and other render methods should generally not be called directly.
         """
-        if self.breakable_length != ZERO and self.flowable is not None:
+        if self.flowable is not None:
             self.render_in_flowable()
         else:
-            self.render_complete(self.pos)
             self._interface_for_children = InvisibleObjectInterface(
                 self.pos,
                 # Hack because root document obj lacks this property
@@ -434,6 +433,7 @@ class PositionedObject:
                 self.transform_origin,
             )
             self._interface_for_children.render()
+            self.render_complete(self.pos)
         for child in self.children:
             child.render()
 

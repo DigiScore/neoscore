@@ -9,6 +9,8 @@ from PyQt5.QtWidgets import QGraphicsItem
 from neoscore.core import neoscore
 from neoscore.core.point import Point
 
+# TODO HIGH rename back to Positioned...
+
 
 @dataclass(frozen=True)
 class GraphicObjectInterface:
@@ -57,7 +59,7 @@ class GraphicObjectInterface:
 
     def _parent_qt_obj(self) -> Optional[QGraphicsItem]:
         if self.parent:
-            parent_qt_obj = self.parent._qt_object
+            parent_qt_obj = getattr(self.parent, "_qt_object", None)
             if not parent_qt_obj:
                 warn(
                     "Parent interface was provided but corresponding Qt object"
