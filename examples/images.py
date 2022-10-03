@@ -19,7 +19,6 @@ Image(ORIGIN, None, pixmap_path, 2)
 Image((Mm(10), Mm(10)), None, svg_path, 2)
 
 Image((Mm(100), Mm(200)), None, svg_path, rotation=180)
-Image((Mm(120), Mm(220)), None, svg_path, rotation=180)
 
 
 render_example("images")

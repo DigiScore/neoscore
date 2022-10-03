@@ -11,7 +11,7 @@ from neoscore.core.directions import DirectionX
 from neoscore.core.paper import Paper
 from neoscore.core.pen import Pen
 from neoscore.core.pen_pattern import PenPattern
-from neoscore.core.point import ORIGIN, PointDef
+from neoscore.core.point import Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.rect import Rect
 from neoscore.core.units import ZERO, Mm, Unit
@@ -171,29 +171,35 @@ class Page(PositionedObject):
         """
         from neoscore.core.path import Path
 
+        parent = self if self.index == 0 else None
         # Create page rect
         bounding_rect = self.bounding_rect
         page_drop_shadow_rect = Path.rect(
-            (bounding_rect.x + Mm(1), bounding_rect.y + Mm(1)),
-            self,
+            self.pos + Point(bounding_rect.x + Mm(1), bounding_rect.y + Mm(1)),
+            parent,
             bounding_rect.width,
             bounding_rect.height,
             Brush(_PREVIEW_SHADOW_COLOR),
             Pen.no_pen(),
         )
         page_preview_rect = Path.rect(
-            (bounding_rect.x, bounding_rect.y),
-            self,
+            self.pos + Point(bounding_rect.x, bounding_rect.y),
+            parent,
             bounding_rect.width,
             bounding_rect.height,
             background_brush,
             pen=Pen(_PREVIEW_OUTLINE_COLOR),
         )
         live_area_preview_rect = Path.rect(
-            ORIGIN,
-            self,
+            self.pos,
+            parent,
             self.paper.live_width,
             self.paper.live_height,
             Brush.no_brush(),
             pen=Pen(_PREVIEW_OUTLINE_COLOR, pattern=PenPattern.DOT),
+        )
+        # Terrible hack to ensure preview is always drawn below document contents
+        preview_objs_parent = live_area_preview_rect.parent
+        preview_objs_parent.children = (
+            preview_objs_parent.children[-3:] + preview_objs_parent.children[:-3]
         )
