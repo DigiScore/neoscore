@@ -8,8 +8,8 @@ from backports.cached_property import cached_property
 from neoscore.core import neoscore
 from neoscore.core.point import ORIGIN, Point, PointDef
 from neoscore.core.units import ZERO, Unit
-from neoscore.interface.graphic_object_interface import GraphicObjectInterface
 from neoscore.interface.invisible_object_interface import InvisibleObjectInterface
+from neoscore.interface.positioned_object_interface import PositionedObjectInterface
 
 if TYPE_CHECKING:
     # Used in type annotations, imported here to avoid cyclic imports
@@ -213,7 +213,7 @@ class PositionedObject:
         )
 
     @property
-    def interfaces(self) -> List[GraphicObjectInterface]:
+    def interfaces(self) -> List[PositionedObjectInterface]:
         """The graphical backend binding interfaces for this object
 
         Interface objects are created and stored here upon calling :obj:`.render`.
@@ -224,7 +224,7 @@ class PositionedObject:
         return self._interfaces
 
     @property
-    def interface_for_children(self) -> Optional[GraphicObjectInterface]:
+    def interface_for_children(self) -> Optional[PositionedObjectInterface]:
         return self._interface_for_children
 
     def descendants_of_class_or_subclass(

@@ -13,7 +13,7 @@ from neoscore.core.point import Point
 
 
 @dataclass(frozen=True)
-class GraphicObjectInterface:
+class PositionedObjectInterface:
     """Interface for a generic graphic object.
 
     All graphic interfaces for renderable objects should descend from
@@ -27,7 +27,7 @@ class GraphicObjectInterface:
     is in absolute document coordinates.
     """
 
-    parent: Optional[GraphicObjectInterface]
+    parent: Optional[PositionedObjectInterface]
     """The object's parent, if any.
 
     If a parent interface is provided, it must be rendered before this interface.

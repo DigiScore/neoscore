@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QGraphicsItem, QGraphicsPixmapItem
 
 from neoscore.core.exceptions import ImageLoadingError
 from neoscore.core.point import ORIGIN
-from neoscore.interface.graphic_object_interface import GraphicObjectInterface
+from neoscore.interface.positioned_object_interface import PositionedObjectInterface
 from neoscore.interface.qt.converters import point_to_qt_point_f
 
 # Qt::SmoothTransformation
@@ -15,7 +15,7 @@ _QT_SMOOTH_TRANSFORMATION = 1
 
 
 @dataclass(frozen=True)
-class ImageInterface(GraphicObjectInterface):
+class ImageInterface(PositionedObjectInterface):
 
     """Interface for images, including both pixmaps and SVGs.
 

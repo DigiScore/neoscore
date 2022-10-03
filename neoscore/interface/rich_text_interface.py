@@ -3,13 +3,13 @@ from typing import Optional
 
 from neoscore.core.units import Unit
 from neoscore.interface.font_interface import FontInterface
-from neoscore.interface.graphic_object_interface import GraphicObjectInterface
+from neoscore.interface.positioned_object_interface import PositionedObjectInterface
 from neoscore.interface.qt.converters import point_to_qt_point_f
 from neoscore.interface.qt.q_rich_text_item import QRichTextItem
 
 
 @dataclass(frozen=True)
-class RichTextInterface(GraphicObjectInterface):
+class RichTextInterface(PositionedObjectInterface):
 
     """An interface for graphical text objects."""
 
