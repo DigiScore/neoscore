@@ -134,10 +134,12 @@ class AbstractStaff(PaintedObject, HasMusicFont):
         else:
             slice_length = clip_width
         inside_flowable = bool(flowable_line)
+        if inside_flowable:
+            segment_pos = Point(pos.x + fringe_layout.staff, pos.y)
+        else:
+            segment_pos = Point(fringe_layout.staff, ZERO)
         path = self._create_staff_segment_path(
-            Point(pos.x + fringe_layout.staff, pos.y),
-            slice_length - fringe_layout.staff,
-            inside_flowable,
+            segment_pos, slice_length - fringe_layout.staff, inside_flowable
         )
         path.render()
         path.remove()
