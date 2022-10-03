@@ -40,9 +40,11 @@ def render_example(name: str):
             pdf_path = output_dir / f"{name}_pdf.pdf"
         neoscore.render_pdf(pdf_path, dpi)
     else:
+        display_page_geometry = "--hide-page-geometry" not in sys.argv
         auto_viewport_interaction_enabled = (
             "--no-auto-viewport-interaction" not in sys.argv
         )
         neoscore.show(
+            display_page_geometry=display_page_geometry,
             auto_viewport_interaction_enabled=auto_viewport_interaction_enabled,
         )

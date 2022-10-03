@@ -18,22 +18,14 @@ class Document:
     can be then accessed as :obj:`.neoscore.document`.
     """
 
-    def __init__(
-        self,
-        paper: Paper,
-        overlay_func: Optional[PageOverlayFunc] = None,
-        display_page_geometry: bool = True,
-    ):
+    def __init__(self, paper: Paper, overlay_func: Optional[PageOverlayFunc] = None):
         """
         Args:
             paper: The paper to use in the document.
             overlay_func: An optional function to run on each generated page.
-            display_page_geometry: Whether to include a preview of page geometry,
-                including a page outline and a dotted outline of the page's live
-                area inside its margins.
         """
         self._paper = paper
-        self._pages = PageSupplier(self, overlay_func, display_page_geometry)
+        self._pages = PageSupplier(self, overlay_func)
 
     @property
     def paper(self) -> Paper:

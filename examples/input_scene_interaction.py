@@ -63,8 +63,7 @@ def refresh_func(time: float):
     typing_text.text = " ".join(text_list)
 
 
-neoscore.setup(display_page_geometry=False)
-
+neoscore.setup()
 Path.rect(
     (Mm(-1000000), Mm(-1000000)),
     None,
@@ -84,6 +83,7 @@ neoscore.set_viewport_center_pos((Unit(250), Unit(250)))
 neoscore.show(
     refresh_func,
     auto_viewport_interaction_enabled=False,
+    display_page_geometry=False,
     min_window_size=(500, 500),
     max_window_size=(500, 500),
 )

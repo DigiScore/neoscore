@@ -83,7 +83,7 @@ _BRAVURA_PATH = _BRAVURA_DIR / "Bravura.otf"
 _BRAVURA_METADATA_PATH = _BRAVURA_DIR / "bravura_metadata.json"
 
 
-def setup(paper: Paper = A4, display_page_geometry=True):
+def setup(paper: Paper = A4):
     """Initialize the application and set up the global state.
 
     This initializes the global ``Document`` and a back-end
@@ -94,9 +94,6 @@ def setup(paper: Paper = A4, display_page_geometry=True):
 
     Args:
         paper: The paper to use in the document.
-        display_page_geometry: Whether to include a preview of page geometry,
-            including a page outline and a dotted outline of the page's live
-            area inside its margins.
     """
     global app_interface
     global default_font
@@ -106,7 +103,7 @@ def setup(paper: Paper = A4, display_page_geometry=True):
     from neoscore.core.document import Document
     from neoscore.core.font import Font
 
-    document = Document(paper, display_page_geometry=display_page_geometry)
+    document = Document(paper)
 
     app_interface = AppInterface(
         document, _repl_refresh_func, background_brush.interface, True
@@ -216,6 +213,7 @@ Refresh functions can modify the scene, create new objects, and :obj:`remove
 
 def show(
     refresh_func: Optional[RefreshFunc] = None,
+    display_page_geometry=True,
     auto_viewport_interaction_enabled=True,
     min_window_size: Optional[Tuple[int, int]] = None,
     max_window_size: Optional[Tuple[int, int]] = None,
@@ -227,6 +225,9 @@ def show(
         refresh_func: A scene update function to run on a timer approximating the
             frame rate. This can also be set with :obj:`.set_refresh_func`, which
             allows customizing the target frame rate.
+        display_page_geometry: Whether to include a preview of page geometry,
+            including a page outline and a dotted outline of the page's live
+            area inside its margins.
         auto_viewport_interaction_enabled: Whether mouse and scrollbar viewport
             interaction is enabled. If false, scrollbars do not appear, mousewheel
             zooming is disabled, and click-and-drag view movement is disabled.
@@ -238,6 +239,8 @@ def show(
     global document
     global app_interface
     app_interface.clear_scene()
+    if display_page_geometry:
+        _render_geometry_preview()
     document.render()
     if refresh_func:
         set_refresh_func(refresh_func)
@@ -256,6 +259,13 @@ def _clear_interfaces():
                 interfaces.clear()
             if hasattr(obj, "_interface_for_children"):
                 obj._interface_for_children = None
+
+
+def _render_geometry_preview():
+    global document
+    global background_brush
+    for page in document.pages:
+        page.render_geometry_preview(background_brush)
 
 
 def set_viewport_center_pos(document_pos: PointDef):
