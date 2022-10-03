@@ -9,8 +9,6 @@ from PyQt5.QtWidgets import QGraphicsItem
 from neoscore.core import neoscore
 from neoscore.core.point import Point
 
-# TODO HIGH rename back to Positioned...
-
 
 @dataclass(frozen=True)
 class PositionedObjectInterface:
@@ -34,10 +32,20 @@ class PositionedObjectInterface:
     """
 
     scale: float
-    """A scaling factor, where 1 is no scaling."""
+    """A scaling factor, where 1 is no scaling.
+
+    This occurs relative to ``transform_origin``.
+
+    Scaling is inherited from parents to children along the interface tree.
+    """
 
     rotation: float
-    """Rotation angle in degrees, where 0 is no rotation."""
+    """Rotation angle in degrees, where 0 is no rotation.
+
+    This occurs relative to ``transform_origin``.
+
+    Rotation is inherited from parents to children along the interface tree.
+    """
 
     transform_origin: Point
     """The origin point for rotation and scaling transforms"""
