@@ -49,5 +49,5 @@ def test_pdf_example():
 
 def validate_script_safe_to_run(example_path: pathlib.Path):
     script = example_path.read_text()
-    assert re.search(r"neoscore.show\(.*?\)", script) is None
+    assert re.search(r"neoscore.show\(.*?\)$", script) is None
     assert re.search(r"render_example\(.*?\)", script) is not None
