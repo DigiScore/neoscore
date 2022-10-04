@@ -1,12 +1,11 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import NamedTuple, Optional, Union
+from typing import List, NamedTuple, Optional, Union
 
 from PyQt5.QtGui import QPainterPath
 from typing_extensions import TypeAlias
 
-from neoscore.core import neoscore
 from neoscore.core.units import Unit
 from neoscore.interface.brush_interface import BrushInterface
 from neoscore.interface.pen_interface import PenInterface
@@ -65,13 +64,7 @@ class PathInterface(PositionedObjectInterface):
 
     elements: List[ResolvedPathElement]
 
-    rotation: float = 0
-    """Rotation angle in degrees"""
-
     background_brush: Optional[BrushInterface] = None
-
-    z_index: int = 0
-    """Z-index controlling draw order."""
 
     clip_start_x: Optional[Unit] = None
     """The local starting position of the drawn region in the glyph.
@@ -110,8 +103,7 @@ class PathInterface(PositionedObjectInterface):
 
     def render(self):
         """Render the path to the scene."""
-        qt_object = self._create_qt_object()
-        neoscore.app_interface.scene.addItem(qt_object)
+        self._register_qt_object(self._create_qt_object())
 
     def _create_qt_object(self) -> QClippingPath:
         painter_path = PathInterface.create_qt_path(self.elements)
@@ -119,15 +111,14 @@ class PathInterface(PositionedObjectInterface):
             painter_path,
             self.clip_start_x.base_value if self.clip_start_x is not None else 0,
             self.clip_width.base_value if self.clip_width is not None else None,
-            1,
+            self.scale,
             self.rotation,
             self.background_brush.qt_object if self.background_brush else None,
             defer_geometry_calculation=True,
+            transform_origin=point_to_qt_point_f(self.transform_origin),
         )
         qt_object.setPos(point_to_qt_point_f(self.pos))
         qt_object.setBrush(self.brush.qt_object)
         qt_object.setPen(self.pen.qt_object)
-        if self.z_index != 0:
-            qt_object.setZValue(self.z_index)
         qt_object.update_geometry()
         return qt_object

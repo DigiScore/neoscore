@@ -27,7 +27,6 @@ class TabStringText(MusicText):
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,
         hide_background: bool = True,
-        z_index: Optional[int] = None,
         breakable: bool = True,
         alignment_x: AlignmentX = AlignmentX.CENTER,
         alignment_y: AlignmentY = AlignmentY.CENTER,
@@ -45,8 +44,6 @@ class TabStringText(MusicText):
             pen: The pen to trace text outlines with. This defaults to no pen.
             hide_background: Whether to paint over the background behind the text.
                 Particularly useful for preventing overlaps with staff lines.
-            z_index: Controls draw order with lower values drawn first.
-                Defaults to 1 greater than the staff's z_index.
             breakable: Whether this object should break across lines in
                 Flowable containers.
             alignment_x: The text's horizontal alignment relative to ``pos``.
@@ -69,7 +66,6 @@ class TabStringText(MusicText):
             1,
             0,
             background_brush,
-            z_index if z_index is not None else staff.z_index + 1,
             breakable,
             alignment_x,
             alignment_y,

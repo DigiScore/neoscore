@@ -1,8 +1,9 @@
 import pathlib
 
-from neoscore.core.point import Point
+from neoscore.core.point import ORIGIN, Point
 from neoscore.core.units import Unit
 from neoscore.interface.image_interface import ImageInterface
+from neoscore.interface.qt.converters import point_to_qt_point_f
 
 from ..helpers import AppTest
 
@@ -13,32 +14,44 @@ svg_image_path = img_dir / "svg_image.svg"
 
 class TestImageInterface(AppTest):
     def test_pixmap_image_loading(self):
-        interface = ImageInterface(Point(Unit(5), Unit(6)), pixmap_image_path)
+        interface = ImageInterface(
+            Point(Unit(5), Unit(6)), None, 1, 0, ORIGIN, pixmap_image_path
+        )
         interface.render()
 
     def test_pixmap_qt_item_properties(self):
-        interface = ImageInterface(Point(Unit(5), Unit(6)), pixmap_image_path, 2, 3, 4)
+        transform_origin = Point(Unit(12), Unit(12))
+        interface = ImageInterface(
+            Point(Unit(5), Unit(6)), None, 2, 3, transform_origin, pixmap_image_path
+        )
         qt_object = interface._create_pixmap_qt_object()
         assert qt_object.x() == 5
         assert qt_object.y() == 6
         assert qt_object.scale() == 2
         assert qt_object.rotation() == 3
-        assert qt_object.zValue() == 4
+        assert qt_object.transformOriginPoint() == point_to_qt_point_f(transform_origin)
 
     def test_pixmap_qt_object_transformation_mode(self):
-        interface = ImageInterface(Point(Unit(5), Unit(6)), pixmap_image_path, 2)
+        interface = ImageInterface(
+            Point(Unit(5), Unit(6)), None, 1, 0, ORIGIN, pixmap_image_path
+        )
         qt_object = interface._create_pixmap_qt_object()
         assert qt_object.transformationMode() == 1  # Qt::SmoothTransformation
 
     def test_svg_image_loading(self):
-        interface = ImageInterface(Point(Unit(5), Unit(6)), svg_image_path, 1)
+        interface = ImageInterface(
+            Point(Unit(5), Unit(6)), None, 1, 1, ORIGIN, svg_image_path
+        )
         interface.render()
 
     def test_svg_qt_item_properties(self):
-        interface = ImageInterface(Point(Unit(5), Unit(6)), svg_image_path, 2, 3, 4)
+        transform_origin = Point(Unit(12), Unit(12))
+        interface = ImageInterface(
+            Point(Unit(5), Unit(6)), None, 2, 3, transform_origin, svg_image_path
+        )
         qt_object = interface._create_svg_qt_object()
         assert qt_object.x() == 5
         assert qt_object.y() == 6
         assert qt_object.scale() == 2
         assert qt_object.rotation() == 3
-        assert qt_object.zValue() == 4
+        assert qt_object.transformOriginPoint() == point_to_qt_point_f(transform_origin)

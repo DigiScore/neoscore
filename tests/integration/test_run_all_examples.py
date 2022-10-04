@@ -15,12 +15,13 @@ example_script_paths = [
     if f.endswith(".py")
     and f
     not in [
-        "helpers.py",
-        "repl.py",
         "animation.py",
-        "pdf.py",
-        "input_simple.py",
+        "helpers.py",
         "input_scene_interaction.py",
+        "input_simple.py",
+        "pdf.py",
+        "repl.py",
+        "transform_origin.py",
     ]
 ]
 example_script_paths.append(example_dir / "feldman_projection_2" / "main.py")
@@ -48,5 +49,5 @@ def test_pdf_example():
 
 def validate_script_safe_to_run(example_path: pathlib.Path):
     script = example_path.read_text()
-    assert re.search(r"neoscore.show\(.*?\)", script) is None
+    assert re.search(r"neoscore.show\(.*?\)$", script) is None
     assert re.search(r"render_example\(.*?\)", script) is not None

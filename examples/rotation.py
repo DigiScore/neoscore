@@ -8,6 +8,7 @@ from neoscore.core.point import ORIGIN
 from neoscore.core.repeating_music_text_line import RepeatingMusicTextLine
 from neoscore.core.rich_text import RichText
 from neoscore.core.text import Text
+from neoscore.core.text_alignment import AlignmentX, AlignmentY
 from neoscore.core.units import ZERO, Mm, Unit
 
 neoscore.setup()
@@ -55,6 +56,26 @@ arp = RepeatingMusicTextLine(
     "wiggleArpeggiatoUpArrow",
     mfont,
 )
+
+# Demonstrate variable transform origins
+
+pos_marker = Text(
+    (Mm(50), Mm(150)),
+    None,
+    "x",
+    alignment_x=AlignmentX.CENTER,
+    alignment_y=AlignmentY.CENTER,
+)
+
+for i in range(10):
+    MusicText(
+        (Mm(50), Mm(150)),
+        None,
+        ["wiggleArpeggiatoUp"] * 10 + ["wiggleArpeggiatoUpArrow"],
+        mfont,
+        rotation=45,
+        transform_origin=(Mm(i * 2), ZERO),
+    )
 
 
 render_example("rotation")

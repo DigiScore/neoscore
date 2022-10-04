@@ -1,5 +1,9 @@
-# 0.1.7 (unreleased)
+# 0.1.7 (unreleased): BREAKING CHANGE
 - Fix [clipping of thick pens](https://github.com/DigiScore/neoscore/issues/14) thanks to help from @Xavman42.
+- Add a new field `transform_origin` to all graphical objects and corresponding interface classes, with help from @Xavman42. This new field sets the origin point (relative to the object's `pos`) for rotation and scaling.
+- Explicit z-index support has been removed. Stacking order is now strictly set by the order of the document tree's depth-first traversal.
+- The interface and Qt layer now reflects the document parent-child tree outside of flowable contexts. Interface classes now have a `parent` field. Outside flowables, interfaces are now given positions relative to their parent, another interface set with the parent object's position and transform properties. Inside flowables, interfaces are given no parent and they still receive global document-based positions. See `PositionedObject.render_complete()` and `PositionedObject.interface_for_children` for more.
+- Rotation and scaling transforms are now inherited by children outside flowable contexts.
 
 # 0.1.6 (2022-07-27)
 - Fix bug affecting path resolution in image export on Windows with Python 3.7

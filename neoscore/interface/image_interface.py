@@ -5,8 +5,8 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtSvg import QGraphicsSvgItem
 from PyQt5.QtWidgets import QGraphicsItem, QGraphicsPixmapItem
 
-from neoscore.core import neoscore
 from neoscore.core.exceptions import ImageLoadingError
+from neoscore.core.point import ORIGIN
 from neoscore.interface.positioned_object_interface import PositionedObjectInterface
 from neoscore.interface.qt.converters import point_to_qt_point_f
 
@@ -27,14 +27,6 @@ class ImageInterface(PositionedObjectInterface):
     """
 
     file_path: pathlib.Path
-
-    scale: float = 1
-
-    rotation: float = 0
-    """Rotation angle in degrees"""
-
-    z_index: int = 0
-    """Z-index controlling draw order."""
 
     @property
     def _resolved_path(self) -> str:
@@ -57,17 +49,22 @@ class ImageInterface(PositionedObjectInterface):
 
     def _apply_common_properties(self, qt_object: QGraphicsItem):
         qt_object.setPos(point_to_qt_point_f(self.pos))
+        if self.transform_origin != ORIGIN:
+            qt_object.setTransformOriginPoint(
+                point_to_qt_point_f(self.transform_origin)
+            )
         if self.scale != 1:
             qt_object.setScale(self.scale)
         if self.rotation != 0:
             qt_object.setRotation(self.rotation)
-        if self.z_index != 0:
-            qt_object.setZValue(self.z_index)
+        if self.transform_origin != ORIGIN:
+            qt_object.setTransformOriginPoint(
+                point_to_qt_point_f(self.transform_origin)
+            )
 
     def render(self):
         if self.file_path.suffix == ".svg":
             qt_object = self._create_svg_qt_object()
         else:
             qt_object = self._create_pixmap_qt_object()
-
-        neoscore.app_interface.scene.addItem(qt_object)
+        self._register_qt_object(qt_object)

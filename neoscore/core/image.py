@@ -4,7 +4,7 @@ import pathlib
 from typing import Optional
 
 from neoscore.core.layout_controllers import NewLine
-from neoscore.core.point import Point, PointDef
+from neoscore.core.point import ORIGIN, Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.units import ZERO, Unit
 from neoscore.interface.image_interface import ImageInterface
@@ -24,7 +24,7 @@ class Image(PositionedObject):
         file_path: str | pathlib.Path,
         scale: float = 1,
         rotation: float = 0,
-        z_index: int = 0,
+        transform_origin: PointDef = ORIGIN,
     ):
         """
         Args:
@@ -33,42 +33,12 @@ class Image(PositionedObject):
             file_path: Path to an image file to be used
             scale: A scaling factor applied to the image.
             rotation: Rotation angle in degrees.
-            z_index: Controls draw order with lower values drawn first.
         """
+        super().__init__(pos, parent)
         self._scale = scale
         self._rotation = rotation
-        self._z_index = z_index
+        self.transform_origin = transform_origin
         self.file_path = file_path
-        super().__init__(pos, parent)
-
-    @property
-    def scale(self) -> float:
-        """A scaling factor.
-
-        Scaling always respects the image's aspect ratio."""
-        return self._scale
-
-    @scale.setter
-    def scale(self, value: float):
-        self._scale = value
-
-    @property
-    def rotation(self) -> float:
-        """An angle in degrees to rotate about the image origin"""
-        return self._rotation
-
-    @rotation.setter
-    def rotation(self, value: float):
-        self._rotation = value
-
-    @property
-    def z_index(self) -> int:
-        """Value controlling draw order with lower values being drawn first"""
-        return self._z_index
-
-    @z_index.setter
-    def z_index(self, value: int):
-        self._z_index = value
 
     @property
     def file_path(self) -> pathlib.Path:
@@ -99,7 +69,12 @@ class Image(PositionedObject):
         flowable_x: Optional[Unit] = None,
     ):
         interface = ImageInterface(
-            pos, self.file_path, self.scale, self.rotation, self.z_index
+            pos,
+            None if flowable_line else self.parent.interface_for_children,
+            self.scale,
+            self.rotation,
+            self.transform_origin,
+            self.file_path,
         )
         interface.render()
         self.interfaces.append(interface)

@@ -79,6 +79,17 @@ class OctaveLine(PositionedObject, Spanner, HasMusicFont):
             font = HasMusicFont.find_music_font(start_parent)
         self._music_font = font
         self.direction = direction
+
+        self.line_path = Path(
+            ORIGIN,
+            self,
+            Brush.no_brush(),
+            Pen(
+                thickness=font.engraving_defaults["octaveLineThickness"],
+                pattern=PenPattern.DASH,
+            ),
+        )
+
         self.line_text = _OctaveLineText(
             ORIGIN, self, self.breakable_length, indication, font
         )
@@ -87,16 +98,8 @@ class OctaveLine(PositionedObject, Spanner, HasMusicFont):
         text_rect = self.line_text.bounding_rect
         path_x = text_rect.width
         path_y = cast(Unit, text_rect.height / -2)
-        self.line_path = Path(
-            Point(path_x, path_y),
-            self,
-            Brush.no_brush(),
-            Pen(
-                thickness=font.engraving_defaults["octaveLineThickness"],
-                pattern=PenPattern.DASH,
-            ),
-        )
-        self.line_text.z_index = self.line_path.z_index + 1
+        self.line_path.pos = Point(path_x, path_y)
+
         # Drawn main line part
         self.line_path.line_to(self.end_pos.x, path_y, self.end_parent)
         self.line_path.line_to(
@@ -125,8 +128,7 @@ class _OctaveLineText(MusicText):
         indication: str,
         font: MusicFont,
     ):
-        MusicText.__init__(
-            self,
+        super().__init__(
             pos,
             parent,
             _GLYPHS[indication],
@@ -145,12 +147,12 @@ class _OctaveLineText(MusicText):
         return self._length
 
     def render_before_break(self, pos: Point, flowable_line: NewLine, flowable_x: Unit):
-        super().render_complete(pos)
+        super().render_complete(pos, flowable_line)
 
     def render_spanning_continuation(
         self, pos: Point, flowable_line: NewLine, object_x: Unit
     ):
-        super().render_complete(pos)
+        super().render_complete(pos, flowable_line)
 
     def render_after_break(self, pos: Point, flowable_line: NewLine, object_x: Unit):
-        super().render_complete(pos)
+        super().render_complete(pos, flowable_line)

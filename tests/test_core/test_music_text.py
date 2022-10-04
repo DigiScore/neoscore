@@ -35,10 +35,10 @@ class TestMusicText(AppTest):
             2,
             123,
             "#00f",
-            5,
             False,
             AlignmentX.RIGHT,
             AlignmentY.CENTER,
+            ORIGIN,
         )
         assert mtext.pos == Point(Unit(5), Unit(6))
         assert mtext.parent == mock_parent
@@ -49,10 +49,10 @@ class TestMusicText(AppTest):
         assert mtext.scale == 2
         assert mtext.rotation == 123
         assert mtext.background_brush == Brush("#00f")
-        assert mtext.z_index == 5
         assert not mtext.breakable
         assert mtext.alignment_x == AlignmentX.RIGHT
         assert mtext.alignment_y == AlignmentY.CENTER
+        assert mtext.transform_origin == ORIGIN
 
     def test_init_with_one_tuple(self):
         mtext = MusicText((Unit(5), Unit(6)), self.staff, ("brace", 1))

@@ -38,7 +38,6 @@ class TabClef(MusicText, StaffObject):
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,
         hide_background: bool = True,
-        z_index: Optional[int] = None,
     ):
         """
         Args:
@@ -48,8 +47,6 @@ class TabClef(MusicText, StaffObject):
             brush: The brush to fill in text shapes with.
             pen: The pen to trace text outlines with. This defaults to no pen.
             hide_background: Whether to paint over the background behind the text.
-            z_index: Controls draw order with lower values drawn first.
-                Defaults to 1 greater than the staff's ``z_index``.
         """
         StaffObject.__init__(self, staff)
         MusicText.__init__(
@@ -61,7 +58,6 @@ class TabClef(MusicText, StaffObject):
             brush,
             pen,
             background_brush=neoscore.background_brush if hide_background else None,
-            z_index=z_index if z_index is not None else staff.z_index + 1,
             alignment_y=AlignmentY.CENTER,
         )
 
@@ -79,20 +75,20 @@ class TabClef(MusicText, StaffObject):
         fringe_layout = self.staff.fringe_layout_at(flowable_line)
         if fringe_layout.pos_x_in_staff == self.pos_x_in_staff:
             pos = Point(pos.x + fringe_layout.clef, pos.y)
-        super().render_complete(pos)
+        super().render_complete(pos, flowable_line, flowable_x)
 
     def render_before_break(self, pos: Point, flowable_line: NewLine, flowable_x: Unit):
         fringe_layout = self.staff.fringe_layout_at(flowable_line)
         if fringe_layout.pos_x_in_staff == self.pos_x_in_staff:
             pos = Point(pos.x + fringe_layout.clef, pos.y)
-        super().render_complete(pos)
+        super().render_complete(pos, flowable_line)
 
     def render_spanning_continuation(
         self, pos: Point, flowable_line: NewLine, object_x: Unit
     ):
         fringe_layout = self.staff.fringe_layout_at(flowable_line)
-        super().render_complete(Point(pos.x + fringe_layout.clef, pos.y))
+        super().render_complete(Point(pos.x + fringe_layout.clef, pos.y), flowable_line)
 
     def render_after_break(self, pos: Point, flowable_line: NewLine, object_x: Unit):
         fringe_layout = self.staff.fringe_layout_at(flowable_line)
-        super().render_complete(Point(pos.x + fringe_layout.clef, pos.y))
+        super().render_complete(Point(pos.x + fringe_layout.clef, pos.y), flowable_line)

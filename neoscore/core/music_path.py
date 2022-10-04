@@ -7,7 +7,7 @@ from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.music_font import MusicFont
 from neoscore.core.path import Path
 from neoscore.core.pen import PenDef
-from neoscore.core.point import PointDef
+from neoscore.core.point import ORIGIN, PointDef
 from neoscore.core.positioned_object import PositionedObject
 
 
@@ -28,7 +28,7 @@ class MusicPath(Path, HasMusicFont):
         pen: Optional[PenDef] = None,
         rotation: float = 0,
         background_brush: Optional[BrushDef] = None,
-        z_index: int = 0,
+        transform_origin: PointDef = ORIGIN,
     ):
         """
         Args:
@@ -42,10 +42,16 @@ class MusicPath(Path, HasMusicFont):
                 path elements anchored to other objects are not currently supported.
             background_brush: Optional brush used to paint the path's bounding rect
                 behind it.
-            z_index: Controls draw order with lower values drawn first.
         """
         Path.__init__(
-            self, pos, parent, brush, pen, rotation, background_brush, z_index
+            self,
+            pos,
+            parent,
+            brush,
+            pen,
+            rotation,
+            background_brush,
+            transform_origin,
         )
         if font is None:
             font = HasMusicFont.find_music_font(parent)

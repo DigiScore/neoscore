@@ -10,7 +10,7 @@ from neoscore.core.directions import DirectionX
 from neoscore.core.paper import Paper
 from neoscore.core.pen import Pen
 from neoscore.core.pen_pattern import PenPattern
-from neoscore.core.point import ORIGIN, PointDef
+from neoscore.core.point import Point, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.rect import Rect
 from neoscore.core.units import ZERO, Mm, Unit
@@ -60,6 +60,7 @@ class Page(PositionedObject):
         self._index = index
         self._page_side = page_side
         self.paper = paper
+        self._geometry_preview_created = False
 
     @property
     def index(self):
@@ -156,7 +157,7 @@ class Page(PositionedObject):
         """
         return self.paper.live_width / 2
 
-    def render_geometry_preview(self, background_brush: Brush):
+    def create_geometry_preview(self, background_brush: Brush):
         """Create and render child objects which show the page geometry.
 
         This shouldn't be called directly; use the setting in :obj:`.neoscore.score`
@@ -165,39 +166,60 @@ class Page(PositionedObject):
         This is useful for interactive views, but should typically not be called in PDF
         and image export contexts.
         """
+        # An implementation note on page geometry previews:
+
+        # Ideally it would make the most sense for page geometry preview objects to be
+        # generated at the same time the page is created. However, this goal conflicts
+        # with our desire for preview visibility to be set at the top-level
+        # `neoscore.show()` call, typically at the end of a user script. This allows
+        # users to switch between preview mode and pdf/image export without modifying
+        # their setup line. Achieving this requires some ugly workarounds, like passing
+        # preview information to the top-level `document.render()` call, and here
+        # ensuring this is only ever called once with a private flag. There are more
+        # elegant ways to approach this issue, but for now this seems ok.
+
+        # Import here to avoid cyclic import
         from neoscore.core.path import Path
 
-        # Create page rect
+        # Ensure this is only executed once
+        if self._geometry_preview_created:
+            return
+        self._geometry_preview_created = True
+
+        # To ensure these preview objects appear below all real document objects, we
+        # need to attach all preview objects to the *first* page. This is necessary
+        # because the first page is drawn first. We furthermore need to ensure page
+        # preview objects are placed at the beginning of the first page's child list to
+        # ensure they are drawn before other first-page children. Some strange hacks
+        # here are needed to guarantee this behavior.
+        parent = self if self.index == 0 else None
         bounding_rect = self.bounding_rect
-        page_preview_rect = Path.rect(
-            (bounding_rect.x, bounding_rect.y),
-            self,
-            bounding_rect.width,
-            bounding_rect.height,
-            background_brush,
-            pen=Pen(_PREVIEW_OUTLINE_COLOR),
-        )
-        page_preview_rect.z_index = -999999999999
         page_drop_shadow_rect = Path.rect(
-            (Mm(1), Mm(1)),
-            page_preview_rect,
+            self.pos + Point(bounding_rect.x + Mm(1), bounding_rect.y + Mm(1)),
+            parent,
             bounding_rect.width,
             bounding_rect.height,
             Brush(_PREVIEW_SHADOW_COLOR),
             Pen.no_pen(),
         )
-        page_drop_shadow_rect.z_index = page_preview_rect.z_index - 1
+        page_preview_rect = Path.rect(
+            self.pos + Point(bounding_rect.x, bounding_rect.y),
+            parent,
+            bounding_rect.width,
+            bounding_rect.height,
+            background_brush,
+            pen=Pen(_PREVIEW_OUTLINE_COLOR),
+        )
         live_area_preview_rect = Path.rect(
-            ORIGIN,
-            self,
+            self.pos,
+            parent,
             self.paper.live_width,
             self.paper.live_height,
             Brush.no_brush(),
             pen=Pen(_PREVIEW_OUTLINE_COLOR, pattern=PenPattern.DOT),
         )
-        for obj in [
-            page_preview_rect,
-            page_drop_shadow_rect,
-            live_area_preview_rect,
-        ]:
-            obj.render()
+        # Terrible hack to ensure preview is always drawn below document contents
+        preview_objs_parent = live_area_preview_rect.parent
+        preview_objs_parent.children = (
+            preview_objs_parent.children[-3:] + preview_objs_parent.children[:-3]
+        )

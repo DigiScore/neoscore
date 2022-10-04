@@ -4,7 +4,7 @@ import json
 import os
 import pathlib
 from time import time
-from typing import TYPE_CHECKING, Callable, Optional
+from typing import TYPE_CHECKING, Callable, Dict, List, Optional, Set, Tuple
 from warnings import warn
 
 import img2pdf  # type: ignore
@@ -54,6 +54,12 @@ app_interface: AppInterface
 You generally shouldn't directly interact with this.
 """
 
+_display_page_geometry_in_refresh_func: bool = False
+"""Whether to render the page geometry in refresh renders.
+
+This global serves as a bit of a hack for passing the "display page geometry?" flag into
+refresh functions.
+"""
 
 _supported_image_extensions = {
     ".bmp",
@@ -236,12 +242,13 @@ def show(
         fullscreen: Whether to show the window in fullscreen mode.
             This doesn't mix well with ``max_window_size``.
     """
-    global document
     global app_interface
+    global background_brush
+    global document
+    global _display_page_geometry_in_refresh_func
+    _display_page_geometry_in_refresh_func = display_page_geometry
     app_interface.clear_scene()
-    document.render()
-    if display_page_geometry:
-        _render_geometry_preview()
+    document.render(display_page_geometry, background_brush)
     if refresh_func:
         set_refresh_func(refresh_func)
     app_interface.auto_viewport_interaction_enabled = auto_viewport_interaction_enabled
@@ -257,13 +264,8 @@ def _clear_interfaces():
             interfaces = getattr(obj, "interfaces", None)
             if interfaces:
                 interfaces.clear()
-
-
-def _render_geometry_preview():
-    global document
-    global background_brush
-    for page in document.pages:
-        page.render_geometry_preview(background_brush)
+            if hasattr(obj, "_interface_for_children"):
+                obj._interface_for_children = None
 
 
 def set_viewport_center_pos(document_pos: PointDef):
@@ -337,10 +339,11 @@ def render_pdf(pdf_path: str | pathlib.Path, dpi: int = 300):
         pdf_path: The output pdf path
         dpi: Resolution to render at
     """
-    global document
     global app_interface
+    global background_brush
+    global document
     _clear_interfaces()
-    document.render()
+    document.render(False, background_brush)
     # Render all pages to temp files
     page_imgs = []
     render_threads = []
@@ -411,8 +414,9 @@ def render_image(
             unknown reasons.
     """
 
-    global document
     global app_interface
+    global background_brush
+    global document
 
     _clear_interfaces()
 
@@ -429,7 +433,7 @@ def render_image(
         )
 
     bg_color = background_brush.color
-    document.render()
+    document.render(False, background_brush)
 
     thread = app_interface.render_image(
         rect,
@@ -450,8 +454,11 @@ def _repl_refresh_func(_: float) -> float:
 
     Refreshes at a rate of 5 FPS.
     """
+    global background_brush
+    global document
+    global _display_page_geometry_in_refresh_func
     _clear_interfaces()
-    document.render()
+    document.render(_display_page_geometry_in_refresh_func, background_brush)
     return 0.2
 
 
@@ -464,6 +471,8 @@ def set_refresh_func(refresh_func: RefreshFunc, target_fps: int = 60):
     """
     global app_interface
     global document
+    global background_brush
+    global _display_page_geometry_in_refresh_func
 
     frame_wait = 1 / target_fps
 
@@ -474,7 +483,7 @@ def set_refresh_func(refresh_func: RefreshFunc, target_fps: int = 60):
     def wrapped_refresh_func(frame_time: float) -> float:
         _clear_interfaces()
         refresh_func(frame_time)
-        document.render()
+        document.render(_display_page_geometry_in_refresh_func, background_brush)
         elapsed_time = time() - frame_time
         return max(frame_wait - elapsed_time, 0)
 

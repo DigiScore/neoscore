@@ -81,6 +81,8 @@ class KeySignature(PositionedObject, StaffObject):
     def _render_occurrence(
         self, pos: Point, flowable_line: Optional[NewLine], for_line_start: bool
     ):
+        inside_flowable = bool(flowable_line)
+        # when inside flowable this pos is absolute, otherwise relative
         base_x = pos.x
         base_y = pos.y
         fringe_layout = self.staff.fringe_layout_at(flowable_line)
@@ -98,8 +100,9 @@ class KeySignature(PositionedObject, StaffObject):
                 base_x + self.staff.unit(pos_tuple[0]),
                 base_y + self.staff.unit(pos_tuple[1]),
             )
+            parent = None if inside_flowable else self
             accidental = MusicText(
-                acc_pos, None, accidental_type.value, self.staff.music_font
+                acc_pos, parent, accidental_type.value, self.staff.music_font
             )
             accidental.render()
             accidental.remove()

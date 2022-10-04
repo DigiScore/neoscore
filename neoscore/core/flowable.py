@@ -267,11 +267,15 @@ class Flowable(PositionedObject):
             return len(self.lines) - 1
 
     def render(self):
-        self._generate_lines()
         super().render()
+
+    def pre_render_hook(self):
+        super().pre_render_hook()
+        self._generate_lines()
 
     def post_render_hook(self):
         # Clear all auto-generated margin controllers
+        super().post_render_hook()
         self._provided_controllers = Flowable._new_provided_controllers_list()
 
     @staticmethod

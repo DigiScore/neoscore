@@ -1,6 +1,7 @@
 from collections.abc import Callable
 from typing import Optional
 
+from neoscore.core.brush import Brush
 from neoscore.core.page_supplier import PageOverlayFunc, PageSupplier
 from neoscore.core.paper import Paper
 from neoscore.core.point import Point
@@ -67,12 +68,19 @@ class Document:
             for obj in page.descendants:
                 func(obj)
 
-    def render(self):
+    def render(self, display_page_geometry: bool, background_brush: Brush):
         """Render all items in the document.
 
         This should not be called directly.
+
+        Args:
+            display_page_geometry: Whether to include a preview of page geometry.
+            background_brush: The brush used to draw the scene background.
         """
         self._run_on_all_descendants(lambda g: g.pre_render_hook())
+        if display_page_geometry:
+            for page in self.pages:
+                page.create_geometry_preview(background_brush)
         for page in self.pages:
             page.render()
         self._run_on_all_descendants(lambda g: g.post_render_hook())

@@ -109,7 +109,8 @@ class TestStaff(AppTest):
 
     def test_path_drawing(self):
         staff = Staff((Mm(2), Mm(3)), self.flowable, Mm(10), None, Mm(1))
-        path = staff._create_staff_segment_path(Point(Mm(2), Mm(3)), Mm(10))
+        path = staff._create_staff_segment_path(Point(Mm(2), Mm(3)), Mm(10), True)
+        self.flowable.pre_render_hook()
         self.flowable.render()
         # Top line
         assert path.elements[0].pos == Point(Mm(0), Mm(0))

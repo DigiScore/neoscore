@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 from collections.abc import Iterator
-from typing import TYPE_CHECKING, Any, Optional, Type, cast
+from typing import TYPE_CHECKING, Any, List, Optional, Set, Type, cast
 
 from backports.cached_property import cached_property
 
 from neoscore.core import neoscore
 from neoscore.core.point import ORIGIN, Point, PointDef
 from neoscore.core.units import ZERO, Unit
+from neoscore.interface.invisible_object_interface import InvisibleObjectInterface
 from neoscore.interface.positioned_object_interface import PositionedObjectInterface
 
 if TYPE_CHECKING:
@@ -96,6 +97,10 @@ class PositionedObject:
         self._render_cached_properties: Set[str] = set()
         self._currently_rendering = False
         self._interfaces = []
+        self._interface_for_children = None
+        self._scale = 1.0
+        self._rotation = 0.0
+        self.transform_origin = ORIGIN
 
     @property
     def pos(self) -> Point:
@@ -105,6 +110,45 @@ class PositionedObject:
     @pos.setter
     def pos(self, value: PointDef):
         self._pos = Point.from_def(value)
+
+    @property
+    def scale(self) -> float:
+        """A scale factor to be applied to the rendered object.
+
+        Outside flowable contexts, scaling is inherited by children.
+
+        Scaling occurs relative to ``self.transform_origin``, which is by default the
+        local origin.
+        """
+        return self._scale
+
+    @scale.setter
+    def scale(self, value: float):
+        self._scale = value
+
+    @property
+    def rotation(self) -> float:
+        """A rotation angle in degrees.
+
+        Outside flowable contexts, rotation is inherited by children.
+
+        Rotation occurs relative to ``self.transform_origin``, which is by default the
+        local origin.
+        """
+        return self._rotation
+
+    @rotation.setter
+    def rotation(self, value: float):
+        self._rotation = value
+
+    @property
+    def transform_origin(self) -> Point:
+        """The origin point for rotation and scaling transforms"""
+        return self._transform_origin
+
+    @transform_origin.setter
+    def transform_origin(self, value: PointDef):
+        self._transform_origin = Point.from_def(value)
 
     @property
     def x(self) -> Unit:
@@ -173,7 +217,7 @@ class PositionedObject:
                 yield subchild
             yield child
 
-    @property
+    @render_cached_property
     def flowable(self) -> Optional[Flowable]:
         """The flowable this object belongs in."""
         return cast(
@@ -190,6 +234,18 @@ class PositionedObject:
         flowable line it appears in.
         """
         return self._interfaces
+
+    @property
+    def interface_for_children(self) -> Optional[PositionedObjectInterface]:
+        """The low level object interface to be used by children objects.
+
+        Outside flowable contexts, interface classes utilize a parenting scheme much
+        like core classes. The interfaces of child objects should use this field as
+        their parent for proper position and transform inheritance.
+
+        Users should rarely, if ever, have to deal with this field.
+        """
+        return self._interface_for_children
 
     def descendants_of_class_or_subclass(
         self, graphic_object_class: Type[PositionedObject]
@@ -385,10 +441,19 @@ class PositionedObject:
 
         This and other render methods should generally not be called directly.
         """
-        if self.breakable_length != ZERO and self.flowable is not None:
+        if self.flowable is not None:
             self.render_in_flowable()
         else:
-            self.render_complete(self.canvas_pos())
+            self._interface_for_children = InvisibleObjectInterface(
+                self.pos,
+                # Hack because root document obj lacks this property
+                getattr(self.parent, "interface_for_children", None),
+                self.scale,
+                self.rotation,
+                self.transform_origin,
+            )
+            self._interface_for_children.render()
+            self.render_complete(self.pos)
         for child in self.children:
             child.render()
 
@@ -459,12 +524,23 @@ class PositionedObject:
         By default, this is a no-op. Subclasses with rendered appearances should
         override this.
 
+        This method behaves differently inside and outside of flowables. Whether this
+        object is inside a flowable can be determined by whether a ``flowable_line`` is
+        given. When inside a flowable, the given position is in global document
+        coordinates, and created interfaces (or higher level classes) must not be
+        assigned a parent. When not inside a flowable, the given position is relative to
+        ``self.parent`` and created interfaces (or higher level classes) must be
+        assigned a parent. In this case, created interfaces should use
+        ``self.parent.interface_for_children`` as their parent.
+
         This and other render methods should generally not be called directly.
 
         Args:
-            pos: The rendering position in document space for drawing.
+            pos: The rendering position. If outside a flowable, this is relative to
+                the parent. Otherwise, it is in document coordinates.
             flowable_line: If in a ``Flowable``, the line in which this object appears
             flowable_x: If in a ``Flowable``, the flowable x position of this render
+
         """
 
     def render_before_break(self, pos: Point, flowable_line: NewLine, flowable_x: Unit):
@@ -476,6 +552,8 @@ class PositionedObject:
 
         By default, this is a no-op. Subclasses with rendered appearances should
         override this.
+
+        Created interfaces and higher level objects should not be assigned a parent.
 
         This and other render methods should generally not be called directly.
 
@@ -499,6 +577,8 @@ class PositionedObject:
         By default, this is a no-op. Subclasses with rendered appearances should
         override this.
 
+        Created interfaces and higher level objects should not be assigned a parent.
+
         This and other render methods should generally not be called directly.
 
         Args:
@@ -516,6 +596,8 @@ class PositionedObject:
 
         By default, this is a no-op. Subclasses with rendered appearances should
         override this.
+
+        Created interfaces and higher level objects should not be assigned a parent.
 
         This and other render methods should generally not be called directly.
 

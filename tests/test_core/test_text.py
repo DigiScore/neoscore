@@ -30,10 +30,10 @@ class TestText(AppTest):
             2,
             12,
             "#00f",
-            3,
             False,
             AlignmentX.CENTER,
             AlignmentY.CENTER,
+            ORIGIN,
         )
         assert obj.x == Unit(5)
         assert obj.y == Unit(6)
@@ -45,10 +45,10 @@ class TestText(AppTest):
         assert obj.scale == 2
         assert obj.rotation == 12
         assert obj.background_brush == Brush("#00f")
-        assert obj.z_index == 3
         assert not obj.breakable
         assert obj.alignment_x == AlignmentX.CENTER
         assert obj.alignment_y == AlignmentY.CENTER
+        assert obj.transform_origin == ORIGIN
 
     def test_default_init_values(self):
         obj = Text((Unit(5), Unit(6)), None, "testing")
@@ -89,12 +89,11 @@ class TestText(AppTest):
         assert obj.rotation == 123
         assert Text((Unit(5), Unit(6)), None, "testing", rotation=123).rotation == 123
 
-    def test_z_index(self):
-        obj = Text((Unit(5), Unit(6)), None, "testing")
-        assert obj.z_index == 0
-        obj.z_index = 123
-        assert obj.z_index == 123
-        assert Text((Unit(5), Unit(6)), None, "testing", z_index=123).z_index == 123
+    def test_transform_origin_setter(self):
+        obj = Text((Unit(5), Unit(6)), None, "testing", transform_origin=ORIGIN)
+        assert obj.transform_origin == ORIGIN
+        obj.transform_origin = (Unit(12), Unit(12))
+        assert obj.transform_origin == Point(Unit(12), Unit(12))
 
     def test_alignment_x_setter(self):
         obj = Text(ORIGIN, None, "testing", alignment_x=AlignmentX.CENTER)

@@ -9,7 +9,7 @@ from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.music_char import MusicChar, MusicCharDef
 from neoscore.core.music_font import MusicFont
 from neoscore.core.pen import PenDef
-from neoscore.core.point import PointDef
+from neoscore.core.point import ORIGIN, PointDef
 from neoscore.core.positioned_object import PositionedObject, render_cached_property
 from neoscore.core.rect import Rect
 from neoscore.core.text import Text
@@ -61,10 +61,10 @@ class MusicText(Text, HasMusicFont):
         scale: float = 1,
         rotation: float = 0,
         background_brush: Optional[BrushDef] = None,
-        z_index: int = 0,
         breakable: bool = True,
         alignment_x: AlignmentX = AlignmentX.LEFT,
         alignment_y: AlignmentY = AlignmentY.BASELINE,
+        transform_origin: PointDef = ORIGIN,
     ):
         """
         Args:
@@ -82,7 +82,6 @@ class MusicText(Text, HasMusicFont):
                 not currently supported.
             background_brush: Optional brush used to paint the text's bounding rect
                 behind it.
-            z_index: Controls draw order with lower values drawn first.
             breakable: Whether this object should break across lines in
                 :obj:`.Flowable` containers.
             alignment_x: The text's horizontal alignment relative to ``pos``.
@@ -105,10 +104,10 @@ class MusicText(Text, HasMusicFont):
             scale,
             rotation,
             background_brush,
-            z_index,
             breakable,
             alignment_x,
             alignment_y,
+            transform_origin,
         )
 
     @property

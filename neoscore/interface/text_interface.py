@@ -3,7 +3,6 @@ from typing import Dict, NamedTuple, Optional
 
 from PyQt5.QtGui import QFont, QPainterPath
 
-from neoscore.core import neoscore
 from neoscore.core.units import Unit
 from neoscore.interface.brush_interface import BrushInterface
 from neoscore.interface.font_interface import FontInterface
@@ -55,15 +54,7 @@ class TextInterface(PositionedObjectInterface):
 
     font: FontInterface
 
-    scale: float = 1
-
-    rotation: float = 0
-    """Rotation angle in degrees"""
-
     background_brush: Optional[BrushInterface] = None
-
-    z_index: int = 0
-    """Z-index controlling draw order."""
 
     clip_start_x: Optional[Unit] = None
     """The local starting position of the drawn region in the glyph.
@@ -79,8 +70,7 @@ class TextInterface(PositionedObjectInterface):
 
     def render(self):
         """Render the line to the scene."""
-        qt_object = self._create_qt_object()
-        neoscore.app_interface.scene.addItem(qt_object)
+        self._register_qt_object(self._create_qt_object())
 
     def _create_qt_object(self) -> QClippingPath:
         """Create and return this interface's underlying Qt object"""
@@ -88,8 +78,6 @@ class TextInterface(PositionedObjectInterface):
         qt_object.setPos(point_to_qt_point_f(self.pos))
         qt_object.setBrush(self.brush.qt_object)
         qt_object.setPen(self.pen.qt_object)
-        if self.z_index != 0:
-            qt_object.setZValue(self.z_index)
         qt_object.update_geometry()
         return qt_object
 
@@ -113,6 +101,7 @@ class TextInterface(PositionedObjectInterface):
             self.rotation,
             self.background_brush.qt_object if self.background_brush else None,
             defer_geometry_calculation=True,
+            transform_origin=point_to_qt_point_f(self.transform_origin),
         )
 
     @staticmethod

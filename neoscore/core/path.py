@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from math import atan, cos, pi, sin, sqrt, tan
-from typing import Optional, cast
+from typing import List, Optional, Tuple, cast
 
 from neoscore.core.brush import Brush, BrushDef
 from neoscore.core.layout_controllers import NewLine
@@ -14,7 +14,7 @@ from neoscore.core.path_element import (
     PathElement,
 )
 from neoscore.core.pen import Pen, PenDef
-from neoscore.core.point import Point, PointDef
+from neoscore.core.point import ORIGIN, Point, PointDef
 from neoscore.core.positioned_object import PositionedObject, render_cached_property
 from neoscore.core.units import ZERO, Mm, Unit
 from neoscore.interface.path_interface import (
@@ -46,7 +46,7 @@ class Path(PaintedObject):
         pen: Optional[PenDef] = None,
         rotation: float = 0,
         background_brush: Optional[BrushDef] = None,
-        z_index: int = 0,
+        transform_origin: PointDef = ORIGIN,
     ):
         """
         Args:
@@ -58,14 +58,13 @@ class Path(PaintedObject):
                 path elements parented to other objects are not currently supported.
             background_brush: Optional brush used to paint the path's bounding rect
                 behind it.
-            z_index: Controls draw order with lower values drawn first.
         """
         super().__init__(pos, parent, brush, pen)
         self.background_brush = background_brush
-        self._z_index = z_index
         self._rotation = rotation
         self.elements: List[PathElement] = []
         self._current_subpath_start: Optional[Tuple[Point, Optional[parent]]] = None
+        self.transform_origin = transform_origin
 
     @classmethod
     def straight_line(
@@ -407,19 +406,6 @@ class Path(PaintedObject):
         return max_x - min_x
 
     @property
-    def rotation(self) -> float:
-        """An angle in degrees to rotate about the path origin.
-
-        Rotated paths with flowable breaks and path elements anchored
-        to other objects are not currently supported.
-        """
-        return self._rotation
-
-    @rotation.setter
-    def rotation(self, value: float):
-        self._rotation = value
-
-    @property
     def background_brush(self) -> Optional[Brush]:
         """An optional brush to paint over the path bounding rect's background with"""
         return self._background_brush
@@ -430,15 +416,6 @@ class Path(PaintedObject):
             self._background_brush = Brush.from_def(value)
         else:
             self._background_brush = None
-
-    @property
-    def z_index(self) -> int:
-        """Value controlling draw order with lower values being drawn first"""
-        return self._z_index
-
-    @z_index.setter
-    def z_index(self, value: int):
-        self._z_index = value
 
     def line_to(self, x: Unit, y: Unit, parent: Optional[PositionedObject] = None):
         """Draw a path from the current position to a new point.
@@ -561,6 +538,7 @@ class Path(PaintedObject):
     def _render_slice(
         self,
         pos: Point,
+        inside_flowable: bool,
         clip_start_x: Optional[Unit] = None,
         clip_width: Optional[Unit] = None,
     ):
@@ -570,12 +548,14 @@ class Path(PaintedObject):
         resolved_path_elements = self._resolve_path_elements()
         slice_interface = PathInterface(
             pos,
+            None if inside_flowable else self.parent.interface_for_children,
+            self.scale,
+            self.rotation,
+            self.transform_origin,
             self.brush.interface,
             self.pen.interface,
             resolved_path_elements,
-            self.rotation,
             self.background_brush.interface if self.background_brush else None,
-            self.z_index,
             clip_start_x,
             clip_width,
         )
@@ -588,16 +568,17 @@ class Path(PaintedObject):
         flowable_line: Optional[NewLine] = None,
         flowable_x: Optional[Unit] = None,
     ):
-        self._render_slice(pos, None, None)
+        inside_flowable = bool(flowable_line)
+        self._render_slice(pos, inside_flowable, None, None)
 
     def render_before_break(self, pos: Point, flowable_line: NewLine, flowable_x: Unit):
         slice_length = flowable_line.length - (flowable_x - flowable_line.flowable_x)
-        self._render_slice(pos, ZERO, slice_length)
+        self._render_slice(pos, True, ZERO, slice_length)
 
     def render_spanning_continuation(
         self, pos: Point, flowable_line: NewLine, object_x: Unit
     ):
-        self._render_slice(pos, object_x, flowable_line.length)
+        self._render_slice(pos, True, object_x, flowable_line.length)
 
     def render_after_break(self, pos: Point, flowable_line: NewLine, object_x: Unit):
-        self._render_slice(pos, object_x, None)
+        self._render_slice(pos, True, object_x, None)

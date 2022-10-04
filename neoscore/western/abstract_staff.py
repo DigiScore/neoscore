@@ -42,7 +42,6 @@ class AbstractStaff(PaintedObject, HasMusicFont):
         self._length = length
         self._group = group or StaffGroup()
         self._group.staves.add(self)
-        self._z_index = 0
 
     @property
     def music_font(self) -> MusicFont:
@@ -100,15 +99,6 @@ class AbstractStaff(PaintedObject, HasMusicFont):
         """
         return self._group
 
-    @property
-    def z_index(self) -> int:
-        """Value controlling draw order with lower values being drawn first"""
-        return self._z_index
-
-    @z_index.setter
-    def z_index(self, value: int):
-        self._z_index = value
-
     def find_ordered_descendants_with_attr(self, attr: str) -> List[Tuple[Unit, Any]]:
         """Find all descendants with an attribute, sorted with their staff x positions"""
         result = [
@@ -143,9 +133,13 @@ class AbstractStaff(PaintedObject, HasMusicFont):
                 slice_length = self.breakable_length - clip_start_x
         else:
             slice_length = clip_width
+        inside_flowable = bool(flowable_line)
+        if inside_flowable:
+            segment_pos = Point(pos.x + fringe_layout.staff, pos.y)
+        else:
+            segment_pos = Point(fringe_layout.staff, ZERO)
         path = self._create_staff_segment_path(
-            Point(pos.x + fringe_layout.staff, pos.y),
-            slice_length - fringe_layout.staff,
+            segment_pos, slice_length - fringe_layout.staff, inside_flowable
         )
         path.render()
         path.remove()
@@ -174,8 +168,11 @@ class AbstractStaff(PaintedObject, HasMusicFont):
     def render_after_break(self, pos: Point, flowable_line: NewLine, object_x: Unit):
         self._render_slice(pos, object_x, None, flowable_line)
 
-    def _create_staff_segment_path(self, doc_pos: Point, length: Unit) -> Path:
-        path = Path(doc_pos, None, pen=self.pen, z_index=self.z_index)
+    def _create_staff_segment_path(
+        self, pos: Point, length: Unit, inside_flowable: bool
+    ) -> Path:
+        parent = None if inside_flowable else self
+        path = Path(pos, parent, pen=self.pen)
         line_y = ZERO
         for i in range(self.line_count):
             path.move_to(ZERO, line_y)

@@ -50,7 +50,9 @@ class SystemLine(MultiStaffObject, MusicPath):
         flowable_line: Optional[NewLine],
     ):
         fringe_layout = self.highest.fringe_layout_at(flowable_line)
-        super().render_complete(Point(pos.x + fringe_layout.staff, pos.y))
+        super().render_complete(
+            Point(pos.x + fringe_layout.staff, pos.y), flowable_line
+        )
 
     def render_complete(
         self,

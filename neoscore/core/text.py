@@ -31,10 +31,10 @@ class Text(PaintedObject):
         scale: float = 1,
         rotation: float = 0,
         background_brush: Optional[BrushDef] = None,
-        z_index: int = 0,
         breakable: bool = True,
         alignment_x: AlignmentX = AlignmentX.LEFT,
         alignment_y: AlignmentY = AlignmentY.BASELINE,
+        transform_origin: PointDef = ORIGIN,
     ):
         """
         Args:
@@ -49,7 +49,6 @@ class Text(PaintedObject):
                 not currently supported.
             background_brush: Optional brush used to paint the text's bounding rect
                 behind it.
-            z_index: Controls draw order with lower values drawn first.
             breakable: Whether this object should break across lines in
                 :obj:`.Flowable` containers.
             alignment_x: The text's horizontal alignment relative to ``pos``.
@@ -57,6 +56,7 @@ class Text(PaintedObject):
                 correctly when breaking across flowable lines.
             alignment_y: The text's vertical alignment relative to ``pos``.
         """
+        super().__init__(pos, parent, brush, pen or Pen.no_pen())
         if font:
             self._font = font
         else:
@@ -65,11 +65,10 @@ class Text(PaintedObject):
         self._scale = scale
         self._rotation = rotation
         self.background_brush = background_brush
-        self._z_index = z_index
         self._breakable = breakable
         self._alignment_x = alignment_x
         self._alignment_y = alignment_y
-        super().__init__(pos, parent, brush, pen or Pen.no_pen())
+        self.transform_origin = transform_origin
 
     @property
     def breakable_length(self) -> Unit:
@@ -101,32 +100,6 @@ class Text(PaintedObject):
         self._font = value
 
     @property
-    def scale(self) -> float:
-        """A scale factor to be applied to the rendered text.
-
-        This is applied in addition to the font size. It has no effect on children.
-        """
-        return self._scale
-
-    @scale.setter
-    def scale(self, value: float):
-        self._scale = value
-
-    @property
-    def rotation(self) -> float:
-        """An angle in degrees to rotate about the text origin.
-
-        Note that breakable rotated text is not currently supported.
-
-        This has no effect on children.
-        """
-        return self._rotation
-
-    @rotation.setter
-    def rotation(self, value: float):
-        self._rotation = value
-
-    @property
     def background_brush(self) -> Optional[Brush]:
         """The brush to paint over the background with."""
         return self._background_brush
@@ -137,15 +110,6 @@ class Text(PaintedObject):
             self._background_brush = Brush.from_def(value)
         else:
             self._background_brush = None
-
-    @property
-    def z_index(self) -> int:
-        """Value controlling draw order with lower values being drawn first"""
-        return self._z_index
-
-    @z_index.setter
-    def z_index(self, value: int):
-        self._z_index = value
 
     @property
     def breakable(self) -> bool:
@@ -221,6 +185,7 @@ class Text(PaintedObject):
     def _render_slice(
         self,
         pos: Point,
+        inside_flowable: bool,
         clip_start_x: Optional[Unit] = None,
         clip_width: Optional[Unit] = None,
     ):
@@ -232,17 +197,20 @@ class Text(PaintedObject):
             clip_start_x: The starting local x position in of the slice
             clip_width: The horizontal length of the slice to
                 be rendered
+            inside_flowable: Whether this is being rendered in a flowable.
+                This affects the treatment of the interface position and parent.
         """
         slice_interface = TextInterface(
             pos + self._alignment_offset,
+            None if inside_flowable else self.parent.interface_for_children,
+            self.scale,
+            self.rotation,
+            self.transform_origin,
             self.brush.interface,
             self.pen.interface,
             self.text,
             self.font.interface,
-            self.scale,
-            self.rotation,
             self.background_brush.interface if self.background_brush else None,
-            self.z_index,
             clip_start_x,
             clip_width,
         )
@@ -255,16 +223,17 @@ class Text(PaintedObject):
         flowable_line: Optional[NewLine] = None,
         flowable_x: Optional[Unit] = None,
     ):
-        self._render_slice(pos, None, None)
+        inside_flowable = bool(flowable_line)
+        self._render_slice(pos, inside_flowable, None, None)
 
     def render_before_break(self, pos: Point, flowable_line: NewLine, flowable_x: Unit):
         slice_length = flowable_line.length - (flowable_x - flowable_line.flowable_x)
-        self._render_slice(pos, ZERO, slice_length)
+        self._render_slice(pos, True, ZERO, slice_length)
 
     def render_spanning_continuation(
         self, pos: Point, flowable_line: NewLine, object_x: Unit
     ):
-        self._render_slice(pos, object_x, flowable_line.length)
+        self._render_slice(pos, True, object_x, flowable_line.length)
 
     def render_after_break(self, pos: Point, flowable_line: NewLine, object_x: Unit):
-        self._render_slice(pos, object_x, None)
+        self._render_slice(pos, True, object_x, None)

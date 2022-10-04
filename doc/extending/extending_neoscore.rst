@@ -32,7 +32,7 @@ Neoscore's core functionality is divided into 3 main components: the :obj:`.core
        4 -> 5
    }
 
-The :obj:`interface <.neoscore.interface>` layer provides low-level representations of core-layer objects. The document tree at the interface layer is completely flattened; every interface object is positioned in absolute document coordinates. Interface classes are also immutable; once created they cannot be changed. Mutation in interactive contexts like animation and live-coding is achieved by continually destroying and recreating interface classes.
+The :obj:`interface <.neoscore.interface>` layer provides low-level representations of core-layer objects. The document tree at the interface layer is partially flattened; every interface object inside flowable containers is positioned in absolute document coordinates. Interface classes are also immutable; once created they cannot be changed. Mutation in interactive contexts like animation and live-coding is achieved by continually destroying and recreating interface classes.
 
 .. note::
 
