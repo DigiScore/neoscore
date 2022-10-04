@@ -80,7 +80,6 @@ class RenderedExample(CodeBlock):
     def post_process_script(script: List[str], export_path: Path):
         """Modify `script` in-place preparing it for render"""
 
-        setup_line = "neoscore.setup(display_page_geometry=False)"
         render_line = (
             f"neoscore.render_image("
             + "None,"
@@ -91,9 +90,8 @@ class RenderedExample(CodeBlock):
             # Assume script includes setup code too
             # Just overwrite the `show` line with image export
             for i in range(len(script)):
-                script[i] = script[i].replace("neoscore.setup()", setup_line)
                 script[i] = script[i].replace("neoscore.show()", render_line)
         else:
             script.insert(0, "from neoscore.common import *")
-            script.insert(1, setup_line)
+            script.insert(1, "neoscore.setup()")
             script.append(render_line)
