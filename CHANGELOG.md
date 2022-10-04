@@ -1,4 +1,4 @@
-# 0.1.7 (unreleased): BREAKING CHANGE
+# 0.1.7 (2022-10-03) - BREAKING CHANGE
 - Fix [clipping of thick pens](https://github.com/DigiScore/neoscore/issues/14) thanks to help from @Xavman42.
 - Add a new field `transform_origin` to all graphical objects and corresponding interface classes, with help from @Xavman42. This new field sets the origin point (relative to the object's `pos`) for rotation and scaling.
 - Explicit z-index support has been removed. Stacking order is now strictly set by the order of the document tree's depth-first traversal.
