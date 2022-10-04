@@ -471,8 +471,8 @@ def set_refresh_func(refresh_func: RefreshFunc, target_fps: int = 60):
     """
     global app_interface
     global document
-    # global background_brush
-    # global _display_page_geometry_in_refresh_func
+    global background_brush
+    global _display_page_geometry_in_refresh_func
 
     frame_wait = 1 / target_fps
 
@@ -483,8 +483,7 @@ def set_refresh_func(refresh_func: RefreshFunc, target_fps: int = 60):
     def wrapped_refresh_func(frame_time: float) -> float:
         _clear_interfaces()
         refresh_func(frame_time)
-        # document.render(_display_page_geometry_in_refresh_func, background_brush)
-        document.render(True, Brush("#fff"))
+        document.render(_display_page_geometry_in_refresh_func, background_brush)
         elapsed_time = time() - frame_time
         return max(frame_wait - elapsed_time, 0)
 

@@ -60,6 +60,7 @@ class Page(PositionedObject):
         self._index = index
         self._page_side = page_side
         self.paper = paper
+        self._geometry_preview_created = False
 
     @property
     def index(self):
@@ -165,8 +166,25 @@ class Page(PositionedObject):
         This is useful for interactive views, but should typically not be called in PDF
         and image export contexts.
         """
+        # An implementation note on page geometry previews:
+
+        # Ideally it would make the most sense for page geometry preview objects to be
+        # generated at the same time the page is created. However, this goal conflicts
+        # with our desire for preview visibility to be set at the top-level
+        # `neoscore.show()` call, typically at the end of a user script. This allows
+        # users to switch between preview mode and pdf/image export without modifying
+        # their setup line. Achieving this requires some ugly workarounds, like passing
+        # preview information to the top-level `document.render()` call, and here
+        # ensuring this is only ever called once with a private flag. There are more
+        # elegant ways to approach this issue, but for now this seems ok.
+
         # Import here to avoid cyclic import
         from neoscore.core.path import Path
+
+        # Ensure this is only executed once
+        if self._geometry_preview_created:
+            return
+        self._geometry_preview_created = True
 
         # To ensure these preview objects appear below all real document objects, we
         # need to attach all preview objects to the *first* page. This is necessary
