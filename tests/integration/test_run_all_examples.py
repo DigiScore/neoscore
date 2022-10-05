@@ -16,6 +16,7 @@ example_script_paths = [
     and f
     not in [
         "animation.py",
+        "fractal_score.py",
         "helpers.py",
         "input_scene_interaction.py",
         "input_simple.py",
