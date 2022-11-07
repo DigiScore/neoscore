@@ -14,7 +14,7 @@ Neoscore is a Python programming library for creating scores without limits. Whi
 
 Neoscore uses a layered architecture which allows users to work with low-level graphics primitives and higher-level notation constructs according to their needs. Users can build sophisticated scores using the substantial built-in primitives, or they can treat the library as a framework on which to build complex new notation systems. Experimentally it also supports an interactive runtime allowing users to live code on scores and even animate them.
 
-We differ from traditional score-writing systems in many important aspects. Neoscore deliberately lacks support for things like audio playback, MusicXML support, MIDI import, automatic score layout, and part extraction. We treat traditional western notation as a second class citizen. In general, if your score *can* be written with traditional score-writers you're better off using one. But if your notation speaks in dots and squiggles, grids and colors, bouncing barlines and unruly clefs—you're in the right place!
+We differ from traditional score-writing systems in many important aspects. Neoscore deliberately lacks support for things like audio playback, MusicXML, MIDI, automatic score layout, and part extraction. We treat traditional western notation as a second class citizen. In general, if your score *can* be written with traditional score-writers you're better off using one. But if your notation speaks in dots and squiggles, grids and colors, bouncing barlines and unruly clefs—you're in the right place!
 
 .. raw:: html
 

@@ -46,9 +46,9 @@ Glyphs with `SMuFL alternate codes <https://w3c.github.io/smufl/latest/specifica
 
     font = MusicFont("Bravura", Mm(2))
     MusicText(ORIGIN, None, "flag16thUp", font)
-    # short-flagged alternate, also accessible with the "flag16thUpShort" glyph name
-    MusicText((Mm(4), ZERO), None, ("flag16thUp", 1), font)
     # straight-flagged alternate, aka "flag16thUpStraight"
+    MusicText((Mm(4), ZERO), None, ("flag16thUp", 1), font)
+    # short-flagged alternate, also accessible with the "flag16thUpShort" glyph name
     MusicText((Mm(8), ZERO), None, ("flag16thUp", 2), font)
 
 Each resolved :obj:`.MusicChar` is placed in :obj:`.MusicText.music_chars`, through which you can access rich glyph metadata provided by SMuFL::
