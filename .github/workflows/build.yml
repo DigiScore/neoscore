@@ -7,6 +7,9 @@ on:
 
 jobs:
   build:
+    defaults:
+      run:
+        shell: bash
     strategy:
       matrix:
         platform: [ubuntu-latest, macos-latest, windows-latest]
