@@ -3,16 +3,16 @@ import pytest
 
 from neoscore.western.staff import Staff
 from neoscore.western.pedal_line import PedalLine
-from neoscore.core.units import ZERO, Mm
-from neoscore.core.point import Point
+from neoscore.core.units import Mm
+from neoscore.core.point import Point, ORIGIN
 
-class TestBarLine(AppTest):
+class TestPedalLine(AppTest):
     def setUp(self):
         super().setUp()
-        self.staff = Staff((Mm(0), Mm(0)), None, Mm(100))
+        self.staff = Staff(ORIGIN, None, Mm(100))
 
     def test_full_pedal_line(self):
-        pedal_line = PedalLine((Mm(0), Mm(0)),
+        pedal_line = PedalLine(ORIGIN,
                                self.staff,
                                Mm(100))
         assert pedal_line.pos == Point(x=Mm(0.0), y=Mm(0.0))
@@ -21,7 +21,7 @@ class TestBarLine(AppTest):
         assert pedal_line.elements[3].pos == Point(x=Mm(100.0), y=Mm(0.0))
 
     def test_pedal_line_half_lift(self):
-        pedal_line = PedalLine((Mm(0), Mm(0)),
+        pedal_line = PedalLine(ORIGIN,
                                self.staff,
                                Mm(100),
                                half_lift_positions=[Mm(10), Mm(50), Mm(95)]
@@ -32,7 +32,7 @@ class TestBarLine(AppTest):
 
     def test_pedal_line_half_lift_too_long(self):
         with pytest.raises(AttributeError):
-            PedalLine((Mm(0), Mm(0)),
+            PedalLine(ORIGIN,
                       self.staff,
                       Mm(100),
                       half_lift_positions=[Mm(10), Mm(50), Mm(120)]
