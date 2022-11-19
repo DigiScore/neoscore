@@ -82,22 +82,25 @@ class PedalLine(Spanner, MusicPath):
         self.line_to(self.music_font.unit(0), descent)
 
         # Draw half lift positions, if any exist
-        for pos in self.half_lift_positions:
-            if isinstance(pos, tuple):
-                lift_parent = pos[1]
-                lift_center_x = pos[0]
-                lift_center_y = lift_parent.map_to(self).y + descent
-            elif isinstance(pos, Unit):
-                lift_parent = self
-                lift_center_x = pos
-                lift_center_y = descent
-            else:
-                raise AttributeError("Invalid half lift position: {}".format(pos))
-            lift_left_x = lift_center_x - half_lift_x_extent
-            lift_right_x = lift_center_x + half_lift_x_extent
-            self.line_to(lift_left_x, lift_center_y, lift_parent)
-            self.line_to(lift_center_x, lift_center_y - descent, lift_parent)
-            self.line_to(lift_right_x, lift_center_y, lift_parent)
+        if self.half_lift_positions:
+            for pos in self.half_lift_positions:
+                if pos >= self.end_x - (half_lift_x_extent * 2):
+                    raise AttributeError("Invalid half lift position: {}".format(pos))
+                if isinstance(pos, tuple):
+                    lift_parent = pos[1]
+                    lift_center_x = pos[0]
+                    lift_center_y = lift_parent.map_to(self).y + descent
+                elif isinstance(pos, Unit):
+                    lift_parent = self
+                    lift_center_x = pos
+                    lift_center_y = descent
+                else:
+                    raise AttributeError("Invalid half lift position: {}".format(pos))
+                lift_left_x = lift_center_x - half_lift_x_extent
+                lift_right_x = lift_center_x + half_lift_x_extent
+                self.line_to(lift_left_x, lift_center_y, lift_parent)
+                self.line_to(lift_center_x, lift_center_y - descent, lift_parent)
+                self.line_to(lift_right_x, lift_center_y, lift_parent)
 
         # Draw closing crook
         self.line_to(self.end_x, self.end_y + descent, self.end_parent)
