@@ -19,7 +19,7 @@ from neoscore.western.pedal_line import PedalLine
 class Main:
     """Main thread for running this digital score.
     Args:
-        headset: True for headset available. This can be used without a headset (False)"""
+        headset: True for headset available. This can be used in DEMO mode without a headset (False)"""
     def __init__(self, headset: bool = True):
         # start brainbit reading
         self.bb = BrainbitReader(headset)

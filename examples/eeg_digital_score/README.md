@@ -7,7 +7,7 @@ The system uses the BrainBit eeg reader to generate the brainwave stream. The sc
 
 In realtime it generates the notes for bar 1 then bar 2, so that the next bar is always waiting for the musicians.
 
-It can be used without a headset by declaring headset=False, in which case the brainflow library is not required
+It can be used in DEMO mode without a headset by declaring headset=False, in which case the brainflow library is not required
 
 # Requirements
 brainflow
