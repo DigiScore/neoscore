@@ -1,0 +1,3 @@
+neoscore~=0.1.7
+brainflow~=5.4.0
+music21~=8.1.0
