@@ -7,18 +7,13 @@ from neoscore.core import neoscore
 from neoscore.core.brush import Brush
 from neoscore.core.directions import DirectionY
 from neoscore.core.has_music_font import HasMusicFont
-from neoscore.core.layout_controllers import NewLine
-from neoscore.core.music_char import MusicChar
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
-from neoscore.core.pen_pattern import PenPattern
-from neoscore.core.point import ORIGIN, Point, PointDef
+from neoscore.core.point import ORIGIN, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner_2d import Spanner2D
-from neoscore.core.units import Unit, Mm, ZERO
-from neoscore.western.tab_string_text import TabStringText
 
 
 class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
@@ -65,10 +60,7 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
                 stop point is relative to the start point.
             indication: A valid octave indication. currently supported indications are:
 
-                    * '15ma' (two octaves higher)
-                    * '8va' (one octave higher)
-                    * '8vb' (one octave lower)
-                    * '15mb' (two octaves lower)
+
 
             direction: The direction the line's ending hook points.
                 For lines above staves, this should be down, and vice versa for below.
@@ -91,8 +83,9 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
                 ),
         )
 
-        # Draw bracket
+        # Calculate the bracket end length
         self.bracket_end = self.music_font.unit(1 * self.direction.value)
+        # Draw bracket
         if include_bracket:
             self._draw_path()
 
@@ -106,7 +99,8 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
             self.parent,
             self.smufl_text,
             font,
-            background_brush=neoscore.background_brush
+            background_brush=neoscore.background_brush,
+            rotation=self.angle
         )
 
     def _draw_path(self):
@@ -118,10 +112,10 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
         self.line_path.line_to(self.music_font.unit(0), self.bracket_end)
 
         # draw full line
-        self.line_path.line_to(self.end_x_adjusted, self.end_y, self.end_parent)
+        self.line_path.line_to(self.end_x_adjusted, self.end_y + self.bracket_end, self.end_parent)
 
         # Draw end crook
-        self.line_path.line_to(self.end_x_adjusted, self.end_y - self.bracket_end, self.end_parent)
+        self.line_path.line_to(self.end_x_adjusted, self.end_y, self.end_parent)
 
     @staticmethod
     def _number_to_digit_glyph_names(number: str) -> List[str]:
@@ -134,11 +128,21 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
         return smufl_list
 
     def _find_text_start_point(self) -> tuple:
-        mid_length = self.spanner_2d_length / 2
+        # Find x & y for half-way hypotenuse
+        start_parent = self.parent
+        end_parent = self.end_parent
+        parent_distance = start_parent.map_to(end_parent)
+
+        mid_x = parent_distance.x / 2
+        mid_y = ((self.end_y - self.y) / 2) + self.bracket_end
+
+        # adjust for length of ration text
         if len(self.smufl_text) > 1:
             for _ in self.smufl_text:
-                mid_length -= self.music_font.unit(0.5)
-        return (self.x + mid_length, self.y + self.bracket_end)
+                mid_x -= self.music_font.unit(0.5)
+            if mid_x.base_value % 2 == 0:
+                mid_x += self.music_font.unit(0.5)
+        return (self.x + mid_x, self.y + mid_y)
 
     @property
     def music_font(self) -> MusicFont:

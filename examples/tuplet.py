@@ -19,9 +19,9 @@ note3 = Chordrest(Mm(15), staff, ["d'"], (1, 8))
 note4 = Chordrest(Mm(20), staff, ["e'"], (1, 8))
 note5 = Chordrest(Mm(25), staff, None, (1, 8))
 
-tuplet = Tuplet((Mm(0), Mm(10)),
+tuplet = Tuplet((Mm(0), Mm(20)),
                 note1,
-                (Mm(0), Mm(100)),
+                (Mm(0), Mm(15)),
                 note5,
                 "5:4")
 
