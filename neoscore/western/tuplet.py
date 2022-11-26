@@ -79,11 +79,8 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
         if font is None:
             font = HasMusicFont.find_music_font(start_parent)
         self._music_font = font
-        smufl_text = self._number_to_digit_glyph_names(ratio_text)
-        # self._music_chars = MusicText._resolve_music_chars(font, smufl_text)
-        # resolved_str = MusicText._music_chars_to_str(self._music_chars)
         self.direction = bracket_dir
-        self.ratio_text = ratio_text
+        self.end_x_adjusted = self.end_pos.x + self.music_font.unit(1)
 
         # Create line path object
         self.line_path = Path(
@@ -94,16 +91,20 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
                 ),
         )
 
-        # Draw bracket if requested
+        # Draw bracket
+        self.bracket_end = self.music_font.unit(1 * self.direction.value)
         if include_bracket:
             self._draw_path()
 
+        # Convert ratio text to SMuFL glyphs
+        self.smufl_text = self._number_to_digit_glyph_names(ratio_text)
+
         # Create line text object; will paint over bracket line
-        self.mid_point = self._find_mid_point()
+        self.text_start_point = self._find_text_start_point()
         self.line_text = MusicText(
-            self.mid_point,
-            self.line_path,
-            smufl_text,
+            self.text_start_point,
+            self.parent,
+            self.smufl_text,
             font,
             background_brush=neoscore.background_brush
         )
@@ -113,22 +114,14 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
 
         Returns: None
         """
-        # Set up constants
-        # The vertical extent of the shape
-        bracket_end = self._music_font.unit(1 * self.direction.value)
-
         # Draw opening crook
-        self.line_path.line_to(self.music_font.unit(0), bracket_end)
-
-        # Draw 1st half of tuplet indicator
-        # gap = self._music_font.unit(0.5 + len(self.ratio_text))
-        # mid_point_left_edge = self.mid_point - gap
+        self.line_path.line_to(self.music_font.unit(0), self.bracket_end)
 
         # draw full line
-        self.line_path.line_to(self.end_pos.x, self.end_y, self.end_parent)
+        self.line_path.line_to(self.end_x_adjusted, self.end_y, self.end_parent)
 
         # Draw end crook
-        self.line_path.line_to(self.end_pos.x, self.end_y - bracket_end, self.end_parent)
+        self.line_path.line_to(self.end_x_adjusted, self.end_y - self.bracket_end, self.end_parent)
 
     @staticmethod
     def _number_to_digit_glyph_names(number: str) -> List[str]:
@@ -140,10 +133,14 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
                 smufl_list.append(f"tuplet{digit}")
         return smufl_list
 
-    def _find_mid_point(self):
+    def _find_text_start_point(self) -> tuple:
         mid_length = self.spanner_2d_length / 2
-        return self.x + mid_length, self.y + mid_length
+        if len(self.smufl_text) > 1:
+            for _ in self.smufl_text:
+                mid_length -= self.music_font.unit(0.5)
+        return (self.x + mid_length, self.y + self.bracket_end)
 
     @property
     def music_font(self) -> MusicFont:
         return self._music_font
+

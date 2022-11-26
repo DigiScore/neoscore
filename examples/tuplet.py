@@ -21,7 +21,7 @@ note5 = Chordrest(Mm(25), staff, None, (1, 8))
 
 tuplet = Tuplet((Mm(0), Mm(10)),
                 note1,
-                (Mm(0), Mm(10)),
+                (Mm(0), Mm(100)),
                 note5,
                 "5:4")
 
