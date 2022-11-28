@@ -11,13 +11,13 @@ from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
-from neoscore.core.point import ORIGIN, PointDef, Unit
+from neoscore.core.point import ORIGIN, PointDef, ZERO
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner_2d import Spanner2D
 from neoscore.core.spanner import Spanner
 
 
-class Tuplet(PositionedObject, Spanner, HasMusicFont):
+class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
     """A polyrhythm indicator such as triplet or 3:4.
 
     This tuplet indicator spans a group of notes labelling them
@@ -41,7 +41,7 @@ class Tuplet(PositionedObject, Spanner, HasMusicFont):
         self,
         start: PointDef,
         start_parent: PositionedObject,
-        end: Unit,
+        end: PointDef,
         end_parent: Optional[PositionedObject] = None,
         ratio_text: str = "3",
         include_bracket: bool = True,
@@ -68,12 +68,14 @@ class Tuplet(PositionedObject, Spanner, HasMusicFont):
             font: If provided, this overrides any font found in the ancestor chain.
         """
         PositionedObject.__init__(self, start, start_parent)
-        Spanner.__init__(self, end, end_parent or self)
+        Spanner2D.__init__(self, end, end_parent or self)
         if font is None:
             font = HasMusicFont.find_music_font(start_parent)
         self._music_font = font
         self.direction = bracket_dir
-        self.end_x_adjustment = self.music_font.unit(1)
+        # self.end_x_adjustment = self.music_font.unit(1)
+
+        print(self.x, self.end_x, self.parent.map_to(self.end_parent))
 
         # Create line path object
         self.line_path = Path(
@@ -101,7 +103,7 @@ class Tuplet(PositionedObject, Spanner, HasMusicFont):
             self.smufl_text,
             font,
             background_brush=neoscore.background_brush,
-            # rotation=self.angle
+            rotation=self.angle
         )
 
     def _draw_path(self):
@@ -110,13 +112,13 @@ class Tuplet(PositionedObject, Spanner, HasMusicFont):
         Returns: None
         """
         # Draw opening crook
-        self.line_path.line_to(self.music_font.unit(0), self.bracket_end)
+        self.line_path.line_to(ZERO, self.bracket_end)
 
         # draw full line
-        self.line_path.line_to(self.end_pos.x + self.end_x_adjustment, self.end_y + self.bracket_end, self.end_parent)
+        self.line_path.line_to(self.end_pos.x, self.end_y + self.bracket_end, self.end_parent)
 
         # Draw end crook
-        self.line_path.line_to(self.end_pos.x + self.end_x_adjustment, self.end_y, self.end_parent)
+        self.line_path.line_to(self.end_pos.x, self.end_y, self.end_parent)
 
     @staticmethod
     def _number_to_digit_glyph_names(number: str) -> List[str]:
@@ -133,13 +135,14 @@ class Tuplet(PositionedObject, Spanner, HasMusicFont):
         start_parent = self.parent
         end_parent = self.end_parent
         parent_distance = start_parent.map_to(end_parent)
-        print(parent_distance)
+        x_distance = parent_distance.x + self.end_x
+        y_distance = parent_distance.y + self.bracket_end
+        print(x_distance, y_distance)
 
-        mid_x = (parent_distance.x + self.end_x_adjustment) / 2
-        mid_y = ((self.end_y - self.pos.y) + self.bracket_end) / 2 #+ self.bracket_end
+        mid_x = x_distance / 2
+        mid_y = y_distance / 2
 
         # adjust for length of ration text
-        # todo - replace with glyph width count
         if len(self.smufl_text) > 1:
             for _ in self.smufl_text:
                 mid_x -= self.music_font.unit(0.5)
