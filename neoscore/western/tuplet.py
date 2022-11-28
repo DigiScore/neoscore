@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from typing import Optional, cast, List
 from math import cos, sin
+from typing import List, Optional
 
 from neoscore.core import neoscore
 from neoscore.core.brush import Brush
@@ -11,10 +11,9 @@ from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
-from neoscore.core.point import ORIGIN, PointDef, ZERO
+from neoscore.core.point import ORIGIN, ZERO, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner_2d import Spanner2D
-from neoscore.core.spanner import Spanner
 
 
 class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
@@ -79,8 +78,7 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
             ORIGIN,
             self,
             Brush.no_brush(),
-            Pen(thickness=font.engraving_defaults["tupletBracketThickness"]
-                ),
+            Pen(thickness=font.engraving_defaults["tupletBracketThickness"]),
         )
 
         # Calculate the bracket end length
@@ -100,7 +98,7 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
             self.smufl_text,
             font,
             background_brush=neoscore.background_brush,
-            rotation=self.angle
+            rotation=self.angle,
         )
 
     def position_checker(self):
@@ -118,7 +116,9 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
         self.line_path.line_to(ZERO, self.bracket_end)
 
         # draw full line
-        self.line_path.line_to(self.end_pos.x, self.end_y + self.bracket_end, self.end_parent)
+        self.line_path.line_to(
+            self.end_pos.x, self.end_y + self.bracket_end, self.end_parent
+        )
 
         # Draw end crook
         self.line_path.line_to(self.end_pos.x, self.end_y, self.end_parent)
@@ -179,4 +179,3 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
     @property
     def music_font(self) -> MusicFont:
         return self._music_font
-

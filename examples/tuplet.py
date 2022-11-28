@@ -1,8 +1,6 @@
-from helpers import render_example
-
 from neoscore.core import neoscore
-from neoscore.core.units import ZERO, Mm
 from neoscore.core.directions import DirectionY
+from neoscore.core.units import ZERO, Mm
 from neoscore.western.chordrest import Chordrest
 from neoscore.western.clef import Clef
 from neoscore.western.staff import Staff
@@ -20,12 +18,7 @@ note3 = Chordrest(Mm(15), staff, ["d"], (1, 8))
 note4 = Chordrest(Mm(20), staff, ["e"], (1, 8))
 note5 = Chordrest(Mm(25), staff, None, (1, 8))
 
-Tuplet((Mm(0), Mm(-2)),
-                note1,
-                (Mm(5), Mm(-2)),
-                note5,
-                "5:4",
-                bracket_dir=DirectionY.UP)
+Tuplet((Mm(0), Mm(-2)), note1, (Mm(5), Mm(-2)), note5, "5:4", bracket_dir=DirectionY.UP)
 
 # sloping under tuplet indicator
 note10 = Chordrest(Mm(50), staff, ["c'"], (1, 4))
@@ -34,11 +27,7 @@ note30 = Chordrest(Mm(65), staff, ["d'"], (1, 8))
 note40 = Chordrest(Mm(70), staff, ["e'"], (1, 8))
 note50 = Chordrest(Mm(75), staff, None, (1, 8))
 
-Tuplet((Mm(0), Mm(15)),
-                note10,
-                (Mm(30), Mm(50)),
-                note10,
-                "6:4")
+Tuplet((Mm(0), Mm(15)), note10, (Mm(30), Mm(150)), note10, "6:4")
 
 # sloping top tuplet indicator
 note11 = Chordrest(Mm(105), staff, ["c"], (1, 8))
@@ -47,13 +36,9 @@ note31 = Chordrest(Mm(115), staff, ["d"], (1, 8))
 note41 = Chordrest(Mm(120), staff, ["e"], (1, 8))
 note51 = Chordrest(Mm(125), staff, None, (1, 8))
 
-Tuplet((Mm(0), Mm(-2)),
-                note11,
-                (Mm(15), Mm(-22)),
-                note51,
-                "5:4",
-                bracket_dir=DirectionY.UP)
-
+Tuplet(
+    (Mm(0), Mm(-2)), note11, (Mm(15), Mm(-22)), note51, "5:4", bracket_dir=DirectionY.UP
+)
 
 
 neoscore.show(display_page_geometry=False)
