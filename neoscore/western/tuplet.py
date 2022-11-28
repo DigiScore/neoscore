@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from typing import Optional, cast, List
-from math import sqrt
+from math import cos, sin
 
 from neoscore.core import neoscore
 from neoscore.core.brush import Brush
@@ -25,6 +25,8 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
 
     Starting at the first event in the grouping (note or rest),
     the indicator spans across to the end event (note or rest).
+    An error will be raised if the spanning is right to left.
+
     At the centre of this line is the tuplet number
     (default = 3 for triplet). More complex ratios can be declared
     such as 7:8, 11:16, 12:14.
@@ -53,29 +55,24 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
             start: The starting point.
             start_parent: The parent for the starting position. If no font is given,
                 this or one of its ancestors must implement :obj:`.HasMusicFont`.
-            end_x: The spanner end x position. The y position will be
-                automatically calculated to be horizontal.
+            end: The spanner end point position. This must be to the right of the start position
             end_parent: An object either in a Staff or
                 a staff itself. The root staff of this *must* be the same
                 as the root staff of ``start_parent``. If omitted, the
                 stop point is relative to the start point.
-            indication: A valid octave indication. currently supported indications are:
-
-
-
-            direction: The direction the line's ending hook points.
+            ratio_text: The Tuplet number (e.g. 3 for tripets) or Ratio number (e.g. 5:4 for polyrhythms)
+            include_bracket: Bool to draw the spanning bracket over the tuplet
+            bracket_dir: The direction the line's ending hook points.
                 For lines above staves, this should be down, and vice versa for below.
             font: If provided, this overrides any font found in the ancestor chain.
         """
         PositionedObject.__init__(self, start, start_parent)
         Spanner2D.__init__(self, end, end_parent or self)
+        self.position_checker()
         if font is None:
             font = HasMusicFont.find_music_font(start_parent)
         self._music_font = font
         self.direction = bracket_dir
-        # self.end_x_adjustment = self.music_font.unit(1)
-
-        print(self.x, self.end_x, self.parent.map_to(self.end_parent))
 
         # Create line path object
         self.line_path = Path(
@@ -106,6 +103,12 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
             rotation=self.angle
         )
 
+    def position_checker(self):
+        """Checks if the Tuplet travels left to right."""
+        parent_distance = self.parent.map_to(self.end_parent)
+        if self.end_x - self.x + parent_distance.x < ZERO:
+            raise AttributeError("Invalid Tuplet start or end positions")
+
     def _draw_path(self):
         """Draw the path according to this object's attributes.
 
@@ -122,6 +125,13 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
 
     @staticmethod
     def _number_to_digit_glyph_names(number: str) -> List[str]:
+        """Converts ratio text to corresponding SMuFL names
+
+        Args:
+            number: str: the original ratio string
+
+        Returns:
+            List: SMuFL names"""
         smufl_list = []
         for digit in number:
             if digit == ":":
@@ -131,24 +141,40 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
         return smufl_list
 
     def _find_text_start_point(self) -> tuple:
+        """Positions ratio text centre on the mid-point
+        of the bracket line.
+        Returns: tuple of x, y points"""
         # Find x & y for half-way hypotenuse
         start_parent = self.parent
         end_parent = self.end_parent
         parent_distance = start_parent.map_to(end_parent)
-        x_distance = parent_distance.x + self.end_x
-        y_distance = parent_distance.y + self.bracket_end
-        print(x_distance, y_distance)
+        x_distance = parent_distance.x + self.x + self.end_x
+        y_distance = parent_distance.y + self.y + self.end_y
 
         mid_x = x_distance / 2
-        mid_y = y_distance / 2
+        mid_y = y_distance / 2 + self.bracket_end
 
-        # adjust for length of ration text
-        if len(self.smufl_text) > 1:
-            for _ in self.smufl_text:
-                mid_x -= self.music_font.unit(0.5)
-            if mid_x.base_value % 2 == 0:
-                mid_x += self.music_font.unit(0.5)
-        return (self.x + mid_x, self.y + mid_y)
+        # Centre ratio text with bracket direction DOWN
+        if self.direction == DirectionY.UP:
+            mid_y += self.music_font.unit(0.5)
+
+        # adjust mid-points for length of ratio text
+        num_digits = len(self.smufl_text)
+
+        # for each digit move mid-point back along hypotenuse
+        for digit in range(num_digits):
+            if self.angle >= 0:
+                theta = self.angle
+                # move adjacent and opposite coords by 0.5 unit on hypotenuse
+                mid_x -= self.music_font.unit(0.5 * cos(theta))
+                mid_y -= self.music_font.unit(0.5 * sin(theta))
+            else:
+                theta = self.angle * -1
+                # move adjacent and opposite coords by 0.5 unit on hypotenuse
+                mid_x -= self.music_font.unit(0.5 * cos(theta))
+                mid_y += self.music_font.unit(0.5 * sin(theta))
+
+        return (mid_x, mid_y)
 
     @property
     def music_font(self) -> MusicFont:

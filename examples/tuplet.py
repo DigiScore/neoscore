@@ -36,7 +36,7 @@ note50 = Chordrest(Mm(75), staff, None, (1, 8))
 
 Tuplet((Mm(0), Mm(15)),
                 note10,
-                (Mm(30), Mm(10)),
+                (Mm(30), Mm(50)),
                 note10,
                 "6:4")
 
@@ -49,7 +49,7 @@ note51 = Chordrest(Mm(125), staff, None, (1, 8))
 
 Tuplet((Mm(0), Mm(-2)),
                 note11,
-                (Mm(5), Mm(-12)),
+                (Mm(15), Mm(-22)),
                 note51,
                 "5:4",
                 bracket_dir=DirectionY.UP)
