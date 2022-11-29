@@ -16,7 +16,7 @@ repos:
       args:
         - --check
         - --remove
-        - --exclude="common.py"
+        - --exclude=neoscore/common.py
 
 - repo: https://github.com/psf/black
   rev: 22.10.0
