@@ -169,21 +169,21 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
         #     mid_y += self.music_font.unit(1)
 
         # adjust mid-points for length of ratio text
-        # num_digits = len(self.smufl_text)
+        num_digits = len(self.smufl_text)
 
         # for each digit move mid-point back along hypotenuse
-        # for digit in range(num_digits):
-        #     print(self.angle)
-        #     if self.angle >= 0:
-        #         theta = self.angle
-        #         # move adjacent and opposite coords by 0.5 unit on hypotenuse
-        #         mid_x -= self.music_font.unit(0.5 * cos(theta))
-        #         mid_y -= self.music_font.unit(0.5 * sin(theta))
-        #     else:
-        #         theta = self.angle * -1
-        #         # move adjacent and opposite coords by 0.5 unit on hypotenuse
-        #         mid_x -= self.music_font.unit(0.5 * cos(theta))
-        #         mid_y += self.music_font.unit(0.5 * sin(theta))
+        for digit in range(num_digits):
+            print(self.angle)
+            if self.angle >= 0:
+                theta = self.angle
+                # move adjacent and opposite coords by 0.5 unit on hypotenuse
+                mid_x -= self.music_font.unit(0.5 * cos(theta))
+                mid_y -= self.music_font.unit(0.5 * sin(theta))
+            else:
+                theta = self.angle * -1
+                # move adjacent and opposite coords by 0.5 unit on hypotenuse
+                mid_x -= self.music_font.unit(0.5 * cos(theta))
+                mid_y += self.music_font.unit(0.5 * sin(theta))
 
         return (mid_x, mid_y)
 
