@@ -11,7 +11,7 @@
 7. Run `poetry shell` to shell into the virtual environment
 8. Run `sh dev_scripts/install_devtools.sh` to install dependencies used to enforce code standards.
 9. Test your environment by running `python examples/kitchen_sink.py`
-10. Install the pre-commit hook with `sh dev_scripts/install_pre_commit_hook.sh`
+10. Install the pre-commit hook with `pre-commit install -f`, then test it with `pre-commit run --all-files`.
 
 ## Running tests
 
