@@ -19,7 +19,7 @@ python = "^3.7"
 PyQt5 = "^5.15.6"
 img2pdf = "0.4.4"
 sortedcontainers = "2.4.0"
-typing_extensions = "^4.3"
+typing_extensions = ">=3.10.0.0"
 "backports.cached-property" = "1.0.2"
 
 [tool.poetry.dev-dependencies]
@@ -29,6 +29,10 @@ Sphinx="^4.5"
 sphinx-rtd-theme = "1.0.0"
 beautifulsoup4 = "^4.11.1"
 lxml = "^4.8.0"
+pre-commit = "^2.20.0"
+isort = "^5.10.1"
+black = "^22.10.0"
+unimport = "^0.12.2"
 
 [tool.isort]
 profile = "black"
