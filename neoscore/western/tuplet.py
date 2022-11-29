@@ -14,6 +14,7 @@ from neoscore.core.pen import Pen
 from neoscore.core.point import ORIGIN, ZERO, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner_2d import Spanner2D
+from neoscore.core.units import Mm
 
 
 class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
@@ -101,6 +102,10 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
             rotation=self.angle,
         )
 
+        # get exact coords for text bos position
+        new_position = self.new_box_position()
+        self.line_text.pos = new_position
+
     def _position_checker(self):
         """Checks if the Tuplet travels left to right."""
         parent_distance = self.parent.map_to(self.end_parent)
@@ -141,8 +146,8 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
         return smufl_list
 
     def _find_text_start_point(self) -> tuple:
-        """Positions ratio text centre on the mid-point
-        of the bracket line.
+        """Positions ratio text centre roughly on the mid-point
+        of the bracket line to generate a text rect.
         Returns: tuple of x, y points"""
         # Find x & y for half-way hypotenuse
         start_parent = self.parent
@@ -154,39 +159,25 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
         mid_x = x_distance / 2
         mid_y = y_distance / 2 + self.bracket_end
 
-        # print(self.line_text.bounding_rect)
-        # centre_text_box_x = text_rect[2] / 2
-        # centre_text_box_y = text_rect[3] / 2
-        #
-        # mid_x += centre_text_box_x
-        # mid_y += centre_text_box_y
-
-
-        # Centre ratio text with bracket direction DOWN
-        # if self.direction == DirectionY.UP:
-        #     mid_y += self.music_font.unit(0.5)
-        # else:
-        #     mid_y += self.music_font.unit(1)
-
-        # adjust mid-points for length of ratio text
-        num_digits = len(self.smufl_text)
-
-        # for each digit move mid-point back along hypotenuse
-        for digit in range(num_digits):
-            print(self.angle)
-            if self.angle >= 0:
-                theta = self.angle
-                # move adjacent and opposite coords by 0.5 unit on hypotenuse
-                mid_x -= self.music_font.unit(0.5 * cos(theta))
-                mid_y -= self.music_font.unit(0.5 * sin(theta))
-            else:
-                theta = self.angle * -1
-                # move adjacent and opposite coords by 0.5 unit on hypotenuse
-                mid_x -= self.music_font.unit(0.5 * cos(theta))
-                mid_y += self.music_font.unit(0.5 * sin(theta))
-
         return (mid_x, mid_y)
 
+    def new_box_position(self) -> tuple:
+        """Finds the exact centre of the text rect,
+        and repositions on the bracket"""
+        # dimensions of text rect
+        text_box = self.line_text.bounding_rect
+
+        # original point position of MusicText
+        original_pos = self.line_text.pos
+
+        # Calc new x and y on box coords
+        new_x = original_pos.x - ((text_box.x + text_box.width) / 2)
+        if original_pos.y < Mm(0):
+            new_y = original_pos.y + (text_box.height / 2)- Mm(self.angle / 20)
+        else:
+            new_y = original_pos.y + (text_box.height / 2) - Mm(self.angle / 20)
+
+        return (new_x, new_y)
 
     @property
     def music_font(self) -> MusicFont:
