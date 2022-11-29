@@ -101,8 +101,6 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
             rotation=self.angle,
         )
 
-        self.line_text.pos = self._exact_text_start_point(self.text_start_point, self.angle)
-
     def _position_checker(self):
         """Checks if the Tuplet travels left to right."""
         parent_distance = self.parent.map_to(self.end_parent)
@@ -189,22 +187,6 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
 
         return (mid_x, mid_y)
 
-    def _exact_text_start_point(self, start_position, angle):
-        text_rect = self.line_text.bounding_rect
-        print(text_rect)
-        centre_text_box_x = text_rect.width / 2
-        centre_text_box_y = text_rect.height / 2
-        x = start_position[0]
-        y = start_position[1]
-
-        if angle >= 0:
-            x -= (centre_text_box_x + text_rect.x)
-            y -= (centre_text_box_y + text_rect.y)
-        else:
-            x -= (centre_text_box_x + text_rect.x)
-            y -= (centre_text_box_y + text_rect.y)
-
-        return (x, y)
 
     @property
     def music_font(self) -> MusicFont:
