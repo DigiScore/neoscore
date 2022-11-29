@@ -67,7 +67,7 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
         """
         PositionedObject.__init__(self, start, start_parent)
         Spanner2D.__init__(self, end, end_parent or self)
-        self.position_checker()
+        self._position_checker()
         if font is None:
             font = HasMusicFont.find_music_font(start_parent)
         self._music_font = font
@@ -101,7 +101,9 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
             rotation=self.angle,
         )
 
-    def position_checker(self):
+        self.line_text.pos = self._exact_text_start_point(self.text_start_point, self.angle)
+
+    def _position_checker(self):
         """Checks if the Tuplet travels left to right."""
         parent_distance = self.parent.map_to(self.end_parent)
         if self.end_x - self.x + parent_distance.x < ZERO:
@@ -154,27 +156,55 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
         mid_x = x_distance / 2
         mid_y = y_distance / 2 + self.bracket_end
 
+        # print(self.line_text.bounding_rect)
+        # centre_text_box_x = text_rect[2] / 2
+        # centre_text_box_y = text_rect[3] / 2
+        #
+        # mid_x += centre_text_box_x
+        # mid_y += centre_text_box_y
+
+
         # Centre ratio text with bracket direction DOWN
-        if self.direction == DirectionY.UP:
-            mid_y += self.music_font.unit(0.5)
+        # if self.direction == DirectionY.UP:
+        #     mid_y += self.music_font.unit(0.5)
+        # else:
+        #     mid_y += self.music_font.unit(1)
 
         # adjust mid-points for length of ratio text
-        num_digits = len(self.smufl_text)
+        # num_digits = len(self.smufl_text)
 
         # for each digit move mid-point back along hypotenuse
-        for digit in range(num_digits):
-            if self.angle >= 0:
-                theta = self.angle
-                # move adjacent and opposite coords by 0.5 unit on hypotenuse
-                mid_x -= self.music_font.unit(0.5 * cos(theta))
-                mid_y -= self.music_font.unit(0.5 * sin(theta))
-            else:
-                theta = self.angle * -1
-                # move adjacent and opposite coords by 0.5 unit on hypotenuse
-                mid_x -= self.music_font.unit(0.5 * cos(theta))
-                mid_y += self.music_font.unit(0.5 * sin(theta))
+        # for digit in range(num_digits):
+        #     print(self.angle)
+        #     if self.angle >= 0:
+        #         theta = self.angle
+        #         # move adjacent and opposite coords by 0.5 unit on hypotenuse
+        #         mid_x -= self.music_font.unit(0.5 * cos(theta))
+        #         mid_y -= self.music_font.unit(0.5 * sin(theta))
+        #     else:
+        #         theta = self.angle * -1
+        #         # move adjacent and opposite coords by 0.5 unit on hypotenuse
+        #         mid_x -= self.music_font.unit(0.5 * cos(theta))
+        #         mid_y += self.music_font.unit(0.5 * sin(theta))
 
         return (mid_x, mid_y)
+
+    def _exact_text_start_point(self, start_position, angle):
+        text_rect = self.line_text.bounding_rect
+        print(text_rect)
+        centre_text_box_x = text_rect.width / 2
+        centre_text_box_y = text_rect.height / 2
+        x = start_position[0]
+        y = start_position[1]
+
+        if angle >= 0:
+            x -= (centre_text_box_x + text_rect.x)
+            y -= (centre_text_box_y + text_rect.y)
+        else:
+            x -= (centre_text_box_x + text_rect.x)
+            y -= (centre_text_box_y + text_rect.y)
+
+        return (x, y)
 
     @property
     def music_font(self) -> MusicFont:

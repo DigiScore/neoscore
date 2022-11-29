@@ -18,7 +18,7 @@ note3 = Chordrest(Mm(15), staff, ["d"], (1, 8))
 note4 = Chordrest(Mm(20), staff, ["e"], (1, 8))
 note5 = Chordrest(Mm(25), staff, None, (1, 8))
 
-Tuplet((Mm(0), Mm(-2)), note1, (Mm(5), Mm(-2)), note5, "5:4", bracket_dir=DirectionY.UP)
+Tuplet((Mm(0), Mm(-2)), note1, (Mm(5), Mm(-2)), note5, "4:5", bracket_dir=DirectionY.UP)
 
 # sloping under tuplet indicator
 note10 = Chordrest(Mm(50), staff, ["c'"], (1, 4))
