@@ -1,13 +1,12 @@
 import pytest
 
-from neoscore.core.point import ORIGIN, Point, ZERO
-from neoscore.core.units import Mm
-from neoscore.western.tuplet import Tuplet
-from neoscore.western.staff import Staff
-from neoscore.western.chordrest import Chordrest
-from neoscore.core.directions import DirectionY
-from neoscore.western.clef import Clef
 from neoscore.core.exceptions import MusicFontGlyphNotFoundError
+from neoscore.core.point import ORIGIN, ZERO, Point
+from neoscore.core.units import Mm
+from neoscore.western.chordrest import Chordrest
+from neoscore.western.clef import Clef
+from neoscore.western.staff import Staff
+from neoscore.western.tuplet import Tuplet
 
 from ..helpers import AppTest
 
@@ -33,7 +32,9 @@ class TestTuplet(AppTest):
 
     def test_incorrect_ratio_text_content(self):
         with pytest.raises(MusicFontGlyphNotFoundError):
-            Tuplet((Mm(0), Mm(0)), self.note1, (Mm(0), Mm(0)), self.note3, "Hello World")
+            Tuplet(
+                (Mm(0), Mm(0)), self.note1, (Mm(0), Mm(0)), self.note3, "Hello World"
+            )
 
     def test_flat_tuplet_down_bracket(self):
         tuplet = Tuplet((Mm(0), Mm(0)), self.note1, (Mm(0), Mm(0)), self.note3, "3:2")
@@ -41,7 +42,6 @@ class TestTuplet(AppTest):
         assert tuplet.direction.value == 1
         # assert tuplet.line_path.elements[1].pos == Point(x=Mm(0.0), y=StaffUnit(1))
         # assert tuplet.line_path.parent == self.note1
-
 
         # assert pedal_line.pos == Point(x=Mm(0.0), y=Mm(0.0))
         # assert pedal_line.end_pos == Point(x=Mm(100.0), y=Mm(0.0))

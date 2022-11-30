@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from math import cos, sin
 from typing import List, Optional
 
 from neoscore.core import neoscore
@@ -173,7 +172,7 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
         # Calc new x and y on box coords
         new_x = original_pos.x - ((text_box.x + text_box.width) / 2)
         if original_pos.y < Mm(0):
-            new_y = original_pos.y + (text_box.height / 2)- Mm(self.angle / 20)
+            new_y = original_pos.y + (text_box.height / 2) - Mm(self.angle / 20)
         else:
             new_y = original_pos.y + (text_box.height / 2) - Mm(self.angle / 20)
 
