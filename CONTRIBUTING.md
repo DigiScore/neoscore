@@ -11,7 +11,7 @@
 7. Run `poetry shell` to shell into the virtual environment
 8. Run `sh dev_scripts/install_devtools.sh` to install dependencies used to enforce code standards.
 9. Test your environment by running `python examples/kitchen_sink.py`
-10. Install the pre-commit hook with `sh dev_scripts/install_pre_commit_hook.sh`
+10. Install the pre-commit hook with `pre-commit install -f`, then test it with `pre-commit run --all-files`.
 
 ## Running tests
 
@@ -34,4 +34,4 @@ Full builds require [Graphviz](https://graphviz.org/) available on your system p
 
 ## Committing
 
-The pre-commit hook, installed with the above-mentioned script, will automatically apply formatting and import corrections. The script will not automatically add them to your commit, since this can be dangerous, so if any changes are added please add and commit them yourself before opening a PR. You can also manually run these hooks before committing with `sh dev_scripts/pre_commit.sh` to prevent double or amended commits. PRs which fail these checks will not build successfully.
+The pre-commit hook, installed as described above, will automatically apply formatting and import corrections. If corrections are needed, the hook will abort the commit and apply the needed changes, which you should then validate with a `git diff`, stage with a `git add`, and try committing again. PRs which fail these checks will not build successfully.
