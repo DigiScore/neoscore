@@ -1,5 +1,5 @@
-from time import sleep
 from random import random
+from time import sleep
 
 
 class BrainbitReader:
@@ -7,6 +7,7 @@ class BrainbitReader:
     Alternatively sets up a dummy class the returns random numbers.
     Args:
         headset: bool = BrainBit used or dummy"""
+
     def __init__(self, headset):
         self.headset = headset
         if self.headset:
@@ -22,21 +23,20 @@ class BrainbitReader:
             # set it logging
             BoardShim.enable_dev_board_logger()
 
-        print('BrainBit reader ready')
+        print("BrainBit reader ready")
         self.brain_bit = False
 
     def start(self):
         # instantiate the board reading
         if self.headset:
             try:
-                self.board = BoardShim(self.params.board_id,
-                                       self.params)
+                self.board = BoardShim(self.params.board_id, self.params)
 
                 self.board.prepare_session()
 
                 # board.start_stream () # use this for default options
-                self.board.start_stream(2) # removed 48000
-                print('BrainBit stream started')
+                self.board.start_stream(2)  # removed 48000
+                print("BrainBit stream started")
                 self.brain_bit = True
             except:
                 print("BrainBit ALT started")
@@ -58,20 +58,13 @@ class BrainbitReader:
                 t4 = parse_data[1][0:1][0]
                 n1 = parse_data[2][0:1][0]
                 n2 = parse_data[3][0:1][0]
-                self.data = [t2,
-                             t4,
-                             n1,
-                             n2]
+                self.data = [t2, t4, n1, n2]
             else:
                 self.data = [0, 0, 0, 0]
 
         else:
             """get dummy data instead of Brainbit stream."""
-            self.data = [random(),
-                         random(),
-                         random(),
-                         random()
-                         ]
+            self.data = [random(), random(), random(), random()]
         return self.data
 
     def terminate(self):

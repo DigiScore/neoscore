@@ -1,25 +1,25 @@
-import score_draw
-from random import random, choice, seed
+from random import choice, random, seed
 
-from random import choice
+import score_draw
 from brainbit import BrainbitReader
 
 from neoscore.core import neoscore
 from neoscore.core.rich_text import RichText
 from neoscore.core.text import Text
 from neoscore.core.units import ZERO, Mm
-from neoscore.western.staff import Staff
+from neoscore.western.barline import Barline
 from neoscore.western.chordrest import Chordrest
 from neoscore.western.clef import Clef
 from neoscore.western.duration import Duration
-from neoscore.western.barline import Barline
 from neoscore.western.pedal_line import PedalLine
+from neoscore.western.staff import Staff
 
 
 class Main:
     """Main thread for running this digital score.
     Args:
         headset: True for headset available. This can be used in DEMO mode without a headset (False)"""
+
     def __init__(self, headset: bool = True):
         # start brainbit reading
         self.bb = BrainbitReader(headset)
@@ -110,7 +110,7 @@ class Main:
         and converts to neoscore duration.
         Args:
             raw duration: quaternote length from Music21 midi message e.g. 0.5 = quaver (1/8th note)
-            """
+        """
         if raw_duration < 0.25:
             neo_duration = (1, 16)
         elif raw_duration == 0.25:
@@ -138,7 +138,7 @@ class Main:
             part: str: current part
         Returns:
             name of note in neoscore format, duration in neoscore format
-            """
+        """
         pitch, octave, duration = choice(part)
         # calc neonote (octave and name)
         if pitch[-1] == "#":
@@ -204,17 +204,14 @@ class Main:
         self.conductor_1_2 = Text((bar1_origin + Mm(40), Mm(50)), None, "2")
         self.conductor_2_1 = Text((bar1_origin + Mm(90), Mm(50)), None, "3")
         self.conductor_2_2 = Text((bar1_origin + Mm(130), Mm(50)), None, "4")
-        self.conductor_list = [self.conductor_1_1,
-                               self.conductor_1_2,
-                               self.conductor_2_1,
-                               self.conductor_2_2
-                               ]
+        self.conductor_list = [
+            self.conductor_1_1,
+            self.conductor_1_2,
+            self.conductor_2_1,
+            self.conductor_2_2,
+        ]
 
-        self.bar_indicator = PedalLine(
-            (Mm(0), Mm(20)),
-            self.b_staff,
-            Mm(90)
-        )
+        self.bar_indicator = PedalLine((Mm(0), Mm(20)), self.b_staff, Mm(90))
 
     def change_beat(self, beat):
         """Changes the visual beat indicator on the UI.
@@ -226,7 +223,7 @@ class Main:
         for b in self.conductor_list:
             b.scale = 1
         # boost the beat
-        self.conductor_list[beat-1].scale = 3
+        self.conductor_list[beat - 1].scale = 3
 
     def refresh_func(self, time):
         """Updates the UI with refreshed data of notes, eeg reader,
@@ -234,13 +231,15 @@ class Main:
         # get data from brainbit
         self.eegdata = self.bb.read()
         # print(f"EEG read = {data}")
-        self.eeg_output.text = f"eeg output = T2 {round(self.eegdata[0], 2)}; " \
-                               f"T4 {round(self.eegdata[1], 2)}; " \
-                               f"N1 {round(self.eegdata[2], 2)}; " \
-                               f"N2 {round(self.eegdata[3], 2)}"
+        self.eeg_output.text = (
+            f"eeg output = T2 {round(self.eegdata[0], 2)}; "
+            f"T4 {round(self.eegdata[1], 2)}; "
+            f"N1 {round(self.eegdata[2], 2)}; "
+            f"N2 {round(self.eegdata[3], 2)}"
+        )
 
         # calc which beat and change score
-        now_beat = (int(time) % 8) + 1 # 8 beats = 2 bars
+        now_beat = (int(time) % 8) + 1  # 8 beats = 2 bars
         if now_beat != self.beat:
             self.change_beat(now_beat)
             self.beat = now_beat
@@ -259,5 +258,4 @@ class Main:
 
 if __name__ == "__main__":
     run = Main(headset=False)
-    neoscore.show(run.refresh_func,
-                  display_page_geometry=False)
+    neoscore.show(run.refresh_func, display_page_geometry=False)

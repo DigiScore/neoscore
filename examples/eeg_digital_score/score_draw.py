@@ -1,5 +1,6 @@
 from music21 import converter
 
+
 def get_midi_lists():
     """Parses the note and rest data from a given midifile
     into separate part lists.
@@ -8,7 +9,7 @@ def get_midi_lists():
     # This works for this midi file.
     # For others to work may need some adjustment in the code.
 
-    mf = 'purcell_low.mid'
+    mf = "purcell_low.mid"
     score_in = converter.parse(mf)
     s = []
     a = []
@@ -26,11 +27,14 @@ def get_midi_lists():
             try:
                 if msg.duration.quarterLength != 0:
                     # convert to neoscore
-                    active_part.append((msg.pitch.name, msg.pitch.octave, msg.duration.quarterLength))
+                    active_part.append(
+                        (msg.pitch.name, msg.pitch.octave, msg.duration.quarterLength)
+                    )
             except:
                 pass
 
     return s, a, t, b
+
 
 if __name__ == "__main__":
     s, a, t, b = get_midi_lists()
