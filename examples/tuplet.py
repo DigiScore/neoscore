@@ -1,3 +1,5 @@
+from helpers import render_example
+
 from neoscore.core import neoscore
 from neoscore.core.directions import DirectionY
 from neoscore.core.units import ZERO, Mm
@@ -41,4 +43,4 @@ Tuplet(
 )
 
 
-neoscore.show(display_page_geometry=False)
+render_example("tuplet")
