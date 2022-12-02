@@ -1,5 +1,5 @@
 from neoscore.core.painted_object import PaintedObject
-from neoscore.core.point import Point
+from neoscore.core.point import ORIGIN, Point
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner_2d import Spanner2D
 from neoscore.core.units import Unit
@@ -67,3 +67,19 @@ class TestSpanner2D(AppTest):
             Point(Unit(1), Unit(2)), parent_1, Point(Unit(4), Unit(5)), parent_2
         )
         self.assertAlmostEqual(spanner.angle, 45.0)
+
+    def test_point_along_spanner(self):
+        parent_1 = PositionedObject((Unit(1), Unit(2)), None)
+        parent_2 = PositionedObject((Unit(11), Unit(12)), None)
+        spanner = MockSpanner2D(
+            Point(Unit(1), Unit(2)), parent_1, Point(Unit(4), Unit(5)), parent_2
+        )
+
+        assert_almost_equal(spanner.point_along_spanner(0), ORIGIN)
+        base_delta = Point(Unit(10 - 1 + 4), Unit(10 - 2 + 5))
+        assert_almost_equal(spanner.point_along_spanner(1), base_delta)
+        assert_almost_equal(spanner.point_along_spanner(0.5), base_delta * 0.5)
+        # Values outside the spanner should give points as if
+        # the spanner extends to infinity
+        assert_almost_equal(spanner.point_along_spanner(2), base_delta * 2)
+        assert_almost_equal(spanner.point_along_spanner(-1), base_delta * -1)
