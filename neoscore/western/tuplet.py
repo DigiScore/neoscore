@@ -68,7 +68,6 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
         """
         PositionedObject.__init__(self, start, start_parent)
         Spanner2D.__init__(self, end, end_parent or self)
-        # self._position_checker()
         if font is None:
             font = HasMusicFont.find_music_font(start_parent)
         self._music_font = font
