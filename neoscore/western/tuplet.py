@@ -67,26 +67,20 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
         self._music_font = font
         self.direction = bracket_dir
 
-        # Create line path object
-        self.line_path = Path(
-            ORIGIN,
-            self,
-            Brush.no_brush(),
-            Pen(thickness=font.engraving_defaults["tupletBracketThickness"]),
-        )
-
         # Calculate the bracket end length
         self.bracket_height = self.music_font.unit(self.direction.value)
-        # Draw bracket
-        if include_bracket:
-            self._draw_path()
+
+        # Create bracket path if needed
+        self.bracket: Optional[Path] = (
+            self._create_bracket() if include_bracket else None
+        )
 
         # Convert ratio text to SMuFL glyphs
-        self.smufl_text = self._number_to_digit_glyph_names(indicator_text)
+        self.smufl_text = self._indicator_to_glyph_names(indicator_text)
 
         # Create line text object; will paint over bracket line
         spanner_center = self.point_along_spanner(0.5)
-        self.line_text = MusicText(
+        self.indicator = MusicText(
             (spanner_center.x, spanner_center.y + self.bracket_height),
             self,
             self.smufl_text,
@@ -96,32 +90,36 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
             alignment_y=AlignmentY.CENTER,
         )
 
-    def _draw_path(self):
-        """Draw the path according to this object's attributes."""
+    def _create_bracket(self) -> Path:
+        bracket = Path(
+            ORIGIN,
+            self,
+            Brush.no_brush(),
+            Pen(thickness=self.music_font.engraving_defaults["tupletBracketThickness"]),
+        )
         # Draw opening crook
-        self.line_path.line_to(ZERO, self.bracket_height)
-
-        # draw full line
-        self.line_path.line_to(
+        bracket.line_to(ZERO, self.bracket_height)
+        # Draw spanning line
+        bracket.line_to(
             self.end_pos.x, self.end_y + self.bracket_height, self.end_parent
         )
-
         # Draw end crook
-        self.line_path.line_to(self.end_pos.x, self.end_y, self.end_parent)
+        bracket.line_to(self.end_pos.x, self.end_y, self.end_parent)
+        return bracket
 
     @staticmethod
-    def _number_to_digit_glyph_names(number: str) -> List[str]:
+    def _indicator_to_glyph_names(indicator: str) -> List[str]:
         """Converts indicator text to corresponding SMuFL names
 
         Args:
             number: the original ratio string
         """
         smufl_list = []
-        for digit in number:
-            if digit == ":":
+        for char in indicator:
+            if char == ":":
                 smufl_list.append("tupletColon")
             else:
-                smufl_list.append(f"tuplet{digit}")
+                smufl_list.append(f"tuplet{char}")
         return smufl_list
 
     @property
