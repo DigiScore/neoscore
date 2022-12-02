@@ -78,3 +78,19 @@ class Spanner:
     def breakable_length(self) -> Unit:
         """Spanners are breakable over their ``spanner_x_length``."""
         return self.spanner_x_length
+
+    def point_along_spanner(self, ratio: float) -> Point:
+        """Find the point on the spanner at a given 0-1 ratio along it.
+
+        For example, a ratio of ``0.5`` will give the point half-way along the spanner.
+
+        The returned point will be relative to the starting point.
+
+        Args:
+            ratio: A value representing progress along the spanner,
+                where 0 is at the start and 1 is at the end. Values outside these
+                bounds will give a point as if the spanner extended to infinity.
+        """
+        return (
+            cast(PositionedObject, self).map_to(self.end_parent) + self.end_pos
+        ) * ratio

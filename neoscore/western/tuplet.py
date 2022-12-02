@@ -10,10 +10,11 @@ from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
-from neoscore.core.point import ORIGIN, ZERO, PointDef
+from neoscore.core.point import ORIGIN, PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner_2d import Spanner2D
-from neoscore.core.units import Mm
+from neoscore.core.text_alignment import AlignmentX, AlignmentY
+from neoscore.core.units import ZERO
 
 
 class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
@@ -67,7 +68,7 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
         """
         PositionedObject.__init__(self, start, start_parent)
         Spanner2D.__init__(self, end, end_parent or self)
-        self._position_checker()
+        # self._position_checker()
         if font is None:
             font = HasMusicFont.find_music_font(start_parent)
         self._music_font = font
@@ -82,7 +83,7 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
         )
 
         # Calculate the bracket end length
-        self.bracket_end = self.music_font.unit(1 * self.direction.value)
+        self.bracket_height = self.music_font.unit(self.direction.value)
         # Draw bracket
         if include_bracket:
             self._draw_path()
@@ -91,25 +92,16 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
         self.smufl_text = self._number_to_digit_glyph_names(ratio_text)
 
         # Create line text object; will paint over bracket line
-        self.text_start_point = self._find_text_start_point()
+        spanner_center = self.point_along_spanner(0.5)
         self.line_text = MusicText(
-            self.text_start_point,
-            self.parent,
+            (spanner_center.x, spanner_center.y + self.bracket_height),
+            self,
             self.smufl_text,
             font,
             background_brush=neoscore.background_brush,
-            rotation=self.angle,
+            alignment_x=AlignmentX.CENTER,
+            alignment_y=AlignmentY.CENTER,
         )
-
-        # get exact coords for text bos position
-        new_position = self.new_box_position()
-        self.line_text.pos = new_position
-
-    def _position_checker(self):
-        """Checks if the Tuplet travels left to right."""
-        parent_distance = self.parent.map_to(self.end_parent)
-        if self.end_x - self.x + parent_distance.x < ZERO:
-            raise AttributeError("Invalid Tuplet start or end positions")
 
     def _draw_path(self):
         """Draw the path according to this object's attributes.
@@ -117,11 +109,11 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
         Returns: None
         """
         # Draw opening crook
-        self.line_path.line_to(ZERO, self.bracket_end)
+        self.line_path.line_to(ZERO, self.bracket_height)
 
         # draw full line
         self.line_path.line_to(
-            self.end_pos.x, self.end_y + self.bracket_end, self.end_parent
+            self.end_pos.x, self.end_y + self.bracket_height, self.end_parent
         )
 
         # Draw end crook
@@ -143,40 +135,6 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
             else:
                 smufl_list.append(f"tuplet{digit}")
         return smufl_list
-
-    def _find_text_start_point(self) -> tuple:
-        """Positions ratio text centre roughly on the mid-point
-        of the bracket line to generate a text rect.
-        Returns: tuple of x, y points"""
-        # Find x & y for half-way hypotenuse
-        start_parent = self.parent
-        end_parent = self.end_parent
-        parent_distance = start_parent.map_to(end_parent)
-        x_distance = parent_distance.x + self.x + self.end_x
-        y_distance = parent_distance.y + self.y + self.end_y
-
-        mid_x = x_distance / 2
-        mid_y = y_distance / 2 + self.bracket_end
-
-        return (mid_x, mid_y)
-
-    def new_box_position(self) -> tuple:
-        """Finds the exact centre of the text rect,
-        and repositions on the bracket"""
-        # dimensions of text rect
-        text_box = self.line_text.bounding_rect
-
-        # original point position of MusicText
-        original_pos = self.line_text.pos
-
-        # Calc new x and y on box coords
-        new_x = original_pos.x - ((text_box.x + text_box.width) / 2)
-        if original_pos.y < Mm(0):
-            new_y = original_pos.y + (text_box.height / 2) - Mm(self.angle / 20)
-        else:
-            new_y = original_pos.y + (text_box.height / 2) - Mm(self.angle / 20)
-
-        return (new_x, new_y)
 
     @property
     def music_font(self) -> MusicFont:
