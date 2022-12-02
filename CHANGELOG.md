@@ -1,3 +1,10 @@
+# 0.1.8 (2022-12-02)
+
+- Add a new `Tuplet` class for simple notation of tuplets. (by @craigvear)
+- Add a new method `Spanner.point_along_spanner` for easily finding points along the spanner's line.
+- Switch to using the [pre-commit](https://pre-commit.com/) framework for our precommit hooks, improving stability and cross-platform dev environment support. See the updated [`CONTRIBUTING.md`](/CONTRIBUTING.md) file for new pre-commit setup instructions. You can easily migrate by first installing new dependencies with `poetry install` then setting up the new pre-commit hook with `pre-commit install -f`.
+- Fix a bug where `PedalLine` without half-lift positions errored. (by @craigvear)
+
 # 0.1.7 (2022-10-03) - BREAKING CHANGE
 
 This release includes substantial breaking changes. See [the announcement post](https://github.com/DigiScore/neoscore/discussions/73) for more information.
