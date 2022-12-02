@@ -23,20 +23,13 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
     This tuplet indicator spans a group of notes labelling them
     as triplet or more complex polyrhythms such as 5:4.
 
-    Starting at the first event in the grouping (note or rest),
-    the indicator spans across to the end event (note or rest).
-    An error will be raised if the spanning is right to left.
-
-    At the centre of this line is the tuplet number
-    (default = 3 for triplet). More complex ratios can be declared
+    At the centre of this line is the tuplet number.
+    More complex ratios can be declared
     such as 7:8, 11:16, 12:14.
 
-    Optional parameters enable bracket visibility (default = True),
-    and bracket direction (default = DOWN).
+    Optional parameters enable bracket visibility,
+    and bracket direction.
 
-    It is not common music engraving practice to split tuplets
-    across bar lines or staff splits, so this function is
-    not supported.
     """
 
     def __init__(
@@ -45,7 +38,7 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
         start_parent: PositionedObject,
         end: PointDef,
         end_parent: Optional[PositionedObject] = None,
-        ratio_text: str = "3",
+        indicator_text: str = "3",
         include_bracket: bool = True,
         bracket_dir: DirectionY = DirectionY.DOWN,
         font: Optional[MusicFont] = None,
@@ -60,10 +53,11 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
                 a staff itself. The root staff of this *must* be the same
                 as the root staff of ``start_parent``. If omitted, the
                 stop point is relative to the start point.
-            ratio_text: The Tuplet number (e.g. 3 for tripets) or Ratio number (e.g. 5:4 for polyrhythms)
-            include_bracket: Bool to draw the spanning bracket over the tuplet
+            indicator_text: The tuplet indicator text drawn at the middle of the spanner.
+                This should contain only of numbers and colons, for example "3" or "5:4".
+                Any other character will cause a ``ValueError`` to be raised.
+            include_bracket: Whether to draw a bracket spanning the tuplet
             bracket_dir: The direction the line's ending hook points.
-                For lines above staves, this should be down, and vice versa for below.
             font: If provided, this overrides any font found in the ancestor chain.
         """
         PositionedObject.__init__(self, start, start_parent)
@@ -88,7 +82,7 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
             self._draw_path()
 
         # Convert ratio text to SMuFL glyphs
-        self.smufl_text = self._number_to_digit_glyph_names(ratio_text)
+        self.smufl_text = self._number_to_digit_glyph_names(indicator_text)
 
         # Create line text object; will paint over bracket line
         spanner_center = self.point_along_spanner(0.5)
@@ -103,10 +97,7 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
         )
 
     def _draw_path(self):
-        """Draw the path according to this object's attributes.
-
-        Returns: None
-        """
+        """Draw the path according to this object's attributes."""
         # Draw opening crook
         self.line_path.line_to(ZERO, self.bracket_height)
 
@@ -120,13 +111,11 @@ class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
 
     @staticmethod
     def _number_to_digit_glyph_names(number: str) -> List[str]:
-        """Converts ratio text to corresponding SMuFL names
+        """Converts indicator text to corresponding SMuFL names
 
         Args:
-            number: str: the original ratio string
-
-        Returns:
-            List: SMuFL names"""
+            number: the original ratio string
+        """
         smufl_list = []
         for digit in number:
             if digit == ":":
