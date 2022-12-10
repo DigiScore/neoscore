@@ -4,19 +4,18 @@ from typing import Optional
 
 from neoscore.core.brush import BrushDef
 from neoscore.core.directions import DirectionY
-from neoscore.core.math_helpers import interpolate
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
 from neoscore.core.pen import PenDef
-from neoscore.core.point import ORIGIN, Point, PointDef
+from neoscore.core.point import PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner_2d import Spanner2D
-from neoscore.core.units import ZERO, Unit
+from neoscore.core.units import Unit
 from neoscore.western.abstract_slur import AbstractSlur
 
 class Slur(AbstractSlur, MusicPath, Spanner2D):
 
-    """A slur, also usable as a tie.
+    """A slur.
 
     While this is a path, it requires a music font from which to derive its appearance.
     """
@@ -65,18 +64,11 @@ class Slur(AbstractSlur, MusicPath, Spanner2D):
             "slurEndpointThickness"
         ]
         self.length = self.spanner_2d_length
-        # Work out parameters
-        # self.abs_height = self.height if self.height else self._derive_height()
-        # self.arch_length = (
-        #     self.arch_length if self.arch_length else self._derive_arch_length()
-        # )
-        # self.mid_height = self.abs_height * self.direction.value
-        # self.mid_upper_height = self.mid_height + (self.midpoint_thickness * self.direction.value)
-        # self.end_height = self.endpoint_thickness * self.direction.value
 
         # draw slur
         AbstractSlur.draw_slur(self)
 
+    # todo - tidy this once PR approved
     # def _derive_height(self):
     #     # length = self.spanner_2d_length
     #     unit = self.music_font.unit

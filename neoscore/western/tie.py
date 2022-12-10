@@ -1,19 +1,16 @@
 from __future__ import annotations
-
 from typing import Optional
 
 from neoscore.core.brush import BrushDef
 from neoscore.core.directions import DirectionY
-from neoscore.core.math_helpers import interpolate
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_path import MusicPath
 from neoscore.core.pen import PenDef
-from neoscore.core.point import ORIGIN, Point, PointDef
+from neoscore.core.point import PointDef
 from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner_2d import Spanner2D
 from neoscore.core.units import ZERO, Unit
 from neoscore.western.abstract_slur import AbstractSlur
-
 
 
 class Tie(AbstractSlur, MusicPath, Spanner2D):
@@ -27,7 +24,7 @@ class Tie(AbstractSlur, MusicPath, Spanner2D):
         self,
         pos: PointDef,
         parent: PositionedObject,
-        end_x: Point,
+        end_x: Unit,
         end_parent: Optional[PositionedObject] = None,
         direction: DirectionY = DirectionY.UP,
         height: Optional[Unit] = None,
@@ -41,7 +38,7 @@ class Tie(AbstractSlur, MusicPath, Spanner2D):
             pos: The starting point.
             parent: The parent for the starting position. If no font is provided,
                 this parent or one of its ancestors must implement :obj:`.HasStaffUnit`.
-            end_pos: The stopping point.
+            end_x: The stopping point.
             end_parent: The parent for the ending position.
                 If ``None``, defaults to ``self``.
             direction: The vertical direction the slur arches.
@@ -56,7 +53,7 @@ class Tie(AbstractSlur, MusicPath, Spanner2D):
         """
         MusicPath.__init__(self, pos, parent, font, brush, pen)
 
-        end_pos = Point(end_x, ZERO)
+        end_pos = (end_x, ZERO)
         Spanner2D.__init__(self, end_pos, end_parent or self)
         self.direction = direction
         self.height = height
@@ -69,14 +66,6 @@ class Tie(AbstractSlur, MusicPath, Spanner2D):
             "slurEndpointThickness"
         ]
         self.length = self.spanner_2d_length
-        # Work out parameters
-        # self.abs_height = self.height if self.height else self._derive_height()
-        # self.arch_length = (
-        #     self.arch_length if self.arch_length else self._derive_arch_length()
-        # )
-        # self.mid_height = self.abs_height * self.direction.value
-        # self.mid_upper_height = self.mid_height + (self.midpoint_thickness * self.direction.value)
-        # self.end_height = self.endpoint_thickness * self.direction.value
 
         # draw slur
         AbstractSlur.draw_slur(self)
