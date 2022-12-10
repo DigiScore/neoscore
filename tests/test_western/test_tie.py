@@ -2,8 +2,8 @@ from neoscore.core.flowable import Flowable
 from neoscore.core.path_element import ControlPoint, CurveTo, LineTo, MoveTo
 from neoscore.core.point import ORIGIN, Point
 from neoscore.core.units import ZERO, Mm, Unit
-from neoscore.western.tie import Tie
 from neoscore.western.staff import Staff
+from neoscore.western.tie import Tie
 from tests.mocks.mock_staff_object import MockStaffObject
 
 from ..helpers import AppTest, assert_path_els_equal

@@ -13,6 +13,7 @@ from neoscore.core.spanner_2d import Spanner2D
 from neoscore.core.units import Unit
 from neoscore.western.abstract_slur import AbstractSlur
 
+
 class Slur(AbstractSlur, MusicPath, Spanner2D):
 
     """A slur.

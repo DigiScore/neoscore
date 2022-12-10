@@ -4,8 +4,8 @@ from neoscore.core import neoscore
 from neoscore.core.units import ZERO, Mm
 from neoscore.western.chordrest import Chordrest
 from neoscore.western.clef import Clef
-from neoscore.western.staff import Staff
 from neoscore.western.slur import Slur
+from neoscore.western.staff import Staff
 from neoscore.western.tie import Tie
 
 neoscore.setup()

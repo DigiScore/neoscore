@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from typing import Optional
 
 from neoscore.core.brush import BrushDef
@@ -14,6 +15,7 @@ from neoscore.western.abstract_slur import AbstractSlur
 
 
 class Tie(AbstractSlur, MusicPath, Spanner2D):
+
     """A tie.
 
     While this is a path, it requires a music font from which to derive its appearance.
