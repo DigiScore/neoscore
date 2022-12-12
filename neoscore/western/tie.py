@@ -9,12 +9,12 @@ from neoscore.core.music_path import MusicPath
 from neoscore.core.pen import PenDef
 from neoscore.core.point import PointDef
 from neoscore.core.positioned_object import PositionedObject
-from neoscore.core.spanner_2d import Spanner2D
-from neoscore.core.units import ZERO, Unit
+from neoscore.core.spanner import Spanner
+from neoscore.core.units import Unit
 from neoscore.western.abstract_slur import AbstractSlur
 
 
-class Tie(AbstractSlur, MusicPath, Spanner2D):
+class Tie(AbstractSlur, MusicPath, Spanner):
     """A tie.
 
     While this is a path, it requires a music font from which to derive its appearance.
@@ -25,7 +25,6 @@ class Tie(AbstractSlur, MusicPath, Spanner2D):
         pos: PointDef,
         parent: PositionedObject,
         end_x: Unit,
-        end_parent: Optional[PositionedObject] = None,
         direction: DirectionY = DirectionY.UP,
         height: Optional[Unit] = None,
         arch_length: Optional[Unit] = None,
@@ -39,8 +38,6 @@ class Tie(AbstractSlur, MusicPath, Spanner2D):
             parent: The parent for the starting position. If no font is provided,
                 this parent or one of its ancestors must implement :obj:`.HasStaffUnit`.
             end_x: The stopping point.
-            end_parent: The parent for the ending position.
-                If ``None``, defaults to ``self``.
             direction: The vertical direction the slur arches.
             height: The ascent or descent of the curve given in absolute value.
                 If omitted, a reasonable default is derived from other properties.
@@ -53,8 +50,8 @@ class Tie(AbstractSlur, MusicPath, Spanner2D):
         """
         MusicPath.__init__(self, pos, parent, font, brush, pen)
 
-        end_pos = (end_x, ZERO)
-        Spanner2D.__init__(self, end_pos, end_parent or self)
+        # end_pos = (end_x, ZERO)
+        Spanner.__init__(self, end_x, parent or self)
         self.direction = direction
         self.height = height
         self.arch_length = arch_length
@@ -65,7 +62,7 @@ class Tie(AbstractSlur, MusicPath, Spanner2D):
         self.endpoint_thickness = self.music_font.engraving_defaults[
             "slurEndpointThickness"
         ]
-        self.length = self.spanner_2d_length
+        self.length = self.spanner_x_length
 
         # draw slur
         AbstractSlur.draw_slur(self)

@@ -18,23 +18,23 @@ class TestTie(AppTest):
         self.right_parent = MockStaffObject((Unit(10), Unit(2)), self.staff)
 
     def test_path_elements(self):
-        tie = Tie((Mm(1), Mm(2)), self.left_parent, Mm(3), self.right_parent)
+        tie = Tie((Mm(1), Mm(2)), self.left_parent, Mm(3))
         unit = self.staff.unit
         assert_path_els_equal(
             tie.elements,
             [
                 MoveTo(Point(unit(0.0), unit(-0.1)), tie),
                 CurveTo(
-                    Point(Mm(3), Mm(-0.175)),
-                    self.right_parent,
+                    Point(Mm(3), Mm(1.825)),
+                    self.left_parent,
                     ControlPoint(Point(unit(0), unit(-0.97)), tie),
-                    ControlPoint(Point(Mm(3), Mm(-1.697)), self.right_parent),
+                    ControlPoint(Point(Mm(3), Mm(0.303)), self.left_parent),
                 ),
-                LineTo(Point(Mm(3), Mm(0)), self.right_parent),
+                LineTo(Point(Mm(3), Mm(2)), self.left_parent),
                 CurveTo(
                     ORIGIN,
                     tie,
-                    ControlPoint(Point(Mm(3), Mm(-1.312)), self.right_parent),
+                    ControlPoint(Point(Mm(3), Mm(0.688)), self.left_parent),
                     ControlPoint(Point(ZERO, unit(-0.75)), tie),
                 ),
             ],
