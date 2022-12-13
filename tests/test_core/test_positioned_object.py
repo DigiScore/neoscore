@@ -197,6 +197,13 @@ class TestPositionedObject(AppTest):
         expected = (page_4_x + Unit(99)) - (page_1_x + Unit(5))
         assert_almost_equal(relative_x, expected)
 
+    def test_distance_to(self):
+        source = PositionedObject((Unit(1), Unit(2)), None)
+        destination = PositionedObject((Unit(3), Unit(10)), None)
+        assert_almost_equal(
+            source.distance_to(destination, Point(Unit(3), Unit(4))), Unit(13)
+        )
+
     def test_canvas_pos(self):
         item = PositionedObject((Mm(5), Mm(6)), neoscore.document.pages[2])
         canvas_pos = item.canvas_pos()

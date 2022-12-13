@@ -12,9 +12,9 @@ from ..helpers import AppTest, assert_path_els_equal
 class TestSlur(AppTest):
     def setUp(self):
         super().setUp()
-        self.flowable = Flowable((Mm(0), Mm(0)), None, Mm(10000), Mm(30), Mm(5))
-        self.staff = Staff((Mm(0), Mm(0)), self.flowable, Mm(5000))
-        self.left_parent = MockStaffObject((Unit(0), Unit(0)), self.staff)
+        self.flowable = Flowable(ORIGIN, None, Mm(10000), Mm(30), Mm(5))
+        self.staff = Staff(ORIGIN, self.flowable, Mm(5000))
+        self.left_parent = MockStaffObject(ORIGIN, self.staff)
         self.right_parent = MockStaffObject((Unit(10), Unit(2)), self.staff)
 
     def test_path_elements(self):
@@ -27,7 +27,7 @@ class TestSlur(AppTest):
                 CurveTo(
                     Point(Mm(3), Mm(3.825)),
                     self.right_parent,
-                    ControlPoint(Point(unit(0), unit(-0.97)), slur),
+                    ControlPoint(Point(ZERO, unit(-0.97)), slur),
                     ControlPoint(Point(Mm(3), Mm(2.302)), self.right_parent),
                 ),
                 LineTo(Point(Mm(3), Mm(4)), self.right_parent),

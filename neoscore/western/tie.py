@@ -5,7 +5,6 @@ from typing import Optional
 from neoscore.core.brush import BrushDef
 from neoscore.core.directions import DirectionY
 from neoscore.core.music_font import MusicFont
-from neoscore.core.music_path import MusicPath
 from neoscore.core.pen import PenDef
 from neoscore.core.point import PointDef
 from neoscore.core.positioned_object import PositionedObject
@@ -14,10 +13,15 @@ from neoscore.core.units import Unit
 from neoscore.western.abstract_slur import AbstractSlur
 
 
-class Tie(AbstractSlur, MusicPath, Spanner):
-    """A tie.
+class Tie(AbstractSlur, Spanner):
 
-    While this is a path, it requires a music font from which to derive its appearance.
+    """A tie, conventionally drawn between notes.
+
+    Note that this class currently provides no smart positioning logic to automatically
+    attach to and span between noteheads in :obj:`.Chordrest`\ s.
+
+    For slurs, see :obj:`.Slur`, which works identically to this class except that it
+    is not constrainted to be horizontal.
     """
 
     def __init__(
@@ -25,6 +29,7 @@ class Tie(AbstractSlur, MusicPath, Spanner):
         pos: PointDef,
         parent: PositionedObject,
         end_x: Unit,
+        end_parent: Optional[PositionedObject] = None,
         direction: DirectionY = DirectionY.UP,
         height: Optional[Unit] = None,
         arch_length: Optional[Unit] = None,
@@ -37,7 +42,8 @@ class Tie(AbstractSlur, MusicPath, Spanner):
             pos: The starting point.
             parent: The parent for the starting position. If no font is provided,
                 this parent or one of its ancestors must implement :obj:`.HasStaffUnit`.
-            end_x: The stopping point.
+            end_x: The stopping point's x value. The y value will be automatically set
+                so the tie is horizontal.
             direction: The vertical direction the slur arches.
             height: The ascent or descent of the curve given in absolute value.
                 If omitted, a reasonable default is derived from other properties.
@@ -48,21 +54,8 @@ class Tie(AbstractSlur, MusicPath, Spanner):
             brush: The brush to fill shapes with.
             pen: The pen to draw outlines with.
         """
-        MusicPath.__init__(self, pos, parent, font, brush, pen)
-
-        # end_pos = (end_x, ZERO)
-        Spanner.__init__(self, end_x, parent or self)
-        self.direction = direction
-        self.height = height
-        self.arch_length = arch_length
-        # Load relevant engraving defaults from music font
-        self.midpoint_thickness = self.music_font.engraving_defaults[
-            "slurMidpointThickness"
-        ]
-        self.endpoint_thickness = self.music_font.engraving_defaults[
-            "slurEndpointThickness"
-        ]
-        self.length = self.spanner_x_length
-
-        # draw slur
-        AbstractSlur.draw_slur(self)
+        AbstractSlur.__init__(
+            self, pos, parent, direction, height, arch_length, font, brush, pen
+        )
+        Spanner.__init__(self, end_x, end_parent or self)
+        self.draw_slur(self.end_pos, self.end_parent)

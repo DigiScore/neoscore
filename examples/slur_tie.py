@@ -26,6 +26,6 @@ tie = Tie((Mm(0), Mm(0)), note3, Mm(10))
 
 nh1 = Notehead(Mm(60), staff, "e", (1, 4))
 nh2 = Notehead(Mm(80), staff, "b", (1, 4))
-Tie(ORIGIN, nh1, Mm(20))
+Tie(ORIGIN, nh1, ZERO, nh2)
 
 render_example("slur_tie")

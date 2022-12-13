@@ -1,26 +1,56 @@
 from __future__ import annotations
 
-from neoscore.core.has_music_font import HasMusicFont
+from typing import Optional
+
+from neoscore.core.brush import BrushDef
+from neoscore.core.directions import DirectionY
 from neoscore.core.math_helpers import interpolate
-from neoscore.core.painted_object import PaintedObject
-from neoscore.core.point import ORIGIN, Point
-from neoscore.core.units import ZERO
+from neoscore.core.music_font import MusicFont
+from neoscore.core.music_path import MusicPath
+from neoscore.core.pen import PenDef
+from neoscore.core.point import ORIGIN, Point, PointDef
+from neoscore.core.positioned_object import PositionedObject
+from neoscore.core.units import ZERO, Unit
 
 
-class AbstractSlur(PaintedObject, HasMusicFont):
+class AbstractSlur(MusicPath):
     """An abstract superclass for slur and tie.
 
     This is not meant to be used directly."""
 
-    @staticmethod
-    def draw_slur(self):
-        # Work out parameters
+    def __init__(
+        self,
+        pos: PointDef,
+        parent: PositionedObject,
+        direction: DirectionY = DirectionY.UP,
+        height: Optional[Unit] = None,
+        arch_length: Optional[Unit] = None,
+        font: Optional[MusicFont] = None,
+        brush: Optional[BrushDef] = None,
+        pen: Optional[PenDef] = None,
+    ):
+        MusicPath.__init__(self, pos, parent, font, brush, pen)
+        self.direction = direction
+        self.height = height
+        self.arch_length = arch_length
+        # Load relevant engraving defaults from music font
+        self.midpoint_thickness = self.music_font.engraving_defaults[
+            "slurMidpointThickness"
+        ]
+        self.endpoint_thickness = self.music_font.engraving_defaults[
+            "slurEndpointThickness"
+        ]
 
-        abs_height = self.height if self.height else self._derive_height(self.length)
+    def draw_slur(self, end_pos, end_parent):
+        """Draw the slur shape.
+
+        This should generally not be called directly.
+        """
+        # Work out parameters
+        length = self.distance_to(end_parent, end_pos)
+        abs_height = self.height if self.height else self._derive_height(length)
         arch_length = (
-            self.arch_length
-            if self.arch_length
-            else self._derive_arch_length(self.length)
+            self.arch_length if self.arch_length else self._derive_arch_length(length)
         )
         mid_height = abs_height * self.direction.value
         mid_upper_height = mid_height + (self.midpoint_thickness * self.direction.value)
