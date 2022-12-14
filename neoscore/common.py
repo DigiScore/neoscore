@@ -66,5 +66,6 @@ from neoscore.western.tab_clef import TabClef
 from neoscore.western.tab_number import TabNumber
 from neoscore.western.tab_staff import TabStaff
 from neoscore.western.tab_string_text import TabStringText
+from neoscore.western.tie import Tie
 from neoscore.western.time_signature import TimeSignature
 from neoscore.western.tuplet import Tuplet
