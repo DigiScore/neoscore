@@ -1,6 +1,6 @@
 # 0.1.9 (unreleased)
 
-- Create a dedicated `Tie` class for ties. Both it and `Slur` now inherit from a shared `AbstractSlur` class which provides common drawing functionality. `Tie` is a nice convenience class in that it is automatically kept horizontal; in the future it may also be shaped slightly differently than a slur.
+- Create a dedicated `Tie` class for ties. Both it and `Slur` now inherit from a shared `AbstractSlur` class which provides common drawing functionality. `Tie` is a nice convenience class in that it is automatically kept horizontal; in the future it may also be shaped slightly differently than a slur. (by @craigvear)
 - Add a new method `PositionedObject.distance_to` which provides a convenient way to find the Euclidean distance to another object.
 
 # 0.1.8 (2022-12-02)
