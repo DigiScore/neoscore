@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 from collections.abc import Iterator
 from typing import TYPE_CHECKING, Any, List, Optional, Set, Type, cast
 
@@ -396,6 +397,20 @@ class PositionedObject:
                 # ancestor, this should never happen
                 assert False, "Unreachable"
         raise ValueError(f"{self} and {dst} have no common ancestor")
+
+    def distance_to(self, obj: PositionedObject, offset: Point = ORIGIN) -> Unit:
+        """Find the distance to a given object, with an optional extra offset.
+
+        Like :obj:`.map_to`, this works in *logical* coordinates.
+        """
+        relative_dst_pos = self.map_to(obj) + offset
+        distance = Unit(
+            math.sqrt(
+                (relative_dst_pos.x.base_value**2)
+                + (relative_dst_pos.y.base_value**2)
+            )
+        )
+        return type(self.x)(distance)
 
     def canvas_pos(self) -> Point:
         """Find the document-space position of this object.

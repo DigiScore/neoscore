@@ -50,14 +50,7 @@ class Spanner2D(Spanner):
         This takes into account both the x and y-axis. For only the horizontal length,
         use :obj:`.Spanner.spanner_x_length`.
         """
-        relative_end_pos = self._relative_end_pos
-        distance = Unit(
-            math.sqrt(
-                (relative_end_pos.x.base_value**2)
-                + (relative_end_pos.y.base_value**2)
-            )
-        )
-        return type(cast(PositionedObject, self).pos.x)(distance)
+        return cast(PositionedObject, self).distance_to(self.end_parent, self.end_pos)
 
     @render_cached_property
     def angle(self) -> float:
@@ -70,7 +63,4 @@ class Spanner2D(Spanner):
 
     @render_cached_property
     def _relative_end_pos(self) -> Point:
-        if self.end_parent == self:
-            return self.end_pos
-        else:
-            return cast(PositionedObject, self).map_to(self.end_parent) + self.end_pos
+        return cast(PositionedObject, self).map_to(self.end_parent) + self.end_pos

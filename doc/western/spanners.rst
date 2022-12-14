@@ -37,7 +37,7 @@ Crescendo and diminuendo :obj:`.Hairpin`\ s, demonstrated above, can be configur
 Slurs and Ties
 --------------
 
-Slur and ties are both created with the :obj:`.Slur` class. By default they arch upward, but this can be changed with the ``direction`` argument.
+Slur are created with the :obj:`.Slur` class. By default they arch upward, but this can be changed with the ``direction`` argument.
 
 .. rendered-example::
 
@@ -48,16 +48,18 @@ Slur and ties are both created with the :obj:`.Slur` class. By default they arch
    end = Chordrest(Mm(22), staff, ["c#'"], (1, 2))
    Slur((ZERO, staff.unit(-1)), start.stem.end_point, end.extra_attachment_point, end)
 
-Ties are just horizontal slurs. (`Though we're open to contributions making this easier <https://github.com/DigiScore/neoscore/issues/22>`_)
+Ties work identically to slurs, except they are automatically constrained to be horizontal.
 
 .. rendered-example::
 
    staff = Staff(ORIGIN, None, Mm(40))
    Clef(ZERO, staff, 'treble')
    start = Chordrest(Mm(2), staff, ["f"], (1, 4))
-   Slur(start.extra_attachment_point, start, (Mm(10), ZERO), direction=DirectionY.DOWN)
+   end = Chordrest(Mm(22), staff, ["f"], (1, 4))
+   Tie(start.extra_attachment_point, start,
+       end.extra_attachment_point.x, end, direction=DirectionY.DOWN)
 
-A reasonable curvature is automatically derived from the spanner length, but this can be overridden with the ``height`` and ``arch_length`` arguments.
+For both classes, a reasonable curvature is automatically derived from the spanner length, but this can be overridden with the ``height`` and ``arch_length`` arguments.
 
 Octave Lines
 ------------
