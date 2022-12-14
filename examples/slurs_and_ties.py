@@ -28,4 +28,4 @@ nh1 = Notehead(Mm(60), staff, "e", (1, 4))
 nh2 = Notehead(Mm(80), staff, "b", (1, 4))
 Tie(ORIGIN, nh1, ZERO, nh2)
 
-render_example("slur_tie")
+render_example("slurs_and_ties")
