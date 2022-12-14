@@ -106,7 +106,7 @@ _Q_MOUSE_MIDDLE_BUTTON = 0x00000004
 
 
 def q_mouse_event_to_mouse_event(
-    q_event: QMouseEvent, ns_event_type: MouseEventType
+    q_event: QMouseEvent, ns_event_type: MouseEventType, window_pos: QPointF
 ) -> MouseEvent:
     buttons = int(q_event.buttons())
     if buttons & _Q_MOUSE_LEFT_BUTTON:
@@ -119,7 +119,10 @@ def q_mouse_event_to_mouse_event(
         ns_mouse_button = None
     q_pos = q_event.windowPos()
     ns_window_pos = (int(q_pos.x()), int(q_pos.y()))
-    return MouseEvent(ns_event_type, ns_mouse_button, ns_window_pos)
+    ns_document_pos = Point(
+        Unit(q_pos.x() + window_pos.x()), Unit(q_pos.y() + window_pos.y())
+    )
+    return MouseEvent(ns_event_type, ns_mouse_button, ns_window_pos, ns_document_pos)
 
 
 def q_key_event_to_key_event(

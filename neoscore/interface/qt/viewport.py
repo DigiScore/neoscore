@@ -1,4 +1,5 @@
 from PyQt5 import QtGui, QtWidgets
+from PyQt5.QtCore import QPointF
 
 from neoscore.core.key_event import KeyEventType
 from neoscore.core.mouse_event import MouseEventType
@@ -72,12 +73,17 @@ class Viewport(QtWidgets.QGraphicsView):
         super().scrollContentsBy(*args)
         self.viewport().update()
 
+    def window_document_pos(self) -> QPointF:
+        return self.mapToScene(0, 0)
+
     # Input event handler overrides
 
     def mouseMoveEvent(self, e):
         if self.mouse_event_handler:
             self.mouse_event_handler(
-                q_mouse_event_to_mouse_event(e, MouseEventType.MOVE)
+                q_mouse_event_to_mouse_event(
+                    e, MouseEventType.MOVE, self.window_document_pos()
+                )
             )
         if self.auto_interaction_enabled:
             super().mouseMoveEvent(e)
@@ -85,7 +91,9 @@ class Viewport(QtWidgets.QGraphicsView):
     def mousePressEvent(self, e):
         if self.mouse_event_handler:
             self.mouse_event_handler(
-                q_mouse_event_to_mouse_event(e, MouseEventType.PRESS)
+                q_mouse_event_to_mouse_event(
+                    e, MouseEventType.PRESS, self.window_document_pos()
+                )
             )
         if self.auto_interaction_enabled:
             super().mousePressEvent(e)
@@ -93,7 +101,9 @@ class Viewport(QtWidgets.QGraphicsView):
     def mouseReleaseEvent(self, e):
         if self.mouse_event_handler:
             self.mouse_event_handler(
-                q_mouse_event_to_mouse_event(e, MouseEventType.RELEASE)
+                q_mouse_event_to_mouse_event(
+                    e, MouseEventType.RELEASE, self.window_document_pos()
+                )
             )
         if self.auto_interaction_enabled:
             super().mouseReleaseEvent(e)
@@ -101,7 +111,9 @@ class Viewport(QtWidgets.QGraphicsView):
     def mouseDoubleClickEvent(self, e):
         if self.mouse_event_handler:
             self.mouse_event_handler(
-                q_mouse_event_to_mouse_event(e, MouseEventType.DOUBLE_CLICK)
+                q_mouse_event_to_mouse_event(
+                    e, MouseEventType.DOUBLE_CLICK, self.window_document_pos()
+                )
             )
         if self.auto_interaction_enabled:
             super().mouseDoubleClickEvent(e)

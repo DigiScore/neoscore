@@ -3,12 +3,15 @@ This example demonstrates slightly more complicated mouse and keyboard input
 in the interactive runtime viewport.
 """
 
+from typing import List, Optional
+
 from neoscore.core import neoscore
 from neoscore.core.brush import Brush
 from neoscore.core.key_event import KeyEventType
 from neoscore.core.mouse_event import MouseEventType
 from neoscore.core.path import Path
 from neoscore.core.pen import Pen
+from neoscore.core.point import Point
 from neoscore.core.text import Text
 from neoscore.core.units import Mm, Unit
 
@@ -32,11 +35,11 @@ def key_handler(event):
     Add single characters to a list when a key is pressed,
     and remove them from the list when the key is released.
     """
-    global text_list
+    global held_key_strings
     if event.event_type == KeyEventType.PRESS:
-        text_list.append(event.text)
+        held_key_strings.append(event.text)
     if event.event_type == KeyEventType.RELEASE:
-        text_list.remove(event.text)
+        held_key_strings.remove(event.text)
 
 
 def mouse_handler(event):
@@ -47,20 +50,24 @@ def mouse_handler(event):
     draw a line between the click and release points when the mouse is released."""
     global click_point
     if event.event_type == MouseEventType.PRESS:
-        click_point.clear()
-        click_point.append(Unit(event.window_pos[0]))
-        click_point.append(Unit(event.window_pos[1]))
-    if event.event_type == MouseEventType.RELEASE:
+        click_point = event.document_pos
+    elif event.event_type == MouseEventType.RELEASE:
+        if click_point is None:
+            print("Ignoring unexpected mouse RELEASE event")
+            return
         path = Path(click_point, None, "#ff00ff55")
-        path.line_to(
-            Unit(event.window_pos[0]) - click_point[0],
-            Unit(event.window_pos[1]) - click_point[1],
-        )
+        release_pos_relative_to_click = event.document_pos - click_point
+        path.line_to(release_pos_relative_to_click.x, release_pos_relative_to_click.y)
+        click_point = None
 
 
 def refresh_func(time: float):
-    global text_list
-    typing_text.text = " ".join(text_list)
+    global held_key_strings
+    typing_text.text = (
+        " ".join(held_key_strings)
+        if held_key_strings
+        else "To interact with the scene, press keys or click and drag the mouse"
+    )
 
 
 neoscore.setup()
@@ -73,9 +80,10 @@ Path.rect(
     Pen.no_pen(),
 )
 
-click_point = []
-text_list = []
-typing_text = Text((Unit(250), Unit(250)), None, "begin holding keys down")
+click_point: Optional[Point] = None
+held_key_strings: List[str] = []
+typing_text = Text((Unit(20), Unit(250)), None, "begin holding keys down")
+
 
 neoscore.set_key_event_handler(key_handler)
 neoscore.set_mouse_event_handler(mouse_handler)

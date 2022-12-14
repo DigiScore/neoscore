@@ -2,6 +2,8 @@ from dataclasses import dataclass
 from enum import Enum, auto
 from typing import Optional, Tuple
 
+from neoscore.core.point import Point
+
 
 class MouseButton(Enum):
     """Enum for mouse buttons.
@@ -23,7 +25,7 @@ class MouseEventType(Enum):
     """
 
     MOVE = auto()
-    """The mouse was moved while a button was held"""
+    """The mouse was moved"""
 
     PRESS = auto()
     """A mouse button was pressed"""
@@ -55,3 +57,6 @@ class MouseEvent:
 
     window_pos: Tuple[int, int]
     """The mouse position on the window in ``x, y`` pixels."""
+
+    document_pos: Point
+    """The document-space position of the mouse."""
