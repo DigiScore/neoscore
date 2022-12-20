@@ -1,3 +1,7 @@
+# 0.1.10 (2022-12-20)
+
+- Dataclass tweaks to support Python 3.11 breaking changes.
+
 # 0.1.9 (2022-12-15)
 
 - Create a dedicated `Tie` class for ties. Both it and `Slur` now inherit from a shared `AbstractSlur` class which provides common drawing functionality. `Tie` is a nice convenience class in that it is automatically kept horizontal; in the future it may also be shaped slightly differently than a slur. (by @craigvear)

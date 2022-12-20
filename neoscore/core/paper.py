@@ -13,11 +13,11 @@ class Paper:
 
     width: Unit
     height: Unit
-    margin_top: Unit = ZERO
-    margin_right: Unit = ZERO
-    margin_bottom: Unit = ZERO
-    margin_left: Unit = ZERO
-    gutter: Unit = ZERO
+    margin_top: Unit = field(default_factory=lambda: ZERO)
+    margin_right: Unit = field(default_factory=lambda: ZERO)
+    margin_bottom: Unit = field(default_factory=lambda: ZERO)
+    margin_left: Unit = field(default_factory=lambda: ZERO)
+    gutter: Unit = field(default_factory=lambda: ZERO)
     live_width: Unit = field(init=False)
     live_height: Unit = field(init=False)
 

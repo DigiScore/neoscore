@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from neoscore.core.units import ZERO, Unit
 
@@ -35,7 +35,7 @@ class StaffFringeLayout:
     If there is no key signature this will be ``ZERO``.
     """
 
-    time_signature: Unit = ZERO
+    time_signature: Unit = field(default_factory=lambda: ZERO)
     """The time signature's position, if any.
 
     If there is no time signature this will be ``ZERO``.
