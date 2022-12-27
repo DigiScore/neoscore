@@ -1,3 +1,7 @@
+# 0.1.11 (unreleased)
+
+- Fix bug where viewport scales were set and got incorrectly (#89)
+
 # 0.1.10 (2022-12-20)
 
 - Dataclass tweaks to support Python 3.11 breaking changes.

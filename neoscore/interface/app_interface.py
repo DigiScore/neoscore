@@ -287,8 +287,7 @@ class AppInterface:
     @viewport_scale.setter
     def viewport_scale(self, value: float):
         transform = self.view.viewportTransform()
-        current_scale = transform.m11()  # Assume x and y scales are equal
-        relative_scale_factor = value / current_scale
+        relative_scale_factor = value / self.viewport_scale
         self.view.setTransform(
             transform.scale(relative_scale_factor, relative_scale_factor)
         )
