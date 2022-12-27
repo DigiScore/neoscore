@@ -1,6 +1,7 @@
 # 0.1.11 (unreleased)
 
 - Fix bug where viewport scales were set and got incorrectly (#89)
+- Fix viewport scaling support in Python < 3.8
 
 # 0.1.10 (2022-12-20)
 

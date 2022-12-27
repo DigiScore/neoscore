@@ -1,6 +1,7 @@
 """General math helper tools."""
 
 import math
+from typing import Tuple
 
 from neoscore.core.point import Point
 from neoscore.core.units import Unit
@@ -27,3 +28,12 @@ def point_angle(point: Point) -> float:
     the angle in degrees.
     """
     return math.atan2(point.y.base_value, point.x.base_value)
+
+
+def dist(p1: Tuple[float, float], p2: Tuple[float, float]) -> float:
+    """Find the Euclidean distance between two 2D float tuples.
+
+    In the future this function and signature may be modified to support neoscore
+    unit-points as well.
+    """
+    return math.sqrt(((p2[1] - p1[1]) ** 2) + ((p2[0] - p1[0]) ** 2))

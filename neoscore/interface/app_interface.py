@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import math
 import multiprocessing
 import pathlib
 import threading
@@ -18,7 +17,7 @@ from PyQt5.QtGui import (
 )
 from PyQt5.QtWidgets import QApplication, QGraphicsScene
 
-from neoscore.core import env
+from neoscore.core import env, math_helpers
 from neoscore.core.color import Color
 from neoscore.core.exceptions import FontRegistrationError, ImageExportError
 from neoscore.core.key_event import KeyEvent
@@ -282,7 +281,7 @@ class AppInterface:
         # mapping a vector of known length.
         p1 = self.view.mapToScene(QPoint(0, 0))
         p2 = self.view.mapToScene(QPoint(1, 0))
-        return 1 / math.dist((p1.x(), p1.y()), (p2.x(), p2.y()))
+        return 1 / math_helpers.dist((p1.x(), p1.y()), (p2.x(), p2.y()))
 
     @viewport_scale.setter
     def viewport_scale(self, value: float):
