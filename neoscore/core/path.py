@@ -79,7 +79,7 @@ class Path(PaintedObject):
         """Convenience for drawing a single straight line.
 
         Args:
-            start: The position of the center of the arrow line's start
+            start: The position of the center of the line's start
             parent: A parent object
             end: The position of the end of the line, relative to ``end_parent``
                 if provided or otherwise ``start``
