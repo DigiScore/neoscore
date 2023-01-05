@@ -27,6 +27,16 @@ the page coordinates and screen coordinates should be identical. One way to achi
 this is by fixing the size and scale of the viewport.
 """
 
+DEFAULT_TEXT_STR = "To interact with the scene, press keys or click and drag the mouse"
+
+scene_changed = False
+"""Global variable tracking whether the scene changed and requires a re-render.
+
+This is used to demonstrate the optimization of using RefreshFuncResult to tell neoscore
+when it does and doesn't need to re-render the scene. See RefreshFuncResult to learn
+more about this.
+"""
+
 
 def key_handler(event):
     """
@@ -36,10 +46,15 @@ def key_handler(event):
     and remove them from the list when the key is released.
     """
     global held_key_strings
+    global scene_changed
     if event.event_type == KeyEventType.PRESS:
         held_key_strings.append(event.text)
     if event.event_type == KeyEventType.RELEASE:
         held_key_strings.remove(event.text)
+    typing_text.text = (
+        " ".join(held_key_strings) if held_key_strings else DEFAULT_TEXT_STR
+    )
+    scene_changed = True
 
 
 def mouse_handler(event):
@@ -49,6 +64,7 @@ def mouse_handler(event):
     Remember where the user clicked the mouse, then
     draw a line between the click and release points when the mouse is released."""
     global click_point
+    global scene_changed
     if event.event_type == MouseEventType.PRESS:
         click_point = event.document_pos
     elif event.event_type == MouseEventType.RELEASE:
@@ -59,15 +75,14 @@ def mouse_handler(event):
         release_pos_relative_to_click = event.document_pos - click_point
         path.line_to(release_pos_relative_to_click.x, release_pos_relative_to_click.y)
         click_point = None
+        scene_changed = True
 
 
-def refresh_func(time: float):
-    global held_key_strings
-    typing_text.text = (
-        " ".join(held_key_strings)
-        if held_key_strings
-        else "To interact with the scene, press keys or click and drag the mouse"
-    )
+def refresh_func(time: float) -> neoscore.RefreshFuncResult:
+    global scene_changed
+    result = neoscore.RefreshFuncResult(scene_changed)
+    scene_changed = False  # Reset before returning
+    return result
 
 
 neoscore.setup()
@@ -82,7 +97,7 @@ Path.rect(
 
 click_point: Optional[Point] = None
 held_key_strings: List[str] = []
-typing_text = Text((Unit(20), Unit(250)), None, "begin holding keys down")
+typing_text = Text((Unit(20), Unit(250)), None, DEFAULT_TEXT_STR)
 
 
 neoscore.set_key_event_handler(key_handler)

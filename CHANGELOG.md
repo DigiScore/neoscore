@@ -2,6 +2,8 @@
 
 - Fix bug where viewport scales were set and got incorrectly (#89)
 - Fix viewport scaling support in Python < 3.8
+- Slightly improve initial scene render performance by not clearing the scene before rendering.
+- Support optimizing refresh functions when the scene doesn't change in every frame. This is done with a new class `neoscore.RefreshFuncResut`, which provided refresh functions can return. The class has a field, `scene_render_needed: bool = True` which tells neoscore whether it needs to clear and re-render the scene after the refresh function returns. This can be set to `False` in situations where the scene did not change in the frame, a significant optimization in complex scenes. It should be noted though that in complex scenes this could result in a noticeable frame rate drop when the scene _does_ change. The `input_scene_interaction` example has been updated to demonstrate this capability.
 
 # 0.1.10 (2022-12-20)
 
