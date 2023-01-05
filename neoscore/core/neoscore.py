@@ -63,7 +63,11 @@ refresh functions.
 """
 
 _must_clear_scene_before_next_render: bool = False
-"""Whether the scene must be cleared before rendering."""
+"""Whether the scene must be cleared before rendering.
+
+When refresh functions indicate no re-render is required, that indication takes
+precedence over this flag.
+"""
 
 _supported_image_extensions = {
     ".bmp",
