@@ -34,17 +34,18 @@ You can also animate your scores by passing a callback function to :obj:`.neosco
 
     from neoscore.common import *
     import math
+    from typing import Optional
 
     neoscore.setup()
     center = Mm(50)
     text = Text((center, Mm(50)), None, "moving text")
 
-    def refresh_func(time: float):
+    def refresh_func(time: float) -> Optional[neoscore.RefreshFuncResult]:
         text.x = center + Mm(math.sin(time) * 20)
 
     neoscore.show(refresh_func)
 
-This callback will be automatically executed at up to 60 times per second. The refresh function is called with the current system time in seconds.
+This callback will be automatically executed at up to 60 times per second. The refresh function is called with the current system time in seconds. Optionally, some state can be returned to the neoscore runtime with a :obj:`.neoscore.RefreshFuncResult` object, such as indicating to the runtime that no scene re-render is required.
 
 .. note::
 
