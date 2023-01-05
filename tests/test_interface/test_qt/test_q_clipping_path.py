@@ -38,7 +38,7 @@ class TestQClippingPath(AppTest):
         raw_path_rect = painter_path.boundingRect()
         assert obj.boundingRect().x() == raw_path_rect.x() - self.pen_padding_width
         assert obj.boundingRect().y() == raw_path_rect.y() - self.pen_padding_width
-        assert obj.boundingRect().width() == raw_path_rect.width() + 5 + (
+        assert obj.boundingRect().width() == raw_path_rect.width() + (
             self.pen_padding_width * 2
         )
         assert obj.boundingRect().height() == raw_path_rect.height() + (
@@ -54,11 +54,11 @@ class TestQClippingPath(AppTest):
         obj.setPen(self.pen)
         obj.update_geometry()
         raw_path_rect = painter_path.boundingRect()
-        assert obj.boundingRect().x() == raw_path_rect.x()
+        assert obj.boundingRect().x() == 0
         assert obj.boundingRect().y() == raw_path_rect.y() - self.pen_padding_width
         assert (
             obj.boundingRect().width()
-            == raw_path_rect.width() + 5 - 50 + self.pen_padding_width
+            == raw_path_rect.width() - 50 - 5 + self.pen_padding_width
         )
         assert obj.boundingRect().height() == raw_path_rect.height() + (
             self.pen_padding_width * 2
@@ -89,9 +89,9 @@ class TestQClippingPath(AppTest):
         obj.setPen(self.pen)
         obj.update_geometry()
         raw_path_rect = painter_path.boundingRect()
-        assert obj.boundingRect().x() == raw_path_rect.x()
+        assert obj.boundingRect().x() == 0
         assert obj.boundingRect().y() == raw_path_rect.y() - self.pen_padding_width
-        assert obj.boundingRect().width() == 30 + 5
+        assert obj.boundingRect().width() == 30
         assert obj.boundingRect().height() == raw_path_rect.height() + (
             self.pen_padding_width * 2
         )

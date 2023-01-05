@@ -156,22 +156,48 @@ class QClippingPath(QGraphicsPathItem):
             padding: Extra area padding to be added to all non-clipped sides
                 of the rect.
         """
-        if clip_width is None:
-            resolved_clip_width = (
-                bounding_rect.width() - bounding_rect.x() - clip_start_x
+        # We used to do this in a more DRY way, but it was very difficult to reason
+        # about which factors applied to which cases, so to make things much easier to
+        # reason about we simply split each of the 4 cases apart and handle them
+        # separately.
+        if not clip_start_x and not clip_width:
+            # Full bounding rect
+            # (Either not in a flowable, or fits completely in line)
+            return QRectF(
+                bounding_rect.x() - padding,
+                bounding_rect.y() - padding,
+                bounding_rect.width() + (padding * 2),
+                bounding_rect.height() + (padding * 2),
             )
-            padding_right = padding
+        elif clip_width and (not clip_start_x):
+            # Starting from beginning, using a clip width
+            # (Incomplete first line in flowable)
+            return QRectF(
+                bounding_rect.x() - padding,
+                bounding_rect.y() - padding,
+                # Do not pad right edge
+                (clip_width - bounding_rect.x()) + padding,
+                bounding_rect.height() + (padding * 2),
+            )
+        elif clip_width and clip_start_x:
+            # Starting from middle of path, using a clip width
+            # (After first line in a flowable, but not at the end yet)
+            return QRectF(
+                # Do not pad left or right edge
+                0.0,
+                bounding_rect.y() - padding,
+                clip_width,
+                bounding_rect.height() + (padding * 2),
+            )
+        elif (not clip_width) and clip_start_x:
+            # Starting from middle of path, extends to the end
+            # (Last line in flowable after a continuation)
+            return QRectF(
+                # Do not pad left edge
+                0.0,
+                bounding_rect.y() - padding,
+                (bounding_rect.width() - clip_start_x + bounding_rect.x()) + padding,
+                bounding_rect.height() + (padding * 2),
+            )
         else:
-            resolved_clip_width = clip_width - bounding_rect.x()
-            padding_right = 0
-        if not clip_start_x:
-            padding_left = padding
-        else:
-            padding_left = 0
-        # I think this assumes bounding rect starts at 0,0??
-        return QRectF(
-            bounding_rect.x() - padding_left,
-            bounding_rect.y() - padding,
-            resolved_clip_width + padding_left + padding_right,
-            bounding_rect.height() + (padding * 2),
-        )
+            raise RuntimeError("Unreachable")

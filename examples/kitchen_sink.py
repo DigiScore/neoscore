@@ -41,7 +41,7 @@ neoscore.setup()
 
 flow = Flowable((Mm(0), Mm(0)), None, Mm(11000), Mm(30), Mm(10))
 
-counting_string = "    ".join(str(x) for x in range(200))
+counting_string = "    ".join(str(x) for x in range(195))
 counting_text = Text((Mm(0), Mm(0)), parent=flow, text=counting_string)
 counting_text._length = Mm(10000)
 
