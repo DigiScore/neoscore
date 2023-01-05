@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import os
 import pathlib
+from dataclasses import dataclass
 from time import time
 from typing import TYPE_CHECKING, Callable, Dict, List, Optional, Set, Tuple
 from warnings import warn
@@ -59,6 +60,13 @@ _display_page_geometry_in_refresh_func: bool = False
 
 This global serves as a bit of a hack for passing the "display page geometry?" flag into
 refresh functions.
+"""
+
+_must_clear_scene_before_next_render: bool = False
+"""Whether the scene must be cleared before rendering.
+
+When refresh functions indicate no re-render is required, that indication takes
+precedence over this flag.
 """
 
 _supported_image_extensions = {
@@ -207,13 +215,30 @@ def register_music_font(
     registered_music_fonts[name] = metadata
 
 
-RefreshFunc: TypeAlias = Callable[[float], None]
+@dataclass
+class RefreshFuncResult:
+    """Results passed back to the neoscore runtime from refresh functions."""
+
+    scene_render_needed: bool = True
+    """If True, neoscore will clear the scene and re-render it.
+
+    Refresh functions can set this to false to tell neoscore that no changes to the
+    scene were made during the refresh, and so re-rendering is not necessary. This is a
+    helpful optimization in situations where the scene does not change in every frame.
+    """
+
+
+RefreshFunc: TypeAlias = Callable[[float], Optional[RefreshFuncResult]]
 """A user-providable function for updating the scene every frame(ish).
 
 The function should accept one argument - the current time in seconds.
 
 Refresh functions can modify the scene, create new objects, and :obj:`remove
 <.PositionedObject.remove>` them, though not all objects respond well to mutability.
+
+The function may optionally return a :obj:`.RefreshFuncResult` to pass information back
+to the neoscore runtime. If this is omitted, a default :obj:`.RefreshFuncResult` is
+automatically returned.
 """
 
 
@@ -244,28 +269,36 @@ def show(
     """
     global app_interface
     global background_brush
-    global document
     global _display_page_geometry_in_refresh_func
     _display_page_geometry_in_refresh_func = display_page_geometry
-    app_interface.clear_scene()
-    document.render(display_page_geometry, background_brush)
+
+    _render_document(display_page_geometry, background_brush)
     if refresh_func:
         set_refresh_func(refresh_func)
     app_interface.auto_viewport_interaction_enabled = auto_viewport_interaction_enabled
     app_interface.show(min_window_size, max_window_size, fullscreen)
 
 
-def _clear_interfaces():
+def _render_document(display_page_geometry: bool, background_brush: Brush):
+    """Render the document, clearing the scene before if needed.
+
+    This should be used instead of using ``document.render`` directly.
+    """
     global document
     global app_interface
-    app_interface.clear_scene()
-    for page in document.pages:
-        for obj in page.descendants:
-            interfaces = getattr(obj, "interfaces", None)
-            if interfaces:
-                interfaces.clear()
-            if hasattr(obj, "_interface_for_children"):
-                obj._interface_for_children = None
+    global _must_clear_scene_before_next_render
+
+    if _must_clear_scene_before_next_render:
+        app_interface.clear_scene()
+        for page in document.pages:
+            for obj in page.descendants:
+                interfaces = getattr(obj, "interfaces", None)
+                if interfaces:
+                    interfaces.clear()
+                if hasattr(obj, "_interface_for_children"):
+                    obj._interface_for_children = None
+    document.render(display_page_geometry, background_brush)
+    _must_clear_scene_before_next_render = True
 
 
 def set_viewport_center_pos(document_pos: PointDef):
@@ -341,9 +374,7 @@ def render_pdf(pdf_path: str | pathlib.Path, dpi: int = 300):
     """
     global app_interface
     global background_brush
-    global document
-    _clear_interfaces()
-    document.render(False, background_brush)
+    _render_document(False, background_brush)
     # Render all pages to temp files
     page_imgs = []
     render_threads = []
@@ -416,9 +447,6 @@ def render_image(
 
     global app_interface
     global background_brush
-    global document
-
-    _clear_interfaces()
 
     if not ((0 <= quality <= 100) or quality == -1):
         warn("render_image quality {} invalid; using default.".format(quality))
@@ -433,7 +461,7 @@ def render_image(
         )
 
     bg_color = background_brush.color
-    document.render(False, background_brush)
+    _render_document(False, background_brush)
 
     thread = app_interface.render_image(
         rect,
@@ -455,10 +483,8 @@ def _repl_refresh_func(_: float) -> float:
     Refreshes at a rate of 5 FPS.
     """
     global background_brush
-    global document
     global _display_page_geometry_in_refresh_func
-    _clear_interfaces()
-    document.render(_display_page_geometry_in_refresh_func, background_brush)
+    _render_document(_display_page_geometry_in_refresh_func, background_brush)
     return 0.2
 
 
@@ -470,7 +496,6 @@ def set_refresh_func(refresh_func: RefreshFunc, target_fps: int = 60):
         target_fps: The requested frame rate to run the function at.
     """
     global app_interface
-    global document
     global background_brush
     global _display_page_geometry_in_refresh_func
 
@@ -481,9 +506,12 @@ def set_refresh_func(refresh_func: RefreshFunc, target_fps: int = 60):
     # before the next frame, calculated to automatically compensate
     # for refresh time.
     def wrapped_refresh_func(frame_time: float) -> float:
-        _clear_interfaces()
-        refresh_func(frame_time)
-        document.render(_display_page_geometry_in_refresh_func, background_brush)
+        result = refresh_func(frame_time)
+        if result is None:
+            # Construct default result if none was provided
+            result = RefreshFuncResult()
+        if result.scene_render_needed:
+            _render_document(_display_page_geometry_in_refresh_func, background_brush)
         elapsed_time = time() - frame_time
         return max(frame_wait - elapsed_time, 0)
 
