@@ -68,7 +68,7 @@ class Barline(PositionedObject, MultiStaffObject, HasMusicFont):
         fallback_thickness = self.unit(_DEFAULT_BARLINE_STYLE.thickness)
         fallback_gap_right = self.unit(_DEFAULT_BARLINE_STYLE.gap_right)
 
-        # draw each of the bar lines in turn from left to right
+        # draw each of the bar lines in turn from right to left
         for i in reversed(range(len(styles))):
             style = styles[i]
             thickness = self._resolve_style_measurement(
