@@ -29,6 +29,14 @@ def repeat_barline(
 
     In the future this may be pulled directly into neoscore.
 
+    This has some known limitations:
+    * The start and end variations of these don't seem to be exactly symmetrical.
+      This may have to do with the naive way ``barline_line.END`` is inverted,
+      and the dots seem to be horizontally placed slightly asymmetrically as well.
+    * Because this uses the compound "rhythmDots" glyph, which contains two dots
+      one staff unit apart, the dots will overlap with staff lines on staves with
+      even line counts.
+
     Args:
         pos_x: The barline X position relative to the highest staff.
             If ``is_end_repeat``, this specifies the right edge of the barline.
@@ -56,11 +64,6 @@ def repeat_barline(
             - barline.music_font.engraving_defaults["repeatBarlineDotSeparation"]
         )
     if not is_end_repeat:
-        # For start-repeat barlines, we want to position by the left edge.
-        # Here we do this very hackily by leveraging knowledge about how barline
-        # paths are constructed to infer where the left edge of the path-group's
-        # bounding rect is. If neoscore had proper bounding rect support this would
-        # be a lot easier.
         rightmost_path = barline.paths[0]
         barline.x -= rightmost_path.x
         dot_x = barline.music_font.engraving_defaults["repeatBarlineDotSeparation"]
