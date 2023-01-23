@@ -6,30 +6,15 @@ neoscore.setup()
 staff = Staff((Mm(10), Mm(10)), None, Mm(150))
 clef = Clef(ZERO, staff, "treble")
 
-c1 = Chordrest(Mm(10), staff, ["a", "c"], (1, 2))
+c1 = Chordrest(Mm(10), staff, ["c'"], (1, 2))
 c2 = Chordrest(Mm(20), staff, ["c"], (1, 2))
-c3 = Chordrest(Mm(40), staff, ["a,"], (1, 4))
-c4 = Chordrest(Mm(50), staff, ["c", "g"], (1, 1))
-c5 = Chordrest(Mm(60), staff, ["c"], (1, 2))
-c6 = Chordrest(Mm(80), staff, ["c", "e"], (1, 2))
-c7 = Chordrest(Mm(90), staff, ["e", "g"], (1, 2))
-# target_notehead = c.highest_notehead
+c3 = Chordrest(Mm(30), staff, [], (1, 4))
+c4 = Chordrest(Mm(50), staff, ["d"], (1, 4))
+c5 = Chordrest(Mm(60), staff, ["g"], (1, 4))
 
-
-Tremolo(c1, 3)
-Tremolo(c2, 2)
-Tremolo(c3, 1)
-Tremolo(c4, 4)
-Tremolo(c5, alt_glyph="pendereckiTremolo")
-Tremolo(c6, 4, c7)
-
-
-# Tremolo(parent=c,
-#     strokes=1,
-# end_pos=ORIGIN,
-# end_parent=c1,
-# alt_glyph="pendereckiTremolo",
-#     )
-
+Tremolo.for_chordrest(c1, 3)
+Tremolo.for_chordrest(c2, 2)
+Tremolo.for_chordrest(c3, 1)
+Tremolo((Mm(5), Mm(0)), c4, 5)
 
 neoscore.show(display_page_geometry=False)

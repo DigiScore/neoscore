@@ -333,6 +333,38 @@ class Chordrest(PositionedObject, StaffObject):
         x = notehead.x + bounding_rect.x + (bounding_rect.width / 2)
         return Point(x, y)
 
+    def mid_stem_attachment_point(self) -> Point:
+        """A mid-point where common attachments like tremolo's could go.
+
+        For chords, this is a point centered above or below the outermost notehead
+        opposite of the stem direction.
+
+        For rests, this is a point centered above the rest.
+
+        The returned point is relative to the Chordrest.
+        """
+        if self.rest:
+            bounding_rect = self.rest.bounding_rect
+            x = self.rest.x + bounding_rect.x + (bounding_rect.width / 2)
+            y = self.rest.y + bounding_rect.y - self.staff.unit(1)
+            return Point(x, y)
+        if self.stem_direction == DirectionY.DOWN:
+            notehead = self.lowest_notehead
+            bounding_rect = notehead.bounding_rect
+            x = notehead.x - bounding_rect.x
+            y = (
+                notehead.y
+                + bounding_rect.y
+                + bounding_rect.height
+                + self.staff.unit(1.5)
+            )
+        else:
+            notehead = self.highest_notehead
+            bounding_rect = notehead.bounding_rect
+            x = notehead.x + bounding_rect.x + bounding_rect.width
+            y = notehead.y - bounding_rect.y - bounding_rect.height - self.staff.unit(1)
+        return Point(x, y)
+
     @cached_property
     def notehead_column_width(self) -> Unit:
         """The width of the notehead column after layout"""
