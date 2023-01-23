@@ -1,3 +1,6 @@
+# 0.1.12 (unreleased)
+- Add support for 8va treble clefs ('treble_8va') and bridge clefs ('bridge'). Bridge clef acts like percussion clefs - it uses the center staff position as middle C regardless of staff line count.
+
 # 0.1.11 (2023-01-05)
 
 - Fix bug where viewport scales were set and got incorrectly (#89)
