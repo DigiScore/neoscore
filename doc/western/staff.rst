@@ -49,12 +49,14 @@ Several common clef types are built in, and for convenience these can be specifi
 
 * ``'treble'``
 * ``'treble_8vb'``
+* ``'treble_8va'``
 * ``'bass'``
 * ``'bass_8vb'``
 * ``'tenor'``
 * ``'alto'``
 * ``'percussion_1'``
 * ``'percussion_2'``
+* ``'bridge'``
 
 Custom clefs can also be defined using arbitrary glyphs and pitch offsets using :obj:`.ClefType`.
 
