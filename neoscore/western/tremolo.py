@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Optional
+from typing import Optional, Union
 
 from neoscore.core.brush import BrushDef
 from neoscore.core.has_music_font import HasMusicFont
@@ -13,12 +13,11 @@ from neoscore.western.chordrest import Chordrest
 
 
 class Tremolo(MusicText):
-
     """A tremolo marking over a single Chordrest.
 
-    This uses basic tremolo glyphs e.g. tremolo3.
-    If specific tremolo's are required e.g. penderecki, a workaround is:
-    MusicText(cr.mid_stem_attachment_point(), cr, 'pendereckiTremolo').
+    The tremolo indicator accepts either an integer for declaring the number
+    of strokes of a combining (common) tremolo, or a
+    SMuFL glyphname e.g. "pendereckiTremolo".
 
     If a bridging tremolo is required between two Chordrests,
     then move the x position with the pos variable.
@@ -28,17 +27,18 @@ class Tremolo(MusicText):
         self,
         pos: PointDef,
         parent: PositionedObject,
-        strokes: int,
+        indication: Union[int, str],
         font: Optional[MusicFont] = None,
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,
     ):
         """
         Args:
-            pos: The starting (left) position of the beam
-            parent: The parent for the starting position, must be a Chordrest. If no font is given, this or one of its ancestors must
+            pos: The starting position
+            parent: The parent for the starting position. If no font is given, this or one of its ancestors must
                 implement :obj:`.HasMusicFont`.
-            strokes: number of strokes indicated in the tremolo. Must be 1, 2, 3, 4 or 5
+            indication: number of strokes indicated in the tremolo. Must be 1, 2, 3, 4 or 5,
+                or SMuFL glyphname.
             font: If provided, this overrides any font found in the ancestor chain.
             brush: The brush to fill shapes with.
             pen: The pen to draw outlines with.
@@ -48,15 +48,51 @@ class Tremolo(MusicText):
             font = HasMusicFont.find_music_font(parent)
         self._music_font = font
 
-        if 1 > strokes > 5:
-            raise AttributeError("Invalid stroke number: {}".format(strokes))
-        tremolo_smufl_name = "tremolo" + str(strokes)
+        self.trem_pos = pos
 
-        MusicText.__init__(self, pos, parent, tremolo_smufl_name, font, brush, pen)
+        if isinstance(indication, int):
+            if 1 > indication > 5:
+                raise AttributeError("Invalid stroke number: {}".format(indication))
+            self.tremolo_smufl_name = "tremolo" + str(indication)
+        else:
+            self.tremolo_smufl_name = indication
 
-    # todo - properties
+        MusicText.__init__(
+            self, self.trem_pos, parent, self.tremolo_smufl_name, font, brush, pen
+        )
 
     @classmethod
-    def for_chordrest(self, cr: Chordrest, strokes: int) -> Tremolo:
-        trem_pos = cr.mid_stem_attachment_point()
-        Tremolo(trem_pos, cr, strokes)
+    def for_chordrest(
+        cls,
+        chordrest: Chordrest,
+        indication: Union[int, str],
+        font: Optional[MusicFont] = None,
+        brush: Optional[BrushDef] = None,
+        pen: Optional[PenDef] = None,
+    ) -> Tremolo:
+        """Convenience constructor for a tremolo attached to a chord
+
+        Args:
+           chordrest: The chord to attach the tremolo to.
+           indication: number of strokes indicated in the tremolo. Must be 1, 2, 3, 4 or 5,
+               or SMuFL glyphname.
+           font: If provided, this overrides any font found in the ancestor chain.
+           brush: The brush to fill shapes with.
+           pen: The pen to draw outlines with.
+        """
+
+        trem_pos = chordrest.mid_stem_attachment_point()
+
+        return Tremolo(trem_pos, chordrest, indication, font, brush, pen)
+
+    @property
+    def music_font(self) -> MusicFont:
+        return self._music_font
+
+    @property
+    def glyph_name(self) -> str:
+        return self.tremolo_smufl_name
+
+    @property
+    def tremolo_position(self) -> PointDef:
+        return self.trem_pos
