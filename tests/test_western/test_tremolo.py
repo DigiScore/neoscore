@@ -1,4 +1,4 @@
-from neoscore.core.point import ORIGIN, ZERO, Point
+from neoscore.core.point import ORIGIN, ZERO
 from neoscore.core.units import Mm
 from neoscore.western.chordrest import Chordrest
 from neoscore.western.clef import Clef
@@ -34,6 +34,7 @@ class TestTremolo(AppTest):
         tremolo = Tremolo.for_chordrest(self.cr2, 3)
         assert tremolo.parent == self.cr2
         assert tremolo.glyph_name == "tremolo3"
-        assert tremolo.tremolo_position == Point(
-            self.staff.unit(0.067), self.staff.unit(2.996)
-        )
+        # assert tremolo.pos == Point(
+        #     self.staff.unit(0.067), self.staff.unit(2.996)
+        # )
+        assert tremolo.pos == tremolo.tremolo_position

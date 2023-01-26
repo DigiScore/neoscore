@@ -47,8 +47,7 @@ class Tremolo(MusicText):
         if font is None:
             font = HasMusicFont.find_music_font(parent)
         self._music_font = font
-
-        self.trem_pos = pos
+        self.pos = pos
 
         if isinstance(indication, int):
             if 1 > indication > 5:
@@ -58,7 +57,7 @@ class Tremolo(MusicText):
             self.tremolo_smufl_name = indication
 
         MusicText.__init__(
-            self, self.trem_pos, parent, self.tremolo_smufl_name, font, brush, pen
+            self, self.pos, parent, self.tremolo_smufl_name, font, brush, pen
         )
 
     @classmethod
@@ -95,4 +94,4 @@ class Tremolo(MusicText):
 
     @property
     def tremolo_position(self) -> PointDef:
-        return self.trem_pos
+        return self.pos
