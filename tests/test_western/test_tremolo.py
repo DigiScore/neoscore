@@ -34,7 +34,8 @@ class TestTremolo(AppTest):
         tremolo = Tremolo.for_chordrest(self.cr2, 3)
         assert tremolo.parent == self.cr2
         assert tremolo.glyph_name == "tremolo3"
+        assert tremolo.pos == tremolo.tremolo_position
+        # todo - this last test shows and error that doesnlt make sense, as the values do match
         # assert tremolo.pos == Point(
         #     self.staff.unit(0.067), self.staff.unit(2.996)
         # )
-        assert tremolo.pos == tremolo.tremolo_position
