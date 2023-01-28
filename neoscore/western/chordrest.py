@@ -333,8 +333,8 @@ class Chordrest(PositionedObject, StaffObject):
         x = notehead.x + bounding_rect.x + (bounding_rect.width / 2)
         return Point(x, y)
 
-    def mid_stem_attachment_point(self) -> Point:
-        """A mid-point where common attachments like tremolo's could go.
+    def tremolo_attachment_point(self) -> Point:
+        """A point where tremolo's attach.
 
         For chords, this is a point centered above or below the outermost notehead
         opposite of the stem direction.

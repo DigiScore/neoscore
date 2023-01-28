@@ -37,8 +37,8 @@ class Tremolo(MusicText):
             pos: The starting position
             parent: The parent for the starting position. If no font is given, this or one of its ancestors must
                 implement :obj:`.HasMusicFont`.
-            indication: number of strokes indicated in the tremolo. Must be 1, 2, 3, 4 or 5,
-                or SMuFL glyphname.
+            indication: The type of tremolo to draw, either a stroke count for conventional
+                tremolos (1-5) or an arbitrary SMuFL glyphname.
             font: If provided, this overrides any font found in the ancestor chain.
             brush: The brush to fill shapes with.
             pen: The pen to draw outlines with.
@@ -51,7 +51,7 @@ class Tremolo(MusicText):
 
         if isinstance(indication, int):
             if 1 > indication > 5:
-                raise AttributeError("Invalid stroke number: {}".format(indication))
+                raise ValueError("Invalid stroke number: {}".format(indication))
             self.tremolo_smufl_name = "tremolo" + str(indication)
         else:
             self.tremolo_smufl_name = indication
@@ -73,14 +73,14 @@ class Tremolo(MusicText):
 
         Args:
            chordrest: The chord to attach the tremolo to.
-           indication: number of strokes indicated in the tremolo. Must be 1, 2, 3, 4 or 5,
-               or SMuFL glyphname.
+           indication: The type of tremolo to draw, either a stroke count for conventional
+                tremolos (1-5) or an arbitrary SMuFL glyphname.
            font: If provided, this overrides any font found in the ancestor chain.
            brush: The brush to fill shapes with.
            pen: The pen to draw outlines with.
         """
 
-        trem_pos = chordrest.mid_stem_attachment_point()
+        trem_pos = chordrest.tremolo_attachment_point()
 
         return Tremolo(trem_pos, chordrest, indication, font, brush, pen)
 
