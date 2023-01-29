@@ -339,12 +339,15 @@ class Chordrest(PositionedObject, StaffObject):
 
     @cached_property
     def tremolo_attachment_point(self) -> Point:
-        """A convenient reasonable location for tremolos to be placed.
+        """A convenient reasonable point for tremolos to be placed.
 
-        For chords, this is a point centered above or below the outermost notehead
-        opposite of the stem direction. For rests, this behavior is undefined.
+        The returned point is relative to the chordrest.
 
-        The returned point is relative to the Chordrest.
+        The precise position returned is not currently guaranteed, as there are known
+        shortcomings that still need to be addressed, particularly with short stems and
+        stems with flags attached.
+
+        For rests, this simply returns ``ORIGIN``.
         """
         if self.rest:
             # Since there's no use-case we know of for rest tremolos, there's no
