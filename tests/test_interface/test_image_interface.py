@@ -22,7 +22,13 @@ class TestImageInterface(AppTest):
     def test_pixmap_qt_item_properties(self):
         transform_origin = Point(Unit(12), Unit(12))
         interface = ImageInterface(
-            Point(Unit(5), Unit(6)), None, 2, 3, transform_origin, pixmap_image_path
+            Point(Unit(5), Unit(6)),
+            None,
+            2,
+            3,
+            transform_origin,
+            pixmap_image_path,
+            0.6,
         )
         qt_object = interface._create_pixmap_qt_object()
         assert qt_object.x() == 5
@@ -30,6 +36,7 @@ class TestImageInterface(AppTest):
         assert qt_object.scale() == 2
         assert qt_object.rotation() == 3
         assert qt_object.transformOriginPoint() == point_to_qt_point_f(transform_origin)
+        assert qt_object.opacity() == 0.6
 
     def test_pixmap_qt_object_transformation_mode(self):
         interface = ImageInterface(
@@ -47,7 +54,7 @@ class TestImageInterface(AppTest):
     def test_svg_qt_item_properties(self):
         transform_origin = Point(Unit(12), Unit(12))
         interface = ImageInterface(
-            Point(Unit(5), Unit(6)), None, 2, 3, transform_origin, svg_image_path
+            Point(Unit(5), Unit(6)), None, 2, 3, transform_origin, svg_image_path, 0.6
         )
         qt_object = interface._create_svg_qt_object()
         assert qt_object.x() == 5
@@ -55,3 +62,4 @@ class TestImageInterface(AppTest):
         assert qt_object.scale() == 2
         assert qt_object.rotation() == 3
         assert qt_object.transformOriginPoint() == point_to_qt_point_f(transform_origin)
+        assert qt_object.opacity() == 0.6
