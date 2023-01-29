@@ -4,7 +4,8 @@ from neoscore.core.directions import DirectionY
 from neoscore.core.flowable import Flowable
 from neoscore.core.music_char import MusicChar
 from neoscore.core.point import ORIGIN, Point
-from neoscore.core.units import Mm
+from neoscore.core.rect import Rect
+from neoscore.core.units import ZERO, Mm, Unit
 from neoscore.western import notehead_tables
 from neoscore.western.accidental_type import AccidentalType
 from neoscore.western.chordrest import Chordrest
@@ -288,3 +289,56 @@ class TestChordrest(AppTest):
         # Rest with dots
         Chordrest(unit(20), staff, None, Duration(7, 128))
         render_scene()
+
+    def test_notehead_column_bounding_rect_for_rest(self):
+        chord = Chordrest(Mm(1), self.staff, None, (1, 4))
+        assert chord.notehead_column_bounding_rect == Rect(ZERO, ZERO, ZERO, ZERO)
+
+    @pytest.mark.skipif("not AppTest.running_on_linux()")
+    def test_notehead_column_bounding_rect_one_note(self):
+        cr = Chordrest(Mm(1), self.staff, ["c"], Duration(1, 4))
+        br = cr.notehead_column_bounding_rect
+        assert_almost_equal(br.x, Unit(-6.556), 3)
+        assert_almost_equal(br.y, Unit(21.803), 3)
+        assert_almost_equal(br.width, Unit(8), 3)
+        assert_almost_equal(br.height, Unit(6), 3)
+
+    @pytest.mark.skipif("not AppTest.running_on_linux()")
+    def test_notehead_column_bounding_rect_many_notes(self):
+        cr = Chordrest(Mm(1), self.staff, ["gs''", "cf", "a,,,,"], Duration(1, 4))
+        br = cr.notehead_column_bounding_rect
+        assert_almost_equal(br.x, Unit(-6.556), 3)
+        assert_almost_equal(br.y, Unit(-22.843), 3)
+        assert_almost_equal(br.width, Unit(8), 3)
+        assert_almost_equal(br.height, Unit(107.693), 3)
+
+    @pytest.mark.skipif("not AppTest.running_on_linux()")
+    def test_tremolo_attachment_point_below_no_stem(self):
+        cr = Chordrest(Mm(1), self.staff, ["c''"], Duration(1, 1))
+        assert_almost_equal(cr.tremolo_attachment_point, Point(Unit(4), Unit(0.52)), 3)
+
+    @pytest.mark.skipif("not AppTest.running_on_linux()")
+    def test_tremolo_attachment_point_above_no_stem(self):
+        cr = Chordrest(Mm(1), self.staff, ["c,"], Duration(1, 1))
+        assert_almost_equal(
+            cr.tremolo_attachment_point, Point(Unit(4), Unit(34.205)), 3
+        )
+
+    @pytest.mark.skipif("not AppTest.running_on_linux()")
+    def test_tremolo_attachment_point_below_with_stem(self):
+        cr = Chordrest(Mm(1), self.staff, ["c''"], Duration(1, 4))
+        assert_almost_equal(cr.tremolo_attachment_point, Point(Unit(0), Unit(0.52)), 3)
+
+    @pytest.mark.skipif("not AppTest.running_on_linux()")
+    def test_tremolo_attachment_point_above_with_stem(self):
+        cr = Chordrest(Mm(1), self.staff, ["c,"], Duration(1, 4))
+        assert_almost_equal(
+            cr.tremolo_attachment_point, Point(Unit(0), Unit(34.205)), 3
+        )
+
+    @pytest.mark.skipif("not AppTest.running_on_linux()")
+    def test_tremolo_attachment_point_with_many_notes(self):
+        cr = Chordrest(Mm(1), self.staff, ["c,", "gs''", "b'"], Duration(1, 32))
+        assert_almost_equal(
+            cr.tremolo_attachment_point, Point(Unit(0), Unit(-27.803)), 3
+        )

@@ -3,8 +3,9 @@ from typing import List, NamedTuple, Optional, Union
 from backports.cached_property import cached_property
 
 from neoscore.core.directions import DirectionX, DirectionY
-from neoscore.core.point import Point
+from neoscore.core.point import ORIGIN, Point
 from neoscore.core.positioned_object import PositionedObject
+from neoscore.core.rect import Rect
 from neoscore.core.units import ZERO, Unit
 from neoscore.western import notehead_tables
 from neoscore.western.accidental import Accidental
@@ -65,7 +66,8 @@ class Chordrest(PositionedObject, StaffObject):
         "rightmost_notehead",
         "widest_notehead",
         "extra_attachment_point",
-        "notehead_column_width",
+        "tremolo_attachment_point",
+        "notehead_column_bounding_rect",
         "noteheads_outside_staff",
         "leftmost_notehead_outside_staff",
         "rightmost_notehead_outside_staff",
@@ -259,7 +261,9 @@ class Chordrest(PositionedObject, StaffObject):
             dottables = {self.rest}
         else:
             dot_start_x = (
-                self.leftmost_notehead.x + self.notehead_column_width + start_padding
+                self.leftmost_notehead.x
+                + self.notehead_column_bounding_rect.width
+                + start_padding
             )
             dottables = self.noteheads
         result = []
@@ -334,14 +338,53 @@ class Chordrest(PositionedObject, StaffObject):
         return Point(x, y)
 
     @cached_property
-    def notehead_column_width(self) -> Unit:
-        """The width of the notehead column after layout"""
-        leftmost_notehead = self.leftmost_notehead
-        if not leftmost_notehead:
-            return self.staff.unit(0)
+    def tremolo_attachment_point(self) -> Point:
+        """A convenient reasonable point for tremolos to be placed.
+
+        The returned point is relative to the chordrest.
+
+        The precise position returned is not currently guaranteed, as there are known
+        shortcomings that still need to be addressed, particularly with short stems and
+        stems with flags attached.
+
+        For rests, this simply returns ``ORIGIN``.
+        """
+        if self.rest:
+            # Since there's no use-case we know of for rest tremolos, there's no
+            # reasonable implementation of this, so just return 0, 0.
+            return ORIGIN
+        x = ZERO
+        noteheads_rect = self.notehead_column_bounding_rect
+        if not self.duration.display.requires_stem:
+            x = noteheads_rect.x + (noteheads_rect.width / 2)
+        if self.stem_direction == DirectionY.DOWN:
+            y = noteheads_rect.y + noteheads_rect.height + self.staff.unit(1.5)
         else:
-            extent = max((n.x + n.visual_width for n in self.noteheads))
-            return extent - leftmost_notehead.x
+            y = noteheads_rect.y - self.staff.unit(1)
+        return Point(x, y)
+
+    @cached_property
+    def notehead_column_bounding_rect(self) -> Rect:
+        """The bounding rect of the notehead column after layout."""
+        if self.rest:
+            return Rect(ZERO, ZERO, ZERO, ZERO)
+        left_x = Unit(float("inf"))
+        top_y = Unit(float("inf"))
+        right_x = Unit(float("-inf"))
+        bottom_y = Unit(float("-inf"))
+        for n in self.noteheads:
+            n_rect = n.bounding_rect.offset(n.pos)
+            if left_x > n_rect.x:
+                left_x = n_rect.x
+            if top_y > n_rect.y:
+                top_y = n_rect.y
+            n_rect_right_x = n_rect.x + n_rect.width
+            if right_x < n_rect_right_x:
+                right_x = n_rect_right_x
+            n_rect_bottom_y = n_rect.y + n_rect.height
+            if bottom_y < n_rect_bottom_y:
+                bottom_y = n_rect_bottom_y
+        return Rect(left_x, top_y, right_x - left_x, bottom_y - top_y)
 
     @cached_property
     def noteheads_outside_staff(self) -> List[Notehead]:
