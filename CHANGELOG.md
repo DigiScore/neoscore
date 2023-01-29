@@ -1,4 +1,4 @@
-# 0.1.12 (unreleased)
+# 0.1.12 (2023-01-29)
 - Add support for 8va treble clefs ('treble_8va') and bridge clefs ('bridge'). Bridge clef acts like percussion clefs - it uses the center staff position as middle C regardless of staff line count.
 - Add support for image transparency with new `opacity` field. The field is accessible through the `Image` constructor and a new `opacity` property.
 - Add built-in tremolo support with new `Tremolo` class (by @craigvear)
