@@ -58,6 +58,7 @@ class Path(PaintedObject):
                 path elements parented to other objects are not currently supported.
             background_brush: Optional brush used to paint the path's bounding rect
                 behind it.
+            transform_origin: The origin point for rotation and scaling transforms
         """
         super().__init__(pos, parent, brush, pen)
         self.background_brush = background_brush

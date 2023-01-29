@@ -55,6 +55,7 @@ class Text(PaintedObject):
                 Note that text which is not ``LEFT`` aligned does not currently display
                 correctly when breaking across flowable lines.
             alignment_y: The text's vertical alignment relative to ``pos``.
+            transform_origin: The origin point for rotation and scaling transforms
         """
         super().__init__(pos, parent, brush, pen or Pen.no_pen())
         if font:

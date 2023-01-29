@@ -88,6 +88,7 @@ class MusicText(Text, HasMusicFont):
                 Note that text which is not ``LEFT`` aligned does not currently display
                 correctly when breaking across flowable lines.
             alignment_y: The text's vertical alignment relative to ``pos``.
+            transform_origin: The origin point for rotation and scaling transforms
         """
         if font is None:
             font = HasMusicFont.find_music_font(parent)

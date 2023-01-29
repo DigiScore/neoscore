@@ -33,6 +33,7 @@ class Image(PositionedObject):
             file_path: Path to an image file to be used
             scale: A scaling factor applied to the image.
             rotation: Rotation angle in degrees.
+            transform_origin: The origin point for rotation and scaling transforms
         """
         super().__init__(pos, parent)
         self._scale = scale

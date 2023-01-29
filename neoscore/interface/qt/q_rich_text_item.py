@@ -19,6 +19,10 @@ class QRichTextItem(QGraphicsTextItem):
         self,
         transform_origin: QPointF = ORIGIN,
     ):
+        """
+        Args:
+            transform_origin: The origin point for rotation and scaling transforms
+        """
         super().__init__()
         self.setCacheMode(QGraphicsItem.CacheMode.DeviceCoordinateCache)
         self.setTransformOriginPoint(point_to_qt_point_f(transform_origin))
