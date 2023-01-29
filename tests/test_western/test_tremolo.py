@@ -27,21 +27,24 @@ class TestTremolo(AppTest):
     def test_init_with_int_indication_args(self):
         tremolo = Tremolo(ORIGIN, self.staff, 3)
         assert tremolo.parent == self.staff
-        assert tremolo.glyph_name == "tremolo3"
+        assert len(tremolo.music_chars) == 1
+        assert tremolo.music_chars[0].glyph_info.canonical_name == "tremolo3"
         assert tremolo.pos.x == ZERO
         assert tremolo.pos.y == ZERO
 
     def test_init_with_smufl_indication_args(self):
         tremolo = Tremolo(ORIGIN, self.staff, "pendereckiTremolo")
         assert tremolo.parent == self.staff
-        assert tremolo.glyph_name == "pendereckiTremolo"
+        assert len(tremolo.music_chars) == 1
+        assert tremolo.music_chars[0].glyph_info.canonical_name == "pendereckiTremolo"
         assert tremolo.pos.x == ZERO
         assert tremolo.pos.y == ZERO
 
     def test_init_build_with_for_chordrest_function(self):
         tremolo = Tremolo.for_chordrest(self.cr2, 3)
         assert tremolo.parent == self.cr2
-        assert tremolo.glyph_name == "tremolo3"
+        assert len(tremolo.music_chars) == 1
+        assert tremolo.music_chars[0].glyph_info.canonical_name == "tremolo3"
 
     def test_init_with_invalid_stroke_count(self):
         with pytest.raises(ValueError):

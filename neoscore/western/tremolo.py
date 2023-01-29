@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import Optional, Union
 
 from neoscore.core.brush import BrushDef
-from neoscore.core.has_music_font import HasMusicFont
 from neoscore.core.music_font import MusicFont
 from neoscore.core.music_text import MusicText
 from neoscore.core.pen import PenDef
@@ -19,8 +18,9 @@ class Tremolo(MusicText):
     of strokes of a combining (common) tremolo, or a
     SMuFL glyphname e.g. "pendereckiTremolo".
 
-    If a bridging tremolo is required between two Chordrests,
-    then move the x position with the pos variable.
+    If a bridging tremolo is required between two chordrests, this class may not be
+    suitable; instead consider manually building such tremolos using :obj:`.Beam`
+    objects.
     """
 
     def __init__(
@@ -35,8 +35,8 @@ class Tremolo(MusicText):
         """
         Args:
             pos: The starting position
-            parent: The parent for the starting position. If no font is given, this or one of its ancestors must
-                implement :obj:`.HasMusicFont`.
+            parent: The parent for the starting position. If no font is given, this or
+                one of its ancestors must implement :obj:`.HasMusicFont`.
             indication: The type of tremolo to draw, either a stroke count for conventional
                 tremolos (1-5) or an arbitrary SMuFL glyphname.
             font: If provided, this overrides any font found in the ancestor chain.
@@ -44,21 +44,14 @@ class Tremolo(MusicText):
             pen: The pen to draw outlines with.
         """
 
-        if font is None:
-            font = HasMusicFont.find_music_font(parent)
-        self._music_font = font
-        self.pos = pos
-
         if isinstance(indication, int):
             if indication < 1 or indication > 5:
                 raise ValueError(f"Invalid stroke number: {indication}")
-            self.tremolo_smufl_name = "tremolo" + str(indication)
+            glyphname = "tremolo" + str(indication)
         else:
-            self.tremolo_smufl_name = indication
+            glyphname = indication
 
-        MusicText.__init__(
-            self, self.pos, parent, self.tremolo_smufl_name, font, brush, pen
-        )
+        MusicText.__init__(self, pos, parent, glyphname, font, brush, pen)
 
     @classmethod
     def for_chordrest(
@@ -81,11 +74,3 @@ class Tremolo(MusicText):
         """
         pos = chordrest.tremolo_attachment_point
         return Tremolo(pos, chordrest, indication, font, brush, pen)
-
-    @property
-    def music_font(self) -> MusicFont:
-        return self._music_font
-
-    @property
-    def glyph_name(self) -> str:
-        return self.tremolo_smufl_name
