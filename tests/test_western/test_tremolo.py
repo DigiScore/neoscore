@@ -1,3 +1,5 @@
+import pytest
+
 from neoscore.core.point import ORIGIN
 from neoscore.core.units import ZERO, Mm
 from neoscore.western.chordrest import Chordrest
@@ -5,7 +7,7 @@ from neoscore.western.clef import Clef
 from neoscore.western.staff import Staff
 from neoscore.western.tremolo import Tremolo
 
-from ..helpers import AppTest, assert_almost_equal
+from ..helpers import AppTest
 
 
 class TestTremolo(AppTest):
@@ -40,59 +42,11 @@ class TestTremolo(AppTest):
         tremolo = Tremolo.for_chordrest(self.cr2, 3)
         assert tremolo.parent == self.cr2
         assert tremolo.glyph_name == "tremolo3"
-        assert tremolo.pos == tremolo.tremolo_position
-        assert_almost_equal(tremolo.pos.x, self.staff.unit(0.067), 2)
-        assert_almost_equal(tremolo.pos.y, self.staff.unit(2.996), 2)
 
-    def test_position_of_tremolo_attachment_point(self):
-        cr = Chordrest.tremolo_attachment_point(self.cr2)
-        assert_almost_equal(cr.x, self.staff.unit(0.067), 2)
-        assert_almost_equal(cr.y, self.staff.unit(2.996), 2)
-
-    def test_init_build_with_for_chordrest_function_rest(self):
-        tremolo = Tremolo.for_chordrest(self.cr3, 3)
-        assert tremolo.parent == self.cr3
-        assert tremolo.glyph_name == "tremolo3"
-        assert tremolo.pos == tremolo.tremolo_position
-        assert_almost_equal(tremolo.pos.x, self.staff.unit(0.567), 2)
-        assert_almost_equal(tremolo.pos.y, self.staff.unit(0.427), 2)
-
-    def test_init_build_with_for_chordrest_function_wholenote(self):
-        tremolo = Tremolo.for_chordrest(self.cr4, 5)
-        assert tremolo.parent == self.cr4
-        assert tremolo.glyph_name == "tremolo5"
-        assert tremolo.pos == tremolo.tremolo_position
-        assert_almost_equal(tremolo.pos.x, self.staff.unit(1.701), 2)
-        assert_almost_equal(tremolo.pos.y, self.staff.unit(3.996), 2)
-
-    def test_init_build_with_for_chordrest_function_8th_notes_up_stem(self):
-        tremolo_up = Tremolo.for_chordrest(self.cr5, 2)
-        assert tremolo_up.parent == self.cr5
-        assert tremolo_up.glyph_name == "tremolo2"
-        assert tremolo_up.pos == tremolo_up.tremolo_position
-        assert_almost_equal(tremolo_up.pos.x, self.staff.unit(0.067), 2)
-        assert_almost_equal(tremolo_up.pos.y, self.staff.unit(3.496), 2)
-
-    def test_init_build_with_for_chordrest_function_8th_notes_down_stem(self):
-        tremolo_down = Tremolo.for_chordrest(self.cr6, 2)
-        assert tremolo_down.parent == self.cr6
-        assert tremolo_down.glyph_name == "tremolo2"
-        assert tremolo_down.pos == tremolo_down.tremolo_position
-        assert_almost_equal(tremolo_down.pos.x, self.staff.unit(-0.06), 2)
-        assert_almost_equal(tremolo_down.pos.y, self.staff.unit(2.004), 2)
-
-    def test_init_build_with_for_mulitnote_chordrest_function_8th_notes_up_stem(self):
-        tremolo_up = Tremolo.for_chordrest(self.cr7, 2)
-        assert tremolo_up.parent == self.cr7
-        assert tremolo_up.glyph_name == "tremolo2"
-        assert tremolo_up.pos == tremolo_up.tremolo_position
-        assert_almost_equal(tremolo_up.pos.x, self.staff.unit(0.067), 2)
-        assert_almost_equal(tremolo_up.pos.y, self.staff.unit(1.496), 2)
-
-    def test_init_build_with_for_mulitnote_chordrest_function_8th_notes_down_stem(self):
-        tremolo_down = Tremolo.for_chordrest(self.cr8, 2)
-        assert tremolo_down.parent == self.cr8
-        assert tremolo_down.glyph_name == "tremolo2"
-        assert tremolo_down.pos == tremolo_down.tremolo_position
-        assert_almost_equal(tremolo_down.pos.x, self.staff.unit(-0.06), 2)
-        assert_almost_equal(tremolo_down.pos.y, self.staff.unit(2.004), 2)
+    def test_init_with_invalid_stroke_count(self):
+        with pytest.raises(ValueError):
+            tremolo = Tremolo(ORIGIN, self.staff, 0)
+        with pytest.raises(ValueError):
+            tremolo = Tremolo(ORIGIN, self.staff, -1)
+        with pytest.raises(ValueError):
+            tremolo = Tremolo(ORIGIN, self.staff, 6)

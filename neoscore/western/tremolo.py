@@ -50,8 +50,8 @@ class Tremolo(MusicText):
         self.pos = pos
 
         if isinstance(indication, int):
-            if 1 > indication > 5:
-                raise ValueError("Invalid stroke number: {}".format(indication))
+            if indication < 1 or indication > 5:
+                raise ValueError(f"Invalid stroke number: {indication}")
             self.tremolo_smufl_name = "tremolo" + str(indication)
         else:
             self.tremolo_smufl_name = indication
@@ -79,10 +79,8 @@ class Tremolo(MusicText):
            brush: The brush to fill shapes with.
            pen: The pen to draw outlines with.
         """
-
-        trem_pos = chordrest.tremolo_attachment_point()
-
-        return Tremolo(trem_pos, chordrest, indication, font, brush, pen)
+        pos = chordrest.tremolo_attachment_point
+        return Tremolo(pos, chordrest, indication, font, brush, pen)
 
     @property
     def music_font(self) -> MusicFont:
@@ -91,7 +89,3 @@ class Tremolo(MusicText):
     @property
     def glyph_name(self) -> str:
         return self.tremolo_smufl_name
-
-    @property
-    def tremolo_position(self) -> PointDef:
-        return self.pos

@@ -13,23 +13,29 @@ neoscore.setup()
 staff = Staff((Mm(10), Mm(10)), None, Mm(150))
 clef = Clef(ZERO, staff, "treble")
 
-c1 = Chordrest(Mm(10), staff, ["c'"], (1, 2))
-c2 = Chordrest(Mm(20), staff, ["d"], (1, 2))
-c3 = Chordrest(Mm(30), staff, [], (1, 4))
-c4 = Chordrest(Mm(50), staff, ["d'"], (1, 4))
-c5 = Chordrest(Mm(60), staff, ["g"], (1, 4))
 
 # 3 stroke tremolo on single Chordrest
+c1 = Chordrest(Mm(10), staff, ["c'"], (1, 2))
 Tremolo.for_chordrest(c1, 3)
 
 # pendereckiTremolo
+c2 = Chordrest(Mm(20), staff, ["d"], (1, 2))
 Tremolo.for_chordrest(c2, "pendereckiTremolo")
 
-# 2 stroke tremolo on a rest (don't know how you would play that :)
+# 2 stroke tremolo on a whole note
+c3 = Chordrest(Mm(30), staff, ["b'"], (1, 1))
 Tremolo.for_chordrest(c3, 2)
 
-# 5 sroke tremolo bridging two Chordrests
-Tremolo((Mm(5), Mm(5)), c4, 5)
+# 4 stroke tremolo on a chord with many notes and a flag
+c4 = Chordrest(Mm(40), staff, ["b'", "c", "d#"], (1, 32))
+Tremolo.for_chordrest(c4, 2)
+
+# 5 stroke tremolo bridging two Chordrests
+# But note that for best results, you should manually construct tremolos
+# spanning chordrests by drawing `Beam` objects.
+c5 = Chordrest(Mm(50), staff, ["d'"], (1, 4))
+c6 = Chordrest(Mm(60), staff, ["g"], (1, 4))
+Tremolo((Mm(5), Mm(5)), c5, 5)
 
 
 render_example("tremolo")
