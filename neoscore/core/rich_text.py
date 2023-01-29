@@ -42,6 +42,7 @@ class RichText(PositionedObject):
             font: The default font to display the text in.
             scale: A scaling factor relative to the font size.
             rotation: Rotation angle in degrees.
+            transform_origin: The origin point for rotation and scaling transforms
         """
         super().__init__(pos, parent)
         if font:

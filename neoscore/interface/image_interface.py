@@ -27,6 +27,10 @@ class ImageInterface(PositionedObjectInterface):
     """
 
     file_path: pathlib.Path
+    """Path to an image file to be used"""
+
+    opacity: float = 1
+    """The image's opacity, where 1 is fully opaque and 0 is invisible."""
 
     @property
     def _resolved_path(self) -> str:
@@ -61,6 +65,8 @@ class ImageInterface(PositionedObjectInterface):
             qt_object.setTransformOriginPoint(
                 point_to_qt_point_f(self.transform_origin)
             )
+        if self.opacity != 1:
+            qt_object.setOpacity(self.opacity)
 
     def render(self):
         if self.file_path.suffix == ".svg":

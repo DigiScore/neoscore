@@ -25,6 +25,7 @@ class Image(PositionedObject):
         scale: float = 1,
         rotation: float = 0,
         transform_origin: PointDef = ORIGIN,
+        opacity: float = 1,
     ):
         """
         Args:
@@ -33,11 +34,14 @@ class Image(PositionedObject):
             file_path: Path to an image file to be used
             scale: A scaling factor applied to the image.
             rotation: Rotation angle in degrees.
+            transform_origin: The origin point for rotation and scaling transforms
+            opacity: The image's opacity, where 1 is fully opaque and 0 is invisible.
         """
         super().__init__(pos, parent)
         self._scale = scale
         self._rotation = rotation
         self.transform_origin = transform_origin
+        self._opacity = opacity
         self.file_path = file_path
 
     @property
@@ -50,6 +54,15 @@ class Image(PositionedObject):
         if isinstance(value, str):
             value = pathlib.Path(value)
         self._file_path = value
+
+    @property
+    def opacity(self) -> float:
+        """The image's opacity, where 1 is fully opaque and 0 is invisible."""
+        return self._opacity
+
+    @opacity.setter
+    def opacity(self, value: float):
+        self._opacity = value
 
     @property
     def breakable_length(self) -> Unit:
@@ -75,6 +88,7 @@ class Image(PositionedObject):
             self.rotation,
             self.transform_origin,
             self.file_path,
+            self.opacity,
         )
         interface.render()
         self.interfaces.append(interface)

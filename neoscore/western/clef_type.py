@@ -127,6 +127,18 @@ TREBLE_8VB = ClefType("gClef8vb", 3, 1.5, _flat_positions, _sharp_positions)
 :meta hide-value:
 """
 
+TREBLE_8VA = ClefType("gClef8va", 3, 8.5, _flat_positions, _sharp_positions)
+"""A treble clef one octave below, like often used in tenor vocal parts.
+
+:meta hide-value:
+"""
+
+TREBLE_8VB = ClefType("gClef8vb", 3, 1.5, _flat_positions, _sharp_positions)
+"""A treble clef one octave below, like often used in tenor vocal parts.
+
+:meta hide-value:
+"""
+
 BASS = ClefType("fClef", 1, -1, _bass_flat_positions, _bass_sharp_positions)
 """A conventional bass clef.
 
@@ -185,15 +197,32 @@ See also ``PERCUSSION_1``
 :meta hide-value:
 """
 
+BRIDGE = ClefType(
+    "bridgeClef",
+    _percussion_staff_pos_func,
+    _percussion_staff_pos_func,
+    _alto_flat_positions,
+    _alto_sharp_positions,
+)
+"""A bridge clef.
+
+Like percussion clefs, the bridge clef is treated as a C clef always centered at the
+middle of the staff. This works with any number of staff lines.
+
+:meta hide-value:
+"""
+
 CLEF_TYPE_SHORTHAND_NAMES = {
     "treble": TREBLE,
     "treble_8vb": TREBLE_8VB,
+    "treble_8va": TREBLE_8VA,
     "bass": BASS,
     "bass_8vb": BASS_8VB,
     "tenor": TENOR,
     "alto": ALTO,
     "percussion_1": PERCUSSION_1,
     "percussion_2": PERCUSSION_2,
+    "bridge": BRIDGE,
 }
 
 ClefTypeDef: TypeAlias = Union[ClefType, str]

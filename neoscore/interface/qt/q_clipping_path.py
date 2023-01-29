@@ -74,6 +74,7 @@ class QClippingPath(QGraphicsPathItem):
                 you *must* call ``update_geometry`` when the geometry is finalized.
                 This is useful when post-init modifications immediately alter the geometry,
                 preventing a redundant calculation.
+            transform_origin: The origin point for rotation and scaling transforms
         """
         super().__init__(qt_path)
         self.clip_start_x = clip_start_x / scale
