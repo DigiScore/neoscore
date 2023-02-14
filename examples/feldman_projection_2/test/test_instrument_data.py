@@ -9,7 +9,6 @@ from examples.feldman_projection_2.register import Register
 
 class TestInstrumentData(unittest.TestCase):
     def test_calculate_occupied_measures_one_grid_unit_event(self):
-
         data = [EventData("", Measure(0) + GridUnit(3), Register.M, "", GridUnit(1))]
 
         assert InstrumentData.calculate_occupied_measures(data) == {0}

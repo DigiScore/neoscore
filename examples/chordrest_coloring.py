@@ -36,6 +36,7 @@ c3 = Chordrest(Mm(25), staff_1, ["en'"], (1, 32))
 c3.flag.brush = Brush("#0000ff")
 c3.stem.brush = Brush("#0000ff")
 
+
 # Changing the brushes of *all* component objects is a bit tedious.
 # You can use this snippet to accomplish that.
 # We may upstream something like this later on.

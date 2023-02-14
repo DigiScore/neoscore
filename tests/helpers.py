@@ -75,7 +75,7 @@ def assert_path_els_equal(
     """
     if isinstance(left, list) and isinstance(right, list):
         assert len(left) == len(right)
-        for (left_el, right_el) in zip(left, right):
+        for left_el, right_el in zip(left, right):
             assert_path_els_equal(
                 left_el, right_el, places, epsilon, compare_parents=True
             )

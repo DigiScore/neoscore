@@ -106,7 +106,6 @@ class RichText(PositionedObject):
         flowable_line: Optional[NewLine] = None,
         flowable_x: Optional[Unit] = None,
     ):
-
         interface = RichTextInterface(
             pos,
             None if flowable_line else self.parent.interface_for_children,

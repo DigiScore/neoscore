@@ -83,7 +83,7 @@ class Clef(MusicText, StaffObject):
         # which means the first loop pass in which self_staff_x
         # has been assigned must be the next clef in the staff.
         self_staff_x = None
-        for (staff_x, clef) in self.staff.clefs:
+        for staff_x, clef in self.staff.clefs:
             if self_staff_x is not None:
                 return staff_x - self_staff_x
             if clef is self:

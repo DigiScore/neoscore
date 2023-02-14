@@ -11,7 +11,7 @@ from neoscore.western.staff import Staff
 neoscore.setup(paper=Paper(Inch(8.5), Inch(40), Inch(1), Inch(1), Inch(1), Inch(1)))
 
 
-for (i, table) in enumerate(notehead_tables.ALL_TABLES):
+for i, table in enumerate(notehead_tables.ALL_TABLES):
     staff = Staff((Mm(20), Mm(i * 18)), None, Mm(100))
     unit = staff.unit
     clef = Clef(ZERO, staff, "treble")

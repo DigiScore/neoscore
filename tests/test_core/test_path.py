@@ -265,7 +265,7 @@ class TestPath(AppTest):
         assert path.brush == self.brush
         assert path.pen == self.pen
         expected = Path.ellipse((Unit(-2.5), Unit(-3)), None, Unit(5), Unit(6))
-        for (actual, expected) in zip(path.elements, expected.elements):
+        for actual, expected in zip(path.elements, expected.elements):
             assert_path_els_equal(actual, expected, 3, compare_parents=False)
 
     def test_arc(self):

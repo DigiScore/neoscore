@@ -98,7 +98,6 @@ class MusicFont(Font):
     def _glyph_info(
         self, glyph_name: str, alternate_number: Optional[int] = None
     ) -> GlyphInfo:
-
         # if an alt glyph get name
         if alternate_number:
             glyph_name = self._check_alternate_names(glyph_name, alternate_number)

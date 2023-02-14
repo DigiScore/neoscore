@@ -19,7 +19,7 @@ neoscore.setup(paper=Paper(Inch(8.5), Inch(20), Inch(1), Inch(1), Inch(1), Inch(
 staff_group = StaffGroup()
 staves = []
 
-for (i, clef_shorthand_name) in enumerate(CLEF_TYPE_SHORTHAND_NAMES):
+for i, clef_shorthand_name in enumerate(CLEF_TYPE_SHORTHAND_NAMES):
     clef_type = CLEF_TYPE_SHORTHAND_NAMES[clef_shorthand_name]
     staff = Staff((Mm(20), Mm(i * 40)), None, Mm(100), staff_group)
     staves.append(staff)

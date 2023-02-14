@@ -24,7 +24,7 @@ meters: List[MeterDef] = [
 ]
 
 
-for (i, meter) in enumerate(meters):
+for i, meter in enumerate(meters):
     TimeSignature(Mm(i * 15), staff, meter)
 
 render_example("time_signature")
