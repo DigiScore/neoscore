@@ -1,4 +1,4 @@
-# 0.1.13 (unreleased)
+# 0.1.13 (2023-02-13)
 - Fix `breakable_length` on all built-in spanners. Users with custom spanners should see [the updated documentation](https://neoscore.org/api/neoscore.core.spanner.html) on proper superclass declaration order.
 - Make `PaintedObject.parent` no longer a kwarg providing a default `= None`. This aligns the class with how we do this everywhere else. This is technically a breaking change, but it's largely an internal class so we don't expect any users will be affected.
 
