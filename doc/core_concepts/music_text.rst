@@ -67,4 +67,6 @@ If you expect to use music text often, we strongly recommend getting familiar wi
 Using other music fonts
 -----------------------
 
-In theory, neoscore should support all SMuFL-compliant music fonts, not just Bravura, but we haven't tested this much yet. See `Issue #29 <https://github.com/DigiScore/neoscore/issues/29>`_.
+Neoscore comes with Bravura built-in, but in theory it should support all SMuFL-compliant music fonts. SMuFL provides `a list of compatible fonts here <http://www.smufl.org/fonts/>`_. To use a new font, simply register it with the application with :obj:`.neoscore.register_music_font` and request its family name where needed. `See the relevant example here <https://github.com/DigiScore/neoscore/tree/main/examples/other_music_fonts.py>`_.
+
+

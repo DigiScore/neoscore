@@ -113,9 +113,12 @@ class MusicFont(Font):
 
         # if we have made it this far and populated
         # info with all other valid details
-        advance_width = self.metadata["glyphAdvanceWidths"].get(glyph_name)
-        if advance_width:
-            advance_width = self.unit(advance_width)
+        advance_width = self.unit(0)
+        glyphAdvanceWidths = self.metadata.get("glyphAdvanceWidths")
+        if glyphAdvanceWidths:
+            raw_advance_width = glyphAdvanceWidths.get(glyph_name)
+            if raw_advance_width:
+                advance_width = self.unit(raw_advance_width)
 
         bounding_rect = copy.deepcopy(self.metadata["glyphBBoxes"].get(glyph_name))
         if bounding_rect:
