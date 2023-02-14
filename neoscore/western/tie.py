@@ -13,7 +13,7 @@ from neoscore.core.units import Unit
 from neoscore.western.abstract_slur import AbstractSlur
 
 
-class Tie(AbstractSlur, Spanner):
+class Tie(Spanner, AbstractSlur):
 
     """A tie, conventionally drawn between notes.
 

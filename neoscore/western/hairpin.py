@@ -14,7 +14,7 @@ from neoscore.core.spanner_2d import Spanner2D
 from neoscore.core.units import ZERO, Unit
 
 
-class Hairpin(MusicPath, Spanner2D):
+class Hairpin(Spanner2D, MusicPath):
 
     """A crescendo/diminuendo hairpin spanner.
 

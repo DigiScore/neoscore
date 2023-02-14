@@ -386,13 +386,7 @@ class Path(PaintedObject):
         return path
 
     @render_cached_property
-    def breakable_length(self) -> Unit:
-        """The breakable length of the path.
-
-        This is calculated automatically from path contents. By extension,
-        this means that by default all ``Path`` objects will automatically
-        wrap in flowables.
-        """
+    def _cacheable_breakable_length(self) -> Unit:
         # Find the positions of every path element relative to the path
         min_x = Unit(float("inf"))
         max_x = Unit(-float("inf"))
@@ -405,6 +399,20 @@ class Path(PaintedObject):
             if relative_x < min_x:
                 min_x = relative_x
         return max_x - min_x
+
+    @property
+    def breakable_length(self) -> Unit:
+        """The breakable length of the path.
+
+        This is calculated automatically from path contents. By extension,
+        this means that by default all ``Path`` objects will automatically
+        wrap in flowables.
+        """
+        # This can be slow to calculate, so we want to render-cache it.
+        # We can't directly annotate this method @render_cached_property
+        # because it would violate the type signature of this inherited method,
+        # so simply delegate to a private property which is cached.
+        return self._cacheable_breakable_length
 
     @property
     def background_brush(self) -> Optional[Brush]:

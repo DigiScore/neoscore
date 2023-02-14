@@ -13,7 +13,7 @@ from neoscore.core.units import Unit
 from neoscore.western.abstract_slur import AbstractSlur
 
 
-class Slur(AbstractSlur, Spanner2D):
+class Slur(Spanner2D, AbstractSlur):
 
     """A slur, conventionally drawn between notes.
 

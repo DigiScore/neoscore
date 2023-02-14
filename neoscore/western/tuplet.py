@@ -17,7 +17,7 @@ from neoscore.core.text_alignment import AlignmentX, AlignmentY
 from neoscore.core.units import ZERO
 
 
-class Tuplet(PositionedObject, Spanner2D, HasMusicFont):
+class Tuplet(Spanner2D, PositionedObject, HasMusicFont):
     """A polyrhythm indicator such as triplet or 3:4.
 
     This tuplet indicator spans a group of notes labelling them

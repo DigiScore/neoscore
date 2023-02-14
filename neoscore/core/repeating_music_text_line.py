@@ -13,7 +13,7 @@ from neoscore.core.spanner_2d import Spanner2D
 from neoscore.core.units import ZERO, Unit
 
 
-class RepeatingMusicTextLine(MusicText, Spanner2D):
+class RepeatingMusicTextLine(Spanner2D, MusicText):
 
     """A spanner of repeating music text over its length.
 

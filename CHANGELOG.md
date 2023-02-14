@@ -1,3 +1,6 @@
+# 0.1.13 (2023-02-13)
+- Fix `breakable_length` on all built-in spanners. Users with custom spanners should see [the updated documentation](https://neoscore.org/api/neoscore.core.spanner.html) on proper superclass declaration order.
+
 # 0.1.12 (2023-01-29)
 - Add support for 8va treble clefs ('treble_8va') and bridge clefs ('bridge'). Bridge clef acts like percussion clefs - it uses the center staff position as middle C regardless of staff line count.
 - Add support for image transparency with new `opacity` field. The field is accessible through the `Image` constructor and a new `opacity` property.

@@ -18,6 +18,9 @@ class PaintedObject(PositionedObject):
     def __init__(
         self,
         pos: PointDef,
+        # TODO: parent is typically not optional.
+        # I don't think we do this anywhere else currently. Fixing this is a breaking
+        # change but since this is mostly an internal class I think we can manage it.
         parent: Optional[PositionedObject] = None,
         brush: Optional[BrushDef] = None,
         pen: Optional[PenDef] = None,

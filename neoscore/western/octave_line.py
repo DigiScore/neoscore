@@ -28,7 +28,7 @@ _GLYPHS = {
 }
 
 
-class OctaveLine(PositionedObject, Spanner, HasMusicFont):
+class OctaveLine(Spanner, PositionedObject, HasMusicFont):
 
     """An octave indication with a dashed line.
 

@@ -20,6 +20,11 @@ class Spanner:
 
     Simple ``Spanner``\ s are horizontal relative to their starting anchor. Arbitrary
     end-y positions can be set with :obj:`.Spanner2D`.
+
+    Implementations should be careful to declare ``Spanner`` as a superclass **before**
+    ``PositionedObject`` or any inheritors of it. This is necessary in order to get the
+    correct method resolution order for custom ``PositionedObject`` behavior provided
+    by this class - namely :obj:`.Spanner.breakable_length`.
     """
 
     def __init__(self, end_x: Unit, end_parent: PositionedObject):
@@ -76,7 +81,12 @@ class Spanner:
 
     @property
     def breakable_length(self) -> Unit:
-        """Spanners are breakable over their ``spanner_x_length``."""
+        """Spanners are breakable over their ``spanner_x_length``.
+
+        Note that in order for this implementation to take effect on concrete spanners,
+        ``Spanner`` must be declared as a superclass *before* ``PositionedObject`` or
+        any other class that implements ``breakable_length``!
+        """
         return self.spanner_x_length
 
     def point_along_spanner(self, ratio: float) -> Point:

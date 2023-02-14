@@ -10,7 +10,7 @@ from neoscore.core.positioned_object import PositionedObject
 from neoscore.core.spanner_2d import Spanner2D
 
 
-class PedAndStar(PositionedObject, Spanner2D, HasMusicFont):
+class PedAndStar(Spanner2D, PositionedObject, HasMusicFont):
 
     """Pedal notation in the ornate 'Ped' and release star style."""
 
