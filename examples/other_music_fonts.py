@@ -15,11 +15,11 @@ neoscore.setup()
 # https://github.com/fkretlow/sebastian
 #
 # e.g. /path/to/Sebastian.otf
-FONT_FILE_PATH = "/home/ayoon/Downloads/Sebastian.fonts.v1.08/Sebastian.otf"
+FONT_FILE_PATH = ""
 # e.g. /path/to/Sebastian.json
-METADATA_PATH = "/home/ayoon/Downloads/Sebastian.fonts.v1.08/Sebastian.json"
+METADATA_PATH = ""
 # e.g. "Sebastian"
-FONT_FAMILY_NAME = "Sebastian"
+FONT_FAMILY_NAME = ""
 
 neoscore.register_music_font(FONT_FILE_PATH, METADATA_PATH)
 
