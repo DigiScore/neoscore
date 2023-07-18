@@ -1,0 +1,59 @@
+import threading
+from queue import Queue
+
+from flask import Flask
+
+from neoscore.core import neoscore
+from neoscore.core.point import ORIGIN
+from neoscore.core.text import Text
+
+"""
+This example demonstrates a simple way to send messages to a Neoscore application from
+external programs using a local HTTP server. This is a common way to perform
+inter-process communication (IPC). This pattern allows any external program which can
+send HTTP requests to communicate with a Neoscore application.
+
+To run this example, you must first install the HTTP Server framework Flask using `pip
+install flask`. Then run this script to start the server, and in another terminal you
+can test it with `curl localhost:5000/set_text/anything`, or by simply loading that URL
+in your browser. (The port number 5000 may vary - check the Flask startup logs)
+"""
+
+
+# The queue that carries messages between the Flask thread and Neoscore thread
+message_queue = Queue()
+
+
+# Flask code ############
+
+app = Flask(__name__)
+
+
+@app.route("/set_text/<text>")
+def set_text(text: str):
+    # As a simple example, send the time
+    message_queue.put(text)
+    return f'text set to "{text}"'
+
+
+def run_flask():
+    app.run()
+
+
+# Start a new thread that will run the Flask application
+t = threading.Thread(target=run_flask)
+t.start()
+
+# Set up Neoscore in the main thread
+neoscore.setup()
+
+main_text = Text(ORIGIN, None, "Change this text with an HTTP request")
+
+
+def refresh_func(time: float) -> neoscore.RefreshFuncResult:
+    while not message_queue.empty():
+        msg = message_queue.get()
+        main_text.text = msg
+
+
+neoscore.show(refresh_func)

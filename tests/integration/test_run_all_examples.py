@@ -24,6 +24,7 @@ example_script_paths = [
         "repl.py",
         "transform_origin.py",
         "other_music_fonts.py",
+        "inter_process_communication.py",
     ]
 ]
 example_script_paths.append(example_dir / "feldman_projection_2" / "main.py")
