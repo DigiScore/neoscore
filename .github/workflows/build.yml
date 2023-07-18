@@ -87,7 +87,7 @@ jobs:
         env:
           NEOSCORE_HEADLESS: True
       - name: Check formatting conforms to Black
-        uses: psf/black@stable
+        uses: psf/black@23.3.0
         if: matrix.platform == 'ubuntu-latest'
       - name: Check import sorting with isort
         if: matrix.platform == 'ubuntu-latest'

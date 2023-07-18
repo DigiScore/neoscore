@@ -31,7 +31,8 @@ app = Flask(__name__)
 
 @app.route("/set_text/<text>")
 def set_text(text: str):
-    # As a simple example, send the time
+    # Send messages between the Flask thread and the Neoscore refresh func thread
+    # using a simple message queue.
     message_queue.put(text)
     return f'text set to "{text}"'
 
@@ -51,6 +52,7 @@ main_text = Text(ORIGIN, None, "Change this text with an HTTP request")
 
 
 def refresh_func(time: float) -> neoscore.RefreshFuncResult:
+    # Process all available messages from the Flask thread
     while not message_queue.empty():
         msg = message_queue.get()
         main_text.text = msg
