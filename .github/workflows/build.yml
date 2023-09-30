@@ -32,6 +32,10 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
+          # Poetry seems to have dropped official support for Python 3.7
+          # but we need it for PyQt build artifacts. Pin poetry version.
+          # See https://github.com/snok/install-poetry/issues/131
+          # and https://github.com/python-poetry/poetry/pull/7674
           version: 1.5.1
           virtualenvs-create: true
           virtualenvs-in-project: true
