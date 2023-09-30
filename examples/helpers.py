@@ -33,7 +33,6 @@ def render_example(name: str):
             autocrop=autocrop,
         )
     elif "--pdf" in sys.argv:
-        # PDF export is currently broken
         if tmp_mode:
             pdf_path = pathlib.Path(tempfile.NamedTemporaryFile(suffix=".pdf").name)
         else:
