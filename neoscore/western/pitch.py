@@ -9,6 +9,9 @@ from typing_extensions import TypeAlias
 from neoscore.core.exceptions import InvalidPitchDescriptionError
 from neoscore.western.accidental_type import AccidentalType
 
+# TODO support very basic midi constructor, maybe like
+# Pitch.from_midi(midi_code: int, prefer_flat: bool)
+
 
 @dataclass(frozen=True)
 class Pitch:

@@ -36,7 +36,7 @@ def simple_header_footer(
     ``simple_header_footer(centered_bottom_text="Page #%page)`` will generate
     footers with the text "Page #1", "Page #2", etc.
 
-    This generates and reutrns a ``PageOverlayFunc`` which should be passed to the
+    This generates and returns a ``PageOverlayFunc`` which should be passed to the
     document's page generator with:
 
     >>> neoscore.document.pages.overlay_func = simple_header_footer() # doctest: +SKIP
