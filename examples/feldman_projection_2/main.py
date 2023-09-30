@@ -2,7 +2,7 @@
 
 import math
 
-from examples.feldman_projection_2.content_no2 import instruments
+from examples.feldman_projection_2.content import instruments
 from examples.feldman_projection_2.grid_unit import GridUnit
 from examples.feldman_projection_2.measure import Measure
 from examples.feldman_projection_2.score import Score
