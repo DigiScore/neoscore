@@ -54,7 +54,7 @@ class Tuplet(Spanner2D, PositionedObject, HasMusicFont):
                 as the root staff of ``start_parent``. If omitted, the
                 stop point is relative to the start point.
             indicator_text: The tuplet indicator text drawn at the middle of the spanner.
-                This should contain only of numbers and colons, for example "3" or "5:4".
+                This should consist only of numbers and colons, for example "3" or "5:4".
                 Any other character will cause a ``ValueError`` to be raised.
             include_bracket: Whether to draw a bracket spanning the tuplet
             bracket_dir: The direction the line's ending hook points.
