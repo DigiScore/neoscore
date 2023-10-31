@@ -1,3 +1,3 @@
 # Benchmark the example with https://github.com/sharkdp/hyperfine
 
-hyperfine 'python examples/kitchen_sink.py --image'
+hyperfine --show-output 'python3 examples/kitchen_sink.py --image'
