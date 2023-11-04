@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Optional
 
-from PyQt5 import QtGui
+from PyQt6 import QtGui
 
 from neoscore.core import neoscore
 from neoscore.core.rect import Rect

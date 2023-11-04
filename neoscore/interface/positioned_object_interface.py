@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 from typing import Optional
 from warnings import warn
 
-from PyQt5.QtWidgets import QGraphicsItem
+from PyQt6.QtWidgets import QGraphicsItem
 
 from neoscore.core import neoscore
 from neoscore.core.point import Point

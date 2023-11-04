@@ -1,9 +1,9 @@
 import pathlib
 from dataclasses import dataclass
 
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtSvg import QGraphicsSvgItem
-from PyQt5.QtWidgets import QGraphicsItem, QGraphicsPixmapItem
+from PyQt6.QtGui import QPixmap
+from PyQt6.QtSvg import QGraphicsSvgItem
+from PyQt6.QtWidgets import QGraphicsItem, QGraphicsPixmapItem
 
 from neoscore.core.exceptions import ImageLoadingError
 from neoscore.core.point import ORIGIN

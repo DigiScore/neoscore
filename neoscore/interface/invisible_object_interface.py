@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from PyQt5.QtWidgets import QGraphicsSimpleTextItem
+from PyQt6.QtWidgets import QGraphicsSimpleTextItem
 
 from neoscore.core.point import ORIGIN
 from neoscore.interface.positioned_object_interface import PositionedObjectInterface

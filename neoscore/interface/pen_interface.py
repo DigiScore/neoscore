@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 
-from PyQt5 import QtGui
+from PyQt6 import QtGui
 
 from neoscore.core.color import Color
 from neoscore.core.pen_cap_style import PenCapStyle

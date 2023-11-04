@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import List, NamedTuple, Optional, Union
 
-from PyQt5.QtGui import QPainterPath
+from PyQt6.QtGui import QPainterPath
 from typing_extensions import TypeAlias
 
 from neoscore.core.units import Unit
