@@ -4,7 +4,7 @@ These hash functions are mostly needed so Qt objects (or other classes including
 can be hashed and used in cache dicts.
 """
 
-from PyQt5.QtGui import QPainterPath, QTransform
+from PyQt6.QtGui import QPainterPath, QTransform
 
 
 def hash_transformed_path(path: QPainterPath, transform: QTransform) -> int:

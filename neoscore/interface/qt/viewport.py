@@ -1,5 +1,5 @@
-from PyQt5 import QtGui, QtWidgets
-from PyQt5.QtCore import QPointF
+from PyQt6 import QtGui, QtWidgets
+from PyQt6.QtCore import QPointF
 
 from neoscore.core.key_event import KeyEventType
 from neoscore.core.mouse_event import MouseEventType

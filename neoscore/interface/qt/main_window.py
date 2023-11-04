@@ -2,7 +2,7 @@ import os
 from time import time
 from typing import Optional, Tuple
 
-from PyQt5 import QtCore, QtWidgets, uic
+from PyQt6 import QtCore, QtWidgets, uic
 
 QT_PRECISE_TIMER = 0
 
