@@ -16,7 +16,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.7"
-PyQt5 = "^5.15.6"
+PyQt6 = "^6.6.0"
 img2pdf = "0.4.4"
 sortedcontainers = "2.4.0"
 typing_extensions = "^4"
