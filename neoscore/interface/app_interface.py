@@ -5,8 +5,8 @@ import pathlib
 import threading
 from typing import TYPE_CHECKING, Callable, List, Optional, Tuple
 
-from PyQt5.QtCore import QBuffer, QByteArray, QIODevice, QPoint, QRectF
-from PyQt5.QtGui import (
+from PySide6.QtCore import QBuffer, QByteArray, QIODevice, QPoint, QRectF
+from PySide6.QtGui import (
     QBitmap,
     QColor,
     QFontDatabase,
@@ -15,7 +15,7 @@ from PyQt5.QtGui import (
     QPixmapCache,
     QRegion,
 )
-from PyQt5.QtWidgets import QApplication, QGraphicsScene
+from PySide6.QtWidgets import QApplication, QGraphicsScene
 
 from neoscore.core import env, math_helpers
 from neoscore.core.color import Color

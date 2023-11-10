@@ -2,8 +2,8 @@
 
 from typing import Union
 
-from PyQt5.QtCore import QPoint, QPointF, QRect, QRectF
-from PyQt5.QtGui import QColor, QKeyEvent, QMouseEvent
+from PySide6.QtCore import QPoint, QPointF, QRect, QRectF
+from PySide6.QtGui import QColor, QKeyEvent, QMouseEvent
 
 from neoscore.core.color import Color
 from neoscore.core.key_event import KeyEvent, KeyEventType

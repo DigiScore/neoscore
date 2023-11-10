@@ -1,8 +1,8 @@
 from typing import Optional
 
-from PyQt5.QtCore import QPointF, QRectF
-from PyQt5.QtGui import QBrush, QColor, QPainter, QPainterPath, QPen
-from PyQt5.QtWidgets import QGraphicsItem, QGraphicsPathItem
+from PySide6.QtCore import QPointF, QRectF
+from PySide6.QtGui import QBrush, QColor, QPainter, QPainterPath, QPen
+from PySide6.QtWidgets import QGraphicsItem, QGraphicsPathItem
 
 from neoscore.core import env
 

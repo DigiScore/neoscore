@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Dict, NamedTuple, Optional
 
-from PyQt5.QtGui import QFont, QPainterPath
+from PySide6.QtGui import QFont, QPainterPath
 
 from neoscore.core.units import Unit
 from neoscore.interface.brush_interface import BrushInterface

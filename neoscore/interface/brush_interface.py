@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 
-from PyQt5 import QtGui
+from PySide6 import QtGui
 
 from neoscore.core.brush_pattern import BrushPattern
 from neoscore.core.color import Color

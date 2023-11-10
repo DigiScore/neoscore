@@ -2,7 +2,8 @@ import os
 from time import time
 from typing import Optional, Tuple
 
-from PyQt5 import QtCore, QtWidgets, uic
+from PySide6 import QtCore, QtWidgets
+from PySide6.QtUiTools import loadUiType
 
 QT_PRECISE_TIMER = 0
 
@@ -17,7 +18,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def __init__(self):
         super().__init__()
-        uic.loadUi(MainWindow._ui_path, self)
+        # fixing this (not sure if it takes in 2 parameters), removed self
+        loadUiType(MainWindow._ui_path)
         self.refresh_func = None
         self.mouse_event_handler = None
         self._frame = 0  # Frame counter used in debug mode
