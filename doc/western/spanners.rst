@@ -61,6 +61,35 @@ Ties work identically to slurs, except they are automatically constrained to be 
 
 For both classes, a reasonable curvature is automatically derived from the spanner length, but this can be overridden with the ``height`` and ``arch_length`` arguments.
 
+Tuplets
+-------
+
+Since neoscore's :obj:`.Chordrest` model only accounts for written durations, :obj:`.Tuplet`\ s are specified visually as separate objects spanning the Chordrest group.
+
+.. rendered-example::
+
+   staff = Staff(ORIGIN, None, Mm(40))
+   Clef(ZERO, staff, 'treble')
+   group = [
+       Chordrest(ZERO, staff, ["c"], (1, 8)),
+       Chordrest(Mm(8), staff, ["d"], (1, 8)),
+       Chordrest(Mm(16), staff, ["eb"], (1, 8))
+   ]
+   BeamGroup(group)
+   Tuplet((ZERO, Mm(-6)), group[0], (ZERO, Mm(-6)), group[-1], "3", include_bracket=False)
+
+.. rendered-example::
+
+   staff = Staff(ORIGIN, None, Mm(40))
+   Clef(ZERO, staff, 'treble')
+   start = Chordrest(Mm(5), staff, ["c"], (1, 8))
+   Chordrest(Mm(10), staff, None, (1, 8))
+   Chordrest(Mm(15), staff, ["d"], (1, 8))
+   Chordrest(Mm(20), staff, ["e"], (1, 8))
+   end = Chordrest(Mm(25), staff, None, (1, 8))
+   Tuplet((ZERO, Mm(-2)), start, (Mm(5), Mm(-2)), end, "5:4", bracket_dir=DirectionY.UP)
+
+
 Octave Lines
 ------------
 
@@ -137,5 +166,6 @@ Other Spanners
 
 Other available spanners include:
 
+* :obj:`.Tuplet`
 * :obj:`.PedalLine`
 * :obj:`.PedAndStar`
