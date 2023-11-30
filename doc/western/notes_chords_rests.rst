@@ -76,7 +76,7 @@ It can be a bit difficult to work out the numerical representations of durations
 
 .. note::
 
-   Because durations are given as `written`, they have no concept of tuplets. Durations in tuplets should be specified in their written forms, then `tuplet annotations </western/spanners.html#tuplets>`_ can then be placed over the relevant note group
+   Because durations are given as `written`, they have no concept of tuplets. Durations in tuplets should be specified in their written forms, then `tuplet annotations </western/spanners.html#tuplets>`_ can then be placed over the relevant note group.
 
 Rests
 -----
