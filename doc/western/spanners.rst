@@ -166,6 +166,5 @@ Other Spanners
 
 Other available spanners include:
 
-* :obj:`.Tuplet`
 * :obj:`.PedalLine`
 * :obj:`.PedAndStar`
