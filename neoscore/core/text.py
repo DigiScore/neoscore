@@ -206,7 +206,7 @@ class Text(PaintedObject):
             None if inside_flowable else self.parent.interface_for_children,
             self.scale,
             self.rotation,
-            self.transform_origin,
+            self.transform_origin - self._alignment_offset,
             self.brush.interface,
             self.pen.interface,
             self.text,
