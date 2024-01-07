@@ -151,12 +151,14 @@ class TestText(AppTest):
             "testing",
             alignment_x=AlignmentX.CENTER,
             alignment_y=AlignmentY.CENTER,
-            transform_origin=(Mm(15), Mm(10)),
+            transform_origin=(Unit(15), Unit(10)),
         )
         obj.render()
         rendered_pos = obj.interfaces[0].pos
         transform_origin = obj.interfaces[0].transform_origin
         assert_almost_equal(rendered_pos, Point(Unit(-20), Unit(2.5)), epsilon=1.5)
         assert_almost_equal(
-            transform_origin, Point(Unit(-20) - Mm(15), Unit(2.5) - Mm(10)), epsilon=1.5
+            transform_origin,
+            Point(Unit(35), Unit(7.5)),
+            epsilon=1.5,
         )
