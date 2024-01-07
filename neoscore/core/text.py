@@ -171,8 +171,11 @@ class Text(PaintedObject):
         """The bounding rect for this text positioned relative to ``pos``.
 
         The rect ``(x, y)`` position is relative to the object's position.
+        Note that with text objects, the rect's ``(x, y)`` position will
+        typically not be at the origin.
 
-        Note that this currently accounts for scaling, but not rotation.
+        This currently accounts for scaling and alignment, but not rotation.
+        Rotated objects will generally have incorrect bounding rects.
         """
         raw_rect = self._raw_scaled_bounding_rect
         alignment_offset = self._alignment_offset
