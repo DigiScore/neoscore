@@ -11,7 +11,7 @@ Tabs can be written with the dedicated staff and clef types, :obj:`.TabStaff` an
    # Tab clefs are purely cosmetic and they don't take a start position
    TabClef(staff)  
 
-Significantly, tab staves typically have a wider line spacing than conventionally staves, and by default their font is sized such that ``tab_staff.unit(1)`` is 2/3 the line spacing.
+Significantly, tab staves typically have a wider line spacing than conventional staves, and by default their font is sized such that ``tab_staff.unit(1)`` is 2/3 the line spacing.
 
 .. rendered-example::
 
