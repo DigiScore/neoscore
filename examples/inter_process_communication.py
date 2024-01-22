@@ -64,5 +64,4 @@ def refresh_func(time: float) -> neoscore.RefreshFuncResult:
     return neoscore.RefreshFuncResult(request_render)
 
 
-
 neoscore.show(refresh_func)
