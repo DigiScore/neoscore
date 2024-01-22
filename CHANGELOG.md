@@ -1,3 +1,7 @@
+# 0.1.15 (2024-01-22)
+- Update dependencies
+- Pin pyqt5-qt5 to 5.15.2 to fix build failures on non-Mac systems. It seems that recent releases of this package do not support all systems.
+
 # 0.1.14 (2024-01-07)
 - Fix bug with transform origin on `Text` objects with non-default text alignment.
 
