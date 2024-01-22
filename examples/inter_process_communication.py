@@ -52,10 +52,17 @@ main_text = Text(ORIGIN, None, "Change this text with an HTTP request")
 
 
 def refresh_func(time: float) -> neoscore.RefreshFuncResult:
+    request_render = False
     # Process all available messages from the Flask thread
     while not message_queue.empty():
+        request_render = True
         msg = message_queue.get()
         main_text.text = msg
+    # If our main loop doesn't make changes unless messages
+    # trigger them, we can optimize our application by telling
+    # Neoscore when we do or don't need a re-render.
+    return neoscore.RefreshFuncResult(request_render)
+
 
 
 neoscore.show(refresh_func)
