@@ -7,6 +7,8 @@ from dataclasses import dataclass
 from time import time
 from typing import TYPE_CHECKING, Callable, Dict, List, Optional, Set, Tuple
 from warnings import warn
+from IPython import get_ipython  # type: ignore
+from IPython.display import display, Image  # type: ignore
 
 import img2pdf  # type: ignore
 from typing_extensions import TypeAlias
@@ -459,6 +461,26 @@ def render_image(
         raise InvalidImageFormatError(
             "image_path {} is not in a supported format.".format(dest)
         )
+    
+    # checking jupyter notebook
+    try:
+        get_ipython()
+        in_jupyter = True
+    except NameError:
+        in_jupyter = False
+
+    if in_jupyter:
+        # Jupyter notebook detected
+        print("Running in a Jupyter environment")
+
+        # image rendering will go here
+
+        # display image from dest
+        display(Image(dest))
+
+        return
+    else:
+        print("Not running in a Jupyter environment")
 
     bg_color = background_brush.color
     _render_document(False, background_brush)
