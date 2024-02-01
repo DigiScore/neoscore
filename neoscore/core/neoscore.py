@@ -281,8 +281,7 @@ def show(
         in_jupyter = False
 
     if in_jupyter:
-        # Jupyter notebook detected (for debugging purposes, will be removed in production)
-        print("Running in a Jupyter environment")
+        raise RuntimeError("Unable to call the function show() in this context.")
 
     _render_document(display_page_geometry, background_brush)
     if refresh_func:
