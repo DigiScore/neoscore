@@ -274,6 +274,16 @@ def show(
     global _display_page_geometry_in_refresh_func
     _display_page_geometry_in_refresh_func = display_page_geometry
 
+    try:
+        get_ipython()
+        in_jupyter = True
+    except NameError:
+        in_jupyter = False
+
+    if in_jupyter:
+        # Jupyter notebook detected (for debugging purposes, will be removed in production)
+        print("Running in a Jupyter environment")
+
     _render_document(display_page_geometry, background_brush)
     if refresh_func:
         set_refresh_func(refresh_func)
@@ -470,17 +480,8 @@ def render_image(
         in_jupyter = False
 
     if in_jupyter:
-        # Jupyter notebook detected
+        # Jupyter notebook detected (for debugging purposes, will be removed in production)
         print("Running in a Jupyter environment")
-
-        # image rendering will go here
-
-        # display image from dest
-        display(Image(dest))
-
-        return
-    else:
-        print("Not running in a Jupyter environment")
 
     bg_color = background_brush.color
     _render_document(False, background_brush)
@@ -496,6 +497,10 @@ def render_image(
     )
     if wait:
         thread.join()
+
+        if in_jupyter:
+            display(Image(dest))
+
     return thread
 
 
