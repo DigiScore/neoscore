@@ -140,7 +140,10 @@ def set_default_color(color: ColorDef):
 
 
 def set_background_brush(brush: BrushDef):
-    """Set the brush used to paint the scene background."""
+    """Set the brush used to paint the scene background.
+
+    See :obj:`.background_brush`.
+    """
     global background_brush
     global app_interface
     background_brush = Brush.from_def(brush)
@@ -258,7 +261,8 @@ def show(
             allows customizing the target frame rate.
         display_page_geometry: Whether to include a preview of page geometry,
             including a page outline and a dotted outline of the page's live
-            area inside its margins.
+            area inside its margins. This should not be used in combination with
+            a transparent :obj:`.background_brush`.
         auto_viewport_interaction_enabled: Whether mouse and scrollbar viewport
             interaction is enabled. If false, scrollbars do not appear, mousewheel
             zooming is disabled, and click-and-drag view movement is disabled.
@@ -423,6 +427,11 @@ def render_image(
     image on a spawned thread which is returned to allow efficient rendering of many
     images in parallel.
 
+    For a transparent background, use :obj:`.set_background_brush` to set the
+    background brush to any fully transparent color, for example
+    ``neoscore.set_background_brush('#00000000')``. You'll also need to use an image
+    format that supports transparency like PNG, and set ``preserve_alpha=True``.
+
     Args:
         rect: The part of the document to render, in document coordinates.
             If ``None``, the entire scene will be rendered.
@@ -434,8 +443,8 @@ def render_image(
             (most compressed) and ``100`` (least compressed).
         autocrop: Whether to crop the output image to tightly
             fit the contents of the frame.
-        preserve_alpha: Whether to preserve the alpha channel. If false,
-            ``neoscore.background_brush`` will be used to flatten any transparency.
+        preserve_alpha: Whether to preserve the alpha channel. This should be set ``false``
+            for export formats that don't support alpha.
         wait: Whether to block until the image is fully exported.
 
     Raises:
@@ -460,7 +469,6 @@ def render_image(
             "image_path {} is not in a supported format.".format(dest)
         )
 
-    bg_color = background_brush.color
     _render_document(False, background_brush)
 
     thread = app_interface.render_image(
@@ -468,7 +476,7 @@ def render_image(
         dest,
         dpi,
         quality,
-        bg_color,
+        background_brush.color,
         autocrop,
         preserve_alpha,
     )

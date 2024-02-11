@@ -168,8 +168,7 @@ class AppInterface:
         q_image = QImage(pix_width, pix_height, q_image_format)
         q_image.setDotsPerMeterX(dpm)
         q_image.setDotsPerMeterY(dpm)
-        q_color = color_to_q_color(bg_color)
-        q_image.fill(q_color)
+        q_bg_color = color_to_q_color(bg_color)
 
         painter = QPainter()
         painter.begin(q_image)
@@ -183,7 +182,7 @@ class AppInterface:
         def finalize():
             with self.render_image_thread_semaphore:
                 final_image = (
-                    AppInterface._autocrop(q_image, q_color) if autocrop else q_image
+                    AppInterface._autocrop(q_image, q_bg_color) if autocrop else q_image
                 )
                 if isinstance(dest, bytearray):
                     output_array = QByteArray()
