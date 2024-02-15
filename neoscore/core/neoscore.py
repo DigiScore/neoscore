@@ -410,7 +410,7 @@ def render_pdf(pdf_path: str | pathlib.Path, dpi: int = 300):
 
 def render_image(
     rect: Optional[RectDef],
-    dest: str | pathlib.Path | bytearray,
+    dest: str | pathlib.Path | bytearray = None,
     dpi: int = 300,
     quality: int = -1,
     autocrop: bool = False,
@@ -459,9 +459,23 @@ def render_image(
     global app_interface
     global background_brush
 
+    try:
+        get_ipython()
+        in_jupyter = True
+    except NameError:
+        in_jupyter = False
+
     if not ((0 <= quality <= 100) or quality == -1):
         warn("render_image quality {} invalid; using default.".format(quality))
         quality = -1
+    
+    if in_jupyter:
+        # set temp file path for jupyter notebook
+        # it is deleted after generation of image
+        dest = "temp.png"
+    else:
+        if dest is None:
+            raise ValueError("dest file path cannot be empty.")
 
     if (
         not isinstance(dest, bytearray)
@@ -470,17 +484,6 @@ def render_image(
         raise InvalidImageFormatError(
             "image_path {} is not in a supported format.".format(dest)
         )
-    
-    # checking jupyter notebook
-    try:
-        get_ipython()
-        in_jupyter = True
-    except NameError:
-        in_jupyter = False
-
-    if in_jupyter:
-        # Jupyter notebook detected (for debugging purposes, will be removed in production)
-        print("Running in a Jupyter environment")
 
     bg_color = background_brush.color
     _render_document(False, background_brush)
@@ -499,6 +502,8 @@ def render_image(
 
         if in_jupyter:
             display(Image(dest))
+            os.remove(dest)
+            return None
 
     return thread
 
