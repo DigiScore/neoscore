@@ -37,4 +37,3 @@ for i, clef_shorthand_name in enumerate(CLEF_TYPE_SHORTHAND_NAMES):
 Barline(staves[0].unit(35), staff_group, barline_style.THIN_DOUBLE)
 
 render_example("clefs")
-
