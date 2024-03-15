@@ -169,6 +169,7 @@ class AppInterface:
         q_image.setDotsPerMeterX(dpm)
         q_image.setDotsPerMeterY(dpm)
         q_bg_color = color_to_q_color(bg_color)
+        q_image.fill(q_bg_color)
 
         painter = QPainter()
         painter.begin(q_image)
