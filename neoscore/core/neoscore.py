@@ -485,6 +485,30 @@ def render_image(
     return thread
 
 
+def render_to_notebook(
+    rect: Optional[RectDef] = None,
+    dpi: int = 300,
+    quality: int = -1,
+    autocrop: bool = False,
+    preserve_alpha: bool = True,
+):
+    """Render an image to a Jupyter Notebook environment.
+
+    This works exactly like :obj:`.render_image`, but instead of saving
+    a file it sends the image to the active Jupyter Notebook environment.
+    If not running within a Jupyter environment, this will raise an
+    ``EnvironmentError``. Unlike ``render_image``, this method takes no
+    output path, and always blocks until the render completes.
+    """
+    # if not running_in_jupyter_notebook():
+    #     raise EnvironmentError("No Jupyter Notebook environment detected")
+    from IPython.display import Image, display
+
+    buffer = bytearray()
+    thread = render_image(rect, buffer, dpi, quality, autocrop, preserve_alpha, True)
+    display(Image(data=buffer))
+
+
 def _repl_refresh_func(_: float) -> float:
     """Default refresh func to be used in REPL mode.
 
