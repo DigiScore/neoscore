@@ -117,6 +117,15 @@ def setup(paper: Paper = A4):
     from neoscore.core.document import Document
     from neoscore.core.font import Font
 
+    try:
+        document
+        warn(
+            "neoscore.setup() appears to have already been called. To prevent unexpected behavior, only run initial setup once. Skipping this call."
+        )
+        return
+    except NameError:
+        pass
+
     document = Document(paper)
 
     app_interface = AppInterface(

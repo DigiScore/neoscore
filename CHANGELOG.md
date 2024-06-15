@@ -1,3 +1,7 @@
+# 0.1.16 (unreleased)
+- Make `neoscore.setup()` warn and skip if it detects it has been called more than once.
+- Add `neoscore.render_to_notebook()` for conveniently emitting rendered images to Jupyter Notebook and compatible environments.
+
 # 0.1.15 (2024-01-22)
 - Update dependencies
 - Pin pyqt5-qt5 to 5.15.2 to fix build failures on non-Mac systems. It seems that recent releases of this package do not support all systems.
