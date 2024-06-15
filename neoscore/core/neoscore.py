@@ -117,8 +117,13 @@ def setup(paper: Paper = A4):
     from neoscore.core.document import Document
     from neoscore.core.font import Font
 
+    # Some guardrails against repeated `setup()` calls, which cause crashes.
     try:
-        document  # triggers NameError on first setup
+        # If this is the first `setup()` call, referencing `document`
+        # here will raise a NameError
+        document
+        # If Neoscore was previously `setup()` then cleanly `shutdown()`,
+        # `document` will be `None`
         if document is not None:
             warn(
                 "`neoscore.setup()` was called but Neoscore is already running."
