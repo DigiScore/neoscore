@@ -65,7 +65,10 @@ jobs:
           if [ "$RUNNER_OS" == "Linux" ]; then
             sudo apt install graphviz
           elif [ "$RUNNER_OS" == "macOS" ]; then
-            brew install graphviz
+            brew install graphviz || \
+                 # Conflict can happen here, hack around it
+                 brew link --overwrite python@3.12 && \
+                 brew install graphviz
           elif [ "$RUNNER_OS" == "Windows" ]; then
             choco install graphviz --no-progress
           else
