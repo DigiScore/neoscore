@@ -118,11 +118,15 @@ def setup(paper: Paper = A4):
     from neoscore.core.font import Font
 
     try:
-        document
-        warn(
-            "neoscore.setup() appears to have already been called. To prevent unexpected behavior, only run initial setup once. Skipping this call."
-        )
-        return
+        document  # triggers NameError on first setup
+        if document is not None:
+            warn(
+                "`neoscore.setup()` was called but Neoscore is already running."
+                + "To prevent unexpected behavior, only run initial setup once "
+                + "or call `neoscore.shutdown()` first. "
+                + "Skipping this call."
+            )
+            return
     except NameError:
         pass
 
@@ -607,4 +611,10 @@ def shutdown():
     After running this, :obj:`.neoscore.setup` can be called again to start a new
     document.
     """
+    global app_interface
+    global default_font
+    global document
     app_interface.destroy()
+    app_interface = None
+    document = None
+    default_font = None
