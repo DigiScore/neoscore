@@ -497,26 +497,18 @@ def render_image(
 def render_to_notebook(
     rect: Optional[RectDef] = None,
     dpi: int = 300,
-    quality: int = -1,
-    autocrop: bool = False,
-    preserve_alpha: bool = True,
+    autocrop: bool = True,
+    preserve_alpha: bool = False,
 ):
     """Render an image to a Jupyter Notebook environment.
 
-    This works like :obj:`.render_image`, but instead of saving
+    This works mostly like :obj:`.render_image`, but instead of saving
     a file it sends the image to the active notebook environment.
     If there is no active environment, this may error or have no effect.
+    For convenience, some default arguments differ from ``render_image``
+    to align with what you usually want in a notebook.
 
-    `Jupyter Notebooks <https://jupyter.org/>`_ are a popular programming
-    environment which let you interactively combine code, commentary, and
-    media side-by-side. This function lets you write Neoscore scores inside
-    Jupyter Notebooks while embedding the rendered results within your document.
-
-    Note that Jupyter is not bundled with Neoscore. To try this out, first
-    install it in your environment with ``pip install jupyter``, then start
-    the notebook server with ``jupyter notebook``, create a new notebook,
-    and write your Neoscore code. Calling this function will allow you to
-    render and display the output in an image block.
+    :ref:`See the docs <jupyter integration>` for more information.
 
     This functionality is experimental and subject to change.
     """
@@ -526,7 +518,7 @@ def render_to_notebook(
         warn("Attempted to render to notebook, but IPython is not installed.")
         return
     buffer = bytearray()
-    thread = render_image(rect, buffer, dpi, quality, autocrop, preserve_alpha, True)
+    thread = render_image(rect, buffer, dpi, -1, autocrop, preserve_alpha, True)
     display(Image(data=buffer))
 
 

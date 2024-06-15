@@ -6,7 +6,7 @@ Neoscore has experimental support for interactive scores which can change on the
 Live coding with a REPL
 -----------------------
 
-You can integrate neoscore applications with a Python `REPL <https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop>`_ through `IPython <https://ipython.org/>`_. To get started, install ipython in your environment with ``pip install ipython``. Once installed you can run or write neoscore programs using the ipython shell with the flag ``--gui=qt5``::
+You can integrate neoscore applications with a Python `REPL <https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop>`_ through `IPython <https://ipython.org/>`_. To get started, install ipython in your virtual environment with ``pip install ipython``. Once installed you can run or write neoscore programs using the ipython shell with the flag ``--gui=qt5``::
 
     $ ipython --gui=qt5
     Python 3.10.4 (main, Mar 23 2022, 23:05:40) [GCC 11.2.0]
@@ -26,6 +26,17 @@ You can integrate neoscore applications with a Python `REPL <https://en.wikipedi
     In [6]: text.text = 'changing text!'
 
 You can also write starting code in a python script as usual, then run it interactively with ``ipython --gui=qt5 -i your_script.py``.
+
+Embedding scores in Jupyter Notebooks
+-------------------------------------
+
+.. _jupyter integration:
+
+`Jupyter Notebooks <https://jupyter.org/>`_ are a popular programming environment which let you interactively combine code, notes, and media side-by-side. Neoscore has experimental support for easily embedding rendered images in notebooks.
+
+To try this out, first install Jupyter in your virtul environment with ``pip install jupyter``, then start the notebook server with ``jupyter notebook``, create a new notebook, and write your Neoscore code. To display an image from your score in your notebook, call :obj:`.neoscore.render_to_notebook`. You can find `a simple example notebook here  <https://github.com/DigiScore/neoscore/tree/main/examples/jupyter_notebook.ipynb>`_.
+
+Before using this feature we recommend you familiarize yourself with the basics of `how Jupyter Notebooks work <https://jupyter-notebook.readthedocs.io/en/stable/examples/Notebook/Running%20Code.html>`_. Jupyter allows running code blocks repeatedly; unless you restart the kernel, all state is carried over from previous executions, so if you rerun a block creating an object it will not edit the original object, but create a new one. Similarly, you usually should not rerun initial setup code like configuring pages, flowables, and staves. When modifying and rerunning cells we generally recommend using the button to 'Restart the kernel and run all cells'.
 
 Animation
 ---------
