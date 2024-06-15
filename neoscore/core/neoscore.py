@@ -492,18 +492,17 @@ def render_to_notebook(
     autocrop: bool = False,
     preserve_alpha: bool = True,
 ):
-    """Render an image to a Jupyter Notebook environment.
+    """Render an image to a IPython/Jupyter Notebook environment.
 
-    This works exactly like :obj:`.render_image`, but instead of saving
-    a file it sends the image to the active Jupyter Notebook environment.
-    If not running within a Jupyter environment, this will raise an
-    ``EnvironmentError``. Unlike ``render_image``, this method takes no
-    output path, and always blocks until the render completes.
+    This works like :obj:`.render_image`, but instead of saving
+    a file it sends the image to the active notebook environment.
+    If there is no active environment, this may error or have no effect.
     """
-    # if not running_in_jupyter_notebook():
-    #     raise EnvironmentError("No Jupyter Notebook environment detected")
-    from IPython.display import Image, display
-
+    try:
+        from IPython.display import Image, display
+    except:  # noqa
+        warn("Attempted to render to notebook, but IPython is not installed.")
+        return
     buffer = bytearray()
     thread = render_image(rect, buffer, dpi, quality, autocrop, preserve_alpha, True)
     display(Image(data=buffer))
