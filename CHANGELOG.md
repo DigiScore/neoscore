@@ -1,6 +1,6 @@
-# 0.1.16 (unreleased)
+# 0.1.16 (2024-06-27)
 - Make `neoscore.setup()` warn and skip if it detects it has been called more than once.
-- Add `neoscore.render_to_notebook()` for conveniently emitting rendered images to Jupyter Notebook and compatible environments.
+- Add `neoscore.render_to_notebook()` for conveniently emitting rendered images to Jupyter Notebook and compatible environments. Thanks @demithetechie for helping with this!
 
 # 0.1.15 (2024-01-22)
 - Update dependencies
