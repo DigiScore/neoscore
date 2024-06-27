@@ -117,6 +117,24 @@ def setup(paper: Paper = A4):
     from neoscore.core.document import Document
     from neoscore.core.font import Font
 
+    # Some guardrails against repeated `setup()` calls, which cause crashes.
+    try:
+        # If this is the first `setup()` call, referencing `document`
+        # here will raise a NameError
+        document
+        # If Neoscore was previously `setup()` then cleanly `shutdown()`,
+        # `document` will be `None`
+        if document is not None:
+            warn(
+                "`neoscore.setup()` was called but Neoscore is already running."
+                + "To prevent unexpected behavior, only run initial setup once "
+                + "or call `neoscore.shutdown()` first. "
+                + "Skipping this call."
+            )
+            return
+    except NameError:
+        pass
+
     document = Document(paper)
 
     app_interface = AppInterface(
@@ -485,6 +503,34 @@ def render_image(
     return thread
 
 
+def render_to_notebook(
+    rect: Optional[RectDef] = None,
+    dpi: int = 300,
+    autocrop: bool = True,
+    preserve_alpha: bool = False,
+):
+    """Render an image to a Jupyter Notebook environment.
+
+    This works mostly like :obj:`.render_image`, but instead of saving
+    a file it sends the image to the active notebook environment.
+    If there is no active environment, this may error or have no effect.
+    For convenience, some default arguments differ from ``render_image``
+    to align with what you usually want in a notebook.
+
+    :ref:`See the docs <jupyter integration>` for more information.
+
+    This functionality is experimental and subject to change.
+    """
+    try:
+        from IPython.display import Image, display
+    except:  # noqa
+        warn("Attempted to render to notebook, but IPython is not installed.")
+        return
+    buffer = bytearray()
+    thread = render_image(rect, buffer, dpi, -1, autocrop, preserve_alpha, True)
+    display(Image(data=buffer))
+
+
 def _repl_refresh_func(_: float) -> float:
     """Default refresh func to be used in REPL mode.
 
@@ -570,4 +616,10 @@ def shutdown():
     After running this, :obj:`.neoscore.setup` can be called again to start a new
     document.
     """
+    global app_interface
+    global default_font
+    global document
     app_interface.destroy()
+    app_interface = None
+    document = None
+    default_font = None
